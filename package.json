@@ -16,7 +16,7 @@
     "tailwindcss": "^1.4.6",
     "vue": "^3.0.0-beta.1",
     "vue-router": "^4.0.0-alpha.12",
-    "vuex": "^3.4.0"
+    "vuex": "^4.0.0-beta.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
