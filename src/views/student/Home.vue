@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="mt-32 text-4xl text-center font-semibold text-gray-900">My Courses</div>
-        <div class="mt-16 flex justify-center">
+        <div class="mt-8 flex justify-center">
             <course-list :courses="courses"></course-list>
         </div>
     </div>
