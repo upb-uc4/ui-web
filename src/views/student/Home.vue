@@ -6,6 +6,6 @@
 
 <script>
 export default {
-    name: 'StudentHome',
+    name: 'Student.Home',
 }
 </script>
