@@ -22,3 +22,13 @@ pnpm-debug.log*
 *.sw?
 
 .npmrc
+
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+src/_drafts
+package-lock.json
