@@ -20,6 +20,7 @@ export default {
                 name: "Vue.js 101",
                 type: "Seminar",
                 lecturer: "Prof. Dr. Bienlein",
+                language: "English",
                 description: "This is a generic course description which can be quite long. " +
                     "It may consists of several paragraphs and perhaps should be shortened." +
                     "Could also include a 'click for more'.",
@@ -33,6 +34,7 @@ export default {
                 name: "Tailwindcss 101",
                 type: "Lecture",
                 lecturer: "Donald Duck",
+                language: "German",
                 description: "This is a generic course description which can be quite long. " +
                     "It may consists of several paragraphs and perhaps should be shortened." +
                     "Could also include a 'click for more'.",
