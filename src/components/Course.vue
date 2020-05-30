@@ -11,6 +11,7 @@
                         </div>
                     </div>
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.name }}</div>
+                    <div class="mt-1 font-semibold text-sm text-gray-600">ID: {{ course.id }}</div>
                     <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturer }}</div>
                     <div class="mt-3">
                         <div class="text-gray-600">
@@ -25,11 +26,11 @@
                 </div>
             </div>
         </div>
-
+        <!-- v-if directive just for design purposes here -> replace with state of myCourses-->
         <div class="w-1/6 bg-white rounded-lg rounded-l-none pl-4 pr-8">
-            <div class="mt-6 flex h-full items-center justify-center">
-                <button class="bg-white text-red-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold">Leave</button>
-                <!-- <button class="bg-red-600 text-white shadow-md py-2 px-8 rounded focus:outline-none font-semibold">Leave</button> -->
+            <div  class="mt-6 flex h-full items-center justify-center">
+                <button v-if="course.id===123456789" class="bg-white text-red-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold">Leave</button>
+                <button v-else class="bg-white text-blue-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold">Enter</button>
             </div>
         </div>
     </div>

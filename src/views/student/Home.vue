@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="mt-32 text-4xl text-center font-semibold text-gray-900">My Courses</div>
+        <div class="mt-32 text-4xl text-center font-semibold text-gray-900">Available Courses</div>
         <div class="mt-8 flex justify-center">
             <course-list :courses="courses"></course-list>
         </div>
@@ -18,6 +18,7 @@ export default {
         courses: {
             vue: {
                 name: "Vue.js 101",
+                id: 123456789,
                 type: "Seminar",
                 lecturer: "Prof. Dr. Bienlein",
                 language: "English",
@@ -31,6 +32,7 @@ export default {
             },
             tailwind: {
                 name: "Tailwindcss 101",
+                id: 987654321,
                 type: "Lecture",
                 lecturer: "Donald Duck",
                 language: "German",
