@@ -22,6 +22,7 @@ export default {
                 type: "Seminar",
                 lecturer: "Prof. Dr. Bienlein",
                 language: "English",
+                credits: 5,
                 description: "This is a generic course description which can be quite long. " +
                     "It may consists of several paragraphs and perhaps should be shortened." +
                     "Could also include a 'click for more'.",
@@ -36,6 +37,7 @@ export default {
                 type: "Lecture",
                 lecturer: "Donald Duck",
                 language: "German",
+                credits: 6,
                 description: "This is a generic course description which can be quite long. " +
                     "It may consists of several paragraphs and perhaps should be shortened." +
                     "Could also include a 'click for more'.",
@@ -51,6 +53,7 @@ export default {
                 type: "Lecture",
                 lecturer: "Darth Vader",
                 language: "German",
+                credits: 10,
                 description: "This is a generic course description which can be quite long. " +
                     "It may consists of several paragraphs and perhaps should be shortened." +
                     "Could also include a 'click for more'.",

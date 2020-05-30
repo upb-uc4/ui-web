@@ -6,6 +6,9 @@
                     <div class="flex items-baseline">
                         <span class="inline-block bg-teal-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide">{{ course.type }}</span>
                         <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">{{ course.language }}</div>
+                         <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">
+                            {{ course.credits }} ECTS
+                        </div>
                         <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">
                             <i class="inline fas fa-users text-lg"></i> {{ course.participants}} / {{ course.maxParticipants }}
                         </div>
