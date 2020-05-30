@@ -7,7 +7,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import CourseList from "../../components/CourseList";
 export default {
     name: 'Student.Home',

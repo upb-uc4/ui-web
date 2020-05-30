@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
     export default {
         name: "CourseListFilter",
         components: {
@@ -20,12 +20,12 @@
         },
         computed: {
             // filtered courses
-            filteredCourses: function() {
+            filteredCourses: function() : object[] {
                 if(this.message == "") {
                     this.$emit('filter', this.courses)
                     return this.courses
                 }
-                var filteredCourses = []
+                var filteredCourses : object[] = []
                 
 
                 for (var i = 0; i < this.courses.length; i++) {

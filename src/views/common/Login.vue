@@ -19,12 +19,12 @@
     </div>
 </template>
 
-<script>
-import Router from "../../router/routes";
+<script lang="ts">
+import Router from "../../router/";
 export default {
     name: 'Login',
     methods: {
-        goto: function(target) {
+        goto: function(target : string) {
             Router.push(target);
         },
     }

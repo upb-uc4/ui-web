@@ -7,9 +7,9 @@
     </div>
 </template>
 
-<script>
-    import Course from "./Course";
-    import CourseListFilter from "./CourseListFilter"
+<script lang="ts">
+    import Course from "./Course.vue";
+    import CourseListFilter from "./CourseListFilter.vue"
     export default {
         name: "CourseList",
         components: {
@@ -25,7 +25,7 @@
             }
         }, 
         methods: {
-            filter: function(value) {
+            filter: function(value : object[]) {
                 this.filteredCourses = value
                 console.log(this.filteredCourses)
             }
