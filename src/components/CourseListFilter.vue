@@ -1,6 +1,6 @@
 <template>
     <div class="w-full max-w-4xl">
-        <input class="mb-6 w-4/6 h-8 text-xl rounded-lg pl-8" placeholder="Filter by.." v-model="message">
+        <input class="mb-6 w-4/6 h-8 text-xl rounded-lg pl-8 shadow-xl" placeholder="Filter by name.." v-model="message">
         <p hidden>{{ filteredCourses }}</p>
     </div>
 </template>
