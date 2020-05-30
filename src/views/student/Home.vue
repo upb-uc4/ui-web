@@ -15,8 +15,8 @@ export default {
         CourseList,
     },
     data: () => ({
-        courses: {
-            vue: {
+        courses: [
+            {
                 name: "Vue.js 101",
                 type: "Seminar",
                 lecturer: "Prof. Dr. Bienlein",
@@ -30,7 +30,7 @@ export default {
                 from: '14:00',
                 to: '16:00',
             },
-            tailwind: {
+           {
                 name: "Tailwindcss 101",
                 type: "Lecture",
                 lecturer: "Donald Duck",
@@ -44,7 +44,7 @@ export default {
                 from: '08:00',
                 to: '10:30',
             },
-        },
+        ],
     })
 }
 </script>
