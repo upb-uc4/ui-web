@@ -19,8 +19,7 @@
                     </div>
                     <div class="mt-5 flex text-gray-600">
                         <i class="far fa-calendar-alt text-2xl"></i>
-                        <p class="ml-3">{{ course.weekday }}</p>
-                        <p class="ml-2">{{ course.from }} - {{ course.to }}</p>
+                        <p class="ml-2">{{ course.startDate }} - {{ course.endDate }}</p>
                     </div>
 
                 </div>

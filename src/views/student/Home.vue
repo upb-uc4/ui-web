@@ -26,9 +26,8 @@ export default {
                     "Could also include a 'click for more'.",
                 participants: 5,
                 maxParticipants: 16,
-                weekday: 'Tuesdays',
-                from: '14:00',
-                to: '16:00',
+                startDate: 'Sat, 30.05.2020 [18:00]',
+                endDate: 'Mo, 29.06.2020 [20:00]',
             },
             tailwind: {
                 name: "Tailwindcss 101",
@@ -40,9 +39,8 @@ export default {
                     "Could also include a 'click for more'.",
                 participants: 74,
                 maxParticipants: 105,
-                weekday: 'Mondays',
-                from: '08:00',
-                to: '10:30',
+                startDate: 'Sat, 30.05.2020 [14:00]',
+                endDate: 'Sat, 27.06.2020 [14:00]',
             },
         },
     })
