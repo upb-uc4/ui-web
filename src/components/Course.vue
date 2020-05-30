@@ -14,9 +14,10 @@
                     <div class="mt-1 font-semibold text-sm text-gray-600">ID: {{ course.id }}</div>
                     <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturer }}</div>
                     <div class="mt-3">
-                        <div class="text-gray-600">
-                            {{ course.description }}
-                        </div>
+                        <details class="text-gray-600">
+                            <summary> Description </summary>
+                            <p> {{ course.description }} </p>
+                        </details>
                     </div>
                     <div class="mt-5 flex text-gray-600">
                         <i class="far fa-calendar-alt text-2xl"></i>
