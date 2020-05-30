@@ -16,32 +16,19 @@
         data: function () {
             return {
                 message: ""
-            }
+            };
         },
         computed: {
             // filtered courses
             filteredCourses: function() : object[] {
                 if(this.message == "") {
-                    this.$emit('filter', this.courses)
-                    return this.courses
+                    this.$emit('filter', this.courses);
+                    return this.courses;
                 }
-                var filteredCourses : object[] = []
-                
+                const filteredCourses = this.courses.filter((course: {name: string}) => course.name.toLowerCase().includes(this.message.toLowerCase()));
 
-                for (var i = 0; i < this.courses.length; i++) {
-                    //console.log(this.courses[i].name)
-                    //console.log(this.message)
-                    var courseName = this.courses[i].name.toLowerCase()
-                    //console.log(courseName)
-                    if (courseName.includes(this.message.toLowerCase()))
-                        filteredCourses.push(this.courses[i])
-                }
-                
-                //console.log("in")
-                //console.log(filteredCourses)
-                //console.log("-")
-                this.$emit('filter', filteredCourses)
-                return filteredCourses
+                this.$emit('filter', filteredCourses);
+                return filteredCourses;
             }
         }, 
         methods: {
@@ -49,5 +36,5 @@
                 
             }
         }
-    }
+    };
 </script>
