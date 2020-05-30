@@ -19,7 +19,7 @@
         props: [
             'courses'
         ],
-        data: function() {
+        data: function() : {filteredCourses : object} {
             return {
                 filteredCourses: {...this.courses}
             }
