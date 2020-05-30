@@ -44,6 +44,21 @@ export default {
                 startDate: 'Sat, 30.05.2020 [14:00]',
                 endDate: 'Sat, 27.06.2020 [14:00]',
             },
+
+                javascript: {
+                name: "JavaScript 101",
+                id: 132457689,
+                type: "Lecture",
+                lecturer: "Darth Vader",
+                language: "German",
+                description: "This is a generic course description which can be quite long. " +
+                    "It may consists of several paragraphs and perhaps should be shortened." +
+                    "Could also include a 'click for more'.",
+                participants: 200,
+                maxParticipants: 200,
+                startDate: 'Fr, 29.05.2020 [14:00]',
+                endDate: 'Sat, 27.06.2020 [17:00]',
+            },
         },
     })
 }
