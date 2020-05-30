@@ -8,7 +8,7 @@
           <label
             class="block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
             for="inline-username"
-          >Participant Limit</label>
+          >Course Description</label>
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
