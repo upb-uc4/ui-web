@@ -22,8 +22,12 @@ const router = createRouter({
             component: LecturerHomeView
         },
         {
-            path: '/',
+            path: '/createCourse',
             component: LecturerCreateCourseView
+        },
+        {
+            path: '/',
+            component: LoginView
         }
     ]
 });
