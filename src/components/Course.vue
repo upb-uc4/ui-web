@@ -18,10 +18,6 @@
                         <details class="text-gray-600">
                             <summary>Details</summary>
                             <p>{{ course.description }}</p>
-                            <div class="mt-5 flex text-gray-600">
-                                <i class="far fa-calendar-alt text-2xl"></i>
-                                <p class="ml-2">{{ course.startDate }} - {{ course.endDate }}</p>
-                            </div>
                         </details>
                     </div>
                 </div>
