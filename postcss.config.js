@@ -1,9 +1,6 @@
-const autoprefixer = require('autoprefixer');
-const tailwindcss = require('tailwindcss');
-
 module.exports = {
   plugins: [
-    tailwindcss,
-    autoprefixer,
+    require('tailwindcss')('./tailwind.config.js'),
+    require('autoprefixer'),
   ],
 };
