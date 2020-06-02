@@ -24,8 +24,9 @@ export default {
                 language: "English",
                 credits: 5,
                 description: "This is a generic course description which can be quite long. " +
-                    "It may consists of several paragraphs and perhaps should be shortened." +
-                    "Could also include a 'click for more'.",
+                    "It may consists of several paragraphs and perhaps should be shortened. " +
+                    "Imagine some longer text that describes this course very well. Just imagine for a brief moment, this description is long. " +
+                    "Imagine some longer text that describes this course very well. Just imagine for a brief moment, this description is long. ",
                 participants: 5,
                 maxParticipants: 16,
                 startDate: 'Sat, 30.05.2020 [18:00]',
@@ -39,8 +40,9 @@ export default {
                 language: "German",
                 credits: 6,
                 description: "This is a generic course description which can be quite long. " +
-                    "It may consists of several paragraphs and perhaps should be shortened." +
-                    "Could also include a 'click for more'.",
+                    "It may consists of several paragraphs and perhaps should be shortened. " +
+                    "Imagine some longer text that describes this course very well. Just imagine for a brief moment, this description is long. " +
+                    "Imagine some longer text that describes this course very well. Just imagine for a brief moment, this description is long. ",
                 participants: 74,
                 maxParticipants: 105,
                 startDate: 'Sat, 30.05.2020 [14:00]',

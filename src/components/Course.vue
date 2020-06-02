@@ -15,10 +15,7 @@
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.name }}</div>
                     <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturer }}</div>
                     <div class="mt-3">
-                        <details class="text-gray-600">
-                            <summary>Details</summary>
-                            <p>{{ course.description }}</p>
-                        </details>
+                        <read-more more-str="Mehr ansehen" :text="course.description" less-str="Weniger anzeigen" :max-chars="150"></read-more>
                     </div>
                 </div>
             </div>
@@ -35,8 +32,15 @@
 </template>
 
 <script>
+    import ReadMore from "./ReadMore";
     export default {
         name: "course",
-        props: ["course"]
+        props: ["course"],
+        components: {
+            ReadMore
+        },
+        data: () => ({
+            less: '<span class="text-blue-900">less</span>'
+        })
     };
 </script>
