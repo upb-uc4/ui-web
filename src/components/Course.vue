@@ -27,7 +27,7 @@
         <div class="w-1/6 bg-white rounded-lg rounded-l-none pl-4 pr-8">
             <div class="mt-6 flex h-full items-center justify-center">
                 <button v-if="course.id===123456789" class="bg-white text-red-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold">Leave</button>
-                <button v-else-if="course.participants<course.maxParticipants" class="bg-white text-blue-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold">Enter</button>
+                <button v-else-if="course.participants<course.maxParticipants" class="bg-white text-blue-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold">Join</button>
                 <p v-else class="flex text-red-600 text-opacity-50 text-center py-2 px-8 rounded-lg font-semibold">Course is full</p>
             </div>
         </div>
