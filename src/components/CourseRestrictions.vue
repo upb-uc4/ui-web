@@ -10,8 +10,8 @@
             for="inline-username"
           >Participant Limit</label>
         </div>
-        <select
-          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+        <!--<select
+          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 "
         >
           <option>unlimited</option>
           <option>50</option>
@@ -21,6 +21,15 @@
           <option>200</option>
           <option>Custom</option>
         </select>
+        -->
+        <div class="md:w-2/3">
+        <input
+          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/6 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+          id="inline-username"
+          type="text"
+          placeholder="Limit"
+        />
+      </div>
       </div>
     </div>
   </div>
