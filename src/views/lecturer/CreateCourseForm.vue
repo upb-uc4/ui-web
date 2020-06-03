@@ -9,7 +9,8 @@
              v-model:courseName="courseName"
              v-model:lecturerName="lecturerName"
              v-model:ects="ects" />
-            <CourseRestriction />
+            <CourseRestriction 
+            v-model:participantLimit="participantLimit"/>
             <CourseDescription />
             <div class="flex items-center justify-center">
  
@@ -41,14 +42,15 @@ export default {
         type:'Lecture',
         courseName:'',
         lecturerName:'',
-        ects:''
+        ects:'',
+        participantLimit:''
       
     }
   },
 
   methods: {
     test() {
-      console.log(this.type,this.courseName,this.lecturerName,this.ects)
+      console.log(this.type,this.courseName,this.lecturerName,this.ects,this.participantLimit)
     }
   }
 };
