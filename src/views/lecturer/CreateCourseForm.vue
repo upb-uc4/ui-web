@@ -11,7 +11,8 @@
              v-model:ects="ects" />
             <CourseRestriction 
             v-model:participantLimit="participantLimit"/>
-            <CourseDescription />
+            <CourseDescription 
+            v-model:description="description"/>
             <div class="flex items-center justify-center">
  
                 <button
@@ -43,14 +44,14 @@ export default {
         courseName:'',
         lecturerName:'',
         ects:'',
-        participantLimit:''
-      
+        participantLimit:'',
+        description:'',
     }
   },
 
   methods: {
     test() {
-      console.log(this.type,this.courseName,this.lecturerName,this.ects,this.participantLimit)
+      console.log(this.type,this.courseName,this.lecturerName,this.ects,this.participantLimit,this.description)
     }
   }
 };

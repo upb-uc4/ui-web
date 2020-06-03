@@ -13,7 +13,10 @@
           <div class="md:w-2/3">
             <textarea
               class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 resize-none"
-              placeholder="(Optional)"/>
+              placeholder="(Optional)"
+              :value="description"
+              @input="updateDescription($event.target.value)"
+              />   
           </div>
       </div>
     </div>
@@ -22,6 +25,16 @@
 
 <script lang="ts">
 export default {
-  name: "Course.Description"
+  name: "Course.Description",
+  props: {
+    description:String
+  },
+  setup(props, { emit }) {
+    const updateDescription = value => {
+    emit('update:description',value)
+    }
+    return {updateDescription}
+  }
+
 };
 </script>
