@@ -1,10 +1,10 @@
 <template>
-    <div id='root'>
+    <div id='root' class="container mx-auto">
         <router-view/>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 
 export default {
   name: 'App',
