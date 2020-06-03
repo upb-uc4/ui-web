@@ -15,7 +15,7 @@
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.name }}</div>
                     <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturer }}</div>
                     <div class="mt-3 w-5/6">
-                        <read-more more-str="Mehr ansehen" :text="course.description" less-str="Weniger anzeigen" :max-chars="180"></read-more>
+                        <read-more more-str="Show more" :text="course.description" less-str="Show less" :max-chars="180"></read-more>
                     </div>
                 </div>
             </div>
