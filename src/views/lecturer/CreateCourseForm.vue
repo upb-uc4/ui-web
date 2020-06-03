@@ -21,9 +21,9 @@
 </template>
 
 <script lang="ts">
-import CourseGeneralInformation from "../../components/CourseGeneralInformation";
-import CourseRestriction from "../../components/CourseRestrictions";
-import CourseDescription from "../../components/CourseDescription";
+import CourseGeneralInformation from "../../components/CourseGeneralInformation.vue";
+import CourseRestriction from "../../components/CourseRestrictions.vue";
+import CourseDescription from "../../components/CourseDescription.vue";
 export default {
   name: "Lecturer.CreateCourseForm",
   components: {
