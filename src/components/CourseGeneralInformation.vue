@@ -96,10 +96,10 @@ export default {
       emit("update:courseName", value);
     };
     const updateLecturerId = value => {
-      emit("update:lecturerId", value);
+      emit("update:lecturerId", +value);
     };
     const updateEcts = value => {
-      emit("update:ects", value);
+      emit("update:ects", +value);
     };
     const updateLanguage = value => {
       emit("update:language", value);
