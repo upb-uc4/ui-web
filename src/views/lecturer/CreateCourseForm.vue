@@ -11,6 +11,7 @@
             v-model:courseName="course.courseName"
             v-model:lecturerId="course.lecturerId"
             v-model:ects="course.ects"
+            v-model:language="course.language"
           />
           <CourseRestriction v-model:maxStudents="course.maxStudents" />
           <CourseDescription v-model:description="course.description" />
