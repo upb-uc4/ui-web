@@ -26,7 +26,7 @@
           <input
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/6 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             type="text"
-            :value="participantLimit"
+            :value="maxStudents"
             @input="updateParticipantLimit($event.target.value)"
             placeholder="Limit"
           />

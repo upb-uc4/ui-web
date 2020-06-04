@@ -13,7 +13,7 @@
         </div>
         <select
           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-          :value="type"
+          :value="courseType"
           @input="updateType($event.target.value)"
         >
           <option>Lecture</option>
@@ -48,7 +48,7 @@
         <input
           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
           type="text"
-          :value="lecturerName"
+          :value="lecturerId"
           @input="updateLecturerName($event.target.value)"
           placeholder="Your Name (via vuex)"
         />
