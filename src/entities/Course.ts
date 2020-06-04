@@ -1,8 +1,11 @@
 export class Course {
-    type: string = "Lecture";
+    courseType: string = "Lecture";
+    courseId: bigint = 0n;
     courseName: string = "";
-    lecturerName: string = "";
-    ects: number = 0;
-    participantLimit: number = 0;
+    lecturerId: bigint = 0n;
+    ects: bigint = 0n;
+    maxStudents: bigint = 0n;
     description: string = "";
+    startDate: string ="";
+    endDate: string = "";
 }
