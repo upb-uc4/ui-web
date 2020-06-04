@@ -66,15 +66,15 @@ export default {
         this.error = true;
         this.collectedErrors+= "\t(Course Name)\t";
       }
-      if (this.course.lecturerId == 0n || this.course.lecturerId == undefined) {
+      if (this.course.lecturerId == 0 || this.course.lecturerId == undefined) {
         this.error = true;
         this.collectedErrors+= "\t(Lecturer ID)\t";
       }
-      if(this.course.ects == 0n || this.course.ects == undefined) {
+      if(this.course.ects == 0 || this.course.ects == undefined) {
         this.error = true;
         this.collectedErrors+= "\t(ECTS)\t";
       }
-      if(this.course.maxStudents == 0n || this.course.maxStudents == undefined) {
+      if(this.course.maxStudents == 0 || this.course.maxStudents == undefined) {
         this.error = true;
         this.collectedErrors+= "(Participant Limit)";
       }
@@ -90,10 +90,22 @@ export default {
     },
 
     submitForm() {
-      //TODO
       //generate a random course ID
-      const random = require('random-bigint')
-      this.course.courseId = random(128)
+      this.course.courseId = Math.floor(Math.random() * Math.floor(30000));
+
+      const axios = require("axios");
+      const instance =  axios.create({
+        baseURL: "http://192.168.0.66:9000",
+          headers: {
+            "Accept": "*/*",
+            "Content-Type": "application/json;charset=UTF-8"
+          }
+      });
+
+      instance.post("/course", this.course).then((response: any) => {
+        console.log(response);
+      });
+
       return
     }
   }

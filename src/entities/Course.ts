@@ -1,8 +1,8 @@
 export class Course {
     courseType: string = "Lecture";
-    courseId: bigint = 0n;
+    courseId: number = 0;
     courseName: string = "";
-    lecturerId: bigint = 0n;
+    lecturerId: number = 0;
     ects: number = 0;
     maxStudents: number = 0;
     currentParticipants: number = 0;
