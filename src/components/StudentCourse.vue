@@ -4,7 +4,7 @@
             <div class="flex">
                 <div class="w-full">
                     <div class="flex items-baseline">
-                        <span class="inline-block bg-teal-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide">{{ course.CourseType }}</span>
+                        <span class="inline-block bg-teal-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide">{{ course.courseType }}</span>
                         <!--
                         <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">{{ course.language }}</div>
                         -->
