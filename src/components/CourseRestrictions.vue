@@ -26,9 +26,10 @@
           <input
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/6 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             type="text"
-            :value="participantLimit"
+            :value="maxStudents"
             @input="updateParticipantLimit($event.target.value)"
             placeholder="Limit"
+            onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
           />
         </div>
       </div>
@@ -45,7 +46,7 @@ export default {
 
   setup(props, { emit }) {
     const updateParticipantLimit = value => {
-      emit("update:participantLimit", value);
+      emit("update:maxStudents", value);
     };
     return {updateParticipantLimit};
   }
