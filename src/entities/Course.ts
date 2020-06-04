@@ -3,9 +3,11 @@ export class Course {
     courseId: bigint = 0n;
     courseName: string = "";
     lecturerId: bigint = 0n;
-    ects: bigint = 0n;
-    maxStudents: bigint = 0n;
+    ects: number = 0;
+    maxStudents: number = 0;
+    currentParticipants: number = 0;
     description: string = "";
+    language:string = "English";
     startDate: string ="";
     endDate: string = "";
 }
