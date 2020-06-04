@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import CourseList from "../../components/CourseList.vue";
+import CourseList from "../../components/StudentCourseList.vue";
 export default {
     name: 'Student.Home',
     components: {

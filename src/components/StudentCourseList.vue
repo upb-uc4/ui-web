@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-    import Course from "./Course.vue";
+    import Course from "./StudentCourse.vue";
     import CourseListFilter from "./CourseListFilter.vue"
     export default {
         name: "CourseList",

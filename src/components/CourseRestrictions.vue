@@ -23,13 +23,14 @@
         </select>
         -->
         <div class="md:w-2/3">
-        <input
-          class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/6 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-          id="inline-username"
-          type="text"
-          placeholder="Limit"
-        />
-      </div>
+          <input
+            class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/6 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+            type="text"
+            :value="participantLimit"
+            @input="updateParticipantLimit($event.target.value)"
+            placeholder="Limit"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -37,6 +38,16 @@
 
 <script lang="ts">
 export default {
-  name: "Course.Restrictions"
+  name: "Course.Restrictions",
+  props: {
+    participantLimit: String
+  },
+
+  setup(props, { emit }) {
+    const updateParticipantLimit = value => {
+      emit("update:participantLimit", value);
+    };
+    return {updateParticipantLimit};
+  }
 };
 </script>
