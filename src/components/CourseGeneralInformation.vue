@@ -14,7 +14,7 @@
         <select
           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
           :value="courseType"
-          @input="updateType($event.target.value)"
+          @input="updateCourseType($event.target.value)"
         >
           <option>Lecture</option>
           <option>Seminar</option>
@@ -49,7 +49,7 @@
           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
           type="text"
           :value="lecturerId"
-          @input="updateLecturerName($event.target.value)"
+          @input="updateLecturerId($event.target.value)"
           placeholder="Your ID (via vuex)"
           onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
         />
@@ -81,19 +81,20 @@ export default {
   
 
   setup(props, { emit } ) {
-        const updateType = value => {
+        const updateCourseType = value => {
+          console.log(value)
           emit('update:courseType',value)
         }
         const updateCourseName = value => {
           emit('update:courseName',value)
         }
-        const updateLecturerName = value => {
+        const updateLecturerId = value => {
           emit('update:lecturerId',value)
         }
         const updateEcts = value => {
           emit('update:ects',value)
         }
-        return {updateType,updateCourseName,updateLecturerName,updateEcts}
+        return {updateCourseType,updateCourseName,updateLecturerId,updateEcts}
     }
 };
 </script>

@@ -7,7 +7,7 @@
           class="w-4/5 bg-white items-center justify-center rounded-lg rounded-r-none shadow-xl py-4 px-8"
         >
           <CourseGeneralInformation
-            v-model:type="course.courseType"
+            v-model:courseType="course.courseType"
             v-model:courseName="course.courseName"
             v-model:lecturerId="course.lecturerId"
             v-model:ects="course.ects"
