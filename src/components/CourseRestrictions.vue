@@ -45,7 +45,7 @@ export default {
 
   setup(props, { emit }) {
     const updateParticipantLimit = value => {
-      emit("update:participantLimit", value);
+      emit("update:maxStudents", value);
     };
     return {updateParticipantLimit};
   }

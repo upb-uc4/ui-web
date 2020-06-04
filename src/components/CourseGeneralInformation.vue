@@ -97,13 +97,13 @@ export default {
 
   setup(props, { emit } ) {
     const updateType = value => {
-      emit('update:type',value)
+      emit('update:courseType',value)
     }
     const updateCourseName = value => {
       emit('update:courseName',value)
     }
     const updateLecturerName = value => {
-      emit('update:lecturerName',value)
+      emit('update:lecturerId',value)
     }
     const updateEcts = value => {
       emit('update:ects',value)

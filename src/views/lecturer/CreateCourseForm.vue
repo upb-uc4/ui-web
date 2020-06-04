@@ -10,7 +10,7 @@
             v-model:lecturerId="course.lecturerId"
             v-model:ects="course.ects"
             <CourseRestriction 
-          <CourseRestriction v-model:participantLimit="course.maxStudents" />
+          <CourseRestriction v-model:maxStudents="course.maxStudents" />
             <CourseDescription 
             v-model:description="course.description"/>
             <div class="flex items-center justify-center">
