@@ -24,7 +24,7 @@
 
             const axios = require("axios");
             const instance = await axios.create({
-                baseURL: "http://192.168.0.66:9000",
+                baseURL: "http://localhost:9000",
                 headers: {
                     "Accept": "*/*",
                     "Content-Type": "application/json;charset=UTF-8"
