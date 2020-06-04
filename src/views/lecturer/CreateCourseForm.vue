@@ -90,6 +90,9 @@ export default {
 
     submitForm() {
       //TODO
+      //generate a random course ID
+      const random = require('random-bigint')
+      this.course.courseId = random(128)
       return
     }
   }
