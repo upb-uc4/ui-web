@@ -5,14 +5,14 @@
       <div class="w-full flex justify-center items-center">
       <div class="w-4/5 bg-white items-center justify-center rounded-lg rounded-r-none shadow-xl py-4 px-8">
             <CourseGeneralInformation 
-             v-model:type="type"
-             v-model:courseName="courseName"
-             v-model:lecturerName="lecturerName"
-             v-model:ects="ects" />
+             v-model:type="course.type"
+             v-model:courseName="course.courseName"
+             v-model:lecturerName="course.lecturerName"
+             v-model:ects="course.ects" />
             <CourseRestriction 
-            v-model:participantLimit="participantLimit"/>
+            v-model:participantLimit="course.participantLimit"/>
             <CourseDescription 
-            v-model:description="description"/>
+            v-model:description="course.description"/>
             <div class="flex items-center justify-center">
  
                 <button
@@ -31,6 +31,8 @@
 import CourseGeneralInformation from "../../components/CourseGeneralInformation.vue";
 import CourseRestriction from "../../components/CourseRestrictions.vue";
 import CourseDescription from "../../components/CourseDescription.vue";
+import { Course } from "../../entities/Course";
+
 export default {
   name: "Lecturer.CreateCourseForm",
   components: {
@@ -40,18 +42,13 @@ export default {
   },
   data() {
     return {
-        type:'Lecture',
-        courseName:'',
-        lecturerName:'',
-        ects:'',
-        participantLimit:'',
-        description:'',
+        course: Course,
     }
   },
 
   methods: {
     test() {
-      console.log(this.type,this.courseName,this.lecturerName,this.ects,this.participantLimit,this.description)
+      console.log(this.course);
     }
   }
 };

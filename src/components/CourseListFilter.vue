@@ -1,6 +1,6 @@
 <template>
     <div class="w-full max-w-4xl flex">
-        <div class="container w-4/6">
+        <div class="container w-full">
             <div class="container w-full flex"
             v-bind:class="{'mb-6 shadow-xl rounded-lg':message === '', 'shadow-none rounded-t-lg':message != ''}" > 
                 <input class="flex-auto h-8 text-xl  pl-6 outline-none" 

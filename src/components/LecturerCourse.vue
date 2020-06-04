@@ -37,10 +37,10 @@
     <div class="w-1/6 bg-white rounded-lg rounded-l-none pl-4 pr-8">
       <div class="mt-6 items-end justify-end">
         <button
-          class="bg-white text-red-600 w-full text-center border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold"
+          class="bg-white text-red-600 w-full text-center border-2 shadow-md border-gray-300 py-2 rounded-lg focus:outline-none font-semibold mb-2"
         >Edit</button>
         <button
-          class="bg-red-500 text-white w-full text-center border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold"
+          class="bg-red-500 text-white w-full text-center border-2 shadow-md border-gray-300 py-2 rounded-lg focus:outline-none font-semibold"
         >Delete</button>
       </div>
     </div>
