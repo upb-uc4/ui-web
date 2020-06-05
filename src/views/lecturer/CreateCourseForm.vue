@@ -13,18 +13,33 @@
                 <div class="w-full lg:w-2/3">
                     <div class="mb-4 flex flex-col">
                         <label for="name" class="text-gray-700 text-md font-semibold mb-3">Name</label>
-                        <input type="text" id="name" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600">
+                        <input type="text" id="name" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="description" class="text-gray-700 text-md font-semibold mb-3">Description</label>
-                        <textarea name="description" id="description" cols="30" rows="10" class="w-full border-2 border-gray-400 rounded-lg text-gray-600"></textarea>
+                        <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"></textarea>
                     </div>
                     <div class="mb-4 flex flex-col">
+                        <!-- TODO: create cards for better visual impact -->
                         <label class="text-gray-700 text-md font-semibold mb-3">Type</label>
+                        <div class="flex">
+                            <div class="mr-4">
+                                <label class="flex items-center">
+                                    <input type="radio" class="form-radio text-indigo-600" name="radio-colors" value="1" checked>
+                                    <span class="ml-2">Seminar</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="flex items-center">
+                                    <input type="radio" class="form-radio text-indigo-600" name="radio-colors" value="1" checked>
+                                    <span class="ml-2">Lecture</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label class="text-gray-700 text-md font-semibold mb-3">Language</label>
-                        <select name="language" id="language" class="w-full border-2 border-gray-400 rounded-lg text-gray-600 py-3">
+                        <select name="language" id="language" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
                             <option>German</option>
                             <option>English</option>
                         </select>
@@ -44,7 +59,7 @@
                 <div class="w-full lg:w-2/3">
                     <div class="mb-4 flex flex-col">
                         <label for="limit" class="text-gray-700 text-md font-semibold mb-3">Participation Limit</label>
-                        <input type="number" id="limit" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600">
+                        <input type="number" id="limit" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                     </div>
                 </div>
             </div>
