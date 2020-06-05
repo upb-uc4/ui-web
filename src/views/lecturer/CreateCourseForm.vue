@@ -1,6 +1,11 @@
 <template>
 
-    <div class="w-full mt-20 bg-gray-300 mx-auto h-screen p-8">
+    <div class="w-full mt-20 bg-gray-300 mx-auto h-screen">
+        <button class="flex items-center mb-4">
+            <i class="fas text-xl fa-chevron-left text-blue-700"></i>
+            <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
+        </button>
+
         <h1 class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
         <section class="border-t-2 py-8 border-gray-400">
             <div class="flex">
