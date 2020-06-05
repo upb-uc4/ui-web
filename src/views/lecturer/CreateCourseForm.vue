@@ -1,7 +1,7 @@
 <template>
 
     <div class="w-full mt-20 bg-gray-300 mx-auto h-screen">
-        <button class="flex items-center mb-4">
+        <button @click="navigateBack()" class="flex items-center mb-4">
             <i class="fas text-xl fa-chevron-left text-blue-700"></i>
             <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
         </button>
@@ -77,6 +77,7 @@
 <script lang="ts">
 import { Course } from "../../entities/Course";
 import { store } from '../../store/store';
+import Router from "../../router/";
 
 let course = new Course();
 export default {
@@ -98,6 +99,9 @@ export default {
     test() {
       console.log(this.course);
     },
+        navigateBack() {
+          Router.go(-1);
+        },
 
     handleSubmit() {
       console.log(this.course)
