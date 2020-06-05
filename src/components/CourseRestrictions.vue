@@ -26,7 +26,7 @@
           <input
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/6 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             type="text"
-            :value="maxStudents"
+            :value="getMaxStudentsDescription()"
             @input="updateParticipantLimit($event.target.value)"
             placeholder="Limit"
             onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
@@ -41,7 +41,15 @@
 export default {
   name: "Course.Restrictions",
   props: {
-    participantLimit: String
+    participantLimit: Number
+  },
+  methods: {
+    getMaxStudentsDescription() {
+      if(this.participantLimit == 0) {
+        return ""
+      }
+      return this.participantLimit
+    }
   },
 
   setup(props, { emit }) {

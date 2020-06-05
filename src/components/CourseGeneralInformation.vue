@@ -58,9 +58,9 @@
         <input
           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/2 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
           type="text"
-          :value="lecturerId"
+          :value="getLecturerIdDescription()"
           @input="updateLecturerId($event.target.value)"
-          placeholder="Your ID (via vuex)"
+          placeholder="ID"
           onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
         />
       </div>
@@ -73,7 +73,7 @@
         <input
           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-1/6 py-2 px-4 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
           type="text"
-          :value="ects"
+          :value="getEctsDescription()"
           @input="updateEcts($event.target.value)"
           placeholder="ECTS"
           onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
@@ -86,10 +86,30 @@
 <script lang="ts">
 export default {
   name: "Course.GeneralInformation",
+  props: {
+    courseType:String ,
+    language:String,
+    courseName:String,
+    lecturerId:Number,
+    ects:Number
+  },
+  methods : {
+    getEctsDescription() {
+      if(this.ects == 0) {
+        return ""
+      }
+      return this.ects
+    },
+    getLecturerIdDescription() {
+      if(this.lecturerId == 0) {
+        return ""
+      }
+      return this.lecturerId
+    }
+  },
 
   setup(props, { emit }) {
     const updateCourseType = value => {
-      console.log(value);
       emit("update:courseType", value);
     };
     const updateCourseName = value => {
