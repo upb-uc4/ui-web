@@ -10,10 +10,16 @@
 
 <script lang="ts">
 import CourseList from "../../components/LecturerCourseList.vue";
+import { useStore } from "../../store/store"
+
 export default {
   name: "Lecturer.Home",
   components: {
     CourseList
+  },
+  setup() {
+    const store = useStore();
+    console.log(store.state.myRole);
   },
   data: () => ({
     courses: [
