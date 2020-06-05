@@ -1,34 +1,62 @@
 <template>
     <div class="w-full max-w-4xl flex">
         <div class="container w-full">
-            <div class="container w-full flex"
-            v-bind:class="{'mb-6 shadow-xl rounded-lg':message === '', 'shadow-none rounded-t-lg':message != ''}" > 
-                <input class="flex-auto h-8 text-xl  pl-6 outline-none" 
-                placeholder="Filter by name.." v-model="message">
-                <i class="fas fa-search flex-right pt-2 pr-2 bg-white text-gray-600"></i>
+            <div
+                class="container w-full flex"
+                :class="{'mb-6 shadow-xl rounded-lg':message === '', 'shadow-none rounded-t-lg':message != ''}"
+            > 
+                <input
+                    v-model="message" 
+                    class="flex-auto h-8 text-xl  pl-6 outline-none"
+                    placeholder="Filter by name.."
+                >
+                <i class="fas fa-search flex-right pt-2 pr-2 bg-white text-gray-600" />
             </div>
 
-            <div v-bind:class="{'hidden':message === ''}" class="bg-white mb-6 w-full pt-2 rounded-b-lg border-t-2">
-                <div v-for="searchElement in searchElements" :key="searchElement" class="container flex pl-6 pr-2 pb-1 hover:bg-blue-200 cursor-pointer" @click="addFilter(searchElement)">
-                    <div class="flex-auto">{{searchElement.value}}</div>
-                    <div class="flex-right text-gray-600 w-1/5">as {{searchElement.key}}</div>
+            <div
+                :class="{'hidden':message === ''}"
+                class="bg-white mb-6 w-full pt-2 rounded-b-lg border-t-2"
+            >
+                <div
+                    v-for="searchElement in searchElements"
+                    :key="searchElement"
+                    class="container flex pl-6 pr-2 pb-1 hover:bg-blue-200 cursor-pointer"
+                    @click="addFilter(searchElement)"
+                >
+                    <div class="flex-auto">
+                        {{ searchElement.value }}
+                    </div>
+                    <div class="flex-right text-gray-600 w-1/5">
+                        as {{ searchElement.key }}
+                    </div>
                 </div>
             </div>
-            <p hidden>{{ filteredCourses }}</p>
+            <p hidden>
+                {{ filteredCourses }}
+            </p>
         </div>
         <div class="w-2/6 flex-right flex flex-wrap">
-            <div v-for="filter in filters" :key="filter.value">
-                <div class="rounded-lg mx-4 mb-2 px-2 py-1 flex"
-                v-bind:class="{ 'bg-red-500':filter.key==='Studiengang',
-                        'bg-green-500':filter.key=='Modul',
-                        'bg-blue-500':filter.key=='Language'
-                }">
-                    <p class="flex-auto text-sm">{{filter.value}}</p>
-                    <i class="fas fa-trash flex-right ml-4 pt-1 text-red-200 cursor-pointer" @click="removeFilter(filter)"></i>
+            <div
+                v-for="filter in filters"
+                :key="filter.value"
+            >
+                <div
+                    class="rounded-lg mx-4 mb-2 px-2 py-1 flex"
+                    :class="{ 'bg-red-500':filter.key==='Studiengang',
+                              'bg-green-500':filter.key=='Modul',
+                              'bg-blue-500':filter.key=='Language'
+                    }"
+                >
+                    <p class="flex-auto text-sm">
+                        {{ filter.value }}
+                    </p>
+                    <i
+                        class="fas fa-trash flex-right ml-4 pt-1 text-red-200 cursor-pointer"
+                        @click="removeFilter(filter)"
+                    />
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 

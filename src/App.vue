@@ -1,6 +1,9 @@
 <template>
-    <div id='root' class="container mx-auto">
-        <router-view/>
+    <div
+        id="root"
+        class="container mx-auto"
+    >
+        <router-view />
     </div>
 </template>
 
