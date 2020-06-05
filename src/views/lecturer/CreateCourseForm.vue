@@ -11,9 +11,9 @@
         <form :action="endpoint" method="POST">
             <input type="hidden" name="lecturerId" :value="lecturerId">
             <section class="border-t-2 py-8 border-gray-400">
-                <div class="flex">
-                    <div class="hidden lg:w-1/3 lg:block mr-12 flex flex-col">
-                        <label class="block text-gray-700 text-md font-semibold mb-2">Basics</label>
+                <div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
+                        <label class="block text-gray-700 text-lg font-semibold mb-2">Basics</label>
                         <label class="block text-gray-600">
                             This is some long detailed description which is part towards a better form.
                         </label>
@@ -59,8 +59,8 @@
             </section>
 
             <section class="border-t-2 py-8 border-gray-400">
-                <div class="flex">
-                    <div class="hidden lg:w-1/3 lg:block mr-12 flex flex-col">
+                <div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-md font-semibold mb-2">Restrictions</label>
                         <label class="block text-gray-600">
                             This is some long detailed description which is part towards a better form.
