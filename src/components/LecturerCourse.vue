@@ -1,6 +1,6 @@
 <template>
-  <div class="flex shadow-xl">
-    <div class="w-5/6 bg-white rounded-lg rounded-r-none py-4 px-8">
+  <div class="flex shadow-xl bg-white rounded-lg">
+    <div class="w-2/3 py-4 px-8">
       <div class="flex">
         <div class="w-full">
           <div class="flex items-baseline">
@@ -33,16 +33,10 @@
         </div>
       </div>
     </div>
-    <!-- v-if directive just for design purposes here -> replace with state of myCourses-->
-    <div class="w-1/6 bg-white rounded-lg rounded-l-none pl-4 pr-8">
-      <div class="mt-6 items-end justify-end">
-        <button
-          class="bg-white text-red-600 w-full text-center border-2 shadow-md border-gray-300 py-2 rounded-lg focus:outline-none font-semibold mb-2"
-        >Edit</button>
-        <button
-          class="bg-red-500 text-white w-full text-center border-2 shadow-md border-gray-300 py-2 rounded-lg focus:outline-none font-semibold"
-        >Delete</button>
-      </div>
+    <div class="w-1/3 pl-4 pr-8 flex justify-end items-center">
+      <button class="w-full md:w-1/2 bg-gray-600 text-white text-center py-2 rounded-lg font-semibold">
+          Edit
+      </button>
     </div>
   </div>
 </template>
