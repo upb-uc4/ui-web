@@ -1,40 +1,58 @@
 <template>
-  <section class="w-full pt-5 px-20 py-20 flex items-center justify-center">
-    <div class="w-full container items-center justify-center">
-      <h2 class="p-10 text-4xl font-semibold text-gray-900 text-center">Create A New Course</h2>
-      <div class="w-full flex justify-center items-center">
-        <div
-          class="w-4/5 bg-white items-center justify-center rounded-lg rounded-r-none shadow-xl py-4 px-8"
-        >
-          <CourseGeneralInformation
-            v-model:courseType="course.courseType"
-            v-model:courseName="course.courseName"
-            v-model:lecturerId="course.lecturerId"
-            v-model:ects="course.ects"
-            v-model:language="course.language"
-          />
-          <CourseRestriction v-model:maxStudents="course.maxStudents" />
-          <CourseDescription v-model:description="course.description" />
-          <div class="flex items-center justify-center">
-            <button
-              class="bg-white text-blue-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold"
-              @click="handleSubmit"
-            >Create Course</button>
-          </div>
-          <div v-if="error" class="items-center justify-center">
-            <h2  class="text-xl font-semibold text-red-500 text-center">Please check your inputs!</h2>
-            <p  class="text-m font-semibold text-red-500 text-center">Errors in: {{ collectedErrors }}</p>
-          </div>
-        </div>
-      </div>
+
+    <div class="w-full mt-20 bg-gray-300 mx-auto h-screen p-8">
+        <h1 class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
+        <section class="border-t-2 py-8 border-gray-400">
+            <div class="flex">
+                <div class="hidden lg:w-1/3 lg:block mr-12 flex flex-col">
+                    <label class="block text-gray-700 text-md font-semibold mb-2">Basics</label>
+                    <label class="block text-gray-600">
+                        This is some long detailed description which is part towards a better form.
+                    </label>
+                </div>
+                <div class="w-full lg:w-2/3">
+                    <div class="mb-4 flex flex-col">
+                        <label for="name" class="text-gray-700 text-md font-semibold mb-3">Name</label>
+                        <input type="text" id="name" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600">
+                    </div>
+                    <div class="mb-4 flex flex-col">
+                        <label for="description" class="text-gray-700 text-md font-semibold mb-3">Description</label>
+                        <textarea name="description" id="description" cols="30" rows="10" class="w-full border-2 border-gray-400 rounded-lg text-gray-600"></textarea>
+                    </div>
+                    <div class="mb-4 flex flex-col">
+                        <label class="text-gray-700 text-md font-semibold mb-3">Type</label>
+                    </div>
+                    <div class="mb-4 flex flex-col">
+                        <label class="text-gray-700 text-md font-semibold mb-3">Language</label>
+                        <select name="language" id="language" class="w-full border-2 border-gray-400 rounded-lg text-gray-600 py-3">
+                            <option>German</option>
+                            <option>English</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="border-t-2 py-8 border-gray-400">
+            <div class="flex">
+                <div class="hidden lg:w-1/3 lg:block mr-12 flex flex-col">
+                    <label class="block text-gray-700 text-md font-semibold mb-2">Restrictions</label>
+                    <label class="block text-gray-600">
+                        This is some long detailed description which is part towards a better form.
+                    </label>
+                </div>
+                <div class="w-full lg:w-2/3">
+                    <div class="mb-4 flex flex-col">
+                        <label for="limit" class="text-gray-700 text-md font-semibold mb-3">Participation Limit</label>
+                        <input type="number" id="limit" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600">
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-  </section>
 </template>
 
 <script lang="ts">
-import CourseGeneralInformation from "../../components/CourseGeneralInformation.vue";
-import CourseRestriction from "../../components/CourseRestrictions.vue";
-import CourseDescription from "../../components/CourseDescription.vue";
 import { Course } from "../../entities/Course";
 import { store } from '../../store/store';
 
@@ -42,9 +60,6 @@ let course = new Course();
 export default {
   name: "Lecturer.CreateCourseForm",
   components: {
-    CourseGeneralInformation,
-    CourseRestriction,
-    CourseDescription
   },
   data() {
     return {
