@@ -69,7 +69,7 @@
                     <div class="w-full lg:w-2/3">
                         <div class="mb-4 flex flex-col">
                             <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
-                            <input type="number" id="limit" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                            <input type="number" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                         </div>
                     </div>
                 </div>
