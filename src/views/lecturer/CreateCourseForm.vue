@@ -27,13 +27,13 @@
                         <div class="flex">
                             <div class="mr-4">
                                 <label class="flex items-center">
-                                    <input type="radio" class="form-radio text-indigo-600" name="radio-colors" value="1" checked>
+                                    <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="radio-colors" value="1" checked>
                                     <span class="ml-2">Seminar</span>
                                 </label>
                             </div>
                             <div>
                                 <label class="flex items-center">
-                                    <input type="radio" class="form-radio text-indigo-600" name="radio-colors" value="1" checked>
+                                    <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="radio-colors" value="1" checked>
                                     <span class="ml-2">Lecture</span>
                                 </label>
                             </div>
