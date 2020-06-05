@@ -76,10 +76,10 @@
             </section>
 
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
-                <button type="reset" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider mr-6">
+                <button type="reset" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6">
                     Cancel
                 </button>
-                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide">
+                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
                     Create Course
                 </button>
             </section>
