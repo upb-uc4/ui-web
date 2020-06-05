@@ -108,6 +108,17 @@ export default {
             navigateBack() {
                 Router.go(-1);
             },
+        },
+        beforeRouteLeave (to, from, next) {
+            //todo use styled modal
+            //todo raise only when user did input something into the fields
+            //todo don't raise on submit
+            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+            if (answer) {
+                next()
+            } else {
+                next(false)
+            }
         }
     };
 </script>
