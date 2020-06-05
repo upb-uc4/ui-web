@@ -1,17 +1,8 @@
 <template>
     <div class="w-full max-w-4xl">
-        <course-list-filter
-            :courses="courses"
-            @filter="filter"
-        />
-        <div
-            v-for="course in filteredCourses"
-            :key="course.name"
-        >
-            <student-course
-                :course="course"
-                class="mb-8"
-            />
+        <course-list-filter :courses="courses" @filter="filter"></course-list-filter>
+        <div v-for="course in filteredCourses" :key="course.name">
+            <student-course :course="course" class="mb-8"></student-course>
         </div>
     </div>
 </template>
@@ -20,7 +11,6 @@
     import StudentCourse from "./StudentCourse.vue";
     import CourseListFilter from "./CourseListFilter.vue"
     import {Course} from "../entities/Course"
-    import axios from "axios"
 
     export default {
         name: "CourseList",
@@ -32,6 +22,7 @@
             const kurs : Course = new Course();
             console.log(kurs);
 
+            const axios = require("axios");
             const instance = await axios.create({
                 baseURL: "http://localhost:9000",
                 headers: {
