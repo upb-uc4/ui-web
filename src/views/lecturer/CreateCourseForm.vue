@@ -36,6 +36,7 @@ import CourseGeneralInformation from "../../components/CourseGeneralInformation.
 import CourseRestriction from "../../components/CourseRestrictions.vue";
 import CourseDescription from "../../components/CourseDescription.vue";
 import { Course } from "../../entities/Course";
+import { store } from '../../store/store';
 
 let course = new Course();
 export default {
@@ -53,7 +54,9 @@ export default {
       collectedErrors: ""
     };
   },
-
+  setup () {
+    course.lecturerId = store.state.myId
+  },
   methods: {
     test() {
       console.log(this.course);
