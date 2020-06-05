@@ -22,8 +22,8 @@
             >Create Course</button>
           </div>
           <div v-if="error" class="items-center justify-center">
-          <h2  class="text-xl font-semibold text-red-500 text-center">Please check your inputs!</h2>
-          <p  class="text-m font-semibold text-red-500 text-center">Errors in: {{ collectedErrors }}</p>
+            <h2  class="text-xl font-semibold text-red-500 text-center">Please check your inputs!</h2>
+            <p  class="text-m font-semibold text-red-500 text-center">Errors in: {{ collectedErrors }}</p>
           </div>
         </div>
       </div>
@@ -64,6 +64,7 @@ export default {
 
     handleSubmit() {
       console.log(this.course)
+      this.error = false;
       this.collectedErrors = "";
       if (this.course.courseName == "" || this.course.courseName == undefined) {
         this.error = true;
@@ -85,11 +86,7 @@ export default {
       if(this.error) {
         return;
       }
-      else {
-        this.submitForm();
-        this.error=false;
-        this.collectedErrors="";
-      }
+      this.submitForm();
     },
 
     submitForm() {
