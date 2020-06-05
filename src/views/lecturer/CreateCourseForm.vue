@@ -33,13 +33,13 @@
                             <div class="mr-4">
                                 <label class="flex items-center">
                                     <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="radio-colors" value="1" checked>
-                                    <span class="ml-2">Seminar</span>
+                                    <span class="ml-2 text-gray-700 text-md font-semibold">Seminar</span>
                                 </label>
                             </div>
                             <div>
                                 <label class="flex items-center">
                                     <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="radio-colors" value="1" checked>
-                                    <span class="ml-2">Lecture</span>
+                                    <span class="ml-2 text-gray-700 text-md font-semibold">Lecture</span>
                                 </label>
                             </div>
                         </div>
