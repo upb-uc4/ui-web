@@ -87,6 +87,29 @@
                 </div>
             </section>
 
+            <section class="border-t-2 py-8 border-gray-400">
+                <div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
+                        <label class="block text-gray-700 text-md font-medium mb-2">Time</label>
+                        <label class="block text-gray-600">
+                            This section is disabled for now as there is no Vue3 datepicker plugin yet.
+                        </label>
+                    </div>
+                    <div class="w-full lg:w-2/3 flex">
+                        <div class="w-1/2 mb-4 mr-12 flex flex-col">
+                            <label for="start" class="text-gray-700 text-md font-medium mb-3">Start Date</label>
+                            <input type="text" readonly name="startDate" id="start"
+                                   class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
+                        </div>
+                        <div class="w-1/2 mb-4 flex flex-col">
+                            <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
+                            <input type="text" readonly name="endDate" id="end"
+                                   class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
                 <button type="reset" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6">
                     Cancel
