@@ -45,10 +45,16 @@
                                         <span class="ml-2 text-gray-700 text-md font-medium">Seminar</span>
                                     </label>
                                 </div>
-                                <div>
+                                <div class="mr-4">
                                     <label class="flex items-center">
                                         <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="lecture">
                                         <span class="ml-2 text-gray-700 text-md font-medium">Lecture</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="project">
+                                        <span class="ml-2 text-gray-700 text-md font-medium">Project Group</span>
                                     </label>
                                 </div>
                             </div>
