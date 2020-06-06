@@ -10,6 +10,12 @@
 
         <form :action="endpoint" method="POST">
             <input type="hidden" name="lecturerId" :value="lecturerId">
+
+            <!-- TODO: remove in new API version -->
+            <input type="hidden" name="ects" :value="0">
+            <input type="hidden" name="courseId" :value="0">
+            <input type="hidden" name="currentParticipants" :value="0">
+
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
@@ -21,7 +27,7 @@
                     <div class="w-full lg:w-2/3">
                         <div class="mb-4 flex flex-col">
                             <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <input type="text" id="name" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                            <input type="text" id="name" name="courseName" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="description" class="text-gray-700 text-md font-medium mb-3">Description</label>
@@ -35,13 +41,13 @@
                             <div class="flex">
                                 <div class="mr-4">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="radio-colors" value="1" checked>
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="seminar" checked>
                                         <span class="ml-2 text-gray-700 text-md font-medium">Seminar</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="radio-colors" value="1" checked>
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="lecture">
                                         <span class="ml-2 text-gray-700 text-md font-medium">Lecture</span>
                                     </label>
                                 </div>
@@ -69,7 +75,7 @@
                     <div class="w-full lg:w-2/3">
                         <div class="mb-4 flex flex-col">
                             <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
-                            <input type="number" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                            <input type="number" name="maxParticipants" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                         </div>
                     </div>
                 </div>
