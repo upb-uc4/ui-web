@@ -8,7 +8,7 @@
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
 
-        <form :action="endpoint" method="POST">
+        <form @submit.prevent="submit" method="POST">
             <input type="hidden" name="lecturerId" :value="lecturerId">
 
             <!-- TODO: remove in new API version -->
@@ -27,7 +27,8 @@
                     <div class="w-full lg:w-2/3">
                         <div class="mb-4 flex flex-col">
                             <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <input type="text" id="name" name="courseName" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                            <input type="text" id="name" name="courseName" v-model="course.courseName"
+                                   class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="description" class="text-gray-700 text-md font-medium mb-3">
@@ -37,7 +38,7 @@
                                 </span>
                             </label>
                             <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                      placeholder="Add an optional description.">
+                                      v-model="course.description" placeholder="Add an optional description.">
                             </textarea>
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -46,19 +47,22 @@
                             <div class="flex">
                                 <div class="mr-4">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="seminar" checked>
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Seminar</span>
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Lecture"
+                                               v-model="course.courseType">
+                                        <span class="ml-2 text-gray-700 text-md font-medium">Lecture</span>
                                     </label>
                                 </div>
                                 <div class="mr-4">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="lecture">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Lecture</span>
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Seminar"
+                                               v-model="course.courseType">
+                                        <span class="ml-2 text-gray-700 text-md font-medium">Seminar</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="project">
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Project"
+                                               v-model="course.courseType">
                                         <span class="ml-2 text-gray-700 text-md font-medium">Project Group</span>
                                     </label>
                                 </div>
@@ -66,7 +70,7 @@
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
-                            <select name="language" id="language" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
+                            <select name="language" id="language" v-model="course.language" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
                                 <option>German</option>
                                 <option>English</option>
                             </select>
@@ -86,7 +90,8 @@
                     <div class="w-full lg:w-2/3">
                         <div class="mb-4 flex flex-col">
                             <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
-                            <input type="number" name="maxParticipants" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                            <input type="number" name="maxParticipants" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                   v-model="course.maxStudents">
                         </div>
                     </div>
                 </div>
@@ -103,12 +108,12 @@
                     <div class="w-full lg:w-2/3 flex">
                         <div class="w-1/2 mb-4 mr-12 flex flex-col">
                             <label for="start" class="text-gray-700 text-md font-medium mb-3">Start Date</label>
-                            <input type="text" readonly name="startDate" id="start" value="01.06.2020"
+                            <input type="text" readonly name="startDate" id="start" v-model="course.startDate"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
                         </div>
                         <div class="w-1/2 mb-4 flex flex-col">
                             <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
-                            <input type="text" readonly name="endDate" id="end" value="31.08.2020"
+                            <input type="text" readonly name="endDate" id="end" v-model="course.endDate"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
                         </div>
                     </div>
@@ -131,34 +136,47 @@
 <script lang="ts">
 import Router from "@/router/";
 import { store } from '@/store/store';
+import {Course} from "@/entities/Course";
 
-let lecturerId = -1;
+const axios = require("axios");
+
 export default {
     name: "LecturerCreateCourseForm",
-        data() {
-            return {
-                endpoint: 'http://localhost:9000/course',
-                lecturerId: lecturerId,
-            };
+    props: {
+
+    },
+    data() {
+        return {
+            course: new Course(),
+        };
+    },
+    created() {
+        this.course.lecturerId = store.state.myId;
+        this.course.startDate = "01.06.2020";
+        this.course.endDate = "31.08.2020";
+        this.course.courseId = Math.floor(Math.random() * Math.floor(30000));
+    },
+    methods: {
+        navigateBack() {
+            Router.go(-1);
         },
-        setup () {
-            lecturerId = store.state.myId;
-        },
-        methods: {
-            navigateBack() {
-                Router.go(-1);
-            },
-        },
-        beforeRouteLeave (to, from, next) {
-            //todo use styled modal
-            //todo raise only when user did input something into the fields
-            //todo don't raise on submit
-            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-            if (answer) {
-                next()
-            } else {
-                next(false)
-            }
+        submit() {
+            axios.post("http://localhost:9000/course", this.course)
+                .then((response: any) => {
+                    console.log(response);
+                });
         }
-    };
+    },
+    beforeRouteLeave (to, from, next) {
+        //todo use styled modal
+        //todo raise only when user did input something into the fields
+        //todo don't raise on submit
+        const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+        if (answer) {
+            next()
+        } else {
+            next(false)
+        }
+    }
+};
 </script>
