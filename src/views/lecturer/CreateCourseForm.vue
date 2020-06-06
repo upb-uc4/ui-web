@@ -121,7 +121,7 @@
             </section>
 
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
-                <button type="reset" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6">
+                <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6">
                     Cancel
                 </button>
                 <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
@@ -148,6 +148,7 @@ export default {
     data() {
         return {
             course: new Course(),
+            success: false,
         };
     },
     created() {
@@ -155,6 +156,17 @@ export default {
         this.course.startDate = "01.06.2020";
         this.course.endDate = "31.08.2020";
         this.course.courseId = Math.floor(Math.random() * Math.floor(30000));
+    },
+    computed: {
+        hasInput: function (): boolean {
+            //todo: if this is an edit form, check if original course data was modified
+            //todo make this cleaner via onChange maybe?
+            if (this.course.courseName != "" || this.course.description != "" || this.course.language != "English" ||
+                this.course.courseType != "Lecture" || this.course.maxStudents != 0) {
+                    return true;
+            }
+            return false;
+        }
     },
     methods: {
         navigateBack() {
@@ -169,13 +181,17 @@ export default {
     },
     beforeRouteLeave (to, from, next) {
         //todo use styled modal
-        //todo raise only when user did input something into the fields
         //todo don't raise on submit
-        const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-        if (answer) {
+        if (this.hasInput) {
+            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+            if (answer) {
+                next()
+            } else {
+                next(false)
+            }
+        }
+        else {
             next()
-        } else {
-            next(false)
         }
     }
 };
