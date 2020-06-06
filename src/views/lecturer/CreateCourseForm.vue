@@ -103,12 +103,12 @@
                     <div class="w-full lg:w-2/3 flex">
                         <div class="w-1/2 mb-4 mr-12 flex flex-col">
                             <label for="start" class="text-gray-700 text-md font-medium mb-3">Start Date</label>
-                            <input type="text" readonly name="startDate" id="start"
+                            <input type="text" readonly name="startDate" id="start" value="01.06.2020"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
                         </div>
                         <div class="w-1/2 mb-4 flex flex-col">
                             <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
-                            <input type="text" readonly name="endDate" id="end"
+                            <input type="text" readonly name="endDate" id="end" value="31.08.2020"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
                         </div>
                     </div>
