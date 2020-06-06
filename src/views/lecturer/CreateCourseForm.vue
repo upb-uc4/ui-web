@@ -175,14 +175,23 @@ export default {
         submit() {
             axios.post("http://localhost:9000/course", this.course)
                 .then((response: any) => {
-                    console.log(response);
-                });
+                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
+                    this.success = true;
+                    //todo show success toast
+                    this.navigateBack();
+                })
+                .catch((error: any) => {
+                    console.error(error)
+                })
         }
     },
     beforeRouteLeave (to, from, next) {
         //todo use styled modal
-        //todo don't raise on submit
-        if (this.hasInput) {
+        //todo break this into smaller methods
+        if (this.success) {
+            next();
+        }
+        else if (this.hasInput) {
             const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
             if (answer) {
                 next()
