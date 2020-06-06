@@ -30,9 +30,14 @@
                             <input type="text" id="name" name="courseName" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                         </div>
                         <div class="mb-4 flex flex-col">
-                            <label for="description" class="text-gray-700 text-md font-medium mb-3">Description</label>
+                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
+                                Description
+                                <span class="text-gray-600 font-normal">
+                                    (Optional)
+                                </span>
+                            </label>
                             <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                      placeholder="Add an optional description...">
+                                      placeholder="Add an optional description.">
                             </textarea>
                         </div>
                         <div class="mb-4 flex flex-col">
