@@ -24,24 +24,7 @@
                             This is some long detailed description which is part towards a better form.
                         </label>
                     </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <input type="text" id="name" name="courseName" v-model="course.courseName"
-                                   class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
-                                Description
-                                <span class="text-gray-600 font-normal">
-                                    (Optional)
-                                </span>
-                            </label>
-                            <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                      v-model="course.description" placeholder="Add an optional description.">
-                            </textarea>
-                        </div>
-                        <div class="mb-4 flex flex-col">
+                    <div class="w-full lg:w-2/3"> <div class="mb-4 flex flex-col">
                             <!-- TODO: create cards for better visual impact -->
                             <label class="text-gray-700 text-md font-medium mb-3">Type</label>
                             <div class="flex">
@@ -67,6 +50,10 @@
                                     </label>
                                 </div>
                             </div>
+                        <div class="mb-4 flex flex-col">
+                            <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
+                            <input type="text" id="name" name="courseName" v-model="course.courseName"
+                                   class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
@@ -74,6 +61,18 @@
                                 <option>German</option>
                                 <option>English</option>
                             </select>
+                        </div>
+                        <div class="mb-4 flex flex-col">
+                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
+                                Description
+                                <span class="text-gray-600 font-normal">
+                                    (Optional)
+                                </span>
+                            </label>
+                            <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
+                                      v-model="course.description" placeholder="Add an optional description.">
+                            </textarea>
+                        </div>
                         </div>
                     </div>
                 </div>
