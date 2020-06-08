@@ -172,7 +172,8 @@ export default {
             Router.go(-1);
         },
         submit() {
-            axios.post("http://localhost:9000/course", this.course)
+            if(this.hasInput) { 
+                axios.post("http://localhost:9000/course", this.course)
                 .then((response: any) => {
                     console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
                     this.success = true;
@@ -182,6 +183,12 @@ export default {
                 .catch((error: any) => {
                     console.error(error)
                 })
+            }
+            else {
+                this.success = false;
+                console.log("Error: Input Validation Failed!")
+            }
+
         }
     },
     beforeRouteLeave (to, from, next) {
