@@ -3,7 +3,7 @@
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
         <button @click="navigateBack()" class="flex items-center mb-4">
             <i class="fas text-xl fa-chevron-left text-blue-700"></i>
-            <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
+            <span class="text-blue-700 font-bold text-sm ml-1">Back</span>
         </button>
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8">Account Creation</h1>
@@ -14,7 +14,7 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
                         <label class="block text-gray-600">
-                            This is some long detailed description which is part towards a better form.
+                            Create a new user account. 
                         </label>
                     </div>
                     <div class="w-full lg:w-2/3"><div class="mb-4 flex flex-col">
@@ -23,7 +23,7 @@
                                 <div class="mr-4 mb-3">
                                     <label class="flex items-center">
                                         <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Administrator"
-                                               >
+                                        >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Administrator</span>
                                     </label>
                                 </div>
@@ -42,7 +42,8 @@
                                     </label>
                                 </div>
                             </div>
-                        <div class="mb-4 flex flex-col">
+                        <!-- Comment in name fields for the user account, when needed 
+                        <div class="mb-4 flex flex-col hidden">
                             <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
                             <div class="flex">
                             <input type="text" id="firstname" name="firstname"
@@ -53,6 +54,7 @@
                                    placeholder="Last Name">
                             </div>
                         </div>
+                        -->
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
                             <input type="text" id="userName" name="username" 
