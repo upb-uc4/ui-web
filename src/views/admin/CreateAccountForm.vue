@@ -17,27 +17,26 @@
                             This is some long detailed description which is part towards a better form.
                         </label>
                     </div>
-                    <div class="w-full lg:w-2/3"> <div class="mb-4 flex flex-col">
-                            <!-- TODO: create cards for better visual impact -->
+                    <div class="w-full lg:w-2/3"><div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Role</label>
                             <div class="flex">
                                 <div class="mr-4 mb-3">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Lecture"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Administrator"
                                                >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Administrator</span>
                                     </label>
                                 </div>
                                 <div class="mr-4">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Seminar"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Lecturer"
                                                >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Lecturer</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Project"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Student"
                                                >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Student</span>
                                     </label>
@@ -64,7 +63,7 @@
                             <label for="description" class="text-gray-700 text-md font-medium mb-3">
                                 Password
                             </label>
-                             <input type="text" id="firstname" name="firstname"
+                             <input type="text" id="password" name="password"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                    placeholder="Password">
                         </div>
@@ -95,7 +94,7 @@ import Router from "@/router/";
 //const axios = require("axios");
 
 export default {
-    name: "LecturerCreateCourseForm",
+    name: "AdmingCreateAccountForm",
     props: {
 
     },
