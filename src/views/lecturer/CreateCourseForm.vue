@@ -57,7 +57,7 @@
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
-                            <select name="language" id="language" v-model="course.language" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
+                            <select required name="language" id="language" v-model="course.courseLanguage" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
                                 <option>German</option>
                                 <option>English</option>
                             </select>
@@ -70,7 +70,7 @@
                                 </span>
                             </label>
                             <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                      v-model="course.description" placeholder="Add an optional description.">
+                                      v-model="course.courseDescription" placeholder="Add an optional description.">
                             </textarea>
                         </div>
                         </div>
@@ -90,7 +90,7 @@
                         <div class="mb-4 flex flex-col">
                             <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
                             <input type="number" name="maxParticipants" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   v-model="course.maxStudents">
+                                   v-model="course.maxParticipants">
                         </div>
                     </div>
                 </div>
@@ -136,6 +136,8 @@
 import Router from "@/router/";
 import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
+import {CourseType} from '@/entities/CourseType';
+import {CourseLanguage} from '@/entities/CourseLanguage'
 
 const axios = require("axios");
 
@@ -160,11 +162,18 @@ export default {
         hasInput: function (): boolean {
             //todo: if this is an edit form, check if original course data was modified
             //todo make this cleaner via onChange maybe?
-            if (this.course.courseName != "" || this.course.description != "" || this.course.language != "English" ||
-                this.course.courseType != "Lecture" || this.course.maxStudents != 0) {
+            if (this.course.courseName != "" || this.course.courseDescription != "" ||  this.course.courseLanguage != "" ||
+                this.course.courseType != "" || this.course.maxParticipants != 0) {
                     return true;
             }
             return false;
+        },
+        isValid: function (): boolean {
+            if(this.course.courseName == "" || !Object.values(CourseLanguage).includes(this.course.courseLanguage) || 
+            !Object.values(CourseType).includes(this.course.courseType) || this.course.maxParticipants == 0) {
+                return false;
+            }
+            return true;
         }
     },
     methods: {
@@ -172,7 +181,7 @@ export default {
             Router.go(-1);
         },
         submit() {
-            if(this.hasInput) { 
+            if(this.isValid) { 
                 axios.post("http://localhost:9000/course", this.course)
                 .then((response: any) => {
                     console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
