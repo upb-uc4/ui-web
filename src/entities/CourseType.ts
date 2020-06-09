@@ -1,0 +1,1 @@
+export enum CourseType {"Lecture", "Seminar", "Project Group"}
