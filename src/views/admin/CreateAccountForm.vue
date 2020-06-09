@@ -22,21 +22,21 @@
                             <div class="flex">
                                 <div class="mr-4 mb-3">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Administrator"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Administrator" v-model="account.role"
                                         >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Administrator</span>
                                     </label>
                                 </div>
                                 <div class="mr-4">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Lecturer"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Lecturer" v-model="account.role"
                                                >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Lecturer</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Student"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Student" v-model="account.role"
                                                >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Student</span>
                                     </label>
@@ -59,7 +59,8 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
                             <input type="text" id="userName" name="username" 
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   placeholder="Username">
+                                   placeholder="Username"
+                                   v-model="account.username">
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="description" class="text-gray-700 text-md font-medium mb-3">
@@ -67,7 +68,8 @@
                             </label>
                              <input type="text" id="password" name="password"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   placeholder="Password">
+                                   placeholder="Password"
+                                   v-model="account.password">
                         </div>
                         </div>
                     </div>
@@ -90,9 +92,8 @@
 
 <script lang="ts">
 import Router from "@/router/";
-//import { store } from '@/store/store';
+import {Account} from '../../entities/Account'
 
-//TODO: Add vmodels to the form
 //const axios = require("axios");
 
 export default {
@@ -102,7 +103,7 @@ export default {
     },
     data() {
         return {
-            //TODO Add User Object
+            account: new Account(),
             success: false,
         };
     },
@@ -124,7 +125,7 @@ export default {
             }
             else {
                 this.success = false;
-                console.log("Error: Input Validation Failed!")
+                console.log(this.account)
             }
 
         }
