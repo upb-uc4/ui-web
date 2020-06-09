@@ -116,7 +116,7 @@ export default {
                 return false;
             }
             return true
-        }
+        },
 
         hasInput: function():boolean {
             if(this.account.username != "" || this.account.password != "" || this.account.role != "") {

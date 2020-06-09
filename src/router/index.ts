@@ -27,11 +27,11 @@ const router = createRouter({
             component: LecturerCreateCourseView
         },
 		{
-			path: "/login",
+			path: "/",
 			component: LoginView,
 		},
 		{
-			path: "/",
+			path: "/createAccount",
 			component: AdminCreateAccountView
 		}
 	],
