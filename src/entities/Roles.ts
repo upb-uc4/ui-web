@@ -1,0 +1,1 @@
+enum roles{"Admin", "Lecturer", "Student"}
