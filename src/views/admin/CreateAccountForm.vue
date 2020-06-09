@@ -111,7 +111,7 @@ export default {
     created() {
     },
     computed: {
-        hasInput: function (): boolean {
+        isValid: function (): boolean {
             if(this.account.username == "" || this.account.password =="" || !Object.values(Roles).includes(this.account.role)) {
                 return false;
             }
@@ -123,7 +123,7 @@ export default {
             Router.go(-1);
         },
         submit() {
-            if(this.hasInput) { 
+            if(this.isValid) { 
                 //TODO Axios Call
             }
             else {
