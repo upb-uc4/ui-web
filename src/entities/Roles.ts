@@ -1,1 +1,1 @@
-enum roles{"Admin", "Lecturer", "Student"}
+export enum Roles{"Admin", "Lecturer", "Student"}

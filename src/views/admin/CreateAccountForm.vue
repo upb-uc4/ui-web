@@ -22,7 +22,7 @@
                             <div class="flex">
                                 <div class="mr-4 mb-3">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Administrator" v-model="account.role"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Admin" v-model="account.role"
                                         >
                                         <span class="ml-2 text-gray-700 text-md font-medium">Administrator</span>
                                     </label>
@@ -93,6 +93,7 @@
 <script lang="ts">
 import Router from "@/router/";
 import {Account} from '../../entities/Account'
+import {Roles} from '../../entities/Roles'
 
 //const axios = require("axios");
 
@@ -111,8 +112,10 @@ export default {
     },
     computed: {
         hasInput: function (): boolean {
-            //TODO Check Input
-            return false;
+            if(this.account.username == "" || this.account.password =="" || !Object.values(Roles).includes(this.account.role)) {
+                return false;
+            }
+            return true
         }
     },
     methods: {
