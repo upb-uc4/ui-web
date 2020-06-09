@@ -1,7 +1,7 @@
 <template>
     <div class="w-full max-w-4xl">
         <course-list-filter :courses="courses" @filter="filter"></course-list-filter>
-        <div v-for="course in filteredCourses" :key="course.name">
+        <div v-for="course in filteredCourses" :key="course.courseName">
             <student-course :course="course" class="mb-8"></student-course>
         </div>
     </div>

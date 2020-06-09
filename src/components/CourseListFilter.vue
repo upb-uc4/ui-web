@@ -63,7 +63,7 @@
                     this.$emit('filter', this.courses);
                     return this.courses;
                 }
-                const filteredCourses = this.courses.filter((course: {name: string}) => course.name.toLowerCase().includes(this.message.toLowerCase()));
+                const filteredCourses = this.courses.filter((course: {courseName: string}) => course.courseName.toLowerCase().includes(this.message.toLowerCase()));
 
                 this.$emit('filter', filteredCourses);
                 return filteredCourses;
