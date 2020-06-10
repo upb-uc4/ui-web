@@ -57,7 +57,7 @@ export default {
   
   methods: {
     editCourse() {
-      router.push({path: "/test/"+this.course.courseId})
+      router.push({path: "/editCourse/"+this.course.courseId})
     }
   }
 }

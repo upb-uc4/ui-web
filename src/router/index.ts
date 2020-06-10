@@ -4,7 +4,7 @@ import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
-import Test from '../components/Test.vue'
+
 
 const routerHistory = createWebHistory();
 
@@ -25,12 +25,12 @@ const router = createRouter({
 		},
 		{
 			path: '/createCourse',
-			name: 'createEditCourse',
+			name: 'createCourse',
 			props: {editMode:false},
             component: LecturerEditCreateCourseView
 		},
 		{
-			path: '/Test/:id',
+			path: '/editCourse/:id',
 			props: {editMode:true},
             component: LecturerEditCreateCourseView
         },
