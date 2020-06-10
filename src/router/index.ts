@@ -32,7 +32,11 @@ const router = createRouter({
 		{
 			path: '/Test',
 			name: 'test',
-			props: true,
+			props: (route) => ({
+				editmode: "0",
+				course: Course,
+				...route.params
+			}),
             component: Test
         },
 		{
