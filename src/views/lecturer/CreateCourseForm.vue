@@ -27,7 +27,7 @@
                     <div class="w-full lg:w-2/3"> <div class="mb-4 flex flex-col">
                             <!-- TODO: create cards for better visual impact -->
                             <label class="text-gray-700 text-md font-medium mb-3">Type</label>
-                            <div class="flex">
+                            <div class="flex mb-4">
                                 <div class="mr-4">
                                     <label class="flex items-center">
                                         <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Lecture"
