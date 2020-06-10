@@ -1,24 +1,41 @@
 <template>
     <div>
         <h1>{{ course }}</h1>
-        <h1>{{ localCourse.courseName }}</h1>
+        
     </div>
 </template>
 
 <script lang="ts">
-import { Course } from '../entities/Course'
+
+import  {Course}  from '../entities/Course'
+
+const axios = require("axios");
+
     export default {
         name: "Test",
-        props: ['course'],
+        props: ['editMode'],
         data () {
             return {
-                localCourse: typeof Course
+                course: new Course(), 
+
             }
         },
-        created() {
-            console.log(this.course )
-            this.localCourse = JSON.parse(this.course)
-        }   
+        methods: {
+            loadCourse () {
+                axios.get("http://localhost:9000/course/findByCourseId?id=" + this.$route.params.id)
+                .then((response: any) => {
+                    this.course = response.data
+                })
+                .catch((error: any) => {
+                    console.error(error)
+                })
+            }
+        },
+        mounted() {
+            this.loadCourse()
+            
+            
+        } 
     }
    
 </script>

@@ -26,17 +26,12 @@ const router = createRouter({
 		{
 			path: '/createCourse',
 			name: 'createEditCourse',
-			props: true,
+			props: {editMode:false},
             component: LecturerCreateCourseView
 		},
 		{
-			path: '/Test',
-			name: 'test',
-			props: (route) => ({
-				editmode: "0",
-				course: Course,
-				...route.params
-			}),
+			path: '/Test/:id',
+			props: {editMode:true},
             component: Test
         },
 		{
