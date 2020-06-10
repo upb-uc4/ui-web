@@ -60,7 +60,8 @@ export default {
   }),
   methods: {
     test() {
-      Router.push({name: 'test', params: {course: this.testObject}});
+      console.log(this.course)
+      Router.push({name: 'test', params: {course: JSON.stringify(this.course)}})
     }
   }
 };
