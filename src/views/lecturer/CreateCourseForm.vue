@@ -137,7 +137,7 @@ import Router from "@/router/";
 import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
 import {CourseType} from '@/entities/CourseType';
-import {CourseLanguage} from '@/entities/CourseLanguage'
+import {Language} from '@/entities/Language'
 
 const axios = require("axios");
 
@@ -169,7 +169,7 @@ export default {
             return false;
         },
         isValid: function (): boolean {
-            if(this.course.courseName == "" || !Object.values(CourseLanguage).includes(this.course.courseLanguage) || 
+            if(this.course.courseName == "" || !Object.values(Language).includes(this.course.courseLanguage) ||
             !Object.values(CourseType).includes(this.course.courseType) || this.course.maxParticipants == 0) {
                 return false;
             }

@@ -1,5 +1,5 @@
 import { CourseType } from './CourseType';
-import { CourseLanguage } from './CourseLanguage';
+import { Language } from './Language';
 
 
 export class Course {
@@ -11,7 +11,7 @@ export class Course {
     maxParticipants: number = 0;
     currentParticipants: number = 0;
     courseDescription: string = "";
-    courseLanguage:string = typeof CourseLanguage;
+    courseLanguage:string = typeof Language;
     startDate: string ="";
     endDate: string = "";
 }
