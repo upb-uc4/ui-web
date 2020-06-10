@@ -32,7 +32,9 @@ const axios = require("axios");
             }
         },
         mounted() {
-            this.loadCourse()
+            if(this.editMode) {
+                this.loadCourse()
+            }
             
             
         } 

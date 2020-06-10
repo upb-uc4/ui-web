@@ -141,9 +141,7 @@ const axios = require("axios");
 
 export default {
     name: "LecturerCreateCourseForm",
-    props: {
-
-    },
+    props: ['editMode'],
     data() {
         return {
             course: new Course(),
@@ -171,6 +169,15 @@ export default {
         navigateBack() {
             Router.go(-1);
         },
+        loadCourse () {
+                axios.get("http://localhost:9000/course/findByCourseId?id=" + this.$route.params.id)
+                .then((response: any) => {
+                    this.course = response.data
+                })
+                .catch((error: any) => {
+                    console.error(error)
+                })
+            },
         submit() {
             if(this.hasInput) { 
                 axios.post("http://localhost:9000/course", this.course)
@@ -208,6 +215,11 @@ export default {
         else {
             next()
         }
+    },
+    mounted() {
+        if(this.editMode) {
+            this.loadCourse()
+            }
     }
 };
 </script>

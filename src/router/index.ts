@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
-import LecturerCreateCourseView from '../views/lecturer/CreateCourseForm.vue';
+import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
 import Test from '../components/Test.vue'
 
 const routerHistory = createWebHistory();
@@ -27,12 +27,12 @@ const router = createRouter({
 			path: '/createCourse',
 			name: 'createEditCourse',
 			props: {editMode:false},
-            component: LecturerCreateCourseView
+            component: LecturerEditCreateCourseView
 		},
 		{
 			path: '/Test/:id',
 			props: {editMode:true},
-            component: Test
+            component: LecturerEditCreateCourseView
         },
 		{
 			path: "/",
