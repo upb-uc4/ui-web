@@ -30,7 +30,7 @@
                             <div class="flex">
                                 <div class="mr-4" v-for="courseType in courseTypes" :key="courseType">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" :value="courseType"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600" name="type" :value="courseType"
                                                v-model="course.courseType">
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{courseType}}</span>
                                     </label>
