@@ -1,5 +1,6 @@
 export enum CourseType {
-    Lecture = "Lecture", 
-    Seminar = "Seminar", 
-    PG = "Project Group"
+    LECTURE = "Lecture", 
+    SEMINAR = "Seminar", 
+    PG = "Project Group",
+    NONE = ""
 }

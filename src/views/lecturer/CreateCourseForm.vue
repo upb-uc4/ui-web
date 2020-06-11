@@ -135,8 +135,8 @@ export default {
     data() {
         return {
             course: new Course(),
-            languages: Language,
-            courseTypes: CourseType,
+            languages: Object.values(Language).filter(e => e != Language.NONE),
+            courseTypes: Object.values(CourseType).filter(e => e != CourseType.NONE),
             success: false,
         };
     },
@@ -150,15 +150,15 @@ export default {
         hasInput: function (): boolean {
             //todo: if this is an edit form, check if original course data was modified
             //todo make this cleaner via onChange maybe?
-            if (this.course.courseName != "" || this.course.courseDescription != "" ||  this.course.courseLanguage != Language.English ||
-                this.course.courseType != CourseType.Lecture || this.course.maxParticipants != 0) {
+            if (this.course.courseName != "" || this.course.courseDescription != "" ||  this.course.courseLanguage != Language.NONE ||
+                this.course.courseType != CourseType.NONE || this.course.maxParticipants != 0) {
                     return true;
             }
             return false;
         },
         isValid: function (): boolean {
-            if(this.course.courseName == "" || !Object.values(Language).includes(this.course.courseLanguage) ||
-            !Object.values(CourseType).includes(this.course.courseType) || this.course.maxParticipants == 0) {
+            if(this.course.courseName == "" || this.course.courseLanguage != Language.NONE ||
+            this.course.courseType != CourseType.NONE || this.course.maxParticipants == 0) {
                 return false;
             }
             return true;
