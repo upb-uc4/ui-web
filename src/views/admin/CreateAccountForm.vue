@@ -93,21 +93,21 @@ export default {
         return {
             account: new Account(),
             success: false,
-            roles: Object.values(Roles).filter(e => e!=Roles.none)
+            roles: Object.values(Roles).filter(e => e!=Roles.NONE)
         };
     },
     created() {
     },
     computed: {
         isValid: function (): boolean {
-            if(this.account.username == "" || this.account.password =="" || this.account.role == Roles.none) {
+            if(this.account.username == "" || this.account.password =="" || this.account.role == Roles.NONE) {
                 return false;
             }
             return true
         },
 
         hasInput: function():boolean {
-            if(this.account.username != "" || this.account.password != "" || this.account.role != Roles.none) {
+            if(this.account.username != "" || this.account.password != "" || this.account.role != Roles.NONE) {
                 return true
             }
             return false;
