@@ -162,8 +162,9 @@ export default {
         hasInput: function (): boolean {
             //todo: if this is an edit form, check if original course data was modified
             //todo make this cleaner via onChange maybe?
-            if (this.course.courseName != "" || this.course.courseDescription != "" ||  this.course.courseLanguage != "" ||
-                this.course.courseType != "" || this.course.maxParticipants != 0) {
+            if (this.course.courseName != "" || this.course.courseDescription != "" ||  this.course.courseLanguage != Language.English ||
+                this.course.courseType != CourseType.Lecture || this.course.maxParticipants != 0) {
+                    console.log(this.course)
                     return true;
             }
             return false;
@@ -181,6 +182,7 @@ export default {
             Router.go(-1);
         },
         submit() {
+            console.log(this.course)
             if(this.isValid) { 
                 axios.post("http://localhost:9000/course", this.course)
                 .then((response: any) => {
@@ -207,7 +209,7 @@ export default {
             next();
         }
         else if (this.hasInput) {
-            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+            const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
             if (answer) {
                 next()
             } else {

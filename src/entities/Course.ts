@@ -3,7 +3,7 @@ import { Language } from './Language';
 
 
 export class Course {
-    courseType: string = typeof CourseType;
+    courseType: CourseType = CourseType.Lecture;
     courseId: number = 0;
     courseName: string = "";
     lecturerId: number = 0;
@@ -11,7 +11,7 @@ export class Course {
     maxParticipants: number = 0;
     currentParticipants: number = 0;
     courseDescription: string = "";
-    courseLanguage:string = typeof Language;
+    courseLanguage:Language = Language.English;
     startDate: string ="";
     endDate: string = "";
 }

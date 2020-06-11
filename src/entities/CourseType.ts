@@ -1,1 +1,5 @@
-export enum CourseType {"Lecture", "Seminar", "Project Group"}
+export enum CourseType {
+    Lecture = "Lecture", 
+    Seminar = "Seminar", 
+    PG = "Project Group"
+}
