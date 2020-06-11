@@ -6,7 +6,8 @@
             <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
         </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
+        <h1 v-if="!editMode" class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
+        <h1 v-else class="text-2xl font-medium text-gray-700 mb-8">Edit Your Course</h1>
 
         <form @submit.prevent="submit" method="POST">
             <input type="hidden" name="lecturerId" :value="lecturerId">
@@ -123,8 +124,11 @@
                 <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6">
                     Cancel
                 </button>
-                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
+                <button v-if="!editMode" type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
                     Create Course
+                </button>
+                <button v-else @click="updateCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
+                    Save Changes
                 </button>
             </section>
         </form>
@@ -157,7 +161,6 @@ export default {
     computed: {
         hasInput: function (): boolean {
             //todo: if this is an edit form, check if original course data was modified
-            //todo make this cleaner via onChange maybe?
             if (this.course.courseName != "" || this.course.description != "" || this.course.language != "English" ||
                 this.course.courseType != "Lecture" || this.course.maxStudents != 0) {
                     return true;
@@ -195,7 +198,9 @@ export default {
                 this.success = false;
                 console.log("Error: Input Validation Failed!")
             }
-
+        },
+        updateCourse() {
+            //TODO
         }
     },
     beforeRouteLeave (to, from, next) {
