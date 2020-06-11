@@ -28,25 +28,11 @@
                             <!-- TODO: create cards for better visual impact -->
                             <label class="text-gray-700 text-md font-medium mb-3">Type</label>
                             <div class="flex">
-                                <div class="mr-4">
+                                <div class="mr-4" v-for="courseType in courseTypes" :key="courseType">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Lecture"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" :value="courseType"
                                                v-model="course.courseType">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Lecture</span>
-                                    </label>
-                                </div>
-                                <div class="mr-4">
-                                    <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Seminar"
-                                               v-model="course.courseType">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Seminar</span>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Project"
-                                               v-model="course.courseType">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Project Group</span>
+                                        <span class="ml-2 text-gray-700 text-md font-medium">{{courseType}}</span>
                                     </label>
                                 </div>
                             </div>
@@ -58,8 +44,7 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
                             <select required name="language" id="language" v-model="course.courseLanguage" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
-                                <option>German</option>
-                                <option>English</option>
+                                <option v-for="language in languages" :key="language">{{language}}</option>
                             </select>
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -149,6 +134,8 @@ export default {
     data() {
         return {
             course: new Course(),
+            languages: Language,
+            courseTypes: CourseType,
             success: false,
         };
     },
@@ -164,7 +151,6 @@ export default {
             //todo make this cleaner via onChange maybe?
             if (this.course.courseName != "" || this.course.courseDescription != "" ||  this.course.courseLanguage != Language.English ||
                 this.course.courseType != CourseType.Lecture || this.course.maxParticipants != 0) {
-                    console.log(this.course)
                     return true;
             }
             return false;
