@@ -131,6 +131,16 @@
                     Save Changes
                 </button>
             </section>
+            <section v-if="editMode" class="border-t-2 py-8 border-red-500 lg:mt-8 flex justify-end items-center">
+                <div class="w-full lg:w-full mr-12 flex mb-4">
+                    <label class="text-red-500 text-md font-medium mb-2">Danger Zone</label>
+                </div>
+             <div class="w- justify-end items-center">
+              <button @click="deleteCourse" class="w-48 bg-red-500 border-2 border-red-500 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
+                    Delete Course
+                </button>
+            </div>
+            </section>
         </form>
 
     </div>
@@ -200,6 +210,9 @@ export default {
             }
         },
         updateCourse() {
+            //TODO
+        },
+        deleteCourse() {
             //TODO
         }
     },
