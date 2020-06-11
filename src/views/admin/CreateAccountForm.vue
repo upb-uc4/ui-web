@@ -20,25 +20,11 @@
                     <div class="w-full lg:w-2/3"><div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Role</label>
                             <div class="flex">
-                                <div class="mr-4 mb-3">
-                                    <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Admin" v-model="account.role"
+                                <div class="mr-4 mb-3" v-for="role in roles" :key="role">
+                                    <label class="flex items-center" >
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600" name="role" :value="role" v-model="account.role"
                                         >
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Administrator</span>
-                                    </label>
-                                </div>
-                                <div class="mr-4">
-                                    <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Lecturer" v-model="account.role"
-                                               >
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Lecturer</span>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="role" value="Student" v-model="account.role"
-                                               >
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Student</span>
+                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                     </label>
                                 </div>
                             </div>
@@ -106,6 +92,7 @@ export default {
         return {
             account: new Account(),
             success: false,
+            roles: Roles
         };
     },
     created() {

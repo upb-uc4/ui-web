@@ -1,1 +1,5 @@
-export enum Roles{"Admin", "Lecturer", "Student"}
+export enum Roles{
+    admin="Admin", 
+    lecturer = "Lecturer", 
+    student = "Student"
+}
