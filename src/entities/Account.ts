@@ -1,6 +1,6 @@
-import { Roles } from './Roles';
+import { Roles } from './Role';
 export class Account {
     username: string= "";
     password: string="";
-    role: string= typeof Roles;
+    role: Roles= Roles.none;
 }

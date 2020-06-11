@@ -22,7 +22,7 @@
                             <div class="flex">
                                 <div class="mr-4 mb-3" v-for="role in roles" :key="role">
                                     <label class="flex items-center" >
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600" name="role" :value="role" v-model="account.role"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600 active:bg-indigo-600" name="role" :value="role" v-model="account.role"
                                         >
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                     </label>
@@ -64,10 +64,11 @@
 
 
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
-                <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6">
+                <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-gray-400">
                     Cancel
                 </button>
-                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
+                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed"
+                v-bind:disabled="!hasInput">
                     Create Account
                 </button>
             </section>
@@ -79,7 +80,7 @@
 <script lang="ts">
 import Router from "@/router/";
 import {Account} from '../../entities/Account'
-import {Roles} from '../../entities/Roles'
+import {Roles} from '../../entities/Role'
 
 //const axios = require("axios");
 
@@ -92,21 +93,21 @@ export default {
         return {
             account: new Account(),
             success: false,
-            roles: Roles
+            roles: Object.values(Roles).filter(e => e!=Roles.none)
         };
     },
     created() {
     },
     computed: {
         isValid: function (): boolean {
-            if(this.account.username == "" || this.account.password =="" || !Object.values(Roles).includes(this.account.role)) {
+            if(this.account.username == "" || this.account.password =="" || this.account.role == Roles.none) {
                 return false;
             }
             return true
         },
 
         hasInput: function():boolean {
-            if(this.account.username != "" || this.account.password != "" || this.account.role != "") {
+            if(this.account.username != "" || this.account.password != "" || this.account.role != Roles.none) {
                 return true
             }
             return false;
