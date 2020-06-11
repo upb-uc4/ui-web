@@ -9,13 +9,13 @@
             >{{ course.courseType }}</span>
             <div
               class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide"
-            >{{ course.language }}</div>
+            >{{ course.courseLanguage }}</div>
             <div
               class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide"
             >{{ course.ects }} ECTS</div>
             <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">
               <i class="inline fas fa-users text-lg"></i>
-              {{ course.currentParticipants}} / {{ course.maxStudents }}
+              {{ course.currentParticipants}} / {{ course.maxParticipants }}
             </div>
           </div>
           <div
@@ -25,7 +25,7 @@
           <div class="mt-3 w-5/6">
             <read-more
               more-str="Show more"
-              :text="course.description"
+              :text="course.courseDescription"
               less-str="Show less"
               :max-chars="180"
             ></read-more>

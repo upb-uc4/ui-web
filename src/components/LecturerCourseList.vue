@@ -9,7 +9,7 @@
 			</router-link>
 		</div>
 
-		<div v-for="course in filteredCourses" :key="course.name">
+		<div v-for="course in filteredCourses" :key="course.courseName">
 			<lecturer-course :course="course" class="mb-8"></lecturer-course>
 		</div>
 	</div>

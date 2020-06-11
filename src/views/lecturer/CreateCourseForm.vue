@@ -28,25 +28,11 @@
                             <!-- TODO: create cards for better visual impact -->
                             <label class="text-gray-700 text-md font-medium mb-3">Type</label>
                             <div class="flex">
-                                <div class="mr-4">
+                                <div class="mr-4" v-for="courseType in courseTypes" :key="courseType">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Lecture"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600" name="type" :value="courseType"
                                                v-model="course.courseType">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Lecture</span>
-                                    </label>
-                                </div>
-                                <div class="mr-4">
-                                    <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Seminar"
-                                               v-model="course.courseType">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Seminar</span>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Project"
-                                               v-model="course.courseType">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">Project Group</span>
+                                        <span class="ml-2 text-gray-700 text-md font-medium">{{courseType}}</span>
                                     </label>
                                 </div>
                             </div>
@@ -57,9 +43,8 @@
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
-                            <select name="language" id="language" v-model="course.language" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
-                                <option>German</option>
-                                <option>English</option>
+                            <select required name="language" id="language" v-model="course.courseLanguage" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
+                                <option v-for="language in languages" :key="language">{{language}}</option>
                             </select>
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -70,7 +55,7 @@
                                 </span>
                             </label>
                             <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                      v-model="course.description" placeholder="Add an optional description.">
+                                      v-model="course.courseDescription" placeholder="Add an optional description.">
                             </textarea>
                         </div>
                         </div>
@@ -90,7 +75,7 @@
                         <div class="mb-4 flex flex-col">
                             <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
                             <input type="number" name="maxParticipants" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   v-model="course.maxStudents">
+                                   v-model="course.maxParticipants">
                         </div>
                     </div>
                 </div>
@@ -120,10 +105,11 @@
             </section>
 
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
-                <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6">
+                <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-gray-400">
                     Cancel
                 </button>
-                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
+                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed"
+                v-bind:disabled="!hasInput">
                     Create Course
                 </button>
             </section>
@@ -136,6 +122,8 @@
 import Router from "@/router/";
 import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
+import {CourseType} from '@/entities/CourseType';
+import {Language} from '@/entities/Language'
 
 const axios = require("axios");
 
@@ -147,6 +135,8 @@ export default {
     data() {
         return {
             course: new Course(),
+            languages: Language,
+            courseTypes: CourseType,
             success: false,
         };
     },
@@ -160,11 +150,18 @@ export default {
         hasInput: function (): boolean {
             //todo: if this is an edit form, check if original course data was modified
             //todo make this cleaner via onChange maybe?
-            if (this.course.courseName != "" || this.course.description != "" || this.course.language != "English" ||
-                this.course.courseType != "Lecture" || this.course.maxStudents != 0) {
+            if (this.course.courseName != "" || this.course.courseDescription != "" ||  this.course.courseLanguage != Language.English ||
+                this.course.courseType != CourseType.Lecture || this.course.maxParticipants != 0) {
                     return true;
             }
             return false;
+        },
+        isValid: function (): boolean {
+            if(this.course.courseName == "" || !Object.values(Language).includes(this.course.courseLanguage) ||
+            !Object.values(CourseType).includes(this.course.courseType) || this.course.maxParticipants == 0) {
+                return false;
+            }
+            return true;
         }
     },
     methods: {
@@ -172,7 +169,8 @@ export default {
             Router.go(-1);
         },
         submit() {
-            if(this.hasInput) { 
+            console.log(this.course)
+            if(this.isValid) { 
                 axios.post("http://localhost:9000/course", this.course)
                 .then((response: any) => {
                     console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
@@ -198,7 +196,7 @@ export default {
             next();
         }
         else if (this.hasInput) {
-            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+            const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
             if (answer) {
                 next()
             } else {
