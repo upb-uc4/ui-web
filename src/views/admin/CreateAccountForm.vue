@@ -81,7 +81,7 @@
 import Router from "@/router/";
 import {Account} from '../../entities/Account'
 import {Roles} from '../../entities/Role'
-
+import { store } from '@/store/store';
 const axios = require("axios");
 
 export default {
@@ -118,8 +118,13 @@ export default {
             Router.go(-1);
         },
         submit() {
-            if(this.isValid) { 
-                axios.post("http://localhost:9000/authentication", this.account)
+            if(this.isValid) {                 
+                axios.post("http://localhost:9000/authentication", this.account, {
+                    auth: {
+                            username: store.state.loginData.username,
+                            password: store.state.loginData.password
+                    }
+                })
                 .then((response: any) => {
                     console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
                     this.success = true;
@@ -127,7 +132,12 @@ export default {
                     this.navigateBack();
                 })
                 .catch((error: any) => {
-                    console.error(error)
+                    if (error.response.status == "401") {
+                        //todo don't loose the account object 
+                        Router.push("/login");
+                    } else if (error.response.status == "403") {
+                        //todo show dialog that they do not have access here
+                    }
                 })
             }
             else {
