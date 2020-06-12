@@ -2,10 +2,9 @@
 <div>
     <dev-nav-bar></dev-nav-bar>
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        
-        <button @click="navigateBack()" class="flex items-center mb-4">
-            <i class="fas text-xl fa-chevron-left text-blue-700"></i>
-            <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
+        <button @click="navigateBack()" class="flex items-center mb-4 text-blue-700 hover:text-blue-500">
+            <i class="fas text-xl fa-chevron-left"></i>
+            <span class="font-bold text-sm ml-1">Course List</span>
         </button>
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
@@ -29,7 +28,7 @@
                     <div class="w-full lg:w-2/3"> <div class="mb-4 flex flex-col">
                             <!-- TODO: create cards for better visual impact -->
                             <label class="text-gray-700 text-md font-medium mb-3">Type</label>
-                            <div class="flex">
+                            <div class="flex mb-4">
                                 <div class="mr-4" v-for="courseType in courseTypes" :key="courseType">
                                     <label class="flex items-center">
                                         <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600" name="type" :value="courseType"
