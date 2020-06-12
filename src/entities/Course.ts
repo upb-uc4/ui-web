@@ -6,7 +6,7 @@ export class Course {
     courseType: CourseType = CourseType.Lecture;
     courseId: number = 0;
     courseName: string = "";
-    lecturerId: number = 0;
+    lecturerId: string = "";
     ects: number = 0;
     maxParticipants: number = 0;
     currentParticipants: number = 0;

@@ -1,5 +1,5 @@
 export const state = {
-    myId: -1,
+    myId: "",
     myRole: "",
     loginData: {
         username: "",

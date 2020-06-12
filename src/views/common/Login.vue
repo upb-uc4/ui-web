@@ -3,7 +3,6 @@
     <dev-nav-bar></dev-nav-bar>
     <div class="container max-w-full h-full h-auto flex flex-col lg:flex-row lg:items-center">
         <form v-on:submit.prevent="login" method="POST" action="" class="xl:w-3/4 w-full flex items-center flex-col mx-auto">
-            <input type="hidden" name="_token" :value="csrf">
             <h1 class="lg:text-6xl mt-2 text-4xl font-bold mb-4 text-center text-gray-900 mb-10">Login to Your Account</h1>
 
             <div class="w-full flex">
@@ -88,8 +87,6 @@
                 const store = useStore();
                 const username = this.email;
                 const password = this.password;
-                console.log(username)
-                console.log(password)
                 axios.get("http://localhost:9000/authentication/getRole", {
                     auth: {
                             "username": username,
@@ -98,6 +95,7 @@
                 })
                 .then((response: any) => {
                     store.state.myRole = response.data.role;
+                    store.state.myId = username;
                     store.state.loginData = {
                         "username": this.email,
                         "password": this.password
@@ -105,20 +103,20 @@
                     //if(window.history.length > 1) {
                     //    Router.go(-1);
                     //} else {
-                        switch(store.state.myRole) {
-                            case Roles.ADMIN: {
-                                Router.push("/createAccount");
-                                break;
-                            }
-                            case Roles.LECTURER: {
-                                Router.push("/lecturer");
-                                break;
-                            }
-                            case Roles.STUDENT: {
-                                Router.push("/student");
-                                break;
-                            }
+                    switch(store.state.myRole) {
+                        case Roles.ADMIN: {
+                            Router.push("/createAccount");
+                            break;
                         }
+                        case Roles.LECTURER: {
+                            Router.push("/lecturer");
+                            break;
+                        }
+                        case Roles.STUDENT: {
+                            Router.push("/student");
+                            break;
+                        }
+                    }
                     //}
                 })
                 .catch((error: any) => {

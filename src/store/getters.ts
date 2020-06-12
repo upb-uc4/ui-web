@@ -4,11 +4,11 @@ import { State } from './state'
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
-  doubledCounter(state: State): number
+  doubledCounter(state: State): string
 }
 
 export const getters: GetterTree<State, State> & Getters = {
   doubledCounter: (state) => {
-    return state.myId * 2
+    return state.myId
   },
 }
