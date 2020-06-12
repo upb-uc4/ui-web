@@ -1,6 +1,8 @@
 <template>
-
+<div>
+    <dev-nav-bar></dev-nav-bar>
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
+        
         <button @click="navigateBack()" class="flex items-center mb-4">
             <i class="fas text-xl fa-chevron-left text-blue-700"></i>
             <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
@@ -116,6 +118,7 @@
         </form>
 
     </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -124,6 +127,7 @@ import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
 import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
+import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 
 const axios = require("axios");
 
@@ -131,6 +135,9 @@ export default {
     name: "LecturerCreateCourseForm",
     props: {
 
+    },
+    components: {
+        DevNavBar
     },
     data() {
         return {

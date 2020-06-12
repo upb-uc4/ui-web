@@ -1,5 +1,6 @@
 <template>
   <div>
+    <dev-nav-bar></dev-nav-bar>
     <section class="pt-16 flex items-center justify-center bg-gray-100">
       <div class="container">
         <div>
@@ -48,7 +49,9 @@
 
 <script lang="ts">
 import Router from "../../router/";
-import { useStore } from "../../store/store"
+import { useStore } from "../../store/store";
+import DevNavBar from "../../components/dev_components/DevNavBar.vue"
+
 export default {
   name: "Login", 
   data()  {
@@ -56,6 +59,9 @@ export default {
       lecturerId: -1,
       studentId: -1
       }
+  },
+  components: {
+    DevNavBar
   },
   methods: {
     goto: function(target: string) {
