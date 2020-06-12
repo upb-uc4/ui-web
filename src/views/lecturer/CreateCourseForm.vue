@@ -1,9 +1,9 @@
 <template>
 
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button @click="navigateBack()" class="flex items-center mb-4">
-            <i class="fas text-xl fa-chevron-left text-blue-700"></i>
-            <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
+        <button @click="navigateBack()" class="flex items-center mb-4 text-blue-700 hover:text-blue-500">
+            <i class="fas text-xl fa-chevron-left"></i>
+            <span class="font-bold text-sm ml-1">Course List</span>
         </button>
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
