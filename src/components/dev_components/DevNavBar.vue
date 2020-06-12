@@ -4,6 +4,9 @@
             <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/login')">   
                 <a>login</a>  
             </li>
+            <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/login2')">   
+                <a>login2</a>  
+            </li>
             <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/student')">   
                 <a>studentHome</a>
             </li>

@@ -1,5 +1,6 @@
 <template>
-
+<div>
+    <dev-nav-bar></dev-nav-bar>
     <div class="container max-w-full h-full h-auto flex flex-col lg:flex-row lg:items-center">
         <form v-on:submit.prevent="login" method="POST" action="" class="xl:w-3/4 w-full flex items-center flex-col mx-auto">
             <input type="hidden" name="_token" :value="csrf">
@@ -45,15 +46,20 @@
             </div>
         </form>
     </div>
-
+</div>
 </template>
 
 <script>
+    import DevNavBar from "../../components/dev_components/DevNavBar.vue"
+
     export default {
         props: [
             'route',
             'csrf',
         ],
+        components: {
+            DevNavBar
+        },
         data () {
             return {
                 email: "",
