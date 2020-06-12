@@ -82,7 +82,7 @@ import Router from "@/router/";
 import {Account} from '../../entities/Account'
 import {Roles} from '../../entities/Role'
 
-//const axios = require("axios");
+const axios = require("axios");
 
 export default {
     name: "AdmingCreateAccountForm",
@@ -144,7 +144,7 @@ export default {
             next();
         }
         else if (this.hasInput) {
-            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+            const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
             if (answer) {
                 next()
             } else {
