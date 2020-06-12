@@ -176,16 +176,31 @@ export default {
         },
         submit() {
             console.log(this.course)
+
             if(this.isValid) { 
-                axios.post("http://localhost:9000/course", this.course)
+                axios.post("http://localhost:9000/course", this.course, {
+                    auth: {
+                            username: store.state.loginData.username,
+                            password: store.state.loginData.password
+                    }
+                })
                 .then((response: any) => {
-                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
+                    console.log(response); 
+
+                    //if (response.status == "")
+
                     this.success = true;
                     //todo show success toast
                     this.navigateBack();
                 })
                 .catch((error: any) => {
-                    console.error(error)
+                    if (error.response.status == "401") {
+                        //todo don't loose the course object 
+                        Router.push("/login");
+                    } else if (error.response.status == "403") {
+                        //todo show dialog that they do not have access here
+                        Router.go(-1);
+                    }
                 })
             }
             else {
@@ -198,6 +213,7 @@ export default {
     beforeRouteLeave (to, from, next) {
         //todo use styled modal
         //todo break this into smaller methods
+        //todo check if redirect to login
         if (this.success) {
             next();
         }
