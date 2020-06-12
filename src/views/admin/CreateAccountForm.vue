@@ -119,7 +119,16 @@ export default {
         },
         submit() {
             if(this.isValid) { 
-                //TODO Axios Call
+                axios.post("http://localhost:9000/authentication", this.account)
+                .then((response: any) => {
+                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
+                    this.success = true;
+                    //todo show success toast
+                    this.navigateBack();
+                })
+                .catch((error: any) => {
+                    console.error(error)
+                })
             }
             else {
                 this.success = false;
