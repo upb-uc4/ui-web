@@ -13,9 +13,8 @@
 
 <script lang="ts">
 import CourseList from "../../components/LecturerCourseList.vue";
-import { useStore } from "../../store/store"
+import { store } from "../../store/store"
 import {Role} from "../../entities/Role"
-import Router from "../../router"
 import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 
 export default {
@@ -25,17 +24,16 @@ export default {
 		DevNavBar
 	},
 	setup() {
-		const store = useStore();
 		console.log(store.state.myRole);
 	},
 	data: () => ({
 	}),
-	beforeRouteEnter() {
-		const store = useStore();
+	beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.LECTURER) {
-			Router.push("/redirect");
+			next("/redirect");
 		}
-	}
+		next();
+	},
 };
 </script>

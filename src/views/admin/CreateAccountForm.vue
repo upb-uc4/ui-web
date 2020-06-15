@@ -147,11 +147,12 @@ export default {
 
         }
     },
-    beforeRouteEnter() {
+	beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.ADMIN) {
-			Router.push("/redirect");
+			next("/redirect");
 		}
+		next();
 	},
     beforeRouteLeave (to, from, next) {
         //todo use styled modal
