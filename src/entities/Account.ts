@@ -1,6 +1,6 @@
-import { Roles } from './Role';
+import { Role } from './Role';
 export class Account {
     username: string= "";
     password: string="";
-    role: Roles= Roles.NONE;
+    role: Role= Role.NONE;
 }

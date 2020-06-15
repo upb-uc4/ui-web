@@ -80,7 +80,7 @@
 <script lang="ts">
 import Router from "@/router/";
 import {Account} from '../../entities/Account'
-import {Roles} from '../../entities/Role'
+import {Role} from '../../entities/Role'
 import { store } from '@/store/store';
 const axios = require("axios");
 
@@ -93,21 +93,21 @@ export default {
         return {
             account: new Account(),
             success: false,
-            roles: Object.values(Roles).filter(e => e!=Roles.NONE)
+            roles: Object.values(Role).filter(e => e!=Role.NONE)
         };
     },
     created() {
     },
     computed: {
         isValid: function (): boolean {
-            if(this.account.username == "" || this.account.password =="" || this.account.role == Roles.NONE) {
+            if(this.account.username == "" || this.account.password =="" || this.account.role == Role.NONE) {
                 return false;
             }
             return true
         },
 
         hasInput: function():boolean {
-            if(this.account.username != "" || this.account.password != "" || this.account.role != Roles.NONE) {
+            if(this.account.username != "" || this.account.password != "" || this.account.role != Role.NONE) {
                 return true
             }
             return false;
@@ -149,7 +149,7 @@ export default {
     },
     beforeRouteEnter() {
 		const myRole = store.state.myRole;
-		if (myRole != Roles.ADMIN) {
+		if (myRole != Role.ADMIN) {
 			Router.push("/redirect");
 		}
 	},

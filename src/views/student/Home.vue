@@ -15,7 +15,7 @@ import CourseList from "../../components/StudentCourseList.vue";
 import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 import { store } from "../../store/store"
 import  Router  from "../../router"
-import { Roles } from "../../entities/Role"
+import { Role } from "../../entities/Role"
 
 export default {
   name: "Student.Home",
@@ -27,7 +27,7 @@ export default {
   }),
   beforeRouteEnter() {
 		const myRole = store.state.myRole;
-		if (myRole != Roles.STUDENT) {
+		if (myRole != Role.STUDENT) {
 			Router.push("/redirect");
 		}
 	},

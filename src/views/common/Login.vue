@@ -43,7 +43,7 @@
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
     import { useStore } from "../../store/store";
-    import { Roles } from "../../entities/Role";
+    import { Role } from "../../entities/Role";
     const axios = require("axios");
 
     export default {
@@ -96,15 +96,15 @@
                     //    Router.go(-1);
                     //} else {
                     switch(store.state.myRole) {
-                        case Roles.ADMIN: {
+                        case Role.ADMIN: {
                             Router.push("/createAccount");
                             break;
                         }
-                        case Roles.LECTURER: {
+                        case Role.LECTURER: {
                             Router.push("/lecturer");
                             break;
                         }
-                        case Roles.STUDENT: {
+                        case Role.STUDENT: {
                             Router.push("/student");
                             break;
                         }

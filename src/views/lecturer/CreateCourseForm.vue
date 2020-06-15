@@ -125,7 +125,7 @@ import Router from "@/router/";
 import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
 import {CourseType} from '@/entities/CourseType';
-import { Roles } from "../../entities/Role"
+import { Role } from "../../entities/Role"
 import {Language} from '@/entities/Language'
 import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 
@@ -213,7 +213,7 @@ export default {
     },
     beforeRouteEnter() {
 		const myRole = store.state.myRole;
-		if (myRole != Roles.LECTURER) {
+		if (myRole != Role.LECTURER) {
 			Router.push("/redirect");
 		}
 	},

@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Router from "../../router/";
-import { Roles } from "../../entities/Role"
+import { Role } from "../../entities/Role"
 
 export default {
   name: "DevNavBar",
@@ -37,7 +37,7 @@ export default {
       },
       logout: function() {
           this.$store.state.loginData = {username:"", password:""};
-          this.$store.state.myRole = Roles.NONE;
+          this.$store.state.myRole = Role.NONE;
           this.$store.state.myId = "";
           Router.push("/login")
       }

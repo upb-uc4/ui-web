@@ -14,7 +14,7 @@
 <script lang="ts">
 import CourseList from "../../components/LecturerCourseList.vue";
 import { useStore } from "../../store/store"
-import {Roles} from "../../entities/Role"
+import {Role} from "../../entities/Role"
 import Router from "../../router"
 import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 
@@ -33,7 +33,7 @@ export default {
 	beforeRouteEnter() {
 		const store = useStore();
 		const myRole = store.state.myRole;
-		if (myRole != Roles.LECTURER) {
+		if (myRole != Role.LECTURER) {
 			Router.push("/redirect");
 		}
 	}
