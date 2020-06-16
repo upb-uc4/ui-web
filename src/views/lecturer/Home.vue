@@ -18,22 +18,22 @@ import {Role} from "../../entities/Role"
 import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 
 export default {
-	name: "Lecturer.Home",
-	components: {
+    name: "Lecturer.Home",
+    components: {
 		CourseList,
 		DevNavBar
-	},
-	setup() {
+    },
+    setup() {
 		console.log(store.state.myRole);
-	},
-	data: () => ({
-	}),
-	beforeRouteEnter(_from, _to, next) {
+    },
+    data: () => ({
+    }),
+    beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.LECTURER) {
-			next("/redirect");
+			return next("/redirect");
 		}
-		next();
-	},
+		return next();
+    },
 };
 </script>
