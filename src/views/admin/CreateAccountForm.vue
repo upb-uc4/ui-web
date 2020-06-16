@@ -14,49 +14,36 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
                         <label class="block text-gray-600">
-                            Create a new user account. 
+                            Create a new user account.
                         </label>
                     </div>
-                    <div class="w-full lg:w-2/3"><div class="mb-4 flex flex-col">
+                    <div class="w-full lg:w-2/3">
+                        <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Role</label>
                             <div class="flex">
                                 <div class="mr-4 mb-3" v-for="role in roles" :key="role">
                                     <label class="flex items-center" >
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600 active:bg-indigo-600" name="role" :value="role" v-model="account.role"
-                                        >
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600 active:bg-indigo-600" name="role" :value="role" v-model="account.role">
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                     </label>
                                 </div>
                             </div>
-                        <!-- Comment in name fields for the user account, when needed 
-                        <div class="mb-4 flex flex-col hidden">
-                            <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <div class="flex">
-                            <input type="text" id="firstname" name="firstname"
-                                   class="w-1/2 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input mr-2"
-                                   placeholder="First Name">
-                            <input type="text" id="lastName" name="lastname"
-                                   class="w-1/2 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   placeholder="Last Name">
+                            <div class="mb-4 flex flex-col">
+                                <label class="text-gray-700 text-md font-medium mb-3">Username</label>
+                                <input type="text" id="userName" name="username"
+                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                    placeholder="Username"
+                                    v-model="account.username">
                             </div>
-                        </div>
-                        -->
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Username</label>
-                            <input type="text" id="userName" name="username" 
-                                   class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   placeholder="Username"
-                                   v-model="account.username">
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
-                                Password
-                            </label>
-                             <input type="text" id="password" name="password"
-                                   class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   placeholder="Password"
-                                   v-model="account.password">
-                        </div>
+                            <div class="mb-4 flex flex-col">
+                                <label for="password" class="text-gray-700 text-md font-medium mb-3">
+                                    Password
+                                </label>
+                                <input type="text" id="password" name="password"
+                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                    placeholder="Password"
+                                    v-model="account.password">
+                            </div>
                         </div>
                     </div>
                 </div>
