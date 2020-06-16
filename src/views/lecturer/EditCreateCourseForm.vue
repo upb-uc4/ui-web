@@ -215,7 +215,22 @@ export default {
             }
         },
         updateCourse() {
-            //TODO
+            if(this.hasInput) { 
+                axios.put("http://localhost:9000/course", this.course)
+                .then((response: any) => {
+                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
+                    this.success = true;
+                    //todo show success toast
+                    this.navigateBack();
+                })
+                .catch((error: any) => {
+                    console.error(error)
+                })
+            }
+            else {
+                this.success = false;
+                console.log("Error: Input Validation Failed!")
+            }
         },
         deleteCourse() {
             const check = prompt("Warning! You are about to delete the course \"" + this.course.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
