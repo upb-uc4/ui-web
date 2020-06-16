@@ -159,6 +159,7 @@ export default {
     data() {
         return {
             course: new Course(),
+            backupCourse: new Course(),
             success: false,
             deleted: false
         };
@@ -171,13 +172,14 @@ export default {
     },
     computed: {
         hasInput: function (): boolean {
-            //todo: if this is an edit form, check if original course data was modified
-            if (this.course.courseName != "" || this.course.description != "" || this.course.language != "English" ||
-                this.course.courseType != "Lecture" || this.course.maxStudents != 0) {
-                    return true;
-            }
+            //TODO transform if conditions to class method in Course.ts
+                if (this.course.courseName !== this.backupCourse.courseName || this.course.description !== this.backupCourse.description || this.course.language !== this.backupCourse.language ||
+                    this.course.courseType !== this.backupCourse.courseType || this.course.maxStudents !== this.backupCourse.maxStudents) {
+                        return true;
+                }
             return false;
-        }
+            }
+        
     },
     methods: {
         navigateBack() {
@@ -187,6 +189,8 @@ export default {
                 axios.get("http://localhost:9000/course/findByCourseId?id=" + this.$route.params.id)
                 .then((response: any) => {
                     this.course = response.data
+                    this.backupCourse = JSON.parse(JSON.stringify(this.course))
+                    console.log(this.course)
                 })
                 .catch((error: any) => {
                     console.error(error)
