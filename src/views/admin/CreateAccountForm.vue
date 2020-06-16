@@ -137,26 +137,26 @@ export default {
 	beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.ADMIN) {
-			next("/redirect");
+			return next("/redirect");
 		}
-		next();
+		return next();
 	},
     beforeRouteLeave (to, from, next) {
         //todo use styled modal
         //todo break this into smaller methods
         if (this.success) {
-            next();
+            return next();
         }
         else if (this.hasInput) {
             const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
             if (answer) {
-                next()
+                return next()
             } else {
-                next(false)
+                return next(false)
             }
         }
         else {
-            next()
+            return next()
         }
     }
 };

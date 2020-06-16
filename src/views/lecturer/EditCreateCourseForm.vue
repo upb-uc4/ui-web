@@ -283,18 +283,18 @@ export default {
         //todo use styled modal
         //todo break this into smaller methods
         if (this.success) {
-            next();
+            return next();
         }
         else if (this.hasInput && !this.deleted ) {
             const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
             if (answer) {
-                next()
+                return next()
             } else {
-                next(false)
+                return next(false)
             }
         }
         else {
-            next()
+            return next()
         }
     },
     mounted() {

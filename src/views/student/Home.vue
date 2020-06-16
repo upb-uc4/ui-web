@@ -27,9 +27,9 @@ export default {
 	beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.STUDENT) {
-			next("/redirect");
+			return next("/redirect");
 		}
-		next();
+		return next();
 	},
 };
 </script>
