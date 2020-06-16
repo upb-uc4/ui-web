@@ -20,6 +20,7 @@ import LecturerCourse from "./LecturerCourse.vue";
 import CourseListFilter from "./CourseListFilter.vue";
 import { Course } from "../entities/Course"
 import { useStore } from "../store/store"
+//import Router from "@/router/";
 
 export default {
   name: "CourseList",
@@ -49,10 +50,20 @@ export default {
 		// 	})
 
 		var courses = await instance
-			.get("/course")
-			.then((response: any) => {
-					return response.data
+			.get("/course", {
+				auth: {
+						username: store.state.loginData.username,
+						password: store.state.loginData.password
+				}
 			})
+			.then((response: any) => {
+				console.log(response);
+				return response.data
+			})//.catch((error : any) => {
+			// 	// if (error.response.status == "401") {
+			// 	// 	Router.push("/login");
+			// 	// }
+			// })
 
 		courses = courses.filter(course => course.lecturerId == myId);
 		return {

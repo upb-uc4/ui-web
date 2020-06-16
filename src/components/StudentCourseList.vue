@@ -11,6 +11,8 @@
     import StudentCourse from "./StudentCourse.vue";
     import CourseListFilter from "./CourseListFilter.vue"
     import {Course} from "../entities/Course"
+    import Router from "@/router/";
+    import { useStore } from "../store/store"
 
     export default {
         name: "CourseList",
@@ -31,14 +33,22 @@
                 }
             });
 
+            const store = useStore();
             const courses = await instance
-                .get("/course")
+                .get("/course", {
+                    auth: {
+                         username: store.state.loginData.username,
+                         password: store.state.loginData.password
+                    }
+                })
                 .then((response: any) => {
                     console.log(response);
                     return response.data
+                }).catch((error : any) => {
+                    if (error.response.status == "401") {
+                        Router.push("/login");
+                    }
                 })
-            console.log("outter")
-            console.log(courses)
             return {
                 courses
             }

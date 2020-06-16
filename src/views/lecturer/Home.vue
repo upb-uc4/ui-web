@@ -1,5 +1,6 @@
 <template>
   <div>
+    <dev-nav-bar></dev-nav-bar>
     <div class="mt-32 text-4xl text-center font-semibold text-gray-900">My Courses</div>
     <div class="mt-8 flex justify-center">
       <Suspense>
@@ -12,18 +13,27 @@
 
 <script lang="ts">
 import CourseList from "../../components/LecturerCourseList.vue";
-import { useStore } from "../../store/store"
+import { store } from "../../store/store"
+import {Role} from "../../entities/Role"
+import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 
 export default {
-  name: "Lecturer.Home",
-  components: {
-    CourseList
-  },
-  setup() {
-    const store = useStore();
-    console.log(store.state.myRole);
-  },
-  data: () => ({
-  })
+	name: "Lecturer.Home",
+	components: {
+		CourseList,
+		DevNavBar
+	},
+	setup() {
+		console.log(store.state.myRole);
+	},
+	data: () => ({
+	}),
+	beforeRouteEnter(_from, _to, next) {
+		const myRole = store.state.myRole;
+		if (myRole != Role.LECTURER) {
+			next("/redirect");
+		}
+		next();
+	},
 };
 </script>

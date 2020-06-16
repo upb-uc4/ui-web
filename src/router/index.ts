@@ -4,6 +4,8 @@ import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
+import AdminCreateAccountView from '../views/admin/CreateAccountForm.vue';
+import Redirect from "../views/common/Redirect.vue"
 
 
 const routerHistory = createWebHistory();
@@ -38,6 +40,14 @@ const router = createRouter({
 			path: "/",
 			component: LoginView,
 		},
+		{
+			path: "/createAccount",
+			component: AdminCreateAccountView
+		},
+		{
+			path: "/redirect",
+			component: Redirect,
+		}
 	],
 });
 

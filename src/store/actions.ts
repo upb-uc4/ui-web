@@ -14,8 +14,8 @@ type AugmentedActionContext = {
   export interface Actions {
     [ActionTypes.GET_ID](
       { commit }: AugmentedActionContext,
-      payload: number
-    ): Promise<number>,
+      payload: string
+    ): Promise<string>,
     
     [ActionTypes.GET_ROLE](
         { commit }: AugmentedActionContext,
@@ -27,7 +27,7 @@ type AugmentedActionContext = {
     [ActionTypes.GET_ID]({ commit }) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          const data = 256
+          const data = ""
           commit(MutationTypes.SET_ID, data)
           resolve(data)
         }, 500)
