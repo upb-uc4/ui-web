@@ -28,19 +28,6 @@
                                     </label>
                                 </div>
                             </div>
-                        <!-- Comment in name fields for the user account, when needed 
-                        <div class="mb-4 flex flex-col hidden">
-                            <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <div class="flex">
-                            <input type="text" id="firstname" name="firstname"
-                                   class="w-1/2 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input mr-2"
-                                   placeholder="First Name">
-                            <input type="text" id="lastName" name="lastname"
-                                   class="w-1/2 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                   placeholder="Last Name">
-                            </div>
-                        </div>
-                        -->
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
                             <input type="text" id="userName" name="username" 
