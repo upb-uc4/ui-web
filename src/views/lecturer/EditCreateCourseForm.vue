@@ -6,8 +6,7 @@
             <span class="text-blue-700 font-bold text-sm ml-1">Course List</span>
         </button>
 
-        <h1 v-if="!editMode" class="text-2xl font-medium text-gray-700 mb-8">Course Creation</h1>
-        <h1 v-else class="text-2xl font-medium text-gray-700 mb-8">Edit Your Course</h1>
+        <h1 class="text-2xl font-medium text-gray-700 mb-8"> {{ heading }} </h1>
 
         <form @submit.prevent="submit" method="POST">
             <input type="hidden" name="lecturerId" :value="lecturerId">
@@ -160,6 +159,7 @@ export default {
         return {
             course: new Course(),
             initialCourseState: new Course(),
+            heading: this.editMode ? "Edit Course" : "Create Course",
             success: false,
             deleted: false
         };
