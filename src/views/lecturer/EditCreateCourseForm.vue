@@ -160,6 +160,7 @@ export default {
         return {
             course: new Course(),
             success: false,
+            deleted: false
         };
     },
     created() {
@@ -213,7 +214,17 @@ export default {
             //TODO
         },
         deleteCourse() {
-            //TODO
+            const check = prompt("Warning! You are about to delete the course \"" + this.course.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
+            if(check != this.course.courseName) {
+                this.deleted = false
+                console.log("Wrong input")
+            }
+            else{
+                console.log("Delete Course")
+                //TODO Delete Course
+                this.deleted = true
+                Router.go(-1)
+            }
         }
     },
     beforeRouteLeave (to, from, next) {
@@ -222,7 +233,7 @@ export default {
         if (this.success) {
             next();
         }
-        else if (this.hasInput) {
+        else if (this.hasInput && !this.deleted ) {
             const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
             if (answer) {
                 next()
