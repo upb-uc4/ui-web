@@ -4,6 +4,16 @@ module.exports = {
         './src/**/*.vue',
     ],
   theme: {
+    customForms: theme => ({
+      default: {
+          checkbox: {
+              '&:focus': {
+                  boxShadow: undefined,
+                  borderColor: undefined,
+              },
+          },
+      }
+    }),
     extend: {},
   },
   variants: {

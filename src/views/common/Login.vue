@@ -21,7 +21,7 @@
 
                     <div class="w-full text-center lg:text-left lg:pl-16 lg:ml-3">
                         <label class="block text-gray-500 font-semibold">
-                            <input class="mr-2 form-checkbox text-blue-500 hover:bg-blue-400 hover:shadow-inner border-gray-500 border-1 focus:border-none" type="checkbox" checked>
+                            <input class="mr-2 form-checkbox text-blue-500 border-gray-500 focus:border-none" type="checkbox" checked>
                             <span class="text-sm">Remember me</span>
                         </label>
                         <a class="mt-2 no-underline inline-block align-baseline font-semibold text-sm text-blue-500 hover:text-blue-600" href="#">
