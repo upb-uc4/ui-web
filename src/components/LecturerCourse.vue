@@ -34,7 +34,8 @@
       </div>
     </div>
     <div class="w-1/3 pl-4 pr-8 flex justify-end items-center">
-      <button class="w-full md:w-1/2 bg-gray-600 text-white text-center py-2 rounded-lg font-semibold">
+      <button class="w-full md:w-1/2 bg-gray-600 text-white text-center py-2 rounded-lg font-semibold"
+      @click="editCourse()">
           Edit
       </button>
     </div>
@@ -43,6 +44,7 @@
 
 <script lang="ts">
 import ReadMore from "./ReadMore.vue";
+import router from '../router';
 export default {
   name: "Course",
   props: ["course"],
@@ -50,7 +52,14 @@ export default {
     ReadMore
   },
   data: () => ({
-    less: '<span class="text-blue-900">less</span>'
-  })
-};
+    less: '<span class="text-blue-900">less</span>',
+    }),
+  
+  methods: {
+    editCourse() {
+      router.push({path: "/editCourse/"+this.course.courseId})
+    }
+  }
+}
+
 </script>
