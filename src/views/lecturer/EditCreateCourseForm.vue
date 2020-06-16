@@ -181,14 +181,17 @@ export default {
             Router.go(-1);
         },
         loadCourse () {
-                axios.get("http://localhost:9000/course/findByCourseId",null, {
-                    params: {
-                        id: this.$route.params.id
+                axios.get("http://localhost:9000/course", {
+                    auth: {
+                        username: store.state.loginData.username,
+                        password: store.state.loginData.password
                     }
                 })
                 .then((response: any) => {
-                    this.course = response.data
-                    this.initialCourseState = JSON.parse(JSON.stringify(this.course))
+                    const courses = response.data as Course[];
+                    this.course = courses.filter(c => c.courseId == this.$route.params.id)[0];
+
+                    this.initialCourseState = JSON.parse(JSON.stringify(this.course));
                     console.log(this.course)
                 })
                 .catch((error: any) => {
@@ -197,7 +200,12 @@ export default {
             },
         submit() {
             if(this.hasInput) { 
-                axios.post("http://localhost:9000/course", this.course)
+                axios.post("http://localhost:9000/course", this.course, {
+                    auth: {
+                        username: store.state.loginData.username,
+                        password: store.state.loginData.password
+                    }
+                })
                 .then((response: any) => {
                     console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
                     this.success = true;
@@ -215,7 +223,12 @@ export default {
         },
         updateCourse() {
             if(this.hasInput) { 
-                axios.put("http://localhost:9000/course", this.course)
+                axios.put("http://localhost:9000/course", this.course, {
+                    auth: {
+                        username: store.state.loginData.username,
+                        password: store.state.loginData.password
+                    }
+                })
                 .then((response: any) => {
                     console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
                     this.success = true;
@@ -243,12 +256,15 @@ export default {
             else {
                 console.log("Delete Course")
                 //TODO Include proper API
-                /*
-                axios.delete("http://localhost:9000/course", null , {
+                axios.delete("http://localhost:9000/course" , {
                     params: {
-                        id: this.course.courseId
+                         "id": this.course.courseId
+                    },
+                    auth: {
+                        username: store.state.loginData.username,
+                        password: store.state.loginData.password
                     }
-                    })
+                })
                 .then((response: any) => {
                     console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
                     this.success = true;
@@ -257,7 +273,7 @@ export default {
                 })
                 .catch((error: any) => {
                     console.error(error)
-                })*/
+                })
                 this.deleted = true
                 Router.go(-1)
             }
