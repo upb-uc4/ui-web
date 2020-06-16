@@ -186,7 +186,11 @@ export default {
             Router.go(-1);
         },
         loadCourse () {
-                axios.get("http://localhost:9000/course/findByCourseId?id=" + this.$route.params.id)
+                axios.get("http://localhost:9000/course/findByCourseId",null, {
+                    params: {
+                        id: this.$route.params.id
+                    }
+                })
                 .then((response: any) => {
                     this.course = response.data
                     this.backupCourse = JSON.parse(JSON.stringify(this.course))
@@ -243,7 +247,22 @@ export default {
             }
             else{
                 console.log("Delete Course")
-                //TODO Delete Course
+                //TODO Include proper API
+                /*
+                axios.delete("http://localhost:9000/course", null , {
+                    params: {
+                        id: this.course.courseId
+                    }
+                    })
+                .then((response: any) => {
+                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
+                    this.success = true;
+                    //todo show success toast
+                    this.navigateBack();
+                })
+                .catch((error: any) => {
+                    console.error(error)
+                })*/
                 this.deleted = true
                 Router.go(-1)
             }
