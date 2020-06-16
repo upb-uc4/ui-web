@@ -66,8 +66,8 @@
 
 <script lang="ts">
 import Router from "@/router/";
-import {Account} from '../../entities/Account'
-import {Role} from '../../entities/Role'
+import {Account} from '@/entities/Account'
+import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
 const axios = require("axios");
 
