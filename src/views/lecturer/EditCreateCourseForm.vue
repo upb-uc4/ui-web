@@ -216,8 +216,11 @@ export default {
         deleteCourse() {
             const check = prompt("Warning! You are about to delete the course \"" + this.course.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
             if(check != this.course.courseName) {
+                console.log(check)
                 this.deleted = false
-                console.log("Wrong input")
+                if(check != null) {
+                    this.deleteCourse()
+                }
             }
             else{
                 console.log("Delete Course")
