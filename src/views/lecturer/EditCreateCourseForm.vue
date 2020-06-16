@@ -45,7 +45,7 @@
                                 </div>
                                 <div>
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Project"
+                                        <input type="radio" class="form-radio focus:shadow-none text-indigo-600" name="type" value="Project Group"
                                                v-model="course.courseType">
                                         <span class="ml-2 text-gray-700 text-md font-medium">Project Group</span>
                                     </label>
