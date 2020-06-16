@@ -49,7 +49,7 @@
                                    v-model="account.username">
                         </div>
                         <div class="mb-4 flex flex-col">
-                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
+                            <label for="password" class="text-gray-700 text-md font-medium mb-3">
                                 Password
                             </label>
                              <input type="text" id="password" name="password"
