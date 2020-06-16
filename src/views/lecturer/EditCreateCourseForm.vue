@@ -159,7 +159,7 @@ export default {
     data() {
         return {
             course: new Course(),
-            backupCourse: new Course(),
+            initialCourseState: new Course(),
             success: false,
             deleted: false
         };
@@ -173,8 +173,8 @@ export default {
     computed: {
         hasInput: function (): boolean {
             //TODO transform if conditions to class method in Course.ts
-                if (this.course.courseName !== this.backupCourse.courseName || this.course.description !== this.backupCourse.description || this.course.language !== this.backupCourse.language ||
-                    this.course.courseType !== this.backupCourse.courseType || this.course.maxStudents !== this.backupCourse.maxStudents) {
+                if (this.course.courseName !== this.initialCourseState.courseName || this.course.description !== this.initialCourseState.description || this.course.language !== this.initialCourseState.language ||
+                    this.course.courseType !== this.initialCourseState.courseType || this.course.maxStudents !== this.initialCourseState.maxStudents) {
                         return true;
                 }
             return false;
@@ -193,7 +193,7 @@ export default {
                 })
                 .then((response: any) => {
                     this.course = response.data
-                    this.backupCourse = JSON.parse(JSON.stringify(this.course))
+                    this.initialCourseState = JSON.parse(JSON.stringify(this.course))
                     console.log(this.course)
                 })
                 .catch((error: any) => {
