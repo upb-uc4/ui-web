@@ -100,29 +100,44 @@
                 </div>
             </section>
 
-            <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
-                <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-gray-400">
-                    Cancel
-                </button>
-                <button v-if="!editMode" type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
-                    Create Course
-                </button>
-                <button v-else @click="updateCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
-                    Save Changes
-                </button>
-            </section>
-            <section v-if="editMode" class="border-t-2 py-8 border-red-500 lg:mt-8 flex justify-end items-center">
-                <div class="w-full lg:w-full mr-12 flex mb-4">
-                    <label class="text-red-500 text-md font-medium mb-2">Danger Zone</label>
+            <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
+                <div class="hidden sm:flex justify-between">
+                    <div class="flex justify-start items-center">
+                        <button class="w-32 text-red-700 border-2 border-red-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
+                            Delete
+                        </button>
+                    </div>
+
+                    <div class="flex justify-end items-center">
+                        <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-gray-400">
+                            Cancel
+                        </button>
+                        <button v-if="!editMode" type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                            Create Course
+                        </button>
+                        <button v-else @click="updateCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                            Save Changes
+                        </button>
+                    </div>
                 </div>
-             <div class="w- justify-end items-center">
-              <button @click="deleteCourse" class="w-48 bg-red-500 border-2 border-red-500 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
-                    Delete Course
-                </button>
-            </div>
+
+                <!-- different button layout for mobile -->
+                <div class="sm:hidden">
+                    <button type="button" @click="navigateBack" class="mb-4 w-full text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none hover:bg-gray-400">
+                        Cancel
+                    </button>
+                    <button v-if="!editMode" type="submit" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                        Create Course
+                    </button>
+                    <button v-else @click="updateCourse" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                        Save Changes
+                    </button>
+                    <button class="w-full text-red-700 border-2 border-red-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
+                        Delete
+                    </button>
+                </div>
             </section>
         </form>
-
     </div>
 </template>
 
