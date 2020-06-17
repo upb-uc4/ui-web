@@ -103,7 +103,7 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" type="button" class="w-32 btn btn-red-secondary">
+                        <button v-if="editMode" @click="deleteCourse" type="button" class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
@@ -132,7 +132,7 @@
                     <button v-else type="submit" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
-                    <button class="w-full btn btn-red-secondary">
+                    <button @click="deleteCourse" class="w-full btn btn-red-secondary">
                         Delete
                     </button>
                 </div>
