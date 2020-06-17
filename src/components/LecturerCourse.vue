@@ -36,16 +36,16 @@
 <script lang="ts">
 import ReadMore from "./ReadMore.vue";
 import router from '../router';
+
 export default {
   name: "Course",
   props: ["course"],
   components: {
     ReadMore
   },
-  data: () => ({
-    less: '<span class="text-blue-900">less</span>',
-    }),
-  
+  data() {
+
+  },
   methods: {
     editCourse() {
       router.push({path: "/editCourse/"+this.course.courseId})
