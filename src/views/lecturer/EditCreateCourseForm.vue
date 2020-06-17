@@ -27,7 +27,7 @@
                                     <label class="flex items-center">
                                         <input type="radio" class="form-radio focus:shadow-none text-indigo-600 hover:bg-indigo-300 focus:bg-indigo-600" name="type" :value="courseType"
                                                v-model="course.courseType">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{courseType}}</span>
+                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ courseType }}</span>
                                     </label>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
                             <select required name="language" id="language" v-model="course.courseLanguage" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
-                                <option v-for="language in languages" :key="language">{{language}}</option>
+                                <option v-for="language in languages" :key="language">{{ language }}</option>
                             </select>
                         </div>
                         <div class="mb-4 flex flex-col">
