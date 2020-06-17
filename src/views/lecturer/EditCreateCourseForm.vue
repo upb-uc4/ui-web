@@ -103,7 +103,7 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button class="w-32 btn btn-red-secondary">
+                        <button v-if="editMode" type="button" class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
@@ -126,7 +126,7 @@
                     <button type="button" @click="navigateBack" class="mb-4 w-full btn btn-blue-secondary">
                         Cancel
                     </button>
-                    <button v-if="editMode" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
+                    <button v-if="editMode" type="button" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
                         Save Changes
                     </button>
                     <button v-else type="submit" class="mb-4 w-full btn btn-blue-primary">
