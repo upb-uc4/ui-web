@@ -19,7 +19,8 @@
                             This is some long detailed description which is part towards a better form.
                         </label>
                     </div>
-                    <div class="w-full lg:w-2/3"> <div class="mb-4 flex flex-col">
+                    <div class="w-full lg:w-2/3">
+                        <div class="mb-4 flex flex-col">
                             <!-- TODO: create cards for better visual impact -->
                             <label class="text-gray-700 text-md font-medium mb-3">Type</label>
                             <div class="flex">
@@ -31,6 +32,7 @@
                                     </label>
                                 </div>
                             </div>
+                        </div>
                         <div class="mb-4 flex flex-col">
                             <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
                             <input type="text" id="name" name="courseName" v-model="course.courseName"
@@ -52,7 +54,6 @@
                             <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                       v-model="course.courseDescription" placeholder="Add an optional description.">
                             </textarea>
-                        </div>
                         </div>
                     </div>
                 </div>
