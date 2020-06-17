@@ -28,22 +28,22 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="mb-4 flex flex-col">
-                                <label class="text-gray-700 text-md font-medium mb-3">Username</label>
-                                <input type="text" id="userName" name="username"
-                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                    placeholder="Username"
-                                    v-model="account.username">
-                            </div>
-                            <div class="mb-4 flex flex-col">
-                                <label for="password" class="text-gray-700 text-md font-medium mb-3">
-                                    Password
-                                </label>
-                                <input type="text" id="password" name="password"
-                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                    placeholder="Password"
-                                    v-model="account.password">
-                            </div>
+                        </div>
+                        <div class="mb-4 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">Username</label>
+                            <input type="text" id="userName" name="username"
+                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                placeholder="Username"
+                                v-model="account.username">
+                        </div>
+                        <div class="mb-4 flex flex-col">
+                            <label for="password" class="text-gray-700 text-md font-medium mb-3">
+                                Password
+                            </label>
+                            <input type="text" id="password" name="password"
+                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                placeholder="Password"
+                                v-model="account.password">
                         </div>
                     </div>
                 </div>
