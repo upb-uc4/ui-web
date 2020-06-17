@@ -4,23 +4,14 @@
       <div class="flex">
         <div class="w-full">
           <div class="flex items-baseline">
-            <span
-              class="inline-block bg-teal-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide"
-            >{{ course.courseType }}</span>
-            <div
-              class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide"
-            >{{ course.courseLanguage }}</div>
-            <div
-              class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide"
-            >{{ course.ects }} ECTS</div>
+            <span class="inline-block bg-teal-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide">{{ course.courseType }}</span>
+            <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">{{ course.courseLanguage }}</div>
+            <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">{{ course.ects }} ECTS</div>
             <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">
-              <i class="inline fas fa-users text-lg"></i>
-              {{ course.currentParticipants}} / {{ course.maxParticipants }}
+              <i class="inline fas fa-users text-lg"></i>{{ course.currentParticipants}} / {{ course.maxParticipants }}
             </div>
           </div>
-          <div
-            class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900"
-          >{{ course.courseName }}</div>
+          <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.courseName }}</div>
           <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturerId }}</div>
           <div class="mt-3 w-5/6">
             <read-more
