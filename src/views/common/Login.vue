@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="mt-10 mb-6 justify-center text-center">
-                        <button type=submit :disabled="isInputEmpty" class="w-2/5 sm:w-2/5 md:w-2/5 lg:w-2/4 inline-block center bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none text-white font-semibold py-2 px-4 rounded focus:shadow-outline hover:bg-blue-400 disabled:bg-blue-500">
+                        <button type=submit :disabled="isInputEmpty" class="w-2/5 sm:w-2/5 md:w-2/5 lg:w-2/4 inline-block center btn btn-blue-primary">
                             Login
                         </button>
                     </div>
