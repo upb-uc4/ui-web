@@ -29,12 +29,12 @@
     @apply bg-red-800 border-red-800 text-white;
 }
 
-.btn-green-primary {
-    @apply bg-green-700 border-green-700 text-white;
+.btn-green-primary-500 {
+    @apply bg-green-500 border-green-500 text-white;
 }
 
-.btn-green-primary:hover {
-    @apply bg-green-800 border-green-800 text-white;
+.btn-green-primary-500:hover {
+    @apply bg-green-600 border-green-600 text-white;
 }
 
 .btn-gray-primary {

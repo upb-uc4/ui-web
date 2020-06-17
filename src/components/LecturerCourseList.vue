@@ -1,17 +1,19 @@
 <template>
 	<div class="w-full max-w-4xl">
 		<div class="flex">
-			<course-list-filter :courses="courses" @filter="filter"></course-list-filter>
+			<course-list-filter :courses="courses" @filter="filter"/>
+		</div>
+
+		<div class="mt-8" v-for="course in filteredCourses" :key="course.courseName">
+			<lecturer-course :course="course" class="mb-8"></lecturer-course>
+		</div>
+
+		<div class="flex justify-center mt-16">
 			<router-link to="/createCourse">
-			<button
-				class="bg-green-500 text-white text-center px-3 py-2 mr-8 shadow-lg border-gray-300 mb-6 rounded-lg focus:outline-none font-semibold"
-			>Create course</button>
+				<button class="px-4 btn btn-green-primary-500">New Course</button>
 			</router-link>
 		</div>
 
-		<div v-for="course in filteredCourses" :key="course.courseName">
-			<lecturer-course :course="course" class="mb-8"></lecturer-course>
-		</div>
 	</div>
 </template>
 
