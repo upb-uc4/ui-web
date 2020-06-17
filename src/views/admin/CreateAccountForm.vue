@@ -1,7 +1,7 @@
 <template>
 
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button @click="navigateBack()" class="flex items-center mb-4 text-blue-700 hover:text-blue-500">
+        <button @click="navigateBack()" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
@@ -51,10 +51,10 @@
 
 
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
-                <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-gray-400">
+                <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
                     Cancel
                 </button>
-                <button type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed"
+                <button type="submit" class="w-48 btn btn-blue-primary"
                 v-bind:disabled="!hasInput">
                     Create Account
                 </button>

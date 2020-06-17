@@ -1,7 +1,7 @@
 <template>
 
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button @click="navigateBack()" class="flex items-center mb-4 text-blue-700 hover:text-blue-800 focus:text-blue-800">
+        <button @click="navigateBack()" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Course List</span>
         </button>
@@ -103,19 +103,19 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button class="w-32 text-red-700 border-2 border-red-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-red-700 hover:border-red-700 hover:text-white">
+                        <button class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-blue-800 hover:border-blue-800 hover:text-white">
+                        <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
                             Cancel
                         </button>
-                        <button v-if="editMode" @click="updateCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:border-blue-800 hover:bg-blue-800 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                        <button v-if="editMode" @click="updateCourse" class="w-48 w-full btn btn-blue-primary">
                             Save Changes
                         </button>
-                        <button v-else type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:border-blue-800 hover:bg-blue-800 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                        <button v-else type="submit" class="w-48 btn btn-blue-primary">
                             Create Course
                         </button>
                     </div>
@@ -123,16 +123,16 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" @click="navigateBack" class="mb-4 w-full text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none hover:bg-blue-800 hover:border-blue-800 hover:text-white">
+                    <button type="button" @click="navigateBack" class="mb-4 w-full btn btn-blue-secondary">
                         Cancel
                     </button>
-                    <button v-if="editMode" @click="updateCourse" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:border-blue-800 hover:bg-blue-800 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                    <button v-if="editMode" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
                         Save Changes
                     </button>
-                    <button v-else type="submit" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:border-blue-800 hover:bg-blue-800 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                    <button v-else type="submit" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
-                    <button class="w-full text-red-700 border-2 border-red-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-red-700 hover:border-red-700 hover:text-white">
+                    <button class="w-full btn btn-red-secondary">
                         Delete
                     </button>
                 </div>
