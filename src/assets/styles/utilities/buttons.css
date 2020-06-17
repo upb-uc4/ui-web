@@ -29,6 +29,22 @@
     @apply bg-red-800 border-red-800 text-white;
 }
 
+.btn-green-primary {
+    @apply bg-green-700 border-green-700 text-white;
+}
+
+.btn-green-primary:hover {
+    @apply bg-green-800 border-green-800 text-white;
+}
+
+.btn-gray-primary {
+    @apply bg-gray-600 border-gray-600 text-white;
+}
+
+.btn-gray-primary:hover {
+    @apply bg-gray-700 border-gray-700 text-white;
+}
+
 
 /* SECONDARY BUTTONS */
 

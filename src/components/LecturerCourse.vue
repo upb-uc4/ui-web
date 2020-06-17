@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="w-1/3 pl-4 pr-8 flex justify-end items-center">
-            <button class="w-full md:w-1/2 bg-gray-600 text-white text-center py-2 rounded-lg font-semibold" @click="editCourse()">Edit</button>
+            <button class="w-full md:w-1/2 btn btn-gray-primary py-2" @click="editCourse()">Edit</button>
         </div>
     </div>
 </template>
