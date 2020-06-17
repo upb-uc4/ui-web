@@ -112,11 +112,11 @@
                         <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-gray-400">
                             Cancel
                         </button>
-                        <button v-if="!editMode" type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
-                            Create Course
-                        </button>
-                        <button v-else @click="updateCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                        <button v-if="editMode" @click="updateCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
                             Save Changes
+                        </button>
+                        <button v-else type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                            Create Course
                         </button>
                     </div>
                 </div>
@@ -126,11 +126,11 @@
                     <button type="button" @click="navigateBack" class="mb-4 w-full text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none hover:bg-gray-400">
                         Cancel
                     </button>
-                    <button v-if="!editMode" type="submit" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
-                        Create Course
-                    </button>
-                    <button v-else @click="updateCourse" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                    <button v-if="editMode" @click="updateCourse" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
                         Save Changes
+                    </button>
+                    <button v-else type="submit" class="mb-4 w-full bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                        Create Course
                     </button>
                     <button class="w-full text-red-700 border-2 border-red-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none">
                         Delete
