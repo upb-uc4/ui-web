@@ -19,7 +19,7 @@
               :text="course.courseDescription"
               less-str="Show less"
               :max-chars="180"
-            ></read-more>
+            />
           </div>
         </div>
       </div>
