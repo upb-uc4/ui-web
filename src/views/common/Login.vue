@@ -1,11 +1,11 @@
 <template>
-<div>
-    <dev-nav-bar></dev-nav-bar>
-    <div class="container max-w-full h-full h-auto flex flex-col lg:flex-row lg:items-center">
-        <form v-on:submit.prevent="login" method="POST" action="" class="xl:w-3/4 w-full flex items-center flex-col mx-auto">
-            <h1 class="lg:text-5xl mt-2 text-4xl font-bold mb-4 text-center text-gray-900 mb-10">Login to Your Account</h1>
+    <div>
+        <dev-nav-bar></dev-nav-bar>
+        <div class="container max-w-full h-full h-auto flex flex-col lg:flex-row lg:items-center">
+            <form v-on:submit.prevent="login" method="POST" action="" class="xl:w-3/4 w-full flex items-center flex-col mx-auto">
+                <h1 class="lg:text-5xl mt-2 text-4xl font-bold mb-4 text-center text-gray-900 mb-10">Login to Your Account</h1>
 
-            <div class="w-full lg:w-3/5 mx-4 flex-auto items-center justify-center">
+                <div class="w-full lg:w-3/5 mx-4 flex-auto items-center justify-center">
                     <div class="mb-6 text-center">
                         <i class="m-3 fas fa-envelope absolute text-gray-500"></i>
                         <input v-model="email" class="inline-block center lg:w-3/4 block appearance-none shadow-md font-semibold bg-gray-200 text-gray-600 placeholder-gray-600 focus:text-gray-600 p-2 pl-10 rounded hover:border-gray-300 focus:outline-none focus:shadow-outline" type="text" placeholder="Email" name="email">
@@ -34,10 +34,10 @@
                             Login
                         </button>
                     </div>
-            </div>
-        </form>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 </template>
 <script lang="ts">
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
