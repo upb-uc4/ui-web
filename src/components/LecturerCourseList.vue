@@ -13,7 +13,14 @@
 			>Create course</button>
 			</router-link>
 		</div>
-		<courseList></courseList>
+		<suspense>
+			<template #default>
+				<courseList></courseList>
+			</template>
+			<template #fallback>
+				Loading....
+			</template>
+		</suspense>
 	</div>
 </template>
 
