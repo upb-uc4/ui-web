@@ -18,19 +18,19 @@
 				<courseList></courseList>
 			</template>
 			<template #fallback>
-				Loading....
+				<p class="text-center text-lg pt-20">
+				Loading Courses...
+				</p>
 			</template>
 		</suspense>
 	</div>
 </template>
 
 <script lang="ts">
-import CourseList from "./CourseList"
-//import { Course } from "../entities/Course"
-//import Router from "@/router/";
+import CourseList from "./CourseList.vue"
 
 export default {
-  name: "CourseList",
+  name: "LecturerCourseList",
   components: {
 	CourseList,
   },
