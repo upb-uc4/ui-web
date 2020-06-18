@@ -54,8 +54,9 @@ export default {
 			// 	// 	Router.push("/login");
 			// 	// }
 			// })
-
-		courses = courses.filter(course => course.lecturerId == myId);
+        if(isLecturer) {
+            courses = courses.filter(course => course.lecturerId == myId);
+        }
         return {
             role, myId, courses, isLecturer, isStudent
         }
