@@ -30,14 +30,14 @@
 import CourseList from "./CourseList.vue"
 
 export default {
-  name: "LecturerCourseList",
-  components: {
-	CourseList,
-  },
-  data() {
-	return {
-		message: "",
-	}
-  },
+	name: "LecturerCourseList",
+	components: {
+		CourseList,
+	},
+	data() {
+		return {
+			message: "",
+		}
+	},
 };
 </script>

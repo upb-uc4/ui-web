@@ -1,15 +1,15 @@
 <template>
     <div>
         <div v-for="course in courses" :key="course.courseName">
-			<lecturer-course v-if="isLecturer" :course="course"  class="mb-8"></lecturer-course>
-            <student-course v-if="isStudent" :course="course"  class="mb-8"></student-course>
+			<lecturer-course v-if="isLecturer" :course="course"  class="mb-8"/>
+            <student-course v-if="isStudent" :course="course"  class="mb-8"/>
 		</div>
     </div>
 </template>
 
 <script lang="ts">
 import { store } from "../store/store"
-import {Role} from "@/entities/Role"
+import { Role } from "@/entities/Role"
 import LecturerCourse from "./LecturerCourse.vue";
 import StudentCourse from "./StudentCourse.vue";
 
@@ -49,14 +49,13 @@ export default {
 			.then((response: any) => {
 				console.log(response);
 				return response.data
-			})//.catch((error : any) => {
-			// 	// if (error.response.status == "401") {
-			// 	// 	Router.push("/login");
-			// 	// }
-			// })
+            })
+            
         if(isLecturer) {
             courses = courses.filter(course => course.lecturerId == myId);
         }
+
+        
         return {
             role, myId, courses, isLecturer, isStudent
         }

@@ -10,7 +10,7 @@
 		</div>
 		<suspense>
 			<template #default>
-				<courseList></courseList>
+				<courseList/>
 			</template>
 			<template #fallback>
 				<p class="text-center text-lg pt-20">
@@ -22,16 +22,16 @@
 </template>
 
 <script lang="ts">
-   import CourseList from "./CourseList.vue"
+    import CourseList from "./CourseList.vue"
 
     export default {
         name: "StudentCourseList",
         components: {
-           CourseList
+            CourseList
         },
         data() {
             return {
-               message: "",
+                message: "",
             }
         },
     }
