@@ -55,7 +55,9 @@
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     },
-    "rules": {},
+    "rules": {
+      "no-unused-vars": "warn"
+    },
     "overrides": [
       {
         "files": [

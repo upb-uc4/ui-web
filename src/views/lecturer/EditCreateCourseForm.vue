@@ -137,6 +137,8 @@ import {Course} from "@/entities/Course";
 import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
 import Course_Management from "@/api/Course_Management"
+import {Role} from '@/entities/Role'
+
 
 export default {
     name: "LecturerCreateCourseForm",
@@ -234,6 +236,13 @@ export default {
                 }); 
             }
         }
+    },
+    beforeRouteEnter(_from, _to, next) {
+		const myRole = store.state.myRole;
+		if (myRole != Role.LECTURER) {
+			return next("/redirect");
+		}
+		return next();
     },
     beforeRouteLeave (to, from, next) {
         //todo use styled modal

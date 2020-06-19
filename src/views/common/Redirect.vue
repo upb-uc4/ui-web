@@ -43,12 +43,15 @@
                 }, 1000) 
             },
             redirect() {
-                clearInterval(this.timeout);
                 Router.go(-1)
             }, 
         },
         created() {
            this.countDownTimer();
+        },
+        beforeRouteLeave(_from, _to, next) {
+             clearInterval(this.timeout);
+             return next();
         },
     }
 </script>
