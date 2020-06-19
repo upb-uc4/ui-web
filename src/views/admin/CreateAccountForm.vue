@@ -69,7 +69,7 @@ import Router from "@/router/";
 import {Account} from '@/entities/Account'
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
-const axios = require("axios");
+import Authentication_Management from "@/api/Authentication_Management"
 
 export default {
     name: "AdmingCreateAccountForm",
@@ -105,26 +105,12 @@ export default {
             Router.go(-1);
         },
         submit() {
-            if(this.isValid) {                 
-                axios.post("http://localhost:9000/authentication", this.account, {
-                    auth: {
-                            username: store.state.loginData.username,
-                            password: store.state.loginData.password
-                    }
-                })
-                .then((response: any) => {
-                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
-                    this.success = true;
-                    //todo show success toast
-                    this.navigateBack();
-                })
-                .catch((error: any) => {
-                    if (error.response.status == "401") {
-                        //todo don't loose the account object 
-                        Router.push("/login");
-                    } else if (error.response.status == "403") {
-                        //todo show dialog that they do not have access here
-                    }
+            if(this.isValid) {    
+                
+                const authentication_management: Authentication_Management = new Authentication_Management();
+                
+                authentication_management.createAccount(this.account).then(() =>{
+                    //handle errors, ...
                 })
             }
             else {

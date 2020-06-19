@@ -42,9 +42,9 @@
 <script lang="ts">
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
-    import { useStore } from "../../store/store";
+    import { store } from "../../store/store";
     import { Role } from "../../entities/Role";
-    const axios = require("axios");
+    import Authentication_Management from "@/api/Authentication_Management"
 
     export default {
         props: [
@@ -76,52 +76,32 @@
                 this.error = false;
             },
             login() {
-                const store = useStore();
                 const username = this.email;
                 const password = this.password;
-                axios.get("http://localhost:9000/authentication/getRole", {
-                    auth: {
-                            "username": username,
-                            "password": password
-                    }
-                })
-                .then((response: any) => {
-                    store.state.myRole = response.data.role;
-                    store.state.myId = username;
-                    store.state.loginData = {
-                        "username": this.email,
-                        "password": this.password
-                    }
-                    //if(window.history.length > 1) {
-                    //    Router.go(-1);
-                    //} else {
-                    switch(store.state.myRole) {
-                        case Role.ADMIN: {
-                            Router.push("/createAccount");
-                            break;
-                        }
-                        case Role.LECTURER: {
-                            Router.push("/lecturer");
-                            break;
-                        }
-                        case Role.STUDENT: {
-                            Router.push("/student");
-                            break;
-                        }
-                    }
-                    //}
-                })
-                .catch((error: any) => {
-                    if (error.response.status == "401") {
-                        console.log(error)
-                    } else if (error.response.status == "403") {
-                        //todo show dialog that they do not have access here
-                        Router.go(-1);
-                    }
-                })
 
+                const authentication_management: Authentication_Management = new Authentication_Management();
 
-
+                authentication_management.login({username: username, password: password})
+                    .then((success : boolean)=> {
+                        if (success) {
+                            switch(store.state.myRole) {
+                                case Role.ADMIN: {
+                                    Router.push("/createAccount");
+                                    break;
+                                }
+                                case Role.LECTURER: {
+                                    Router.push("/lecturer");
+                                    break;
+                                }
+                                case Role.STUDENT: {
+                                    Router.push("/student");
+                                    break;
+                                }
+                            }
+                        } else {
+                            //TODO: show auth error
+                        }
+                    })
             },
         }
     }

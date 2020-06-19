@@ -4,10 +4,10 @@ import { Language } from './Language';
 
 export class Course {
     courseType: CourseType = CourseType.NONE;
-    courseId: number = 0;
+    courseId: string = "";
     courseName: string = "";
     lecturerId: string = "";
-    ects: number = 0;
+    ects: number = 1;
     maxParticipants: number = 0;
     currentParticipants: number = 0;
     courseDescription: string = "";
