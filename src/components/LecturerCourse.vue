@@ -39,9 +39,6 @@ export default {
     components: {
         ReadMore
     },
-    data() {
-
-    },
     methods: {
         editCourse() {
             router.push({path: "/editCourse/" + this.course.courseId})
