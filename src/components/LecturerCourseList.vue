@@ -1,86 +1,43 @@
 <template>
 	<div class="w-full max-w-4xl">
 		<div class="flex">
-			<course-list-filter :courses="courses" @filter="filter"></course-list-filter>
+			<div class="container w-full flex justify-center py-4 pr-4"
+            v-bind:class="{'mb-6 rounded-lg':message === '', 'shadow-none rounded-t-lg':message != ''}" > 
+                <input class="flex-auto h-8 text-xl  pl-6 outline-none" 
+                placeholder="Filter by name.." v-model="message">
+                <i class="fas fa-search flex-right pt-2 pr-2 bg-white text-gray-600"></i>
+            </div>
 			<router-link to="/createCourse">
 			<button
 				class="bg-green-500 text-white text-center px-3 py-2 mr-8 shadow-lg border-gray-300 mb-6 rounded-lg focus:outline-none font-semibold"
 			>Create course</button>
 			</router-link>
 		</div>
-
-		<div v-for="course in filteredCourses" :key="course.courseName">
-			<lecturer-course :course="course" class="mb-8"></lecturer-course>
-		</div>
+		<suspense>
+			<template #default>
+				<courseList></courseList>
+			</template>
+			<template #fallback>
+				<p class="text-center text-lg pt-20">
+				Loading Courses...
+				</p>
+			</template>
+		</suspense>
 	</div>
 </template>
 
 <script lang="ts">
-import LecturerCourse from "./LecturerCourse.vue";
-import CourseListFilter from "./CourseListFilter.vue";
-import { Course } from "../entities/Course"
-import { useStore } from "../store/store"
-//import Router from "@/router/";
+import CourseList from "./CourseList.vue"
 
 export default {
-  name: "CourseList",
-  components: {
-	LecturerCourse,
-	CourseListFilter
-  },
-  async setup() {
-		const kurs : Course = new Course();
-		console.log(kurs);
-
-		const axios = require("axios");
-		const instance = await axios.create({
-			baseURL: "http://localhost:9000",
-			headers: {
-				"Accept": "*/*",
-				"Content-Type": "application/json;charset=UTF-8"
-			}
-		});
-		const store = useStore();
-		const myId = store.state.myId;
-
-		// var courses = await instance
-		// 	.get("/course/findByLecturerID", +myId)
-		// 	.then((response: any) => {
-		// 			return response.data
-		// 	})
-
-		var courses = await instance
-			.get("/course", {
-				auth: {
-						username: store.state.loginData.username,
-						password: store.state.loginData.password
-				}
-			})
-			.then((response: any) => {
-				console.log(response);
-				return response.data
-			})//.catch((error : any) => {
-			// 	// if (error.response.status == "401") {
-			// 	// 	Router.push("/login");
-			// 	// }
-			// })
-
-		courses = courses.filter(course => course.lecturerId == myId);
+	name: "LecturerCourseList",
+	components: {
+		CourseList,
+	},
+	data() {
 		return {
-			courses	
+			message: "",
 		}
 	},
-	data: function(): { filteredCourses: object } {
-		
-		return {
-			filteredCourses: {...this.courses}
-		};
-  },
-	methods: {
-		filter: function(value: object[]) {
-			this.filteredCourses = value;
-			console.log(this.filteredCourses);
-		}
-	}
 };
 </script>

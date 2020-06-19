@@ -40,7 +40,6 @@
             ReadMore
         },
         data: () => ({
-            less: '<span class="text-blue-900">less</span>'
         })
     };
 </script>
