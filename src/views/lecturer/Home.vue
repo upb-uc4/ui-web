@@ -21,7 +21,6 @@
 			DevNavBar
 		},
 		setup() {
-			console.log(store.state.myRole);
 		},
 		data: () => ({
 		}),

@@ -183,9 +183,7 @@ export default {
                 .then((response: any) => {
                     const courses = response.data as Course[];
                     this.course = courses.filter(c => c.courseId == this.$route.params.id)[0];
-
                     this.initialCourseState = JSON.parse(JSON.stringify(this.course));
-                    console.log(this.course)
                 })
                 .catch((error: any) => {
                     console.error(error)
@@ -240,14 +238,12 @@ export default {
         deleteCourse() {
             const check = prompt("Warning! You are about to delete the course \"" + this.course.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
             if (check != this.course.courseName) {
-                console.log(check)
                 this.deleted = false
                 if(check != null) {
                     this.deleteCourse()
                 }
             }
             else {
-                console.log("Delete Course")
                 //TODO Include proper API
                 axios.delete("http://localhost:9000/course" , {
                     params: {
