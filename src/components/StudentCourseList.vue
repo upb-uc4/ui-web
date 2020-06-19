@@ -1,58 +1,40 @@
 <template>
     <div class="w-full max-w-4xl">
-        <course-list-filter :courses="courses" @filter="filter"></course-list-filter>
-        <div v-for="course in filteredCourses" :key="course.name">
-            <student-course :course="course" class="mb-8"></student-course>
+        <div class="flex">
+            <div class="w-full">
+                <div class="pt-2 mb-8 relative mx-auto text-gray-600">
+                    <i class="fas fa-search absolute left-0 top-0 mt-6 ml-4"></i>
+                    <input class="w-full border-2 border-gray-300 bg-white h-12 px-5 pl-12 rounded-lg focus:outline-none"
+                           type="search" placeholder="Filter"
+                           v-model="message">
+                </div>
+            </div>
         </div>
+        <suspense>
+            <template #default>
+                <courseList></courseList>
+            </template>
+            <template #fallback>
+                <p class="text-center text-lg pt-20">
+                    Loading Courses...
+                </p>
+            </template>
+        </suspense>
     </div>
 </template>
 
 <script lang="ts">
-    import StudentCourse from "./StudentCourse.vue";
-    import CourseListFilter from "./CourseListFilter.vue"
-    import {Course} from "../entities/Course"
+    import CourseList from "./CourseList.vue"
 
     export default {
-        name: "CourseList",
+        name: "StudentCourseList",
         components: {
-            StudentCourse,
-            CourseListFilter
+            CourseList
         },
-        async setup() {
-            const kurs : Course = new Course();
-            console.log(kurs);
-
-            const axios = require("axios");
-            const instance = await axios.create({
-                baseURL: "http://localhost:9000",
-                headers: {
-                    "Accept": "*/*",
-                    "Content-Type": "application/json;charset=UTF-8"
-                }
-            });
-
-            const courses = await instance
-                .get("/course")
-                .then((response: any) => {
-                    console.log(response);
-                    return response.data
-                })
-            console.log("outter")
-            console.log(courses)
+        data() {
             return {
-                courses
+                message: "",
             }
         },
-        data: function() : {filteredCourses : object} {
-            return {
-                filteredCourses: {...this.courses}
-            }
-        }, 
-        methods: {
-            filter: function(value : object[]) {
-                this.filteredCourses = value
-                console.log(this.filteredCourses)
-            }
-        }
     }
 </script>

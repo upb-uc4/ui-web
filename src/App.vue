@@ -1,5 +1,5 @@
 <template>
-    <div id='root' class="container mx-auto">
+    <div id='root' class="container mx-auto px-4">
         <router-view/>
     </div>
 </template>

@@ -1,29 +1,35 @@
 <template>
-  <div>
-    <div class="mt-32 text-4xl text-center font-semibold text-gray-900">My Courses</div>
-    <div class="mt-8 flex justify-center">
-      <Suspense>
-        <course-list :courses="{courses}"></course-list>
-      </Suspense>
-    </div>
-    
-  </div>
+	<div>
+		<dev-nav-bar/>
+		<div class="mt-32 text-4xl text-center font-semibold text-gray-900">My Courses</div>
+		<div class="mt-8 flex justify-center">
+			<course-list/>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import CourseList from "../../components/LecturerCourseList.vue";
-import { useStore } from "../../store/store"
+	import CourseList from "../../components/LecturerCourseList.vue";
+	import { store } from "../../store/store"
+	import {Role} from "../../entities/Role"
+	import DevNavBar from "../../components/dev_components/DevNavBar.vue"
 
-export default {
-  name: "Lecturer.Home",
-  components: {
-    CourseList
-  },
-  setup() {
-    const store = useStore();
-    console.log(store.state.myRole);
-  },
-  data: () => ({
-  })
-};
+	export default {
+		name: "Lecturer.Home",
+		components: {
+			CourseList,
+			DevNavBar
+		},
+		setup() {
+		},
+		data: () => ({
+		}),
+		beforeRouteEnter(_from, _to, next) {
+			const myRole = store.state.myRole;
+			if (myRole != Role.LECTURER) {
+				return next("/redirect");
+			}
+			return next();
+		},
+	};
 </script>

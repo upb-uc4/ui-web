@@ -1,13 +1,17 @@
+import { CourseType } from './CourseType';
+import { Language } from './Language';
+
+
 export class Course {
-    courseType: string = "Lecture";
-    courseId: number = 0;
+    courseType: CourseType = CourseType.NONE;
+    courseId: string = "";
     courseName: string = "";
-    lecturerId: number = 0;
-    ects: number = 0;
-    maxStudents: number = 0;
+    lecturerId: string = "";
+    ects: number = 1;
+    maxParticipants: number = 0;
     currentParticipants: number = 0;
-    description: string = "";
-    language:string = "English";
+    courseDescription: string = "";
+    courseLanguage:Language = Language.NONE;
     startDate: string ="";
     endDate: string = "";
 }

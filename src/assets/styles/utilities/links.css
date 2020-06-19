@@ -1,0 +1,11 @@
+.navigation-link {
+    @apply text-blue-700
+}
+
+.navigation-link:hover {
+    @apply text-blue-800;
+}
+
+.navigation-link:focus {
+    @apply outline-none text-blue-800;
+}
