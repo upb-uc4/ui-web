@@ -8,7 +8,8 @@
                         <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">{{ course.courseLanguage }}</div>
                         <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">{{ course.ects }} ECTS</div>
                         <div class="ml-4 text-gray-600 text-xs uppercase font-semibold tracking-wide">
-                            <i class="inline fas fa-users text-lg"></i>{{ course.currentParticipants}} / {{ course.maxParticipants }}
+                            <i class="inline fas fa-users text-lg"></i>
+                            {{ course.currentParticipants}} / {{ course.maxParticipants }}
                         </div>
                     </div>
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.courseName }}</div>
