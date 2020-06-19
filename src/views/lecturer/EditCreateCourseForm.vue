@@ -9,7 +9,6 @@
         <h1 class="text-2xl font-medium text-gray-700 mb-8"> {{ heading }} </h1>
 
         <form @submit.prevent="submit" method="POST">
-            <input type="hidden" name="lecturerId" :value="lecturerId">
 
             <!-- TODO: remove in new API version -->
             <input type="hidden" name="ects" :value="0">
