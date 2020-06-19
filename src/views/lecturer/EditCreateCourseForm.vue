@@ -9,12 +9,6 @@
         <h1 class="text-2xl font-medium text-gray-700 mb-8"> {{ heading }} </h1>
 
         <form @submit.prevent="submit" method="POST">
-
-            <!-- TODO: remove in new API version -->
-            <input type="hidden" name="ects" :value="0">
-            <input type="hidden" name="courseId" :value="0">
-            <input type="hidden" name="currentParticipants" :value="0">
-
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
