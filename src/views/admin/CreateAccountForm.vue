@@ -129,7 +129,6 @@ export default {
             }
             else {
                 this.success = false;
-                console.log(this.account)
             }
 
         }
