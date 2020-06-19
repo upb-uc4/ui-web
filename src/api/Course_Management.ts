@@ -1,5 +1,4 @@
 import Common from "./Common"
-import { store } from '@/store/store';
 import { Course } from "@/entities/Course"
 
 export default class Course_Management extends Common {
@@ -92,18 +91,7 @@ export default class Course_Management extends Common {
                     });    
     }    
 
-    /**
-     * declare either id or use the course object. If course is specified (optional), id of the course
-     * will be used.
-     * @param id 
-     * @param course 
-     */
-    async deleteCourse(courseId: string, course?: Course) {
-        var id: string = courseId;
-        if(course != undefined) {
-            id = course.courseId;
-        }
-
+    async deleteCourse(id: string) {
         await this._axios.delete(`/courses/${id}`, this._authHeader)
                     .then((response: any) => {
                         console.log(response)
