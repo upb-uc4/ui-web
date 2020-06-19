@@ -46,8 +46,6 @@
     import { Role } from "../../entities/Role";
     import Authentication_Management from "@/api/Authentication_Management"
 
-    // const axios = require("axios");
-
     export default {
         props: [
         ],

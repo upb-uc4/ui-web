@@ -8,7 +8,7 @@
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8"> {{ heading }} </h1>
 
-        <form @submit.prevent="submit" method="POST">
+        <form @submit.prevent="" method="POST">
             <input type="hidden" name="lecturerId" :value="lecturerId">
 
             <!-- TODO: remove in new API version -->
@@ -108,7 +108,7 @@
                 <button type="button" @click="navigateBack" class="w-32 text-blue-700 border-2 border-blue-700 text-center py-3 rounded-lg font-semibold tracking-wider focus:outline-none mr-6 hover:bg-gray-400">
                     Cancel
                 </button>
-                <button v-if="!editMode" type="submit" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
+                <button v-if="!editMode" @click="createCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
                     Create Course
                 </button>
                 <button v-else @click="updateCourse" class="w-48 bg-blue-700 border-2 border-blue-700 text-white text-center py-3 rounded-lg font-semibold tracking-wide focus:outline-none hover:bg-blue-600 disabled:opacity-50 disabled:bg-blue-700 disabled:cursor-not-allowed">
@@ -136,8 +136,7 @@ import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
 import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
-
-const axios = require("axios");
+import Course_Management from "@/api/Course_Management"
 
 export default {
     name: "LecturerCreateCourseForm",
@@ -155,15 +154,14 @@ export default {
     },
     created() {
         this.course.lecturerId = store.state.myId;
-        this.course.startDate = "01.06.2020";
-        this.course.endDate = "31.08.2020";
-        this.course.courseId = Math.floor(Math.random() * Math.floor(30000));
+        this.course.startDate = "2020-06-01";
+        this.course.endDate = "2020-08-31";
     },
     computed: {
         hasInput: function (): boolean {
             //TODO transform if conditions to class method in Course.ts
-                if (this.course.courseName !== this.initialCourseState.courseName || this.course.description !== this.initialCourseState.description || this.course.language !== this.initialCourseState.language ||
-                    this.course.courseType !== this.initialCourseState.courseType || this.course.maxStudents !== this.initialCourseState.maxStudents) {
+                if (this.course.courseName !== this.initialCourseState.courseName || this.course.courseDescription !== this.initialCourseState.courseDescription || this.course.courseLanguage !== this.initialCourseState.courseLanguage ||
+                    this.course.courseType !== this.initialCourseState.courseType || this.course.maxParticipants !== this.initialCourseState.maxParticipants) {
                         return true;
                 }
             return false;
@@ -181,40 +179,22 @@ export default {
             Router.go(-1);
         },
         loadCourse () {
-                axios.get("http://localhost:9000/course", {
-                    auth: {
-                        username: store.state.loginData.username,
-                        password: store.state.loginData.password
-                    }
-                })
-                .then((response: any) => {
-                    const courses = response.data as Course[];
-                    this.course = courses.filter(c => c.courseId == this.$route.params.id)[0];
-
+                const course_management: Course_Management = new Course_Management();
+                course_management.getCourse(this.$route.params.id).then((v : {course: Course, found: boolean}) => {
+                    this.course = v.course;
                     this.initialCourseState = JSON.parse(JSON.stringify(this.course));
-                    console.log(this.course)
-                })
-                .catch((error: any) => {
-                    console.error(error)
-                })
-            },
-        submit() {
-            if(this.hasInput) { 
-                axios.post("http://localhost:9000/course", this.course, {
-                    auth: {
-                        username: store.state.loginData.username,
-                        password: store.state.loginData.password
+                    if (!v.found) {
+                        //todo no course with that ID
                     }
-                })
-                .then((response: any) => {
-                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
+                });
+            },
+        createCourse() {
+            if(this.hasInput) { 
+                const course_management: Course_Management = new Course_Management();
+                course_management.createCourse(this.course).then(() => {
                     this.success = true;
-                    //todo show success toast
                     this.navigateBack();
-                })
-                .catch((error: any) => {
-                    console.error(error)
-                })
+                });
             }
             else {
                 this.success = false;
@@ -223,21 +203,11 @@ export default {
         },
         updateCourse() {
             if(this.hasInput) { 
-                axios.put("http://localhost:9000/course", this.course, {
-                    auth: {
-                        username: store.state.loginData.username,
-                        password: store.state.loginData.password
-                    }
-                })
-                .then((response: any) => {
-                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
+                const course_management: Course_Management = new Course_Management();
+                course_management.updateCourse(this.course).then(() => {
                     this.success = true;
-                    //todo show success toast
                     this.navigateBack();
-                })
-                .catch((error: any) => {
-                    console.error(error)
-                })
+                });                
             }
             else {
                 this.success = false;
@@ -256,26 +226,12 @@ export default {
             else {
                 console.log("Delete Course")
                 //TODO Include proper API
-                axios.delete("http://localhost:9000/course" , {
-                    params: {
-                         "id": this.course.courseId
-                    },
-                    auth: {
-                        username: store.state.loginData.username,
-                        password: store.state.loginData.password
-                    }
-                })
-                .then((response: any) => {
-                    console.log(response); //todo configure esl lint that it does not throw an error on unsed response param.
-                    this.success = true;
-                    //todo show success toast
+                const course_management: Course_Management = new Course_Management();
+                course_management.deleteCourse(this.course.courseId).then(() => {
+                    this.deleted = true;
                     this.navigateBack();
-                })
-                .catch((error: any) => {
-                    console.error(error)
-                })
-                this.deleted = true
-                Router.go(-1)
+                    //todo check for success..
+                }); 
             }
         }
     },
