@@ -3,7 +3,7 @@
 		<dev-nav-bar/>
 		<div class="mt-32 text-4xl text-center font-semibold text-gray-900">Available Courses</div>
 		<div class="mt-8 flex justify-center">
-			<course-list :courses="{courses}"/>
+			<course-list/>
 		</div>
 	</div>
 </template>

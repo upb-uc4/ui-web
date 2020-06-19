@@ -8,9 +8,7 @@
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8"> {{ heading }} </h1>
 
-        <form @submit.prevent="" method="POST">
-            <input type="hidden" name="lecturerId" :value="lecturerId">
-
+        <form @submit.prevent="submit" method="POST">
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
@@ -229,14 +227,12 @@ export default {
         deleteCourse() {
             const check = prompt("Warning! You are about to delete the course \"" + this.course.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
             if (check != this.course.courseName) {
-                console.log(check)
                 this.deleted = false
                 if(check != null) {
                     this.deleteCourse()
                 }
             }
             else {
-                console.log("Delete Course")
                 //TODO Include proper API
                 const course_management: Course_Management = new Course_Management();
                 course_management.deleteCourse(this.course.courseId).then(() => {
