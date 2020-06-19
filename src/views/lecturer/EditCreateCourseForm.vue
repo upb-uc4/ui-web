@@ -147,6 +147,7 @@ import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
 import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
+import {Role} from '@/entities/Role'
 
 const axios = require("axios");
 
@@ -289,6 +290,13 @@ export default {
                 Router.go(-1)
             }
         }
+    },
+    beforeRouteEnter(_from, _to, next) {
+		const myRole = store.state.myRole;
+		if (myRole != Role.LECTURER) {
+			return next("/redirect");
+		}
+		return next();
     },
     beforeRouteLeave (to, from, next) {
         //todo use styled modal
