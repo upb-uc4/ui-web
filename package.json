@@ -55,7 +55,10 @@
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     },
-    "rules": {},
+    "rules": {
+      "no-unused-vars": "warn",
+      "no-mixed-spaces-and-tabs": "warn"
+    },
     "overrides": [
       {
         "files": [

@@ -12,6 +12,8 @@ import { store } from "../store/store"
 import { Role } from "@/entities/Role"
 import LecturerCourse from "./LecturerCourse.vue";
 import StudentCourse from "./StudentCourse.vue";
+import Course_Management from "@/api/Course_Management";
+import { Course } from "@/entities/Course"
 
 export default {
     name: "CourseList",
@@ -29,33 +31,21 @@ export default {
         
         const isLecturer: boolean = (role == Role.LECTURER);
         const isStudent: boolean = (role == Role.STUDENT);
-        const axios = require("axios");
-		const instance = await axios.create({
-			baseURL: "http://localhost:9000",
-			headers: {
-				"Accept": "*/*",
-				"Content-Type": "application/json;charset=UTF-8"
-			}
-		});
-		
+
+        const course_management: Course_Management = new Course_Management();
+
+        var courses: Course[] = [];
+        console.log(Course);
+
+        await course_management.getCourses().then((response : Course[]) => {
+            courses = response;
+        })
+        
         const myId = store.state.myId;
-        var courses = await instance
-			.get("/course", {
-				auth: {
-						username: store.state.loginData.username,
-						password: store.state.loginData.password
-				}
-			})
-			.then((response: any) => {
-				console.log(response);
-				return response.data
-            })
-            
         if(isLecturer) {
             courses = courses.filter(course => course.lecturerId == myId);
         }
 
-        
         return {
             role, myId, courses, isLecturer, isStudent
         }
