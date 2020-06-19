@@ -112,10 +112,10 @@
                         <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
                             Cancel
                         </button>
-                        <button v-if="editMode" @click="updateCourse" class="w-48 w-full btn btn-blue-primary">
+                        <button v-if="editMode" @click="updateCourse" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary">
                             Save Changes
                         </button>
-                        <button v-else type="submit" class="w-48 btn btn-blue-primary">
+                        <button v-else type="submit" :disabled="!hasInput" class="w-48 btn btn-blue-primary">
                             Create Course
                         </button>
                     </div>
@@ -126,10 +126,10 @@
                     <button type="button" @click="navigateBack" class="mb-4 w-full btn btn-blue-secondary">
                         Cancel
                     </button>
-                    <button v-if="editMode" type="button" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
+                    <button v-if="editMode" :disabled="!hasInput" type="button" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
                         Save Changes
                     </button>
-                    <button v-else type="submit" class="mb-4 w-full btn btn-blue-primary">
+                    <button v-else :disabled="!hasInput" type="submit" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
                     <button @click="deleteCourse" class="w-full btn btn-red-secondary">
@@ -173,8 +173,8 @@ export default {
     computed: {
         hasInput: function (): boolean {
             //TODO transform if conditions to class method in Course.ts
-                if (this.course.courseName !== this.initialCourseState.courseName || this.course.description !== this.initialCourseState.description || this.course.language !== this.initialCourseState.language ||
-                    this.course.courseType !== this.initialCourseState.courseType || this.course.maxStudents !== this.initialCourseState.maxStudents) {
+                if (this.course.courseName !== this.initialCourseState.courseName || this.course.courseDescription !== this.initialCourseState.courseDescription|| this.course.courseLanguage !== this.initialCourseState.courseLanguage ||
+                    this.course.courseType !== this.initialCourseState.courseType || this.course.maxParticipants !== this.initialCourseState.maxParticipants) {
                         return true;
                 }
             return false;
