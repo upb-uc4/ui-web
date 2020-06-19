@@ -1,16 +1,18 @@
 <template>
 	<div class="w-full max-w-4xl">
 		<div class="flex">
-			<div class="container w-full flex justify-center py-4 pr-4"
-            v-bind:class="{'mb-6 rounded-lg':message === '', 'shadow-none rounded-t-lg':message != ''}" > 
-                <input class="flex-auto h-8 text-xl  pl-6 outline-none" 
-                placeholder="Filter by name.." v-model="message">
-                <i class="fas fa-search flex-right pt-2 pr-2 bg-white text-gray-600"></i>
-            </div>
+			<div class="w-full">
+				<div class="pt-2 relative mx-auto text-gray-600">
+					<i class="fas fa-search absolute left-0 top-0 mt-6 ml-4"></i>
+					<input class="w-full border-2 border-gray-300 bg-white h-12 px-5 pl-12 rounded-lg focus:outline-none"
+						   type="search" placeholder="Filter"
+						   v-model="message">
+				</div>
+      		</div>
 		</div>
 		<suspense>
 			<template #default>
-				<courseList/>
+				<courseList></courseList>
 			</template>
 			<template #fallback>
 				<p class="text-center text-lg pt-20">

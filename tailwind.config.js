@@ -12,6 +12,12 @@ module.exports = {
 						borderColor: undefined,
 					},
 				},
+				radio: {
+					'&:focus': {
+						boxShadow: undefined,
+						borderColor: undefined,
+					},
+				}
 			}
 		}),
 		extend: {},
