@@ -100,7 +100,7 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" @click="deleteCourse" type="button" class="w-32 btn btn-red-secondary">
+                        <button v-if="editMode" @click="showDeleteModal" type="button" class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
@@ -129,12 +129,13 @@
                     <button v-else :disabled="!hasInput" @click="createCourse" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
-                    <button @click="deleteCourse" class="w-full btn btn-red-secondary">
+                    <button @click="showDeleteModal" class="w-full btn btn-red-secondary">
                         Delete
                     </button>
                 </div>
             </section>
         </form>
+        <delete-course-modal :showing="showingDeleteModal" v-on:cancel="hideDeleteModal" v-on:delete="deleteCourse"></delete-course-modal>
     </div>
 </template>
 
@@ -146,11 +147,14 @@ import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
 import Course_Management from "@/api/Course_Management"
 import {Role} from '@/entities/Role'
-
+import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
 
 export default {
     name: "LecturerCreateCourseForm",
     props: ['editMode'],
+    components: {
+        DeleteCourseModal
+    },
     data() {
         return {
             course: new Course(),
@@ -159,7 +163,8 @@ export default {
             languages: Object.values(Language).filter(e => e != Language.NONE),
             courseTypes: Object.values(CourseType).filter(e => e != CourseType.NONE),
             success: false,
-            deleted: false
+            deleted: false,
+            showingDeleteModal: false,
         };
     },
     created() {
@@ -239,9 +244,15 @@ export default {
                     this.deleted = true;
                     this.navigateBack();
                     //todo check for success..
-                }); 
+                });
             }
-        }
+        },
+        showDeleteModal() {
+            this.showingDeleteModal = true;
+        },
+        hideDeleteModal() {
+            this.showingDeleteModal = false;
+        },
     },
     beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
