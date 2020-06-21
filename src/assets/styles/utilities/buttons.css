@@ -63,3 +63,17 @@
 .btn-red-secondary:hover {
     @apply bg-red-800 border-red-800 text-white;
 }
+
+/* TERTIARY BUTTONS */
+
+.btn-tertiary {
+    @apply font-semibold text-gray-600 tracking-wider
+}
+
+.btn-tertiary:hover {
+    @apply text-gray-700
+}
+
+.btn-tertiary:focus {
+    @apply outline-none;
+}
