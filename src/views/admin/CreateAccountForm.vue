@@ -70,6 +70,7 @@ import {Account} from '@/entities/Account'
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
 import Authentication_Management from "@/api/Authentication_Management"
+import { ref, computed } from 'vue';
 
 export default {
     name: "AdmingCreateAccountForm",
@@ -77,24 +78,25 @@ export default {
 
     },
     setup() {
-        let account = new Account();
+        let account = ref(new Account());
         let success:boolean = false;
         let roles = Object.values(Role).filter(e => e!=Role.NONE);
 
 
         function isValid() {
-             if(account.username == "" || account.password =="" || account.role == Role.NONE) {
+             if(account.value.username == "" || account.value.password =="" || account.value.role == Role.NONE) {
                 return false;
             }
             return true;
         }
 
-        function hasInput() {
-            if(account.username != "" || account.password != "" || account.role != Role.NONE) {
+        let hasInput = computed(() => {
+            console.log("hallo")
+            if(account.value.username != "" || account.value.password != "" || account.value.role != Role.NONE) {
                 return true;
             }
             return false;
-        }
+        })
 
         function navigateBack() {
             Router.go(-1);
@@ -103,7 +105,7 @@ export default {
         function submit() {
              if(isValid()) {    
                 const authentication_management: Authentication_Management = new Authentication_Management();
-                authentication_management.createAccount(account).then(() =>{
+                authentication_management.createAccount(account.value).then(() =>{
                     //handle errors, ...
                 })
             }
