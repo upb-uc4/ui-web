@@ -163,7 +163,6 @@ export default {
             languages: Object.values(Language).filter(e => e != Language.NONE),
             courseTypes: Object.values(CourseType).filter(e => e != CourseType.NONE),
             success: false,
-            deleted: false,
             showingDeleteModal: false,
         };
     },
@@ -230,22 +229,11 @@ export default {
             }
         },
         deleteCourse() {
-            const check = prompt("Warning! You are about to delete the course \"" + this.course.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
-            if (check != this.course.courseName) {
-                this.deleted = false
-                if(check != null) {
-                    this.deleteCourse()
-                }
-            }
-            else {
-                //TODO Include proper API
-                const course_management: Course_Management = new Course_Management();
-                course_management.deleteCourse(this.course.courseId).then(() => {
-                    this.deleted = true;
-                    this.navigateBack();
-                    //todo check for success..
-                });
-            }
+            const courseManager: Course_Management = new Course_Management();
+            courseManager.deleteCourse(this.course.courseId).then(() => {
+                //todo check for success
+                this.navigateBack();
+            });
         },
         showDeleteModal() {
             this.showingDeleteModal = true;
