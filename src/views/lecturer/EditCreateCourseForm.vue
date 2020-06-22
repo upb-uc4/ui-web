@@ -24,7 +24,7 @@
                             <div class="flex">
                                 <div class="mr-4" v-for="courseType in courseTypes" :key="courseType">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-blue-700 hover:bg-blue-400" name="type" :value="courseType"
+                                        <input type="radio" class="form-radio radio" name="type" :value="courseType"
                                                v-model="course.courseType">
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ courseType }}</span>
                                     </label>

@@ -23,7 +23,7 @@
                             <div class="flex">
                                 <div class="mr-4 mb-3" v-for="role in roles" :key="role">
                                     <label class="flex items-center" >
-                                        <input type="radio" class="form-radio focus:shadow-none text-blue-700 hover:bg-blue-400" name="role" :value="role" v-model="account.role">
+                                        <input type="radio" class="form-radio radio" name="role" :value="role" v-model="account.role">
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                     </label>
                                 </div>
