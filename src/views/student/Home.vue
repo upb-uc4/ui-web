@@ -15,13 +15,11 @@
 	import { Role } from "../../entities/Role"
 
 	export default {
-	name: "Student.Home",
-	components: {
-		CourseList,
-		DevNavBar
-	},
-	data: () => ({
-	}),
+		name: "Student.Home",
+		components: {
+			CourseList,
+			DevNavBar
+		},
 		beforeRouteEnter(_from, _to, next) {
 			const myRole = store.state.myRole;
 			if (myRole != Role.STUDENT) {

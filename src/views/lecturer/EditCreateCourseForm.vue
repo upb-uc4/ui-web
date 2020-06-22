@@ -1,5 +1,4 @@
 <template>
-
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
         <button @click="navigateBack()" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
