@@ -76,49 +76,53 @@ export default {
     props: {
 
     },
-    data() {
-        return {
-            account: new Account(),
-            success: false,
-            roles: Object.values(Role).filter(e => e!=Role.NONE)
-        };
-    },
-    created() {
-    },
-    computed: {
-        isValid: function (): boolean {
-            if(this.account.username == "" || this.account.password =="" || this.account.role == Role.NONE) {
+    setup() {
+        let account = new Account();
+        let success:boolean = false;
+        let roles = Object.values(Role).filter(e => e!=Role.NONE);
+
+
+        function isValid() {
+             if(account.username == "" || account.password =="" || account.role == Role.NONE) {
                 return false;
             }
-            return true
-        },
+            return true;
+        }
 
-        hasInput: function():boolean {
-            if(this.account.username != "" || this.account.password != "" || this.account.role != Role.NONE) {
-                return true
+        function hasInput() {
+            if(account.username != "" || account.password != "" || account.role != Role.NONE) {
+                return true;
             }
             return false;
         }
-    },
-    methods: {
-        navigateBack() {
+
+        function navigateBack() {
             Router.go(-1);
-        },
-        submit() {
-            if(this.isValid) {    
-                
+        }
+
+        function submit() {
+             if(isValid()) {    
                 const authentication_management: Authentication_Management = new Authentication_Management();
-                
-                authentication_management.createAccount(this.account).then(() =>{
+                authentication_management.createAccount(account).then(() =>{
                     //handle errors, ...
                 })
             }
             else {
-                this.success = false;
+                success = false;
             }
+        }
 
+        return {
+            account,
+            success,
+            roles,
+            isValid,
+            navigateBack,
+            hasInput,
+            submit
         }
     },
+
 	beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.ADMIN) {
@@ -132,7 +136,7 @@ export default {
         if (this.success) {
             return next();
         }
-        else if (this.hasInput) {
+        else if (this.hasInput()) {
             const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
             if (answer) {
                 return next()
