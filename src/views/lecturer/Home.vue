@@ -20,10 +20,7 @@
 			CourseList,
 			DevNavBar
 		},
-		setup() {
-		},
-		data: () => ({
-		}),
+		
 		beforeRouteEnter(_from, _to, next) {
 			const myRole = store.state.myRole;
 			if (myRole != Role.LECTURER) {
