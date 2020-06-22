@@ -17,38 +17,42 @@
 <script lang="ts">
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
+    import { ref } from 'vue';
 
     export default {
-        props: [
-            
-        ],
         components: {
             DevNavBar
         },
-        data () {
-            return {
-                countdown: 10,
-                timeout : 0,
-            };
-        },
-       
-        methods: {
-            countDownTimer() {
-                this.timeout = setInterval(() => {
-                    if (this.countdown > 0) {
-                        this.countdown -= 1;
-                    } else {
-                        this.redirect();
+        setup() {
+            let countdown = ref(10);
+            let timeout = 0;
+
+            //setup the timer
+            countDownTimer()
+         
+
+            function countDownTimer() {
+                timeout = setInterval(() => {
+                if (countdown.value > 0) {
+                    countdown.value = countdown.value - 1;
+                } else {
+                    redirect();
                     }
                 }, 1000) 
-            },
-            redirect() {
+            }
+
+            function redirect() {
                 Router.go(-1)
-            }, 
+            }
+
+            return {
+                countdown,
+                timeout,
+                countDownTimer,
+                redirect,
+            }
         },
-        created() {
-           this.countDownTimer();
-        },
+    
         beforeRouteLeave(_from, _to, next) {
              clearInterval(this.timeout);
              return next();
