@@ -73,7 +73,7 @@ import Authentication_Management from "@/api/Authentication_Management"
 import { ref, computed } from 'vue';
 
 export default {
-    name: "AdmingCreateAccountForm",
+    name: "AdminCreateAccountForm",
     props: {
 
     },
@@ -91,7 +91,6 @@ export default {
         }
 
         let hasInput = computed(() => {
-            console.log("hallo")
             if(account.value.username != "" || account.value.password != "" || account.value.role != Role.NONE) {
                 return true;
             }
@@ -138,7 +137,7 @@ export default {
         if (this.success) {
             return next();
         }
-        else if (this.hasInput()) {
+        else if (this.hasInput) {
             const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
             if (answer) {
                 return next()
