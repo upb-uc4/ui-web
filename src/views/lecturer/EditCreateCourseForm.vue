@@ -1,7 +1,7 @@
 <template>
 
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button @click="navigateBack()" class="flex items-center mb-4 navigation-link">
+        <button @click="back" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Course List</span>
         </button>
@@ -135,7 +135,8 @@
                 </div>
             </section>
         </form>
-        <delete-course-modal :showing="showingDeleteModal" v-on:cancel="hideDeleteModal" v-on:delete="deleteCourse"></delete-course-modal>
+        <delete-course-modal :showing="showingDeleteModal" v-on:cancel="hideDeleteModal" v-on:delete="deleteCourse"/>
+        <unsaved-changes-modal :showing="showingUnsavedChangesModal" v-on:cancel="hideUnsavedChangesModal" v-on:confirm="navigateBack"/>
     </div>
 </template>
 
@@ -148,12 +149,14 @@ import {Language} from '@/entities/Language'
 import Course_Management from "@/api/Course_Management"
 import {Role} from '@/entities/Role'
 import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
+import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
 export default {
     name: "LecturerCreateCourseForm",
     props: ['editMode'],
     components: {
-        DeleteCourseModal
+        DeleteCourseModal,
+        UnsavedChangesModal,
     },
     data() {
         return {
@@ -164,6 +167,7 @@ export default {
             courseTypes: Object.values(CourseType).filter(e => e != CourseType.NONE),
             success: false,
             showingDeleteModal: false,
+            showingUnsavedChangesModal: false,
         };
     },
     created() {
@@ -189,6 +193,13 @@ export default {
         }
     },
     methods: {
+        back() {
+            if (this.hasInput) {
+                this.showUnsavedChangesModal();
+            } else {
+                Router.go(-1);
+            }
+        },
         navigateBack() {
             Router.go(-1);
         },
@@ -241,6 +252,12 @@ export default {
         hideDeleteModal() {
             this.showingDeleteModal = false;
         },
+        showUnsavedChangesModal() {
+            this.showingUnsavedChangesModal = true;
+        },
+        hideUnsavedChangesModal() {
+            this.showingUnsavedChangesModal = false;
+        },
     },
     beforeRouteEnter(_from, _to, next) {
 		const myRole = store.state.myRole;
@@ -248,24 +265,6 @@ export default {
 			return next("/redirect");
 		}
 		return next();
-    },
-    beforeRouteLeave (to, from, next) {
-        //todo use styled modal
-        //todo break this into smaller methods
-        if (this.success) {
-            return next();
-        }
-        else if (this.hasInput && !this.deleted ) {
-            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-            if (answer) {
-                return next()
-            } else {
-                return next(false)
-            }
-        }
-        else {
-            return next()
-        }
     },
     mounted() {
         if(this.editMode) {
