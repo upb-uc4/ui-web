@@ -84,6 +84,7 @@
                 authentication_management.login({username: username, password: password})
                     .then((success : boolean)=> {
                         if (success) {
+                            store.state.myId = username;
                             switch(store.state.myRole) {
                                 case Role.ADMIN: {
                                     Router.push("/createAccount");
