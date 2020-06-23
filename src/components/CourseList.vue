@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="course in courses" :key="course.courseName">
+        <div v-for="course in courses" :key="course.courseId">
 			<lecturer-course v-if="isLecturer" :course="course"  class="mb-8"/>
             <student-course v-if="isStudent" :course="course"  class="mb-8"/>
 		</div>

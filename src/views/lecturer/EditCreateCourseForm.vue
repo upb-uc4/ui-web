@@ -1,6 +1,6 @@
 <template>
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button @click="navigateBack()" class="flex items-center mb-4 navigation-link">
+        <button @click="back" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Course List</span>
         </button>
@@ -99,13 +99,13 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" @click="deleteCourse" type="button" class="w-32 btn btn-red-secondary">
+                        <button v-if="editMode" @click="showDeleteModal" type="button" class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
+                        <button type="button" @click="back" class="w-32 mr-6 btn btn-blue-secondary">
                             Cancel
                         </button>
                         <button v-if="editMode" @click="updateCourse" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary">
@@ -119,7 +119,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" @click="navigateBack" class="mb-4 w-full btn btn-blue-secondary">
+                    <button type="button" @click="back" class="mb-4 w-full btn btn-blue-secondary">
                         Cancel
                     </button>
                     <button v-if="editMode" :disabled="!hasInput" type="button" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
@@ -128,11 +128,14 @@
                     <button v-else :disabled="!hasInput" @click="createCourse" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
-                    <button @click="deleteCourse" class="w-full btn btn-red-secondary">
+                    <button @click="showDeleteModal" class="w-full btn btn-red-secondary">
                         Delete
                     </button>
                 </div>
             </section>
+
+        <delete-course-modal :showing="showingDeleteModal" v-on:cancel="hideDeleteModal" v-on:delete="deleteCourse"/>
+        <unsaved-changes-modal :showing="showingUnsavedChangesModal" v-on:cancel="hideUnsavedChangesModal" v-on:confirm="navigateBack"/>
         </div>
     </div>
 </template>
@@ -145,14 +148,23 @@ import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
 import Course_Management from "@/api/Course_Management"
 import {Role} from '@/entities/Role'
-import { ref,onMounted, computed } from 'vue';
 
+import { ref,onMounted, computed } from 'vue';
+import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
+import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
 export default {
     name: "LecturerCreateCourseForm",
     props: { 
-        editMode:Boolean 
+        editMode:{
+          type: Boolean,
+          required: true
+          }
         },
+    components: {
+        DeleteCourseModal,
+        UnsavedChangesModal,
+    },
 
 
     setup(props) {
@@ -161,8 +173,12 @@ export default {
         let heading = props.editMode ? "Edit Course" : "Create Course";
         let languages = Object.values(Language).filter(e => e != Language.NONE);
         let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
-        let success = ref(new Boolean(false));
-        let deleted = ref(new Boolean(false));
+        let success = ref(new Boolean());
+        success.value = false;
+        let showingDeleteModal = ref(new Boolean());
+        showingDeleteModal.value = false;
+        let showingUnsavedChangesModal = ref(new Boolean());
+        showingUnsavedChangesModal.value = false;
         const course_management: Course_Management = new Course_Management();
 
         course.value.lecturerId = store.state.myId;
@@ -229,23 +245,32 @@ export default {
                 console.log("Error: Input Validation Failed!")
             }
         }
-
+        
         function deleteCourse() {
-            const check = prompt("Warning! You are about to delete the course \"" + course.value.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
-            if (check != course.value.courseName) {
-                deleted.value = false
-                if(check != null) {
-                    deleteCourse()
-                }
-            }
-            else {
-                //TODO Include proper API
-                const course_management: Course_Management = new Course_Management();
-                course_management.deleteCourse(course.value.courseId).then(() => {
-                    deleted.value = true;
-                    navigateBack();
-                    //todo check for success..
-                }); 
+            const courseManager: Course_Management = new Course_Management();
+            courseManager.deleteCourse(course.value.courseId).then(() => {
+                //todo check for success
+                navigateBack();
+            });
+        }
+        function showDeleteModal() {
+            showingDeleteModal.value = true;
+        }
+        function hideDeleteModal() {
+            showingDeleteModal.value = false;
+        }
+        function showUnsavedChangesModal() {
+            showingUnsavedChangesModal.value = true;
+        }
+        function hideUnsavedChangesModal() {
+            showingUnsavedChangesModal.value = false;
+        }
+        
+        function back() {
+            if (hasInput.value) {
+                showUnsavedChangesModal();
+            } else {
+                Router.go(-1);
             }
         }
 
@@ -259,40 +284,30 @@ export default {
             heading,
             languages,
             courseTypes,
-            success, deleted,
-            hasInput, isValid,
+            success,
+            showingDeleteModal,
+            showingUnsavedChangesModal,
+            hasInput, 
+            isValid,
+            back, 
             navigateBack,
             loadCourse,
             createCourse,
             updateCourse,
             deleteCourse,
+            showDeleteModal, 
+            hideDeleteModal,
+            showUnsavedChangesModal,
+            hideUnsavedChangesModal,
         }
     },
     
     beforeRouteEnter(_from: any, _to: any, next: any) {
-		const myRole = store.state.myRole;
-		if (myRole != Role.LECTURER) {
-			return next("/redirect");
+        const myRole = store.state.myRole;
+        if (myRole != Role.LECTURER) {
+            return next("/redirect");
 		}
 		return next();
-    },
-    beforeRouteLeave (to: any, from: any, next: any) {
-        //todo use styled modal
-        //todo break this into smaller methods
-        if (this.success) {
-            return next();
-        }
-        else if (this.hasInput && !this.deleted ) {
-            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-            if (answer) {
-                return next()
-            } else {
-                return next(false)
-            }
-        }
-        else {
-            return next()
-        }
     },
 };
 </script>
