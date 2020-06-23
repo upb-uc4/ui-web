@@ -53,7 +53,7 @@
             }
         },
     
-        beforeRouteLeave(_from, _to, next) {
+        beforeRouteLeave(_from: any, _to: any, next: any) {
              clearInterval(this.timeout);
              return next();
         },
