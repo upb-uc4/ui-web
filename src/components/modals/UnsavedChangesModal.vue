@@ -4,10 +4,10 @@
             <p class="text-2xl text-gray-900">Unsaved Changes</p>
         </template>
 
-        Do you really want to continue and leave this site? You have unsaved changes.
+        Do you really want to continue and leave this page? You have unsaved changes.
 
         <template v-slot:footer>
-            <button class="w-24 py-2 px-2 btn btn-blue-primary" @click="$emit('confirm')">Continue</button>
+            <button class="w-24 py-2 px-2 btn btn-blue-primary" @click="$emit('confirm')">Leave</button>
         </template>
     </modal>
 </template>
