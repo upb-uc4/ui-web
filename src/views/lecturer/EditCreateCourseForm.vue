@@ -173,9 +173,12 @@ export default {
         let heading = props.editMode ? "Edit Course" : "Create Course";
         let languages = Object.values(Language).filter(e => e != Language.NONE);
         let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
-        let success = ref(new Boolean(false));
-        let showingDeleteModal = ref(new Boolean(false))
-        let showingUnsavedChangesModal = ref(new Boolean(false))
+        let success = ref(new Boolean());
+        success.value = false;
+        let showingDeleteModal = ref(new Boolean());
+        showingDeleteModal.value = false;
+        let showingUnsavedChangesModal = ref(new Boolean());
+        showingUnsavedChangesModal.value = false;
         const course_management: Course_Management = new Course_Management();
 
         course.value.lecturerId = store.state.myId;
@@ -264,7 +267,7 @@ export default {
         }
         
         function back() {
-            if (hasInput) {
+            if (hasInput.value) {
                 showUnsavedChangesModal();
             } else {
                 Router.go(-1);
@@ -282,6 +285,8 @@ export default {
             languages,
             courseTypes,
             success,
+            showingDeleteModal,
+            showingUnsavedChangesModal,
             hasInput, 
             isValid,
             back, 
