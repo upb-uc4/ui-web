@@ -298,11 +298,11 @@ export default {
     },
     
     beforeRouteEnter(_from: any, _to: any, next: any) {
-		    const myRole = store.state.myRole;
-		    if (myRole != Role.LECTURER) {
-			    return next("/redirect");
-		    }
-		    return next();
+        const myRole = store.state.myRole;
+        if (myRole != Role.LECTURER) {
+            return next("/redirect");
+		}
+		return next();
     },
 };
 </script>
