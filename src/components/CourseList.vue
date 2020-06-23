@@ -13,6 +13,7 @@ import { Role } from "@/entities/Role"
 import LecturerCourse from "./LecturerCourse.vue";
 import StudentCourse from "./StudentCourse.vue";
 import Course_Management from "@/api/Course_Management";
+// eslint-disable-next-line no-unused-vars
 import { Course } from "@/entities/Course"
 
 export default {
@@ -21,33 +22,31 @@ export default {
         LecturerCourse,
         StudentCourse,
     },
-    data() {
-        return {
-            roles: Object.values(Role).filter(e => e != Role.NONE),
-        }
-    },
+    
     async setup() {
-        const role = store.state.myRole;
-        
-        const isLecturer: boolean = (role == Role.LECTURER);
-        const isStudent: boolean = (role == Role.STUDENT);
-
-        const course_management: Course_Management = new Course_Management();
-
-        var courses: Course[] = [];
-        console.log(Course);
+        let courses: Course[] = [];
+        let role = store.state.myRole;
+        let roles = Object.values(Role).filter(e => e != Role.NONE);
+        let isLecturer: boolean = (role == Role.LECTURER);
+        let isStudent: boolean = (role == Role.STUDENT);
+        let course_management: Course_Management = new Course_Management();
+        let myId = store.state.myId;
 
         await course_management.getCourses().then((response : Course[]) => {
             courses = response;
         })
         
-        const myId = store.state.myId;
         if(isLecturer) {
             courses = courses.filter(course => course.lecturerId == myId);
         }
 
         return {
-            role, myId, courses, isLecturer, isStudent
+            role,
+            roles, 
+            myId, 
+            courses, 
+            isLecturer, 
+            isStudent
         }
     }
     
