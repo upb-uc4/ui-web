@@ -41,10 +41,11 @@ export default {
         ReadMore
     },
     props: {
-        course: Course
+        course: {
+            type: Course,
+            required: true
+        }
     },
-    
-
     setup(props) {
         function editCourse() {
             router.push({path: "/editCourse/" + props.course.courseId})
