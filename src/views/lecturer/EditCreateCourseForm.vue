@@ -242,7 +242,7 @@ export default {
                 //TODO Include proper API
                 const course_management: Course_Management = new Course_Management();
                 course_management.deleteCourse(course.value.courseId).then(() => {
-                    deleted = true;
+                    deleted.value = true;
                     navigateBack();
                     //todo check for success..
                 }); 
