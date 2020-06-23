@@ -5,5 +5,5 @@ export default interface Student extends User {
     immatriculationStatus: string,
     matriculationId: string,
     semesterCount: number,
-    fieldsOfStudy: FieldOfStudy
+    fieldsOfStudy: FieldOfStudy[]
 }
