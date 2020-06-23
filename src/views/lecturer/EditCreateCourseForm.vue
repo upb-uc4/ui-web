@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
+                        <button type="button" @click="back" class="w-32 mr-6 btn btn-blue-secondary">
                             Cancel
                         </button>
                         <button v-if="editMode" @click="updateCourse" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary">
@@ -120,7 +120,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" @click="navigateBack" class="mb-4 w-full btn btn-blue-secondary">
+                    <button type="button" @click="back" class="mb-4 w-full btn btn-blue-secondary">
                         Cancel
                     </button>
                     <button v-if="editMode" :disabled="!hasInput" type="button" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
