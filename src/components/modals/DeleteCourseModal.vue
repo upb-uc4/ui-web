@@ -4,8 +4,8 @@
             <p class="text-2xl text-gray-900">Delete course</p>
         </template>
 
-        Are you sure you want to delete this course?
-        By doing this you will lose all of your saved data and will not be able to retrieve it.
+        Are you sure you want to delete this course?<br/>
+        By doing this you will lose all of your saved data and will not be able to restore it.
 
         <template v-slot:footer>
             <button class="w-24 py-2 px-2 btn btn-red-primary" @click="$emit('delete')">Delete</button>
