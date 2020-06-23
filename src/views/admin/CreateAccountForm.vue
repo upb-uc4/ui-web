@@ -70,63 +70,68 @@ import {Account} from '@/entities/Account'
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
 import Authentication_Management from "@/api/Authentication_Management"
+import { ref, computed } from 'vue';
 
 export default {
-    name: "AdmingCreateAccountForm",
+    name: "AdminCreateAccountForm",
     props: {
 
     },
-    data() {
-        return {
-            account: new Account(),
-            success: false,
-            roles: Object.values(Role).filter(e => e!=Role.NONE)
-        };
-    },
-    created() {
-    },
-    computed: {
-        isValid: function (): boolean {
-            if(this.account.username == "" || this.account.password =="" || this.account.role == Role.NONE) {
+    setup() {
+        let account = ref(new Account());
+        let success:boolean = false;
+        let roles = Object.values(Role).filter(e => e!=Role.NONE);
+
+
+        function isValid() {
+             if(account.value.username == "" || account.value.password =="" || account.value.role == Role.NONE) {
                 return false;
             }
-            return true
-        },
+            return true;
+        }
 
-        hasInput: function():boolean {
-            if(this.account.username != "" || this.account.password != "" || this.account.role != Role.NONE) {
-                return true
+        let hasInput = computed(() => {
+            if(account.value.username != "" || account.value.password != "" || account.value.role != Role.NONE) {
+                return true;
             }
             return false;
-        }
-    },
-    methods: {
-        navigateBack() {
+        })
+
+        function navigateBack() {
             Router.go(-1);
-        },
-        submit() {
-            if(this.isValid) {    
-                
+        }
+
+        function submit() {
+             if(isValid()) {    
                 const authentication_management: Authentication_Management = new Authentication_Management();
-                
-                authentication_management.createAccount(this.account).then(() =>{
+                authentication_management.createAccount(account.value).then(() =>{
                     //handle errors, ...
                 })
             }
             else {
-                this.success = false;
+                success = false;
             }
+        }
 
+        return {
+            account,
+            success,
+            roles,
+            isValid,
+            navigateBack,
+            hasInput,
+            submit
         }
     },
-	beforeRouteEnter(_from, _to, next) {
+
+	beforeRouteEnter(_from: any, _to: any, next: any) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.ADMIN) {
 			return next("/redirect");
 		}
 		return next();
 	},
-    beforeRouteLeave (to, from, next) {
+    beforeRouteLeave (to: any, from: any, next: any) {
         //todo use styled modal
         //todo break this into smaller methods
         if (this.success) {
