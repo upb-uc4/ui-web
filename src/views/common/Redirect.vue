@@ -25,14 +25,14 @@
         },
         setup() {
             let countdown = ref(10);
-            let timeout = 0;
+            let timeout = ref(0);
 
             //setup the timer
             countDownTimer()
          
 
             function countDownTimer() {
-                timeout = setInterval(() => {
+                timeout.value = setInterval(() => {
                 if (countdown.value > 0) {
                     countdown.value = countdown.value - 1;
                 } else {
