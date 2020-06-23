@@ -269,14 +269,14 @@ export default {
         }
     },
     
-    beforeRouteEnter(_from, _to, next) {
+    beforeRouteEnter(_from: any, _to: any, next: any) {
 		const myRole = store.state.myRole;
 		if (myRole != Role.LECTURER) {
 			return next("/redirect");
 		}
 		return next();
     },
-    beforeRouteLeave (to, from, next) {
+    beforeRouteLeave (to: any, from: any, next: any) {
         //todo use styled modal
         //todo break this into smaller methods
         if (this.success) {
