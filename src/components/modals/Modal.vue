@@ -9,7 +9,7 @@
                     <div class="py-8 px-10">
                         <div class="flex justify-between items-center">
                             <slot name="header"></slot>
-                            <button class="cursor-pointer z-50 focus:outline-none" @click="$emit('cancel')">
+                            <button class="cursor-pointer z-50 focus:outline-none">
                                 <svg class="fill-current text-gray-600 hover:text-gray-700" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 18 18">
                                     <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                                 </svg>
@@ -22,7 +22,6 @@
 
                     <div class="bg-gray-200 h-20 flex items-center justify-end">
                         <div class="flex justify-end mr-10">
-                            <button class="mr-10 btn-tertiary" @click="$emit('cancel')">Cancel</button>
                             <slot name="footer"></slot>
                         </div>
                     </div>
@@ -33,15 +32,17 @@
 </template>
 
 <script lang="ts">
-export default {
-    emits: ['cancel'],
-    props: {
-        showing: {
-            required: true,
-            type: Boolean,
+    export default {
+        props: {
+            showing: {
+                required: true,
+                type: Boolean,
+            }
+        },
+        setup() {
+
         }
-    },
-}
+    }
 </script>
 
 <style scoped>
