@@ -255,24 +255,20 @@
                 <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
                     Cancel
                 </button>
-                <button type="button" @click="submit" class="w-48 btn btn-blue-primary"
+                <button type="button" @click="createAccount" class="w-48 btn btn-blue-primary"
                 v-bind:disabled="!hasInput">
                     Create Account
                 </button>
             </section>
         </div>
-
     </div>
 </template>
 
 <script lang="ts">
 import Router from "@/router/";
-import {Account} from '@/entities/Account'
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
-import Authentication_Management from "@/api/Authentication_Management"
 import { computed, reactive } from 'vue';
-import  Address  from '@/api/api_models/user_management/Address'
 import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
 
 export default {
@@ -367,18 +363,18 @@ export default {
         function navigateBack() {
             Router.go(-1);
         }
-		/*
-        function submit() {
+		
+        function createAccount() {
              if(isValid()) {    
-                const authentication_management: Authentication_Management = new Authentication_Management();
-                authentication_management.createAccount(account.value).then(() =>{
-                    //handle errors, ...
-                })
+				//TODO create account obejct based on given role and call the method in authenication management
+				
+				navigateBack();
             }
             else {
+				console.log("Error: Input Validation Failed!")
                 success = false;
             }
-        }*/
+        }
 
         return {
             account,
@@ -391,8 +387,7 @@ export default {
 			hasInput,
             isValid,
             navigateBack,
-            
-            // submit
+			createAccount 
         }
     },
 
