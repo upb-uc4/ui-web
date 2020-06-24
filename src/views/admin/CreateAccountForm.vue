@@ -49,6 +49,7 @@
                             <input type="text" id="email" name="email"
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                 placeholder="Email"
+								v-model="account.email"
                                 >
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -82,12 +83,14 @@
                                     <input type="text" id="firstName" name="firstName"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Firstname"
+										v-model="account.firstName"
                                         >
                                 </div>
                                 <div class="w-full pl-2">
                                     <input type="text" id="lastName" name="lastName"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Lastname"
+										v-model="account.lastName"
                                         >
                                 </div>
                             </div>
@@ -101,18 +104,21 @@
                                     <input type="number" id="day" name="day"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Day"
+										v-model="account.birthdate.day"
                                         >
                                 </div>
 								<div class="w-full px-2">
                                     <input type="number" id="month" name="month"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Month"
+										v-model="account.birthdate.month"
                                         >
                                 </div>
 								<div class="w-full pl-2">
                                     <input type="number" id="year" name="year"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Year"
+										v-model="account.birthdate.year"
                                         >
                                 </div>
                             </div>
@@ -121,7 +127,9 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Adress 
                             </label>
-                            <select class="w-1/2 mb-4 rounded-lg border-gray-400 text-gray-600 form-input" name="country" id="country">
+                            <select class="w-1/2 mb-4 rounded-lg border-gray-400 text-gray-600 form-input" 
+							name="country" id="country"
+							v-model="account.address.country">
                                 <!-- TODO: create Options via country enum -->
                                 <option value="Germany">Germany</option>
                                 <option value="United States">United States</option>
@@ -131,13 +139,13 @@
                                     <input type="text" id="street" name="street"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Street"
-                                        >
+										v-model="account.address.street">
                                 </div>
                                 <div class="pl-2">
                                     <input type="number" id="number" name="number"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Number"
-                                        >
+										v-model="account.address.houseNumber">
                                 </div>
                             </div>
                             <div class="flex flex-row ">
@@ -145,13 +153,13 @@
                                     <input type="number" id="zipcode" name="zipcode"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Zip Code"
-                                        >
+										v-model="account.address.zipCode">
                                 </div>
                                  <div class="w-full pl-2">
                                     <input type="text" id="city" name="city"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="City"
-                                        >
+										v-model="account.address.city">
                                 </div>
                             </div>
                         </div>
@@ -193,7 +201,8 @@ import {Account} from '@/entities/Account'
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
 import Authentication_Management from "@/api/Authentication_Management"
-import { ref, computed } from 'vue';
+import { computed, reactive } from 'vue';
+import  Address  from '@/api/api_models/user_management/Address'
 
 export default {
     name: "AdminCreateAccountForm",
@@ -201,11 +210,35 @@ export default {
 
     },
     setup() {
-        let account = ref(new Account());
+        let account = reactive( {
+			role: Role.NONE,
+			username: "",
+			email: "",
+			password: "",
+			firstName: "",
+			lastName: "",
+			birthdate: {
+				day: "",
+				month: "",
+				year: "",
+			},
+			address: {
+				country: "",
+				street: "",
+				houseNumber: "",
+				zipCode: "",
+				city: "",
+			},
+			picture: "",
+		})
         let success:boolean = false;
-        let roles = Object.values(Role).filter(e => e!=Role.NONE);
+		let roles = Object.values(Role).filter(e => e!=Role.NONE);
 
+		function updatePicture() {
+			console.log(account)
+		}
 
+		/*
         function isValid() {
              if(account.value.username == "" || account.value.password =="" || account.value.role == Role.NONE) {
                 return false;
@@ -234,16 +267,17 @@ export default {
             else {
                 success = false;
             }
-        }
+        }*/
 
         return {
             account,
             success,
-            roles,
-            isValid,
-            navigateBack,
-            hasInput,
-            submit
+			roles,
+			updatePicture,
+            // isValid,
+            // navigateBack,
+            // hasInput,
+            // submit
         }
     },
 
