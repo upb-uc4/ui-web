@@ -327,17 +327,31 @@ export default {
 
 		function updatePicture() {
 			console.log(account)
-			console.log(hasInput)
+			console.log("has Input: " + hasInput)
+			console.log("isValid: " + isValid())
 		}
 
-		/*
+		
         function isValid() {
-            if(account.value.username == "" || account.value.password =="" || account.value.role == Role.NONE) {
+            if(	account.role == Role.NONE || account.username == "" || account.email == "" || account.password == "" ||
+				account.firstName == "" || account.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
+				account.birthdate.year == "" || account.address.country == "Country" || account.address.street == "" ||
+				account.address.houseNumber == "" || account.address.zipCode == "" || account.address.city == "") {
                 return false;
-            }
+			}
+
+			if( account.role == Role.STUDENT) {
+				if( account.studentInfo.immatriculationStatus == "" || account.studentInfo.matriculationId == "" || 
+				account.studentInfo.semesterCount == "") {
+					return false;
+				}
+			}
+
+			//For the Lecturer, there cannot be any invalid inputs as the inputs are optional at this point. 
+			//Admin has no additional Inputs
             return true;
         }
-		*/
+		
         let hasInput = computed(() => {
 			if(	account.role != Role.NONE || account.username != "" || account.email != "" || account.password != "" ||
 				account.firstName != "" || account.lastName != "" || account.birthdate.day != "" || account.birthdate.month != "" || 
@@ -349,11 +363,11 @@ export default {
 			// was set
             return false;
         })
-		/*
+		
         function navigateBack() {
             Router.go(-1);
         }
-
+		/*
         function submit() {
              if(isValid()) {    
                 const authentication_management: Authentication_Management = new Authentication_Management();
@@ -375,8 +389,8 @@ export default {
 			isStudent,
 			fieldsOfStudyList,
 			hasInput,
-            // isValid,
-            // navigateBack,
+            isValid,
+            navigateBack,
             
             // submit
         }
