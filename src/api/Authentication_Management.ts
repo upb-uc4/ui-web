@@ -52,10 +52,12 @@ export default class Authentication_Management extends Common {
         return role != Role.NONE;
     }
 
-    async createAccount(account: Account) {
+    async createAccount(account: Account): Promise<boolean> {
+        let success = false;
         await this._axios.post("/users", account, this._authHeader)
                     .then((response: any) => {
                         console.log(response)
+                        success = true;
                     })
                     .catch((error: any) => {
                         if (error.response.status == "401") {
@@ -64,12 +66,15 @@ export default class Authentication_Management extends Common {
                             console.log(error)
                         }
                     });        
+        return success;
     }
 
-    async deleteAccount(username: string) {
+    async deleteAccount(username: string): Promise<boolean> {
+        let success = false;
         await this._axios.delete(`/users/${username}`, this._authHeader)
                     .then((response: any) => {
                         console.log(response)
+                        success = true;
                     })
                     .catch((error: any) => {
                         if (error.response.status == "401") {
@@ -78,5 +83,6 @@ export default class Authentication_Management extends Common {
                             console.log(error)
                         }
                     });    
+        return success;
     }
 }
