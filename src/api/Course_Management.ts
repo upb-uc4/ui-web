@@ -61,7 +61,7 @@ export default class Course_Management extends Common {
         return {course: course, found: found};
     }
 
-    async createCourse(course: ICourse): Promise<boolean> {
+    async createCourse(course: ICourse) {
         await this._axios.post("/courses", course, this._authHeader)
                     .then((response: any) => {
                         console.log(response)
@@ -77,7 +77,7 @@ export default class Course_Management extends Common {
                     });    
     }
 
-    async updateCourse(course: ICourse): Promise<boolean> {
+    async updateCourse(course: ICourse) {
         const id = course.courseId;
         await this._axios.put(`/courses/${id}`, course, this._authHeader)
                     .then((response: any) => {
