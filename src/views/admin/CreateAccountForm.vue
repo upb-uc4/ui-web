@@ -315,6 +315,8 @@ export default {
         let success:boolean = false;
 		let roles = Object.values(Role).filter(e => e!=Role.NONE);
 		let fieldsOfStudyList = Object.values(FieldOfStudy);
+		
+		
 		let isLecturer = computed(() => {
 			return account.role === Role.LECTURER;
 		})
@@ -325,6 +327,7 @@ export default {
 
 		function updatePicture() {
 			console.log(account)
+			console.log(hasInput)
 		}
 
 		/*
@@ -334,14 +337,19 @@ export default {
             }
             return true;
         }
-
+		*/
         let hasInput = computed(() => {
-            if(account.value.username != "" || account.value.password != "" || account.value.role != Role.NONE) {
+			if(	account.role != Role.NONE || account.username != "" || account.email != "" || account.password != "" ||
+				account.firstName != "" || account.lastName != "" || account.birthdate.day != "" || account.birthdate.month != "" || 
+				account.birthdate.year != "" || account.address.country != "Country" || account.address.street != "" ||
+				account.address.houseNumber != "" || account.address.zipCode != "" || account.address.city != "") {
                 return true;
-            }
+			}
+			// No need to check the Lecturer's and Student's Forms at this point, as hasInput will already be true when the role
+			// was set
             return false;
         })
-
+		/*
         function navigateBack() {
             Router.go(-1);
         }
@@ -366,10 +374,10 @@ export default {
 			isLecturer,
 			isStudent,
 			fieldsOfStudyList,
-
+			hasInput,
             // isValid,
             // navigateBack,
-            // hasInput,
+            
             // submit
         }
     },
