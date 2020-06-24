@@ -127,12 +127,13 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Adress 
                             </label>
-                            <select class="w-1/2 mb-4 rounded-lg border-gray-400 text-gray-600 form-input" 
+                            <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-input" 
 							name="country" id="country"
 							v-model="account.address.country">
                                 <!-- TODO: create Options via country enum -->
                                 <option value="Germany">Germany</option>
                                 <option value="United States">United States</option>
+								<option value="Country">Country</option>
                             </select>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2 mb-4">
@@ -166,6 +167,75 @@
                     </div>
                 </div>
             </section>
+			<section class="border-t-2 py-8 border-gray-400" v-if="isLecturer">
+				<div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Lecturer Information</label>
+                        <label class="block text-gray-600">
+                            These are Information specifically for a Lecturer
+                        </label>
+                    </div>
+					<div class="w-full lg:w-2/3">
+                        <div class="mb-4 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">Description</label>
+                           <textarea name="description" id="description" cols="30" rows="5" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
+                                placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
+								v-model="account.lecturerInfo.freeText">
+                            </textarea>
+                        </div>
+                        <div class="mb-4 flex flex-col">
+                           <textarea name="researchField" id="researchField" cols="30" rows="3" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
+                                placeholder="Add an optional Description of the Lecturer's Fields of Research"
+								v-model="account.lecturerInfo.researchArea">>
+                            </textarea>
+                        </div>
+                    </div>
+				</div>
+			</section>
+			<section class="border-t-2 py-8 border-gray-400" v-if="isStudent">
+				<div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Student Information</label>
+                        <label class="block text-gray-600">
+                            These are Information specifically for a Student
+                        </label>
+                    </div>
+					<div class="w-full lg:w-2/3">
+                        <div class="mb-4 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">Immatriculation Status</label>
+                            <input type="text" id="immatriculationStatus" name="immatriculationStatus"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Immatriculation Status"
+										v-model="account.studentInfo.immatriculationStatus">
+                        </div>
+                        <div class="mb-4 flex flex-col">
+                           <input type="number" id="matriculationId" name="matriculationId"
+                                        class="w-1/4 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Matriculation-ID"
+										v-model="account.studentInfo.matriculationId">
+                        </div>
+						<div class="mb-4 mt-8 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
+							<div class="flex flex-row ">
+                                 <div class="w-full pr-2">
+                                    <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-input" 
+									name="country" id="country"
+									v-model="account.studentInfo.fieldsOfStudy">
+									<!-- TODO: create Options via country enum -->
+									<option v-for="field in fieldsOfStudyList" :key="field">{{ field }}</option>
+									</select>
+                                </div>
+								<div class="pl-2">
+                                    <input type="number" id="semesterCount" name="semesterCount"
+                                        class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Semester Count"
+										v-model="account.studentInfo.semesterCount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</section>
 			<section class="border-t-2 py-8 border-gray-400">
 				<div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
@@ -203,6 +273,7 @@ import { store } from '@/store/store';
 import Authentication_Management from "@/api/Authentication_Management"
 import { computed, reactive } from 'vue';
 import  Address  from '@/api/api_models/user_management/Address'
+import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
 
 export default {
     name: "AdminCreateAccountForm",
@@ -223,16 +294,34 @@ export default {
 				year: "",
 			},
 			address: {
-				country: "",
+				country: "Country",
 				street: "",
 				houseNumber: "",
 				zipCode: "",
 				city: "",
 			},
 			picture: "",
+			lecturerInfo: {
+				freeText: "",
+				researchArea: "",
+			},
+			studentInfo: {
+				immatriculationStatus: "",
+				matriculationId: "",
+				fieldsOfStudy: FieldOfStudy.COMPUTER_SCIENCE,
+				semesterCount: "",
+			}
 		})
         let success:boolean = false;
 		let roles = Object.values(Role).filter(e => e!=Role.NONE);
+		let fieldsOfStudyList = Object.values(FieldOfStudy);
+		let isLecturer = computed(() => {
+			return account.role === Role.LECTURER;
+		})
+
+		let isStudent = computed(() => {
+			return account.role === Role.STUDENT;
+		})
 
 		function updatePicture() {
 			console.log(account)
@@ -240,7 +329,7 @@ export default {
 
 		/*
         function isValid() {
-             if(account.value.username == "" || account.value.password =="" || account.value.role == Role.NONE) {
+            if(account.value.username == "" || account.value.password =="" || account.value.role == Role.NONE) {
                 return false;
             }
             return true;
@@ -274,6 +363,10 @@ export default {
             success,
 			roles,
 			updatePicture,
+			isLecturer,
+			isStudent,
+			fieldsOfStudyList,
+
             // isValid,
             // navigateBack,
             // hasInput,
