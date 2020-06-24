@@ -12,29 +12,44 @@
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Select a Role</label>
+                    </div>
+                    <div class="w-full lg:w-2/3">
+                        <div class="mb-4 flex">
+                             <div class="mr-4 mb-3" v-for="role in roles" :key="role">
+                                <label class="flex items-center" >
+                                    <input type="radio" class="form-radio radio" name="role" :value="role" v-model="account.role">
+                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
+
+            <section class="border-t-2 py-8 border-gray-400">
+                <div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
                         <label class="block text-gray-600">
-                            Create a new user account.
+                            Basic Information for the new User Account
                         </label>
                     </div>
                     <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Role</label>
-                            <div class="flex">
-                                <div class="mr-4 mb-3" v-for="role in roles" :key="role">
-                                    <label class="flex items-center" >
-                                        <input type="radio" class="form-radio radio" name="role" :value="role" v-model="account.role">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
                             <input type="text" id="userName" name="username"
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                 placeholder="Username"
                                 v-model="account.username">
+                        </div>
+                        <div class="mb-4 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">Email</label>
+                            <input type="text" id="email" name="email"
+                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                placeholder="Email"
+                                >
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="password" class="text-gray-700 text-md font-medium mb-3">
@@ -49,7 +64,115 @@
                 </div>
             </section>
 
-
+            <section class="border-t-2 py-8 border-gray-400">
+                <div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Personal Information</label>
+                        <label class="block text-gray-600">
+                            Basic Information for the new User Account
+                        </label>
+                    </div>
+                    <div class="w-full lg:w-2/3">
+                        <div class="mb-4 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">
+                                Name
+                            </label>
+                            <div class="flex flex-row ">
+                                <div class="w-full pr-2">
+                                    <input type="text" id="firstName" name="firstName"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Firstname"
+                                        >
+                                </div>
+                                <div class="w-full pl-2">
+                                    <input type="text" id="lastName" name="lastName"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Lastname"
+                                        >
+                                </div>
+                            </div>
+                        </div>
+						<div class="mb-4 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">
+                                Birthdate
+                            </label>
+                            <div class="flex flex-row ">
+                                <div class="w-full pr-2">
+                                    <input type="number" id="day" name="day"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Day"
+                                        >
+                                </div>
+								<div class="w-full px-2">
+                                    <input type="number" id="month" name="month"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Month"
+                                        >
+                                </div>
+								<div class="w-full pl-2">
+                                    <input type="number" id="year" name="year"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Year"
+                                        >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 flex flex-col">
+                            <label class="text-gray-700 text-md font-medium mb-3">
+                                Adress 
+                            </label>
+                            <select class="w-1/2 mb-4 rounded-lg border-gray-400 text-gray-600 form-input" name="country" id="country">
+                                <!-- TODO: create Options via country enum -->
+                                <option value="Germany">Germany</option>
+                                <option value="United States">United States</option>
+                            </select>
+                            <div class="flex flex-row ">
+                                <div class="w-full pr-2 mb-4">
+                                    <input type="text" id="street" name="street"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Street"
+                                        >
+                                </div>
+                                <div class="pl-2">
+                                    <input type="number" id="number" name="number"
+                                        class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Number"
+                                        >
+                                </div>
+                            </div>
+                            <div class="flex flex-row ">
+                                <div class="pr-2">
+                                    <input type="number" id="zipcode" name="zipcode"
+                                        class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="Zip Code"
+                                        >
+                                </div>
+                                 <div class="w-full pl-2">
+                                    <input type="text" id="city" name="city"
+                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        placeholder="City"
+                                        >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+			<section class="border-t-2 py-8 border-gray-400">
+				<div class="lg:flex">
+                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Profile Picture</label>
+                        <label class="block text-gray-600">
+                            You May Change the Profile Picture
+                        </label>
+                    </div>
+					<div class="flex flex-col items-center justify-center">
+						<img class="object-contain h-48" src="@/assets/blank_profile_picture.png">
+						<button class="bg-transparent hover:bg-blue-800 border-blue-700 border-2 text-blue-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded-lg"
+						@click="updatePicture">Upload Profile Picture</button>
+					</div>
+				</div>
+			</section>
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
                 <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
                     Cancel
