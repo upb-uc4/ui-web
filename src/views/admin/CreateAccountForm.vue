@@ -8,7 +8,7 @@
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8">Account Creation</h1>
 
-        <form @submit.prevent="submit" method="POST">
+        <div>
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
@@ -255,12 +255,12 @@
                 <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
                     Cancel
                 </button>
-                <button type="submit" class="w-48 btn btn-blue-primary"
+                <button type="button" @click="submit" class="w-48 btn btn-blue-primary"
                 v-bind:disabled="!hasInput">
                     Create Account
                 </button>
             </section>
-        </form>
+        </div>
 
     </div>
 </template>
