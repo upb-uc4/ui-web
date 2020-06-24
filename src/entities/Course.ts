@@ -16,6 +16,22 @@ export class Course implements ICourse {
     startDate: string ="";
     endDate: string = "";
 
+    constructor(course?: ICourse) {
+        if(course !== undefined) {
+            this.courseType = course.courseType;
+            this.courseId = course.courseId;
+            this.courseName = course.courseName;
+            this.lecturerId = course.lecturerId;
+            this.ects = course.ects;
+            this.maxParticipants = course.maxParticipants;
+            this.currentParticipants = course.currentParticipants;
+            this.courseDescription = course.courseDescription;
+            this.courseLanguage = course.courseLanguage;
+            this.startDate = course.startDate;
+            this.endDate = course.endDate;
+        }
+    }
+
     public equals(obj: any): boolean {
         if (this == obj)
             return true;
