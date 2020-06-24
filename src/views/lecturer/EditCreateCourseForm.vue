@@ -144,6 +144,7 @@
 import Router from "@/router/";
 import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
+import ICourse from "@/api/api_models/course_management/ICourse";
 import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
 import Course_Management from "@/api/Course_Management"
@@ -193,8 +194,8 @@ export default {
 
         function loadCourse () {
             const course_management: Course_Management = new Course_Management();
-            course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
-                course.value = v.course;
+            course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: ICourse, found: boolean}) => {
+                course.value = new Course(v.course);
                 initialCourseState = JSON.parse(JSON.stringify(course.value));
                 if (!v.found) {
                     //todo no course with that ID
