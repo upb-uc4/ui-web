@@ -1,5 +1,5 @@
 <template>
-    <modal :showing="showing" v-on:cancel="$emit('cancel')">
+    <modal :showing="showing">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Delete course</p>
         </template>
@@ -8,7 +8,8 @@
         By doing this you will lose all of your saved data and will not be able to restore it.
 
         <template v-slot:footer>
-            <button class="w-24 py-2 px-2 btn btn-red-primary" @click="$emit('delete')">Delete</button>
+            <button class="mr-10 btn-tertiary" @click="resolve(actions.CANCEL)">Cancel</button>
+            <button class="w-24 py-2 px-2 btn btn-red-primary" @click="resolve(actions.DELETE)">Delete</button>
         </template>
     </modal>
 </template>
@@ -20,12 +21,31 @@
         components: {
             Modal,
         },
-        emits: ['cancel', 'delete'],
         props: {
             showing: {
                 required: true,
                 type: Boolean,
             }
-        }
+        },
+        setup() {
+            enum actions {
+                CANCEL,
+                DELETE
+            }
+
+            let promiseResolve: (x : actions) => void = () => {return};
+
+            function show() {
+                return new Promise<actions>(function(resolve) {
+                    promiseResolve = resolve;
+                });
+            }
+
+            function resolve(action: actions) {
+                promiseResolve(action);
+            }
+
+            return {resolve, show, actions}
+        },
     }
 </script>

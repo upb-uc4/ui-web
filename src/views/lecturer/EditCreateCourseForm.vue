@@ -99,7 +99,7 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" @click="showDeleteModal" type="button" class="w-32 btn btn-red-secondary">
+                        <button v-if="editMode" @click="confirmDeleteCourse" type="button" class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
@@ -128,13 +128,13 @@
                     <button v-else :disabled="!hasInput" @click="createCourse" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
-                    <button @click="showDeleteModal" class="w-full btn btn-red-secondary">
+                    <button @click="confirmDeleteCourse" class="w-full btn btn-red-secondary">
                         Delete
                     </button>
                 </div>
             </section>
 
-            <delete-course-modal :showing="showingDeleteModal" v-on:cancel="hideDeleteModal" v-on:delete="deleteCourse"/>
+            <delete-course-modal ref="deleteCourseModalRef" :showing="showingDeleteModal"/>
             <unsaved-changes-modal ref="unsavedChangesModalRef" :showing="showingUnsavedChangesModal"/>
         </div>
     </div>
@@ -180,10 +180,8 @@
             let showingUnsavedChangesModal = ref(new Boolean());
             showingUnsavedChangesModal.value = false;
             const course_management: Course_Management = new Course_Management();
-
-
             let unsavedChangesModalRef = ref(null);
-
+            let deleteCourseModalRef = ref(null);
 
 
             course.value.lecturerId = store.state.myId;
@@ -258,6 +256,22 @@
                     Router.back();
                 });
             }
+            async function confirmDeleteCourse() {
+                showDeleteModal();
+                let actions = deleteCourseModalRef.value.actions;
+                await deleteCourseModalRef.value.show().then((response: typeof actions) => {
+                    switch(response) {
+                        case actions.CANCEL: {
+                            break;
+                        }
+                        case actions.DELETE: {
+                            deleteCourse();
+                            break;
+                        }
+                    }
+                    hideDeleteModal();
+                })
+            }
             function showDeleteModal() {
                 showingDeleteModal.value = true;
             }
@@ -291,11 +305,13 @@
                 createCourse,
                 updateCourse,
                 deleteCourse,
+                confirmDeleteCourse,
                 showDeleteModal,
                 hideDeleteModal,
                 showUnsavedChangesModal,
                 hideUnsavedChangesModal,
-                unsavedChangesModalRef
+                unsavedChangesModalRef,
+                deleteCourseModalRef
             }
         },
 
