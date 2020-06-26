@@ -15,6 +15,7 @@ import StudentCourse from "./StudentCourse.vue";
 import Course_Management from "@/api/Course_Management";
 // eslint-disable-next-line no-unused-vars
 import { Course } from "@/entities/Course"
+import ICourse from '@/api/api_models/course_management/ICourse';
 
 export default {
     name: "CourseList",
@@ -24,7 +25,7 @@ export default {
     },
     
     async setup() {
-        let courses: Course[] = [];
+        let courses: ICourse[] = [];
         let role = store.state.myRole;
         let roles = Object.values(Role).filter(e => e != Role.NONE);
         let isLecturer: boolean = (role == Role.LECTURER);
@@ -32,7 +33,7 @@ export default {
         let course_management: Course_Management = new Course_Management();
         let myId = store.state.myId;
 
-        await course_management.getCourses().then((response : Course[]) => {
+        await course_management.getCourses().then((response : ICourse[]) => {
             courses = response;
         })
         
