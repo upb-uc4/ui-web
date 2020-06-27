@@ -134,8 +134,8 @@
                 </div>
             </section>
 
-            <delete-course-modal ref="deleteCourseModalRef" :showing="showingDeleteModal"/>
-            <unsaved-changes-modal ref="unsavedChangesModalRef" :showing="showingUnsavedChangesModal"/>
+            <delete-course-modal ref="deleteCourseModalRef"/>
+            <unsaved-changes-modal ref="unsavedChangesModalRef"/>
         </div>
     </div>
 </template>
@@ -166,7 +166,6 @@
             UnsavedChangesModal,
         },
 
-
         setup(props) {
             let course = ref(new Course());
             let initialCourseState = new Course();
@@ -175,10 +174,6 @@
             let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
             let success = ref(new Boolean());
             success.value = false;
-            let showingDeleteModal = ref(new Boolean());
-            showingDeleteModal.value = false;
-            let showingUnsavedChangesModal = ref(new Boolean());
-            showingUnsavedChangesModal.value = false;
             const course_management: Course_Management = new Course_Management();
             let unsavedChangesModalRef = ref(null);
             let deleteCourseModalRef = ref(null);
@@ -257,7 +252,6 @@
                 });
             }
             async function confirmDeleteCourse() {
-                showDeleteModal();
                 let actions = deleteCourseModalRef.value.actions;
                 await deleteCourseModalRef.value.show().then((response: typeof actions) => {
                     switch(response) {
@@ -269,20 +263,7 @@
                             break;
                         }
                     }
-                    hideDeleteModal();
                 })
-            }
-            function showDeleteModal() {
-                showingDeleteModal.value = true;
-            }
-            function hideDeleteModal() {
-                showingDeleteModal.value = false;
-            }
-            function showUnsavedChangesModal() {
-                showingUnsavedChangesModal.value = true;
-            }
-            function hideUnsavedChangesModal() {
-                showingUnsavedChangesModal.value = false;
             }
 
             function back() {
@@ -296,8 +277,6 @@
                 languages,
                 courseTypes,
                 success,
-                showingDeleteModal,
-                showingUnsavedChangesModal,
                 hasInput,
                 isValid,
                 back,
@@ -306,10 +285,6 @@
                 updateCourse,
                 deleteCourse,
                 confirmDeleteCourse,
-                showDeleteModal,
-                hideDeleteModal,
-                showUnsavedChangesModal,
-                hideUnsavedChangesModal,
                 unsavedChangesModalRef,
                 deleteCourseModalRef
             }
@@ -325,7 +300,6 @@
 
         async beforeRouteLeave(_from: any, _to: any, next: any) {
             if (this.hasInput && !this.success) {
-                this.showUnsavedChangesModal();
                 let actions = this.unsavedChangesModalRef.actions;
 
                 await this.unsavedChangesModalRef.show().then((response: typeof actions) => {
@@ -340,7 +314,6 @@
                             break;
                         }
                     }
-                    this.hideUnsavedChangesModal();
                 })
             } else {
                 next(true);

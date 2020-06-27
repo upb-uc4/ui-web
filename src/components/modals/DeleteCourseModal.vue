@@ -1,5 +1,5 @@
 <template>
-    <modal :showing="showing" v-on:cancel="resolve(actions.CANCEL)">
+    <modal :showing="isVisible" v-on:cancel="resolve(actions.CANCEL)">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Delete course</p>
         </template>
@@ -16,18 +16,15 @@
 
 <script lang="ts">
     import Modal from "@/components/modals/Modal.vue";
+    import { ref } from 'vue';
 
     export default {
         components: {
             Modal,
         },
-        props: {
-            showing: {
-                required: true,
-                type: Boolean,
-            }
-        },
         setup() {
+            const isVisible = ref(false);
+
             enum actions {
                 CANCEL,
                 DELETE
@@ -36,16 +33,18 @@
             let promiseResolve: (x : actions) => void = () => {return};
 
             function show() {
+                isVisible.value = true;
                 return new Promise<actions>(function(resolve) {
                     promiseResolve = resolve;
                 });
             }
 
             function resolve(action: actions) {
+                isVisible.value = false;
                 promiseResolve(action);
             }
 
-            return {resolve, show, actions}
+            return {resolve, show, actions, isVisible}
         },
     }
 </script>
