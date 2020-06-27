@@ -1,5 +1,5 @@
 <template>
-    <modal :showing="isVisible" v-on:cancel="resolve(action.CANCEL)">
+    <modal :showing="isVisible" v-on:cancel="close(action.CANCEL)">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Delete course</p>
         </template>
@@ -8,8 +8,8 @@
         By doing this you will lose all of your saved data and will not be able to restore it.
 
         <template v-slot:footer>
-            <button class="mr-10 btn-tertiary" @click="resolve(action.CANCEL)">Cancel</button>
-            <button class="w-24 py-2 px-2 btn btn-red-primary" @click="resolve(action.DELETE)">Delete</button>
+            <button class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
+            <button class="w-24 py-2 px-2 btn btn-red-primary" @click="close(action.DELETE)">Delete</button>
         </template>
     </modal>
 </template>
@@ -39,12 +39,12 @@
                 });
             }
 
-            function resolve(action: action) {
+            function close(action: action) {
                 isVisible.value = false;
                 promiseResolve(action);
             }
 
-            return {isVisible, show, action, resolve}
+            return {isVisible, show, action, close}
         },
     }
 </script>
