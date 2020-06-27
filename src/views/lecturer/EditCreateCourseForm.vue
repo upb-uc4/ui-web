@@ -300,7 +300,10 @@
         },
 
         async beforeRouteLeave(_from: any, _to: any, next: any) {
-            if (this.hasInput && !this.success) {
+            if (this.success) {
+                return next();
+            }
+            if (this.hasInput && !this.deleted) {
                 const modal = this.unsavedChangesModal;
                 let action = modal.action;
                 await modal.show()
