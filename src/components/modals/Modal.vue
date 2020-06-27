@@ -37,11 +37,27 @@
             showing: {
                 required: true,
                 type: Boolean,
+            },
+            action: {
+                required: true
             }
         },
         emits: ['cancel'],
-        setup() {
+        setup(props: any) {
 
+            let promiseResolve: (x : typeof props.action) => void = () => {return};
+
+            function show() {
+                return new Promise(function(resolve) {
+                    promiseResolve = resolve;
+                });
+            }
+
+            function close(action: typeof props.action) {
+                promiseResolve(action);
+            }
+
+            return {show, close}
         }
     }
 </script>
