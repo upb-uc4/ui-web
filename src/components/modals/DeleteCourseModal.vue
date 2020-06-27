@@ -1,5 +1,5 @@
 <template>
-    <modal ref="baseModal" v-on:cancel="close(action.CANCEL)">
+    <modal ref="baseModal" v-on:cancel="close(action.CANCEL)" :action="action">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Delete course</p>
         </template>

@@ -44,7 +44,7 @@
         setup(props: any) {
             const isVisible = ref(false);
 
-            let promiseResolve: (x : typeof props.action) => void = () => {return};
+            let promiseResolve: (action : typeof props.action) => void = () => {return};
 
             function show() {
                 isVisible.value = true;
