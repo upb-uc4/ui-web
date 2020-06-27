@@ -1,5 +1,5 @@
 <template>
-    <modal :showing="showing">
+    <modal :showing="showing" v-on:cancel="resolve(actions.CANCEL)">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Unsaved Changes</p>
         </template>
