@@ -134,8 +134,8 @@
                 </div>
             </section>
 
-            <delete-course-modal ref="deleteCourseModalRef"/>
-            <unsaved-changes-modal ref="unsavedChangesModalRef"/>
+            <delete-course-modal ref="deleteModal"/>
+            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
@@ -166,7 +166,7 @@
             UnsavedChangesModal,
         },
 
-        setup(props) {
+        setup(props: any) {
             let course = ref(new Course());
             let initialCourseState = new Course();
             let heading = props.editMode ? "Edit Course" : "Create Course";
@@ -175,9 +175,8 @@
             let success = ref(new Boolean());
             success.value = false;
             const course_management: Course_Management = new Course_Management();
-            let unsavedChangesModalRef = ref(null);
-            let deleteCourseModalRef = ref(null);
-
+            let unsavedChangesModal = ref();
+            let deleteModal = ref();
 
             course.value.lecturerId = store.state.myId;
             course.value.startDate = "2020-06-01";
@@ -252,18 +251,20 @@
                 });
             }
             async function confirmDeleteCourse() {
-                let actions = deleteCourseModalRef.value.actions;
-                await deleteCourseModalRef.value.show().then((response: typeof actions) => {
-                    switch(response) {
-                        case actions.CANCEL: {
-                            break;
+                let modal = deleteModal.value;
+                let actions = modal.actions;
+                await modal.show()
+                    .then((response: typeof actions) => {
+                        switch(response) {
+                            case actions.CANCEL: {
+                                break;
+                            }
+                            case actions.DELETE: {
+                                deleteCourse();
+                                break;
+                            }
                         }
-                        case actions.DELETE: {
-                            deleteCourse();
-                            break;
-                        }
-                    }
-                })
+                    });
             }
 
             function back() {
@@ -285,8 +286,8 @@
                 updateCourse,
                 deleteCourse,
                 confirmDeleteCourse,
-                unsavedChangesModalRef,
-                deleteCourseModalRef
+                unsavedChangesModal,
+                deleteModal
             }
         },
 
@@ -300,10 +301,12 @@
 
         async beforeRouteLeave(_from: any, _to: any, next: any) {
             if (this.hasInput && !this.success) {
-                let actions = this.unsavedChangesModalRef.actions;
 
-                await this.unsavedChangesModalRef.show().then((response: typeof actions) => {
-                    console.log(response)
+                const modal = this.unsavedChangesModal;
+                const actions = modal.actions;
+
+                await modal.show()
+                    .then((response: typeof actions) => {
                     switch(response) {
                         case actions.CANCEL: {
                             next(false);
