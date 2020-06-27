@@ -1,5 +1,5 @@
 <template>
-    <modal ref="baseModal" :showing="isVisible" v-on:cancel="close(action.CANCEL)">
+    <modal ref="baseModal" v-on:cancel="close(action.CANCEL)">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Delete course</p>
         </template>
@@ -16,14 +16,13 @@
 
 <script lang="ts">
     import Modal from "@/components/modals/Modal.vue";
-    import { ref, onMounted } from 'vue';
+    import { ref } from 'vue';
 
     export default {
         components: {
             Modal,
         },
         setup() {
-            const isVisible = ref(false);
             const baseModal = ref();
 
             enum action {
@@ -32,16 +31,14 @@
             }
 
             function show() {
-                isVisible.value = true;
                 return baseModal.value.show();
             }
 
             function close(action: action) {
-                isVisible.value = false;
                 baseModal.value.close(action);
             }
 
-            return {isVisible, show, action, close, baseModal}
-        },
+            return {baseModal, show, close, action}
+        }
     }
 </script>

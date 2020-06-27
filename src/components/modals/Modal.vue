@@ -1,7 +1,7 @@
 <template>
     <teleport to="#modal-wrapper">
         <transition name="fade">
-            <div v-show="showing" class="fixed w-full h-full top-0 left-0 flex items-center justify-center">
+            <div v-show="isVisible" class="fixed w-full h-full top-0 left-0 flex items-center justify-center">
                 <div class="absolute w-full h-full bg-gray-900 opacity-25"/>
 
                 <div class="bg-white w-full -mt-32 md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto rounded-lg shadow-xl z-50 overflow-y-auto">
@@ -32,32 +32,33 @@
 </template>
 
 <script lang="ts">
+    import {ref} from "vue";
+
     export default {
         props: {
-            showing: {
-                required: true,
-                type: Boolean,
-            },
             action: {
                 required: true
             }
         },
         emits: ['cancel'],
         setup(props: any) {
+            const isVisible = ref(false);
 
             let promiseResolve: (x : typeof props.action) => void = () => {return};
 
             function show() {
+                isVisible.value = true;
                 return new Promise(function(resolve) {
                     promiseResolve = resolve;
                 });
             }
 
             function close(action: typeof props.action) {
+                isVisible.value = false;
                 promiseResolve(action);
             }
 
-            return {show, close}
+            return {isVisible, show, close}
         }
     }
 </script>
