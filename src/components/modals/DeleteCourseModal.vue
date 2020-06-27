@@ -44,7 +44,7 @@
                 promiseResolve(action);
             }
 
-            return {resolve, show, action, isVisible}
+            return {isVisible, show, action, resolve}
         },
     }
 </script>
