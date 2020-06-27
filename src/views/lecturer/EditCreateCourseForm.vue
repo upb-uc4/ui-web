@@ -252,14 +252,14 @@
             }
             async function confirmDeleteCourse() {
                 let modal = deleteModal.value;
-                let actions = modal.actions;
+                let action = modal.action;
                 await modal.show()
-                    .then((response: typeof actions) => {
+                    .then((response: typeof action) => {
                         switch(response) {
-                            case actions.CANCEL: {
+                            case action.CANCEL: {
                                 break;
                             }
-                            case actions.DELETE: {
+                            case action.DELETE: {
                                 deleteCourse();
                                 break;
                             }
@@ -301,20 +301,21 @@
 
         async beforeRouteLeave(_from: any, _to: any, next: any) {
             if (this.hasInput && !this.success) {
-
                 const modal = this.unsavedChangesModal;
-                const actions = modal.actions;
-
+                let action = modal.action;
                 await modal.show()
-                    .then((response: typeof actions) => {
+                    .then((response: typeof action) => {
                     switch(response) {
-                        case actions.CANCEL: {
+                        case action.CANCEL: {
                             next(false);
                             break;
                         }
-                        case actions.CONFIRM: {
+                        case action.CONFIRM: {
                             next(true);
                             break;
+                        }
+                        default: {
+                            next(true);
                         }
                     }
                 })

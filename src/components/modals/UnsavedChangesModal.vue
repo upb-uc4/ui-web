@@ -1,5 +1,5 @@
 <template>
-    <modal :showing="isVisible" v-on:cancel="resolve(actions.CANCEL)">
+    <modal :showing="isVisible" v-on:cancel="resolve(action.CANCEL)">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Unsaved Changes</p>
         </template>
@@ -7,8 +7,8 @@
         Do you really want to continue and leave this page? You have unsaved changes.
 
         <template v-slot:footer>
-            <button class="mr-10 btn-tertiary" @click="resolve(actions.CANCEL)">Cancel</button>
-            <button class="w-24 py-2 px-2 btn btn-blue-primary" @click="resolve(actions.CONFIRM)">Leave</button>
+            <button class="mr-10 btn-tertiary" @click="resolve(action.CANCEL)">Cancel</button>
+            <button class="w-24 py-2 px-2 btn btn-blue-primary" @click="resolve(action.CONFIRM)">Leave</button>
         </template>
     </modal>
 </template>
@@ -24,26 +24,26 @@
         setup() {
             const isVisible = ref(false);
 
-            enum actions {
+            enum action {
                 CANCEL,
                 CONFIRM
             }
 
-            let promiseResolve: (x : actions) => void = () => {return};
+            let promiseResolve: (x : action) => void = () => {return};
 
             function show() {
                 isVisible.value = true;
-                return new Promise<actions>(function(resolve) {
+                return new Promise<action>(function(resolve) {
                     promiseResolve = resolve;
                 });
             }
 
-            function resolve(action: actions) {
+            function resolve(action: action) {
                 isVisible.value = false;
                 promiseResolve(action);
             }
 
-            return {resolve, show, actions, isVisible}
+            return {resolve, show, action, isVisible}
         },
     }
 </script>
