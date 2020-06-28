@@ -19,19 +19,14 @@ export default class User_Management extends Common {
     async getAllUsers(): Promise<User_List> {
         let userList: User_List = {} as User_List;
 
-        await this._axios.get("/users/", this._authHeader)
-                    .then((response: any) => {
+        await this._axios.get("/users", this._authHeader)
+                    .then((response: AxiosResponse) => {
                         console.log(response)
-                        userList = response.data.role;
+                        userList = response.data;
                     })
-                    .catch((error: any) => {
-                        if (!error.reponse) {
+                    .catch((error: AxiosError) => {
+                        if (!error.response) {
                             return console.log("Network Error")
-                        }
-                        if (error.response.status == "401") {
-                            console.log(error)
-                        } else if (error.response.status == "403") {
-                            console.log(error)
                         }
                     }).then(()=> {
                         return userList;
@@ -43,12 +38,13 @@ export default class User_Management extends Common {
     async deleteUser(username: string): Promise<boolean> {
         let success = false;
 
-        this._axios.delete(`/users/${username}`, this._authHeader)
+        await this._axios.delete(`/users/${username}`, this._authHeader)
                     .then((response: AxiosResponse) => {
                         console.log(response)
                         success = true;
                     })
                     .catch((error: AxiosError) => {
+                        console.log(error)
                         if(!error.response) {
                             //network error
                         } 
@@ -73,17 +69,50 @@ export default class User_Management extends Common {
         return result;
     }
 
-    async getSpecificUser(username: string): Promise<Student | Lecturer | Admin> {
-        let result: Student | Lecturer | Admin = {} as Student | Lecturer | Admin;
-        // get role 
-        let endpoint = User_Management._createEndpointByRole(user.role);
+    /**
+     * Authenticate against Lagom endpoint, return true if successful
+     * @param loginData 
+     */
+    async login(loginData: {username: string, password: string}): Promise<boolean> {
+        this._authHeader = {auth: loginData};
+        const role: Role = await this.getRole(loginData.username);
+        store.state.myRole = role;
+        store.state.loginData = loginData;
 
-        this._axios.get(`${endpoint}/${username}`, this._authHeader)
+        return role != Role.NONE;
+    }
+
+    async getRole(username: string): Promise<Role> {
+        let result: Role = Role.NONE;
+
+        await this._axios.get(`/users/${username}/role`, this._authHeader)
+                    .then((response: AxiosResponse) => {
+                        console.log(response)
+                        result = response.data.role;
+                    })
+                    .catch((error: AxiosError) => {
+                        if(!error.response) {
+                            //network error
+                        } 
+
+                    });
+
+        return result;       
+    }
+
+    async getSpecificUser(username: string): Promise<Student | Lecturer | Admin> {
+        var result: Student | Lecturer | Admin = {} as Student | Lecturer | Admin;
+        // get role 
+        let role: Role = await this.getRole(username);
+        let endpoint = User_Management._createEndpointByRole(role);
+
+        await this._axios.get(`${endpoint}/${username}`, this._authHeader)
                     .then((response: AxiosResponse) => {
                         console.log(response)
                         result = response.data;
                     })
                     .catch((error: AxiosError) => {
+                        console.log(error)
                         if(!error.response) {
                             //network error
                         } 
@@ -98,11 +127,12 @@ export default class User_Management extends Common {
         let message = User_Management._createMessage(user, authUser);
 
         let success = false;
-
         await this._axios.post(endpoint, message, this._authHeader)
             .then((reponse : AxiosResponse) => {
                 success = true;
-            })
+            }).catch((error: AxiosError) => {
+                console.log(error)
+            })     
         
         return success;
     }
@@ -111,9 +141,11 @@ export default class User_Management extends Common {
         let endpoint = User_Management._createEndpointByRole(user.role);
         let success = false;
 
-        await this._axios.post(endpoint, user, this._authHeader)
+        await this._axios.put(`${endpoint}/${user.username}`, user, this._authHeader)
             .then((reponse : AxiosResponse) => {
                 success = true;
+            }).catch((error: AxiosError) => {
+                console.log(error)
             })      
         
         return success;       
@@ -147,6 +179,7 @@ export default class User_Management extends Common {
                 new Error("Endpoint undefined")
             }
         }
+        return message;
     }
 
     static _createEndpointByRole(role: Role) : string {
