@@ -8,7 +8,7 @@ import Admin from './api_models/user_management/Admin';
 import { Role } from '@/entities/Role';
 import { Account } from '@/entities/Account';
 
-export default class User_Management extends Common {
+export default class UserManagement extends Common {
 
     constructor() {
        super("/user-management");

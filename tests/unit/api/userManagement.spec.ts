@@ -1,4 +1,4 @@
-import User_Management from "@/api/User_Management"
+import UserManagement from "@/api/UserManagement"
 import { Role } from '@/entities/Role'
 import { Account } from '@/entities/Account';
 import Student from '@/api/api_models/user_management/Student';
@@ -6,13 +6,13 @@ import Address from '@/api/api_models/user_management/Address';
 import User from '@/api/api_models/user_management/User';
 import { FieldOfStudy } from '@/api/api_models/user_management/FieldOfStudy';
 
-var user_management : User_Management;
+var userManagement : UserManagement;
 const adminAuth = {username: "admin", password: "admin"};
 jest.setTimeout(30000);
 
 beforeAll(async () => {
-    user_management = new User_Management();
-    await user_management.login(adminAuth);
+    userManagement = new UserManagement();
+    await userManagement.login(adminAuth);
 })
 
 var authUser: Account = {
@@ -52,27 +52,27 @@ var student: Student = {
 }
 
 test("Create user", async () => {
-    const success = await user_management.createUser(authUser, student);
+    const success = await userManagement.createUser(authUser, student);
     expect(success).toBe(true);
 })
 
 test("Get specific user", async () => {
     await new Promise((r) => setTimeout(r, 10000));
     var result = false;
-    const user = await user_management.getSpecificUser(student.username);
+    const user = await userManagement.getSpecificUser(student.username);
     result = (user.firstName == student.firstName);
     expect(result).toBe(true)  
 })
 
 test("Get all users", async () => {
-    const users = await user_management.getAllUsers();
+    const users = await userManagement.getAllUsers();
     let result = true;
     result = result && users.students.length > 0
     expect(result).toBe(true)
 })
 
 test("Get all students", async () => {
-    const users = await user_management.getAllUsersByRole(Role.STUDENT);
+    const users = await userManagement.getAllUsersByRole(Role.STUDENT);
     let result = users.length > 0
     expect(result).toBe(true)   
 })
@@ -80,12 +80,12 @@ test("Get all students", async () => {
 test("Update user", async () => {
     await new Promise((r) => setTimeout(r, 5000));
     student.immatriculationStatus = "Is a Jedi Master";
-    const success = await user_management.updateUser(student);
+    const success = await userManagement.updateUser(student);
     expect(success).toBe(true);
 })
 
 test("Delete user", async () => {
     await new Promise((r) => setTimeout(r, 5000));
-    const success = await user_management.deleteUser(student.username)
+    const success = await userManagement.deleteUser(student.username)
     expect(success).toBe(true);
 })

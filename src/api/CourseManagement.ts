@@ -1,7 +1,7 @@
 import Common from "./Common"
 import { Course } from "@/entities/Course"
 
-export default class Course_Management extends Common {
+export default class CourseManagement extends Common {
     constructor() {
         super("/course-management");
      }

@@ -1,14 +1,14 @@
-import Course_Management from "@/api/Course_Management"
+import CourseManagement from "@/api/CourseManagement"
 import { Role } from '@/entities/Role'
 import { Account } from '@/entities/Account';
 import { Course } from '@/entities/Course';
 import { Language } from '@/entities/Language';
 import { CourseType } from '@/entities/CourseType';
-import User_Management from '@/api/User_Management';
+import UserManagement from '@/api/UserManagement';
 
 
-var userManagement: User_Management;
-var course_management : Course_Management;
+var userManagement: UserManagement;
+var courseManagement : CourseManagement;
 const adminAuth = {username: "admin", password: "admin"};
 const studentAuth = {username: "student", password: "student"};
 const lecturerAuth = {username: "lecturer", password: "lecturer"};
@@ -17,9 +17,9 @@ var createdCourse: Course = {} as Course;
 jest.useFakeTimers();
 
 beforeAll(async () => {
-    userManagement = new User_Management();
+    userManagement = new UserManagement();
     await userManagement.login(lecturerAuth);
-    course_management = new Course_Management();
+    courseManagement = new CourseManagement();
 })
 
 test("Create course", async () => {
@@ -37,8 +37,8 @@ test("Create course", async () => {
     course.lecturerId = "lecturer";
     course.maxParticipants = 10;
 
-    console.log(course_management._authHeader)
-    const success = await course_management.createCourse(course);
+    console.log(courseManagement._authHeader)
+    const success = await courseManagement.createCourse(course);
 
     expect(success).toBe(true);
 })
@@ -46,7 +46,7 @@ test("Create course", async () => {
 
 test("Get all courses", async () => {
     setTimeout(async () => {
-        const courses = await course_management.getCourses();
+        const courses = await courseManagement.getCourses();
         const filteredCourses = courses.filter((c : Course) => c.courseName === "Best test course ever!")
         expect(filteredCourses.length > 0).toBe(true)
         createdCourse = filteredCourses[0];
@@ -56,14 +56,14 @@ test("Get all courses", async () => {
 test("Update course", async () => {
     setTimeout(async () => {
         createdCourse.courseName = "Worst test course ever!";
-        const success = await course_management.updateCourse(createdCourse)
+        const success = await courseManagement.updateCourse(createdCourse)
         expect(success).toBe(true);
     }, 10000)
 })
 
 test("Delete course", async () => {
     setTimeout(async () => {
-        const success = await course_management.deleteCourse(createdCourse.courseId)
+        const success = await courseManagement.deleteCourse(createdCourse.courseId)
         expect(success).toBe(true);
     }, 10000)
 })
