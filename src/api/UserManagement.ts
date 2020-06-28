@@ -55,7 +55,7 @@ export default class UserManagement extends Common {
     }
 
     async getAllUsersByRole(role: Role): Promise<Student[] | Lecturer[] | Admin[]> {
-        let endpoint = User_Management._createEndpointByRole(role);
+        let endpoint = UserManagement._createEndpointByRole(role);
         let result: Student[] | Lecturer[] | Admin[] = [];
 
         await this._axios.get(endpoint, this._authHeader)
@@ -104,7 +104,7 @@ export default class UserManagement extends Common {
         var result: Student | Lecturer | Admin = {} as Student | Lecturer | Admin;
         // get role 
         let role: Role = await this.getRole(username);
-        let endpoint = User_Management._createEndpointByRole(role);
+        let endpoint = UserManagement._createEndpointByRole(role);
 
         await this._axios.get(`${endpoint}/${username}`, this._authHeader)
                     .then((response: AxiosResponse) => {
@@ -123,8 +123,8 @@ export default class UserManagement extends Common {
     }
 
     async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<boolean> {
-        let endpoint = User_Management._createEndpointByRole(user.role);
-        let message = User_Management._createMessage(user, authUser);
+        let endpoint = UserManagement._createEndpointByRole(user.role);
+        let message = UserManagement._createMessage(user, authUser);
 
         let success = false;
         await this._axios.post(endpoint, message, this._authHeader)
@@ -138,7 +138,7 @@ export default class UserManagement extends Common {
     }
 
     async updateUser(user: Student | Lecturer | Admin): Promise<boolean> {
-        let endpoint = User_Management._createEndpointByRole(user.role);
+        let endpoint = UserManagement._createEndpointByRole(user.role);
         let success = false;
 
         await this._axios.put(`${endpoint}/${user.username}`, user, this._authHeader)
