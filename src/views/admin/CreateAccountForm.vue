@@ -69,7 +69,7 @@ import Router from "@/router/";
 import {Account} from '@/entities/Account'
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
-import Authentication_Management from "@/api/Authentication_Management"
+import UserManagement from "@/api/UserManagement"
 import { ref, computed } from 'vue';
 
 export default {
@@ -103,10 +103,10 @@ export default {
 
         function submit() {
              if(isValid()) {    
-                const authentication_management: Authentication_Management = new Authentication_Management();
-                authentication_management.createAccount(account.value).then(() =>{
+                const userManagement: UserManagement = new UserManagement();
+                //userManagement.createAccount(account.value).then(() =>{
                     //handle errors, ...
-                })
+                //})
             }
             else {
                 success = false;

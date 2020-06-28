@@ -146,7 +146,7 @@ import { store } from '@/store/store';
 import {Course} from "@/entities/Course";
 import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
-import Course_Management from "@/api/Course_Management"
+import CourseManagement from "@/api/CourseManagement"
 import {Role} from '@/entities/Role'
 
 import { ref,onMounted, computed } from 'vue';
@@ -179,7 +179,7 @@ export default {
         showingDeleteModal.value = false;
         let showingUnsavedChangesModal = ref(new Boolean());
         showingUnsavedChangesModal.value = false;
-        const course_management: Course_Management = new Course_Management();
+        const courseManagement: CourseManagement = new CourseManagement();
 
         course.value.lecturerId = store.state.myId;
         course.value.startDate = "2020-06-01";
@@ -192,8 +192,8 @@ export default {
         })
 
         function loadCourse () {
-            const course_management: Course_Management = new Course_Management();
-            course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
+            const courseManagement: CourseManagement = new CourseManagement();
+            courseManagement.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
                 course.value = v.course;
                 initialCourseState = JSON.parse(JSON.stringify(course.value));
                 if (!v.found) {
@@ -221,8 +221,8 @@ export default {
 
         function createCourse() {
             if(hasInput) { 
-                const course_management: Course_Management = new Course_Management();
-                course_management.createCourse(course.value).then(() => {
+                const courseManagement: CourseManagement = new CourseManagement();
+                courseManagement.createCourse(course.value).then(() => {
                     success.value = true;
                     navigateBack();
                 });
@@ -235,7 +235,7 @@ export default {
 
         function updateCourse() {
             if(hasInput) { 
-                course_management.updateCourse(course.value).then(() => {
+                courseManagement.updateCourse(course.value).then(() => {
                     success.value = true;
                     navigateBack();
                 });                
@@ -247,8 +247,8 @@ export default {
         }
         
         function deleteCourse() {
-            const courseManager: Course_Management = new Course_Management();
-            courseManager.deleteCourse(course.value.courseId).then(() => {
+            const courseManagement: CourseManagement = new CourseManagement();
+            courseManagement.deleteCourse(course.value.courseId).then(() => {
                 //todo check for success
                 navigateBack();
             });
