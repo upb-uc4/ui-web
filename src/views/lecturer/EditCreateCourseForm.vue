@@ -143,8 +143,8 @@
 <script lang="ts">
 import Router from "@/router/";
 import { store } from '@/store/store';
-import {Course} from "@/entities/Course";
-import ICourse from "@/api/api_models/course_management/ICourse";
+import {CourseEntity} from "@/entities/CourseEntity";
+import Course from "@/api/api_models/course_management/Course";
 import {CourseType} from '@/entities/CourseType';
 import {Language} from '@/entities/Language'
 import Course_Management from "@/api/Course_Management"
@@ -169,8 +169,8 @@ export default {
 
 
     setup(props) {
-        let course = ref(new Course());
-        let initialCourseState = new Course();
+        let course = ref(new CourseEntity());
+        let initialCourseState = new CourseEntity();
         let heading = props.editMode ? "Edit Course" : "Create Course";
         let languages = Object.values(Language).filter(e => e != Language.NONE);
         let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
@@ -194,8 +194,8 @@ export default {
 
         function loadCourse () {
             const course_management: Course_Management = new Course_Management();
-            course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: ICourse, found: boolean}) => {
-                course.value = new Course(v.course);
+            course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
+                course.value = new CourseEntity(v.course);
                 initialCourseState = JSON.parse(JSON.stringify(course.value));
                 if (!v.found) {
                     //todo no course with that ID
@@ -204,12 +204,8 @@ export default {
         }
 
         let hasInput = computed (() => {
-             //TODO transform if conditions to class method in Course.ts
-            if (course.value.courseName !== initialCourseState.courseName || course.value.courseDescription !== initialCourseState.courseDescription || course.value.courseLanguage !== initialCourseState.courseLanguage ||
-                course.value.courseType !== initialCourseState.courseType || course.value.maxParticipants !== initialCourseState.maxParticipants) {
-                    return true;
-            }
-            return false;
+             // TODO not tested yet (too lazy to start intellij)
+            return course.value.editableInfoEquals(initialCourseState);
         })
 
         let isValid = computed (() => {

@@ -1,14 +1,14 @@
 import Common from "./Common"
-import { Course } from "@/entities/Course"
-import ICourse from './api_models/course_management/ICourse';
+import { CourseEntity } from "@/entities/CourseEntity"
+import Course from './api_models/course_management/Course';
 
 export default class Course_Management extends Common {
     constructor() {
         super("/course-management");
      }
 
-    async getCourses(name?: string): Promise<ICourse[]> {
-        var courses: ICourse[] = [];
+    async getCourses(name?: string): Promise<Course[]> {
+        var courses: Course[] = [];
 
         //optional name to search by 
         if (name != undefined) {
@@ -36,8 +36,8 @@ export default class Course_Management extends Common {
         return courses;
     }
 
-    async getCourse(id: string): Promise<{course: ICourse, found: boolean}> {
-        var course: Course = new Course();
+    async getCourse(id: string): Promise<{course: Course, found: boolean}> {
+        var course: Course = new CourseEntity();
         var found: boolean = false;
         await this._axios.get(`/courses/${id}`, this._authHeader)
                     .then((response: any) => {
@@ -61,7 +61,7 @@ export default class Course_Management extends Common {
         return {course: course, found: found};
     }
 
-    async createCourse(course: ICourse) {
+    async createCourse(course: Course) {
         await this._axios.post("/courses", course, this._authHeader)
                     .then((response: any) => {
                         console.log(response)
@@ -77,7 +77,7 @@ export default class Course_Management extends Common {
                     });    
     }
 
-    async updateCourse(course: ICourse) {
+    async updateCourse(course: Course) {
         const id = course.courseId;
         await this._axios.put(`/courses/${id}`, course, this._authHeader)
                     .then((response: any) => {
