@@ -30,8 +30,8 @@
                 DELETE
             }
 
-            function show() {
-                return baseModal.value.show();
+            async function show() {
+                return await baseModal.value.show();
             }
 
             function close(action: action) {

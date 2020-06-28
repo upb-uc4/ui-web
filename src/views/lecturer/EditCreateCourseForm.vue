@@ -253,10 +253,11 @@
             async function confirmDeleteCourse() {
                 let modal = deleteModal.value;
                 let action = modal.action;
-                await modal.show()
+                modal.show()
                     .then((response: typeof action) => {
                         switch(response) {
                             case action.CANCEL: {
+                                //do nothing
                                 break;
                             }
                             case action.DELETE: {
@@ -306,7 +307,7 @@
             if (this.hasInput && !this.deleted) {
                 const modal = this.unsavedChangesModal;
                 let action = modal.action;
-                await modal.show()
+                modal.show()
                     .then((response: typeof action) => {
                     switch(response) {
                         case action.CANCEL: {
