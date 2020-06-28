@@ -11,8 +11,6 @@ const adminAuth = {username: "admin", password: "admin"};
 jest.setTimeout(30000);
 
 beforeAll(async () => {
-    // authentication_management = new Authentication_Management();
-    // await authentication_management.login(lecturerAuth);
     user_management = new User_Management();
     await user_management.login(adminAuth);
 })
