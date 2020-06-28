@@ -1,70 +1,20 @@
 import User_Management from "@/api/User_Management"
 import { Role } from '@/entities/Role'
 import { Account } from '@/entities/Account';
-import Authentication_Management from "@/api/Authentication_Management"
-import { Course } from '@/entities/Course';
-import { Language } from '@/entities/Language';
-import { CourseType } from '@/entities/CourseType';
 import Student from '@/api/api_models/user_management/Student';
 import Address from '@/api/api_models/user_management/Address';
 import User from '@/api/api_models/user_management/User';
 import { FieldOfStudy } from '@/api/api_models/user_management/FieldOfStudy';
 
-
-var authentication_management: Authentication_Management;
 var user_management : User_Management;
 const adminAuth = {username: "admin", password: "admin"};
-const studentAuth = {username: "student", password: "student"};
-const lecturerAuth = {username: "lecturer", password: "lecturer"};
-
+jest.setTimeout(30000);
 
 beforeAll(async () => {
-    authentication_management = new Authentication_Management();
-    await authentication_management.login(lecturerAuth);
+    // authentication_management = new Authentication_Management();
+    // await authentication_management.login(lecturerAuth);
     user_management = new User_Management();
-})
-
-test("Get all users", async () => {
-    setTimeout(async () => {
-        const users = await user_management.getAllUsers();
-        var result = true;
-        result = result && users.admins.filter((admin) => admin.username === "admin").length == 1
-        result = result && users.students.filter((student) => student.username === "student").length == 1
-        result = result && users.lecturers.filter((lecturer) => lecturer.username === "lecturer").length == 1
-        expect(result).toBe(true)
-    }, 10000)
-})
-
-test("Get all students", async () => {
-    setTimeout(async () => {
-        const users = await user_management.getAllUsersByRole(Role.STUDENT);
-        var result = users.filter((student) => student.username === "student").length == 1
-        expect(result).toBe(true)
-    }, 10000)    
-})
-
-test("Get all lecturers", async () => {
-    setTimeout(async () => {
-        const users = await user_management.getAllUsersByRole(Role.LECTURER);
-        var result = users.filter((admin) => admin.username === "admin").length == 1
-        expect(result).toBe(true)
-    }, 10000)    
-})
-
-test("Get all admins", async () => {
-    setTimeout(async () => {
-        const users = await user_management.getAllUsersByRole(Role.ADMIN);
-        var result = users.filter((lecturer) => lecturer.username === "lecturer").length == 1
-        expect(result).toBe(true)
-    }, 10000)    
-})
-
-test("Get specific user", async () => {
-    setTimeout(async () => {
-        const user = await user_management.getSpecificUser("student");
-        var result = user.username == "student";
-        expect(result).toBe(true)
-    }, 10000)    
+    await user_management.login(adminAuth);
 })
 
 var authUser: Account = {
@@ -108,15 +58,36 @@ test("Create user", async () => {
     expect(success).toBe(true);
 })
 
-test("Update user", async () => {
-    student.immatriculationStatus = "Is a Jedi Master"
-    const success = await user_management.updateUser(student)
+test("Get specific user", async () => {
+    await new Promise((r) => setTimeout(r, 10000));
+    var result = false;
+    const user = await user_management.getSpecificUser(student.username);
+    result = (user.firstName == student.firstName);
+    expect(result).toBe(true)  
 })
 
+test("Get all users", async () => {
+    const users = await user_management.getAllUsers();
+    let result = true;
+    result = result && users.students.length > 0
+    expect(result).toBe(true)
+})
+
+test("Get all students", async () => {
+    const users = await user_management.getAllUsersByRole(Role.STUDENT);
+    let result = users.length > 0
+    expect(result).toBe(true)   
+})
+
+test("Update user", async () => {
+    await new Promise((r) => setTimeout(r, 5000));
+    student.immatriculationStatus = "Is a Jedi Master";
+    const success = await user_management.updateUser(student);
+    expect(success).toBe(true);
+})
 
 test("Delete user", async () => {
-    setTimeout(async () => {
-        const success = await user_management.deleteUser("testUser")
-        expect(success).toBe(true);
-    }, 10000)
+    await new Promise((r) => setTimeout(r, 5000));
+    const success = await user_management.deleteUser(student.username)
+    expect(success).toBe(true);
 })
