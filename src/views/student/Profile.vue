@@ -1,11 +1,15 @@
 <template>
-    <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
+    <div class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
         <button @click="back" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">Max Mustermann's Profile</h1>
+        <div class="flex items-end justify-between">
+            <h1 class="text-2xl font-medium text-gray-700 mb-8">Max Mustermann's Profile</h1>
+            <img class="w-32 h-32 mb-4 rounded-full object-cover"
+                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU">
+        </div>
 
         <div>
             <section class="border-t-2 py-8 border-gray-400">
