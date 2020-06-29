@@ -127,13 +127,10 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Adress 
                             </label>
-                            <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-input" 
+                            <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-select" 
 							name="country" id="country"
 							v-model="account.user.address.country">
-                                <!-- TODO: create Options via country enum -->
-                                <option value="Germany">Germany</option>
-                                <option value="United States">United States</option>
-								<option value="Country">Country</option>
+                                <option v-for="country in countries" :key="country">{{ country }}</option>
                             </select>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2 mb-4">
@@ -221,7 +218,6 @@
                                     <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-input" 
 									name="country" id="country"
 									v-model="account.student.fieldsOfStudy[0]">
-									<!-- TODO: create Options via country enum -->
 									<option v-for="field in fieldsOfStudyList" :key="field">{{ field }}</option>
 									</select>
                                 </div>
@@ -282,6 +278,7 @@ import Admin from '../../api/api_models/user_management/Admin';
 import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
+import { Country } from '../../entities/Country';
 
 
 export default {
@@ -309,6 +306,7 @@ export default {
         success.value = false;
 		let roles = Object.values(Role).filter(e => e!=Role.NONE);
         let fieldsOfStudyList = Object.values(FieldOfStudy);
+        let countries = Object.values(Country).filter(e => e!= Country.NONE);
         let unsavedChangesModal = ref();
 		
 		
@@ -413,7 +411,8 @@ export default {
         return {
             account,
             success,
-			roles,
+            roles,
+            countries,
 			updatePicture,
 			isLecturer,
 			isStudent,
