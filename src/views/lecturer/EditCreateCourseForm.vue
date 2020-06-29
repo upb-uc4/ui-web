@@ -99,7 +99,7 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" @click="showDeleteModal" type="button" class="w-32 btn btn-red-secondary">
+                        <button v-if="editMode" @click="confirmDeleteCourse" type="button" class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
@@ -128,187 +128,204 @@
                     <button v-else :disabled="!hasInput" @click="createCourse" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
-                    <button @click="showDeleteModal" class="w-full btn btn-red-secondary">
+                    <button @click="confirmDeleteCourse" class="w-full btn btn-red-secondary">
                         Delete
                     </button>
                 </div>
             </section>
 
-        <delete-course-modal :showing="showingDeleteModal" v-on:cancel="hideDeleteModal" v-on:delete="deleteCourse"/>
-        <unsaved-changes-modal :showing="showingUnsavedChangesModal" v-on:cancel="hideUnsavedChangesModal" v-on:confirm="navigateBack"/>
+            <delete-course-modal ref="deleteModal"/>
+            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import Router from "@/router/";
-import { store } from '@/store/store';
-import {Course} from "@/entities/Course";
-import ICourse from "@/api/api_models/course_management/ICourse";
-import {CourseType} from '@/entities/CourseType';
-import {Language} from '@/entities/Language'
-import Course_Management from "@/api/Course_Management"
-import {Role} from '@/entities/Role'
+    import Router from "@/router/";
+    import { store } from '@/store/store';
+    import {Course} from "@/entities/Course";
+    import {CourseType} from '@/entities/CourseType';
+    import {Language} from '@/entities/Language'
+    import Course_Management from "@/api/Course_Management"
+    import {Role} from '@/entities/Role'
+    import ICourse from "@/api/api_models/course_management/ICourse";
+    import { ref,onMounted, computed } from 'vue';
+    import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
+    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
-import { ref,onMounted, computed } from 'vue';
-import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
-
-export default {
-    name: "LecturerCreateCourseForm",
-    props: { 
-        editMode:{
-          type: Boolean,
-          required: true
-          }
+    export default {
+        name: "LecturerCreateCourseForm",
+        props: {
+            editMode:{
+                type: Boolean,
+                required: true
+            }
         },
-    components: {
-        DeleteCourseModal,
-        UnsavedChangesModal,
-    },
+        components: {
+            DeleteCourseModal,
+            UnsavedChangesModal,
+        },
 
-
-    setup(props) {
-        let course = ref(new Course());
-        let initialCourseState = new Course();
-        let heading = props.editMode ? "Edit Course" : "Create Course";
-        let languages = Object.values(Language).filter(e => e != Language.NONE);
-        let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
-        let success = ref(new Boolean());
-        success.value = false;
-        let showingDeleteModal = ref(new Boolean());
-        showingDeleteModal.value = false;
-        let showingUnsavedChangesModal = ref(new Boolean());
-        showingUnsavedChangesModal.value = false;
-        const course_management: Course_Management = new Course_Management();
-
-        course.value.lecturerId = store.state.myId;
-        course.value.startDate = "2020-06-01";
-        course.value.endDate = "2020-08-31";
-
-        onMounted( () => {
-            if(props.editMode) {
-                loadCourse();
-            }
-        })
-
-        function loadCourse () {
+        setup(props: any) {
+            let course = ref(new Course());
+            let initialCourseState = new Course();
+            let heading = props.editMode ? "Edit Course" : "Create Course";
+            let languages = Object.values(Language).filter(e => e != Language.NONE);
+            let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
+            let success = ref(new Boolean());
+            success.value = false;
             const course_management: Course_Management = new Course_Management();
-            course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: ICourse, found: boolean}) => {
-                course.value = new Course(v.course);
-                initialCourseState = JSON.parse(JSON.stringify(course.value));
-                if (!v.found) {
-                    //todo no course with that ID
+            let unsavedChangesModal = ref();
+            let deleteModal = ref();
+
+            course.value.lecturerId = store.state.myId;
+            course.value.startDate = "2020-06-01";
+            course.value.endDate = "2020-08-31";
+
+            onMounted( () => {
+                if(props.editMode) {
+                    loadCourse();
                 }
-            });
-        }
+            })
 
-        let hasInput = computed (() => {
-             //TODO transform if conditions to class method in Course.ts
-            if (course.value.courseName !== initialCourseState.courseName || course.value.courseDescription !== initialCourseState.courseDescription || course.value.courseLanguage !== initialCourseState.courseLanguage ||
-                course.value.courseType !== initialCourseState.courseType || course.value.maxParticipants !== initialCourseState.maxParticipants) {
-                    return true;
-            }
-            return false;
-        })
-
-        let isValid = computed (() => {
-            if(course.value.courseName == "" || course.value.courseLanguage != Language.NONE ||
-            course.value.courseType != CourseType.NONE || course.value.maxParticipants == 0) {
-                return false;
-            }
-            return true;
-        })
-
-        function createCourse() {
-            if(hasInput) { 
+            function loadCourse () {
                 const course_management: Course_Management = new Course_Management();
-                course_management.createCourse(course.value).then(() => {
-                    success.value = true;
-                    navigateBack();
+                course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
+                    course.value = v.course;
+                    initialCourseState = JSON.parse(JSON.stringify(course.value));
+                    if (!v.found) {
+                        //todo no course with that ID
+                    }
                 });
             }
-            else {
-                success.value = false;
-                console.log("Error: Input Validation Failed!")
-            }
-        } 
 
-        function updateCourse() {
-            if(hasInput) { 
-                course_management.updateCourse(course.value).then(() => {
-                    success.value = true;
-                    navigateBack();
-                });                
+            let hasInput = computed (() => {
+                //TODO transform if conditions to class method in Course.ts
+                if (course.value.courseName !== initialCourseState.courseName || course.value.courseDescription !== initialCourseState.courseDescription || course.value.courseLanguage !== initialCourseState.courseLanguage ||
+                    course.value.courseType !== initialCourseState.courseType || course.value.maxParticipants !== initialCourseState.maxParticipants) {
+                    return true;
+                }
+                return false;
+            })
+
+            let isValid = computed (() => {
+                if(course.value.courseName == "" || course.value.courseLanguage != Language.NONE ||
+                    course.value.courseType != CourseType.NONE || course.value.maxParticipants == 0) {
+                    return false;
+                }
+                return true;
+            })
+
+            function createCourse() {
+                if(hasInput) {
+                    const course_management: Course_Management = new Course_Management();
+                    course_management.createCourse(course.value).then(() => {
+                        success.value = true;
+                        Router.back();
+                    });
+                }
+                else {
+                    success.value = false;
+                    console.log("Error: Input Validation Failed!")
+                }
             }
-            else {
-                success.value = false;
-                console.log("Error: Input Validation Failed!")
+
+            function updateCourse() {
+                if(hasInput) {
+                    course_management.updateCourse(course.value).then(() => {
+                        success.value = true;
+                        Router.back();
+                    });
+                }
+                else {
+                    success.value = false;
+                    console.log("Error: Input Validation Failed!")
+                }
             }
-        }
-        
-        function deleteCourse() {
-            const courseManager: Course_Management = new Course_Management();
-            courseManager.deleteCourse(course.value.courseId).then(() => {
-                //todo check for success
-                navigateBack();
-            });
-        }
-        function showDeleteModal() {
-            showingDeleteModal.value = true;
-        }
-        function hideDeleteModal() {
-            showingDeleteModal.value = false;
-        }
-        function showUnsavedChangesModal() {
-            showingUnsavedChangesModal.value = true;
-        }
-        function hideUnsavedChangesModal() {
-            showingUnsavedChangesModal.value = false;
-        }
-        
-        function back() {
-            if (hasInput.value) {
-                showUnsavedChangesModal();
+
+            function deleteCourse() {
+                const courseManager: Course_Management = new Course_Management();
+                courseManager.deleteCourse(course.value.courseId).then(() => {
+                    //todo check for success
+                    Router.back();
+                });
+            }
+            async function confirmDeleteCourse() {
+                let modal = deleteModal.value;
+                let action = modal.action;
+                modal.show()
+                    .then((response: typeof action) => {
+                        switch(response) {
+                            case action.CANCEL: {
+                                //do nothing
+                                break;
+                            }
+                            case action.DELETE: {
+                                deleteCourse();
+                                break;
+                            }
+                        }
+                    });
+            }
+
+            function back() {
+                Router.back();
+            }
+
+            return {
+                course,
+                initialCourseState,
+                heading,
+                languages,
+                courseTypes,
+                success,
+                hasInput,
+                isValid,
+                back,
+                loadCourse,
+                createCourse,
+                updateCourse,
+                deleteCourse,
+                confirmDeleteCourse,
+                unsavedChangesModal,
+                deleteModal
+            }
+        },
+
+        beforeRouteEnter(_from: any, _to: any, next: any) {
+            const myRole = store.state.myRole;
+            if (myRole != Role.LECTURER) {
+                return next("/redirect");
+            }
+            return next();
+        },
+
+        async beforeRouteLeave(_from: any, _to: any, next: any) {
+            if (this.success) {
+                return next();
+            }
+            if (this.hasInput && !this.deleted) {
+                const modal = this.unsavedChangesModal;
+                let action = modal.action;
+                modal.show()
+                    .then((response: typeof action) => {
+                    switch(response) {
+                        case action.CANCEL: {
+                            next(false);
+                            break;
+                        }
+                        case action.CONFIRM: {
+                            next(true);
+                            break;
+                        }
+                        default: {
+                            next(true);
+                        }
+                    }
+                })
             } else {
-                Router.go(-1);
+                next(true);
             }
         }
-
-        function navigateBack() {
-             Router.go(-1);
-        }
-
-        return {
-            course,
-            initialCourseState,
-            heading,
-            languages,
-            courseTypes,
-            success,
-            showingDeleteModal,
-            showingUnsavedChangesModal,
-            hasInput, 
-            isValid,
-            back, 
-            navigateBack,
-            loadCourse,
-            createCourse,
-            updateCourse,
-            deleteCourse,
-            showDeleteModal, 
-            hideDeleteModal,
-            showUnsavedChangesModal,
-            hideUnsavedChangesModal,
-        }
-    },
-    
-    beforeRouteEnter(_from: any, _to: any, next: any) {
-        const myRole = store.state.myRole;
-        if (myRole != Role.LECTURER) {
-            return next("/redirect");
-		}
-		return next();
-    },
-};
+    };
 </script>
