@@ -130,6 +130,7 @@
                             <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-select" 
 							name="country" id="country"
 							v-model="account.user.address.country">
+                                <option :value="''" >Select a Country</option>
                                 <option v-for="country in countries" :key="country">{{ country }}</option>
                             </select>
                             <div class="flex flex-row ">
@@ -206,7 +207,7 @@
 										v-model="account.student.immatriculationStatus">
                         </div>
                         <div class="mb-4 flex flex-col">
-                           <input type="number" id="matriculationId" name="matriculationId"
+                           <input type="text" id="matriculationId" name="matriculationId"
                                         class="w-1/4 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Matriculation-ID"
 										v-model="account.student.matriculationId">
@@ -215,9 +216,10 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
 							<div class="flex flex-row ">
                                  <div class="w-full pr-2">
-                                    <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-input" 
+                                    <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
 									name="country" id="country"
 									v-model="account.student.fieldsOfStudy[0]">
+                                    <option :value="undefined">Select a Field of Study</option>
 									<option v-for="field in fieldsOfStudyList" :key="field">{{ field }}</option>
 									</select>
                                 </div>
@@ -319,6 +321,7 @@ export default {
 		})
 
 		function updatePicture() {
+            //TODO
 			console.log(account)
 		}
 
