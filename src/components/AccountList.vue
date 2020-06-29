@@ -8,22 +8,18 @@
                     <th>Matriculation Number</th>
                     <th>Lastname</th>
                     <th>Firstname</th>
-                    <th>Actions</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                 <tr class="bg-gray-100 hover:bg-gray-300 cursor-pointer" v-for="account in accounts" :key="account.username">
-                    <td class="px-4 py-2 border border-black text-center" @dblclick="showAccount">{{account.username}}</td>
-                    <td class="px-4 py-2 border border-black text-center" @dblclick="showAccount">{{account.role}}</td>
-                    <td class="px-4 py-2 border border-black text-center" @dblclick="showAccount">{{account.matNr}}</td>
-                    <td class="px-4 py-2 border border-black text-center" @dblclick="showAccount">{{account.lastname}}</td>
-                    <td class="px-4 py-2 border border-black text-center" @dblclick="showAccount">{{account.firstname}}</td>
+                 <tr class="bg-gray-100 hover:bg-gray-300 cursor-pointer scrolling-auto" v-for="account in accounts" :key="account.username">
+                    <td class="px-4 py-2 border border-black text-center" @dblclick="editAccount">{{account.username}}</td>
+                    <td class="px-4 py-2 border border-black text-center" @dblclick="editAccount">{{account.role}}</td>
+                    <td class="px-4 py-2 border border-black text-center" @dblclick="editAccount">{{account.matNr}}</td>
+                    <td class="px-4 py-2 border border-black text-center" @dblclick="editAccount">{{account.lastname}}</td>
+                    <td class="px-4 py-2 border border-black text-center" @dblclick="editAccount">{{account.firstname}}</td>
                     <td class="px-4 py-2 border border-black">
                         <div class="flex">
-                            <button @click="showAccount" title="Show Details" 
-                                class="w-full m-1 bg-gray-100 text-gray-700 hover:text-white hover:bg-blue-800 rounded-lg border border-blue-800"> 
-                                <i class="inline fas fa-info text-lg"></i>
-                            </button>
                             <button @click="editAccount" title="Edit Account" 
                                 class="w-full m-1 bg-gray-100 text-gray-700 hover:text-white hover:bg-blue-800 rounded-lg border border-blue-800"> 
                                 <i class="inline fas fa-pencil-alt text-lg"></i>
@@ -68,14 +64,9 @@ export default {
         console.log("Edit Me!")
     }
 
-     function showAccount() {
-          //TODO open account details page
-        console.log("Show Me!")
-    }
     return {
         accounts,
         editAccount,
-        showAccount,
     };
   },
 };
