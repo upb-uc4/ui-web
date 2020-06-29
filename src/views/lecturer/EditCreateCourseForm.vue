@@ -148,7 +148,7 @@
     import {Language} from '@/entities/Language'
     import Course_Management from "@/api/Course_Management"
     import {Role} from '@/entities/Role'
-
+    import ICourse from "@/api/api_models/course_management/ICourse";
     import { ref,onMounted, computed } from 'vue';
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";

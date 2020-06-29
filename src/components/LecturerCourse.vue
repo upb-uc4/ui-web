@@ -34,6 +34,7 @@
 import ReadMore from "./ReadMore.vue";
 import router from '../router';
 import { Course } from '../entities/Course';
+import ICourse from '@/api/api_models/course_management/ICourse';
 
 export default {
     name: "LecturerCourse",
@@ -42,7 +43,7 @@ export default {
     },
     props: {
         course: {
-            type: Course,
+            type: Object as () => ICourse,
             required: true
         }
     },
