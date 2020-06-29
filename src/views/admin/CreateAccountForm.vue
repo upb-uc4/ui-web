@@ -268,8 +268,9 @@
 import Router from "@/router/";
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
-import { computed, reactive } from 'vue';
+import { reactive, computed } from 'vue';
 import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
+import UserManagement from "@/api/UserManagement"
 
 export default {
     name: "AdminCreateAccountForm",
@@ -366,8 +367,8 @@ export default {
 		
         function createAccount() {
              if(isValid()) {    
+                const userManagement: UserManagement = new UserManagement();
 				//TODO create account obejct based on given role and call the method in authenication management
-				
 				navigateBack();
             }
             else {

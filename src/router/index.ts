@@ -1,4 +1,3 @@
-import { Course } from './../entities/Course';
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
