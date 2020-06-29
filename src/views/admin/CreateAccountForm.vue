@@ -260,6 +260,8 @@
                     Create Account
                 </button>
             </section>
+            
+            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
@@ -279,10 +281,14 @@ import { Account } from '../../entities/Account';
 import Admin from '../../api/api_models/user_management/Admin';
 import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
+import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
 
 export default {
     name: "AdminCreateAccountForm",
+    components: {
+        UnsavedChangesModal,
+    },
     props: {
 
     },
@@ -302,7 +308,8 @@ export default {
         let success = ref(new Boolean());
         success.value = false;
 		let roles = Object.values(Role).filter(e => e!=Role.NONE);
-		let fieldsOfStudyList = Object.values(FieldOfStudy);
+        let fieldsOfStudyList = Object.values(FieldOfStudy);
+        let unsavedChangesModal = ref();
 		
 		
 		let isLecturer = computed(() => {
@@ -341,7 +348,7 @@ export default {
         let hasInput = computed(() => {
 			if(	account.user.role != Role.NONE || account.user.username != "" || account.user.email != "" || account.authUser.password != "" ||
 				account.user.firstName != "" || account.user.lastName != "" || account.birthdate.day != "" || account.birthdate.month != "" || 
-				account.birthdate.year != "" || account.user.address.country != "Country" || account.user.address.street != "" ||
+				account.birthdate.year != "" || account.user.address.country != "" || account.user.address.street != "" ||
 				account.user.address.houseNumber != "" || account.user.address.zipCode != "" || account.user.address.city != "") {
                 return true;
 			}
@@ -414,7 +421,8 @@ export default {
 			hasInput,
             isValid,
             navigateBack,
-			createAccount 
+            createAccount,
+            unsavedChangesModal
         }
     },
 
@@ -431,17 +439,28 @@ export default {
         if (this.success) {
             return next();
         }
-        else if (this.hasInput) {
-            const answer = window.confirm('Do you really want to leave? You have unsaved changes!')
-            if (answer) {
-                return next()
-            } else {
-                return next(false)
-            }
-        }
-        else {
-            return next()
-        }
+        if (this.hasInput) {
+                const modal = this.unsavedChangesModal;
+                let action = modal.action;
+                modal.show()
+                    .then((response: typeof action) => {
+                        switch(response) {
+                            case action.CANCEL: {
+                                next(false);
+                                break;
+                            }
+                            case action.CONFIRM: {
+                                next(true);
+                                break;
+                            }
+                            default: {
+                                next(true);
+                            }
+                        }
+                    })
+        } else {
+            next(true);
+       }
     }
 };
 </script>
