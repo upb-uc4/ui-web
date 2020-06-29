@@ -12,7 +12,8 @@ jest.setTimeout(30000);
 
 beforeAll(async () => {
     userManagement = new UserManagement();
-    await userManagement.login(adminAuth);
+    const success = await userManagement.login(adminAuth);
+    expect(success).toBe(true);
 })
 
 var authUser: Account = {

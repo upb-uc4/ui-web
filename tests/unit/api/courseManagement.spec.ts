@@ -1,7 +1,8 @@
 import CourseManagement from "@/api/CourseManagement"
 import { Role } from '@/entities/Role'
 import { Account } from '@/entities/Account';
-import { Course } from '@/entities/Course';
+import  { CourseEntity } from '@/entities/CourseEntity';
+import Course from "@/api/api_models/course_management/Course"
 import { Language } from '@/entities/Language';
 import { CourseType } from '@/entities/CourseType';
 import UserManagement from '@/api/UserManagement';
@@ -12,13 +13,14 @@ var courseManagement : CourseManagement;
 const adminAuth = {username: "admin", password: "admin"};
 const studentAuth = {username: "student", password: "student"};
 const lecturerAuth = {username: "lecturer", password: "lecturer"};
-var course = new Course();
+var course = new CourseEntity();
 var createdCourse: Course = {} as Course;
 jest.useFakeTimers();
 
 beforeAll(async () => {
     userManagement = new UserManagement();
-    await userManagement.login(lecturerAuth);
+    const success = await userManagement.login(lecturerAuth);
+    expect(success).toBe(true);
     courseManagement = new CourseManagement();
 })
 

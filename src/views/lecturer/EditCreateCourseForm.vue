@@ -143,12 +143,12 @@
 <script lang="ts">
     import Router from "@/router/";
     import { store } from '@/store/store';
-    import {Course} from "@/entities/Course";
+    import {CourseEntity} from "@/entities/CourseEntity";
     import {CourseType} from '@/entities/CourseType';
     import {Language} from '@/entities/Language'
     import CourseManagement from "@/api/CourseManagement"
     import {Role} from '@/entities/Role'
-    import ICourse from "@/api/api_models/course_management/ICourse";
+    import Course from "@/api/api_models/course_management/Course";
     import { ref,onMounted, computed } from 'vue';
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
@@ -167,8 +167,8 @@
         },
 
         setup(props: any) {
-            let course = ref(new Course());
-            let initialCourseState = new Course();
+            let course = ref(new CourseEntity());
+            let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
             let languages = Object.values(Language).filter(e => e != Language.NONE);
             let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
@@ -189,22 +189,19 @@
 
             function loadCourse () {
                 const courseManagement: CourseManagement = new CourseManagement();
-                courseManagement.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: ICourse, found: boolean}) => {
-                    course.value = new Course(v.course);
+                courseManagement.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
+                    course.value = new CourseEntity(v.course);
                     initialCourseState = JSON.parse(JSON.stringify(course.value));
                     if (!v.found) {
                         //todo no course with that ID
                     }
                 });
             }
+        
 
             let hasInput = computed (() => {
-                //TODO transform if conditions to class method in Course.ts
-                if (course.value.courseName !== initialCourseState.courseName || course.value.courseDescription !== initialCourseState.courseDescription || course.value.courseLanguage !== initialCourseState.courseLanguage ||
-                    course.value.courseType !== initialCourseState.courseType || course.value.maxParticipants !== initialCourseState.maxParticipants) {
-                    return true;
-                }
-                return false;
+                 // TODO not tested yet (too lazy to start intellij)
+                return !course.value.editableInfoEquals(initialCourseState);
             })
 
             let isValid = computed (() => {
