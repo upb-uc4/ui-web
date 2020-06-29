@@ -33,7 +33,7 @@ export default {
         let courseManagement: CourseManagement = new CourseManagement();
         let myId = store.state.myId;
 
-        await course_management.getCourses().then((response : ICourse[]) => {
+        await courseManagement.getCourses().then((response : ICourse[]) => {
             courses = response;
         })
         
