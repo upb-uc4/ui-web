@@ -70,8 +70,6 @@ export class CourseEntity implements Course {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof CourseEntity))
-            return false;
         
         const course: Course = obj as Course;
         let equal: boolean = true;

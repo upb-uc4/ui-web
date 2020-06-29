@@ -12,7 +12,7 @@ import { store } from "../store/store"
 import { Role } from "@/entities/Role"
 import LecturerCourse from "./LecturerCourse.vue";
 import StudentCourse from "./StudentCourse.vue";
-import Course_Management from "@/api/Course_Management";
+import CourseManagement from "@/api/CourseManagement";
 // eslint-disable-next-line no-unused-vars
 import { CourseEntity } from "@/entities/CourseEntity"
 import Course from '@/api/api_models/course_management/Course';
@@ -30,10 +30,10 @@ export default {
         let roles = Object.values(Role).filter(e => e != Role.NONE);
         let isLecturer: boolean = (role == Role.LECTURER);
         let isStudent: boolean = (role == Role.STUDENT);
-        let course_management: Course_Management = new Course_Management();
+        let courseManagement: CourseManagement = new CourseManagement();
         let myId = store.state.myId;
 
-        await course_management.getCourses().then((response : Course[]) => {
+        await courseManagement.getCourses().then((response : Course[]) => {
             courses = response;
         })
         

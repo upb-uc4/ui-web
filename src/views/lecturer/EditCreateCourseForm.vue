@@ -146,7 +146,7 @@
     import {CourseEntity} from "@/entities/CourseEntity";
     import {CourseType} from '@/entities/CourseType';
     import {Language} from '@/entities/Language'
-    import Course_Management from "@/api/Course_Management"
+    import CourseManagement from "@/api/CourseManagement"
     import {Role} from '@/entities/Role'
     import Course from "@/api/api_models/course_management/Course";
     import { ref,onMounted, computed } from 'vue';
@@ -174,7 +174,7 @@
             let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
             let success = ref(new Boolean());
             success.value = false;
-            const course_management: Course_Management = new Course_Management();
+            const courseManagement: CourseManagement = new CourseManagement();
             let unsavedChangesModal = ref();
             let deleteModal = ref();
             course.value.lecturerId = store.state.myId;
@@ -188,8 +188,8 @@
             })
 
             function loadCourse () {
-                const course_management: Course_Management = new Course_Management();
-                course_management.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
+                const courseManagement: CourseManagement = new CourseManagement();
+                courseManagement.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
                     course.value = new CourseEntity(v.course);
                     initialCourseState = JSON.parse(JSON.stringify(course.value));
                     if (!v.found) {
@@ -201,7 +201,7 @@
 
             let hasInput = computed (() => {
                  // TODO not tested yet (too lazy to start intellij)
-                return course.value.editableInfoEquals(initialCourseState);
+                return !course.value.editableInfoEquals(initialCourseState);
             })
 
             let isValid = computed (() => {
@@ -214,8 +214,8 @@
 
             function createCourse() {
                 if(hasInput) {
-                    const course_management: Course_Management = new Course_Management();
-                    course_management.createCourse(course.value).then(() => {
+                    const courseManagement: CourseManagement = new CourseManagement();
+                    courseManagement.createCourse(course.value).then(() => {
                         success.value = true;
                         Router.back();
                     });
@@ -228,7 +228,7 @@
 
             function updateCourse() {
                 if(hasInput) {
-                    course_management.updateCourse(course.value).then(() => {
+                    courseManagement.updateCourse(course.value).then(() => {
                         success.value = true;
                         Router.back();
                     });
@@ -240,12 +240,14 @@
             }
 
             function deleteCourse() {
-                const courseManager: Course_Management = new Course_Management();
-                courseManager.deleteCourse(course.value.courseId).then(() => {
+                const courseManagement: CourseManagement = new CourseManagement();
+                courseManagement.deleteCourse(course.value.courseId).then(() => {
                     //todo check for success
+                    success.value = true;
                     Router.back();
                 });
             }
+
             async function confirmDeleteCourse() {
                 let modal = deleteModal.value;
                 let action = modal.action;
@@ -300,7 +302,7 @@
             if (this.success) {
                 return next();
             }
-            if (this.hasInput && !this.deleted) {
+            if (this.hasInput) {
                 const modal = this.unsavedChangesModal;
                 let action = modal.action;
                 modal.show()
