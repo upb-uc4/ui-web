@@ -44,7 +44,7 @@
     import Router from "@/router/";
     import { store } from "../../store/store";
     import { Role } from "../../entities/Role";
-    import Authentication_Management from "@/api/Authentication_Management"
+    import UserManagement from "@/api/UserManagement"
     import { ref } from 'vue';
 
     export default {
@@ -78,9 +78,9 @@
 
             function login() {
                 const username = email.value;
-                const authentication_management: Authentication_Management = new Authentication_Management();
+                const userManagement: UserManagement = new UserManagement();
 
-                authentication_management.login({username: username, password: password.value})
+                userManagement.login({username: username, password: password.value})
                     .then((success : boolean)=> {
                         if (success) {
                             store.state.myId = username;

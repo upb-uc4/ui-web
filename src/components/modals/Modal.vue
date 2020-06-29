@@ -1,7 +1,7 @@
 <template>
     <teleport to="#modal-wrapper">
         <transition name="fade">
-            <div v-show="showing" class="fixed w-full h-full top-0 left-0 flex items-center justify-center">
+            <div v-show="isVisible" class="fixed w-full h-full top-0 left-0 flex items-center justify-center">
                 <div class="absolute w-full h-full bg-gray-900 opacity-25"/>
 
                 <div class="bg-white w-full -mt-32 md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto rounded-lg shadow-xl z-50 overflow-y-auto">
@@ -22,7 +22,6 @@
 
                     <div class="bg-gray-200 h-20 flex items-center justify-end">
                         <div class="flex justify-end mr-10">
-                            <button class="mr-10 btn-tertiary" @click="$emit('cancel')">Cancel</button>
                             <slot name="footer"></slot>
                         </div>
                     </div>
@@ -33,15 +32,35 @@
 </template>
 
 <script lang="ts">
-export default {
-    emits: ['cancel'],
-    props: {
-        showing: {
-            required: true,
-            type: Boolean,
+    import {ref} from "vue";
+
+    export default {
+        props: {
+            action: {
+                required: true
+            }
+        },
+        emits: ['cancel'],
+        setup(props: any) {
+            const isVisible = ref(false);
+
+            let promiseResolve: (action : typeof props.action) => void = () => {return};
+
+            function show() {
+                isVisible.value = true;
+                return new Promise(function(resolve) {
+                    promiseResolve = resolve;
+                });
+            }
+
+            function close(action: typeof props.action) {
+                isVisible.value = false;
+                promiseResolve(action);
+            }
+
+            return {isVisible, show, close}
         }
-    },
-}
+    }
 </script>
 
 <style scoped>
