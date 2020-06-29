@@ -18,7 +18,7 @@
                         <div class="mb-4 flex">
                              <div class="mr-4 mb-3" v-for="role in roles" :key="role">
                                 <label class="flex items-center" >
-                                    <input type="radio" class="form-radio radio" name="role" :value="role" v-model="account.role">
+                                    <input type="radio" class="form-radio radio" name="role" :value="role" v-model="account.user.role">
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                 </label>
                             </div>
@@ -42,14 +42,14 @@
                             <input type="text" id="userName" name="username"
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                 placeholder="Username"
-                                v-model="account.username">
+                                v-model="account.user.username">
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
                             <input type="text" id="email" name="email"
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                 placeholder="Email"
-								v-model="account.email"
+								v-model="account.user.email"
                                 >
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -59,7 +59,7 @@
                             <input type="text" id="password" name="password"
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                 placeholder="Password"
-                                v-model="account.password">
+                                v-model="account.authUser.password">
                         </div>
                     </div>
                 </div>
@@ -83,14 +83,14 @@
                                     <input type="text" id="firstName" name="firstName"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Firstname"
-										v-model="account.firstName"
+										v-model="account.user.firstName"
                                         >
                                 </div>
                                 <div class="w-full pl-2">
                                     <input type="text" id="lastName" name="lastName"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Lastname"
-										v-model="account.lastName"
+										v-model="account.user.lastName"
                                         >
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                             </label>
                             <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-input" 
 							name="country" id="country"
-							v-model="account.address.country">
+							v-model="account.user.address.country">
                                 <!-- TODO: create Options via country enum -->
                                 <option value="Germany">Germany</option>
                                 <option value="United States">United States</option>
@@ -140,27 +140,27 @@
                                     <input type="text" id="street" name="street"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Street"
-										v-model="account.address.street">
+										v-model="account.user.address.street">
                                 </div>
                                 <div class="pl-2">
-                                    <input type="number" id="number" name="number"
+                                    <input type="text" id="number" name="number"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Number"
-										v-model="account.address.houseNumber">
+										v-model="account.user.address.houseNumber">
                                 </div>
                             </div>
                             <div class="flex flex-row ">
                                 <div class="pr-2">
-                                    <input type="number" id="zipcode" name="zipcode"
+                                    <input type="text" id="zipcode" name="zipcode"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Zip Code"
-										v-model="account.address.zipCode">
+										v-model="account.user.address.zipCode">
                                 </div>
                                  <div class="w-full pl-2">
                                     <input type="text" id="city" name="city"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="City"
-										v-model="account.address.city">
+										v-model="account.user.address.city">
                                 </div>
                             </div>
                         </div>
@@ -180,13 +180,13 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Description</label>
                            <textarea name="description" id="description" cols="30" rows="5" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
-								v-model="account.lecturerInfo.freeText">
+								v-model="account.lecturer.freeText">
                             </textarea>
                         </div>
                         <div class="mb-4 flex flex-col">
                            <textarea name="researchField" id="researchField" cols="30" rows="3" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
-								v-model="account.lecturerInfo.researchArea">>
+								v-model="account.lecturer.researchArea">>
                             </textarea>
                         </div>
                     </div>
@@ -206,13 +206,13 @@
                             <input type="text" id="immatriculationStatus" name="immatriculationStatus"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Immatriculation Status"
-										v-model="account.studentInfo.immatriculationStatus">
+										v-model="account.student.immatriculationStatus">
                         </div>
                         <div class="mb-4 flex flex-col">
                            <input type="number" id="matriculationId" name="matriculationId"
                                         class="w-1/4 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Matriculation-ID"
-										v-model="account.studentInfo.matriculationId">
+										v-model="account.student.matriculationId">
                         </div>
 						<div class="mb-4 mt-8 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
@@ -220,7 +220,7 @@
                                  <div class="w-full pr-2">
                                     <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-input" 
 									name="country" id="country"
-									v-model="account.studentInfo.fieldsOfStudy">
+									v-model="account.student.fieldsOfStudy[0]">
 									<!-- TODO: create Options via country enum -->
 									<option v-for="field in fieldsOfStudyList" :key="field">{{ field }}</option>
 									</select>
@@ -229,7 +229,7 @@
                                     <input type="number" id="semesterCount" name="semesterCount"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Semester Count"
-										v-model="account.studentInfo.semesterCount">
+										v-model="account.student.semesterCount">
                                 </div>
                             </div>
                         </div>
@@ -245,7 +245,7 @@
                         </label>
                     </div>
 					<div class="flex flex-col items-center justify-center">
-						<img class="object-contain h-48" src="@/assets/blank_profile_picture.png">
+						<img class="object-contain h-48" :src="account.user.picture">
 						<button class="bg-transparent hover:bg-blue-800 border-blue-700 border-2 text-blue-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded-lg"
 						@click="updatePicture">Upload Profile Picture</button>
 					</div>
@@ -268,9 +268,18 @@
 import Router from "@/router/";
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
-import { reactive, computed } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
 import UserManagement from "@/api/UserManagement"
+import StudentEntity from "@/entities/StudentEntity"
+import UserEntity from "@/entities/UserEntity"
+import LecturerEntity from "@/entities/LecturerEntity"
+import AdminEntity from "@/entities/AdminEntity"
+import { Account } from '../../entities/Account';
+import Admin from '../../api/api_models/user_management/Admin';
+import Student from '../../api/api_models/user_management/Student';
+import Lecturer from '../../api/api_models/user_management/Lecturer';
+
 
 export default {
     name: "AdminCreateAccountForm",
@@ -279,67 +288,47 @@ export default {
     },
     setup() {
         let account = reactive( {
-			role: Role.NONE,
-			username: "",
-			email: "",
-			password: "",
-			firstName: "",
-			lastName: "",
+            authUser: new Account(),
+            user: new UserEntity(),
+            admin: new AdminEntity(false),
+            student: new StudentEntity(false),
+            lecturer: new LecturerEntity(false),
 			birthdate: {
 				day: "",
 				month: "",
 				year: "",
 			},
-			address: {
-				country: "Country",
-				street: "",
-				houseNumber: "",
-				zipCode: "",
-				city: "",
-			},
-			picture: "",
-			lecturerInfo: {
-				freeText: "",
-				researchArea: "",
-			},
-			studentInfo: {
-				immatriculationStatus: "",
-				matriculationId: "",
-				fieldsOfStudy: FieldOfStudy.COMPUTER_SCIENCE,
-				semesterCount: "",
-			}
 		})
-        let success:boolean = false;
+        let success = ref(new Boolean());
+        success.value = false;
 		let roles = Object.values(Role).filter(e => e!=Role.NONE);
 		let fieldsOfStudyList = Object.values(FieldOfStudy);
 		
 		
 		let isLecturer = computed(() => {
-			return account.role === Role.LECTURER;
+			return account.user.role === Role.LECTURER;
 		})
 
 		let isStudent = computed(() => {
-			return account.role === Role.STUDENT;
+			return account.user.role === Role.STUDENT;
 		})
 
 		function updatePicture() {
 			console.log(account)
-			console.log("has Input: " + hasInput)
-			console.log("isValid: " + isValid())
 		}
 
 		
         function isValid() {
-            if(	account.role == Role.NONE || account.username == "" || account.email == "" || account.password == "" ||
-				account.firstName == "" || account.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
-				account.birthdate.year == "" || account.address.country == "Country" || account.address.street == "" ||
-				account.address.houseNumber == "" || account.address.zipCode == "" || account.address.city == "") {
+            if(	account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
+				account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
+				account.birthdate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
+				account.user.address.houseNumber == "" || account.user.address.zipCode == "" || account.user.address.city == "") {
                 return false;
 			}
 
-			if( account.role == Role.STUDENT) {
-				if( account.studentInfo.immatriculationStatus == "" || account.studentInfo.matriculationId == "" || 
-				account.studentInfo.semesterCount == "") {
+			if( account.user.role == Role.STUDENT) {
+				if( account.student.immatriculationStatus == "" || account.student.matriculationId == "" || 
+				account.student.semesterCount == -1) {
 					return false;
 				}
 			}
@@ -350,10 +339,10 @@ export default {
         }
 		
         let hasInput = computed(() => {
-			if(	account.role != Role.NONE || account.username != "" || account.email != "" || account.password != "" ||
-				account.firstName != "" || account.lastName != "" || account.birthdate.day != "" || account.birthdate.month != "" || 
-				account.birthdate.year != "" || account.address.country != "Country" || account.address.street != "" ||
-				account.address.houseNumber != "" || account.address.zipCode != "" || account.address.city != "") {
+			if(	account.user.role != Role.NONE || account.user.username != "" || account.user.email != "" || account.authUser.password != "" ||
+				account.user.firstName != "" || account.user.lastName != "" || account.birthdate.day != "" || account.birthdate.month != "" || 
+				account.birthdate.year != "" || account.user.address.country != "Country" || account.user.address.street != "" ||
+				account.user.address.houseNumber != "" || account.user.address.zipCode != "" || account.user.address.city != "") {
                 return true;
 			}
 			// No need to check the Lecturer's and Student's Forms at this point, as hasInput will already be true when the role
@@ -368,12 +357,49 @@ export default {
         function createAccount() {
              if(isValid()) {    
                 const userManagement: UserManagement = new UserManagement();
-				//TODO create account obejct based on given role and call the method in authenication management
-				navigateBack();
+                account.authUser.username = account.user.username;
+                account.authUser.role = account.user.role;
+                account.user.birthdate = account.birthdate.year + "-" + account.birthdate.month + "-" + account.birthdate.day;
+                var newUser: Student | Lecturer | Admin = {} as Student;
+                switch(account.user.role) {
+                    case Role.ADMIN: {
+                        newUser = {
+                            ...account.admin,
+                            ...account.user
+                        };
+                        break;
+                    }
+                    case Role.STUDENT: {
+                        newUser = {
+                            ...account.student,
+                            ...account.user
+                        };
+                        break;
+                    }
+                    case Role.LECTURER: {
+                        newUser = {
+                            ...account.lecturer,
+                            ...account.user
+                        };
+                        break;
+                    }
+                }
+                console.log(account.authUser, newUser);
+                userManagement.createUser(account.authUser, newUser)
+                .then( (value) => {
+                    if(value) {
+                        success.value = true;
+                        navigateBack();
+                    }
+                    else {
+                        console.log("API call failed!");
+                        success.value = false;
+                    }
+                });
             }
             else {
 				console.log("Error: Input Validation Failed!")
-                success = false;
+                success.value = false;
             }
         }
 
