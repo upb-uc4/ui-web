@@ -335,8 +335,9 @@ export default {
 			}
 
 			if( account.user.role == Role.STUDENT) {
+                //account.student.semesterCount can have typeof String due to a bug in vue, if the number input field is empty
 				if( account.student.immatriculationStatus == "" || account.student.matriculationId == "" || 
-				account.student.semesterCount == -1) {
+				account.student.semesterCount < 0 || typeof account.student.semesterCount != "number") {
 					return false;
 				}
 			}
