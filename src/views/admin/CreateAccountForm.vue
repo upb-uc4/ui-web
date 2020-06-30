@@ -221,8 +221,8 @@
                                         <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                                         name="country" id="country"
                                         v-model="account.student.fieldsOfStudy[index-1]">
-                                        <option :value="undefined">Select a Field of Study</option>
-                                        <option v-for="field in fieldsOfStudyList" :key="field" @click="test">{{ field }}</option>
+                                        <option :value="undefined" @click="removeFieldOfStudy(index-1)">Select a Field of Study</option>
+                                        <option v-for="field in fieldsOfStudyList" :key="field" @click="addFieldOfStudy(field,index-1)">{{ field }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -324,15 +324,21 @@ export default {
 			return account.user.role === Role.STUDENT;
 		})
 
+        function addFieldOfStudy(field:FieldOfStudy, index:number) {
+            account.student.fieldsOfStudy[index] = field;
+            selectedFieldsOfStudy.value++;
+        }
+
+        function removeFieldOfStudy(index:number) {
+            let toDelete = account.student.fieldsOfStudy[index];
+            account.student.fieldsOfStudy = account.student.fieldsOfStudy.filter(field => field != toDelete);
+            selectedFieldsOfStudy.value--;
+        }
+        
 		function updatePicture() {
             //TODO
 			console.log(account)
 		}
-
-        function test() {
-            selectedFieldsOfStudy.value++;
-            console.log(test)
-        }
         
         function isValid() {
             if(	account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
@@ -429,13 +435,14 @@ export default {
 			updatePicture,
 			isLecturer,
 			isStudent,
-			fieldsOfStudyList,
+            fieldsOfStudyList,
+            addFieldOfStudy,
+            removeFieldOfStudy,
 			hasInput,
             isValid,
             navigateBack,
             createAccount,
             unsavedChangesModal,
-            test,
         }
     },
 
