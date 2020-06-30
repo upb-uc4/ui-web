@@ -216,7 +216,7 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
 							<div class="flex flex-row ">
                                 <div>
-                                    <!-- v-for begins counting at 1, hence 1 is substracted for handling of the arrays -->>
+                                    <!-- v-for begins counting at 1, hence 1 is substracted for handling of the arrays -->
                                     <div class="w-full pr-2" v-for="index in selectedFieldsOfStudy+1" :key="index">
                                         <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                                         name="country" id="country" v-model="account.student.fieldsOfStudy[index-1]"
@@ -364,17 +364,17 @@ export default {
 		}
         
         function isValid() {
-            if(	account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
-				account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
-				account.birthdate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
-				account.user.address.houseNumber == "" || account.user.address.zipCode == "" || account.user.address.city == "") {
-                return false;
+             if(account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
+                account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
+                account.birthdate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
+                account.user.address.houseNumber == "" || account.user.address.zipCode == "" || account.user.address.city == "") {
+                    return false;
 			}
 
 			if( account.user.role == Role.STUDENT) {
                 //account.student.semesterCount can have typeof String due to a bug in vue, if the number input field is empty
 				if( account.student.immatriculationStatus == "" || account.student.matriculationId == "" || 
-				account.student.semesterCount < 0 || typeof account.student.semesterCount != "number") {
+				account.student.semesterCount < 0 || typeof account.student.semesterCount != "number" || account.student.fieldsOfStudy.length == 0) {
 					return false;
 				}
 			}
