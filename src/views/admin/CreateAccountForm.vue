@@ -214,15 +214,15 @@
                         </div>
 						<div class="mb-4 mt-8 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
-                            <!--- TODO: Fields of Study is an Array! --->
 							<div class="flex flex-row ">
                                 <div>
+                                    <!-- v-for begins counting at 1, hence 1 is substracted for handling of the arrays -->>
                                     <div class="w-full pr-2" v-for="index in selectedFieldsOfStudy+1" :key="index">
                                         <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                                         name="country" id="country" v-model="account.student.fieldsOfStudy[index-1]"
                                         >
                                         <option :value="undefined" @click="removeFieldOfStudy(index-1)">Select a Field of Study</option>
-                                        <option v-for="field in fieldsOfStudyList" :key="field" @click="addFieldOfStudy(field,index-1)">{{ field }}</option>
+                                        <option v-for="field in fieldsOfStudyLists[index-1]" :key="field" @click="addFieldOfStudy(field,index-1)">{{ field }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -311,7 +311,8 @@ export default {
         let success = ref(new Boolean());
         success.value = false;
 		let roles = Object.values(Role).filter(e => e!=Role.NONE);
-        let fieldsOfStudyList = Object.values(FieldOfStudy);
+        let fieldsOfStudy = Object.values(FieldOfStudy);
+        let fieldsOfStudyLists:FieldOfStudy[][] = reactive([fieldsOfStudy]);
         let countries = Object.values(Country).filter(e => e!= Country.NONE);
         let unsavedChangesModal = ref();
 		
@@ -326,9 +327,13 @@ export default {
 
         function addFieldOfStudy(field:FieldOfStudy, index:number) {
             if(selectedFieldsOfStudy.value == index) {
-                selectedFieldsOfStudy.value++
+                selectedFieldsOfStudy.value++;
+                fieldsOfStudyLists[index+1] = fieldsOfStudy;
             }
             account.student.fieldsOfStudy[index] = field;
+            
+            updateFieldOfStudyLists();
+            
         }
 
         function removeFieldOfStudy(index:number) {
@@ -336,6 +341,20 @@ export default {
             account.student.fieldsOfStudy = account.student.fieldsOfStudy.filter(field => field != toDelete);
             if(selectedFieldsOfStudy.value != index) {
                 selectedFieldsOfStudy.value--;
+                fieldsOfStudyLists[index+1] = [];
+            }
+            console.log(fieldsOfStudyLists)
+            updateFieldOfStudyLists();
+        }
+
+        function updateFieldOfStudyLists() {
+            for (let i = 0 ; i < fieldsOfStudyLists.length ; i++) {
+                fieldsOfStudyLists[i] = fieldsOfStudy;
+                for (let j = 0; j < account.student.fieldsOfStudy.length ; j++) {
+                    if(i != j) {
+                        fieldsOfStudyLists[i] = fieldsOfStudyLists[i].filter(e => e!= account.student.fieldsOfStudy[j]);
+                    }
+                }
             }
         }
         
@@ -439,9 +458,11 @@ export default {
 			updatePicture,
 			isLecturer,
 			isStudent,
-            fieldsOfStudyList,
+            fieldsOfStudyLists,
+            fieldsOfStudy,
             addFieldOfStudy,
             removeFieldOfStudy,
+            updateFieldOfStudyLists,
 			hasInput,
             isValid,
             navigateBack,
