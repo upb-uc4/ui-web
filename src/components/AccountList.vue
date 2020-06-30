@@ -37,28 +37,20 @@ import UserManagement from '../api/UserManagement';
 import User_List from '../api/api_models/user_management/User_List';
 import { Role } from '../entities/Role';
 import Admin from '../api/api_models/user_management/Admin';
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import Lecturer from '../api/api_models/user_management/Lecturer';
 import Student from '../api/api_models/user_management/Student';
 
 export default {
   name: "AccountList",
   async setup() {
-    //TODO get all accounts via API call + export "accounts" s.t. we can show them in the template
     const userManagement: UserManagement = new UserManagement();
     const roles = Object.values(Role).filter(e => e!=Role.NONE);
 
-    let usersByRole = reactive( {
-        admins: {} as Admin[],
-        lecturers: {} as Lecturer[],
-        students: {} as Student[],
-    })
+    let usersByRole = ref({} as User_List)
 
     await userManagement.getAllUsers().then((response : User_List) => {
-            usersByRole.admins = response.admins;
-            usersByRole.lecturers = response.lecturers;
-            usersByRole.students = response.students;
-            //users = response;
+            usersByRole.value = response
     });
     
     function editAccount() {
