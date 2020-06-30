@@ -12,7 +12,7 @@
         </div>
         <suspense>
             <template #default>
-                <accountList></accountList>
+                <accountList/>
             </template>
             <template #fallback>
                 <p class="text-center text-lg pt-20">
