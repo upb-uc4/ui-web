@@ -325,8 +325,14 @@ export default {
 		})
 
         function addFieldOfStudy(field:FieldOfStudy, index:number) {
+            if(account.student.fieldsOfStudy[index] == undefined) {
+                selectedFieldsOfStudy.value++
+            }
             account.student.fieldsOfStudy[index] = field;
-            selectedFieldsOfStudy.value++;
+            //console.log("added: " + account.student.fieldsOfStudy[index])
+            //console.log(account.student.fieldsOfStudy)
+            console.log(account.student.fieldsOfStudy.length)
+            console.log(index)
         }
 
         function removeFieldOfStudy(index:number) {
