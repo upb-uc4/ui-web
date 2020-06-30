@@ -219,8 +219,8 @@
                                 <div>
                                     <div class="w-full pr-2" v-for="index in selectedFieldsOfStudy+1" :key="index">
                                         <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
-                                        name="country" id="country"
-                                        v-model="account.student.fieldsOfStudy[index-1]">
+                                        name="country" id="country" v-model="account.student.fieldsOfStudy[index-1]"
+                                        >
                                         <option :value="undefined" @click="removeFieldOfStudy(index-1)">Select a Field of Study</option>
                                         <option v-for="field in fieldsOfStudyList" :key="field" @click="addFieldOfStudy(field,index-1)">{{ field }}</option>
                                         </select>
@@ -325,20 +325,18 @@ export default {
 		})
 
         function addFieldOfStudy(field:FieldOfStudy, index:number) {
-            if(account.student.fieldsOfStudy[index] == undefined) {
+            if(selectedFieldsOfStudy.value == index) {
                 selectedFieldsOfStudy.value++
             }
             account.student.fieldsOfStudy[index] = field;
-            //console.log("added: " + account.student.fieldsOfStudy[index])
-            //console.log(account.student.fieldsOfStudy)
-            console.log(account.student.fieldsOfStudy.length)
-            console.log(index)
         }
 
         function removeFieldOfStudy(index:number) {
             let toDelete = account.student.fieldsOfStudy[index];
             account.student.fieldsOfStudy = account.student.fieldsOfStudy.filter(field => field != toDelete);
-            selectedFieldsOfStudy.value--;
+            if(selectedFieldsOfStudy.value != index) {
+                selectedFieldsOfStudy.value--;
+            }
         }
         
 		function updatePicture() {
