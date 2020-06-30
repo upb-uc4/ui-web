@@ -103,21 +103,21 @@
                                 <div class="w-full pr-2">
                                     <input type="number" id="day" name="day"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="Day"
+                                        placeholder="DD"
 										v-model="account.birthdate.day"
                                         >
                                 </div>
 								<div class="w-full px-2">
                                     <input type="number" id="month" name="month"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="Month"
+                                        placeholder="MM"
 										v-model="account.birthdate.month"
                                         >
                                 </div>
 								<div class="w-full pl-2">
                                     <input type="number" id="year" name="year"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="Year"
+                                        placeholder="YYYY"
 										v-model="account.birthdate.year"
                                         >
                                 </div>
