@@ -216,13 +216,15 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
                             <!--- TODO: Fields of Study is an Array! --->
 							<div class="flex flex-row ">
-                                 <div class="w-full pr-2">
-                                    <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
-									name="country" id="country"
-									v-model="account.student.fieldsOfStudy[0]">
-                                    <option :value="undefined">Select a Field of Study</option>
-									<option v-for="field in fieldsOfStudyList" :key="field">{{ field }}</option>
-									</select>
+                                <div>
+                                    <div class="w-full pr-2" v-for="index in selectedFieldsOfStudy+1" :key="index">
+                                        <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+                                        name="country" id="country"
+                                        v-model="account.student.fieldsOfStudy[index-1]">
+                                        <option :value="undefined">Select a Field of Study</option>
+                                        <option v-for="field in fieldsOfStudyList" :key="field" @click="test">{{ field }}</option>
+                                        </select>
+                                    </div>
                                 </div>
 								<div class="pl-2">
                                     <input type="number" id="semesterCount" name="semesterCount"
@@ -305,6 +307,7 @@ export default {
 				year: "",
 			},
 		})
+        let selectedFieldsOfStudy = ref(0);
         let success = ref(new Boolean());
         success.value = false;
 		let roles = Object.values(Role).filter(e => e!=Role.NONE);
@@ -326,7 +329,11 @@ export default {
 			console.log(account)
 		}
 
-		
+        function test() {
+            selectedFieldsOfStudy.value++;
+            console.log(test)
+        }
+        
         function isValid() {
             if(	account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
 				account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
@@ -415,6 +422,7 @@ export default {
 
         return {
             account,
+            selectedFieldsOfStudy,
             success,
             roles,
             countries,
@@ -426,7 +434,8 @@ export default {
             isValid,
             navigateBack,
             createAccount,
-            unsavedChangesModal
+            unsavedChangesModal,
+            test,
         }
     },
 
