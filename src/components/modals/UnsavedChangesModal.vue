@@ -1,5 +1,5 @@
 <template>
-    <modal :showing="showing" v-on:cancel="$emit('cancel')">
+    <modal ref="baseModal" v-on:cancel="close(action.CANCEL)" :action="action">
         <template v-slot:header>
             <p class="text-2xl text-gray-900">Unsaved Changes</p>
         </template>
@@ -7,24 +7,37 @@
         Do you really want to continue and leave this page? You have unsaved changes.
 
         <template v-slot:footer>
-            <button class="w-24 py-2 px-2 btn btn-blue-primary" @click="$emit('confirm')">Leave</button>
+            <button class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
+            <button class="w-24 py-2 px-2 btn btn-blue-primary" @click="close(action.CONFIRM)">Leave</button>
         </template>
     </modal>
 </template>
 
 <script lang="ts">
     import Modal from "@/components/modals/Modal.vue";
+    import {ref} from "vue";
 
     export default {
         components: {
             Modal,
         },
-        emits: ['cancel', 'confirm'],
-        props: {
-            showing: {
-                required: true,
-                type: Boolean,
+        setup() {
+            const baseModal = ref();
+
+            enum action {
+                CANCEL,
+                CONFIRM
             }
+
+            async function show() {
+                return await baseModal.value.show();
+            }
+
+            function close(action: action) {
+                baseModal.value.close(action);
+            }
+
+            return {baseModal, show, close, action}
         }
     }
 </script>

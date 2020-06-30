@@ -1,4 +1,3 @@
-import { Course } from './../entities/Course';
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
@@ -55,6 +54,13 @@ const router = createRouter({
 			component: Redirect,
 		}
 	],
+
+	scrollBehavior(to,from,savedPosition) {
+		if(savedPosition) {
+			return savedPosition;
+		}
+		return { x:0, y:0 }
+	}
 });
 
 export default router;
