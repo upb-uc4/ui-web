@@ -77,3 +77,15 @@
 .btn-tertiary:focus {
     @apply outline-none;
 }
+
+.btn-blue-tertiary {
+    @apply font-semibold text-blue-700
+}
+
+.btn-blue-tertiary:hover {
+    @apply text-blue-800
+}
+
+.btn-blue-tertiary:focus {
+    @apply outline-none;
+}
