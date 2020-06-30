@@ -170,7 +170,7 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Lecturer Information</label>
                         <label class="block text-gray-600">
-                            These are Information specifically for a Lecturer
+                            These is Information specifically for a Lecturer
                         </label>
                     </div>
 					<div class="w-full lg:w-2/3">
@@ -214,6 +214,7 @@
                         </div>
 						<div class="mb-4 mt-8 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
+                            <!--- TODO: Fields of Study is an Array! --->
 							<div class="flex flex-row ">
                                  <div class="w-full pr-2">
                                     <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
@@ -360,7 +361,7 @@ export default {
         })
 		
         function navigateBack() {
-            Router.go(-1);
+            Router.back();
         }
 		
         function createAccount() {
@@ -393,7 +394,7 @@ export default {
                         break;
                     }
                 }
-                console.log(account.authUser, newUser);
+
                 userManagement.createUser(account.authUser, newUser)
                 .then( (value) => {
                     if(value) {
@@ -437,30 +438,28 @@ export default {
 		return next();
 	},
     beforeRouteLeave (to: any, from: any, next: any) {
-        //todo use styled modal
-        //todo break this into smaller methods
         if (this.success) {
             return next();
         }
         if (this.hasInput) {
-                const modal = this.unsavedChangesModal;
-                let action = modal.action;
-                modal.show()
-                    .then((response: typeof action) => {
-                        switch(response) {
-                            case action.CANCEL: {
-                                next(false);
-                                break;
-                            }
-                            case action.CONFIRM: {
-                                next(true);
-                                break;
-                            }
-                            default: {
-                                next(true);
-                            }
+            const modal = this.unsavedChangesModal;
+            let action = modal.action;
+            modal.show()
+                .then((response: typeof action) => {
+                    switch(response) {
+                        case action.CANCEL: {
+                            next(false);
+                            break;
                         }
-                    })
+                        case action.CONFIRM: {
+                            next(true);
+                            break;
+                        }
+                        default: {
+                            next(true);
+                        }
+                    }
+                })
         } else {
             next(true);
        }
