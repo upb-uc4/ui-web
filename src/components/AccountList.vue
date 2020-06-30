@@ -13,11 +13,11 @@
             </thead>
             <tbody v-for="userListByRole in usersByRole" :key="userListByRole">
                 <tr class="bg-gray-100 hover:bg-gray-400 py-2 cursor-pointer" v-for="user in userListByRole" :key="user.username">
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{user.username}}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{user.role}}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{user.matriculationId}}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{user.lastName}}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{user.firstName}}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.username }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.role }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.matriculationId }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.lastName }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.firstName }}</td>
                     <td class="px-2 border border-black">
                         <div class="flex">
                             <button @click="editAccount" title="Edit Account" 
