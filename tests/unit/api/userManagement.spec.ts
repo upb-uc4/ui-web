@@ -65,6 +65,14 @@ test("Get specific user", async () => {
     expect(result).toBe(true)  
 })
 
+test("Get own user", async () => {
+    await new Promise((r) => setTimeout(r, 10000));
+    var result = false;
+    const user = await userManagement.getOwnUser();
+    result = (user.firstName == adminAuth.username);
+    expect(result).toBe(true)  
+})
+
 test("Get all users", async () => {
     const users = await userManagement.getAllUsers();
     let result = true;
