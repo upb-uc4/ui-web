@@ -6,15 +6,17 @@
         </button>
 
         <div class="flex items-end justify-between">
-            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{firstName + " " + lastName}}</h1>
+            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{studentMock.firstName + " " + studentMock.lastName}}</h1>
             <img class="w-32 h-32 mb-4 rounded-full object-cover"
                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU">
         </div>
 
         <div>
             <personal-section
-                v-model:firstName="firstName"
-                v-model:lastName="lastName"/>
+                v-model:firstName="studentMock.firstName"
+                v-model:lastName="studentMock.lastName"
+                v-on:save="save"
+            />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
@@ -152,14 +154,20 @@
 
 <script lang="ts">
     import PersonalSection from "@/components/profile/PersonalSection.vue";
+    import StudentEntity from "@/entities/StudentEntity";
     export default {
         components: {
             PersonalSection
         },
         setup() {
-            const firstName = "Donald"
-            const lastName = "Duck"
-            return {firstName, lastName};
+            const studentMock = new StudentEntity(true);
+
+            function save() {
+                //todo API call to update the student object.
+                console.log("save");
+            }
+
+            return {studentMock, save};
         }
     }
 </script>

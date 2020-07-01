@@ -44,7 +44,7 @@
 
     export default {
         props: ["firstName", "lastName", "birthdate"],
-
+        emits: ["save"],
         setup(props: any, {emit}: any) {
             const isEditing = ref(false);
 
@@ -66,6 +66,7 @@
                 isEditing.value = false;
                 updateFirstName(editedFirstName.value);
                 updateLastName(editedLastName.value);
+                emit("save");
             }
 
             function updateFirstName(name: string) {
