@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
+import AdminHomeView from "../views/admin/Home.vue"
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
 import AdminCreateAccountView from '../views/admin/CreateAccountForm.vue';
 import Redirect from "../views/common/Redirect.vue";
@@ -25,6 +26,12 @@ const router = createRouter({
 			path: "/lecturer",
 			component: LecturerHomeView,
 		},
+
+		{
+			path: "/admin",
+			component: AdminHomeView,
+		},
+
 		{
 			path: '/createCourse',
 			name: 'createCourse',
