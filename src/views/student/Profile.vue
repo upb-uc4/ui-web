@@ -188,8 +188,13 @@
             }
 
             function save() {
-                //todo API call to update the student object.
-                console.log("save");
+                auth.updateUser(studentMock.value).then( (success) => {
+                    if (success) {
+                        console.log("user updated successful.");
+                    } else {
+                        console.error("user profile update failed.")
+                    }
+                })
             }
 
             return {studentMock, save, loading};
