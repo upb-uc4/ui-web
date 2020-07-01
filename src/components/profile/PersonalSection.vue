@@ -4,7 +4,8 @@
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">
                     <label class="block text-gray-700 text-lg font-medium">Personal Information</label>
-                    <button class="ml-4 text-sm btn-blue-tertiary" @click="toggleEdit">{{ buttonText }}</button>
+                    <button v-show="!isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
+                    <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
                     <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">Cancel</button>
                 </div>
                 <label class="block text-gray-600">
@@ -15,13 +16,13 @@
                 <div class="lg:flex mb-6">
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">First Name</label>
-                        <input type="text" :readonly="!isEditing" :value="firstName" @input="updateFirstName($event.target.value)"
+                        <input type="text" :readonly="!isEditing" :value="editedFirstName" @input="onFirstNameChanged($event.target.value)"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                     </div>
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Last Name</label>
-                        <input type="text" :readonly="!isEditing" :value="lastName" @input="updateLastName($event.target.value)"
+                        <input type="text" :readonly="!isEditing" :value="editedLastName" @input="onLastNameChanged($event.target.value)"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
 
@@ -39,35 +40,57 @@
 </template>
 
 <script lang="ts">
-    import {ref, computed} from "vue";
+    import {ref} from "vue";
 
     export default {
         props: ["firstName", "lastName", "birthdate"],
 
         setup(props: any, {emit}: any) {
             const isEditing = ref(false);
-            const buttonText = computed( () => {
-               return isEditing.value ? "Save" : "Edit";
-            });
 
-            function toggleEdit() {
-                isEditing.value =! isEditing.value;
+            function edit() {
+                isEditing.value = true;
             }
 
             function cancelEdit() {
-                //reset data
+                resetInputs();
                 isEditing.value = false;
             }
 
-            function updateFirstName(name: String) {
+            function resetInputs() {
+                editedFirstName.value = props.firstName;
+                editedLastName.value = props.lastName;
+            }
+
+            function save() {
+                isEditing.value = false;
+                updateFirstName(editedFirstName.value);
+                updateLastName(editedLastName.value);
+            }
+
+            function updateFirstName(name: string) {
                 emit('update:firstName', name);
             }
 
-            function updateLastName(name: String) {
+            function updateLastName(name: string) {
                 emit('update:lastName', name);
             }
 
-            return {isEditing, toggleEdit, buttonText, cancelEdit, updateFirstName, updateLastName};
+
+            const editedFirstName = ref(props.firstName);
+            const editedLastName = ref(props.lastName);
+
+            function onFirstNameChanged(name: string) {
+                editedFirstName.value = name;
+            }
+
+            function onLastNameChanged(name: string) {
+                editedLastName.value = name;
+            }
+
+            return {isEditing, edit, cancelEdit, save,
+                onFirstNameChanged, editedFirstName,
+                onLastNameChanged, editedLastName};
         }
     }
 </script>
