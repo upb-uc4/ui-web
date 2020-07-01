@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
+    <div v-show="!loading" class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
         <button @click="back" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
@@ -155,19 +155,49 @@
 <script lang="ts">
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import StudentEntity from "@/entities/StudentEntity";
+    import { onMounted, ref } from "vue";
+    import {store} from "@/store/store";
+    import UserManagement from "@/api/UserManagement";
+    import Student from "@/api/api_models/user_management/Student";
+
     export default {
         components: {
             PersonalSection
         },
         setup() {
-            const studentMock = new StudentEntity(true);
+            const loading = ref(true);
+            const auth: UserManagement = new UserManagement();
+            const studentMock = ref (new StudentEntity(true));
+
+            onMounted( () => {
+                loadStudent();
+            });
+
+            async function loadStudent() {
+                //todo remove after tinkering
+                await auth.login({username: "student", password: "student"})
+                    .then((success : boolean)=> {
+                        if (success) {
+                            store.state.myId = "student";
+                        }
+                    })
+                await auth.getOwnUser().then( (value) => {
+                    studentMock.value = value as Student;
+                });
+                loading.value = false;
+            }
 
             function save() {
                 //todo API call to update the student object.
                 console.log("save");
             }
 
-            return {studentMock, save};
-        }
+            return {studentMock, save, loading};
+        },
+
+        beforeRouteEnter(_from: any, _to: any, next: any) {
+            //todo check if user is student
+            next();
+        },
     }
 </script>

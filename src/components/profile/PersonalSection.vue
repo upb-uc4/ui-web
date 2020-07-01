@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-    import {ref} from "vue";
+    import {ref, watch} from "vue";
 
     export default {
         props: ["firstName", "lastName", "birthdate"],
@@ -89,9 +89,18 @@
                 editedLastName.value = name;
             }
 
+            watch(() => props.firstName, (newValue) => {
+                editedFirstName.value = newValue;
+            });
+
+            watch(() => props.lastName, (newValue) => {
+                editedLastName.value = newValue;
+            });
+
             return {isEditing, edit, cancelEdit, save,
                 onFirstNameChanged, editedFirstName,
                 onLastNameChanged, editedLastName};
-        }
+        },
+
     }
 </script>
