@@ -13,9 +13,8 @@
 
         <div>
             <personal-section
-                    v-model:firstName="firstName"
-                    v-model:lastName="lastName"
-            />
+                v-model:firstName="firstName"
+                v-model:lastName="lastName"/>
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">

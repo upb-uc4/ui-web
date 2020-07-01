@@ -15,13 +15,13 @@
                 <div class="lg:flex mb-6">
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">First Name</label>
-                        <input type="text" :readonly="!isEditing" :value="firstName"
+                        <input type="text" :readonly="!isEditing" :value="firstName" @input="updateFirstName($event.target.value)"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                     </div>
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Last Name</label>
-                        <input type="text" :readonly="!isEditing" :value="lastName"
+                        <input type="text" :readonly="!isEditing" :value="lastName" @input="updateLastName($event.target.value)"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
 
@@ -44,9 +44,7 @@
     export default {
         props: ["firstName", "lastName", "birthdate"],
 
-        setup(props: any) {
-            const test = ref(props.firstName);
-
+        setup(props: any, {emit}: any) {
             const isEditing = ref(false);
             const buttonText = computed( () => {
                return isEditing.value ? "Save" : "Edit";
@@ -61,7 +59,15 @@
                 isEditing.value = false;
             }
 
-            return {isEditing, toggleEdit, buttonText, cancelEdit, test};
+            function updateFirstName(name: String) {
+                emit('update:firstName', name);
+            }
+
+            function updateLastName(name: String) {
+                emit('update:lastName', name);
+            }
+
+            return {isEditing, toggleEdit, buttonText, cancelEdit, updateFirstName, updateLastName};
         }
     }
 </script>
