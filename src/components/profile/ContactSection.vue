@@ -16,7 +16,7 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                    <input type="text" :readonly="!isEditing" :value="editedEmail" @input="onEmailChanged($event.target.value)"
+                    <input type="email" :readonly="!isEditing" :value="editedEmail" @input="onEmailChanged($event.target.value)"
                            :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                            class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                 </div>
