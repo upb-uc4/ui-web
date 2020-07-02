@@ -1,37 +1,37 @@
 <template>
-    <div v-show="!loading" class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
+    <div class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
         <button @click="back" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
 
         <div class="flex items-end justify-between">
-            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ studentMock.firstName + " " + studentMock.lastName }} (@{{ studentMock.username }})</h1>
+            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ student.firstName + " " + student.lastName }} (@{{ student.username }})</h1>
             <img class="w-32 h-32 mb-4 rounded-full object-cover"
                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU">
         </div>
 
         <div>
             <personal-section
-                v-model:firstName="studentMock.firstName"
-                v-model:lastName="studentMock.lastName"
-                v-on:save="save"
+                    v-model:firstName="student.firstName"
+                    v-model:lastName="student.lastName"
+                    v-on:save="save"
             />
 
             <contact-section
-                v-model:email="studentMock.email"
-                v-on:save="save"
+                    v-model:email="student.email"
+                    v-on:save="save"
             />
 
             <address-section
-                v-model:address="studentMock.address"
-                v-on:save="save"
+                    v-model:address="student.address"
+                    v-on:save="save"
             />
 
             <course-of-study-section
-                :fields-of-study="studentMock.fieldsOfStudy"
-                :matriculation-id="studentMock.matriculationId"
-                :semester-count="studentMock.semesterCount"
+                    :fields-of-study="student.fieldsOfStudy"
+                    :matriculation-id="student.matriculationId"
+                    :semester-count="student.semesterCount"
             />
 
             <section class="border-t-2 py-8 border-gray-400">
@@ -60,7 +60,6 @@
                     </div>
                 </div>
             </section>
-
         </div>
     </div>
 </template>
@@ -70,11 +69,9 @@
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
     import CourseOfStudySection from "@/components/profile/CourseOfStudySection.vue";
-    import StudentEntity from "@/entities/StudentEntity";
-    import { onMounted, ref } from "vue";
+    import { ref } from "vue";
     import {store} from "@/store/store";
     import UserManagement from "@/api/UserManagement";
-    import Student from "@/api/api_models/user_management/Student";
 
     export default {
         components: {
@@ -83,40 +80,30 @@
             AddressSection,
             CourseOfStudySection
         },
-        setup() {
-            const loading = ref(true);
+        async setup() {
             const auth: UserManagement = new UserManagement();
-            const studentMock = ref (new StudentEntity(true));
 
-            onMounted( () => {
-                loadStudent();
-            });
-
-            async function loadStudent() {
-                //todo remove after tinkering
-                await auth.login({username: "student", password: "student"})
-                    .then((success : boolean)=> {
-                        if (success) {
-                            store.state.myId = "student";
-                        }
-                    })
-                await auth.getOwnUser().then( (value) => {
-                    studentMock.value = value as Student;
-                });
-                loading.value = false;
-            }
+            //todo remove after tinkering
+            await auth.login({username: "student", password: "student"})
+                .then((success : boolean)=> {
+                    if (success) {
+                        store.state.myId = "student";
+                    }
+                })
+            const student = ref(await auth.getOwnUser());
 
             function save() {
-                auth.updateUser(studentMock.value).then( (success) => {
+                auth.updateUser(student.value).then( (success) => {
                     if (success) {
+                        //todo show toast
                         console.log("user updated successful.");
                     } else {
-                        console.error("user profile update failed.")
+                        //todo error handling
                     }
                 })
             }
 
-            return {studentMock, save, loading};
+            return {student, save};
         },
 
         beforeRouteEnter(_from: any, _to: any, next: any) {

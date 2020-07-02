@@ -6,7 +6,7 @@ import AdminHomeView from "../views/admin/Home.vue"
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
 import AdminCreateAccountView from '../views/admin/CreateAccountForm.vue';
 import Redirect from "../views/common/Redirect.vue";
-import Profile from "../views/student/Profile.vue";
+import Profile from "../views/common/Profile.vue";
 
 
 const routerHistory = createWebHistory();
