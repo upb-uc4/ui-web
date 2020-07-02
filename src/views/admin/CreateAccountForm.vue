@@ -40,9 +40,10 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
                             <input type="text" id="userName" name="username"
-                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input disabled:bg-gray-400"
                                 placeholder="Username"
-                                v-model="account.user.username">
+                                v-model="account.user.username"
+                                :disabled="editMode">
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
@@ -484,6 +485,7 @@ export default {
                 account.user.address.country != initialAccount.user.address.country || account.user.address.street != initialAccount.user.address.street ||
                 account.user.address.houseNumber != initialAccount.user.address.houseNumber || account.user.address.zipCode != initialAccount.user.address.zipCode||
                 account.user.address.city != initialAccount.user.address.city||
+                account.user.picture != initialAccount.user.picture ||
                 //lecturer properties
                 account.lecturer.freeText != initialAccount.lecturer.freeText || account.lecturer.researchArea != initialAccount.lecturer.researchArea||
                 //student properties
@@ -491,6 +493,7 @@ export default {
                 account.student.semesterCount != initialAccount.student.semesterCount) {
                     return true;
                 }
+
                 // for(let course in account.student.fieldsOfStudy) {
                 //     if(! (initialAccount.student.fieldsOfStudy.filter( e => e==course).length == 0)) {
                 //         console.log(initialAccount.student.fieldsOfStudy.filter( e => e==course))
@@ -522,14 +525,9 @@ export default {
         function back() {
             Router.back();
         }
-		
-        function createAccount() {
-             if(isValid()) {    
-                const userManagement: UserManagement = new UserManagement();
-                account.authUser.username = account.user.username;
-                account.authUser.role = account.user.role;
-                account.user.birthdate = account.birthdate.year + "-" + account.birthdate.month + "-" + account.birthdate.day;
-                var newUser: Student | Lecturer | Admin = {} as Student;
+
+        function assembleAccount() :  Student | Lecturer | Admin {
+             var newUser: Student | Lecturer | Admin = {} as Student;
                 switch(account.user.role) {
                     case Role.ADMIN: {
                         newUser = {
@@ -553,6 +551,17 @@ export default {
                         break;
                     }
                 }
+            return newUser;
+        }
+
+         function createAccount() {
+             if(isValid()) {    
+                const userManagement: UserManagement = new UserManagement();
+                account.authUser.username = account.user.username;
+                account.authUser.role = account.user.role;
+                account.user.birthdate = account.birthdate.year + "-" + account.birthdate.month + "-" + account.birthdate.day;
+
+                var newUser: Student | Lecturer | Admin = assembleAccount();
 
                 userManagement.createUser(account.authUser, newUser)
                 .then( (value) => {
@@ -573,7 +582,15 @@ export default {
         }
 
         function updateAccount() {
-
+            const userManagement: UserManagement = new UserManagement();
+            var adaptedUser: Student | Lecturer | Admin = assembleAccount();
+            console.log(adaptedUser);
+            userManagement.updateUser(adaptedUser).then( (response) => {
+                if(response) {
+                    success.value = true;
+                    back();
+                }
+            });
         }
 
         function deleteAccount() {
