@@ -262,7 +262,6 @@
                     Create Account
                 </button>
             </section>
-            
             <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
@@ -293,7 +292,10 @@ export default {
         UnsavedChangesModal,
     },
     props: {
-
+        editMode: {
+            type: Boolean,
+            required: true
+        }
     },
     setup() {
         let account = reactive( {

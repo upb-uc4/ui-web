@@ -48,6 +48,12 @@ const router = createRouter({
 		},
 		{
 			path: "/createAccount",
+			props: {editMode:false},
+			component: AdminCreateAccountView
+		},
+		{
+			path: "/editAccount/:username",
+			props: {editMode:true},
 			component: AdminCreateAccountView
 		},
 		{
