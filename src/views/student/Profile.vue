@@ -80,24 +80,6 @@
                 </div>
             </section>
 
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Security</label>
-                        <label class="block text-gray-600">
-                            This is some long detailed description which is part towards a better form.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Password</label>
-                            <input placeholder="This should be a button to prompt for a password change in a different window"
-                                   type="text" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-                    </div>
-                </div>
-            </section>
-
         </div>
     </div>
 </template>
