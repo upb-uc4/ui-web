@@ -1,7 +1,7 @@
 <template>
 
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button @click="navigateBack()" class="flex items-center mb-4 navigation-link">
+        <button @click="back()" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
@@ -18,7 +18,7 @@
                         <div class="mb-4 flex">
                              <div class="mr-4 mb-3" v-for="role in roles" :key="role">
                                 <label class="flex items-center" >
-                                    <input type="radio" class="form-radio radio" name="role" :value="role" v-model="account.user.role">
+                                    <input type="radio" class="form-radio radio" name="role" :disabled="editMode" :value="role" v-model="account.user.role">
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                 </label>
                             </div>
@@ -52,7 +52,7 @@
 								v-model="account.user.email"
                                 >
                         </div>
-                        <div class="mb-4 flex flex-col">
+                        <div class="mb-4 flex flex-col" v-if="!editMode">
                             <label for="password" class="text-gray-700 text-md font-medium mb-3">
                                 Password
                             </label>
@@ -238,7 +238,7 @@
 				</div>
 			</section>
             <!-- This section is hidden for this moment, but will be used when editing accounts --> 
-			<section class="border-t-2 py-8 border-gray-400 hidden">
+			<section class="border-t-2 py-8 border-gray-400" :hidden="!editMode">
 				<div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Profile Picture</label>
@@ -253,15 +253,44 @@
 					</div>
 				</div>
 			</section>
-            <section class="border-t-2 py-8 border-gray-400 lg:mt-8 flex justify-end items-center">
-                <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
-                    Cancel
-                </button>
-                <button type="button" @click="createAccount" class="w-48 btn btn-blue-primary"
-                v-bind:disabled="!hasInput">
-                    Create Account
-                </button>
+            <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
+                <div class="hidden sm:flex justify-between">
+                    <div class="flex justify-start items-center">
+                        <button v-if="editMode" @click="confirmDeleteAccount" type="button" class="w-32 btn btn-red-secondary">
+                            Delete
+                        </button>
+                    </div>
+
+                    <div class="flex justify-end items-center">
+                        <button type="button" @click="back" class="w-32 mr-6 btn btn-blue-secondary">
+                            Cancel
+                        </button>
+                        <button v-if="editMode" @click="updateAccount" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary">
+                            Save Changes
+                        </button>
+                        <button v-else @click="createAccount" :disabled="!hasInput" class="w-48 btn btn-blue-primary">
+                            Create Account
+                        </button>
+                    </div>
+                </div>
+
+                <!-- different button layout for mobile -->
+                <div class="sm:hidden">
+                    <button type="button" @click="back" class="mb-4 w-full btn btn-blue-secondary">
+                        Cancel
+                    </button>
+                    <button v-if="editMode" :disabled="!hasInput" type="button" @click="updateAccount" class="mb-4 w-full w-full btn btn-blue-primary">
+                        Save Changes
+                    </button>
+                    <button v-else :disabled="!hasInput" @click="createAccount" class="mb-4 w-full btn btn-blue-primary">
+                        Create Account
+                    </button>
+                    <button @click="confirmDeleteAccount" class="w-full btn btn-red-secondary">
+                        Delete
+                    </button>
+                </div>
             </section>
+
             <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
@@ -451,7 +480,7 @@ export default {
             return false;
         })
 		
-        function navigateBack() {
+        function back() {
             Router.back();
         }
 		
@@ -490,7 +519,7 @@ export default {
                 .then( (value) => {
                     if(value) {
                         success.value = true;
-                        navigateBack();
+                        back();
                     }
                     else {
                         console.log("API call failed!");
@@ -520,7 +549,7 @@ export default {
             updateFieldOfStudyLists,
 			hasInput,
             isValid,
-            navigateBack,
+            back,
             createAccount,
             unsavedChangesModal,
         }
