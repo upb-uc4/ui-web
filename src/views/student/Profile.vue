@@ -23,42 +23,10 @@
                 v-on:save="save"
             />
 
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-6">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Address</label>
-                        <label class="block text-gray-600">
-                            Please keep your address information as up to date as possible.
-                        </label>
-                    </div>
-
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Country</label>
-                            <select class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
-                                <option>Germany</option>
-                                <option selected>United States</option>
-                            </select>
-                        </div>
-
-                        <div class="lg:flex mb-6">
-                            <div class="lg:w-2/3 mb-6 lg:mb-0 flex flex-col lg:mr-16">
-                                <label class="text-gray-700 text-md font-medium mb-3">City</label>
-                                <input placeholder="London" type="text" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                            </div>
-                            <div class="lg:w-1/3 mb-6 lg:mb-0 flex flex-col">
-                                <label class="text-gray-700 text-md font-medium mb-3">Postal Code</label>
-                                <input placeholder="12345" type="text" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                            </div>
-                        </div>
-
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Street</label>
-                            <input placeholder="Second Street 44" type="text" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <address-section
+                v-model:address="studentMock.address"
+                v-on:save="save"
+            />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
@@ -137,6 +105,7 @@
 <script lang="ts">
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
+    import AddressSection from "@/components/profile/AddressSection.vue";
     import StudentEntity from "@/entities/StudentEntity";
     import { onMounted, ref } from "vue";
     import {store} from "@/store/store";
@@ -146,7 +115,8 @@
     export default {
         components: {
             PersonalSection,
-            ContactSection
+            ContactSection,
+            AddressSection
         },
         setup() {
             const loading = ref(true);
