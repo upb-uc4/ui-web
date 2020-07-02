@@ -15,39 +15,42 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
     }[];
 
     isValidationError(object: any): object is ValidationError {
-        return "invalidParams" in object;
+        return "type" in object && object.type == "validation error";
     }
 
     handleReponse(response: APIResponse<boolean>): boolean {
         
         if (this.isValidationError(response.error)) {
-            for(let err of response.error.invalidParams) {
+            for(let err of response.error.errors) {
                 this.errorList.push(err);
             }
         }
 
         if (response.networkError) {
-            //TODO show toast
+            alert("Network Error!")
             return false;
         }
 
         switch (response.statusCode) {
             case 400: {
-                //TODO show toast
+                alert("Wrong syntax.. Why are you seeing this?")
                 return false;
             }
             case 401: {
-                //TODO show toast
+                alert("Wrong password or username combination!")
                 return false;
             }
             case 404: {
-                //TODO show toast
+                alert("I don't think this is even possible, HOW IS THIS ERROR CODE GENERATED?")
                 return false;
             }
             case 422: {
+                alert("Validation error!")
+                console.log(response);
+                console.log(this.errorList)
                 return false;
             }
-            case 200: {
+            case 201: {
                 return true;
             }
         }

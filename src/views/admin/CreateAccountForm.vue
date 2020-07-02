@@ -43,6 +43,7 @@
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                 placeholder="Username"
                                 v-model="account.user.username">
+                            <p v-if="hasError('username')" class="text-red-600 ml-1 mt-1">{{ showError('username') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
@@ -51,6 +52,7 @@
                                 placeholder="Email"
 								v-model="account.user.email"
                                 >
+                            <p v-if="hasError('email')" class="text-red-600 ml-1 mt-1">{{ showError('email') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="password" class="text-gray-700 text-md font-medium mb-3">
@@ -60,6 +62,7 @@
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                 placeholder="Password"
                                 v-model="account.authUser.password">
+                            <p v-if="hasError('password')" class="text-red-600 ml-1 mt-1">{{ showError('password') }}</p>
                         </div>
                     </div>
                 </div>
@@ -85,6 +88,7 @@
                                         placeholder="Firstname"
 										v-model="account.user.firstName"
                                         >
+                                    <p v-if="hasError('firstName')" class="text-red-600 ml-1 mt-1">{{ showError('firstName') }}</p>
                                 </div>
                                 <div class="w-full pl-2">
                                     <input type="text" id="lastName" name="lastName"
@@ -92,6 +96,7 @@
                                         placeholder="Lastname"
 										v-model="account.user.lastName"
                                         >
+                                    <p v-if="hasError('lastName')" class="text-red-600 ml-1 mt-1">{{ showError('lastName') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -99,6 +104,7 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Birthdate
                             </label>
+                            <p v-if="hasError('birthdate')" class="text-red-600 ml-1 mt-1">{{ showError('birthdate') }}</p>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2">
                                     <input type="number" id="day" name="day"
@@ -125,26 +131,30 @@
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">
-                                Adress 
+                                Address 
                             </label>
+                            <p v-if="hasError('address')" class="text-red-600 ml-1 mt-1">{{ showError('address') }}</p>
                             <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-select" 
 							name="country" id="country"
 							v-model="account.user.address.country">
                                 <option :value="''" >Select a Country</option>
                                 <option v-for="country in countries" :key="country">{{ country }}</option>
                             </select>
+                            <p v-if="hasError('country')" class="text-red-600 ml-1 mt-1">{{ showError('country') }}</p>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2 mb-4">
                                     <input type="text" id="street" name="street"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Street"
 										v-model="account.user.address.street">
+                                    <p v-if="hasError('street')" class="text-red-600 ml-1 mt-1">{{ showError('street') }}</p>
                                 </div>
                                 <div class="pl-2">
                                     <input type="text" id="number" name="number"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Number"
 										v-model="account.user.address.houseNumber">
+                                    <p v-if="hasError('houseNumber')" class="text-red-600 ml-1 mt-1">{{ showError('houseNumber') }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-row ">
@@ -153,12 +163,14 @@
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Zip Code"
 										v-model="account.user.address.zipCode">
+                                    <p v-if="hasError('zipCode')" class="text-red-600 ml-1 mt-1">{{ showError('zipCode') }}</p>
                                 </div>
                                  <div class="w-full pl-2">
                                     <input type="text" id="city" name="city"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="City"
 										v-model="account.user.address.city">
+                                    <p v-if="hasError('city')" class="text-red-600 ml-1 mt-1">{{ showError('city') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -180,12 +192,14 @@
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
 								v-model="account.lecturer.freeText">
                             </textarea>
+                            <p v-if="hasError('freeText')" class="text-red-600 ml-1 mt-1">{{ showError('freeText') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                            <textarea name="researchField" id="researchField" cols="30" rows="3" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
 								v-model="account.lecturer.researchArea">>
                             </textarea>
+                            <p v-if="hasError('researchArea')" class="text-red-600 ml-1 mt-1">{{ showError('researchArea') }}</p>
                         </div>
                     </div>
 				</div>
@@ -205,15 +219,19 @@
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Immatriculation Status"
 										v-model="account.student.immatriculationStatus">
+                            <p v-if="hasError('immatriculationStatus')" class="text-red-600 ml-1 mt-1">{{ showError('immatriculationStatus') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                            <input type="text" id="matriculationId" name="matriculationId"
                                         class="w-1/4 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Matriculation-ID"
 										v-model="account.student.matriculationId">
+                            <p v-if="hasError('matriculationId')" class="text-red-600 ml-1 mt-1">{{ showError('matriculationId') }}</p>
                         </div>
 						<div class="mb-4 mt-8 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
+                            <p v-if="hasError('fieldsOfStudy')" class="text-red-600 ml-1 mt-1">{{ showError('fieldsOfStudy') }}</p>
+                            <p v-if="hasError('semesterCount')" class="text-red-600 ml-1 mt-1">{{ showError('semesterCount') }}</p>
 							<div class="flex flex-row ">
                                 <div>
                                     <!-- v-for begins counting at 1, hence 1 is substracted for handling of the arrays -->
@@ -285,6 +303,9 @@ import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 import { Country } from '../../entities/Country';
+import ErrorHandler from "@/use/ErrorHandler"
+import useErrorHandler from '@/use/ErrorHandler';
+import ValidationResponseHandler from '../../use/ValidationResponseHandler';
 
 
 export default {
@@ -316,7 +337,9 @@ export default {
         let fieldsOfStudyLists:FieldOfStudy[][] = reactive([fieldsOfStudy]);
         let countries = Object.values(Country).filter(e => e!= Country.NONE);
         let unsavedChangesModal = ref();
-		
+        
+        let { errorList, hasError, showError} = useErrorHandler();
+        let errors = reactive(errorList);
 		
 		let isLecturer = computed(() => {
 			return account.user.role === Role.LECTURER;
@@ -401,8 +424,8 @@ export default {
             Router.back();
         }
 		
-        function createAccount() {
-             if(isValid()) {    
+        async function createAccount() {
+            if(isValid()) {    
                 const userManagement: UserManagement = new UserManagement();
                 account.authUser.username = account.user.username;
                 account.authUser.role = account.user.role;
@@ -432,20 +455,23 @@ export default {
                     }
                 }
 
-                userManagement.createUser(account.authUser, newUser)
-                .then( (value) => {
-                    if(value) {
-                        success.value = true;
-                        navigateBack();
-                    }
-                    else {
-                        console.log("API call failed!");
-                        success.value = false;
-                    }
-                });
+                // delete old errors
+                errors.length = 0;
+                const response = await userManagement.createUser(account.authUser, newUser);
+                const handler =  new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+
+                if(success.value) {
+                    navigateBack();
+                } else {
+                    errors.push(...handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate()
+                }
             }
             else {
-				console.log("Error: Input Validation Failed!")
+                console.log("Error: Input Validation Failed!");
+                alert("Error: Frontend Input Validation Failed!");
                 success.value = false;
             }
         }
@@ -469,14 +495,16 @@ export default {
             navigateBack,
             createAccount,
             unsavedChangesModal,
+            hasError,
+            showError
         }
     },
 
 	beforeRouteEnter(_from: any, _to: any, next: any) {
 		const myRole = store.state.myRole;
-		if (myRole != Role.ADMIN) {
-			return next("/redirect");
-		}
+		// if (myRole != Role.ADMIN) {
+		// 	return next("/redirect");
+		// }
 		return next();
 	},
     beforeRouteLeave (to: any, from: any, next: any) {
