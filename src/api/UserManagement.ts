@@ -122,6 +122,11 @@ export default class UserManagement extends Common {
         return result;
     }
 
+    async getOwnUser(): Promise<Student | Lecturer | Admin> {
+       const username = store.state.loginData.username;
+       return await this.getSpecificUser(username);
+    }
+
     async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<boolean> {
         let endpoint = UserManagement._createEndpointByRole(user.role);
         let message = UserManagement._createMessage(user, authUser);

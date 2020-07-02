@@ -76,14 +76,15 @@ export class CourseEntity implements Course {
         equal = equal && (this.courseType === course.courseType);
 
         equal = equal && (this.courseName === course.courseName);
-        equal = equal && (this.lecturerId === course.lecturerId);
+        //equal = equal && (this.lecturerId === course.lecturerId);
         equal = equal && (this.ects === course.ects);
         equal = equal && (this.maxParticipants === course.maxParticipants);
 
         equal = equal && (this.courseDescription === course.courseDescription);
         equal = equal && (this.courseLanguage === course.courseLanguage);
-        equal = equal && (this.startDate === course.startDate);
-        equal = equal && (this.endDate === course.endDate);
+        //equal = equal && (this.startDate === course.startDate);
+        //equal = equal && (this.endDate === course.endDate);
+        //lecturer ID and dates are set during the setup of the course in the createCourse process -> always false
         
         return equal;        
     }

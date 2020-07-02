@@ -86,7 +86,7 @@
                             store.state.myId = username;
                             switch(store.state.myRole) {
                                 case Role.ADMIN: {
-                                    Router.push("/createAccount");
+                                    Router.push("/admin");
                                     break;
                                 }
                                 case Role.LECTURER: {
