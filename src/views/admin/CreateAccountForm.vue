@@ -560,7 +560,13 @@ export default {
         }
 
         function deleteAccount() {
-
+            const userManagement: UserManagement = new UserManagement();
+            userManagement.deleteUser(account.user.username).then( (value) => {
+                if(value) {
+                    success.value = true;
+                    back();
+                }
+            })
         }
 
         return {
