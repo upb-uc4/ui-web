@@ -291,6 +291,7 @@
                 </div>
             </section>
 
+            <delete-account-modal ref="deleteModal"/>
             <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
@@ -311,6 +312,7 @@ import { Account } from '../../entities/Account';
 import Admin from '../../api/api_models/user_management/Admin';
 import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
+import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
 import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 import { Country } from '../../entities/Country';
 import User from '../../api/api_models/user_management/User';
@@ -319,6 +321,7 @@ import User from '../../api/api_models/user_management/User';
 export default {
     name: "AdminCreateAccountForm",
     components: {
+        DeleteAccountModal,
         UnsavedChangesModal,
     },
     props: {
@@ -361,6 +364,7 @@ export default {
         let fieldsOfStudyLists:FieldOfStudy[][] = reactive([fieldsOfStudy]);
         let countries = Object.values(Country).filter(e => e!= Country.NONE);
         let unsavedChangesModal = ref();
+        let deleteModal = ref();
 		
 		let isLecturer = computed(() => {
 			return account.user.role === Role.LECTURER;
@@ -479,7 +483,25 @@ export default {
 			// was set
             return false;
         })
-		
+        
+        async function confirmDeleteAccount() {
+                let modal = deleteModal.value;
+                let action = modal.action;
+                modal.show()
+                    .then((response: typeof action) => {
+                        switch(response) {
+                            case action.CANCEL: {
+                                //do nothing
+                                break;
+                            }
+                            case action.DELETE: {
+                                deleteAccount();
+                                break;
+                            }
+                        }
+                    });
+            }
+
         function back() {
             Router.back();
         }
@@ -533,6 +555,14 @@ export default {
             }
         }
 
+        function updateAccount() {
+
+        }
+
+        function deleteAccount() {
+
+        }
+
         return {
             account,
             selectedFieldsOfStudy,
@@ -551,7 +581,11 @@ export default {
             isValid,
             back,
             createAccount,
+            updateAccount,
+            deleteAccount,
+            confirmDeleteAccount,
             unsavedChangesModal,
+            deleteModal,
         }
     },
 
