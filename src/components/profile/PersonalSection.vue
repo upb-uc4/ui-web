@@ -16,13 +16,13 @@
                 <div class="lg:flex mb-6">
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">First Name</label>
-                        <input type="text" :readonly="!isEditing" v-model="editedFirstName"
+                        <input type="text" :readonly="!isEditing" v-model="modification.firstName"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                     </div>
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Last Name</label>
-                        <input type="text" :readonly="!isEditing" v-model="editedLastName"
+                        <input type="text" :readonly="!isEditing" v-model="modification.lastName"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                     </div>
@@ -39,14 +39,16 @@
 </template>
 
 <script lang="ts">
-    import {ref} from "vue";
+    import {ref, reactive} from "vue";
 
     export default {
         props: ["firstName", "lastName", "birthdate"],
         emits: ["save", "update:firstName", "update:lastName"],
         setup(props: any, {emit}: any) {
-            const editedFirstName = ref(props.firstName);
-            const editedLastName = ref(props.lastName);
+            const modification = reactive({
+                firstName: props.firstName,
+                lastName: props.lastName,
+            })
             const isEditing = ref(false);
 
             function edit() {
@@ -59,19 +61,19 @@
             }
 
             function resetInputs() {
-                editedFirstName.value = props.firstName;
-                editedLastName.value = props.lastName;
+                modification.firstName = props.firstName;
+                modification.lastName = props.lastName;
             }
 
             function save() {
                 isEditing.value = false;
-                emit('update:firstName', editedFirstName.value);
-                emit('update:lastName', editedLastName.value);
+                emit('update:firstName', modification.firstName);
+                emit('update:lastName', modification.lastName);
                 emit("save");
             }
 
             return {isEditing, edit, cancelEdit, save,
-                editedFirstName, editedLastName};
+                modification};
         },
 
     }
