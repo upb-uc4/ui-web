@@ -110,5 +110,7 @@
             //todo check if user is student
             next();
         },
+
+        //todo add Leave Modal
     }
 </script>
