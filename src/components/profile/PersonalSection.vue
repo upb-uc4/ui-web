@@ -16,16 +16,15 @@
                 <div class="lg:flex mb-6">
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">First Name</label>
-                        <input type="text" :readonly="!isEditing" :value="editedFirstName" @input="onFirstNameChanged($event.target.value)"
+                        <input type="text" :readonly="!isEditing" v-model="editedFirstName"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
                     </div>
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Last Name</label>
-                        <input type="text" :readonly="!isEditing" :value="editedLastName" @input="onLastNameChanged($event.target.value)"
+                        <input type="text" :readonly="!isEditing" v-model="editedLastName"
                                :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-
                     </div>
                 </div>
                 <div class="lg:w-1/2 mb-6 flex flex-col lg:pr-8">
@@ -40,12 +39,14 @@
 </template>
 
 <script lang="ts">
-    import {ref, watch} from "vue";
+    import {ref} from "vue";
 
     export default {
         props: ["firstName", "lastName", "birthdate"],
         emits: ["save", "update:firstName", "update:lastName"],
         setup(props: any, {emit}: any) {
+            const editedFirstName = ref(props.firstName);
+            const editedLastName = ref(props.lastName);
             const isEditing = ref(false);
 
             function edit() {
@@ -64,42 +65,13 @@
 
             function save() {
                 isEditing.value = false;
-                updateFirstName(editedFirstName.value);
-                updateLastName(editedLastName.value);
+                emit('update:firstName', editedFirstName.value);
+                emit('update:lastName', editedLastName.value);
                 emit("save");
             }
 
-            function updateFirstName(name: string) {
-                emit('update:firstName', name);
-            }
-
-            function updateLastName(name: string) {
-                emit('update:lastName', name);
-            }
-
-
-            const editedFirstName = ref(props.firstName);
-            const editedLastName = ref(props.lastName);
-
-            function onFirstNameChanged(name: string) {
-                editedFirstName.value = name;
-            }
-
-            function onLastNameChanged(name: string) {
-                editedLastName.value = name;
-            }
-
-            watch(() => props.firstName, (newValue) => {
-                editedFirstName.value = newValue;
-            });
-
-            watch(() => props.lastName, (newValue) => {
-                editedLastName.value = newValue;
-            });
-
             return {isEditing, edit, cancelEdit, save,
-                onFirstNameChanged, editedFirstName,
-                onLastNameChanged, editedLastName};
+                editedFirstName, editedLastName};
         },
 
     }
