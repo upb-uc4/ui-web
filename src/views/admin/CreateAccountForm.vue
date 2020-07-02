@@ -386,28 +386,27 @@ export default {
                 //TODO Remove next line when lagom finally manage to send a birthdate
                 response.birthdate = "1996-12-11";
 
-                account.user = response;
+                account.user = initialAccount.user = response;
+
                 let dates = response.birthdate.split("-");
-                account.birthdate.day = dates[2];
-                account.birthdate.month = dates[1];
-                account.birthdate.year = dates[0];
+                account.birthdate.day = initialAccount.birthdate.day = dates[2];
+                account.birthdate.month = initialAccount.birthdate.month = dates[1];
+                account.birthdate.year = initialAccount.birthdate.year = dates[0];
 
                 if(response.role == Role.LECTURER) {
-                    account.lecturer = (response as Lecturer);
-                    initialAccount.lecturer = (response as Lecturer);
+                    account.lecturer = initialAccount.lecturer = (response as Lecturer);
                 }
                 else if(response.role == Role.STUDENT ) {
-                    account.student = (response as Student);
+                    account.student = initialAccount.student = (response as Student);
                     selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length;
                     for (let i = 0; i < selectedFieldsOfStudy.value ; i++ ) {
                         fieldsOfStudyLists[i] = fieldsOfStudy;
                     }
                     updateFieldOfStudyLists();
-                    initialAccount.student = (response as Student);
+                    
                 }
                 else if(response.role == Role.ADMIN ) {
-                    account.admin =  (response as Student)
-                    initialAccount.admin = (response as Admin);
+                    account.admin =  initialAccount.admin = (response as Admin)
                 }
 
             })
@@ -447,8 +446,8 @@ export default {
         }
         
 		function updatePicture() {
-            //TODO
 			console.log(account)
+            console.log(initialAccount)
 		}
         
         function isValid() {
