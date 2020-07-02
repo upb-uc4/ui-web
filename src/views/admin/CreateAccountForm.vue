@@ -271,7 +271,7 @@
 import Router from "@/router/";
 import {Role} from '@/entities/Role'
 import { store } from '@/store/store';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
 import UserManagement from "@/api/UserManagement"
 import StudentEntity from "@/entities/StudentEntity"
@@ -284,6 +284,7 @@ import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 import { Country } from '../../entities/Country';
+import User from '../../api/api_models/user_management/User';
 
 
 export default {
@@ -297,7 +298,7 @@ export default {
             required: true
         }
     },
-    setup() {
+    setup(props) {
         let account = reactive( {
             authUser: new Account(),
             user: new UserEntity(),
@@ -309,7 +310,20 @@ export default {
 				month: "",
 				year: "",
 			},
-		})
+        })
+        let initialAccount = {
+            authUser: new Account(),
+            user: new UserEntity(),
+            admin: new AdminEntity(false),
+            student: new StudentEntity(false),
+            lecturer: new LecturerEntity(false),
+			birthdate: {
+				day: "",
+				month: "",
+				year: "",
+			},
+        }
+
         let selectedFieldsOfStudy = ref(0);
         let success = ref(new Boolean());
         success.value = false;
@@ -319,14 +333,52 @@ export default {
         let countries = Object.values(Country).filter(e => e!= Country.NONE);
         let unsavedChangesModal = ref();
 		
-		
 		let isLecturer = computed(() => {
 			return account.user.role === Role.LECTURER;
 		})
 
 		let isStudent = computed(() => {
 			return account.user.role === Role.STUDENT;
-		})
+        })
+        
+        onMounted( () => {
+            if(props.editMode) {
+                loadAccount();
+            }
+        })
+
+        function loadAccount() {
+            const userManagement: UserManagement = new UserManagement();
+            userManagement.getSpecificUser(Router.currentRoute.value.params.username as string).then(( response: Student | Lecturer | Admin) => {
+                //TODO Remove next line when lagom finally manage to send a birthdate
+                response.birthdate = "1996-12-11";
+
+                account.user = response;
+                let dates = response.birthdate.split("-");
+                account.birthdate.day = dates[2];
+                account.birthdate.month = dates[1];
+                account.birthdate.year = dates[0];
+
+                if(response.role == Role.LECTURER) {
+                    account.lecturer = (response as Lecturer);
+                    initialAccount.lecturer = (response as Lecturer);
+                }
+                else if(response.role == Role.STUDENT ) {
+                    account.student = (response as Student);
+                    selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length;
+                    for (let i = 0; i < selectedFieldsOfStudy.value ; i++ ) {
+                        fieldsOfStudyLists[i] = fieldsOfStudy;
+                    }
+                    updateFieldOfStudyLists();
+                    initialAccount.student = (response as Student);
+                }
+                else if(response.role == Role.ADMIN ) {
+                    account.admin =  (response as Student)
+                    initialAccount.admin = (response as Admin);
+                }
+
+            })
+        }
 
         function addFieldOfStudy(field:FieldOfStudy, index:number) {
             if(selectedFieldsOfStudy.value == index) {
