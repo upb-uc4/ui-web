@@ -386,29 +386,30 @@ export default {
                 //TODO Remove next line when lagom finally manage to send a birthdate
                 response.birthdate = "1996-12-11";
 
-                account.user = initialAccount.user = response;
-
+                account.user  = response;
+                initialAccount.user = JSON.parse(JSON.stringify(account.user)) ;
                 let dates = response.birthdate.split("-");
                 account.birthdate.day = initialAccount.birthdate.day = dates[2];
                 account.birthdate.month = initialAccount.birthdate.month = dates[1];
                 account.birthdate.year = initialAccount.birthdate.year = dates[0];
 
                 if(response.role == Role.LECTURER) {
-                    account.lecturer = initialAccount.lecturer = (response as Lecturer);
+                    account.lecturer = (response as Lecturer);
+                    initialAccount.lecturer = JSON.parse(JSON.stringify(account.lecturer));
                 }
                 else if(response.role == Role.STUDENT ) {
-                    account.student = initialAccount.student = (response as Student);
+                    account.student = (response as Student);
+                    initialAccount.student = JSON.parse(JSON.stringify(account.student));
                     selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length;
                     for (let i = 0; i < selectedFieldsOfStudy.value ; i++ ) {
                         fieldsOfStudyLists[i] = fieldsOfStudy;
                     }
                     updateFieldOfStudyLists();
-                    
                 }
                 else if(response.role == Role.ADMIN ) {
-                    account.admin =  initialAccount.admin = (response as Admin)
+                    account.admin = (response as Admin)
+                    initialAccount.admin = JSON.parse(JSON.stringify(account.admin))
                 }
-
             })
         }
 
@@ -420,7 +421,6 @@ export default {
             account.student.fieldsOfStudy[index] = field;
             
             updateFieldOfStudyLists();
-            
         }
 
         function removeFieldOfStudy(index:number) {
@@ -472,14 +472,32 @@ export default {
         }
 		
         let hasInput = computed(() => {
-			if(	account.user.role != Role.NONE || account.user.username != "" || account.user.email != "" || account.authUser.password != "" ||
-				account.user.firstName != "" || account.user.lastName != "" || account.birthdate.day != "" || account.birthdate.month != "" || 
-				account.birthdate.year != "" || account.user.address.country != "" || account.user.address.street != "" ||
-				account.user.address.houseNumber != "" || account.user.address.zipCode != "" || account.user.address.city != "") {
-                return true;
-			}
-			// No need to check the Lecturer's and Student's Forms at this point, as hasInput will already be true when the role
-			// was set
+            if( 
+                //Role and password can only be set during account creation
+                (!props.editMode && account.user.role != Role.NONE) || (!props.editMode && account.authUser.password != "") || 
+                //default user names
+                account.user.username != initialAccount.user.username || account.user.firstName != initialAccount.user.firstName ||
+                account.user.lastName != initialAccount.user.lastName || account.user.email != initialAccount.user.email ||
+                //default user birthdate from the form
+                account.birthdate.day != initialAccount.birthdate.day ||account.birthdate.month != initialAccount.birthdate.month || account.birthdate.year != initialAccount.birthdate.year ||
+                //default user address
+                account.user.address.country != initialAccount.user.address.country || account.user.address.street != initialAccount.user.address.street ||
+                account.user.address.houseNumber != initialAccount.user.address.houseNumber || account.user.address.zipCode != initialAccount.user.address.zipCode||
+                account.user.address.city != initialAccount.user.address.city||
+                //lecturer properties
+                account.lecturer.freeText != initialAccount.lecturer.freeText || account.lecturer.researchArea != initialAccount.lecturer.researchArea||
+                //student properties
+                account.student.immatriculationStatus != initialAccount.student.immatriculationStatus || account.student.matriculationId != initialAccount.student.matriculationId ||
+                account.student.semesterCount != initialAccount.student.semesterCount) {
+                    return true;
+                }
+                // for(let course in account.student.fieldsOfStudy) {
+                //     if(! (initialAccount.student.fieldsOfStudy.filter( e => e==course).length == 0)) {
+                //         console.log(initialAccount.student.fieldsOfStudy.filter( e => e==course))
+                //         console.log("Triggered")
+                //         return true;
+                //     }
+                // }
             return false;
         })
         
