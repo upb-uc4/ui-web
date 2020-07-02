@@ -28,30 +28,11 @@
                 v-on:save="save"
             />
 
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Course of Study</label>
-                        <label class="block text-gray-600">
-                            Information related to your individual academic career.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Field of Study</label>
-                            <input placeholder="Computer Science" type="number" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Degree Sought</label>
-                            <input placeholder="Master's Degree" type="number" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Semester Count</label>
-                            <input placeholder="4" type="number" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <course-of-study-section
+                :fields-of-study="studentMock.fieldsOfStudy"
+                :matriculation-id="studentMock.matriculationId"
+                :semester-count="studentMock.semesterCount"
+            />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
@@ -88,6 +69,7 @@
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
+    import CourseOfStudySection from "@/components/profile/CourseOfStudySection.vue";
     import StudentEntity from "@/entities/StudentEntity";
     import { onMounted, ref } from "vue";
     import {store} from "@/store/store";
@@ -98,7 +80,8 @@
         components: {
             PersonalSection,
             ContactSection,
-            AddressSection
+            AddressSection,
+            CourseOfStudySection
         },
         setup() {
             const loading = ref(true);
