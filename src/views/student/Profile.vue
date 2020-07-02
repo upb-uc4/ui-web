@@ -6,7 +6,7 @@
         </button>
 
         <div class="flex items-end justify-between">
-            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{studentMock.firstName + " " + studentMock.lastName}}</h1>
+            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ studentMock.firstName + " " + studentMock.lastName }} (@{{ studentMock.username }})</h1>
             <img class="w-32 h-32 mb-4 rounded-full object-cover"
                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU">
         </div>
@@ -18,28 +18,10 @@
                 v-on:save="save"
             />
 
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-6">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Contact</label>
-                        <label class="block text-gray-600">
-                            How can we reach you?
-                        </label>
-                    </div>
-
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                            <input placeholder="my@email.com"  type="text" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-
-                        <div class="mb-6 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Phone</label>
-                            <input placeholder="+123 456 789" type="text" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <contact-section
+                v-model:email="studentMock.email"
+                v-on:save="save"
+            />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
@@ -154,6 +136,7 @@
 
 <script lang="ts">
     import PersonalSection from "@/components/profile/PersonalSection.vue";
+    import ContactSection from "@/components/profile/ContactSection.vue";
     import StudentEntity from "@/entities/StudentEntity";
     import { onMounted, ref } from "vue";
     import {store} from "@/store/store";
@@ -162,7 +145,8 @@
 
     export default {
         components: {
-            PersonalSection
+            PersonalSection,
+            ContactSection
         },
         setup() {
             const loading = ref(true);
