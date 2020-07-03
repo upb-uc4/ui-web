@@ -71,6 +71,7 @@
     import CourseOfStudySection from "@/components/profile/CourseOfStudySection.vue";
     import { ref } from "vue";
     import {store} from "@/store/store";
+    import Router from "@/router"
     import UserManagement from "@/api/UserManagement";
 
     export default {
@@ -84,13 +85,17 @@
             const auth: UserManagement = new UserManagement();
 
             //todo remove after tinkering
-            await auth.login({username: "student", password: "student"})
-                .then((success : boolean)=> {
-                    if (success) {
-                        store.state.myId = "student";
-                    }
-                })
+            // await auth.login({username: "student", password: "student"})
+            //     .then((success : boolean)=> {
+            //         if (success) {
+            //             store.state.myId = "student";
+            //         }
+            //     })
             const student = ref(await auth.getOwnUser());
+
+            function back() {
+                Router.back();
+            }
 
             function save() {
                 auth.updateUser(student.value).then( (success) => {
@@ -103,7 +108,11 @@
                 })
             }
 
-            return {student, save};
+            return {
+                student, 
+                save,
+                back,
+            };
         },
 
         beforeRouteEnter(_from: any, _to: any, next: any) {
