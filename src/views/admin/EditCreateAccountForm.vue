@@ -241,10 +241,10 @@
                                     <!-- v-for begins counting at 1, hence 1 is substracted for handling of the arrays -->
                                     <div class="w-full" v-for="index in selectedFieldsOfStudy+1" :key="index">
                                         <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
-                                        name="country" id="country" v-model="account.student.fieldsOfStudy[index-1]"
+                                            v-model="account.student.fieldsOfStudy[index-1]"
                                         >
-                                        <option :value="undefined" @click="removeFieldOfStudy(index-1)">Select a Field of Study</option>
-                                        <option v-for="field in fieldsOfStudyLists[index-1]" :key="field" @click="addFieldOfStudy(field,index-1)">{{ field }}</option>
+                                            <option :value="undefined" @click="removeFieldOfStudy(index-1)">Select a Field of Study</option>
+                                            <option v-for="field in fieldsOfStudyLists[index-1]" :key="field" @click="addFieldOfStudy(field,index-1)">{{ field }}</option>
                                         </select>
                                     </div>
                                 </div>
