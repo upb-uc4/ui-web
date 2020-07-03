@@ -39,7 +39,7 @@
                     <div class="w-full lg:w-2/3">
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
-                            <input type="text" id="userName" name="username"
+                            <input type="text" id="userName" name="Username"
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input disabled:bg-gray-400"
                                 placeholder="Username"
                                 v-model="account.user.username"
@@ -49,7 +49,7 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
                             <input type="text" id="email" name="email"
                                 class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                placeholder="Email"
+                                placeholder="example@mail.com"
 								v-model="account.user.email"
                                 >
                         </div>
@@ -80,14 +80,16 @@
                                 Name
                             </label>
                             <div class="flex flex-row ">
-                                <div class="w-full pr-2">
+                                <div class="w-full pr-2 flex-col">
+                                    <label class="text-gray-700 text-sm">Firstname</label>
                                     <input type="text" id="firstName" name="firstName"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Firstname"
 										v-model="account.user.firstName"
                                         >
                                 </div>
-                                <div class="w-full pl-2">
+                                <div class="w-full pl-2 flex-col">
+                                    <label class="text-gray-700 text-sm">Lastname</label>
                                     <input type="text" id="lastName" name="lastName"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Lastname"
@@ -101,21 +103,24 @@
                                 Birthdate
                             </label>
                             <div class="flex flex-row ">
-                                <div class="w-full pr-2">
+                                <div class="w-full pr-2 flex-col">
+                                    <label class="text-gray-700 text-sm">Day</label>
                                     <input type="number" id="day" name="day"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="DD"
 										v-model="account.birthdate.day"
                                         >
-                                </div>
-								<div class="w-full px-2">
+                                </div> 
+								<div class="w-full px-2 flex-col">
+                                    <label class="text-gray-700 text-sm">Month</label>
                                     <input type="number" id="month" name="month"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="MM"
 										v-model="account.birthdate.month"
                                         >
                                 </div>
-								<div class="w-full pl-2">
+								<div class="w-full pl-2 flex-col">
+                                    <label class="text-gray-700 text-sm">Year</label>
                                     <input type="number" id="year" name="year"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="YYYY"
@@ -125,23 +130,28 @@
                             </div>
                         </div>
                         <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">
-                                Adress 
-                            </label>
-                            <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-select" 
-							name="country" id="country"
-							v-model="account.user.address.country">
-                                <option :value="''" >Select a Country</option>
-                                <option v-for="country in countries" :key="country">{{ country }}</option>
-                            </select>
+                                <label class="text-gray-700 text-md font-medium mb-3">
+                                    Adress 
+                                </label>
+                                <div class="w-full flex flex-col">
+                                    <label class="text-gray-700 text-sm">Country</label>
+                                    <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-select" 
+                                    name="country" id="country"
+                                    v-model="account.user.address.country">
+                                        <option :value="''" >Select a Country</option>
+                                        <option v-for="country in countries" :key="country">{{ country }}</option>
+                                    </select>
+                                </div>
                             <div class="flex flex-row ">
-                                <div class="w-full pr-2 mb-4">
+                                <div class="w-full pr-2 mb-4 flex flex-col">
+                                    <label class="text-gray-700 text-sm">Street</label>
                                     <input type="text" id="street" name="street"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Street"
 										v-model="account.user.address.street">
                                 </div>
-                                <div class="pl-2">
+                                <div class="pl-2 flex flex-col">
+                                    <label class="text-gray-700 text-sm">Number</label>
                                     <input type="text" id="number" name="number"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Number"
@@ -149,13 +159,15 @@
                                 </div>
                             </div>
                             <div class="flex flex-row ">
-                                <div class="pr-2">
+                                <div class="pr-2 flex flex-col">
+                                    <label class="text-gray-700 text-sm">Zip Code</label>
                                     <input type="text" id="zipcode" name="zipcode"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Zip Code"
 										v-model="account.user.address.zipCode">
                                 </div>
-                                 <div class="w-full pl-2">
+                                 <div class="w-full pl-2 flex flex-col">
+                                 <label class="text-gray-700 text-sm">City</label>
                                     <input type="text" id="city" name="city"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="City"
@@ -174,16 +186,18 @@
                             These is Information specifically for a Lecturer
                         </label>
                     </div>
-					<div class="w-full lg:w-2/3">
+					<div class="w-full lg:w-2/3 flex flex-col">
+                        <label class="text-gray-700 text-md font-medium mb-3">Description</label>
                         <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Description</label>
-                           <textarea name="description" id="description" cols="30" rows="5" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
+                            <label class="text-gray-700 text-sm font-medium mb-3">Free Text Description</label>
+                            <textarea name="description" id="description" cols="30" rows="5" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
 								v-model="account.lecturer.freeText">
                             </textarea>
                         </div>
                         <div class="mb-4 flex flex-col">
-                           <textarea name="researchField" id="researchField" cols="30" rows="3" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
+                            <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research</label>
+                            <textarea name="researchField" id="researchField" cols="30" rows="3" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
 								v-model="account.lecturer.researchArea">>
                             </textarea>
@@ -414,6 +428,7 @@ export default {
             })
         }
 
+
         function addFieldOfStudy(field:FieldOfStudy, index:number) {
             if(selectedFieldsOfStudy.value == index) {
                 selectedFieldsOfStudy.value++;
@@ -450,27 +465,6 @@ export default {
 			console.log(account)
             console.log(initialAccount)
 		}
-        
-        function isValid() {
-             if(account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
-                account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
-                account.birthdate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
-                account.user.address.houseNumber == "" || account.user.address.zipCode == "" || account.user.address.city == "") {
-                    return false;
-			}
-
-			if( account.user.role == Role.STUDENT) {
-                //account.student.semesterCount can have typeof String due to a bug in vue, if the number input field is empty
-				if( account.student.immatriculationStatus == "" || account.student.matriculationId == "" || 
-				account.student.semesterCount < 0 || typeof account.student.semesterCount != "number" || account.student.fieldsOfStudy.length == 0) {
-					return false;
-				}
-			}
-
-			//For the Lecturer, there cannot be any invalid inputs as the inputs are optional at this point. 
-			//Admin has no additional Inputs
-            return true;
-        }
 		
         let hasInput = computed(() => {
             if( 
@@ -522,9 +516,7 @@ export default {
                     });
             }
 
-        function back() {
-            Router.back();
-        }
+        
 
         function assembleAccount() :  Student | Lecturer | Admin {
              var newUser: Student | Lecturer | Admin = {} as Student;
@@ -552,6 +544,27 @@ export default {
                     }
                 }
             return newUser;
+        }
+
+        function isValid() {
+             if(account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
+                account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
+                account.birthdate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
+                account.user.address.houseNumber == "" || account.user.address.zipCode == "" || account.user.address.city == "") {
+                    return false;
+			}
+
+			if( account.user.role == Role.STUDENT) {
+                //account.student.semesterCount can have typeof String due to a bug in vue, if the number input field is empty
+				if( account.student.immatriculationStatus == "" || account.student.matriculationId == "" || 
+				account.student.semesterCount < 0 || typeof account.student.semesterCount != "number" || account.student.fieldsOfStudy.length == 0) {
+					return false;
+				}
+			}
+
+			//For the Lecturer, there cannot be any invalid inputs as the inputs are optional at this point. 
+			//Admin has no additional Inputs
+            return true;
         }
 
          function createAccount() {
@@ -601,6 +614,10 @@ export default {
                     back();
                 }
             })
+        }
+
+        function back() {
+            Router.back();
         }
 
         return {
