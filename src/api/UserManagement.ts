@@ -7,6 +7,9 @@ import Lecturer from './api_models/user_management/Lecturer';
 import Admin from './api_models/user_management/Admin';
 import { Role } from '@/entities/Role';
 import { Account } from '@/entities/Account';
+import APIResponse from './helpers/models/APIResponse';
+import APIError from './api_models/errors/APIError';
+import ValidationError from "./api_models/errors/ValidationError"
 
 export default class UserManagement extends Common {
 
@@ -73,28 +76,43 @@ export default class UserManagement extends Common {
      * Authenticate against Lagom endpoint, return true if successful
      * @param loginData 
      */
-    async login(loginData: {username: string, password: string}): Promise<boolean> {
+    async login(loginData: {username: string, password: string}): Promise<APIResponse<boolean>> {
         this._authHeader = {auth: loginData};
-        const role: Role = await this.getRole(loginData.username);
-        store.state.myRole = role;
+        const response: APIResponse<Role> = await this.getRole(loginData.username);
+
+        let result: APIResponse<boolean> = {
+            error: response.error,
+            returnValue: response.returnValue != Role.NONE,
+            networkError: response.networkError,
+            statusCode: response.statusCode,
+        } 
+
+        store.state.myRole = response.returnValue;
         store.state.loginData = loginData;
 
-        return role != Role.NONE;
+        return result;
     }
 
-    async getRole(username: string): Promise<Role> {
-        let result: Role = Role.NONE;
+    async getRole(username: string): Promise<APIResponse<Role>> {
+        let result: APIResponse<Role> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: Role.NONE,
+            statusCode: 0,
+        };
 
         await this._axios.get(`/users/${username}/role`, this._authHeader)
                     .then((response: AxiosResponse) => {
                         console.log(response)
-                        result = response.data.role;
+                        result.statusCode = response.status;
+                        result.returnValue = response.data.role;
                     })
                     .catch((error: AxiosError) => {
                         if(!error.response) {
-                            //network error
-                        } 
-
+                            result.networkError = true;
+                        } else {
+                            result.statusCode = error.response.status;
+                        }
                     });
 
         return result;       
@@ -103,8 +121,8 @@ export default class UserManagement extends Common {
     async getSpecificUser(username: string): Promise<Student | Lecturer | Admin> {
         var result: Student | Lecturer | Admin = {} as Student | Lecturer | Admin;
         // get role 
-        let role: Role = await this.getRole(username);
-        let endpoint = UserManagement._createEndpointByRole(role);
+        let role: APIResponse<Role> = await this.getRole(username);
+        let endpoint = UserManagement._createEndpointByRole(role.returnValue);
 
         await this._axios.get(`${endpoint}/${username}`, this._authHeader)
                     .then((response: AxiosResponse) => {
@@ -127,19 +145,32 @@ export default class UserManagement extends Common {
        return await this.getSpecificUser(username);
     }
 
-    async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<boolean> {
+    async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
         let endpoint = UserManagement._createEndpointByRole(user.role);
         let message = UserManagement._createMessage(user, authUser);
 
-        let success = false;
+        let result: APIResponse<boolean> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: false,
+            statusCode: 0,
+        };
+
         await this._axios.post(endpoint, message, this._authHeader)
             .then((reponse : AxiosResponse) => {
-                success = true;
+                result.statusCode = reponse.status;
+                result.returnValue = true;
             }).catch((error: AxiosError) => {
+                if(!error.response) {
+                    result.networkError = true;
+                } else {
+                    result.statusCode = error.response.status;
+                    result.error = error.response.data as ValidationError;
+                }
                 console.log(error)
             })     
         
-        return success;
+        return result;
     }
 
     async updateUser(user: Student | Lecturer | Admin): Promise<boolean> {

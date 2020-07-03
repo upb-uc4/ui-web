@@ -16,6 +16,9 @@
             <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/createAccount')">   
                  <a>createAccount</a>
             </li>
+            <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/profile/1')">
+                <a>profile</a>
+            </li>
             <li class="ml-auto bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="logout()">
                 <a>logOut</a>
             </li>
