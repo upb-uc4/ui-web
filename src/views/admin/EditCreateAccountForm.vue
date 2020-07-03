@@ -609,7 +609,6 @@ export default {
         function updateAccount() {
             const userManagement: UserManagement = new UserManagement();
             var adaptedUser: Student | Lecturer | Admin = assembleAccount();
-            console.log(adaptedUser);
             userManagement.updateUser(adaptedUser).then( (response) => {
                 if(response) {
                     success.value = true;
