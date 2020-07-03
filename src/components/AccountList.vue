@@ -13,14 +13,14 @@
             </thead>
             <tbody v-for="userListByRole in usersByRole" :key="userListByRole">
                 <tr class="bg-gray-100 hover:bg-gray-400 py-2 cursor-pointer" v-for="user in userListByRole" :key="user.username">
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.username }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.role }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.matriculationId }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.lastName }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount">{{ user.firstName }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.username }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.role }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.matriculationId }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.lastName }}</td>
+                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.firstName }}</td>
                     <td class="px-2 border border-black">
                         <div class="flex">
-                            <button @click="editAccount" title="Edit Account" 
+                            <button @click="editAccount(user.username)" title="Edit Account" 
                                 class="w-full m-1 bg-gray-100 text-gray-700 hover:text-white hover:bg-blue-800 rounded-lg border border-blue-800"> 
                                 <i class="inline fas fa-pencil-alt text-lg"></i>
                             </button>
@@ -40,6 +40,7 @@ import Admin from '../api/api_models/user_management/Admin';
 import { ref } from 'vue';
 import Lecturer from '../api/api_models/user_management/Lecturer';
 import Student from '../api/api_models/user_management/Student';
+import router from '../router';
 
 export default {
   name: "AccountList",
@@ -53,9 +54,8 @@ export default {
             usersByRole.value = response
     });
     
-    function editAccount() {
-        //TODO open edit account page
-        console.log("Edit Me!")
+    function editAccount(username:string) {
+        router.push({path: "/editAccount/" + username})
     }
 
     return {

@@ -4,8 +4,8 @@ import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue"
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
-import AdminCreateAccountView from '../views/admin/CreateAccountForm.vue';
-import Redirect from "../views/common/Redirect.vue";
+import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
+import Redirect from "../views/common/Redirect.vue"
 import Profile from "../views/common/Profile.vue";
 
 
@@ -54,7 +54,13 @@ const router = createRouter({
 		},
 		{
 			path: "/createAccount",
-			component: AdminCreateAccountView
+			props: {editMode:false},
+			component: AdminEditCreateAccountView
+		},
+		{
+			path: "/editAccount/:username",
+			props: {editMode:true},
+			component: AdminEditCreateAccountView
 		},
 		{
 			path: "/redirect",
