@@ -83,14 +83,6 @@
         },
         async setup() {
             const auth: UserManagement = new UserManagement();
-
-            //todo remove after tinkering
-            // await auth.login({username: "student", password: "student"})
-            //     .then((success : boolean)=> {
-            //         if (success) {
-            //             store.state.myId = "student";
-            //         }
-            //     })
             const student = ref(await auth.getOwnUser());
 
             function back() {
