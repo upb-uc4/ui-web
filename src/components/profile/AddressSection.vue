@@ -16,7 +16,7 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Country</label>
-                    <select :readonly="!isEditing" v-model="editedAddress.country"
+                    <select :disabled="!isEditing" v-model="editedAddress.country"
                             :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
                             class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
                         <option v-for="country in countries" :key="country" :selected="country === editedAddress.country" >{{ country }}</option>
