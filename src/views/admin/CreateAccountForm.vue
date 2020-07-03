@@ -260,7 +260,6 @@
                     </div>
 				</div>
 			</section>
-            <!-- This section is hidden for this moment, but will be used when editing accounts --> 
 			<section class="border-t-2 py-8 border-gray-400" :hidden="!editMode">
 				<div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
