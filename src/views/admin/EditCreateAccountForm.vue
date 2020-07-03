@@ -452,7 +452,6 @@ export default {
                 selectedFieldsOfStudy.value--;
                 fieldsOfStudyLists[index+1] = [];
             }
-            console.log(fieldsOfStudyLists)
             updateFieldOfStudyLists();
         }
 
