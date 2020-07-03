@@ -46,6 +46,8 @@
     import { Role } from "../../entities/Role";
     import UserManagement from "@/api/UserManagement"
     import { ref } from 'vue';
+    import LoginResponseHandler from "@/use/LoginResponseHandler"
+    import ErrorHandler from "@/use/ErrorHandler";
 
     export default {
         props: [
@@ -58,7 +60,7 @@
             let password = ref("");
             let passwordFieldType =ref("password")
             let error:boolean= false;
-
+            let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
             function togglePassword () {  
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text"; 
@@ -76,32 +78,30 @@
                  return email.value === "" || password.value === "";
             }
 
-            function login() {
+            async function login() {
                 const username = email.value;
                 const userManagement: UserManagement = new UserManagement();
 
-                userManagement.login({username: username, password: password.value})
-                    .then((success : boolean)=> {
-                        if (success) {
-                            store.state.myId = username;
-                            switch(store.state.myRole) {
-                                case Role.ADMIN: {
-                                    Router.push("/admin");
-                                    break;
-                                }
-                                case Role.LECTURER: {
-                                    Router.push("/lecturer");
-                                    break;
-                                }
-                                case Role.STUDENT: {
-                                    Router.push("/student");
-                                    break;
-                                }
-                            }
-                        } else {
-                            //TODO: show auth error
+                const response = await userManagement.login({username: username, password: password.value});
+
+                const loginSuccess = loginResponseHandler.handleReponse(response);
+
+                if (loginSuccess) {
+                    switch(store.state.myRole) {
+                        case Role.ADMIN: {
+                            Router.push("/createAccount");
+                            break;
                         }
-                    })
+                        case Role.LECTURER: {
+                            Router.push("/lecturer");
+                            break;
+                        }
+                        case Role.STUDENT: {
+                            Router.push("/student");
+                            break;
+                        }
+                    }
+                }
             }
 
             return {
