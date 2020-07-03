@@ -31,7 +31,7 @@
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
+                        <label class="block text-gray-700 text-lg font-medium mb-2">User Security</label>
                         <label class="block text-gray-600">
                             Basic Information of the User for Authentication  
                         </label>
@@ -189,14 +189,14 @@
 					<div class="w-full lg:w-2/3 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Description</label>
                         <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-sm font-medium mb-3">Free Text Description</label>
+                            <label class="text-gray-700 text-sm font-medium mb-3">Free Text Description (optional)</label>
                             <textarea name="description" id="description" cols="30" rows="5" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
 								v-model="account.lecturer.freeText">
                             </textarea>
                         </div>
                         <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research</label>
+                            <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research (optional)</label>
                             <textarea name="researchField" id="researchField" cols="30" rows="3" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
 								v-model="account.lecturer.researchArea">>
@@ -216,23 +216,30 @@
 					<div class="w-full lg:w-2/3">
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Immatriculation Status</label>
-                            <input type="text" id="immatriculationStatus" name="immatriculationStatus"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="Immatriculation Status"
-										v-model="account.student.immatriculationStatus">
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                           <input type="text" id="matriculationId" name="matriculationId"
-                                        class="w-1/4 border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="Matriculation-ID"
-										v-model="account.student.matriculationId">
+                            <div class="flex flex-row">
+                                <div class="w-1/2 flex flex-col">
+                                    <label class="text-gray-700 text-sm font-medium mb-3">Status</label>
+                                    <input type="text" id="immatriculationStatus" name="immatriculationStatus"
+                                                class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                                placeholder="Immatriculation Status"
+                                                v-model="account.student.immatriculationStatus">
+                                </div>
+                                 <div class="w-1/4 flex flex-col pl-2">
+                                    <label class="text-gray-700 text-sm font-medium mb-3">Matriculation-ID</label>
+                                    <input type="text" id="matriculationId" name="matriculationId"
+                                                class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                                placeholder="Matriculation-ID"
+                                                v-model="account.student.matriculationId">
+                                 </div>
+                            </div>
                         </div>
 						<div class="mb-4 mt-8 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
 							<div class="flex flex-row ">
-                                <div>
+                                <div class="w-1/2 flex flex-col">
+                                    <label class="text-gray-700 text-sm font-medium mb-3">Fields of Study</label>
                                     <!-- v-for begins counting at 1, hence 1 is substracted for handling of the arrays -->
-                                    <div class="w-full pr-2" v-for="index in selectedFieldsOfStudy+1" :key="index">
+                                    <div class="w-full" v-for="index in selectedFieldsOfStudy+1" :key="index">
                                         <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                                         name="country" id="country" v-model="account.student.fieldsOfStudy[index-1]"
                                         >
@@ -241,7 +248,8 @@
                                         </select>
                                     </div>
                                 </div>
-								<div class="pl-2">
+								<div class="w-1/4 pl-2 flex flex-col">
+                                    <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
                                     <input type="number" id="semesterCount" name="semesterCount"
                                         class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="Semester Count"
@@ -264,7 +272,7 @@
 					<div class="flex flex-col items-center justify-center">
 						<img class="object-contain h-48" :src="account.user.picture">
 						<button class="bg-transparent hover:bg-blue-800 border-blue-700 border-2 text-blue-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded-lg"
-						@click="updatePicture">Upload Profile Picture</button>
+						@click="updatePicture">Update Profile Picture</button>
 					</div>
 				</div>
 			</section>
