@@ -1,4 +1,4 @@
-import ResponseHandler from "./ResponeHandler"
+import ResponseHandler from "./ResponseHandler"
 import APIResponse from "../api/helpers/models/APIResponse"
 import ValidationError from '@/api/api_models/errors/ValidationError';
 
