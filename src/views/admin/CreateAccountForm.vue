@@ -423,7 +423,7 @@ export default {
                     account.student = (response as Student);
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
                     selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length;
-                    for (let i = 0; i < selectedFieldsOfStudy.value ; i++ ) {
+                    for (let i = 0; i <= selectedFieldsOfStudy.value ; i++ ) {
                         fieldsOfStudyLists[i] = fieldsOfStudy;
                     }
                     updateFieldOfStudyLists();
