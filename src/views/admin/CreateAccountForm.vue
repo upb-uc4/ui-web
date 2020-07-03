@@ -435,7 +435,6 @@ export default {
             })
         }
 
-
         function addFieldOfStudy(field:FieldOfStudy, index:number) {
             if(selectedFieldsOfStudy.value == index) {
                 selectedFieldsOfStudy.value++;
@@ -494,14 +493,20 @@ export default {
                 account.student.semesterCount != initialAccount.student.semesterCount) {
                     return true;
                 }
+                
+                //check whether a field of study has been added or removed
+                for( let field of account.student.fieldsOfStudy) {
+                    if(!initialAccount.student.fieldsOfStudy.includes(field)) {
+                        return true;
+                    }
+                }
 
-                // for(let course in account.student.fieldsOfStudy) {
-                //     if(! (initialAccount.student.fieldsOfStudy.filter( e => e==course).length == 0)) {
-                //         console.log(initialAccount.student.fieldsOfStudy.filter( e => e==course))
-                //         console.log("Triggered")
-                //         return true;
-                //     }
-                // }
+                for( let field of initialAccount.student.fieldsOfStudy) {
+                    if(!account.student.fieldsOfStudy.includes(field)) {
+                        return true;
+                    }
+                }
+                
             return false;
         })
         
