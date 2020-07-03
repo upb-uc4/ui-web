@@ -6,11 +6,15 @@
 </template>
 
 <script lang="ts">
+import {store} from "@/store/store"
 
 export default {
-  name: 'App',
-  components: {
+	name: 'App',
+	components: {
 
-  }
+	}, 
+	setup() {
+		store.state.apiUrl = process.env.VUE_APP_API_URL;
+	}
 }
 </script>
