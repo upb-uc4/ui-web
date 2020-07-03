@@ -15,14 +15,12 @@
 	import { Role } from "../../entities/Role"
 
 	export default {
-	name: "Student.Home",
-	components: {
-		CourseList,
-		DevNavBar
-	},
-	data: () => ({
-	}),
-		beforeRouteEnter(_from, _to, next) {
+		name: "Student.Home",
+		components: {
+			CourseList,
+			DevNavBar
+		},
+		beforeRouteEnter(_from: any, _to: any, next: any) {
 			const myRole = store.state.myRole;
 			if (myRole != Role.STUDENT) {
 				return next("/redirect");

@@ -20,11 +20,8 @@
 			CourseList,
 			DevNavBar
 		},
-		setup() {
-		},
-		data: () => ({
-		}),
-		beforeRouteEnter(_from, _to, next) {
+		
+		beforeRouteEnter(_from: any, _to: any, next: any) {
 			const myRole = store.state.myRole;
 			if (myRole != Role.LECTURER) {
 				return next("/redirect");

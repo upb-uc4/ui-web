@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="course in courses" :key="course.courseName">
+        <div v-for="course in courses" :key="course.courseId">
 			<lecturer-course v-if="isLecturer" :course="course"  class="mb-8"/>
             <student-course v-if="isStudent" :course="course"  class="mb-8"/>
 		</div>
@@ -12,8 +12,10 @@ import { store } from "../store/store"
 import { Role } from "@/entities/Role"
 import LecturerCourse from "./LecturerCourse.vue";
 import StudentCourse from "./StudentCourse.vue";
-import Course_Management from "@/api/Course_Management";
-import { Course } from "@/entities/Course"
+import CourseManagement from "@/api/CourseManagement";
+// eslint-disable-next-line no-unused-vars
+import { CourseEntity } from "@/entities/CourseEntity"
+import Course from '@/api/api_models/course_management/Course';
 
 export default {
     name: "CourseList",
@@ -21,33 +23,31 @@ export default {
         LecturerCourse,
         StudentCourse,
     },
-    data() {
-        return {
-            roles: Object.values(Role).filter(e => e != Role.NONE),
-        }
-    },
+    
     async setup() {
-        const role = store.state.myRole;
-        
-        const isLecturer: boolean = (role == Role.LECTURER);
-        const isStudent: boolean = (role == Role.STUDENT);
+        let courses: Course[] = [];
+        let role = store.state.myRole;
+        let roles = Object.values(Role).filter(e => e != Role.NONE);
+        let isLecturer: boolean = (role == Role.LECTURER);
+        let isStudent: boolean = (role == Role.STUDENT);
+        let courseManagement: CourseManagement = new CourseManagement();
+        let myId = store.state.myId;
 
-        const course_management: Course_Management = new Course_Management();
-
-        var courses: Course[] = [];
-        console.log(Course);
-
-        await course_management.getCourses().then((response : Course[]) => {
+        await courseManagement.getCourses().then((response : Course[]) => {
             courses = response;
         })
         
-        const myId = store.state.myId;
         if(isLecturer) {
             courses = courses.filter(course => course.lecturerId == myId);
         }
 
         return {
-            role, myId, courses, isLecturer, isStudent
+            role,
+            roles, 
+            myId, 
+            courses, 
+            isLecturer, 
+            isStudent
         }
     }
     

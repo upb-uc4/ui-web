@@ -39,7 +39,5 @@
         components: {
             ReadMore
         },
-        data: () => ({
-        })
     };
 </script>

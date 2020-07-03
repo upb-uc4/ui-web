@@ -13,9 +13,9 @@
 
                     <div class="mb-6 text-center ">
                         <i class="m-3 fas fa-lock absolute text-gray-500"></i>
-                        <input v-model="password" ref="password" :type="passwordFieldType" v-on:input="hideErrors" name="password" class="lg:w-3/4 shadow-md inline-block center appearance-none  font-semibold bg-gray-200 text-gray-600 placeholder-gray-600 focus:text-gray-600 p-2 pl-10 rounded hover:border-gray-300 focus:outline-none focus:shadow-outline" placeholder="Password">
+                        <input v-model="password" :type="passwordFieldType" v-on:input="hideErrors()" class="lg:w-3/4 shadow-md inline-block center appearance-none  font-semibold bg-gray-200 text-gray-600 placeholder-gray-600 focus:text-gray-600 p-2 pl-10 rounded hover:border-gray-300 focus:outline-none focus:shadow-outline" placeholder="Password">
                         <button @click="togglePassword" type=button tabIndex="-1" class="display-none absolute inline-block center ml-3 visible text-gray-500 text-sm hover:text-gray-600 focus:outline-none">
-                            <i :class="[isPasswordVisible ? 'fa-eye-slash' : 'fa-eye']" class="display-none absolute mt-3 ml-1 fas mr-1"></i>
+                            <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="display-none absolute mt-3 ml-1 fas mr-1"></i>
                         </button>
                     </div>
 
@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="mt-10 mb-6 justify-center text-center">
-                        <button type=submit :disabled="isInputEmpty" class="w-2/5 sm:w-2/5 md:w-2/5 lg:w-2/4 inline-block center btn btn-blue-primary">
+                        <button type=submit :disabled="isInputEmpty()" class="w-2/5 sm:w-2/5 md:w-2/5 lg:w-2/4 inline-block center btn btn-blue-primary">
                             Login
                         </button>
                     </div>
@@ -44,7 +44,10 @@
     import Router from "@/router/";
     import { store } from "../../store/store";
     import { Role } from "../../entities/Role";
-    import Authentication_Management from "@/api/Authentication_Management"
+    import UserManagement from "@/api/UserManagement"
+    import { ref } from 'vue';
+    import LoginResponseHandler from "@/use/LoginResponseHandler"
+    import ErrorHandler from "@/use/ErrorHandler";
 
     export default {
         props: [
@@ -52,57 +55,67 @@
         components: {
             DevNavBar
         },
-        data () {
+        setup() {
+            let email = ref("");
+            let password = ref("");
+            let passwordFieldType =ref("password")
+            let error:boolean= false;
+            let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
+
+            function togglePassword () {  
+                passwordFieldType.value = isPasswordVisible() ? "password" : "text"; 
+            }
+            
+            function hideErrors() {
+                error = false;
+            }
+
+            function isPasswordVisible() {
+                return passwordFieldType.value === "text";
+            }
+
+            function isInputEmpty() {
+                 return email.value === "" || password.value === "";
+            }
+
+            async function login() {
+                const username = email.value;
+                const userManagement: UserManagement = new UserManagement();
+
+                const response = await userManagement.login({username: username, password: password.value});
+
+                const loginSuccess = loginResponseHandler.handleReponse(response);
+
+                if (loginSuccess) {
+                    switch(store.state.myRole) {
+                        case Role.ADMIN: {
+                            Router.push("/createAccount");
+                            break;
+                        }
+                        case Role.LECTURER: {
+                            Router.push("/lecturer");
+                            break;
+                        }
+                        case Role.STUDENT: {
+                            Router.push("/student");
+                            break;
+                        }
+                    }
+                }
+            }
+
             return {
-                email: "",
-                password: "",
-                passwordFieldType: "password",
-                error: false,
-            };
-        },
-        computed: {
-            isPasswordVisible: function(): boolean {
-                return this.passwordFieldType === "text";
-            },
-            isInputEmpty(): boolean {
-                return this.email === "" || this.password === "";
+                email,
+                password,
+                passwordFieldType,
+                error,
+                isPasswordVisible,
+                isInputEmpty,
+                togglePassword,
+                hideErrors,
+                login,
             }
         },
-        methods: {
-            togglePassword() {
-                this.passwordFieldType = this.isPasswordVisible ? "password" : "text";
-            },
-            hideErrors() {
-                this.error = false;
-            },
-            login() {
-                const username = this.email;
-                const password = this.password;
-
-                const authentication_management: Authentication_Management = new Authentication_Management();
-
-                authentication_management.login({username: username, password: password})
-                    .then((success : boolean)=> {
-                        if (success) {
-                            switch(store.state.myRole) {
-                                case Role.ADMIN: {
-                                    Router.push("/createAccount");
-                                    break;
-                                }
-                                case Role.LECTURER: {
-                                    Router.push("/lecturer");
-                                    break;
-                                }
-                                case Role.STUDENT: {
-                                    Router.push("/student");
-                                    break;
-                                }
-                            }
-                        } else {
-                            //TODO: show auth error
-                        }
-                    })
-            },
-        }
+       
     }
 </script>

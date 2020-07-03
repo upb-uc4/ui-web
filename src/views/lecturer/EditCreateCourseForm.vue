@@ -1,14 +1,13 @@
 <template>
-
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button @click="navigateBack()" class="flex items-center mb-4 navigation-link">
+        <button @click="back" class="flex items-center mb-4 navigation-link">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Course List</span>
         </button>
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8"> {{ heading }} </h1>
 
-        <form @submit.prevent="submit" method="POST">
+        <div>
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
@@ -24,7 +23,7 @@
                             <div class="flex">
                                 <div class="mr-4" v-for="courseType in courseTypes" :key="courseType">
                                     <label class="flex items-center">
-                                        <input type="radio" class="form-radio focus:shadow-none text-blue-700 hover:bg-blue-400" name="type" :value="courseType"
+                                        <input type="radio" class="form-radio radio" name="type" :value="courseType"
                                                v-model="course.courseType">
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ courseType }}</span>
                                     </label>
@@ -100,13 +99,13 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" @click="deleteCourse" type="button" class="w-32 btn btn-red-secondary">
+                        <button v-if="editMode" @click="confirmDeleteCourse" type="button" class="w-32 btn btn-red-secondary">
                             Delete
                         </button>
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" @click="navigateBack" class="w-32 mr-6 btn btn-blue-secondary">
+                        <button type="button" @click="back" class="w-32 mr-6 btn btn-blue-secondary">
                             Cancel
                         </button>
                         <button v-if="editMode" @click="updateCourse" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary">
@@ -120,7 +119,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" @click="navigateBack" class="mb-4 w-full btn btn-blue-secondary">
+                    <button type="button" @click="back" class="mb-4 w-full btn btn-blue-secondary">
                         Cancel
                     </button>
                     <button v-if="editMode" :disabled="!hasInput" type="button" @click="updateCourse" class="mb-4 w-full w-full btn btn-blue-primary">
@@ -129,149 +128,202 @@
                     <button v-else :disabled="!hasInput" @click="createCourse" class="mb-4 w-full btn btn-blue-primary">
                         Create Course
                     </button>
-                    <button @click="deleteCourse" class="w-full btn btn-red-secondary">
+                    <button @click="confirmDeleteCourse" class="w-full btn btn-red-secondary">
                         Delete
                     </button>
                 </div>
             </section>
-        </form>
+
+            <delete-course-modal ref="deleteModal"/>
+            <unsaved-changes-modal ref="unsavedChangesModal"/>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import Router from "@/router/";
-import { store } from '@/store/store';
-import {Course} from "@/entities/Course";
-import {CourseType} from '@/entities/CourseType';
-import {Language} from '@/entities/Language'
-import Course_Management from "@/api/Course_Management"
-import {Role} from '@/entities/Role'
+    import Router from "@/router/";
+    import { store } from '@/store/store';
+    import {CourseEntity} from "@/entities/CourseEntity";
+    import {CourseType} from '@/entities/CourseType';
+    import {Language} from '@/entities/Language'
+    import CourseManagement from "@/api/CourseManagement"
+    import {Role} from '@/entities/Role'
+    import Course from "@/api/api_models/course_management/Course";
+    import { ref,onMounted, computed } from 'vue';
+    import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
+    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
-
-export default {
-    name: "LecturerCreateCourseForm",
-    props: ['editMode'],
-    data() {
-        return {
-            course: new Course(),
-            initialCourseState: new Course(),
-            heading: this.editMode ? "Edit Course" : "Create Course",
-            languages: Object.values(Language).filter(e => e != Language.NONE),
-            courseTypes: Object.values(CourseType).filter(e => e != CourseType.NONE),
-            success: false,
-            deleted: false
-        };
-    },
-    created() {
-        this.course.lecturerId = store.state.myId;
-        this.course.startDate = "2020-06-01";
-        this.course.endDate = "2020-08-31";
-    },
-    computed: {
-        hasInput: function (): boolean {
-            //TODO transform if conditions to class method in Course.ts
-                if (this.course.courseName !== this.initialCourseState.courseName || this.course.courseDescription !== this.initialCourseState.courseDescription || this.course.courseLanguage !== this.initialCourseState.courseLanguage ||
-                    this.course.courseType !== this.initialCourseState.courseType || this.course.maxParticipants !== this.initialCourseState.maxParticipants) {
-                        return true;
-                }
-            return false;
-        },
-        isValid: function (): boolean {
-            if(this.course.courseName == "" || this.course.courseLanguage != Language.NONE ||
-            this.course.courseType != CourseType.NONE || this.course.maxParticipants == 0) {
-                return false;
+    export default {
+        name: "LecturerCreateCourseForm",
+        props: {
+            editMode:{
+                type: Boolean,
+                required: true
             }
-            return true;
-        }
-    },
-    methods: {
-        navigateBack() {
-            Router.go(-1);
         },
-        loadCourse () {
-                const course_management: Course_Management = new Course_Management();
-                course_management.getCourse(this.$route.params.id).then((v : {course: Course, found: boolean}) => {
-                    this.course = v.course;
-                    this.initialCourseState = JSON.parse(JSON.stringify(this.course));
+        components: {
+            DeleteCourseModal,
+            UnsavedChangesModal,
+        },
+
+        setup(props: any) {
+            let course = ref(new CourseEntity());
+            let initialCourseState = new CourseEntity();
+            let heading = props.editMode ? "Edit Course" : "Create Course";
+            let languages = Object.values(Language).filter(e => e != Language.NONE);
+            let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
+            let success = ref(new Boolean());
+            success.value = false;
+            const courseManagement: CourseManagement = new CourseManagement();
+            let unsavedChangesModal = ref();
+            let deleteModal = ref();
+            course.value.lecturerId = store.state.myId;
+            course.value.startDate = "2020-06-01";
+            course.value.endDate = "2020-08-31";
+
+            onMounted( () => {
+                if(props.editMode) {
+                    loadCourse();
+                }
+            })
+
+            function loadCourse () {
+                const courseManagement: CourseManagement = new CourseManagement();
+                courseManagement.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
+                    course.value = new CourseEntity(v.course);
+                    initialCourseState = JSON.parse(JSON.stringify(course.value));
                     if (!v.found) {
                         //todo no course with that ID
                     }
                 });
-            },
-        createCourse() {
-            if(this.hasInput) { 
-                const course_management: Course_Management = new Course_Management();
-                course_management.createCourse(this.course).then(() => {
-                    this.success = true;
-                    this.navigateBack();
-                });
             }
-            else {
-                this.success = false;
-                console.log("Error: Input Validation Failed!")
-            }
-        },
-        updateCourse() {
-            if(this.hasInput) { 
-                const course_management: Course_Management = new Course_Management();
-                course_management.updateCourse(this.course).then(() => {
-                    this.success = true;
-                    this.navigateBack();
-                });                
-            }
-            else {
-                this.success = false;
-                console.log("Error: Input Validation Failed!")
-            }
-        },
-        deleteCourse() {
-            const check = prompt("Warning! You are about to delete the course \"" + this.course.courseName +"\".\nPlease type in the course name to confirm the deletion!", '')
-            if (check != this.course.courseName) {
-                this.deleted = false
-                if(check != null) {
-                    this.deleteCourse()
+        
+
+            let hasInput = computed (() => {
+                 // TODO not tested yet (too lazy to start intellij)
+                return !course.value.editableInfoEquals(initialCourseState);
+            })
+
+            let isValid = computed (() => {
+                if(course.value.courseName == "" || course.value.courseLanguage != Language.NONE ||
+                    course.value.courseType != CourseType.NONE || course.value.maxParticipants == 0) {
+                    return false;
+                }
+                return true;
+            })
+
+            function createCourse() {
+                if(hasInput) {
+                    const courseManagement: CourseManagement = new CourseManagement();
+                    courseManagement.createCourse(course.value).then(() => {
+                        success.value = true;
+                        Router.back();
+                    });
+                }
+                else {
+                    success.value = false;
+                    console.log("Error: Input Validation Failed!")
                 }
             }
-            else {
-                //TODO Include proper API
-                const course_management: Course_Management = new Course_Management();
-                course_management.deleteCourse(this.course.courseId).then(() => {
-                    this.deleted = true;
-                    this.navigateBack();
-                    //todo check for success..
-                }); 
+
+            function updateCourse() {
+                if(hasInput) {
+                    courseManagement.updateCourse(course.value).then(() => {
+                        success.value = true;
+                        Router.back();
+                    });
+                }
+                else {
+                    success.value = false;
+                    console.log("Error: Input Validation Failed!")
+                }
             }
-        }
-    },
-    beforeRouteEnter(_from, _to, next) {
-		const myRole = store.state.myRole;
-		if (myRole != Role.LECTURER) {
-			return next("/redirect");
-		}
-		return next();
-    },
-    beforeRouteLeave (to, from, next) {
-        //todo use styled modal
-        //todo break this into smaller methods
-        if (this.success) {
+
+            function deleteCourse() {
+                const courseManagement: CourseManagement = new CourseManagement();
+                courseManagement.deleteCourse(course.value.courseId).then(() => {
+                    //todo check for success
+                    success.value = true;
+                    Router.back();
+                });
+            }
+
+            async function confirmDeleteCourse() {
+                let modal = deleteModal.value;
+                let action = modal.action;
+                modal.show()
+                    .then((response: typeof action) => {
+                        switch(response) {
+                            case action.CANCEL: {
+                                //do nothing
+                                break;
+                            }
+                            case action.DELETE: {
+                                deleteCourse();
+                                break;
+                            }
+                        }
+                    });
+            }
+
+            function back() {
+                Router.back();
+            }
+
+            return {
+                course,
+                initialCourseState,
+                heading,
+                languages,
+                courseTypes,
+                success,
+                hasInput,
+                isValid,
+                back,
+                loadCourse,
+                createCourse,
+                updateCourse,
+                deleteCourse,
+                confirmDeleteCourse,
+                unsavedChangesModal,
+                deleteModal
+            }
+        },
+
+        beforeRouteEnter(_from: any, _to: any, next: any) {
+            const myRole = store.state.myRole;
+            if (myRole != Role.LECTURER) {
+                return next("/redirect");
+            }
             return next();
-        }
-        else if (this.hasInput && !this.deleted ) {
-            const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-            if (answer) {
-                return next()
+        },
+
+        async beforeRouteLeave(_from: any, _to: any, next: any) {
+            if (this.success) {
+                return next();
+            }
+            if (this.hasInput) {
+                const modal = this.unsavedChangesModal;
+                let action = modal.action;
+                modal.show()
+                    .then((response: typeof action) => {
+                    switch(response) {
+                        case action.CANCEL: {
+                            next(false);
+                            break;
+                        }
+                        case action.CONFIRM: {
+                            next(true);
+                            break;
+                        }
+                        default: {
+                            next(true);
+                        }
+                    }
+                })
             } else {
-                return next(false)
+                next(true);
             }
         }
-        else {
-            return next()
-        }
-    },
-    mounted() {
-        if(this.editMode) {
-            this.loadCourse()
-        }
-    }
-};
+    };
 </script>

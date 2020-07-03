@@ -25,7 +25,8 @@ module.exports = {
 	variants: {
 		opacity: ['responsive', 'hover', 'focus', 'disabled'],
 		backgroundColor: ['responsive', 'hover', 'focus', 'disabled'],
-		cursor: ['responsive', 'disabled']
+		cursor: ['responsive', 'disabled'],
+		tableLayout: ['responsive', 'hover', 'focus'],
 	},
 	plugins: [
 		require('@tailwindcss/custom-forms')

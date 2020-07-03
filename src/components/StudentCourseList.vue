@@ -25,16 +25,19 @@
 
 <script lang="ts">
     import CourseList from "./CourseList.vue"
+    import { ref } from 'vue'
 
     export default {
         name: "StudentCourseList",
         components: {
             CourseList
         },
-        data() {
+        setup() {
+            let message = ref("");
+
             return {
-                message: "",
+                message
             }
-        },
+        }
     }
 </script>

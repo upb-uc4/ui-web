@@ -1,0 +1,15 @@
+.radio {
+    @apply text-blue-700;
+}
+
+.radio:focus {
+    @apply shadow-none;
+}
+
+.radio:hover {
+    @apply bg-blue-400;
+}
+
+.radio:disabled {
+    @apply bg-gray-400;
+}

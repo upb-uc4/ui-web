@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts">
+    import { ref, computed } from 'vue'
     //https://github.com/orlyyani/read-more
     export default{
         props: {
@@ -36,32 +37,33 @@
             }
         },
 
-        data (){
-            return{
-                isReadMore: false
-            }
-        },
+        setup(props) {
+            let isReadMore = ref(new Boolean(false))
 
-        computed: {
-            formattedString(){
-                var val_container = this.text;
 
-                if(!this.isReadMore && this.text.length > this.maxChars){
-                    val_container = val_container.substring(0,this.maxChars) + '...';
+            let formattedString = computed(() => {
+                var val_container = props.text;
+
+                if(!isReadMore.value && props.text.length > props.maxChars){
+                    val_container = val_container.substring(0,props.maxChars) + '...';
                 }
 
                 return(val_container);
-            }
-        },
+            })
 
-        methods: {
-            triggerReadMore(e, b){
-                if(this.link == '#'){
+            function triggerReadMore(e:Event, b:boolean){
+                if(props.link == '#'){
                     e.preventDefault();
                 }
-                if(this.lessStr !== null || this.lessStr !== '')
-                    this.isReadMore = b;
+                if(props.lessStr !== null || props.lessStr !== '')
+                    isReadMore.value = b;
             }
-        }
+
+            return {
+                isReadMore,
+                formattedString,
+                triggerReadMore
+            }
+        },
     }
 </script>
