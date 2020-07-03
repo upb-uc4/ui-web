@@ -33,7 +33,7 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
                         <label class="block text-gray-600">
-                            Basic Information for the new User Account
+                            Basic Information of the User for Authentication  
                         </label>
                     </div>
                     <div class="w-full lg:w-2/3">
@@ -71,7 +71,7 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Personal Information</label>
                         <label class="block text-gray-600">
-                            Basic Information for the new User Account
+                            Personal Information and Contact Data for the User
                         </label>
                     </div>
                     <div class="w-full lg:w-2/3">
@@ -183,7 +183,7 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Lecturer Information</label>
                         <label class="block text-gray-600">
-                            These is Information specifically for a Lecturer
+                            Information Specifically for a Lecturer
                         </label>
                     </div>
 					<div class="w-full lg:w-2/3 flex flex-col">
@@ -210,7 +210,7 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Student Information</label>
                         <label class="block text-gray-600">
-                            These are Information specifically for a Student
+                            Information Specifically for a Student
                         </label>
                     </div>
 					<div class="w-full lg:w-2/3">
@@ -258,7 +258,7 @@
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                         <label class="block text-gray-700 text-lg font-medium mb-2">Profile Picture</label>
                         <label class="block text-gray-600">
-                            You May Change the Profile Picture
+                            Change the Profile Picture
                         </label>
                     </div>
 					<div class="flex flex-col items-center justify-center">
