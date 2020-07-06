@@ -258,10 +258,14 @@
                                     <div class="w-full" v-for="index in selectedFieldsOfStudy+1" :key="index">
                                         <select class="w-full mb-4 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                                             v-model="account.student.fieldsOfStudy[index-1]"
+                                            @change="addFieldOfStudy($event.target.value,index-1)"
                                         >
                                             <option :value="undefined" @click="removeFieldOfStudy(index-1)">Select a Field of Study</option>
                                             <option v-for="field in fieldsOfStudyLists[index-1]" :key="field" @click="addFieldOfStudy(field,index-1)">{{ field }}</option>
+                                            <option v-for="field in fieldsOfStudyLists[index-1]" :key="field">{{ field }}</option>
                                         </select>
+                                        <div class="w-1/6 items-center justify-center">
+                                            <button v-if="account.student.fieldsOfStudy[index-1] != ''" @click="removeFieldOfStudy(index-1)" 
                                     </div>
                                     <p v-if="hasError('fieldsOfStudy')" class="text-red-600 ml-1 mt-1">{{ showError('fieldsOfStudy') }}</p>
                                 </div>
@@ -397,13 +401,14 @@ export default {
 			},
         }
 
+        account.student.fieldsOfStudy[0] = initialAccount.student.fieldsOfStudy[0] = FieldOfStudy.NONE;
         let selectedFieldsOfStudy = ref(0);
         let success = ref(new Boolean());
         success.value = false;
-		let roles = Object.values(Role).filter(e => e!=Role.NONE);
-        let fieldsOfStudy = Object.values(FieldOfStudy);
+		let roles = Object.values(Role).filter(e => e != Role.NONE);
+        let fieldsOfStudy = Object.values(FieldOfStudy).filter(e => e != FieldOfStudy.NONE);
         let fieldsOfStudyLists:FieldOfStudy[][] = reactive([fieldsOfStudy]);
-        let countries = Object.values(Country).filter(e => e!= Country.NONE);
+        let countries = Object.values(Country).filter(e => e != Country.NONE);
         let unsavedChangesModal = ref();
         let deleteModal = ref();
         
@@ -443,8 +448,9 @@ export default {
                 }
                 else if(response.role == Role.STUDENT ) {
                     account.student = (response as Student);
+                    account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
-                    selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length;
+                    selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length-1;
                     for (let i = 0; i <= selectedFieldsOfStudy.value ; i++ ) {
                         fieldsOfStudyLists[i] = fieldsOfStudy;
                     }
@@ -461,6 +467,7 @@ export default {
             if(selectedFieldsOfStudy.value == index) {
                 selectedFieldsOfStudy.value++;
                 fieldsOfStudyLists[index+1] = fieldsOfStudy;
+                account.student.fieldsOfStudy[index+1] = FieldOfStudy.NONE
             }
             account.student.fieldsOfStudy[index] = field;
             
@@ -565,7 +572,10 @@ export default {
                         newUser = {
                             ...account.student,
                             ...account.user
-                        };
+                        } as Student;
+                        if("fieldsOfStudy" in newUser) {
+                            newUser.fieldsOfStudy = newUser.fieldsOfStudy.filter(field => field != FieldOfStudy.NONE);
+                        }
                         break;
                     }
                     case Role.LECTURER: {
@@ -678,7 +688,7 @@ export default {
             unsavedChangesModal,
             deleteModal,
             hasError,
-            showError
+            showError,
         }
     },
 
