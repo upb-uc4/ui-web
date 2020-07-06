@@ -20,6 +20,7 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
             }
             case 403: {
                 alert("You do not have the neccessary user rights for this action!")
+                return response.returnValue;
             }
             case 404: {
                 //TODO show toast
