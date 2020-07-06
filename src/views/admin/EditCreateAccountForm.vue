@@ -22,6 +22,7 @@
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                 </label>
                             </div>
+                            <p v-if="hasError('role')" class="text-red-600 ml-1 mt-1">{{ showError('role') }}</p>
                         </div>
                         
                     </div>
