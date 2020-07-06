@@ -42,14 +42,14 @@ test("Create course", async () => {
     console.log(courseManagement._authHeader)
     const success = await courseManagement.createCourse(course);
 
-    expect(success).toBe(true);
+    expect(success.returnValue).toBe(true);
 })
 
 
 test("Get all courses", async () => {
     setTimeout(async () => {
         const courses = await courseManagement.getCourses();
-        const filteredCourses = courses.filter((c : Course) => c.courseName === "Best test course ever!")
+        const filteredCourses = courses.returnValue.filter((c : Course) => c.courseName === "Best test course ever!")
         expect(filteredCourses.length > 0).toBe(true)
         createdCourse = filteredCourses[0];
     }, 10000)
@@ -59,13 +59,13 @@ test("Update course", async () => {
     setTimeout(async () => {
         createdCourse.courseName = "Worst test course ever!";
         const success = await courseManagement.updateCourse(createdCourse)
-        expect(success).toBe(true);
+        expect(success.returnValue).toBe(true);
     }, 10000)
 })
 
 test("Delete course", async () => {
     setTimeout(async () => {
         const success = await courseManagement.deleteCourse(createdCourse.courseId)
-        expect(success).toBe(true);
+        expect(success.returnValue).toBe(true);
     }, 10000)
 })
