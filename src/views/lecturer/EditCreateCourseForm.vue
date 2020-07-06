@@ -29,17 +29,20 @@
                                     </label>
                                 </div>
                             </div>
+                            <p v-if="hasError('courseType')" class="text-red-600 ml-1 mt-1">{{ showError('courseType') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
                             <input type="text" id="name" name="courseName" v-model="course.courseName"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                            <p v-if="hasError('courseName')" class="text-red-600 ml-1 mt-1">{{ showError('courseName') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
                             <select required name="language" id="language" v-model="course.courseLanguage" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
                                 <option v-for="language in languages" :key="language">{{ language }}</option>
                             </select>
+                            <p v-if="hasError('courseLanguage')" class="text-red-600 ml-1 mt-1">{{ showError('courseLanguage') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="description" class="text-gray-700 text-md font-medium mb-3">
@@ -51,6 +54,7 @@
                             <textarea name="description" id="description" cols="30" rows="10" class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                       v-model="course.courseDescription" placeholder="Add an optional description.">
                             </textarea>
+                            <p v-if="hasError('courseDescription')" class="text-red-600 ml-1 mt-1">{{ showError('courseDescription') }}</p>
                         </div>
                     </div>
                 </div>
@@ -69,6 +73,7 @@
                             <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
                             <input type="number" name="maxParticipants" id="limit" min="0" max="999" class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                    v-model="course.maxParticipants">
+                            <p v-if="hasError('maxParticipants')" class="text-red-600 ml-1 mt-1">{{ showError('maxParticipants') }}</p>
                         </div>
                     </div>
                 </div>
@@ -87,11 +92,13 @@
                             <label for="start" class="text-gray-700 text-md font-medium mb-3">Start Date</label>
                             <input type="text" readonly name="startDate" id="start" v-model="course.startDate"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
+                            <p v-if="hasError('startDate')" class="text-red-600 ml-1 mt-1">{{ showError('startDate') }}</p>
                         </div>
                         <div class="w-1/2 mb-4 flex flex-col">
                             <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
                             <input type="text" readonly name="endDate" id="end" v-model="course.endDate"
                                    class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
+                            <p v-if="hasError('endDate')" class="text-red-600 ml-1 mt-1">{{ showError('endDate') }}</p>
                         </div>
                     </div>
                 </div>
@@ -149,9 +156,13 @@
     import CourseManagement from "@/api/CourseManagement"
     import {Role} from '@/entities/Role'
     import Course from "@/api/api_models/course_management/Course";
-    import { ref,onMounted, computed } from 'vue';
+    import { ref,onMounted, computed, reactive } from 'vue';
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
+    import useErrorHandler from '@/use/ErrorHandler';
+    import ValidationResponseHandler from '@/use/ValidationResponseHandler';
+    import GenericResponseHandler from "@/use/GenericResponseHandler"
+
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -181,21 +192,28 @@
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
+            let { errorList, hasError, showError} = useErrorHandler();
+            let errors = reactive(errorList);
+
             onMounted( () => {
                 if(props.editMode) {
                     loadCourse();
                 }
             })
 
-            function loadCourse () {
-                const courseManagement: CourseManagement = new CourseManagement();
-                courseManagement.getCourse(Router.currentRoute.value.params.id as string).then((v : {course: Course, found: boolean}) => {
-                    course.value = new CourseEntity(v.course);
+            async function loadCourse () {
+                const courseManagement: CourseManagement = new CourseManagement();            
+                const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string)
+                const genericResponseHandler = new GenericResponseHandler();
+                const result = genericResponseHandler.handleReponse(response);
+                
+                //TODO move this to a non-generic response handler
+                if (response.statusCode !== 200) {
+                    alert("Course not found")
+                } else {
+                    course.value = new CourseEntity(result);
                     initialCourseState = JSON.parse(JSON.stringify(course.value));
-                    if (!v.found) {
-                        //todo no course with that ID
-                    }
-                });
+                }
             }
         
 
@@ -212,13 +230,23 @@
                 return true;
             })
 
-            function createCourse() {
+            async function createCourse() {
                 if(hasInput) {
                     const courseManagement: CourseManagement = new CourseManagement();
-                    courseManagement.createCourse(course.value).then(() => {
-                        success.value = true;
-                        Router.back();
-                    });
+
+                    // delete old errors
+                    errors.length = 0;
+                    const response = await courseManagement.createCourse(course.value);
+                    const handler =  new ValidationResponseHandler();
+                    success.value = handler.handleReponse(response);
+
+                    if(success.value) {
+                        back();
+                    } else {
+                        errors.push(...handler.errorList);
+                        //TODO: change the following line?
+                        this.$forceUpdate()
+                    }
                 }
                 else {
                     success.value = false;
@@ -226,12 +254,21 @@
                 }
             }
 
-            function updateCourse() {
+            async function updateCourse() {
                 if(hasInput) {
-                    courseManagement.updateCourse(course.value).then(() => {
-                        success.value = true;
-                        Router.back();
-                    });
+                    // delete old errors
+                    errors.length = 0;
+                    const response = await courseManagement.updateCourse(course.value);
+                    const handler =  new ValidationResponseHandler();
+                    success.value = handler.handleReponse(response);
+
+                    if(success.value) {
+                        back();
+                    } else {
+                        errors.push(...handler.errorList);
+                        //TODO: change the following line?
+                        this.$forceUpdate()
+                    }
                 }
                 else {
                     success.value = false;
@@ -239,13 +276,16 @@
                 }
             }
 
-            function deleteCourse() {
+            async function deleteCourse() {
                 const courseManagement: CourseManagement = new CourseManagement();
-                courseManagement.deleteCourse(course.value.courseId).then(() => {
-                    //todo check for success
-                    success.value = true;
-                    Router.back();
-                });
+
+                const genericResponseHandler = new GenericResponseHandler();
+                const response = await courseManagement.deleteCourse(course.value.courseId);
+                const result = genericResponseHandler.handleReponse(response);
+
+                if (result) {
+                    Router.back()
+                }
             }
 
             async function confirmDeleteCourse() {
@@ -286,7 +326,9 @@
                 deleteCourse,
                 confirmDeleteCourse,
                 unsavedChangesModal,
-                deleteModal
+                deleteModal,
+                hasError,
+                showError
             }
         },
 
