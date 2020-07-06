@@ -53,6 +53,10 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
             case 201: {
                 return true;
             }
+
+            case 200: {
+                return true;
+            }
         }
 
         return false;
