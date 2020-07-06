@@ -359,6 +359,7 @@ import { Country } from '../../entities/Country';
 import User from '../../api/api_models/user_management/User';
 import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
+import GenericResponseHandler from "@/use/GenericResponseHandler"
 
 export default {
     name: "AdminCreateAccountForm",
@@ -425,25 +426,33 @@ export default {
             }
         })
 
-        function loadAccount() {
+        async function loadAccount() {
             const userManagement: UserManagement = new UserManagement();
-            userManagement.getSpecificUser(Router.currentRoute.value.params.username as string).then(( response: Student | Lecturer | Admin) => {
-                //TODO Remove next line when lagom finally manage to send a birthdate
-                response.birthdate = "1996-12-11";
 
-                account.user  = response;
+            const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string)
+            const genericResponseHandler = new GenericResponseHandler();
+            const result = genericResponseHandler.handleReponse(response);
+            
+            //TODO move this to a non-generic response handler
+            if (response.statusCode !== 200) {
+                alert("User not found")
+            } else {
+                //TODO Remove next line when lagom finally manage to send a birthdate
+                result.birthdate = "1996-12-11";
+
+                account.user  = result;
                 initialAccount.user = JSON.parse(JSON.stringify(account.user)) ;
-                let dates = response.birthdate.split("-");
+                let dates = result.birthdate.split("-");
                 account.birthdate.day = initialAccount.birthdate.day = dates[2];
                 account.birthdate.month = initialAccount.birthdate.month = dates[1];
                 account.birthdate.year = initialAccount.birthdate.year = dates[0];
 
-                if(response.role == Role.LECTURER) {
-                    account.lecturer = (response as Lecturer);
+                if(result.role == Role.LECTURER) {
+                    account.lecturer = (result as Lecturer);
                     initialAccount.lecturer = JSON.parse(JSON.stringify(account.lecturer));
                 }
-                else if(response.role == Role.STUDENT ) {
-                    account.student = (response as Student);
+                else if(result.role == Role.STUDENT ) {
+                    account.student = (result as Student);
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
                     selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length;
                     for (let i = 0; i <= selectedFieldsOfStudy.value ; i++ ) {
@@ -451,11 +460,11 @@ export default {
                     }
                     updateFieldOfStudyLists();
                 }
-                else if(response.role == Role.ADMIN ) {
-                    account.admin = (response as Admin)
+                else if(result.role == Role.ADMIN ) {
+                    account.admin = (result as Admin)
                     initialAccount.admin = JSON.parse(JSON.stringify(account.admin))
                 }
-            })
+            }
         }
 
         function addFieldOfStudy(field:FieldOfStudy, index:number) {
@@ -641,14 +650,17 @@ export default {
             });
         }
 
-        function deleteAccount() {
+        async function deleteAccount() {
             const userManagement: UserManagement = new UserManagement();
-            userManagement.deleteUser(account.user.username).then( (value) => {
-                if(value) {
-                    success.value = true;
-                    back();
-                }
-            })
+
+            const genericResponseHandler = new GenericResponseHandler();
+            const response = await userManagement.deleteUser(account.user.username);
+            const result = genericResponseHandler.handleReponse(response);
+
+            if (result) {
+                success.value = true;
+                back()
+            }
         }
 
         function back() {
