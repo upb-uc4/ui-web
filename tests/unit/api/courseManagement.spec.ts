@@ -20,7 +20,7 @@ jest.useFakeTimers();
 beforeAll(async () => {
     userManagement = new UserManagement();
     const success = await userManagement.login(lecturerAuth);
-    expect(success).toBe(true);
+    expect(success.returnValue).toBe(true);
     courseManagement = new CourseManagement();
 })
 

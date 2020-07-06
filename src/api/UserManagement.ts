@@ -17,56 +17,76 @@ export default class UserManagement extends Common {
        super("/user-management");
     }
 
-
-    // users endpoint
-    async getAllUsers(): Promise<User_List> {
-        let userList: User_List = {} as User_List;
+    async getAllUsers(): Promise<APIResponse<User_List>> {
+        let result: APIResponse<User_List> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as User_List,
+            statusCode: 0,
+        };
 
         await this._axios.get("/users", this._authHeader)
-                    .then((response: AxiosResponse) => {
-                        console.log(response)
-                        userList = response.data;
-                    })
-                    .catch((error: AxiosError) => {
-                        if (!error.response) {
-                            return console.log("Network Error")
-                        }
-                    }).then(()=> {
-                        return userList;
-                    });
+            .then((response: AxiosResponse) => {
+                result.returnValue = response.data;
+                result.statusCode = response.status
+            })
+            .catch((error: AxiosError) => {
+                if (!error.response) {
+                    result.networkError = true;
+                } else {
+                    result.statusCode = error.response.status;
+                }
+            });
 
-        return userList;
+        return result;
     }
 
-    async deleteUser(username: string): Promise<boolean> {
-        let success = false;
+    async deleteUser(username: string): Promise<APIResponse<boolean>> {
+        let result: APIResponse<boolean> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: false,
+            statusCode: 0,
+        };
 
         await this._axios.delete(`/users/${username}`, this._authHeader)
-                    .then((response: AxiosResponse) => {
-                        console.log(response)
-                        success = true;
-                    })
-                    .catch((error: AxiosError) => {
-                        console.log(error)
-                        if(!error.response) {
-                            //network error
-                        } 
+            .then((response: AxiosResponse) => {
+                result.returnValue = true;
+                result.statusCode = response.status;
+            })
+            .catch((error: AxiosError) => {
+                console.log(error)
+                if(!error.response) {
+                    result.networkError = true;
+                } else {
+                    result.statusCode = error.response.status;
+                }
 
-                    });
+            });
 
-        return success;
+        return result;
     }
 
-    async getAllUsersByRole(role: Role): Promise<Student[] | Lecturer[] | Admin[]> {
+    async getAllUsersByRole(role: Role): Promise<APIResponse<Student[] | Lecturer[] | Admin[]>> {
         let endpoint = UserManagement._createEndpointByRole(role);
-        let result: Student[] | Lecturer[] | Admin[] = [];
+        let result: APIResponse<Student[] | Lecturer[] | Admin[]> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: [],
+            statusCode: 0,
+        };
 
         await this._axios.get(endpoint, this._authHeader)
             .then((response: AxiosResponse) => {
-                result = response.data
+                result.returnValue = response.data;
+                result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
-
+                if (!error.response) {
+                    result.networkError = true;
+                } else {
+                    result.statusCode = error.response.status;
+                }
             });
         
         return result;
@@ -102,45 +122,63 @@ export default class UserManagement extends Common {
         };
 
         await this._axios.get(`/users/${username}/role`, this._authHeader)
-                    .then((response: AxiosResponse) => {
-                        console.log(response)
-                        result.statusCode = response.status;
-                        result.returnValue = response.data.role;
-                    })
-                    .catch((error: AxiosError) => {
-                        if(!error.response) {
-                            result.networkError = true;
-                        } else {
-                            result.statusCode = error.response.status;
-                        }
-                    });
+            .then((response: AxiosResponse) => {
+                console.log(response)
+                result.statusCode = response.status;
+                result.returnValue = response.data.role;
+            })
+            .catch((error: AxiosError) => {
+                if (!error.response) {
+                    result.networkError = true;
+                } else {
+                    result.statusCode = error.response.status;
+                }
+            });
 
         return result;       
     }
 
-    async getSpecificUser(username: string): Promise<Student | Lecturer | Admin> {
-        var result: Student | Lecturer | Admin = {} as Student | Lecturer | Admin;
+    async getSpecificUser(username: string): Promise<APIResponse<Student | Lecturer | Admin>> {
+        let result: APIResponse<Student | Lecturer | Admin> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Admin,
+            statusCode: 0,
+        };
+
         // get role 
         let role: APIResponse<Role> = await this.getRole(username);
+
+        if (role.networkError) {
+            result.networkError = true;
+            return result;
+        } else if (role.statusCode !== 200) {
+            result.statusCode = role.statusCode;
+            result.error = role.error
+            return result;
+        }
+
+        //successfully received role
+
         let endpoint = UserManagement._createEndpointByRole(role.returnValue);
 
         await this._axios.get(`${endpoint}/${username}`, this._authHeader)
-                    .then((response: AxiosResponse) => {
-                        console.log(response)
-                        result = response.data;
-                    })
-                    .catch((error: AxiosError) => {
-                        console.log(error)
-                        if(!error.response) {
-                            //network error
-                        } 
-
-                    });
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status;
+                result.returnValue = response.data;
+            })
+            .catch((error: AxiosError) => {
+                if (!error.response) {
+                    result.networkError = true;
+                } else {
+                    result.statusCode = error.response.status;
+                }
+            });
 
         return result;
     }
 
-    async getOwnUser(): Promise<Student | Lecturer | Admin> {
+    async getOwnUser(): Promise<APIResponse<Student | Lecturer | Admin>> {
        const username = store.state.loginData.username;
        return await this.getSpecificUser(username);
     }
@@ -161,7 +199,7 @@ export default class UserManagement extends Common {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
             }).catch((error: AxiosError) => {
-                if(!error.response) {
+                if (!error.response) {
                     result.networkError = true;
                 } else {
                     result.statusCode = error.response.status;
@@ -173,18 +211,31 @@ export default class UserManagement extends Common {
         return result;
     }
 
-    async updateUser(user: Student | Lecturer | Admin): Promise<boolean> {
+    async updateUser(user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
         let endpoint = UserManagement._createEndpointByRole(user.role);
-        let success = false;
+
+        let result: APIResponse<boolean> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: false,
+            statusCode: 0,
+        };
 
         await this._axios.put(`${endpoint}/${user.username}`, user, this._authHeader)
-            .then((reponse : AxiosResponse) => {
-                success = true;
+            .then((response : AxiosResponse) => {
+                result.returnValue = true;
+                result.statusCode = response.status;
             }).catch((error: AxiosError) => {
+                if (!error.response) {
+                    result.networkError = true;
+                } else {
+                    result.statusCode = error.response.status;
+                    result.error = error.response.data as ValidationError;
+                }
                 console.log(error)
             })      
         
-        return success;       
+        return result;       
     }
 
     static _createMessage(user: Student | Lecturer | Admin, authUser: Account) {
