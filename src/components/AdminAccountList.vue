@@ -7,12 +7,13 @@
                     <input class="w-full border-2 border-gray-300 bg-white h-12 px-5 pl-12 rounded-lg focus:outline-none"
                            type="search" placeholder="Filter"
                            v-model="message">
+                    <button @click="refresh">Refresh</button>
                 </div>
             </div>
         </div>
         <suspense>
             <template #default>
-                <accountList/>
+                <accountList :key="refreshKey"/>
             </template>
             <template #fallback>
                 <p class="text-center text-lg pt-20">
@@ -40,8 +41,14 @@
         },
         setup() {
             let message = ref("");
+            let refreshKey = ref(0);
             
+            function refresh() {
+                refreshKey.value = refreshKey.value ^ 1 ;
+            }
             return {
+                refreshKey,
+                refresh,
                 message
             }
         }
