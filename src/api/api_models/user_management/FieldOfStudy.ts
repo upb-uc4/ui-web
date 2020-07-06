@@ -12,5 +12,6 @@ export enum FieldOfStudy {
     SPANISH_CULTURE = "Spanish Culture",
     PEDAGOGY = "Pedagogy",
     BUSINESS_INFORMATICS = "Business Informatics",
-    LINGUISTICY = "Linguistics"
+    LINGUISTICY = "Linguistics",
+    NONE = ""
 }

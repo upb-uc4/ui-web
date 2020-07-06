@@ -89,7 +89,7 @@
                 if (loginSuccess) {
                     switch(store.state.myRole) {
                         case Role.ADMIN: {
-                            Router.push("/createAccount");
+                            Router.push("/admin");
                             break;
                         }
                         case Role.LECTURER: {
