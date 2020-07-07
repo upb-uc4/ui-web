@@ -1,4 +1,5 @@
 export const state = {
+    apiUrl: "",
     myId: "",
     myRole: "",
     loginData: {
