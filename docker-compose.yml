@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+    front-end:
+        container_name: vue-frontend
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args: 
+                - VUE_APP_API_URL=http://localhost:9000
+        ports: 
+            - '8080:80'

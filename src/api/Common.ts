@@ -8,11 +8,10 @@ export default class Common {
     _axios: AxiosInstance;
 
     constructor(endpoint: string) {
-
         this._authHeader = {auth: store.state.loginData };
         this._requestParameter = {...this._authHeader, params: {}}
         const instance = axios.create({
-            baseURL: "http://localhost:9000" + endpoint,
+            baseURL: store.state.apiUrl + endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8"
