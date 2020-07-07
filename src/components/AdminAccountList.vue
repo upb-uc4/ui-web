@@ -44,10 +44,10 @@
         },
         setup() {
             let message = ref("");
-            let refreshKey = ref(0);
+            let refreshKey = ref(false);
             
             function refresh() {
-                refreshKey.value = refreshKey.value ^ 1 ;
+                refreshKey.value = !refreshKey.value  ;
             }
             return {
                 refreshKey,
