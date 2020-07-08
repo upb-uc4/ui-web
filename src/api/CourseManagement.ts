@@ -30,10 +30,10 @@ export default class CourseManagement extends Common {
             })
             .catch((error: AxiosError) => {
                 console.log(error)
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
             });
 
@@ -54,10 +54,10 @@ export default class CourseManagement extends Common {
                 result.returnValue = response.data as Course;
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
             });
 
@@ -78,11 +78,11 @@ export default class CourseManagement extends Common {
                 result.returnValue = true;
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError
+                } else {
+                    result.networkError = true;
                 }
             });    
         
@@ -106,11 +106,11 @@ export default class CourseManagement extends Common {
                 result.statusCode = response.status
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
+                } else {
+                    result.networkError = true;
                 }
             });    
 
@@ -131,10 +131,10 @@ export default class CourseManagement extends Common {
                 result.statusCode = response.status
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
             });    
 
