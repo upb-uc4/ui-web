@@ -9,7 +9,7 @@ import Redirect from "../views/common/Redirect.vue"
 import Profile from "../views/common/Profile.vue";
 
 
-const routerHistory = createWebHistory();
+const routerHistory = createWebHistory("./");
 
 const router = createRouter({
 	history: routerHistory,
