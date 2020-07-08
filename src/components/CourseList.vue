@@ -16,6 +16,7 @@ import CourseManagement from "@/api/CourseManagement";
 // eslint-disable-next-line no-unused-vars
 import { CourseEntity } from "@/entities/CourseEntity"
 import Course from '@/api/api_models/course_management/Course';
+import GenericResponseHandler from "@/use/GenericResponseHandler"
 
 export default {
     name: "CourseList",
@@ -33,9 +34,12 @@ export default {
         let courseManagement: CourseManagement = new CourseManagement();
         let myId = store.state.myId;
 
-        await courseManagement.getCourses().then((response : Course[]) => {
-            courses = response;
-        })
+
+        const genericResponseHandler = new GenericResponseHandler();
+        const response = await courseManagement.getCourses();
+        const result = genericResponseHandler.handleReponse(response);
+    
+        courses = result;
         
         if(isLecturer) {
             courses = courses.filter(course => course.lecturerId == myId);

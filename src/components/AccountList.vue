@@ -41,6 +41,7 @@ import { ref } from 'vue';
 import Lecturer from '../api/api_models/user_management/Lecturer';
 import Student from '../api/api_models/user_management/Student';
 import router from '../router';
+import GenericResponseHandler from "@/use/GenericResponseHandler"
 
 export default {
   name: "AccountList",
@@ -50,10 +51,12 @@ export default {
 
     let usersByRole = ref({} as User_List)
 
-    await userManagement.getAllUsers().then((response : User_List) => {
-            usersByRole.value = response
-    });
+    const genericResponseHandler = new GenericResponseHandler();
+    const response = await userManagement.getAllUsers();
+    const result = genericResponseHandler.handleReponse(response);
     
+    usersByRole.value = result;
+
     function editAccount(username:string) {
         router.push({path: "/editAccount/" + username})
     }

@@ -1,14 +1,22 @@
 import Common from "./Common"
-import { CourseEntity } from "@/entities/CourseEntity"
 import Course from './api_models/course_management/Course';
+import APIResponse from './helpers/models/APIResponse';
+import APIError from './api_models/errors/APIError';
+import { AxiosResponse, AxiosError } from 'axios';
+import ValidationError from './api_models/errors/ValidationError';
 
 export default class CourseManagement extends Common {
     constructor() {
         super("/course-management");
      }
 
-    async getCourses(name?: string): Promise<Course[]> {
-        var courses: Course[] = [];
+    async getCourses(name?: string): Promise<APIResponse<Course[]>> {
+        let result: APIResponse<Course[]> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: [],
+            statusCode: 0,
+        };
 
         //optional name to search by 
         if (name != undefined) {
@@ -16,104 +24,121 @@ export default class CourseManagement extends Common {
         }
 
         await this._axios.get(`/courses`, this._requestParameter)
-                    .then((response: any) => {
-                        console.log(response)
-                        courses = response.data;
-                    })
-                    .catch((error: any) => {
-                        console.log(error)
-                        if (!error.reponse) {
-                            return console.log("Network Error")
-                        }
-                        if (error.response.status == "401") {
-                            console.log(error)
-                        } else if (error.response.status == "403") {
-                            console.log(error)
-                        }
-                    }).then(()=> {
-                        return courses;
-                    });
+            .then((response: AxiosResponse) => {
+                result.returnValue = response.data as Course[];
+                result.statusCode = response.status
+            })
+            .catch((error: AxiosError) => {
+                console.log(error)
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
 
-        return courses;
+        return result;
     }
 
-    async getCourse(id: string): Promise<{course: Course, found: boolean}> {
-        var course: Course = new CourseEntity();
-        var found: boolean = false;
+    async getCourse(id: string): Promise<APIResponse<Course>> {
+        let result: APIResponse<Course> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Course,
+            statusCode: 0,
+        };
+
         await this._axios.get(`/courses/${id}`, this._authHeader)
-                    .then((response: any) => {
-                        console.log(response)
-                        course = response.data;
-                        found = true;
-                    })
-                    .catch((error: any) => {
-                        if (!error.reponse) {
-                            return console.log("Network Error")
-                        }
-                        if (error.response.status == "401") {
-                            console.log(error)
-                        } else if (error.response.status == "403") {
-                            console.log(error)
-                        }
-                    }).then(()=> {
-                        return course;
-                    });
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status
+                result.returnValue = response.data as Course;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
 
-        return {course: course, found: found};
+        return result;
     }
 
-    async createCourse(course: Course): Promise<boolean> {
-        let success = false;
+    async createCourse(course: Course): Promise<APIResponse<boolean>> {
+        let result: APIResponse<boolean> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: false,
+            statusCode: 0,
+        };
+
         await this._axios.post("/courses", course, this._authHeader)
-                    .then((response: any) => {
-                        console.log(response)
-                        success = true;
-                    })
-                    .catch((error: any) => {
-                        if (error.response.status == "401") {
-                            console.log(error)
-                        } else if (error.response.status == "403") {
-                            console.log(error)
-                        } else if (error.response.status == "400") {
-                            console.log(error.response)
-                        }
-                    });    
-        return success
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status
+                result.returnValue = true;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                    result.error = error.response.data as ValidationError
+                } else {
+                    result.networkError = true;
+                }
+            });    
+        
+        return result;
     }
 
-    async updateCourse(course: Course): Promise<boolean> {
+    async updateCourse(course: Course): Promise<APIResponse<boolean>> {
+        let result: APIResponse<boolean> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: false,
+            statusCode: 0,
+        };
+
         const id = course.courseId;
-        let success = false;
+
         await this._axios.put(`/courses/${id}`, course, this._authHeader)
-                    .then((response: any) => {
-                        console.log(response)
-                        success = true
-                    })
-                    .catch((error: any) => {
-                        if (error.response.status == "401") {
-                            console.log(error)
-                        } else if (error.response.status == "403") {
-                            console.log(error)
-                        }
-                    });    
-        return success;
+            .then((response: AxiosResponse) => {
+                console.log(response)
+                result.returnValue = true;
+                result.statusCode = response.status
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                    result.error = error.response.data as ValidationError;
+                } else {
+                    result.networkError = true;
+                }
+            });    
+
+        return result;
     }    
 
-    async deleteCourse(id: string): Promise<boolean> {
-        let success = false;
+    async deleteCourse(id: string): Promise<APIResponse<boolean>> {
+        let result: APIResponse<boolean> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: false,
+            statusCode: 0,
+        };
+
         await this._axios.delete(`/courses/${id}`, this._authHeader)
-                    .then((response: any) => {
-                        console.log(response)
-                        success = true;
-                    })
-                    .catch((error: any) => {
-                        if (error.response.status == "401") {
-                            console.log(error)
-                        } else if (error.response.status == "403") {
-                            console.log(error)
-                        }
-                    });    
-        return success;
+            .then((response: AxiosResponse) => {
+                result.returnValue = true;
+                result.statusCode = response.status
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });    
+
+        return result;
     }  
 
 }

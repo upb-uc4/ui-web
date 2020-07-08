@@ -53,9 +53,22 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
             case 201: {
                 return true;
             }
+
+            case 200: {
+                return true;
+            }
         }
 
         return false;
     }
 
+
+    static _createTestErrors(object: any): {name: string, reason: string}[] {
+        let errors = []
+        for (let key in object) {
+            errors.push({name: key, reason: key+" is invalid"})
+        }
+
+        return errors
+    }
 }
