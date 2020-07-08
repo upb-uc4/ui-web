@@ -254,24 +254,7 @@
 							<div class="flex flex-row ">
                                 <div class="w-1/2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Fields of Study</label>
-                                    <!-- v-for begins counting at 1, hence 1 is substracted for handling of the arrays -->
-                                    <div class="w-full flex flex-row items-center" v-for="index in selectedFieldsOfStudy+1" :key="index">
-                                        <select class="w-4/5 mr-1 my-2 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
-                                            v-model="account.student.fieldsOfStudy[index-1]"
-                                            @change="addFieldOfStudy($event.target.value,index-1)"
-                                        >
-                                        
-                                            <option disabled :value="''">Select a Field of Study</option>
-                                            <option v-for="field in fieldsOfStudyLists[index-1]" :key="field">{{ field }}</option>
-                                        </select>
-                                        <div class="w-1/6 items-center justify-center">
-                                            <button v-if="account.student.fieldsOfStudy[index-1] != ''" @click="removeFieldOfStudy(index-1)" 
-                                            title="Remove Selected Field Of Study"
-                                            class="w-1/2 m-1 bg-gray-100 text-gray-700 hover:text-white hover:bg-red-800 hover:border-red-800 rounded-lg border border-gray-600"> 
-                                                <i class="inline far fa-trash-alt text-lg"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <multi-select :inputList="fieldsOfStudy" :preSelection="account.student.fieldsOfStudy" placeholder="Select a Field of Study" v-on:changed="updateFieldsOfStudy"/>
                                     <p v-if="hasError('fieldsOfStudy')" class="text-red-600 ml-1 mt-1">{{ showError('fieldsOfStudy') }}</p>
                                 </div>
 								<div class="w-1/4 pl-2 flex flex-col">
@@ -367,12 +350,14 @@ import { Country } from '../../entities/Country';
 import User from '../../api/api_models/user_management/User';
 import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
+import MultiSelect from "@/components/MultiSelect.vue"
 
 export default {
     name: "AdminCreateAccountForm",
     components: {
         DeleteAccountModal,
         UnsavedChangesModal,
+        MultiSelect
     },
     props: {
         editMode: {
@@ -406,13 +391,10 @@ export default {
 			},
         }
 
-        account.student.fieldsOfStudy[0] = initialAccount.student.fieldsOfStudy[0] = FieldOfStudy.NONE;
-        let selectedFieldsOfStudy = ref(0);
         let success = ref(new Boolean());
         success.value = false;
 		let roles = Object.values(Role).filter(e => e != Role.NONE);
         let fieldsOfStudy = Object.values(FieldOfStudy).filter(e => e != FieldOfStudy.NONE);
-        let fieldsOfStudyLists:FieldOfStudy[][] = reactive([fieldsOfStudy]);
         let countries = Object.values(Country).filter(e => e != Country.NONE);
         let unsavedChangesModal = ref();
         let deleteModal = ref();
@@ -454,13 +436,7 @@ export default {
                 }
                 else if(response.role == Role.STUDENT ) {
                     account.student = (response as Student);
-                    account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
-                    selectedFieldsOfStudy.value = account.student.fieldsOfStudy.length-1;
-                    for (let i = 0; i <= selectedFieldsOfStudy.value ; i++ ) {
-                        fieldsOfStudyLists[i] = fieldsOfStudy;
-                    }
-                    updateFieldOfStudyLists();
                 }
                 else if(response.role == Role.ADMIN ) {
                     account.admin = (response as Admin)
@@ -469,38 +445,10 @@ export default {
             })
         }
 
-        function addFieldOfStudy(field:FieldOfStudy, index:number) {
-            if(selectedFieldsOfStudy.value == index) {
-                selectedFieldsOfStudy.value++;
-                fieldsOfStudyLists[index+1] = fieldsOfStudy;
-                account.student.fieldsOfStudy[index+1] = FieldOfStudy.NONE
-            }
-            account.student.fieldsOfStudy[index] = field;
-            
-            updateFieldOfStudyLists();
+        function updateFieldsOfStudy(value: any) {
+            account.student.fieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE)
         }
 
-        function removeFieldOfStudy(index:number) {
-            let toDelete = account.student.fieldsOfStudy[index];
-            account.student.fieldsOfStudy = account.student.fieldsOfStudy.filter(field => field != toDelete);
-            if(selectedFieldsOfStudy.value != index) {
-                selectedFieldsOfStudy.value--;
-                fieldsOfStudyLists[selectedFieldsOfStudy.value] = [];
-            }
-            updateFieldOfStudyLists();
-        }
-
-        function updateFieldOfStudyLists() {
-            for (let i = 0 ; i < fieldsOfStudyLists.length ; i++) {
-                fieldsOfStudyLists[i] = fieldsOfStudy;
-                for (let j = 0; j < account.student.fieldsOfStudy.length ; j++) {
-                    if(i != j) {
-                        fieldsOfStudyLists[i] = fieldsOfStudyLists[i].filter(e => e!= account.student.fieldsOfStudy[j]);
-                    }
-                }
-            }
-        }
-        
 		function updatePicture() {
 			console.log(account)
             console.log(initialAccount)
@@ -672,18 +620,13 @@ export default {
 
         return {
             account,
-            selectedFieldsOfStudy,
             success,
             roles,
             countries,
 			updatePicture,
 			isLecturer,
 			isStudent,
-            fieldsOfStudyLists,
             fieldsOfStudy,
-            addFieldOfStudy,
-            removeFieldOfStudy,
-            updateFieldOfStudyLists,
 			hasInput,
             isValid,
             back,
@@ -695,6 +638,7 @@ export default {
             deleteModal,
             hasError,
             showError,
+            updateFieldsOfStudy
         }
     },
 
