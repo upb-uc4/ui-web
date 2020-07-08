@@ -31,10 +31,10 @@ export default class UserManagement extends Common {
                 result.statusCode = response.status
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
             });
 
@@ -56,10 +56,10 @@ export default class UserManagement extends Common {
             })
             .catch((error: AxiosError) => {
                 console.log(error)
-                if(!error.response) {
-                    result.networkError = true;
-                } else {
+                if(error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
 
             });
@@ -82,10 +82,10 @@ export default class UserManagement extends Common {
                 result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
             });
         
@@ -128,10 +128,10 @@ export default class UserManagement extends Common {
                 result.returnValue = response.data.role;
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
             });
 
@@ -168,10 +168,10 @@ export default class UserManagement extends Common {
                 result.returnValue = response.data;
             })
             .catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
                 }
             });
 
@@ -199,11 +199,11 @@ export default class UserManagement extends Common {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
             }).catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
+                } else {
+                    result.networkError = true;
                 }
                 console.log(error)
             })     
@@ -226,11 +226,11 @@ export default class UserManagement extends Common {
                 result.returnValue = true;
                 result.statusCode = response.status;
             }).catch((error: AxiosError) => {
-                if (!error.response) {
-                    result.networkError = true;
-                } else {
+                if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
+                } else {
+                    result.networkError = true;
                 }
                 console.log(error)
             })      
