@@ -40,6 +40,7 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
                             <select required name="language" id="language" v-model="course.courseLanguage" class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
+                                <option disabled :value="''">Select a Language</option>
                                 <option v-for="language in languages" :key="language">{{ language }}</option>
                             </select>
                             <p v-if="hasError('courseLanguage')" class="text-red-600 ml-1 mt-1">{{ showError('courseLanguage') }}</p>
