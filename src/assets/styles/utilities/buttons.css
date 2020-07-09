@@ -101,3 +101,15 @@
 .btn-icon-blue:focus {
     @apply outline-none
 }
+
+.btn-icon-red {
+    @apply p-1 bg-gray-100 text-red-400 rounded-lg border border-red-400 
+}
+
+.btn-icon-red:hover {
+    @apply text-white bg-red-800 border-red-800
+}
+
+.btn-icon-red:focus {
+    @apply outline-none
+}
