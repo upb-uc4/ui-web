@@ -21,7 +21,7 @@
                     <td class="px-2 border border-black">
                         <div class="flex">
                             <button @click="editAccount(user.username)" title="Edit Account" 
-                                class="w-full m-1 bg-gray-100 text-gray-700 hover:text-white hover:bg-blue-800 rounded-lg border border-blue-800"> 
+                                class="w-full m-1 btn-icon-blue"> 
                                 <i class="inline fas fa-pencil-alt text-lg"></i>
                             </button>
                         </div>
