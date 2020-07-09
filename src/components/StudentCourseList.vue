@@ -7,7 +7,7 @@
                     <input class="w-full border-2 border-gray-300 bg-white h-12 px-5 pl-12 rounded-lg focus:outline-none"
                            type="search" placeholder="Filter"
                            v-model="message">
-                    <button class="w-1/12 ml-4 my-1 bg-gray-100 text-gray-700 hover:text-white hover:bg-blue-800 rounded-lg border border-blue-800" 
+                    <button class="w-1/12 ml-4 my-1 btn-icon-blue" 
                     @click="refresh"
                     title="Refresh">
                      <i class="inline fa fa-sync-alt text-lg"></i></button>
