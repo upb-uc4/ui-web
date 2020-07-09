@@ -143,7 +143,7 @@
                                 <p v-if="hasError('address')" class="text-red-600 ml-1 mt-1">{{ showError('address') }}</p>
                                 <div class="w-full flex flex-col">
                                     <label class="text-gray-700 text-sm">Country</label>
-                                    <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-select" 
+                                    <select class="w-1/2 mb-4 form-input-select" 
                                     name="country" id="country"
                                     v-model="account.user.address.country">
                                         <option :value="''" >Select a Country</option>
