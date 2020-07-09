@@ -15,7 +15,7 @@
             <div class="w-1/6 items-center justify-center">
                 <button v-if="output[index-1] != ''" @click="removeValue(index-1)" 
                 title="Remove Selected Field Of Study"
-                class="w-1/2 m-1 bg-gray-100 text-gray-700 hover:text-white hover:bg-red-800 hover:border-red-800 rounded-lg border border-gray-600"> 
+                class="w-1/2 m-1 btn-icon-red"> 
                     <i class="inline far fa-trash-alt text-lg"></i>
                 </button>
             </div>
