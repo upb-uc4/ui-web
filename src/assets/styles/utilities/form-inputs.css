@@ -1,0 +1,22 @@
+.form-input-field {
+    appearance: none;
+    background-color: #fff;
+    border-radius: 0.25rem;
+    border-width: 1px;
+    padding-top: 0.5rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    @apply border-2 border-gray-400 rounded-lg text-gray-600 outline-none opacity-100
+}
+
+.form-input-field:focus {
+    border-color: #63b3ed;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+.form-input-field:disabled {
+    @apply bg-gray-400
+}
