@@ -91,7 +91,7 @@
 }
 
 .btn-icon-blue {
-    @apply bg-gray-100 text-gray-700 rounded-lg border-blue-800
+    @apply bg-gray-100 text-gray-700 rounded-lg border border-blue-800
 }
 
 .btn-icon-blue:hover {
