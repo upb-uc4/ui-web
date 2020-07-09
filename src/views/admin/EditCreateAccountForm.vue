@@ -41,7 +41,7 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
                             <input type="text" id="userName" name="Username"
-                                class="w-full py-3 form-input-field"
+                                class="w-full form-input-field"
                                 placeholder="Username"
                                 v-model="account.user.username"
                                 :disabled="editMode">
@@ -50,7 +50,7 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
                             <input type="text" id="email" name="email"
-                                class="w-full py-3 form-input-field"
+                                class="w-full form-input-field"
                                 placeholder="example@mail.com"
 								v-model="account.user.email"
                                 >
@@ -61,7 +61,7 @@
                                 Password
                             </label>
                             <input type="text" id="password" name="password"
-                                class="w-full py-3 form-input-field"
+                                class="w-full form-input-field"
                                 placeholder="Password"
                                 v-model="account.authUser.password">
                             <p v-if="hasError('password')" class="text-red-600 ml-1 mt-1">{{ showError('password') }}</p>
@@ -87,7 +87,7 @@
                                 <div class="w-full pr-2 flex-col">
                                     <label class="text-gray-700 text-sm">Firstname</label>
                                     <input type="text" id="firstName" name="firstName"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="Firstname"
 										v-model="account.user.firstName"
                                         >
@@ -96,7 +96,7 @@
                                 <div class="w-full pl-2 flex-col">
                                     <label class="text-gray-700 text-sm">Lastname</label>
                                     <input type="text" id="lastName" name="lastName"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="Lastname"
 										v-model="account.user.lastName"
                                         >
@@ -113,7 +113,7 @@
                                 <div class="w-full pr-2 flex-col">
                                     <label class="text-gray-700 text-sm">Day</label>
                                     <input type="number" id="day" name="day"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="DD"
 										v-model="account.birthdate.day"
                                         >
@@ -121,7 +121,7 @@
 								<div class="w-full px-2 flex-col">
                                     <label class="text-gray-700 text-sm">Month</label>
                                     <input type="number" id="month" name="month"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="MM"
 										v-model="account.birthdate.month"
                                         >
@@ -129,7 +129,7 @@
 								<div class="w-full pl-2 flex-col">
                                     <label class="text-gray-700 text-sm">Year</label>
                                     <input type="number" id="year" name="year"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="YYYY"
 										v-model="account.birthdate.year"
                                         >
@@ -155,7 +155,7 @@
                                 <div class="w-full pr-2 mb-4 flex flex-col">
                                     <label class="text-gray-700 text-sm">Street</label>
                                     <input type="text" id="street" name="street"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="Street"
 										v-model="account.user.address.street">
                                     <p v-if="hasError('street')" class="text-red-600 ml-1 mt-1">{{ showError('street') }}</p>
@@ -163,7 +163,7 @@
                                 <div class="pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Number</label>
                                     <input type="text" id="number" name="number"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="Number"
 										v-model="account.user.address.houseNumber">
                                     <p v-if="hasError('houseNumber')" class="text-red-600 ml-1 mt-1">{{ showError('houseNumber') }}</p>
@@ -173,7 +173,7 @@
                                 <div class="pr-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Zip Code</label>
                                     <input type="text" id="zipcode" name="zipcode"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="Zip Code"
 										v-model="account.user.address.zipCode">
                                     <p v-if="hasError('zipCode')" class="text-red-600 ml-1 mt-1">{{ showError('zipCode') }}</p>
@@ -181,7 +181,7 @@
                                  <div class="w-full pl-2 flex flex-col">
                                  <label class="text-gray-700 text-sm">City</label>
                                     <input type="text" id="city" name="city"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="City"
 										v-model="account.user.address.city">
                                     <p v-if="hasError('city')" class="text-red-600 ml-1 mt-1">{{ showError('city') }}</p>
@@ -235,7 +235,7 @@
                                 <div class="w-1/2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Status</label>
                                     <input type="text" id="immatriculationStatus" name="immatriculationStatus"
-                                                class="w-full py-3 form-input-field"
+                                                class="w-full form-input-field"
                                                 placeholder="Immatriculation Status"
                                                 v-model="account.student.immatriculationStatus">
                                     <p v-if="hasError('immatriculationStatus')" class="text-red-600 ml-1 mt-1">{{ showError('immatriculationStatus') }}</p>
@@ -243,7 +243,7 @@
                                  <div class="w-1/4 flex flex-col pl-2">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Matriculation-ID</label>
                                     <input type="text" id="matriculationId" name="matriculationId"
-                                                class="w-full py-3 form-input-field"
+                                                class="w-full form-input-field"
                                                 placeholder="Matriculation-ID"
                                                 v-model="account.student.matriculationId">
                                     <p v-if="hasError('matriculationId')" class="text-red-600 ml-1 mt-1">{{ showError('matriculationId') }}</p>
@@ -261,7 +261,7 @@
 								<div class="w-1/4 pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
                                     <input type="number" id="semesterCount" name="semesterCount"
-                                        class="w-full py-3 form-input-field"
+                                        class="w-full form-input-field"
                                         placeholder="Semester Count"
 										v-model="account.student.semesterCount">
                                     <p v-if="hasError('semesterCount')" class="text-red-600 ml-1 mt-1">{{ showError('semesterCount') }}</p>

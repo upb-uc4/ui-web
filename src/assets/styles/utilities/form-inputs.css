@@ -9,7 +9,7 @@
     padding-left: 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    @apply border-2 border-gray-400 rounded-lg text-gray-600 outline-none opacity-100
+    @apply py-3 border-2 border-gray-400 rounded-lg text-gray-600 outline-none opacity-100
 }
 
 .form-input-field:focus {
