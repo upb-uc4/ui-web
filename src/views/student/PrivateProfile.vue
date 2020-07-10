@@ -107,12 +107,6 @@
                 back,
             };
         },
-
-        beforeRouteEnter(_from: any, _to: any, next: any) {
-            //todo check if user is student
-            next();
-        },
-
         //todo add Leave Modal
     }
 </script>
