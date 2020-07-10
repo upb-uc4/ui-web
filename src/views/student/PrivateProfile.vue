@@ -71,14 +71,14 @@
     import CourseOfStudySection from "@/components/profile/CourseOfStudySection.vue";
     import { ref } from "vue";
     import Router from "@/router"
-    import StudentEntity from "@/entities/StudentEntity";
     import UserManagement from "@/api/UserManagement";
+    import Student from "@/api/api_models/user_management/Student";
 
     export default {
         props: {
             user: {
                 required: true,
-                type: StudentEntity
+                type: Object as () => Student,
             }
         },
         components: {
