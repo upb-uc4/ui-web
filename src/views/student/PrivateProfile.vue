@@ -70,34 +70,31 @@
     import AddressSection from "@/components/profile/AddressSection.vue";
     import CourseOfStudySection from "@/components/profile/CourseOfStudySection.vue";
     import { ref } from "vue";
-    import {store} from "@/store/store";
     import Router from "@/router"
-    import UserManagement from "@/api/UserManagement";
+    import StudentEntity from "@/entities/StudentEntity";
 
     export default {
+        props: {
+            student: {
+                required: true,
+                type: StudentEntity
+            }
+        },
         components: {
             PersonalSection,
             ContactSection,
             AddressSection,
             CourseOfStudySection
         },
-        async setup() {
-            const auth: UserManagement = new UserManagement();
-            const student = ref(await auth.getOwnUser());
+        async setup(props: any) {
+            const student = ref(props.student);
 
             function back() {
                 Router.back();
             }
 
             function save() {
-                auth.updateUser(student.value).then( (success) => {
-                    if (success) {
-                        //todo show toast
-                        console.log("user updated successful.");
-                    } else {
-                        //todo error handling
-                    }
-                })
+                //todo
             }
 
             return {
