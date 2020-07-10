@@ -20,7 +20,10 @@
                 <a>Public Student Profile</a>
             </li>
             <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/profile')">
-                <a>Private Student Profile</a>
+                <a>My Profile</a>
+            </li>
+            <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/user/lecturer')">
+                <a>Pub. Lecturer Profile</a>
             </li>
             <li class="ml-auto bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="logout()">
                 <a>logOut</a>
