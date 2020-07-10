@@ -1,17 +1,19 @@
 <template>
-<!--    todo: Change between student/lecturer-->
     <private-student-profile v-if="user.role === Role.STUDENT" :user="user"/>
+    <private-lecturer-profile v-else-if="user.role === Role.LECTURER" :user="user"/>
 </template>
 
 <script lang="ts">
     import PrivateStudentProfile from "@/views/student/PrivateProfile.vue";
+    import PrivateLecturerProfile from "@/views/lecturer/PrivateProfile.vue";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";
     import {Role} from "@/entities/Role";
 
     export default {
         components: {
-            PrivateStudentProfile
+            PrivateStudentProfile,
+            PrivateLecturerProfile
         },
         async setup() {
             const auth: UserManagement = new UserManagement();
