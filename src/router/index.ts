@@ -6,7 +6,7 @@ import AdminHomeView from "../views/admin/Home.vue"
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
 import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
 import Redirect from "../views/common/Redirect.vue"
-import Profile from "../views/common/Profile.vue";
+import ProfileWrapper from "../components/profile/Wrapper.vue";
 
 
 const routerHistory = createWebHistory();
@@ -44,9 +44,14 @@ const router = createRouter({
             component: LecturerEditCreateCourseView
         },
 		{
-			path: '/profile/:id',
-			name: 'profile',
-			component: Profile
+			path: '/user/:username',
+			name: 'profile.public',
+			component: ProfileWrapper
+		},
+		{
+			path: '/profile',
+			name: 'profile.private',
+			component: ProfileWrapper
 		},
 		{
 			path: "/",
