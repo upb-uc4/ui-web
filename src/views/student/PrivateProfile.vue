@@ -72,6 +72,7 @@
     import { ref } from "vue";
     import Router from "@/router"
     import StudentEntity from "@/entities/StudentEntity";
+    import UserManagement from "@/api/UserManagement";
 
     export default {
         props: {
@@ -88,13 +89,16 @@
         },
         async setup(props: any) {
             const student = ref(props.user);
+            const auth: UserManagement = new UserManagement();
 
             function back() {
                 Router.back();
             }
 
-            function save() {
-                //todo
+            async function save() {
+                const response = await auth.updateUser(student.value);
+                //todo show toast
+                //todo error handling
             }
 
             return {
