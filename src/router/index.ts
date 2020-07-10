@@ -46,11 +46,13 @@ const router = createRouter({
 		{
 			path: '/user/:username',
 			name: 'profile.public',
+			props: {isPrivate: false},
 			component: ProfileWrapper
 		},
 		{
 			path: '/profile',
 			name: 'profile.private',
+			props: {isPrivate: true},
 			component: ProfileWrapper
 		},
 		{

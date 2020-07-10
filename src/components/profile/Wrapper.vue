@@ -1,7 +1,7 @@
 <template>
     <suspense>
         <template #default>
-            <profile></profile>
+            <private-profile v-if="isPrivate"/>
         </template>
         <template #fallback>
             <p class="text-center text-lg pt-20">
@@ -12,10 +12,17 @@
 </template>
 
 <script lang="ts">
-    import Profile from "../../views/common/Profile.vue";
+    import PrivateProfile from "../../views/common/PrivateProfile.vue";
+
     export default {
+        props: {
+            isPrivate: {
+                required: true,
+                type: Boolean,
+            }
+        },
         components: {
-            Profile,
+            PrivateProfile,
         }
     }
 </script>
