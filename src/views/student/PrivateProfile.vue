@@ -75,7 +75,7 @@
 
     export default {
         props: {
-            student: {
+            user: {
                 required: true,
                 type: StudentEntity
             }
@@ -87,7 +87,7 @@
             CourseOfStudySection
         },
         async setup(props: any) {
-            const student = ref(props.student);
+            const student = ref(props.user);
 
             function back() {
                 Router.back();
@@ -98,7 +98,7 @@
             }
 
             return {
-                student, 
+                student,
                 save,
                 back,
             };

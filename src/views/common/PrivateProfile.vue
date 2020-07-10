@@ -1,6 +1,6 @@
 <template>
 <!--    todo: Change between student/lecturer-->
-    <private-student-profile v-if="user.role === Role.STUDENT" :student="user"/>
+    <private-student-profile v-if="user.role === Role.STUDENT" :user="user"/>
 </template>
 
 <script lang="ts">
