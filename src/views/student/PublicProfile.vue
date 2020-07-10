@@ -18,14 +18,14 @@
 </template>
 
 <script lang="ts">
-    import StudentEntity from "../../entities/StudentEntity";
     import Router from "@/router";
+    import Student from "@/api/api_models/user_management/Student";
 
     export default {
         props: {
             student: {
                 required: true,
-                type: StudentEntity
+                type: Object as () => Student,
             }
         },
         setup() {
