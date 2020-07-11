@@ -65,6 +65,10 @@ const router = createRouter({
 		{
 			path: "/redirect",
 			component: Redirect,
+		},
+		{
+			path: "/:catchAll(.*)",
+			component: Redirect,
 		}
 	],
 
@@ -72,7 +76,7 @@ const router = createRouter({
 		if(savedPosition) {
 			return savedPosition;
 		}
-		return { x:0, y:0 }
+		return { left:0, top:0 }
 	}
 });
 

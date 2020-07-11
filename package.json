@@ -17,9 +17,9 @@
     "jest": "^26.0.1",
     "random-bigint": "0.0.1",
     "tailwindcss": "^1.4.6",
-    "vue": "^3.0.0-beta.1",
+    "vue": "^3.0.0-beta.18",
     "vue-property-decorator": "^8.4.2",
-    "vue-router": "^4.0.0-alpha.12",
+    "vue-router": "^4.0.0-beta.2",
     "vuex": "^4.0.0-beta.2"
   },
   "devDependencies": {
