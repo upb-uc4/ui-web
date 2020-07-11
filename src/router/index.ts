@@ -2,11 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
-import AdminHomeView from "../views/admin/Home.vue"
+import AdminHomeView from "../views/admin/Home.vue";
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
 import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
-import Redirect from "../views/common/Redirect.vue"
+import Redirect from "../views/common/Redirect.vue";
 import Profile from "../views/common/Profile.vue";
+import PageNotFound from "../views/errors/404.vue";
 
 
 const routerHistory = createWebHistory();
@@ -68,7 +69,7 @@ const router = createRouter({
 		},
 		{
 			path: "/:catchAll(.*)",
-			component: Redirect,
+			component: PageNotFound,
 		}
 	],
 
