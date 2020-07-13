@@ -1,8 +1,9 @@
 <template>
     <suspense>
         <template #default>
-            <admin-create-account-form v-if="isAdmin" :editMode="editMode"/>
+            <admin-create-account-form v-if="isAdmin" :editMode="editMode" v-model:successComp="success" v-model:hasInputComp="hasInput"/>
             <lecturer-create-course-form v-if="isLecturer" :editMode="editMode"/>
+            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </template>
         <template #fallback>
             <loading-component/>
@@ -17,6 +18,9 @@ import LoadingComponent from "../../components/LoadingComponent.vue"
 import { store } from '@/store/store';
 import {Role} from '@/entities/Role'
 import router from '../../router';
+import { ref } from "vue"
+import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
+
 
 
 export default {
@@ -25,6 +29,7 @@ export default {
         AdminCreateAccountForm,
         LecturerCreateCourseForm,
         LoadingComponent,
+        UnsavedChangesModal,
     },
     props: {
         editMode: {
@@ -41,9 +46,19 @@ export default {
         const isAdmin:boolean = props.desiredRole == Role.ADMIN;
         const isLecturer:boolean = props.desiredRole == Role.LECTURER;
 
+        let success = ref(new Boolean());
+        success.value = false;
+        let hasInput = ref(new Boolean());
+        hasInput.value = false;
+
+        let unsavedChangesModal = ref();
+
         return{
+            hasInput,
+            success,
             isAdmin,
             isLecturer,
+            unsavedChangesModal
         }
     },
 
@@ -55,6 +70,37 @@ export default {
             return next();
         }
         return next("/redirect");
-	},
+    },
+    
+    beforeRouteLeave (to: any, from: any, next: any) {
+        console.log(this.hasInput)
+        console.log(this.success)
+        if (this.success) {
+            return next();
+        }
+        if (this.hasInput) {
+            console.log("DOING")
+            const modal = this.unsavedChangesModal;
+            let action = modal.action;
+            modal.show()
+                .then((response: typeof action) => {
+                    switch(response) {
+                        case action.CANCEL: {
+                            next(false);
+                            break;
+                        }
+                        case action.CONFIRM: {
+                            next(true);
+                            break;
+                        }
+                        default: {
+                            next(true);
+                        }
+                    }
+                })
+        } else {
+            next(true);
+       }
+    }
 }
 </script>>
