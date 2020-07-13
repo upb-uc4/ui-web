@@ -40,6 +40,8 @@
         "@vue/test-utils": "^2.0.0-alpha.1",
         "babel-eslint": "^10.1.0",
         "eslint": "^6.7.2",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-prettier": "^3.1.4",
         "eslint-plugin-vue": "^7.0.0-alpha.0",
         "husky": "^4.2.5",
         "jest-serializer-vue": "^2.0.2",
@@ -55,15 +57,41 @@
         },
         "extends": [
             "plugin:vue/vue3-essential",
+            "plugin:vue/vue3-recommended",
+            "plugin:vue/vue3-strongly-recommended",
             "eslint:recommended",
-            "@vue/typescript"
+            "@vue/typescript",
+            "prettier",
+            "prettier/@typescript-eslint",
+            "prettier/vue"
+        ],
+        "plugins": [
+            "prettier"
         ],
         "parserOptions": {
             "parser": "@typescript-eslint/parser"
         },
         "rules": {
-            "no-unused-vars": "warn",
-            "no-mixed-spaces-and-tabs": "warn"
+            "prettier/prettier": [
+                "warn"
+            ],
+            "vue/html-closing-bracket-newline": [
+                "warn",
+                {
+                    "singleline": "never",
+                    "multiline": "always"
+                }
+            ],
+            "max-len": "off",
+            "vue/multiline-html-element-content-newline": 0,
+            "vue/attributes-order": "warn",
+            "no-unused-vars": "off",
+            "vue/component-tags-order": "off",
+            "no-mixed-spaces-and-tabs": "warn",
+            "vue/html-indent": [
+                "error",
+                4
+            ]
         },
         "overrides": [
             {
@@ -78,11 +106,14 @@
         ]
     },
     "prettier": {
+        "printWidth": 140,
         "trailingComma": "es5",
         "tabWidth": 4,
         "semi": true,
         "jsxBracketSameLine": true,
-        "vueIndentScriptAndStyle": true
+        "vueIndentScriptAndStyle": true,
+        "html-whitespace-sensitivity": "ignore",
+        "quoteProps": "consistent"
     },
     "husky": {
         "hooks": {
