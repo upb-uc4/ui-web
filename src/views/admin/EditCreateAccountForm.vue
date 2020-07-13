@@ -323,9 +323,7 @@
                     </button>
                 </div>
             </section>
-
             <delete-account-modal ref="deleteModal"/>
-            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
@@ -346,7 +344,6 @@ import Admin from '../../api/api_models/user_management/Admin';
 import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
-import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 import { Country } from '../../entities/Country';
 import User from '../../api/api_models/user_management/User';
 import useErrorHandler from '@/use/ErrorHandler';
@@ -358,16 +355,17 @@ export default {
     name: "AdminCreateAccountForm",
     components: {
         DeleteAccountModal,
-        UnsavedChangesModal,
         MultiSelect
     },
     props: {
+        successComp: Boolean,
+        hasInputComp: Boolean,
         editMode: {
             type: Boolean,
             required: true
         }
     },
-    async setup(props) {
+    async setup(props, {emit}) {
         let account = reactive( {
             authUser: new Account(),
             user: new UserEntity(),
@@ -400,7 +398,6 @@ export default {
 		let roles = Object.values(Role).filter(e => e != Role.NONE);
         let fieldsOfStudy = Object.values(FieldOfStudy).filter(e => e != FieldOfStudy.NONE);
         let countries = Object.values(Country).filter(e => e != Country.NONE);
-        let unsavedChangesModal = ref();
         let deleteModal = ref();
         
         let { errorList, hasError, showError} = useErrorHandler();
@@ -479,22 +476,25 @@ export default {
                 //student properties
                 account.student.immatriculationStatus != initialAccount.student.immatriculationStatus || account.student.matriculationId != initialAccount.student.matriculationId ||
                 account.student.semesterCount != initialAccount.student.semesterCount) {
+                    emit('update:hasInputComp', true);
                     return true;
                 }
                 
                 //check whether a field of study has been added or removed
                 for( let field of account.student.fieldsOfStudy) {
                     if(!initialAccount.student.fieldsOfStudy.includes(field)) {
+                        emit('update:hasInputComp', true);
                         return true;
                     }
                 }
 
                 for( let field of initialAccount.student.fieldsOfStudy) {
                     if(!account.student.fieldsOfStudy.includes(field)) {
+                        emit('update:hasInputComp', true);
                         return true;
                     }
                 }
-                
+            emit('update:hasInputComp', false);
             return false;
         })
         
@@ -644,40 +644,11 @@ export default {
             updateAccount,
             deleteAccount,
             confirmDeleteAccount,
-            unsavedChangesModal,
             deleteModal,
             hasError,
             showError,
             updateFieldsOfStudy
         }
     },
-
-    beforeRouteLeave (to: any, from: any, next: any) {
-        if (this.success) {
-            return next();
-        }
-        if (this.hasInput) {
-            const modal = this.unsavedChangesModal;
-            let action = modal.action;
-            modal.show()
-                .then((response: typeof action) => {
-                    switch(response) {
-                        case action.CANCEL: {
-                            next(false);
-                            break;
-                        }
-                        case action.CONFIRM: {
-                            next(true);
-                            break;
-                        }
-                        default: {
-                            next(true);
-                        }
-                    }
-                })
-        } else {
-            next(true);
-       }
-    }
 };
 </script>
