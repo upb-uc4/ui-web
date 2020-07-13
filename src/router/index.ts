@@ -8,6 +8,7 @@ import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue
 import FormSuspenseWrapper from '../views/common/FormSuspenseWrapper.vue'
 import Redirect from "../views/common/Redirect.vue"
 import Profile from "../views/common/Profile.vue";
+import {Role} from '@/entities/Role'
 
 
 const routerHistory = createWebHistory();
@@ -55,12 +56,18 @@ const router = createRouter({
 		},
 		{
 			path: "/createAccount",
-			props: {editMode:false},
+			props: {
+				editMode:false,
+				desiredRole: Role.ADMIN,
+			},
 			component: FormSuspenseWrapper
 		},
 		{
 			path: "/editAccount/:username",
-			props: {editMode:true},
+			props: {
+				editMode:true,
+				desiredRole: Role.ADMIN,
+			},
 			component: FormSuspenseWrapper
 		},
 		{

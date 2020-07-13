@@ -1,7 +1,7 @@
 <template>
     <suspense>
         <template #default>
-            <admin-create-account-form :editMode="editMode"/>
+            <admin-create-account-form v-if="isAdmin" :editMode="editMode"/>
         </template>
         <template #fallback>
             Loading.....
@@ -29,6 +29,14 @@ export default {
         desiredRole: {
             role: Role,
             required: true,
+        }
+    },
+
+    setup(props) {
+        const isAdmin:boolean = props.desiredRole == Role.ADMIN;
+
+        return{
+            isAdmin,
         }
     },
 
