@@ -6,7 +6,7 @@
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">Account Creation</h1>
+        <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ title }}</h1>
 
         <div>
             <section class="border-t-2 py-8 border-gray-400">
@@ -393,6 +393,8 @@ export default {
 			},
         }
 
+        let title= props.editMode ? "Account Editing" : "Account Creation";
+
         let success = ref(new Boolean());
         success.value = false;
 		let roles = Object.values(Role).filter(e => e != Role.NONE);
@@ -632,6 +634,7 @@ export default {
         }
 
         return {
+            title,
             account,
             success,
             roles,
