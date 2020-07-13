@@ -73,13 +73,10 @@ export default {
     },
     
     beforeRouteLeave (to: any, from: any, next: any) {
-        console.log(this.hasInput)
-        console.log(this.success)
         if (this.success) {
             return next();
         }
         if (this.hasInput) {
-            console.log("DOING")
             const modal = this.unsavedChangesModal;
             let action = modal.action;
             modal.show()
