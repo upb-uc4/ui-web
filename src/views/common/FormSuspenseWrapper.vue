@@ -5,14 +5,15 @@
             <lecturer-create-course-form v-if="isLecturer" :editMode="editMode"/>
         </template>
         <template #fallback>
-            Loading.....
+            <loading-component/>
         </template>
     </suspense>
 </template>>
 
 <script lang="ts">
 import AdminCreateAccountForm from "../admin/EditCreateAccountForm.vue";
-import LecturerCreateCourseForm from "../lecturer/EditCreateCourseForm.vue"
+import LecturerCreateCourseForm from "../lecturer/EditCreateCourseForm.vue";
+import LoadingComponent from "../../components/LoadingComponent.vue"
 import { store } from '@/store/store';
 import {Role} from '@/entities/Role'
 import router from '../../router';
@@ -22,7 +23,8 @@ export default {
     name: "FormSuspenseWrapper",
     components: {
         AdminCreateAccountForm,
-        LecturerCreateCourseForm
+        LecturerCreateCourseForm,
+        LoadingComponent,
     },
     props: {
         editMode: {
