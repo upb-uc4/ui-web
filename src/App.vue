@@ -14,13 +14,6 @@ export default {
 
 	}, 
 	setup() {
-		console.log("bla")
-		console.log(process.env.BASE_URL)
-		store.state.apiUrl = process.env.VUE_APP_API_URL;
-		if (store.state.apiUrl === undefined) {
-			//fallback url for dev
-			store.state.apiUrl = "http://localhost:9000";
-		}
 	}
 }
 </script>
