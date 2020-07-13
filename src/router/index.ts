@@ -5,6 +5,7 @@ import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue"
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
 import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
+import FormSuspenseWrapper from '../views/common/FormSuspenseWrapper.vue'
 import Redirect from "../views/common/Redirect.vue"
 import Profile from "../views/common/Profile.vue";
 
@@ -55,12 +56,12 @@ const router = createRouter({
 		{
 			path: "/createAccount",
 			props: {editMode:false},
-			component: AdminEditCreateAccountView
+			component: FormSuspenseWrapper
 		},
 		{
 			path: "/editAccount/:username",
 			props: {editMode:true},
-			component: AdminEditCreateAccountView
+			component: FormSuspenseWrapper
 		},
 		{
 			path: "/redirect",

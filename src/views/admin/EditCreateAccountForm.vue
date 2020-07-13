@@ -367,7 +367,7 @@ export default {
             required: true
         }
     },
-    setup(props) {
+    async setup(props) {
         let account = reactive( {
             authUser: new Account(),
             user: new UserEntity(),
@@ -414,13 +414,7 @@ export default {
 			return account.user.role === Role.STUDENT;
         })
         
-        onMounted( () => {
-            if(props.editMode) {
-                loadAccount();
-            }
-        })
-
-        async function loadAccount() {
+        if(props.editMode) {
             const userManagement: UserManagement = new UserManagement();
 
             const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string)
