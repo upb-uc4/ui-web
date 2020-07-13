@@ -652,13 +652,6 @@ export default {
         }
     },
 
-	beforeRouteEnter(_from: any, _to: any, next: any) {
-		const myRole = store.state.myRole;
-		if (myRole != Role.ADMIN) {
-			return next("/redirect");
-		}
-		return next();
-	},
     beforeRouteLeave (to: any, from: any, next: any) {
         if (this.success) {
             return next();
