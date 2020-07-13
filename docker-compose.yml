@@ -3,7 +3,7 @@ version: '3.8'
 services:
     front-end:
         container_name: vue-frontend
-        image: uc4official/ui-web:v0.3.0
+        image: uc4official/ui-web:latest
         build:
             context: .
             dockerfile: Dockerfile

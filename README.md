@@ -47,15 +47,26 @@ Inside the root directory of this project, run
 
 `docker build .` 
 
-## Run docker image
-You can either run a self built image using
+## Run docker container
+You can build a container using your own image:
 
-`docker run <image-id>`.
+`docker run -p '8080:80' <image-id>`
+
+This will run a new docker container and will map port 8080 of the host machine to port of the container, where the webinterface will be served.
 
 
-or use a pre-built image from us:
+Or you can use a pre-built container from us:
 
 `docker run uc4official/ui-web:latest`
+
+The container will be configured with the same configuration found in this repository. For more info, view the `vue.config.js` and `docker-compose.yml` files.
+
+You can also use `docker-compose` to run the application, if you are in the root diretory:
+
+`docker-compose up`
+
+## Configuration of docker container
+
 
 # Development Setup
 
