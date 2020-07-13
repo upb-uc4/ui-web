@@ -178,7 +178,7 @@
             UnsavedChangesModal,
         },
 
-        setup(props: any) {
+        async setup(props: any) {
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
@@ -196,13 +196,8 @@
             let { errorList, hasError, showError} = useErrorHandler();
             let errors = reactive(errorList);
 
-            onMounted( () => {
-                if(props.editMode) {
-                    loadCourse();
-                }
-            })
-
-            async function loadCourse () {
+        
+            if(props.editMode) {
                 const courseManagement: CourseManagement = new CourseManagement();            
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string)
                 const genericResponseHandler = new GenericResponseHandler();
@@ -321,7 +316,6 @@
                 hasInput,
                 isValid,
                 back,
-                loadCourse,
                 createCourse,
                 updateCourse,
                 deleteCourse,
@@ -331,14 +325,6 @@
                 hasError,
                 showError
             }
-        },
-
-        beforeRouteEnter(_from: any, _to: any, next: any) {
-            const myRole = store.state.myRole;
-            if (myRole != Role.LECTURER) {
-                return next("/redirect");
-            }
-            return next();
         },
 
         async beforeRouteLeave(_from: any, _to: any, next: any) {
