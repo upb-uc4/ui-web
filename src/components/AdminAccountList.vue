@@ -19,9 +19,7 @@
                 <accountList :key="refreshKey"/>
             </template>
             <template #fallback>
-                <p class="text-center text-lg pt-20">
-                    Loading Accounts...
-                </p>
+                <loading-component/>
             </template>
         </suspense>
 
@@ -35,12 +33,14 @@
 
 <script lang="ts">
     import AccountList from "./AccountList.vue"
+    import LoadingComponent from "../components/LoadingComponent.vue"
     import { ref } from 'vue'
  
     export default {
         name: "AdminAccountList",
         components: {
             AccountList,
+            LoadingComponent
         },
         setup() {
             let message = ref("");
