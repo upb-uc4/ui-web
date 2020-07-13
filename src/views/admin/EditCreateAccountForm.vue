@@ -584,6 +584,7 @@ export default {
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler =  new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
+                emit('update:successComp', success.value)
 
                 if(success.value) {
                     back();
@@ -596,6 +597,7 @@ export default {
             else {
 				console.log("Error: Input Validation Failed!")
                 success.value = false;
+                emit('update:successComp', success.value)
             }
         }
 
@@ -605,6 +607,7 @@ export default {
             userManagement.updateUser(adaptedUser).then( (response) => {
                 if(response) {
                     success.value = true;
+                    emit('update:successComp', success.value)
                     back();
                 }
             });
@@ -619,6 +622,7 @@ export default {
 
             if (result) {
                 success.value = true;
+                emit('update:successComp', success.value)
                 back()
             }
         }
