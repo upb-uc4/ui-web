@@ -184,8 +184,7 @@
             let heading = props.editMode ? "Edit Course" : "Create Course";
             let languages = Object.values(Language).filter(e => e != Language.NONE);
             let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
-            let success = ref(new Boolean());
-            success.value = false;
+            let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
             let unsavedChangesModal = ref();
             let deleteModal = ref();

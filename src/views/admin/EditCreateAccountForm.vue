@@ -393,8 +393,7 @@ export default {
 
         let title= props.editMode ? "Account Editing" : "Account Creation";
 
-        let success = ref(new Boolean());
-        success.value = false;
+        let success = ref(false);
 		let roles = Object.values(Role).filter(e => e != Role.NONE);
         let fieldsOfStudy = Object.values(FieldOfStudy).filter(e => e != FieldOfStudy.NONE);
         let countries = Object.values(Country).filter(e => e != Country.NONE);
