@@ -3,8 +3,6 @@ import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue"
-import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
-import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
 import FormSuspenseWrapper from '../views/common/FormSuspenseWrapper.vue'
 import Redirect from "../views/common/Redirect.vue"
 import Profile from "../views/common/Profile.vue";
@@ -37,13 +35,19 @@ const router = createRouter({
 		{
 			path: '/createCourse',
 			name: 'createCourse',
-			props: {editMode:false},
-            component: LecturerEditCreateCourseView
+			props: {
+				editMode:false,
+				desiredRole: Role.LECTURER
+			},
+            component: FormSuspenseWrapper
 		},
 		{
 			path: '/editCourse/:id',
-			props: {editMode:true},
-            component: LecturerEditCreateCourseView
+			props: {
+				editMode:true,
+				desiredRole: Role.LECTURER
+			},
+            component: FormSuspenseWrapper
         },
 		{
 			path: '/profile/:id',
