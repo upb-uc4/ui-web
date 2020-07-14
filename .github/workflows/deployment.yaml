@@ -1,0 +1,46 @@
+name: Vue Test Pipeline
+
+on:
+  push:
+    branches: [ feature/deployment ]
+
+jobs:
+  PublishOnDockerhub:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: check out source repository
+      uses: actions/checkout@v2
+    
+    # Set up Node
+    - name: Set up Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+
+    - name: Login to docker hub
+      uses: actions-hub/docker/login@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+
+    # install npm dependencies
+    - name: Install dependencies
+      run: npm install
+    
+    # build image
+    - name: Build docker image
+      run: |
+        echo "##########################"
+        echo "#      Build Image       #"
+        echo "##########################"
+        npm run docker:build
+        
+     # publish image
+    - name: Publish docker image
+      run: |
+        echo "##########################"
+        echo "#     Publish Image      #"
+        echo "##########################"
+        npm run docker:publish
