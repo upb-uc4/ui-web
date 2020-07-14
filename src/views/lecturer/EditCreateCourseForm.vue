@@ -143,7 +143,6 @@
             </section>
 
             <delete-course-modal ref="deleteModal"/>
-            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
@@ -159,7 +158,6 @@
     import Course from "@/api/api_models/course_management/Course";
     import { ref,onMounted, computed, reactive } from 'vue';
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import useErrorHandler from '@/use/ErrorHandler';
     import ValidationResponseHandler from '@/use/ValidationResponseHandler';
     import GenericResponseHandler from "@/use/GenericResponseHandler"
@@ -175,7 +173,6 @@
         },
         components: {
             DeleteCourseModal,
-            UnsavedChangesModal,
         },
 
         async setup(props: any) {
@@ -186,7 +183,6 @@
             let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
             let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
-            let unsavedChangesModal = ref();
             let deleteModal = ref();
             course.value.lecturerId = store.state.myId;
             course.value.startDate = "2020-06-01";
@@ -319,39 +315,10 @@
                 updateCourse,
                 deleteCourse,
                 confirmDeleteCourse,
-                unsavedChangesModal,
                 deleteModal,
                 hasError,
                 showError
             }
         },
-
-        async beforeRouteLeave(_from: any, _to: any, next: any) {
-            if (this.success) {
-                return next();
-            }
-            if (this.hasInput) {
-                const modal = this.unsavedChangesModal;
-                let action = modal.action;
-                modal.show()
-                    .then((response: typeof action) => {
-                    switch(response) {
-                        case action.CANCEL: {
-                            next(false);
-                            break;
-                        }
-                        case action.CONFIRM: {
-                            next(true);
-                            break;
-                        }
-                        default: {
-                            next(true);
-                        }
-                    }
-                })
-            } else {
-                next(true);
-            }
-        }
     };
 </script>
