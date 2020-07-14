@@ -435,7 +435,6 @@ export default {
                 }
                 else if(result.role == Role.STUDENT ) {
                     account.student = (result as Student);
-                    //account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
                 }
                 else if(result.role == Role.ADMIN ) {
