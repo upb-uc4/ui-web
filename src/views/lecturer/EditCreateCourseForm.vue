@@ -167,6 +167,7 @@
         name: "LecturerCreateCourseForm",
         props: {
             successComp: Boolean,
+            hasInputComp: Boolean,
             editMode:{
                 type: Boolean,
                 required: true
@@ -210,8 +211,10 @@
         
 
             let hasInput = computed (() => {
-                 // TODO not tested yet (too lazy to start intellij)
-                return !course.value.editableInfoEquals(initialCourseState);
+                // TODO not tested yet (too lazy to start intellij)
+                let returnValue:boolean = !course.value.editableInfoEquals(initialCourseState);
+                emit('update:hasInputComp', returnValue);
+                return returnValue;
             })
 
             let isValid = computed (() => {
