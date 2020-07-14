@@ -166,8 +166,6 @@
     export default {
         name: "LecturerCreateCourseForm",
         props: {
-            successComp: Boolean,
-            hasInputComp: Boolean,
             editMode:{
                 type: Boolean,
                 required: true
@@ -213,7 +211,7 @@
             let hasInput = computed (() => {
                 // TODO not tested yet (too lazy to start intellij)
                 let returnValue:boolean = !course.value.editableInfoEquals(initialCourseState);
-                emit('update:hasInputComp', returnValue);
+                emit('update:hasInput', returnValue);
                 return returnValue;
             })
 
@@ -234,7 +232,7 @@
                     const response = await courseManagement.createCourse(course.value);
                     const handler =  new ValidationResponseHandler();
                     success.value = handler.handleReponse(response);
-                    emit('update:successComp', success.value)
+                    emit('update:success', success.value)
 
                     if(success.value) {
                         back();
@@ -246,7 +244,7 @@
                 }
                 else {
                     success.value = false;
-                    emit('update:successComp', success.value)
+                    emit('update:success', success.value)
                     console.log("Error: Input Validation Failed!");
                 }
             }
@@ -258,7 +256,7 @@
                     const response = await courseManagement.updateCourse(course.value);
                     const handler =  new ValidationResponseHandler();
                     success.value = handler.handleReponse(response);
-                    emit('update:successComp', success.value)
+                    emit('update:success', success.value)
 
                     if(success.value) {
                         back();
@@ -270,7 +268,7 @@
                 }
                 else {
                     success.value = false;
-                    emit('update:successComp', success.value)
+                    emit('update:success', success.value)
                     console.log("Error: Input Validation Failed!")
                 }
             }

@@ -2,7 +2,7 @@
     <suspense>
         <template #default>
             <admin-create-account-form v-if="isAdmin" :editMode="editMode" v-model:successComp="success" v-model:hasInputComp="hasInput"/>
-            <lecturer-create-course-form v-if="isLecturer" :editMode="editMode" v-model:successComp="success" v-model:hasInputComp="hasInput"/>
+            <lecturer-create-course-form v-if="isLecturer" :editMode="editMode" v-model:success="success" v-model:hasInput="hasInput"/>
             <unsaved-changes-modal ref="unsavedChangesModal"/>
         </template>
         <template #fallback>
