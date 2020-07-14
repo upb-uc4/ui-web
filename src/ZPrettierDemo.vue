@@ -306,7 +306,6 @@
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
                             >
->
                             </textarea>
                             <p v-if="hasError('researchArea')" class="text-red-600 ml-1 mt-1">
                                 {{ showError("researchArea") }}
