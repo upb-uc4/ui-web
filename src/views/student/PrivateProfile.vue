@@ -68,7 +68,7 @@
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
-    import CourseOfStudySection from "@/components/profile/CourseOfStudySection.vue";
+    import CourseOfStudySection from "@/components/profile/student/CourseOfStudySection.vue";
     import { ref } from "vue";
     import Router from "@/router"
     import UserManagement from "@/api/UserManagement";
