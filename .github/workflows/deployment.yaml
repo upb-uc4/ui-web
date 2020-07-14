@@ -1,4 +1,4 @@
-name: Vue Test Pipeline
+name: Vue deployment pipeline
 
 on:
   push:
@@ -40,5 +40,4 @@ jobs:
         echo "##########################"
         echo "#     Publish Image      #"
         echo "##########################"
-        docker login --username=yourhubusername --email=youremail@company.com
         npm run docker:publish
