@@ -62,6 +62,8 @@
 
             function removeValue(index:number) {
                 output.value.splice(index, 1)
+                
+                emit("changed", output)
             }
 
             return {

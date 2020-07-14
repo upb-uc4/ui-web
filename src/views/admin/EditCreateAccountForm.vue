@@ -435,7 +435,7 @@ export default {
                 }
                 else if(result.role == Role.STUDENT ) {
                     account.student = (result as Student);
-                    account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
+                    //account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
                 }
                 else if(result.role == Role.ADMIN ) {
@@ -447,6 +447,7 @@ export default {
 
         function updateFieldsOfStudy(value: any) {
             account.student.fieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE)
+            console.log(value)
         }
 
 		function updatePicture() {
@@ -480,6 +481,7 @@ export default {
                 //check whether a field of study has been added or removed
                 for( let field of account.student.fieldsOfStudy) {
                     if(!initialAccount.student.fieldsOfStudy.includes(field)) {
+                        console.log("FIRE1")
                         emit('update:hasInput', true);
                         return true;
                     }
@@ -487,10 +489,12 @@ export default {
 
                 for( let field of initialAccount.student.fieldsOfStudy) {
                     if(!account.student.fieldsOfStudy.includes(field)) {
+                        console.log("FIRE2")
                         emit('update:hasInput', true);
                         return true;
                     }
                 }
+            console.log("FIRE3")
             emit('update:hasInput', false);
             return false;
         })
