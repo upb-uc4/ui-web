@@ -9,8 +9,13 @@
                 <img class="w-32 h-32 mb-4 rounded-full object-cover mx-16 border-4 border-blue-700"
                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU">
                 <div class="flex flex-col">
-                    <h1 class="text-3xl font-medium text-gray-700">{{ lecturer.firstName + " " + lecturer.lastName }}</h1>
-                    <h2 class="text-xl font-medium text-gray-700">@{{ lecturer.username }}</h2>
+                    <h1 class="text-3xl font-medium text-gray-700">
+                        {{ lecturer.firstName + " " + lecturer.lastName }}
+                        <span class="text-xl">
+                            (@{{ lecturer.username }})
+                        </span>
+                    </h1>
+                    <h2 class="text-xl text-gray-700 text-blue-700 italic">{{ lecturer.role }}</h2>
                 </div>
             </div>
         </div>
