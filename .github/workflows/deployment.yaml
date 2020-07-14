@@ -1,8 +1,8 @@
 name: Vue deployment pipeline
 
 on:
-  push:
-    branches: [ feature/deployment ]
+  release:
+    branches: [ master ]
 
 jobs:
   PublishOnDockerhub:
