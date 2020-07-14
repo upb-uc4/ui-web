@@ -3,10 +3,10 @@ import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue"
-import FormSuspenseWrapper from '../views/common/FormSuspenseWrapper.vue'
+import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue"
+import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue"
 import Redirect from "../views/common/Redirect.vue"
 import Profile from "../views/common/Profile.vue";
-import {Role} from '@/entities/Role'
 
 
 const routerHistory = createWebHistory();
@@ -37,17 +37,15 @@ const router = createRouter({
 			name: 'createCourse',
 			props: {
 				editMode:false,
-				desiredRole: Role.LECTURER
 			},
-            component: FormSuspenseWrapper
+            component: CourseFormSuspenseWrapper
 		},
 		{
 			path: '/editCourse/:id',
 			props: {
 				editMode:true,
-				desiredRole: Role.LECTURER
 			},
-            component: FormSuspenseWrapper
+            component: CourseFormSuspenseWrapper
         },
 		{
 			path: '/profile/:id',
@@ -62,17 +60,15 @@ const router = createRouter({
 			path: "/createAccount",
 			props: {
 				editMode:false,
-				desiredRole: Role.ADMIN,
 			},
-			component: FormSuspenseWrapper
+			component: AccountFormSuspenseWrapper
 		},
 		{
 			path: "/editAccount/:username",
 			props: {
 				editMode:true,
-				desiredRole: Role.ADMIN,
 			},
-			component: FormSuspenseWrapper
+			component: AccountFormSuspenseWrapper
 		},
 		{
 			path: "/redirect",
