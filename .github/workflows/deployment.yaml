@@ -10,7 +10,7 @@ jobs:
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: check out source repository
+    - name: Check out source repository
       uses: actions/checkout@v2
     
     # Set up Node
@@ -18,12 +18,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '12'
-
-    - name: Login to docker hub
-      uses: actions-hub/docker/login@master
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+        
+    - name: Login to DockerHub Registry
+      run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
     # install npm dependencies
     - name: Install dependencies
@@ -43,4 +40,5 @@ jobs:
         echo "##########################"
         echo "#     Publish Image      #"
         echo "##########################"
+        docker login --username=yourhubusername --email=youremail@company.com
         npm run docker:publish
