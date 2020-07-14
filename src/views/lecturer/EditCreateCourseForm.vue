@@ -166,6 +166,7 @@
     export default {
         name: "LecturerCreateCourseForm",
         props: {
+            successComp: Boolean,
             editMode:{
                 type: Boolean,
                 required: true
@@ -175,7 +176,7 @@
             DeleteCourseModal,
         },
 
-        async setup(props: any) {
+        async setup(props: any, { emit }) {
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
@@ -230,6 +231,7 @@
                     const response = await courseManagement.createCourse(course.value);
                     const handler =  new ValidationResponseHandler();
                     success.value = handler.handleReponse(response);
+                    emit('update:successComp', success.value)
 
                     if(success.value) {
                         back();
@@ -241,7 +243,8 @@
                 }
                 else {
                     success.value = false;
-                    console.log("Error: Input Validation Failed!")
+                    emit('update:successComp', success.value)
+                    console.log("Error: Input Validation Failed!");
                 }
             }
 
@@ -252,6 +255,7 @@
                     const response = await courseManagement.updateCourse(course.value);
                     const handler =  new ValidationResponseHandler();
                     success.value = handler.handleReponse(response);
+                    emit('update:successComp', success.value)
 
                     if(success.value) {
                         back();
@@ -263,6 +267,7 @@
                 }
                 else {
                     success.value = false;
+                    emit('update:successComp', success.value)
                     console.log("Error: Input Validation Failed!")
                 }
             }
