@@ -11,7 +11,7 @@
 </template>>
 
 <script lang="ts">
-import AdminCreateAccountForm from "../admin/EditCreateAccountForm.vue";
+import AdminCreateAccountForm from "./EditCreateAccountForm.vue";
 import LoadingComponent from "../../components/LoadingComponent.vue"
 import { store } from '@/store/store';
 import {Role} from '@/entities/Role'

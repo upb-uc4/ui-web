@@ -11,7 +11,7 @@
 </template>>
 
 <script lang="ts">
-import LecturerCreateCourseForm from "EditCreateCourseForm.vue";
+import LecturerCreateCourseForm from "./EditCreateCourseForm.vue";
 import LoadingComponent from "../../components/LoadingComponent.vue"
 import { store } from '@/store/store';
 import {Role} from '@/entities/Role'
