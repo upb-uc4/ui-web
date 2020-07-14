@@ -358,8 +358,6 @@ export default {
         MultiSelect
     },
     props: {
-        successComp: Boolean,
-        hasInputComp: Boolean,
         editMode: {
             type: Boolean,
             required: true
@@ -475,25 +473,25 @@ export default {
                 //student properties
                 account.student.immatriculationStatus != initialAccount.student.immatriculationStatus || account.student.matriculationId != initialAccount.student.matriculationId ||
                 account.student.semesterCount != initialAccount.student.semesterCount) {
-                    emit('update:hasInputComp', true);
+                    emit('update:hasInput', true);
                     return true;
                 }
                 
                 //check whether a field of study has been added or removed
                 for( let field of account.student.fieldsOfStudy) {
                     if(!initialAccount.student.fieldsOfStudy.includes(field)) {
-                        emit('update:hasInputComp', true);
+                        emit('update:hasInput', true);
                         return true;
                     }
                 }
 
                 for( let field of initialAccount.student.fieldsOfStudy) {
                     if(!account.student.fieldsOfStudy.includes(field)) {
-                        emit('update:hasInputComp', true);
+                        emit('update:hasInput', true);
                         return true;
                     }
                 }
-            emit('update:hasInputComp', false);
+            emit('update:hasInput', false);
             return false;
         })
         
@@ -583,7 +581,7 @@ export default {
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler =  new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
-                emit('update:successComp', success.value)
+                emit('update:success', success.value)
 
                 if(success.value) {
                     back();
@@ -596,7 +594,7 @@ export default {
             else {
 				console.log("Error: Input Validation Failed!")
                 success.value = false;
-                emit('update:successComp', success.value)
+                emit('update:success', success.value)
             }
         }
 
@@ -606,7 +604,7 @@ export default {
             userManagement.updateUser(adaptedUser).then( (response) => {
                 if(response) {
                     success.value = true;
-                    emit('update:successComp', success.value)
+                    emit('update:success', success.value)
                     back();
                 }
             });
@@ -621,7 +619,7 @@ export default {
 
             if (result) {
                 success.value = true;
-                emit('update:successComp', success.value)
+                emit('update:success', success.value)
                 back()
             }
         }
