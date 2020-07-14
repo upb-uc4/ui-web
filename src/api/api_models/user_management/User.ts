@@ -9,5 +9,5 @@ export default interface User {
     lastName: string,
     picture: string,
     email: string,
-    birthdate: string
+    birthDate: string
 }
