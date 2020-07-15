@@ -4,7 +4,7 @@
             <label class="text-gray-700 text-sm">Day</label>
             <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                 @change="updateDay($event.target.value)"
-                v-model="myday"
+                v-model="shownDay"
                 >
                 <option disabled :value="''"> Select a Day </option>
                 <option v-for="day in 31" :key="day">{{ day }}</option>
@@ -14,7 +14,7 @@
             <label class="text-gray-700 text-sm">Month  </label>
             <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                 @change="updateMonth($event.target.value)"
-                v-model="mymonth"
+                v-model="shownMonth"
                 >
                 <option disabled :value="''"> Select a Month </option>
                 <option v-for="month in months" :key="month">{{ month }}</option>
@@ -24,7 +24,7 @@
             <label class="text-gray-700 text-sm">Year</label>
             <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                 @change="updateYear($event.target.value)"
-                v-model="myyear"
+                v-model="shownYear"
                 >
                 <option disabled :value="''"> Select a Year </option>
                 <option v-for="year in selectableYears" :key="year">{{ year }}</option>
@@ -55,13 +55,13 @@
 
         setup(props:any, { emit } ) {
             let months = Month;
+            
+            let shownDay:string = ref(props.day).value;
+            let shownMonth:string = ref(props.month).value == "" ? "" : Object.values(Month)[parseInt(ref(props.month).value)-1];
+            let shownYear:string = ref(props.year).value;
+
             let currentYear = new Date().getFullYear();
             let selectableYears = [];
-            
-            let myday:string = ref(props.day).value;
-            let mymonth:string = ref(props.month).value == "" ? "" : Object.values(Month)[parseInt(ref(props.month).value)-1];
-            let myyear:string = ref(props.year).value;
-
             for (let index = currentYear; index >= currentYear-80; index--) {
                 selectableYears.push(index);
             }
@@ -83,9 +83,9 @@
             }
 
             return {
-                myday,
-                mymonth,
-                myyear,
+                shownDay,
+                shownMonth,
+                shownYear,
                 months,
                 selectableYears,
                 updateDay,
