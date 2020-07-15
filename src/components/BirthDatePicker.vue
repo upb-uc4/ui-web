@@ -60,15 +60,19 @@
             }
 
             function updateDay(day:string) {
-               
+               if( parseInt(day) < 10 ) {
+                   day = "0" + day;
+               }
+               emit("update:day",day);
             }
 
             function updateMonth(month:string) {
-
+                let monthIndex = Object.values(months).indexOf(month as Month) + 1;
+                emit("update:month", monthIndex < 10 ? "0" + monthIndex : monthIndex.toString());
             }
 
             function updateYear(year:string) {
-
+                emit("update:year", year.toString());
             }
 
             return {
