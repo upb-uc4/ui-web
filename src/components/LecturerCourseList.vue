@@ -33,7 +33,7 @@
 
 <script lang="ts">
     import CourseList from "./CourseList.vue"
-    import LoadingComponent from "../components/LoadingComponent.vue"
+    import LoadingComponent from "./loading/Spinner.vue"
     import { ref } from 'vue'
  
     export default {

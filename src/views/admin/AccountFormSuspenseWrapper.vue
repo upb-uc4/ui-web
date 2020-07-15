@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import AdminCreateAccountForm from "./EditCreateAccountForm.vue";
-import LoadingComponent from "../../components/LoadingComponent.vue"
+import LoadingComponent from "../../components/loading/Spinner.vue"
 import { store } from '@/store/store';
 import {Role} from '@/entities/Role'
 import router from '../../router';
