@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="w-full flex flex-row items-center" v-for="index in output.length" :key="index">
-            <select class="w-4/5 mr-1 my-2 form-input-select" 
+            <select class="w-4/5 mr-1 my-2 input-select form-select"
                 v-model="output[index-1]"
                 @change="addValue($event.target.value,index-1)"
             >

@@ -1,0 +1,3 @@
+.input-select {
+    @apply py-3 rounded-lg border-2 border-gray-400 text-gray-600 !important;
+}

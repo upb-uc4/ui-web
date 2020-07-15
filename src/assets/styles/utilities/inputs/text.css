@@ -1,0 +1,11 @@
+.input-text {
+    @apply py-3 border-2 border-gray-400 rounded-lg text-gray-600 outline-none opacity-100 !important;
+}
+
+.input-text:read-only {
+    @apply bg-gray-300 !important;
+}
+
+.input-text:read-only:focus {
+    @apply outline-none shadow-none border-gray-400 !important;
+}
