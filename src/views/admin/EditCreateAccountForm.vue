@@ -331,8 +331,7 @@
 <script lang="ts">
 import Router from "@/router/";
 import {Role} from '@/entities/Role'
-import { store } from '@/store/store';
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
 import UserManagement from "@/api/UserManagement"
 import StudentEntity from "@/entities/StudentEntity"
@@ -345,7 +344,6 @@ import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
 import { Country } from '../../entities/Country';
-import User from '../../api/api_models/user_management/User';
 import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
 import GenericResponseHandler from "@/use/GenericResponseHandler"
