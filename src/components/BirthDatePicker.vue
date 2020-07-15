@@ -1,26 +1,26 @@
 <template>
     <div class="flex flex-row ">
-        <div class="w-full px-2 flex flex-col">
+        <div class="mr-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Day</label>
-            <select class="w-4/5 mr-1 my-2 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+            <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                 @change="updateDay($event.target.value)"
                 >
                 <option selected disabled> Select a Day </option>
                 <option v-for="day in 31" :key="day">{{ day }}</option>
             </select>
         </div>
-        <div class="w-full px-2 flex flex-col">
+        <div class="mx-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Month  </label>
-            <select class="w-4/5 mr-1 my-2 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+            <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                 @change="updateMonth($event.target.value)"
                 >
                 <option selected disabled> Select a Month </option>
                 <option v-for="month in months" :key="month">{{ month }}</option>
             </select>
         </div>
-        <div class="w-full pl-2 flex flex-col">
+        <div class="ml-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Year</label>
-            <select class="w-4/5 mr-1 my-2 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+            <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
                 @change="updateYear($event.target.value)"
                 >
                 <option selected disabled> Select a Year </option>
@@ -50,7 +50,7 @@
         },
 
 
-        setup() {
+        setup(props:any, { emit } ) {
             let months = Month;
             let currentYear = new Date().getFullYear();
             let selectableYears = [];
