@@ -95,11 +95,11 @@
 /* ICON BUTTONS */
 
 .btn-icon-blue {
-    @apply p-1 bg-gray-100 text-blue-400 rounded-lg border border-blue-400
+    @apply p-1 bg-gray-100 text-blue-700 rounded-lg border border-blue-700 opacity-75
 }
 
 .btn-icon-blue:hover {
-    @apply text-white bg-blue-400 border-blue-400
+    @apply text-white bg-blue-700 border-blue-700
 }
 
 .btn-icon-blue:focus {
@@ -107,11 +107,11 @@
 }
 
 .btn-icon-red {
-    @apply p-1 bg-gray-100 text-red-400 rounded-lg border border-red-400 
+    @apply p-1 bg-gray-100 text-red-400 rounded-lg border border-red-400 opacity-75
 }
 
 .btn-icon-red:hover {
-    @apply text-white bg-red-800 border-red-800
+    @apply text-white bg-red-700 border-red-700
 }
 
 .btn-icon-red:focus {
