@@ -31,13 +31,9 @@
                 required: true,
             },
         },
-
         setup() {
-            let success = ref(new Boolean());
-            success.value = false;
-            let hasInput = ref(new Boolean());
-            hasInput.value = false;
-
+            let success = ref(false);
+            let hasInput = ref(false);
             let unsavedChangesModal = ref();
 
             return{
