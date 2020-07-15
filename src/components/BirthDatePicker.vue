@@ -1,0 +1,83 @@
+<template>
+    <div class="flex flex-row ">
+        <div class="w-full px-2 flex flex-col">
+            <label class="text-gray-700 text-sm">Day</label>
+            <select class="w-4/5 mr-1 my-2 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+                @change="updateDay($event.target.value)"
+                >
+                <option selected disabled> Select a Day </option>
+                <option v-for="day in 31" :key="day">{{ day }}</option>
+            </select>
+        </div>
+        <div class="w-full px-2 flex flex-col">
+            <label class="text-gray-700 text-sm">Month  </label>
+            <select class="w-4/5 mr-1 my-2 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+                @change="updateMonth($event.target.value)"
+                >
+                <option selected disabled> Select a Month </option>
+                <option v-for="month in months" :key="month">{{ month }}</option>
+            </select>
+        </div>
+        <div class="w-full pl-2 flex flex-col">
+            <label class="text-gray-700 text-sm">Year</label>
+            <select class="w-4/5 mr-1 my-2 py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+                @change="updateYear($event.target.value)"
+                >
+                <option selected disabled> Select a Year </option>
+                <option v-for="year in selectableYears" :key="year">{{ year }}</option>
+            </select>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+    import { Month } from "@/entities/Month"
+    export default {
+        name: "BirthDatePicker",
+        props: {
+            year: {
+                type: String,
+                required: true,
+            },
+            month: {
+                type: String,
+                required: true,
+            },
+            day: {
+                type: String,
+                required: true,
+            },
+        },
+
+
+        setup() {
+            let months = Month;
+            let currentYear = new Date().getFullYear();
+            let selectableYears = [];
+
+            for (let index = currentYear; index >= currentYear-80; index--) {
+                selectableYears.push(index);
+            }
+
+            function updateDay(day:string) {
+               
+            }
+
+            function updateMonth(month:string) {
+
+            }
+
+            function updateYear(year:string) {
+
+            }
+
+            return {
+                months,
+                selectableYears,
+                updateDay,
+                updateMonth,
+                updateYear
+            }
+        }
+    }
+</script>
