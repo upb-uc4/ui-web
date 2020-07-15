@@ -2,7 +2,7 @@
     <div class="flex flex-row ">
         <div class="mr-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Day</label>
-            <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+            <select class="form-select input-select" 
                 @change="updateDay($event.target.value)"
                 v-model="shownDay"
                 >
@@ -12,7 +12,7 @@
         </div>
         <div class="mx-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Month  </label>
-            <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+            <select class="form-select input-select" 
                 @change="updateMonth($event.target.value)"
                 v-model="shownMonth"
                 >
@@ -22,7 +22,7 @@
         </div>
         <div class="ml-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Year</label>
-            <select class="py-3 rounded-lg border-gray-400 text-gray-600 form-select" 
+            <select class="form-select input-select" 
                 @change="updateYear($event.target.value)"
                 v-model="shownYear"
                 >
