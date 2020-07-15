@@ -2,12 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
-import AdminHomeView from "../views/admin/Home.vue"
-import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue"
-import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue"
-import Redirect from "../views/common/Redirect.vue"
+import AdminHomeView from "../views/admin/Home.vue";
+import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
+import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
+import Redirect from "../views/common/Redirect.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
-import Profile from "../views/common/Profile.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
