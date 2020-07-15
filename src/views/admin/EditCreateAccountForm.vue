@@ -22,6 +22,7 @@
                                         <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                 </label>
                             </div>
+                            <p v-if="hasError('role')" class="text-red-600 ml-1 mt-1">{{ showError('role') }}</p>
                         </div>
                         
                     </div>
@@ -107,14 +108,14 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Birthdate
                             </label>
-                            <p v-if="hasError('birthdate')" class="text-red-600 ml-1 mt-1">{{ showError('birthdate') }}</p>
+                            <p v-if="hasError('birthDate')" class="text-red-600 ml-1 mt-1">{{ showError('birthDate') }}</p>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2 flex-col">
                                     <label class="text-gray-700 text-sm">Day</label>
                                     <input type="number" id="day" name="day"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="DD"
-										v-model="account.birthdate.day"
+										v-model="account.birthDate.day"
                                         >
                                 </div> 
 								<div class="w-full px-2 flex-col">
@@ -122,7 +123,7 @@
                                     <input type="number" id="month" name="month"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="MM"
-										v-model="account.birthdate.month"
+										v-model="account.birthDate.month"
                                         >
                                 </div>
 								<div class="w-full pl-2 flex-col">
@@ -130,7 +131,7 @@
                                     <input type="number" id="year" name="year"
                                         class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
                                         placeholder="YYYY"
-										v-model="account.birthdate.year"
+										v-model="account.birthDate.year"
                                         >
                                 </div>
                             </div>
@@ -350,6 +351,7 @@ import { Country } from '../../entities/Country';
 import User from '../../api/api_models/user_management/User';
 import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
+import GenericResponseHandler from "@/use/GenericResponseHandler"
 import MultiSelect from "@/components/MultiSelect.vue"
 
 export default {
@@ -372,7 +374,7 @@ export default {
             admin: new AdminEntity(false),
             student: new StudentEntity(false),
             lecturer: new LecturerEntity(false),
-			birthdate: {
+			birthDate: {
 				day: "",
 				month: "",
 				year: "",
@@ -384,7 +386,7 @@ export default {
             admin: new AdminEntity(false),
             student: new StudentEntity(false),
             lecturer: new LecturerEntity(false),
-			birthdate: {
+			birthDate: {
 				day: "",
 				month: "",
 				year: "",
@@ -416,33 +418,41 @@ export default {
             }
         })
 
-
-        function loadAccount() {
+        async function loadAccount() {
             const userManagement: UserManagement = new UserManagement();
-            userManagement.getSpecificUser(Router.currentRoute.value.params.username as string).then(( response: Student | Lecturer | Admin) => {
+
+            const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string)
+            const genericResponseHandler = new GenericResponseHandler();
+            const result = genericResponseHandler.handleReponse(response);
+            
+            //TODO move this to a non-generic response handler
+            if (response.statusCode !== 200) {
+                alert("User not found")
+            } else {
                 //TODO Remove next line when lagom finally manage to send a birthdate
-                response.birthdate = "1996-12-11";
+                result.birthDate = "1996-12-11";
 
-                account.user  = response;
+                account.user  = result;
                 initialAccount.user = JSON.parse(JSON.stringify(account.user)) ;
-                let dates = response.birthdate.split("-");
-                account.birthdate.day = initialAccount.birthdate.day = dates[2];
-                account.birthdate.month = initialAccount.birthdate.month = dates[1];
-                account.birthdate.year = initialAccount.birthdate.year = dates[0];
+                let dates = result.birthDate.split("-");
+                account.birthDate.day = initialAccount.birthDate.day = dates[2];
+                account.birthDate.month = initialAccount.birthDate.month = dates[1];
+                account.birthDate.year = initialAccount.birthDate.year = dates[0];
 
-                if(response.role == Role.LECTURER) {
-                    account.lecturer = (response as Lecturer);
+                if(result.role == Role.LECTURER) {
+                    account.lecturer = (result as Lecturer);
                     initialAccount.lecturer = JSON.parse(JSON.stringify(account.lecturer));
                 }
-                else if(response.role == Role.STUDENT ) {
-                    account.student = (response as Student);
+                else if(result.role == Role.STUDENT ) {
+                    account.student = (result as Student);
+                    account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
                 }
-                else if(response.role == Role.ADMIN ) {
-                    account.admin = (response as Admin)
+                else if(result.role == Role.ADMIN ) {
+                    account.admin = (result as Admin)
                     initialAccount.admin = JSON.parse(JSON.stringify(account.admin))
                 }
-            })
+            }
         }
 
         function updateFieldsOfStudy(value: any) {
@@ -462,7 +472,7 @@ export default {
                 account.user.username != initialAccount.user.username || account.user.firstName != initialAccount.user.firstName ||
                 account.user.lastName != initialAccount.user.lastName || account.user.email != initialAccount.user.email ||
                 //default user birthdate from the form
-                account.birthdate.day != initialAccount.birthdate.day ||account.birthdate.month != initialAccount.birthdate.month || account.birthdate.year != initialAccount.birthdate.year ||
+                account.birthDate.day != initialAccount.birthDate.day ||account.birthDate.month != initialAccount.birthDate.month || account.birthDate.year != initialAccount.birthDate.year ||
                 //default user address
                 account.user.address.country != initialAccount.user.address.country || account.user.address.street != initialAccount.user.address.street ||
                 account.user.address.houseNumber != initialAccount.user.address.houseNumber || account.user.address.zipCode != initialAccount.user.address.zipCode||
@@ -545,8 +555,8 @@ export default {
 
         function isValid() {
              if(account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
-                account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
-                account.birthdate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
+                account.user.firstName == "" || account.user.lastName == "" || account.birthDate.day == "" || account.birthDate.month == "" || 
+                account.birthDate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
                 account.user.address.houseNumber == "" || account.user.address.zipCode == "" || account.user.address.city == "") {
                     return false;
 			}
@@ -569,7 +579,7 @@ export default {
                 const userManagement: UserManagement = new UserManagement();
                 account.authUser.username = account.user.username;
                 account.authUser.role = account.user.role;
-                account.user.birthdate = account.birthdate.year + "-" + account.birthdate.month + "-" + account.birthdate.day;
+                account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
 
                 var newUser: Student | Lecturer | Admin = assembleAccount();
 
@@ -604,14 +614,17 @@ export default {
             });
         }
 
-        function deleteAccount() {
+        async function deleteAccount() {
             const userManagement: UserManagement = new UserManagement();
-            userManagement.deleteUser(account.user.username).then( (value) => {
-                if(value) {
-                    success.value = true;
-                    back();
-                }
-            })
+
+            const genericResponseHandler = new GenericResponseHandler();
+            const response = await userManagement.deleteUser(account.user.username);
+            const result = genericResponseHandler.handleReponse(response);
+
+            if (result) {
+                success.value = true;
+                back()
+            }
         }
 
         function back() {

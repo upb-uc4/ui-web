@@ -13,7 +13,7 @@ export default class LecturerEntity implements Lecturer {
     lastName = "";
     picture = "";
     email = "";
-    birthdate = "";
+    birthDate = "";
 
     constructor(example: boolean) {
         if (example) {
@@ -29,7 +29,7 @@ export default class LecturerEntity implements Lecturer {
             this.lastName = "Senate"
             this.picture = "https://cdn3.iconfinder.com/data/icons/star-wars-color/216/emperor-palpatine-512.png"
             this.email = "gooooood@anakin.goood"
-            this.birthdate = "4200-05-03"
+            this.birthDate = "4200-05-03"
 
             this.freeText = "Did you ever hear the tragedy of Darth Plaguies the wise?"
             this.researchArea = "Many abilities some consider to be unnatural"

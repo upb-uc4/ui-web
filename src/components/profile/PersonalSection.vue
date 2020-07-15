@@ -42,7 +42,7 @@
     import {ref, reactive} from "vue";
 
     export default {
-        props: ["firstName", "lastName", "birthdate"],
+        props: ["firstName", "lastName", "birthDate"],
         emits: ["save", "update:firstName", "update:lastName"],
         setup(props: any, {emit}: any) {
             const modification = reactive({
