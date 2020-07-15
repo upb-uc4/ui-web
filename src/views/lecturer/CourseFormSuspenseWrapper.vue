@@ -8,81 +8,74 @@
             <loading-component/>
         </template>
     </suspense>
-</template>>
+</template>
 
 <script lang="ts">
-import LecturerCreateCourseForm from "./EditCreateCourseForm.vue";
-import LoadingComponent from "../../components/loading/Spinner.vue"
-import { store } from '@/store/store';
-import {Role} from '@/entities/Role'
-import router from '../../router';
-import { ref } from "vue"
-import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
+    import LecturerCreateCourseForm from "./EditCreateCourseForm.vue";
+    import LoadingComponent from "../../components/loading/Spinner.vue"
+    import { store } from '@/store/store';
+    import {Role} from '@/entities/Role'
+    import { ref } from "vue"
+    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
-
-
-export default {
-    name: "CourseFormSuspenseWrapper",
-    components: {
-        LecturerCreateCourseForm,
-        LoadingComponent,
-        UnsavedChangesModal,
-    },
-    props: {
-        editMode: {
-            type: Boolean,
-            required: true,
+    export default {
+        name: "CourseFormSuspenseWrapper",
+        components: {
+            LecturerCreateCourseForm,
+            LoadingComponent,
+            UnsavedChangesModal,
         },
-    },
+        props: {
+            editMode: {
+                type: Boolean,
+                required: true,
+            },
+        },
+        setup() {
+            let success = ref(false);
+            let hasInput = ref(false);
+            let unsavedChangesModal = ref();
 
-    setup() {
-        let success = ref(new Boolean());
-        success.value = false;
-        let hasInput = ref(new Boolean());
-        hasInput.value = false;
+            return {
+                hasInput,
+                success,
+                unsavedChangesModal
+            }
+        },
 
-        let unsavedChangesModal = ref();
+        beforeRouteEnter(_to: any, _from: any, next: any) {
+            if(store.state.myRole == Role.LECTURER) {
+                return next();
+            }
+            return next("/redirect");
+        },
 
-        return{
-            hasInput,
-            success,
-            unsavedChangesModal
-        }
-    },
-
-    beforeRouteEnter(_to: any, _from: any, next: any) {
-        if(store.state.myRole == Role.LECTURER) {
-            return next();
-        }
-        return next("/redirect");
-    },
-    
-    beforeRouteLeave (to: any, from: any, next: any) {
-        if (this.success) {
-            return next();
-        }
-        if (this.hasInput) {
-            const modal = this.unsavedChangesModal;
-            let action = modal.action;
-            modal.show()
-                .then((response: typeof action) => {
-                    switch(response) {
-                        case action.CANCEL: {
-                            next(false);
-                            break;
+        beforeRouteLeave (to: any, from: any, next: any) {
+            if (this.success) {
+                return next();
+            }
+            if (this.hasInput) {
+                const modal = this.unsavedChangesModal;
+                let action = modal.action;
+                modal.show()
+                    .then((response: typeof action) => {
+                        switch(response) {
+                            case action.CANCEL: {
+                                next(false);
+                                break;
+                            }
+                            case action.CONFIRM: {
+                                next(true);
+                                break;
+                            }
+                            default: {
+                                next(true);
+                            }
                         }
-                        case action.CONFIRM: {
-                            next(true);
-                            break;
-                        }
-                        default: {
-                            next(true);
-                        }
-                    }
-                })
-        } else {
-            next(true);
-       }
+                    })
+            } else {
+                next(true);
+           }
+        }
     }
-}
 </script>>
