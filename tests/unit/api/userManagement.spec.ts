@@ -38,7 +38,7 @@ var user: User = {
     lastName: "Skywalker",
     picture: "string",
     email: "luke@skywalker.com",
-    birthdate: "1950-12-24"
+    birthDate: "1950-12-24"
 }
 
 var student: Student = {
