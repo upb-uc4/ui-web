@@ -64,6 +64,7 @@
     @apply bg-red-800 border-red-800 text-white;
 }
 
+
 /* TERTIARY BUTTONS */
 
 .btn-tertiary {
@@ -90,12 +91,15 @@
     @apply outline-none;
 }
 
+
+/* ICON BUTTONS */
+
 .btn-icon-blue {
-    @apply p-1 bg-gray-100 text-gray-700 rounded-lg border border-blue-400
+    @apply p-1 bg-gray-100 text-blue-400 rounded-lg border border-blue-400
 }
 
 .btn-icon-blue:hover {
-    @apply text-white bg-blue-800 border-blue-800
+    @apply text-white bg-blue-400 border-blue-400
 }
 
 .btn-icon-blue:focus {
