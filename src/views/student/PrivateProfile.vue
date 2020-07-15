@@ -15,6 +15,7 @@
             <personal-section
                     v-model:firstName="student.firstName"
                     v-model:lastName="student.lastName"
+                    :birth-date="student.birthDate"
                     v-on:save="save"
             />
 
@@ -68,50 +69,45 @@
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
-    import CourseOfStudySection from "@/components/profile/CourseOfStudySection.vue";
+    import CourseOfStudySection from "@/components/profile/student/CourseOfStudySection.vue";
     import { ref } from "vue";
-    import {store} from "@/store/store";
     import Router from "@/router"
     import UserManagement from "@/api/UserManagement";
+    import Student from "@/api/api_models/user_management/Student";
 
     export default {
+        props: {
+            user: {
+                required: true,
+                type: Object as () => Student,
+            }
+        },
         components: {
             PersonalSection,
             ContactSection,
             AddressSection,
             CourseOfStudySection
         },
-        async setup() {
+        async setup(props: any) {
+            const student = ref(props.user);
             const auth: UserManagement = new UserManagement();
-            const student = ref(await auth.getOwnUser());
 
             function back() {
                 Router.back();
             }
 
-            function save() {
-                auth.updateUser(student.value).then( (success) => {
-                    if (success) {
-                        //todo show toast
-                        console.log("user updated successful.");
-                    } else {
-                        //todo error handling
-                    }
-                })
+            async function save() {
+                const response = await auth.updateUser(student.value);
+                //todo show toast
+                //todo error handling
             }
 
             return {
-                student, 
+                student,
                 save,
                 back,
             };
         },
-
-        beforeRouteEnter(_from: any, _to: any, next: any) {
-            //todo check if user is student
-            next();
-        },
-
         //todo add Leave Modal
     }
 </script>
