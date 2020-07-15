@@ -143,7 +143,6 @@
             </section>
 
             <delete-course-modal ref="deleteModal"/>
-            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
@@ -159,7 +158,6 @@
     import Course from "@/api/api_models/course_management/Course";
     import { ref,onMounted, computed, reactive } from 'vue';
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import useErrorHandler from '@/use/ErrorHandler';
     import ValidationResponseHandler from '@/use/ValidationResponseHandler';
     import GenericResponseHandler from "@/use/GenericResponseHandler"
@@ -175,19 +173,16 @@
         },
         components: {
             DeleteCourseModal,
-            UnsavedChangesModal,
         },
 
-        setup(props: any) {
+        async setup(props: any, { emit }) {
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
             let languages = Object.values(Language).filter(e => e != Language.NONE);
             let courseTypes = Object.values(CourseType).filter(e => e != CourseType.NONE);
-            let success = ref(new Boolean());
-            success.value = false;
+            let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
-            let unsavedChangesModal = ref();
             let deleteModal = ref();
             course.value.lecturerId = store.state.myId;
             course.value.startDate = "2020-06-01";
@@ -196,13 +191,8 @@
             let { errorList, hasError, showError} = useErrorHandler();
             let errors = reactive(errorList);
 
-            onMounted( () => {
-                if(props.editMode) {
-                    loadCourse();
-                }
-            })
-
-            async function loadCourse () {
+        
+            if(props.editMode) {
                 const courseManagement: CourseManagement = new CourseManagement();            
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string)
                 const genericResponseHandler = new GenericResponseHandler();
@@ -219,8 +209,10 @@
         
 
             let hasInput = computed (() => {
-                 // TODO not tested yet (too lazy to start intellij)
-                return !course.value.editableInfoEquals(initialCourseState);
+                // TODO not tested yet (too lazy to start intellij)
+                let returnValue:boolean = !course.value.editableInfoEquals(initialCourseState);
+                emit('update:hasInput', returnValue);
+                return returnValue;
             })
 
             let isValid = computed (() => {
@@ -240,6 +232,7 @@
                     const response = await courseManagement.createCourse(course.value);
                     const handler =  new ValidationResponseHandler();
                     success.value = handler.handleReponse(response);
+                    emit('update:success', success.value)
 
                     if(success.value) {
                         back();
@@ -251,7 +244,8 @@
                 }
                 else {
                     success.value = false;
-                    console.log("Error: Input Validation Failed!")
+                    emit('update:success', success.value)
+                    console.log("Error: Input Validation Failed!");
                 }
             }
 
@@ -262,6 +256,7 @@
                     const response = await courseManagement.updateCourse(course.value);
                     const handler =  new ValidationResponseHandler();
                     success.value = handler.handleReponse(response);
+                    emit('update:success', success.value)
 
                     if(success.value) {
                         back();
@@ -273,6 +268,7 @@
                 }
                 else {
                     success.value = false;
+                    emit('update:success', success.value)
                     console.log("Error: Input Validation Failed!")
                 }
             }
@@ -321,52 +317,14 @@
                 hasInput,
                 isValid,
                 back,
-                loadCourse,
                 createCourse,
                 updateCourse,
                 deleteCourse,
                 confirmDeleteCourse,
-                unsavedChangesModal,
                 deleteModal,
                 hasError,
                 showError
             }
         },
-
-        beforeRouteEnter(_from: any, _to: any, next: any) {
-            const myRole = store.state.myRole;
-            if (myRole != Role.LECTURER) {
-                return next("/redirect");
-            }
-            return next();
-        },
-
-        async beforeRouteLeave(_from: any, _to: any, next: any) {
-            if (this.success) {
-                return next();
-            }
-            if (this.hasInput) {
-                const modal = this.unsavedChangesModal;
-                let action = modal.action;
-                modal.show()
-                    .then((response: typeof action) => {
-                    switch(response) {
-                        case action.CANCEL: {
-                            next(false);
-                            break;
-                        }
-                        case action.CONFIRM: {
-                            next(true);
-                            break;
-                        }
-                        default: {
-                            next(true);
-                        }
-                    }
-                })
-            } else {
-                next(true);
-            }
-        }
     };
 </script>

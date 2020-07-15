@@ -6,7 +6,7 @@
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">Account Creation</h1>
+        <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ title }}</h1>
 
         <div>
             <section class="border-t-2 py-8 border-gray-400">
@@ -323,9 +323,7 @@
                     </button>
                 </div>
             </section>
-
             <delete-account-modal ref="deleteModal"/>
-            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
@@ -333,22 +331,19 @@
 <script lang="ts">
 import Router from "@/router/";
 import {Role} from '@/entities/Role'
-import { store } from '@/store/store';
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
 import UserManagement from "@/api/UserManagement"
 import StudentEntity from "@/entities/StudentEntity"
 import UserEntity from "@/entities/UserEntity"
 import LecturerEntity from "@/entities/LecturerEntity"
 import AdminEntity from "@/entities/AdminEntity"
-import { Account } from '../../entities/Account';
+import { Account } from '@/entities/Account';
 import Admin from '../../api/api_models/user_management/Admin';
 import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
-import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
-import { Country } from '../../entities/Country';
-import User from '../../api/api_models/user_management/User';
+import { Country } from '@/entities/Country';
 import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
 import GenericResponseHandler from "@/use/GenericResponseHandler"
@@ -358,7 +353,6 @@ export default {
     name: "AdminCreateAccountForm",
     components: {
         DeleteAccountModal,
-        UnsavedChangesModal,
         MultiSelect
     },
     props: {
@@ -367,7 +361,7 @@ export default {
             required: true
         }
     },
-    setup(props) {
+    async setup(props: any, {emit}) {
         let account = reactive( {
             authUser: new Account(),
             user: new UserEntity(),
@@ -393,12 +387,12 @@ export default {
 			},
         }
 
-        let success = ref(new Boolean());
-        success.value = false;
+        let title= props.editMode ? "Account Editing" : "Account Creation";
+
+        let success = ref(false);
 		let roles = Object.values(Role).filter(e => e != Role.NONE);
         let fieldsOfStudy = Object.values(FieldOfStudy).filter(e => e != FieldOfStudy.NONE);
         let countries = Object.values(Country).filter(e => e != Country.NONE);
-        let unsavedChangesModal = ref();
         let deleteModal = ref();
         
         let { errorList, hasError, showError} = useErrorHandler();
@@ -412,13 +406,7 @@ export default {
 			return account.user.role === Role.STUDENT;
         })
         
-        onMounted( () => {
-            if(props.editMode) {
-                loadAccount();
-            }
-        })
-
-        async function loadAccount() {
+        if(props.editMode) {
             const userManagement: UserManagement = new UserManagement();
 
             const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string)
@@ -445,7 +433,6 @@ export default {
                 }
                 else if(result.role == Role.STUDENT ) {
                     account.student = (result as Student);
-                    account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
                 }
                 else if(result.role == Role.ADMIN ) {
@@ -483,22 +470,25 @@ export default {
                 //student properties
                 account.student.immatriculationStatus != initialAccount.student.immatriculationStatus || account.student.matriculationId != initialAccount.student.matriculationId ||
                 account.student.semesterCount != initialAccount.student.semesterCount) {
+                    emit('update:hasInput', true);
                     return true;
                 }
                 
                 //check whether a field of study has been added or removed
                 for( let field of account.student.fieldsOfStudy) {
                     if(!initialAccount.student.fieldsOfStudy.includes(field)) {
+                        emit('update:hasInput', true);
                         return true;
                     }
                 }
 
                 for( let field of initialAccount.student.fieldsOfStudy) {
                     if(!account.student.fieldsOfStudy.includes(field)) {
+                        emit('update:hasInput', true);
                         return true;
                     }
                 }
-                
+            emit('update:hasInput', false);
             return false;
         })
         
@@ -517,10 +507,8 @@ export default {
                                 break;
                             }
                         }
-                    });
-            }
-
-        
+                });
+        }
 
         function assembleAccount() :  Student | Lecturer | Admin {
              var newUser: Student | Lecturer | Admin = {} as Student;
@@ -588,6 +576,7 @@ export default {
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler =  new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
+                emit('update:success', success.value)
 
                 if(success.value) {
                     back();
@@ -600,6 +589,7 @@ export default {
             else {
 				console.log("Error: Input Validation Failed!")
                 success.value = false;
+                emit('update:success', success.value)
             }
         }
 
@@ -609,6 +599,7 @@ export default {
             userManagement.updateUser(adaptedUser).then( (response) => {
                 if(response) {
                     success.value = true;
+                    emit('update:success', success.value)
                     back();
                 }
             });
@@ -623,6 +614,7 @@ export default {
 
             if (result) {
                 success.value = true;
+                emit('update:success', success.value)
                 back()
             }
         }
@@ -632,6 +624,7 @@ export default {
         }
 
         return {
+            title,
             account,
             success,
             roles,
@@ -647,47 +640,11 @@ export default {
             updateAccount,
             deleteAccount,
             confirmDeleteAccount,
-            unsavedChangesModal,
             deleteModal,
             hasError,
             showError,
             updateFieldsOfStudy
         }
     },
-
-	beforeRouteEnter(_from: any, _to: any, next: any) {
-		const myRole = store.state.myRole;
-		if (myRole != Role.ADMIN) {
-			return next("/redirect");
-		}
-		return next();
-	},
-    beforeRouteLeave (to: any, from: any, next: any) {
-        if (this.success) {
-            return next();
-        }
-        if (this.hasInput) {
-            const modal = this.unsavedChangesModal;
-            let action = modal.action;
-            modal.show()
-                .then((response: typeof action) => {
-                    switch(response) {
-                        case action.CANCEL: {
-                            next(false);
-                            break;
-                        }
-                        case action.CONFIRM: {
-                            next(true);
-                            break;
-                        }
-                        default: {
-                            next(true);
-                        }
-                    }
-                })
-        } else {
-            next(true);
-       }
-    }
 };
 </script>

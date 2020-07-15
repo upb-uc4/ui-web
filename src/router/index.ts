@@ -3,11 +3,10 @@ import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue";
-import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
-import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
-import Redirect from "../views/common/Redirect.vue"
+import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
+import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
+import Redirect from "../views/common/Redirect.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
-import Profile from "../views/common/Profile.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -36,13 +35,17 @@ const router = createRouter({
 		{
 			path: '/createCourse',
 			name: 'createCourse',
-			props: {editMode:false},
-            component: LecturerEditCreateCourseView
+			props: {
+				editMode:false,
+			},
+            component: CourseFormSuspenseWrapper
 		},
 		{
 			path: '/editCourse/:id',
-			props: {editMode:true},
-            component: LecturerEditCreateCourseView
+			props: {
+				editMode:true,
+			},
+            component: CourseFormSuspenseWrapper
         },
 		{
 			path: '/user/:username',
@@ -63,13 +66,17 @@ const router = createRouter({
 		},
 		{
 			path: "/createAccount",
-			props: {editMode:false},
-			component: AdminEditCreateAccountView
+			props: {
+				editMode:false,
+			},
+			component: AccountFormSuspenseWrapper
 		},
 		{
 			path: "/editAccount/:username",
-			props: {editMode:true},
-			component: AdminEditCreateAccountView
+			props: {
+				editMode:true,
+			},
+			component: AccountFormSuspenseWrapper
 		},
 		{
 			path: "/redirect",
