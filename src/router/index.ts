@@ -6,9 +6,9 @@ import AdminHomeView from "../views/admin/Home.vue"
 import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue"
 import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue"
 import Redirect from "../views/common/Redirect.vue"
+import ProfileWrapper from "../components/profile/Wrapper.vue";
 import Profile from "../views/common/Profile.vue";
 import PageNotFound from "../views/errors/404.vue";
-
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 
@@ -49,9 +49,16 @@ const router = createRouter({
             component: CourseFormSuspenseWrapper
         },
 		{
-			path: '/profile/:id',
-			name: 'profile',
-			component: Profile
+			path: '/user/:username',
+			name: 'profile.public',
+			props: {isPrivate: false},
+			component: ProfileWrapper
+		},
+		{
+			path: '/profile',
+			name: 'profile.private',
+			props: {isPrivate: true},
+			component: ProfileWrapper
 		},
 		{
 			path: "/",
@@ -82,7 +89,7 @@ const router = createRouter({
 		}
 	],
 
-	scrollBehavior(to,from,savedPosition) {
+	scrollBehavior(to, from, savedPosition) {
 		if(savedPosition) {
 			return savedPosition;
 		}

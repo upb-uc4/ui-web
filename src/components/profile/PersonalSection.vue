@@ -29,7 +29,7 @@
                 </div>
                 <div class="lg:w-1/2 mb-6 flex flex-col lg:pr-8">
                     <label class="text-gray-700 text-md font-medium mb-3">Date of Birth</label>
-                    <input type="text" readonly placeholder="22.04.1984"
+                    <input type="text" readonly :value="birthDate"
                            class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input placeholder-gray-600 bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
                 </div>
             </div>
