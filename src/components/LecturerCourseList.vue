@@ -47,7 +47,7 @@
             let refreshKey = ref(false);
             
             function refresh() {
-                refreshKey.value = !refreshKey.value  ;
+                refreshKey.value = !refreshKey.value;
             }
             
             return {
