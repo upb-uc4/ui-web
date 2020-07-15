@@ -338,12 +338,12 @@ import StudentEntity from "@/entities/StudentEntity"
 import UserEntity from "@/entities/UserEntity"
 import LecturerEntity from "@/entities/LecturerEntity"
 import AdminEntity from "@/entities/AdminEntity"
-import { Account } from '../../entities/Account';
+import { Account } from '@/entities/Account';
 import Admin from '../../api/api_models/user_management/Admin';
 import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
-import { Country } from '../../entities/Country';
+import { Country } from '@/entities/Country';
 import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
 import GenericResponseHandler from "@/use/GenericResponseHandler"
@@ -507,10 +507,8 @@ export default {
                                 break;
                             }
                         }
-                    });
-            }
-
-        
+                });
+        }
 
         function assembleAccount() :  Student | Lecturer | Admin {
              var newUser: Student | Lecturer | Admin = {} as Student;
