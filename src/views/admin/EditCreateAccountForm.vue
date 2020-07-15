@@ -363,7 +363,7 @@ export default {
             required: true
         }
     },
-    async setup(props, {emit}) {
+    async setup(props: any, {emit}) {
         let account = reactive( {
             authUser: new Account(),
             user: new UserEntity(),
