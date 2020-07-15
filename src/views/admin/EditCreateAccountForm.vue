@@ -109,32 +109,7 @@
                                 Birthdate
                             </label>
                             <p v-if="hasError('birthDate')" class="text-red-600 ml-1 mt-1">{{ showError('birthDate') }}</p>
-                            <div class="flex flex-row ">
-                                <div class="w-full pr-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Day</label>
-                                    <input type="number" id="day" name="day"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="DD"
-										v-model="account.birthDate.day"
-                                        >
-                                </div> 
-								<div class="w-full px-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Month</label>
-                                    <input type="number" id="month" name="month"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="MM"
-										v-model="account.birthDate.month"
-                                        >
-                                </div>
-								<div class="w-full pl-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Year</label>
-                                    <input type="number" id="year" name="year"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
-                                        placeholder="YYYY"
-										v-model="account.birthDate.year"
-                                        >
-                                </div>
-                            </div>
+                            <birth-date-picker v-model:year="account.birthDate.year" v-model:month="account.birthDate.month" v-model:day="account.birthDate.day"/>
                         </div>
                         <div class="mb-4 flex flex-col">
                                 <label class="text-gray-700 text-md font-medium mb-3">
@@ -348,12 +323,14 @@ import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
 import GenericResponseHandler from "@/use/GenericResponseHandler"
 import MultiSelect from "@/components/MultiSelect.vue"
+import BirthDatePicker from "@/components/BirthDatePicker.vue"
 
 export default {
     name: "AdminCreateAccountForm",
     components: {
         DeleteAccountModal,
-        MultiSelect
+        MultiSelect,
+        BirthDatePicker
     },
     props: {
         editMode: {
