@@ -6,7 +6,7 @@
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">Account Creation</h1>
+        <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ title }}</h1>
 
         <div>
             <section class="border-t-2 py-8 border-gray-400">
@@ -108,14 +108,14 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Birthdate
                             </label>
-                            <p v-if="hasError('birthdate')" class="text-red-600 ml-1 mt-1">{{ showError('birthdate') }}</p>
+                            <p v-if="hasError('birthDate')" class="text-red-600 ml-1 mt-1">{{ showError('birthDate') }}</p>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2 flex-col">
                                     <label class="text-gray-700 text-sm">Day</label>
                                     <input type="number" id="day" name="day"
                                         class="w-full form-input-field"
                                         placeholder="DD"
-										v-model="account.birthdate.day"
+										v-model="account.birthDate.day"
                                         >
                                 </div> 
 								<div class="w-full px-2 flex-col">
@@ -123,7 +123,7 @@
                                     <input type="number" id="month" name="month"
                                         class="w-full form-input-field"
                                         placeholder="MM"
-										v-model="account.birthdate.month"
+										v-model="account.birthDate.month"
                                         >
                                 </div>
 								<div class="w-full pl-2 flex-col">
@@ -131,7 +131,7 @@
                                     <input type="number" id="year" name="year"
                                         class="w-full form-input-field"
                                         placeholder="YYYY"
-										v-model="account.birthdate.year"
+										v-model="account.birthDate.year"
                                         >
                                 </div>
                             </div>
@@ -323,9 +323,7 @@
                     </button>
                 </div>
             </section>
-
             <delete-account-modal ref="deleteModal"/>
-            <unsaved-changes-modal ref="unsavedChangesModal"/>
         </div>
     </div>
 </template>
@@ -333,22 +331,19 @@
 <script lang="ts">
 import Router from "@/router/";
 import {Role} from '@/entities/Role'
-import { store } from '@/store/store';
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import {FieldOfStudy} from '@/api/api_models/user_management/FieldOfStudy'
 import UserManagement from "@/api/UserManagement"
 import StudentEntity from "@/entities/StudentEntity"
 import UserEntity from "@/entities/UserEntity"
 import LecturerEntity from "@/entities/LecturerEntity"
 import AdminEntity from "@/entities/AdminEntity"
-import { Account } from '../../entities/Account';
+import { Account } from '@/entities/Account';
 import Admin from '../../api/api_models/user_management/Admin';
 import Student from '../../api/api_models/user_management/Student';
 import Lecturer from '../../api/api_models/user_management/Lecturer';
 import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
-import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
-import { Country } from '../../entities/Country';
-import User from '../../api/api_models/user_management/User';
+import { Country } from '@/entities/Country';
 import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
 import GenericResponseHandler from "@/use/GenericResponseHandler"
@@ -358,7 +353,6 @@ export default {
     name: "AdminCreateAccountForm",
     components: {
         DeleteAccountModal,
-        UnsavedChangesModal,
         MultiSelect
     },
     props: {
@@ -367,14 +361,14 @@ export default {
             required: true
         }
     },
-    setup(props) {
+    async setup(props: any, {emit}) {
         let account = reactive( {
             authUser: new Account(),
             user: new UserEntity(),
             admin: new AdminEntity(false),
             student: new StudentEntity(false),
             lecturer: new LecturerEntity(false),
-			birthdate: {
+			birthDate: {
 				day: "",
 				month: "",
 				year: "",
@@ -386,19 +380,19 @@ export default {
             admin: new AdminEntity(false),
             student: new StudentEntity(false),
             lecturer: new LecturerEntity(false),
-			birthdate: {
+			birthDate: {
 				day: "",
 				month: "",
 				year: "",
 			},
         }
 
-        let success = ref(new Boolean());
-        success.value = false;
+        let title= props.editMode ? "Account Editing" : "Account Creation";
+
+        let success = ref(false);
 		let roles = Object.values(Role).filter(e => e != Role.NONE);
         let fieldsOfStudy = Object.values(FieldOfStudy).filter(e => e != FieldOfStudy.NONE);
         let countries = Object.values(Country).filter(e => e != Country.NONE);
-        let unsavedChangesModal = ref();
         let deleteModal = ref();
         
         let { errorList, hasError, showError} = useErrorHandler();
@@ -412,13 +406,7 @@ export default {
 			return account.user.role === Role.STUDENT;
         })
         
-        onMounted( () => {
-            if(props.editMode) {
-                loadAccount();
-            }
-        })
-
-        async function loadAccount() {
+        if(props.editMode) {
             const userManagement: UserManagement = new UserManagement();
 
             const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string)
@@ -430,14 +418,14 @@ export default {
                 alert("User not found")
             } else {
                 //TODO Remove next line when lagom finally manage to send a birthdate
-                result.birthdate = "1996-12-11";
+                result.birthDate = "1996-12-11";
 
                 account.user  = result;
                 initialAccount.user = JSON.parse(JSON.stringify(account.user)) ;
-                let dates = result.birthdate.split("-");
-                account.birthdate.day = initialAccount.birthdate.day = dates[2];
-                account.birthdate.month = initialAccount.birthdate.month = dates[1];
-                account.birthdate.year = initialAccount.birthdate.year = dates[0];
+                let dates = result.birthDate.split("-");
+                account.birthDate.day = initialAccount.birthDate.day = dates[2];
+                account.birthDate.month = initialAccount.birthDate.month = dates[1];
+                account.birthDate.year = initialAccount.birthDate.year = dates[0];
 
                 if(result.role == Role.LECTURER) {
                     account.lecturer = (result as Lecturer);
@@ -445,7 +433,6 @@ export default {
                 }
                 else if(result.role == Role.STUDENT ) {
                     account.student = (result as Student);
-                    account.student.fieldsOfStudy[account.student.fieldsOfStudy.length] = FieldOfStudy.NONE;
                     initialAccount.student = JSON.parse(JSON.stringify(account.student));
                 }
                 else if(result.role == Role.ADMIN ) {
@@ -472,7 +459,7 @@ export default {
                 account.user.username != initialAccount.user.username || account.user.firstName != initialAccount.user.firstName ||
                 account.user.lastName != initialAccount.user.lastName || account.user.email != initialAccount.user.email ||
                 //default user birthdate from the form
-                account.birthdate.day != initialAccount.birthdate.day ||account.birthdate.month != initialAccount.birthdate.month || account.birthdate.year != initialAccount.birthdate.year ||
+                account.birthDate.day != initialAccount.birthDate.day ||account.birthDate.month != initialAccount.birthDate.month || account.birthDate.year != initialAccount.birthDate.year ||
                 //default user address
                 account.user.address.country != initialAccount.user.address.country || account.user.address.street != initialAccount.user.address.street ||
                 account.user.address.houseNumber != initialAccount.user.address.houseNumber || account.user.address.zipCode != initialAccount.user.address.zipCode||
@@ -483,22 +470,25 @@ export default {
                 //student properties
                 account.student.immatriculationStatus != initialAccount.student.immatriculationStatus || account.student.matriculationId != initialAccount.student.matriculationId ||
                 account.student.semesterCount != initialAccount.student.semesterCount) {
+                    emit('update:hasInput', true);
                     return true;
                 }
                 
                 //check whether a field of study has been added or removed
                 for( let field of account.student.fieldsOfStudy) {
                     if(!initialAccount.student.fieldsOfStudy.includes(field)) {
+                        emit('update:hasInput', true);
                         return true;
                     }
                 }
 
                 for( let field of initialAccount.student.fieldsOfStudy) {
                     if(!account.student.fieldsOfStudy.includes(field)) {
+                        emit('update:hasInput', true);
                         return true;
                     }
                 }
-                
+            emit('update:hasInput', false);
             return false;
         })
         
@@ -517,10 +507,8 @@ export default {
                                 break;
                             }
                         }
-                    });
-            }
-
-        
+                });
+        }
 
         function assembleAccount() :  Student | Lecturer | Admin {
              var newUser: Student | Lecturer | Admin = {} as Student;
@@ -555,8 +543,8 @@ export default {
 
         function isValid() {
              if(account.user.role == Role.NONE || account.user.username == "" || account.user.email == "" || account.authUser.password == "" ||
-                account.user.firstName == "" || account.user.lastName == "" || account.birthdate.day == "" || account.birthdate.month == "" || 
-                account.birthdate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
+                account.user.firstName == "" || account.user.lastName == "" || account.birthDate.day == "" || account.birthDate.month == "" || 
+                account.birthDate.year == "" || account.user.address.country == "Country" || account.user.address.street == "" ||
                 account.user.address.houseNumber == "" || account.user.address.zipCode == "" || account.user.address.city == "") {
                     return false;
 			}
@@ -579,7 +567,7 @@ export default {
                 const userManagement: UserManagement = new UserManagement();
                 account.authUser.username = account.user.username;
                 account.authUser.role = account.user.role;
-                account.user.birthdate = account.birthdate.year + "-" + account.birthdate.month + "-" + account.birthdate.day;
+                account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
 
                 var newUser: Student | Lecturer | Admin = assembleAccount();
 
@@ -588,6 +576,7 @@ export default {
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler =  new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
+                emit('update:success', success.value)
 
                 if(success.value) {
                     back();
@@ -600,6 +589,7 @@ export default {
             else {
 				console.log("Error: Input Validation Failed!")
                 success.value = false;
+                emit('update:success', success.value)
             }
         }
 
@@ -609,6 +599,7 @@ export default {
             userManagement.updateUser(adaptedUser).then( (response) => {
                 if(response) {
                     success.value = true;
+                    emit('update:success', success.value)
                     back();
                 }
             });
@@ -623,6 +614,7 @@ export default {
 
             if (result) {
                 success.value = true;
+                emit('update:success', success.value)
                 back()
             }
         }
@@ -632,6 +624,7 @@ export default {
         }
 
         return {
+            title,
             account,
             success,
             roles,
@@ -647,47 +640,11 @@ export default {
             updateAccount,
             deleteAccount,
             confirmDeleteAccount,
-            unsavedChangesModal,
             deleteModal,
             hasError,
             showError,
             updateFieldsOfStudy
         }
     },
-
-	beforeRouteEnter(_from: any, _to: any, next: any) {
-		const myRole = store.state.myRole;
-		if (myRole != Role.ADMIN) {
-			return next("/redirect");
-		}
-		return next();
-	},
-    beforeRouteLeave (to: any, from: any, next: any) {
-        if (this.success) {
-            return next();
-        }
-        if (this.hasInput) {
-            const modal = this.unsavedChangesModal;
-            let action = modal.action;
-            modal.show()
-                .then((response: typeof action) => {
-                    switch(response) {
-                        case action.CANCEL: {
-                            next(false);
-                            break;
-                        }
-                        case action.CONFIRM: {
-                            next(true);
-                            break;
-                        }
-                        default: {
-                            next(true);
-                        }
-                    }
-                })
-        } else {
-            next(true);
-       }
-    }
 };
 </script>

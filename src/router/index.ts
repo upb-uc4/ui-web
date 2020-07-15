@@ -2,14 +2,14 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
-import AdminHomeView from "../views/admin/Home.vue"
-import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
-import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
-import Redirect from "../views/common/Redirect.vue"
-import Profile from "../views/common/Profile.vue";
+import AdminHomeView from "../views/admin/Home.vue";
+import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
+import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
+import Redirect from "../views/common/Redirect.vue";
+import ProfileWrapper from "../components/profile/Wrapper.vue";
+import PageNotFound from "../views/errors/404.vue";
 
-
-const routerHistory = createWebHistory();
+const routerHistory = createWebHistory(process.env.BASE_URL);
 
 const router = createRouter({
 	history: routerHistory,
@@ -35,44 +35,64 @@ const router = createRouter({
 		{
 			path: '/createCourse',
 			name: 'createCourse',
-			props: {editMode:false},
-            component: LecturerEditCreateCourseView
+			props: {
+				editMode:false,
+			},
+            component: CourseFormSuspenseWrapper
 		},
 		{
 			path: '/editCourse/:id',
-			props: {editMode:true},
-            component: LecturerEditCreateCourseView
+			props: {
+				editMode:true,
+			},
+            component: CourseFormSuspenseWrapper
         },
 		{
-			path: '/profile/:id',
-			name: 'profile',
-			component: Profile
+			path: '/user/:username',
+			name: 'profile.public',
+			props: {isPrivate: false},
+			component: ProfileWrapper
+		},
+		{
+			path: '/profile',
+			name: 'profile.private',
+			props: {isPrivate: true},
+			component: ProfileWrapper
 		},
 		{
 			path: "/",
+			name: 'home',
 			component: LoginView,
 		},
 		{
 			path: "/createAccount",
-			props: {editMode:false},
-			component: AdminEditCreateAccountView
+			props: {
+				editMode:false,
+			},
+			component: AccountFormSuspenseWrapper
 		},
 		{
 			path: "/editAccount/:username",
-			props: {editMode:true},
-			component: AdminEditCreateAccountView
+			props: {
+				editMode:true,
+			},
+			component: AccountFormSuspenseWrapper
 		},
 		{
 			path: "/redirect",
 			component: Redirect,
+		},
+		{
+			path: "/:catchAll(.*)",
+			component: PageNotFound,
 		}
 	],
 
-	scrollBehavior(to,from,savedPosition) {
+	scrollBehavior(to, from, savedPosition) {
 		if(savedPosition) {
 			return savedPosition;
 		}
-		return { x:0, y:0 }
+		return { left:0, top:0 }
 	}
 });
 

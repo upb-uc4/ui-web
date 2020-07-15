@@ -16,7 +16,7 @@ export default class StudentEntity implements Student {
     lastName = "";
     picture = "";
     email = "";
-    birthdate = "";
+    birthDate = "";
 
     constructor(example: boolean) {
         if (example) {
@@ -32,7 +32,7 @@ export default class StudentEntity implements Student {
             this.lastName = "Vader"
             this.picture = "https://cdn0.iconfinder.com/data/icons/star-wars/512/darth_vader-512.png"
             this.email = "ihatesand@sithsrule.com"
-            this.birthdate = "0222-07-31"
+            this.birthDate = "0222-07-31"
 
             this.fieldsOfStudy = [FieldOfStudy.EDUCATION]
             this.matriculationId = "420"

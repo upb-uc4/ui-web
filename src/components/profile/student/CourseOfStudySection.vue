@@ -17,8 +17,11 @@
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Field of Study</label>
-                    <input type="text" readonly :value="fieldOfStudyMock"
-                           class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
+                    <div v-for="(val, index) in fieldsOfStudy" :key="val">
+                        <input type="text" readonly :value="val"
+                               class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                               :class="{'mb-4' : index !== fieldsOfStudy.length - 1}">
+                    </div>
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Degree Sought</label>
@@ -36,8 +39,6 @@
 </template>
 
 <script lang="ts">
-    import {FieldOfStudy} from "@/api/api_models/user_management/FieldOfStudy";
-
     export default {
         props: {
             fieldsOfStudy: {
@@ -53,9 +54,5 @@
                 required: true
             }
         },
-        setup(props: any) {
-            const fieldOfStudyMock = props.fieldsOfStudy.length >= 0 ? props.fieldsOfStudy[0] : FieldOfStudy.ECONOMICS;
-            return {fieldOfStudyMock};
-        }
     }
 </script>

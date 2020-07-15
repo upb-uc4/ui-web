@@ -11,7 +11,7 @@ export default class AdminEntity implements Admin {
     lastName = "";
     picture = "";
     email = "";
-    birthdate = "";
+    birthDate = "";
 
     constructor(example: boolean) {
         if (example) {
@@ -27,7 +27,7 @@ export default class AdminEntity implements Admin {
             this.lastName = "Yoda"
             this.picture = "https://cdn0.iconfinder.com/data/icons/star-wars/48/yoda-512.png"
             this.email = "greenHobo@secretlysiths.edu"
-            this.birthdate = "0000-01-01"
+            this.birthDate = "0000-01-01"
         }
     }
 }
