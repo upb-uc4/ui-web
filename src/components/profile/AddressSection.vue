@@ -47,8 +47,7 @@
 </template>
 
 <script lang="ts">
-    import {ref, watch} from "vue";
-    import Address from "@/api/api_models/user_management/Address";
+    import {ref} from "vue";
     import {Country} from "@/entities/Country";
 
     export default {
