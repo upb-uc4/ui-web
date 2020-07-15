@@ -108,6 +108,7 @@ export default class UserManagement extends Common {
         } 
 
         store.state.myRole = response.returnValue;
+        store.state.myId = loginData.username;
         store.state.loginData = loginData;
 
         return result;

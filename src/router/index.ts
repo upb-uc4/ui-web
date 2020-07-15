@@ -2,14 +2,15 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
-import AdminHomeView from "../views/admin/Home.vue"
+import AdminHomeView from "../views/admin/Home.vue";
 import LecturerEditCreateCourseView from '../views/lecturer/EditCreateCourseForm.vue';
 import AdminEditCreateAccountView from '../views/admin/EditCreateAccountForm.vue';
 import Redirect from "../views/common/Redirect.vue"
 import ProfileWrapper from "../components/profile/Wrapper.vue";
+import Profile from "../views/common/Profile.vue";
+import PageNotFound from "../views/errors/404.vue";
 
-
-const routerHistory = createWebHistory();
+const routerHistory = createWebHistory(process.env.BASE_URL);
 
 const router = createRouter({
 	history: routerHistory,
@@ -57,6 +58,7 @@ const router = createRouter({
 		},
 		{
 			path: "/",
+			name: 'home',
 			component: LoginView,
 		},
 		{
@@ -72,14 +74,18 @@ const router = createRouter({
 		{
 			path: "/redirect",
 			component: Redirect,
+		},
+		{
+			path: "/:catchAll(.*)",
+			component: PageNotFound,
 		}
 	],
 
-	scrollBehavior(to,from,savedPosition) {
+	scrollBehavior(to, from, savedPosition) {
 		if(savedPosition) {
 			return savedPosition;
 		}
-		return { x:0, y:0 }
+		return { left:0, top:0 }
 	}
 });
 
