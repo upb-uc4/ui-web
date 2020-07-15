@@ -7,9 +7,10 @@ import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapp
 import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue"
 import Redirect from "../views/common/Redirect.vue"
 import Profile from "../views/common/Profile.vue";
+import PageNotFound from "../views/errors/404.vue";
 
 
-const routerHistory = createWebHistory();
+const routerHistory = createWebHistory(process.env.BASE_URL);
 
 const router = createRouter({
 	history: routerHistory,
@@ -54,6 +55,7 @@ const router = createRouter({
 		},
 		{
 			path: "/",
+			name: 'home',
 			component: LoginView,
 		},
 		{
@@ -73,6 +75,10 @@ const router = createRouter({
 		{
 			path: "/redirect",
 			component: Redirect,
+		},
+		{
+			path: "/:catchAll(.*)",
+			component: PageNotFound,
 		}
 	],
 
@@ -80,7 +86,7 @@ const router = createRouter({
 		if(savedPosition) {
 			return savedPosition;
 		}
-		return { x:0, y:0 }
+		return { left:0, top:0 }
 	}
 });
 

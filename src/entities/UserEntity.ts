@@ -11,5 +11,5 @@ export default class UserEntity implements User {
     lastName = "";
     picture = "https://cdn3.iconfinder.com/data/icons/faticons/32/user-01-512.png";
     email = "";
-    birthdate = "";
+    birthDate = "";
 }
