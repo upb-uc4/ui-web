@@ -17,14 +17,13 @@
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Email</label>
                     <input type="email" :readonly="!isEditing" v-model="editedEmail"
-                           :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
-                           class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                           class="w-full input-text form-input form-input">
                 </div>
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Phone</label>
                     <input placeholder="+123 456 789" readonly type="text"
-                           class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input placeholder-gray-600 bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400">
+                           class="w-full input-text form-input">
                 </div>
             </div>
         </div>

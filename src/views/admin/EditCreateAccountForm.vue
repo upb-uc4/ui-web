@@ -41,16 +41,16 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Username</label>
                             <input type="text" id="userName" name="Username"
-                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input disabled:bg-gray-400"
+                                class="w-full form-input input-text"
                                 placeholder="Username"
                                 v-model="account.user.username"
-                                :disabled="editMode">
+                                :readonly="editMode">
                             <p v-if="hasError('username')" class="text-red-600 ml-1 mt-1">{{ showError('username') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
                             <input type="text" id="email" name="email"
-                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                class="w-full form-input input-text"
                                 placeholder="example@mail.com"
 								v-model="account.user.email"
                                 >
@@ -61,7 +61,7 @@
                                 Password
                             </label>
                             <input type="text" id="password" name="password"
-                                class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                class="w-full form-input input-text"
                                 placeholder="Password"
                                 v-model="account.authUser.password">
                             <p v-if="hasError('password')" class="text-red-600 ml-1 mt-1">{{ showError('password') }}</p>
@@ -87,7 +87,7 @@
                                 <div class="w-full pr-2 flex-col">
                                     <label class="text-gray-700 text-sm">Firstname</label>
                                     <input type="text" id="firstName" name="firstName"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        class="w-full form-input input-text"
                                         placeholder="Firstname"
 										v-model="account.user.firstName"
                                         >
@@ -96,7 +96,7 @@
                                 <div class="w-full pl-2 flex-col">
                                     <label class="text-gray-700 text-sm">Lastname</label>
                                     <input type="text" id="lastName" name="lastName"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        class="w-full form-input input-text"
                                         placeholder="Lastname"
 										v-model="account.user.lastName"
                                         >
@@ -118,7 +118,7 @@
                                 <p v-if="hasError('address')" class="text-red-600 ml-1 mt-1">{{ showError('address') }}</p>
                                 <div class="w-full flex flex-col">
                                     <label class="text-gray-700 text-sm">Country</label>
-                                    <select class="w-1/2 py-3 mb-4 rounded-lg border-gray-400 text-gray-600 form-select" 
+                                    <select class="w-1/2 mb-4 form-select input-select"
                                     name="country" id="country"
                                     v-model="account.user.address.country">
                                         <option :value="''" >Select a Country</option>
@@ -130,7 +130,7 @@
                                 <div class="w-full pr-2 mb-4 flex flex-col">
                                     <label class="text-gray-700 text-sm">Street</label>
                                     <input type="text" id="street" name="street"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        class="w-full form-input input-text"
                                         placeholder="Street"
 										v-model="account.user.address.street">
                                     <p v-if="hasError('street')" class="text-red-600 ml-1 mt-1">{{ showError('street') }}</p>
@@ -138,7 +138,7 @@
                                 <div class="pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Number</label>
                                     <input type="text" id="number" name="number"
-                                        class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        class="w-full form-input input-text"
                                         placeholder="Number"
 										v-model="account.user.address.houseNumber">
                                     <p v-if="hasError('houseNumber')" class="text-red-600 ml-1 mt-1">{{ showError('houseNumber') }}</p>
@@ -148,7 +148,7 @@
                                 <div class="pr-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Zip Code</label>
                                     <input type="text" id="zipcode" name="zipcode"
-                                        class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        class="w-full form-input input-text"
                                         placeholder="Zip Code"
 										v-model="account.user.address.zipCode">
                                     <p v-if="hasError('zipCode')" class="text-red-600 ml-1 mt-1">{{ showError('zipCode') }}</p>
@@ -156,7 +156,7 @@
                                  <div class="w-full pl-2 flex flex-col">
                                  <label class="text-gray-700 text-sm">City</label>
                                     <input type="text" id="city" name="city"
-                                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        class="w-full form-input input-text"
                                         placeholder="City"
 										v-model="account.user.address.city">
                                     <p v-if="hasError('city')" class="text-red-600 ml-1 mt-1">{{ showError('city') }}</p>
@@ -210,7 +210,7 @@
                                 <div class="w-1/2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Status</label>
                                     <input type="text" id="immatriculationStatus" name="immatriculationStatus"
-                                                class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                                class="w-full form-input input-text"
                                                 placeholder="Immatriculation Status"
                                                 v-model="account.student.immatriculationStatus">
                                     <p v-if="hasError('immatriculationStatus')" class="text-red-600 ml-1 mt-1">{{ showError('immatriculationStatus') }}</p>
@@ -218,7 +218,7 @@
                                  <div class="w-1/4 flex flex-col pl-2">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Matriculation-ID</label>
                                     <input type="text" id="matriculationId" name="matriculationId"
-                                                class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                                class="w-full form-input input-text"
                                                 placeholder="Matriculation-ID"
                                                 v-model="account.student.matriculationId">
                                     <p v-if="hasError('matriculationId')" class="text-red-600 ml-1 mt-1">{{ showError('matriculationId') }}</p>
@@ -236,7 +236,7 @@
 								<div class="w-1/4 pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
                                     <input type="number" id="semesterCount" name="semesterCount"
-                                        class="border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input"
+                                        class="w-full form-input input-textd"
                                         placeholder="Semester Count"
 										v-model="account.student.semesterCount">
                                     <p v-if="hasError('semesterCount')" class="text-red-600 ml-1 mt-1">{{ showError('semesterCount') }}</p>

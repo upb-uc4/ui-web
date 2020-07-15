@@ -19,8 +19,7 @@
                     <input :readonly="!isEditing"
                            type="text"
                            v-model="editedResearchArea"
-                           :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
-                           class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                           class="w-full input-text form-input">
                 </div>
 
                 <div class="mb-6 flex flex-col">
@@ -29,8 +28,7 @@
                             :readonly="!isEditing"
                             v-model="editedDescription"
                             rows="3"
-                            :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
-                            class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-textarea"/>
+                            class="w-full input-text form-textarea"/>
                 </div>
             </div>
         </div>
