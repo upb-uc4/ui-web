@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-    import { computed, reactive, ref } from 'vue';
+    import { computed, ref } from 'vue';
     export default {
         name: "MultiSelect",
         props: {
@@ -41,7 +41,7 @@
                 required: true
             }
         },
-        setup(props, {emit}) {
+        setup(props: any, {emit}) {
             let input = ref(props.inputList);
             let output = ref([] as string[]);
             output.value.push(...(props.preSelection as string[]));
@@ -56,13 +56,11 @@
                     output.value.push("")
                 }
                 output.value[index] = value;
-                
                 emit("changed", output)
             }
 
             function removeValue(index:number) {
                 output.value.splice(index, 1)
-                
                 emit("changed", output)
             }
 
