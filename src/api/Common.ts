@@ -11,7 +11,7 @@ export default class Common {
         this._authHeader = {auth: store.state.loginData };
         this._requestParameter = {...this._authHeader, params: {}}
         const instance = axios.create({
-            baseURL: store.state.apiUrl + endpoint,
+            baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8"

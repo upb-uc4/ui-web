@@ -10,7 +10,7 @@ import Profile from "../views/common/Profile.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 
-const routerHistory = createWebHistory();
+const routerHistory = createWebHistory(process.env.BASE_URL);
 
 const router = createRouter({
 	history: routerHistory,
