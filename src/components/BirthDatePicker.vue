@@ -56,7 +56,7 @@
         setup(props:any, { emit } ) {
             let months = Month;
             
-            let shownDay:string = ref(props.day).value;
+            let shownDay:string = parseInt(ref(props.day).value).toString();
             let shownMonth:string = ref(props.month).value == "" ? "" : Object.values(Month)[parseInt(ref(props.month).value)-1];
             let shownYear:string = ref(props.year).value;
 
