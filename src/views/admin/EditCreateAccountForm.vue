@@ -569,6 +569,7 @@ export default {
 
         function updateAccount() {
             const userManagement: UserManagement = new UserManagement();
+            account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
             var adaptedUser: Student | Lecturer | Admin = assembleAccount();
             userManagement.updateUser(adaptedUser).then( (response) => {
                 if(response) {
