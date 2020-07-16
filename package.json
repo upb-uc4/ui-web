@@ -115,11 +115,6 @@
         "html-whitespace-sensitivity": "ignore",
         "quoteProps": "consistent"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
-    },
     "browserslist": [
         "> 1%",
         "last 2 versions",
