@@ -17,9 +17,9 @@
                     <div class="w-full lg:w-2/3">
                         <div class="mb-4 flex">
                              <div class="mr-4 mb-3" v-for="role in roles" :key="role">
-                                <label class="flex items-center" >
+                                <label class="flex items-center">
                                     <input type="radio" class="form-radio radio" name="role" :disabled="editMode" :value="role" v-model="account.user.role">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
+                                    <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
                                 </label>
                             </div>
                             <p v-if="hasError('role')" class="text-red-600 ml-1 mt-1">{{ showError('role') }}</p>
