@@ -394,9 +394,6 @@ export default {
             if (response.statusCode !== 200) {
                 alert("User not found")
             } else {
-                //TODO Remove next line when lagom finally manage to send a birthdate
-                result.birthDate = "1996-12-11";
-
                 account.user  = result;
                 initialAccount.user = JSON.parse(JSON.stringify(account.user)) ;
                 let dates = result.birthDate.split("-");
