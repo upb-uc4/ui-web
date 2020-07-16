@@ -108,8 +108,8 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Birthdate
                             </label>
-                            <p v-if="hasError('birthDate')" class="text-red-600 ml-1 mt-1">{{ showError('birthDate') }}</p>
                             <birth-date-picker v-model:year="account.birthDate.year" v-model:month="account.birthDate.month" v-model:day="account.birthDate.day"/>
+                            <p v-if="hasError('birthDate')" class="text-red-600 ml-1 mt-1">{{ showError('birthDate') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                                 <label class="text-gray-700 text-md font-medium mb-3">
