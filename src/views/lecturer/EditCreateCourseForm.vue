@@ -270,8 +270,8 @@
             let isValid = computed(() => {
                 if (
                     course.value.courseName == "" ||
-                    course.value.courseLanguage != Language.NONE ||
-                    course.value.courseType != CourseType.NONE ||
+                    course.value.courseLanguage == Language.NONE ||
+                    course.value.courseType == CourseType.NONE ||
                     course.value.maxParticipants == 0
                 ) {
                     return false;

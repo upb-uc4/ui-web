@@ -3,6 +3,7 @@ name: Vue deployment pipeline
 on:
   release:
     branches: [ master ]
+    types: [published]
 
 jobs:
   PublishOnDockerhub:
