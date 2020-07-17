@@ -16,8 +16,14 @@
             <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/createAccount')">   
                  <a>createAccount</a>
             </li>
-            <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/profile/1')">
-                <a>profile</a>
+            <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/user/student')">
+                <a>Public Student Profile</a>
+            </li>
+            <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/profile')">
+                <a>My Profile</a>
+            </li>
+            <li class="bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="goto('/user/lecturer')">
+                <a>Pub. Lecturer Profile</a>
             </li>
             <li class="ml-auto bg-blue-200 px-4 py-2 hover:bg-blue-100 cursor-pointer" @click="logout()">
                 <a>logOut</a>

@@ -1,0 +1,12 @@
+.input-select {
+    @apply py-3 rounded-lg border-2 border-gray-400 text-gray-600 !important;
+}
+
+/* use disabled instead of read-only for selects as we otherwise could still select options. */
+.input-select:disabled {
+    @apply bg-gray-300 !important;
+}
+
+.input-select:disabled:focus {
+    @apply outline-none shadow-none border-gray-400 !important;
+}

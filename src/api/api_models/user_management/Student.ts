@@ -1,9 +1,9 @@
-import User from './User';
-import { FieldOfStudy } from './FieldOfStudy';
+import User from "./User";
+import { FieldOfStudy } from "./FieldOfStudy";
 
 export default interface Student extends User {
-    immatriculationStatus: string,
-    matriculationId: string,
-    semesterCount: number,
-    fieldsOfStudy: FieldOfStudy[]
+    immatriculationStatus: string;
+    matriculationId: string;
+    semesterCount: number;
+    fieldsOfStudy: FieldOfStudy[];
 }
