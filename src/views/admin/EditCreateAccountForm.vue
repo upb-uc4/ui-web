@@ -15,14 +15,16 @@
                         <label class="block text-gray-700 text-lg font-medium mb-2">Select a Role</label>
                     </div>
                     <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex">
-                             <div class="mr-4 mb-3" v-for="role in roles" :key="role">
-                                <label class="flex items-center" >
-                                    <input type="radio" class="form-radio radio" name="role" :disabled="editMode" :value="role" v-model="account.user.role">
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
-                                </label>
+                        <div class="mb-4 flex flex-col">
+                            <div class="w-full flex">
+                                <div class="mr-4 mb-3" v-for="role in roles" :key="role">
+                                    <label class="flex items-center" >
+                                        <input type="radio" class="form-radio radio" name="role" :disabled="editMode" :value="role" v-model="account.user.role">
+                                            <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
+                                    </label>
+                                </div>
                             </div>
-                            <p v-if="hasError('role')" class="text-red-600 ml-1 mt-1">{{ showError('role') }}</p>
+                            <p v-if="hasError('role')" class="error-message">{{ showError('role') }} bla</p>
                         </div>
                         
                     </div>
