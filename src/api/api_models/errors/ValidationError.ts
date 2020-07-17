@@ -1,4 +1,4 @@
-import APIError from "./APIError"
+import APIError from "./APIError";
 
 export default interface ValidationError extends APIError {
     invalidParams: {

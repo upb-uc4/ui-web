@@ -1,7 +1,7 @@
-import { CourseType } from '@/entities/CourseType';
-import { Language } from '@/entities/Language';
+import { CourseType } from "@/entities/CourseType";
+import { Language } from "@/entities/Language";
 
-export default interface ICourse {
+export default interface Course {
     courseType: CourseType;
     courseId: string;
     courseName: string;

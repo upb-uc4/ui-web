@@ -1,10 +1,11 @@
 export const state = {
+    apiUrl: "",
     myId: "",
     myRole: "",
     loginData: {
         username: "",
-        password: ""
-    }
-}
+        password: "",
+    },
+};
 
-export type State = typeof state
+export type State = typeof state;

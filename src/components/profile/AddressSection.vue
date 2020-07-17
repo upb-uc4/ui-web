@@ -16,34 +16,27 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Country</label>
-                    <select :disabled="!isEditing" v-model="editedAddress.country"
-                            :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
-                            class="w-full form-select block border-2 border-gray-400 rounded-lg text-gray-600 py-3">
-                        <option v-for="country in countries" :key="country" :selected="country === editedAddress.country" >{{ country }}</option>
+                    <select v-model="editedAddress.country" :disabled="!isEditing" class="w-full form-select input-select">
+                        <option v-for="country in countries" :key="country" :selected="country === editedAddress.country">{{
+                            country
+                        }}</option>
                     </select>
-
                 </div>
 
                 <div class="lg:flex mb-6">
                     <div class="lg:w-2/3 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">City</label>
-                        <input type="text" :readonly="!isEditing" v-model="editedAddress.city"
-                               :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
-                               class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                        <input v-model="editedAddress.city" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
                     </div>
                     <div class="lg:w-1/3 mb-6 lg:mb-0 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Postal Code</label>
-                        <input type="text" :readonly="!isEditing" v-model="editedAddress.zipCode"
-                               :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
-                               class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                        <input v-model="editedAddress.zipCode" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
                     </div>
                 </div>
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Street</label>
-                    <input type="text" :readonly="!isEditing" v-model="editedAddress.street"
-                           :class="{'bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400' : !isEditing}"
-                           class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input">
+                    <input v-model="editedAddress.street" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
                 </div>
             </div>
         </div>
@@ -51,19 +44,18 @@
 </template>
 
 <script lang="ts">
-    import {ref, watch} from "vue";
-    import Address from "@/api/api_models/user_management/Address";
-    import {Country} from "@/entities/Country";
+    import { ref } from "vue";
+    import { Country } from "@/entities/Country";
 
     export default {
         props: {
             address: {
-                type: Object
-            }
+                type: Object,
+            },
         },
         emits: ["save", "update:address"],
-        setup(props: any, {emit}: any) {
-            const countries = Object.values(Country).filter(e => e != Country.NONE);
+        setup(props: any, { emit }: any) {
+            const countries = Object.values(Country).filter((e) => e != Country.NONE);
             const editedAddress = ref(props.address);
             const isEditing = ref(false);
 
@@ -82,13 +74,11 @@
 
             function save() {
                 isEditing.value = false;
-                emit('update:address', editedAddress.value);
+                emit("update:address", editedAddress.value);
                 emit("save");
             }
 
-            return {isEditing, edit, cancelEdit, save,
-                countries, editedAddress};
+            return { isEditing, edit, cancelEdit, save, countries, editedAddress };
         },
-
-    }
+    };
 </script>

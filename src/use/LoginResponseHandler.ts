@@ -1,12 +1,12 @@
-import ResponseHandler from "./ResponseHandler"
-import APIResponse from "../api/helpers/models/APIResponse"
+import ResponseHandler from "./ResponseHandler";
+import APIResponse from "../api/helpers/models/APIResponse";
 
 export default class LoginResponseHandler implements ResponseHandler<boolean> {
     handleReponse(response: APIResponse<boolean>): boolean {
-        console.log(response)
+        console.log(response);
         if (response.networkError) {
             //TODO show toast
-            alert("Network Error")
+            alert("Network Error");
             return false;
         }
         switch (response.statusCode) {
@@ -15,7 +15,7 @@ export default class LoginResponseHandler implements ResponseHandler<boolean> {
                 return false;
             }
             case 401: {
-                alert("Wrong password or username combination!")
+                alert("Wrong password or username combination!");
                 return false;
             }
             case 404: {
@@ -29,5 +29,4 @@ export default class LoginResponseHandler implements ResponseHandler<boolean> {
 
         return false;
     }
-
 }
