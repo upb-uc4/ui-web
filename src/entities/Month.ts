@@ -10,5 +10,5 @@ export enum Month {
     SEPTEMBER = "September",
     OCTOBER = "October",
     NOVEMBER = "November",
-    DECEMBER = "December"
+    DECEMBER = "December",
 }

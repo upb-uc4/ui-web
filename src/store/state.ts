@@ -4,8 +4,8 @@ export const state = {
     myRole: "",
     loginData: {
         username: "",
-        password: ""
-    }
-}
+        password: "",
+    },
+};
 
-export type State = typeof state
+export type State = typeof state;

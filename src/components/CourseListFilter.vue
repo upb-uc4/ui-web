@@ -2,9 +2,12 @@
     <div class="w-full">
         <div class="pt-2 relative mx-auto text-gray-600">
             <i class="fas fa-search absolute left-0 top-0 mt-6 ml-4"></i>
-            <input class="w-full border-2 border-gray-300 bg-white h-12 px-5 pl-12 rounded-lg focus:outline-none"
-                   type="search" placeholder="Filter"
-                   v-model="message">
+            <input
+                v-model="message"
+                class="w-full border-2 border-gray-300 bg-white h-12 px-5 pl-12 rounded-lg focus:outline-none"
+                type="search"
+                placeholder="Filter"
+            />
         </div>
         <p hidden>{{ filteredCourses }}</p>
     </div>
@@ -47,52 +50,47 @@
 <script lang="ts">
     export default {
         name: "CourseListFilter",
-        components: {
-        },
-        props: [
-            'courses'
-        ],
-        data: function () : {message : string, searchElements: {key:string, value:string}[], filters:object[]}{
+        components: {},
+        props: ["courses"],
+        data: function (): { message: string; searchElements: { key: string; value: string }[]; filters: object[] } {
             return {
                 message: "",
                 searchElements: [
-                    {value:"Informatik",
-                    key:"Studiengang"},
-                    {value:"Datenstrukturen und Algorithmen",
-                    key:"Modul"},
-                    {value:"German",
-                    key:"Language"},
-                    {value:"English",
-                    key:"Language"}
+                    { value: "Informatik", key: "Studiengang" },
+                    { value: "Datenstrukturen und Algorithmen", key: "Modul" },
+                    { value: "German", key: "Language" },
+                    { value: "English", key: "Language" },
                 ],
-                filters: []
+                filters: [],
             };
         },
         computed: {
             // filtered courses
-            filteredCourses: function() : object[] {
-                if(this.message == "") {
-                    this.$emit('filter', this.courses);
+            filteredCourses: function (): object[] {
+                if (this.message == "") {
+                    this.$emit("filter", this.courses);
                     return this.courses;
                 }
-                const filteredCourses = this.courses.filter((course: {courseName: string}) => course.courseName.toLowerCase().includes(this.message.toLowerCase()));
+                const filteredCourses = this.courses.filter((course: { courseName: string }) =>
+                    course.courseName.toLowerCase().includes(this.message.toLowerCase())
+                );
 
-                this.$emit('filter', filteredCourses);
+                this.$emit("filter", filteredCourses);
                 return filteredCourses;
-            }
-        }, 
+            },
+        },
         methods: {
-            addFilter: function(searchElement: {key:string, value:string}) {
-                if(!this.filters.includes(searchElement)){
+            addFilter: function (searchElement: { key: string; value: string }) {
+                if (!this.filters.includes(searchElement)) {
                     this.filters.push(searchElement);
                     this.message = "";
                 }
             },
-            removeFilter: function(filter: {key:string, value:string}) {
-                if(this.filters.includes(filter)){
-                    this.filters = this.filters.filter(obj => obj!=filter)
+            removeFilter: function (filter: { key: string; value: string }) {
+                if (this.filters.includes(filter)) {
+                    this.filters = this.filters.filter((obj) => obj != filter);
                 }
-            }
-        }
+            },
+        },
     };
 </script>

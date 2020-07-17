@@ -1,31 +1,22 @@
 <template>
-    <div class="flex flex-row ">
+    <div class="flex flex-row">
         <div class="mr-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Day</label>
-            <select class="form-select input-select" 
-                @change="updateDay($event.target.value)"
-                v-model="shownDay"
-                >
+            <select v-model="shownDay" class="form-select input-select" @change="updateDay($event.target.value)">
                 <option disabled :value="''"> Select a Day </option>
                 <option v-for="day in 31" :key="day">{{ day }}</option>
             </select>
         </div>
         <div class="mx-2 w-full flex flex-col">
-            <label class="text-gray-700 text-sm">Month  </label>
-            <select class="form-select input-select" 
-                @change="updateMonth($event.target.value)"
-                v-model="shownMonth"
-                >
+            <label class="text-gray-700 text-sm">Month </label>
+            <select v-model="shownMonth" class="form-select input-select" @change="updateMonth($event.target.value)">
                 <option disabled :value="''"> Select a Month </option>
                 <option v-for="month in months" :key="month">{{ month }}</option>
             </select>
         </div>
         <div class="ml-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Year</label>
-            <select class="form-select input-select" 
-                @change="updateYear($event.target.value)"
-                v-model="shownYear"
-                >
+            <select v-model="shownYear" class="form-select input-select" @change="updateYear($event.target.value)">
                 <option disabled :value="''"> Select a Year </option>
                 <option v-for="year in selectableYears" :key="year">{{ year }}</option>
             </select>
@@ -34,8 +25,8 @@
 </template>
 
 <script lang="ts">
-    import { Month } from "@/entities/Month"
-    import { ref } from "vue"
+    import { Month } from "@/entities/Month";
+    import { ref } from "vue";
     export default {
         name: "BirthDatePicker",
         props: {
@@ -53,32 +44,32 @@
             },
         },
 
-        setup(props:any, { emit } ) {
+        setup(props: any, { emit }) {
             let months = Month;
-            
-            let shownDay:string = ref(props.day).value == "" ? "" : parseInt(ref(props.day).value).toString();
-            let shownMonth:string = ref(props.month).value == "" ? "" : Object.values(Month)[parseInt(ref(props.month).value)-1];
-            let shownYear:string = ref(props.year).value;
+
+            let shownDay: string = ref(props.day).value == "" ? "" : parseInt(ref(props.day).value).toString();
+            let shownMonth: string = ref(props.month).value == "" ? "" : Object.values(Month)[parseInt(ref(props.month).value) - 1];
+            let shownYear: string = ref(props.year).value;
 
             let currentYear = new Date().getFullYear();
             let selectableYears = [];
-            for (let index = currentYear; index >= currentYear-80; index--) {
+            for (let index = currentYear; index >= currentYear - 80; index--) {
                 selectableYears.push(index);
             }
 
-            function updateDay(day:string) {
-               if( parseInt(day) < 10 ) {
-                   day = "0" + day;
-               }
-               emit("update:day",day);
+            function updateDay(day: string) {
+                if (parseInt(day) < 10) {
+                    day = "0" + day;
+                }
+                emit("update:day", day);
             }
 
-            function updateMonth(month:string) {
+            function updateMonth(month: string) {
                 let monthIndex = Object.values(months).indexOf(month as Month) + 1;
                 emit("update:month", monthIndex < 10 ? "0" + monthIndex : monthIndex.toString());
             }
 
-            function updateYear(year:string) {
+            function updateYear(year: string) {
                 emit("update:year", year.toString());
             }
 
@@ -90,8 +81,8 @@
                 selectableYears,
                 updateDay,
                 updateMonth,
-                updateYear
-            }
-        }
-    }
+                updateYear,
+            };
+        },
+    };
 </script>

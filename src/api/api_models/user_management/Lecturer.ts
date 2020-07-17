@@ -1,6 +1,6 @@
-import User from './User';
+import User from "./User";
 
 export default interface Lecturer extends User {
-    freeText: string,
-    researchArea: string
+    freeText: string;
+    researchArea: string;
 }

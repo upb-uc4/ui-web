@@ -16,14 +16,12 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                    <input type="email" :readonly="!isEditing" v-model="editedEmail"
-                           class="w-full input-text form-input form-input">
+                    <input v-model="editedEmail" type="email" :readonly="!isEditing" class="w-full input-text form-input form-input" />
                 </div>
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Phone</label>
-                    <input placeholder="+123 456 789" readonly type="text"
-                           class="w-full input-text form-input">
+                    <input placeholder="+123 456 789" readonly type="text" class="w-full input-text form-input" />
                 </div>
             </div>
         </div>
@@ -31,12 +29,12 @@
 </template>
 
 <script lang="ts">
-    import {ref} from "vue";
+    import { ref } from "vue";
 
     export default {
         props: ["email"],
         emits: ["save", "update:email"],
-        setup(props: any, {emit}: any) {
+        setup(props: any, { emit }: any) {
             const editedEmail = ref(props.email);
             const isEditing = ref(false);
 
@@ -55,13 +53,11 @@
 
             function save() {
                 isEditing.value = false;
-                emit('update:email', editedEmail.value);
+                emit("update:email", editedEmail.value);
                 emit("save");
             }
 
-            return {isEditing, edit, cancelEdit, save,
-                editedEmail};
+            return { isEditing, edit, cancelEdit, save, editedEmail };
         },
-
-    }
+    };
 </script>

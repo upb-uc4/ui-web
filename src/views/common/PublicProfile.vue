@@ -1,6 +1,6 @@
 <template>
-    <public-student-profile v-if="user.role === Role.STUDENT" :student="user"/>
-    <public-lecturer-profile v-else-if="user.role === Role.LECTURER" :lecturer="user"/>
+    <public-student-profile v-if="user.role === Role.STUDENT" :student="user" />
+    <public-lecturer-profile v-else-if="user.role === Role.LECTURER" :lecturer="user" />
 </template>
 
 <script lang="ts">
@@ -9,12 +9,12 @@
     import Router from "@/router";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";
-    import {Role} from "@/entities/Role";
+    import { Role } from "@/entities/Role";
 
     export default {
         components: {
             PublicStudentProfile,
-            PublicLecturerProfile
+            PublicLecturerProfile,
         },
         async setup() {
             const username: string = Router.currentRoute.value.params.username as string;
@@ -23,7 +23,7 @@
             const responseHandler = new ProfileResponseHandler();
             const response = await auth.getSpecificUser(username);
             const user = responseHandler.handleReponse(response);
-            return {Role, user}
-        }
-    }
+            return { Role, user };
+        },
+    };
 </script>

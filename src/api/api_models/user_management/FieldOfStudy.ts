@@ -13,5 +13,5 @@ export enum FieldOfStudy {
     PEDAGOGY = "Pedagogy",
     BUSINESS_INFORMATICS = "Business Informatics",
     LINGUISTICY = "Linguistics",
-    NONE = ""
+    NONE = "",
 }

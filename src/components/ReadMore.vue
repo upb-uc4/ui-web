@@ -3,67 +3,65 @@
         <div>
             <span v-html="formattedString"></span>
             <span v-show="text.length > maxChars" class="ml-2 text-gray-700 uppercase text-xs font-semibold tracking-wide">
-                <span class="cursor-pointer" v-show="!isReadMore" v-on:click="triggerReadMore($event, true)">{{ moreStr }}</span>
-                <span class="cursor-pointer" v-show="isReadMore" v-on:click="triggerReadMore($event, false)">{{ lessStr }}</span>
+                <span v-show="!isReadMore" class="cursor-pointer" @click="triggerReadMore($event, true)">{{ moreStr }}</span>
+                <span v-show="isReadMore" class="cursor-pointer" @click="triggerReadMore($event, false)">{{ lessStr }}</span>
             </span>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { ref, computed } from 'vue'
+    import { ref, computed } from "vue";
     //https://github.com/orlyyani/read-more
-    export default{
+    export default {
         props: {
             moreStr: {
                 type: String,
-                default: 'Show more'
+                default: "Show more",
             },
             lessStr: {
                 type: String,
-                default: 'Show less'
+                default: "Show less",
             },
             text: {
                 type: String,
-                required: true
+                required: true,
             },
             link: {
                 type: String,
-                default: '#'
+                default: "#",
             },
             maxChars: {
                 type: Number,
-                default: 100
-            }
+                default: 100,
+            },
         },
 
         setup(props) {
-            let isReadMore = ref(new Boolean(false))
-
+            let isReadMore = ref(new Boolean(false));
 
             let formattedString = computed(() => {
                 var val_container = props.text;
 
-                if(!isReadMore.value && props.text.length > props.maxChars){
-                    val_container = val_container.substring(0,props.maxChars) + '...';
+                if (!isReadMore.value && props.text.length > props.maxChars) {
+                    val_container = val_container.substring(0, props.maxChars) + "...";
                 }
 
-                return(val_container);
-            })
+                return val_container;
+            });
 
-            function triggerReadMore(e:Event, b:boolean){
-                if(props.link == '#'){
+            function triggerReadMore(e: Event, b: boolean) {
+                if (props.link == "#") {
                     e.preventDefault();
                 }
-                if(props.lessStr !== null || props.lessStr !== '')
-                    isReadMore.value = b;
+                if (props.lessStr !== null || props.lessStr !== "") isReadMore.value = b;
             }
 
             return {
                 isReadMore,
                 formattedString,
-                triggerReadMore
-            }
+                triggerReadMore,
+            };
         },
-    }
+    };
 </script>

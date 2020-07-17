@@ -1,7 +1,6 @@
-import { CourseType } from './CourseType';
-import { Language } from './Language';
-import Course from '@/api/api_models/course_management/Course';
-
+import { CourseType } from "./CourseType";
+import { Language } from "./Language";
+import Course from "@/api/api_models/course_management/Course";
 
 export class CourseEntity implements Course {
     courseType: CourseType = CourseType.NONE;
@@ -12,16 +11,16 @@ export class CourseEntity implements Course {
     maxParticipants: number = 0;
     currentParticipants: number = 0;
     courseDescription: string = "";
-    courseLanguage:Language = Language.NONE;
-    startDate: string ="";
+    courseLanguage: Language = Language.NONE;
+    startDate: string = "";
     endDate: string = "";
 
     /**
      * Clones all information of object that implements Course in parameter into new object
-     * @param course 
+     * @param course
      */
     constructor(course?: Course) {
-        if(course !== undefined) {
+        if (course !== undefined) {
             this.courseType = course.courseType;
             this.courseId = course.courseId;
             this.courseName = course.courseName;
@@ -37,55 +36,50 @@ export class CourseEntity implements Course {
     }
 
     public equals(obj: any): boolean {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof CourseEntity))
-            return false;
-        
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof CourseEntity)) return false;
+
         const course: Course = obj as Course;
         let equal: boolean = true;
-        equal = equal && (this.courseType === course.courseType);
-        equal = equal && (this.courseId === course.courseId);
-        equal = equal && (this.courseName === course.courseName);
-        equal = equal && (this.lecturerId === course.lecturerId);
-        equal = equal && (this.ects === course.ects);
-        equal = equal && (this.maxParticipants === course.maxParticipants);
-        equal = equal && (this.currentParticipants === course.currentParticipants);
-        equal = equal && (this.courseDescription === course.courseDescription);
-        equal = equal && (this.courseLanguage === course.courseLanguage);
-        equal = equal && (this.startDate === course.startDate);
-        equal = equal && (this.endDate === course.endDate);
-        
+        equal = equal && this.courseType === course.courseType;
+        equal = equal && this.courseId === course.courseId;
+        equal = equal && this.courseName === course.courseName;
+        equal = equal && this.lecturerId === course.lecturerId;
+        equal = equal && this.ects === course.ects;
+        equal = equal && this.maxParticipants === course.maxParticipants;
+        equal = equal && this.currentParticipants === course.currentParticipants;
+        equal = equal && this.courseDescription === course.courseDescription;
+        equal = equal && this.courseLanguage === course.courseLanguage;
+        equal = equal && this.startDate === course.startDate;
+        equal = equal && this.endDate === course.endDate;
+
         return equal;
     }
 
     /**
      * Returns whether the object is equal with respects to all editable info, i.e. everything except the courseId and current participants
-     * @param obj 
+     * @param obj
      */
     public editableInfoEquals(obj: any): boolean {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        
+        if (this == obj) return true;
+        if (obj == null) return false;
+
         const course: Course = obj as Course;
         let equal: boolean = true;
-        equal = equal && (this.courseType === course.courseType);
+        equal = equal && this.courseType === course.courseType;
 
-        equal = equal && (this.courseName === course.courseName);
+        equal = equal && this.courseName === course.courseName;
         //equal = equal && (this.lecturerId === course.lecturerId);
-        equal = equal && (this.ects === course.ects);
-        equal = equal && (this.maxParticipants === course.maxParticipants);
+        equal = equal && this.ects === course.ects;
+        equal = equal && this.maxParticipants === course.maxParticipants;
 
-        equal = equal && (this.courseDescription === course.courseDescription);
-        equal = equal && (this.courseLanguage === course.courseLanguage);
+        equal = equal && this.courseDescription === course.courseDescription;
+        equal = equal && this.courseLanguage === course.courseLanguage;
         //equal = equal && (this.startDate === course.startDate);
         //equal = equal && (this.endDate === course.endDate);
         //lecturer ID and dates are set during the setup of the course in the createCourse process -> always false
-        
-        return equal;        
+
+        return equal;
     }
 }

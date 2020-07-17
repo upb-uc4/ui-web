@@ -1,12 +1,12 @@
-import ResponseHandler from "./ResponseHandler"
-import APIResponse from "../api/helpers/models/APIResponse"
+import ResponseHandler from "./ResponseHandler";
+import APIResponse from "../api/helpers/models/APIResponse";
 
 export default class GenericResponseHandler implements ResponseHandler<boolean> {
     handleReponse<T>(response: APIResponse<T>): T {
-        console.log(response)
+        console.log(response);
         if (response.networkError) {
             //TODO show toast
-            alert("Network Error")
+            alert("Network Error");
             return response.returnValue;
         }
         switch (response.statusCode) {
@@ -15,11 +15,11 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
                 return response.returnValue;
             }
             case 401: {
-                alert("Authentication failed. Please login again!")
+                alert("Authentication failed. Please login again!");
                 return response.returnValue;
             }
             case 403: {
-                alert("You do not have the neccessary user rights for this action!")
+                alert("You do not have the neccessary user rights for this action!");
                 return response.returnValue;
             }
             case 404: {
@@ -33,5 +33,4 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
 
         return response.returnValue;
     }
-
 }
