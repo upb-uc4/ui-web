@@ -20,7 +20,7 @@
 			CourseList,
 			DevNavBar
 		},
-		beforeRouteEnter(_from: any, _to: any, next: any) {
+		beforeRouteEnter(_to: any, _from: any, next: any) {
 			const myRole = store.state.myRole;
 			if (myRole != Role.STUDENT) {
 				return next("/redirect");
