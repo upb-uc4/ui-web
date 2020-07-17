@@ -16,56 +16,62 @@ const router = createRouter({
 	routes: [
 		{
 			path: "/login",
+			name: "login",
 			component: LoginView,
 		},
 		{
 			path: "/student",
+			name: "student.home",
 			component: StudentHomeView,
 		},
 		{
 			path: "/lecturer",
+			name: "lecturer.home",
 			component: LecturerHomeView,
 		},
 
 		{
 			path: "/admin",
+			name: "admin.home",
 			component: AdminHomeView,
 		},
 
 		{
-			path: '/createCourse',
-			name: 'createCourse',
+			path: "/createCourse",
+			name: "courseForm.create",
 			props: {
 				editMode:false,
 			},
             component: CourseFormSuspenseWrapper
 		},
 		{
-			path: '/editCourse/:id',
+			path: "/editCourse/:id",
+			name: "courseForm.edit",
 			props: {
 				editMode:true,
 			},
             component: CourseFormSuspenseWrapper
         },
 		{
-			path: '/user/:username',
-			name: 'profile.public',
+			path: "/user/:username",
+			name: "profile.public",
 			props: {isPrivate: false},
 			component: ProfileWrapper
 		},
 		{
-			path: '/profile',
-			name: 'profile.private',
+			path: "/profile",
+			name: "profile.private",
 			props: {isPrivate: true},
 			component: ProfileWrapper
 		},
 		{
 			path: "/",
-			name: 'home',
+			name: "home",
 			component: LoginView,
 		},
 		{
 			path: "/createAccount",
+			name: "accountForm.create",
 			props: {
 				editMode:false,
 			},
@@ -73,6 +79,7 @@ const router = createRouter({
 		},
 		{
 			path: "/editAccount/:username",
+			name: "accountForm.edit",
 			props: {
 				editMode:true,
 			},
@@ -80,10 +87,12 @@ const router = createRouter({
 		},
 		{
 			path: "/redirect",
+			name: "redirect",
 			component: Redirect,
 		},
 		{
 			path: "/:catchAll(.*)",
+			name: "pageNotFound",
 			component: PageNotFound,
 		}
 	],
