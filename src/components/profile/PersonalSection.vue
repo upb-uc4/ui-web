@@ -34,14 +34,14 @@
 
 <script lang="ts">
     import { ref, reactive } from "vue";
-    import { Month } from "@/entities/Month.ts"
+    import { Month } from "@/entities/Month.ts";
 
     export default {
         props: ["firstName", "lastName", "birthDate"],
         emits: ["save", "update:firstName", "update:lastName"],
         setup(props: any, { emit }: any) {
             let birthDateDates = props.birthDate.split("-");
-            let shownBirthDate = birthDateDates[2] + ". " + Object.values(Month)[parseInt(birthDateDates[1])-1] + " " + birthDateDates[0];
+            let shownBirthDate = birthDateDates[2] + ". " + Object.values(Month)[parseInt(birthDateDates[1]) - 1] + " " + birthDateDates[0];
 
             const modification = reactive({
                 firstName: props.firstName,
@@ -70,7 +70,7 @@
                 emit("save");
             }
 
-            return { isEditing, edit, cancelEdit, save, modification, shownBirthDate};
+            return { isEditing, edit, cancelEdit, save, modification, shownBirthDate };
         },
     };
 </script>

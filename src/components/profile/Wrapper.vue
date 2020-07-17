@@ -5,7 +5,7 @@
             <public-profile v-else />
         </template>
         <template #fallback>
-            <loading-component/>
+            <loading-component />
         </template>
     </suspense>
 </template>
@@ -21,7 +21,7 @@
         components: {
             PrivateProfile,
             PublicProfile,
-            LoadingComponent
+            LoadingComponent,
         },
         beforeRouteEnter(_from: any, _to: any, next: any) {
             const myRole = store.state.myRole;
