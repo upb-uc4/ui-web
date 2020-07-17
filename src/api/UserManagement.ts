@@ -1,20 +1,19 @@
-import Common from "./Common"
-import { store } from '@/store/store';
-import User_List from './api_models/user_management/User_List';
-import { AxiosResponse, AxiosError } from 'axios';
-import Student from './api_models/user_management/Student';
-import Lecturer from './api_models/user_management/Lecturer';
-import Admin from './api_models/user_management/Admin';
-import { Role } from '@/entities/Role';
-import { Account } from '@/entities/Account';
-import APIResponse from './helpers/models/APIResponse';
-import APIError from './api_models/errors/APIError';
-import ValidationError from "./api_models/errors/ValidationError"
+import Common from "./Common";
+import { store } from "@/store/store";
+import User_List from "./api_models/user_management/User_List";
+import { AxiosResponse, AxiosError } from "axios";
+import Student from "./api_models/user_management/Student";
+import Lecturer from "./api_models/user_management/Lecturer";
+import Admin from "./api_models/user_management/Admin";
+import { Role } from "@/entities/Role";
+import { Account } from "@/entities/Account";
+import APIResponse from "./helpers/models/APIResponse";
+import APIError from "./api_models/errors/APIError";
+import ValidationError from "./api_models/errors/ValidationError";
 
 export default class UserManagement extends Common {
-
     constructor() {
-       super("/user-management");
+        super("/user-management");
     }
 
     async getAllUsers(): Promise<APIResponse<User_List>> {
@@ -25,10 +24,11 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios.get("/users", this._authHeader)
+        await this._axios
+            .get("/users", this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data;
-                result.statusCode = response.status
+                result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
@@ -49,19 +49,19 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios.delete(`/users/${username}`, this._authHeader)
+        await this._axios
+            .delete(`/users/${username}`, this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
-                console.log(error)
-                if(error.response) {
+                console.log(error);
+                if (error.response) {
                     result.statusCode = error.response.status;
                 } else {
                     result.networkError = true;
                 }
-
             });
 
         return result;
@@ -76,7 +76,8 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios.get(endpoint, this._authHeader)
+        await this._axios
+            .get(endpoint, this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data;
                 result.statusCode = response.status;
@@ -88,16 +89,16 @@ export default class UserManagement extends Common {
                     result.networkError = true;
                 }
             });
-        
+
         return result;
     }
 
     /**
      * Authenticate against Lagom endpoint, return true if successful
-     * @param loginData 
+     * @param loginData
      */
-    async login(loginData: {username: string, password: string}): Promise<APIResponse<boolean>> {
-        this._authHeader = {auth: loginData};
+    async login(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
+        this._authHeader = { auth: loginData };
         const response: APIResponse<Role> = await this.getRole(loginData.username);
 
         let result: APIResponse<boolean> = {
@@ -105,7 +106,7 @@ export default class UserManagement extends Common {
             returnValue: response.returnValue != Role.NONE,
             networkError: response.networkError,
             statusCode: response.statusCode,
-        } 
+        };
 
         store.state.myRole = response.returnValue;
         store.state.myId = loginData.username;
@@ -122,9 +123,10 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios.get(`/users/${username}/role`, this._authHeader)
+        await this._axios
+            .get(`/users/${username}/role`, this._authHeader)
             .then((response: AxiosResponse) => {
-                console.log(response)
+                console.log(response);
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
             })
@@ -136,7 +138,7 @@ export default class UserManagement extends Common {
                 }
             });
 
-        return result;       
+        return result;
     }
 
     async getSpecificUser(username: string): Promise<APIResponse<Student | Lecturer | Admin>> {
@@ -147,7 +149,7 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        // get role 
+        // get role
         let role: APIResponse<Role> = await this.getRole(username);
 
         if (role.networkError) {
@@ -155,7 +157,7 @@ export default class UserManagement extends Common {
             return result;
         } else if (role.statusCode !== 200) {
             result.statusCode = role.statusCode;
-            result.error = role.error
+            result.error = role.error;
             return result;
         }
 
@@ -163,7 +165,8 @@ export default class UserManagement extends Common {
 
         let endpoint = UserManagement._createEndpointByRole(role.returnValue);
 
-        await this._axios.get(`${endpoint}/${username}`, this._authHeader)
+        await this._axios
+            .get(`${endpoint}/${username}`, this._authHeader)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
@@ -180,8 +183,8 @@ export default class UserManagement extends Common {
     }
 
     async getOwnUser(): Promise<APIResponse<Student | Lecturer | Admin>> {
-       const username = store.state.loginData.username;
-       return await this.getSpecificUser(username);
+        const username = store.state.loginData.username;
+        return await this.getSpecificUser(username);
     }
 
     async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
@@ -195,20 +198,22 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios.post(endpoint, message, this._authHeader)
-            .then((reponse : AxiosResponse) => {
+        await this._axios
+            .post(endpoint, message, this._authHeader)
+            .then((reponse: AxiosResponse) => {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
-            }).catch((error: AxiosError) => {
+            })
+            .catch((error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
                 } else {
                     result.networkError = true;
                 }
-                console.log(error)
-            })     
-        
+                console.log(error);
+            });
+
         return result;
     }
 
@@ -222,71 +227,73 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios.put(`${endpoint}/${user.username}`, user, this._authHeader)
-            .then((response : AxiosResponse) => {
+        await this._axios
+            .put(`${endpoint}/${user.username}`, user, this._authHeader)
+            .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
-            }).catch((error: AxiosError) => {
+            })
+            .catch((error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
                 } else {
                     result.networkError = true;
                 }
-                console.log(error)
-            })      
-        
-        return result;       
+                console.log(error);
+            });
+
+        return result;
     }
 
     static _createMessage(user: Student | Lecturer | Admin, authUser: Account) {
         let message;
-        switch(user.role){
+        switch (user.role) {
             case Role.STUDENT: {
                 message = {
                     authUser: authUser,
-                    student: user as Student
-                }
+                    student: user as Student,
+                };
                 break;
             }
             case Role.LECTURER: {
                 message = {
                     authUser: authUser,
-                    lecturer: user as Lecturer
-                }
+                    lecturer: user as Lecturer,
+                };
                 break;
             }
             case Role.ADMIN: {
                 message = {
                     authUser: authUser,
-                    admin: user as Admin
-                }
+                    admin: user as Admin,
+                };
                 break;
             }
             case Role.NONE: {
-                new Error("Endpoint undefined")
+                new Error("Endpoint undefined");
             }
         }
         return message;
     }
 
-    static _createEndpointByRole(role: Role) : string {
+    static _createEndpointByRole(role: Role): string {
         let endpoint = "/users";
-        switch(role){
+        switch (role) {
             case Role.STUDENT: {
-                endpoint += "/students"
+                endpoint += "/students";
                 break;
             }
             case Role.LECTURER: {
-                endpoint += "/lecturers"
+                endpoint += "/lecturers";
                 break;
             }
             case Role.ADMIN: {
-                endpoint += "/admins"
+                endpoint += "/admins";
                 break;
             }
             case Role.NONE: {
-                new Error("Endpoint undefined")
+                new Error("Endpoint undefined");
             }
         }
         return endpoint;

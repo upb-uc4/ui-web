@@ -141,6 +141,11 @@
         "html-whitespace-sensitivity": "ignore",
         "quoteProps": "consistent"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint"
+        }
+    },
     "browserslist": [
         "> 1%",
         "last 2 versions",

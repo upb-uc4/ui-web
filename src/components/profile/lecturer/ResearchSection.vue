@@ -1,5 +1,5 @@
 <template>
-    <section @keydown.esc="cancelEdit" class="border-t-2 py-8 border-gray-400">
+    <section class="border-t-2 py-8 border-gray-400" @keydown.esc="cancelEdit">
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">
@@ -16,19 +16,12 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Research Area</label>
-                    <input :readonly="!isEditing"
-                           type="text"
-                           v-model="editedResearchArea"
-                           class="w-full input-text form-input">
+                    <input v-model="editedResearchArea" :readonly="!isEditing" type="text" class="w-full input-text form-input" />
                 </div>
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Description</label>
-                    <textarea
-                            :readonly="!isEditing"
-                            v-model="editedDescription"
-                            rows="3"
-                            class="w-full input-text form-textarea"/>
+                    <textarea v-model="editedDescription" :readonly="!isEditing" rows="3" class="w-full input-text form-textarea" />
                 </div>
             </div>
         </div>
@@ -36,12 +29,12 @@
 </template>
 
 <script lang="ts">
-    import {ref} from "vue";
+    import { ref } from "vue";
 
     export default {
         props: ["description", "researchArea"],
         emits: ["save", "update:researchArea", "update:freeText"],
-        setup(props: any, {emit}: any) {
+        setup(props: any, { emit }: any) {
             const editedDescription = ref(props.description);
             const editedResearchArea = ref(props.researchArea);
             const isEditing = ref(false);
@@ -62,14 +55,12 @@
 
             function save() {
                 isEditing.value = false;
-                emit('update:freeText', editedDescription.value);
-                emit('update:researchArea', editedResearchArea.value);
+                emit("update:freeText", editedDescription.value);
+                emit("update:researchArea", editedResearchArea.value);
                 emit("save");
             }
 
-            return {isEditing, edit, cancelEdit, save,
-                editedResearchArea, editedDescription};
+            return { isEditing, edit, cancelEdit, save, editedResearchArea, editedDescription };
         },
-
-    }
+    };
 </script>
