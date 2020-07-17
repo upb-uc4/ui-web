@@ -5,9 +5,7 @@
             <public-profile v-else />
         </template>
         <template #fallback>
-            <p class="text-center text-lg pt-20">
-                Loading Profile...
-            </p>
+            <loading-component/>
         </template>
     </suspense>
 </template>
@@ -17,11 +15,13 @@
     import PublicProfile from "../../views/common/PublicProfile.vue";
     import { store } from "@/store/store";
     import { Role } from "@/entities/Role";
+    import LoadingComponent from "../../components/loading/Spinner.vue";
 
     export default {
         components: {
             PrivateProfile,
             PublicProfile,
+            LoadingComponent
         },
         beforeRouteEnter(_from: any, _to: any, next: any) {
             const myRole = store.state.myRole;
