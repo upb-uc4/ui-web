@@ -48,7 +48,7 @@
                                 placeholder="Username"
                                 v-model="account.user.username"
                                 :readonly="editMode">
-                            <p v-if="hasError('username')" class="text-red-600 ml-1 mt-1">{{ showError('username') }}</p>
+                            <p v-if="hasError('username')" class="error-message">{{ showError('username') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
@@ -58,7 +58,7 @@
                                 placeholder="example@mail.com"
 								v-model="account.user.email"
                                 >
-                            <p v-if="hasError('email')" class="text-red-600 ml-1 mt-1">{{ showError('email') }}</p>
+                            <p v-if="hasError('email')" class="error-message">{{ showError('email') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col" v-if="!editMode">
                             <label for="password" class="text-gray-700 text-md font-medium mb-3">
@@ -69,7 +69,7 @@
                                  :class="{error: hasError('password')}"
                                 placeholder="Password"
                                 v-model="account.authUser.password">
-                            <p v-if="hasError('password')" class="text-red-600 ml-1 mt-1">{{ showError('password') }}</p>
+                            <p v-if="hasError('password')" class="error-message">{{ showError('password') }}</p>
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                                         placeholder="Firstname"
 										v-model="account.user.firstName"
                                         >
-                                    <p v-if="hasError('firstName')" class="text-red-600 ml-1 mt-1">{{ showError('firstName') }}</p>
+                                    <p v-if="hasError('firstName')" class="error-message">{{ showError('firstName') }}</p>
                                 </div>
                                 <div class="w-full pl-2 flex-col">
                                     <label class="text-gray-700 text-sm">Lastname</label>
@@ -107,7 +107,7 @@
                                         placeholder="Lastname"
 										v-model="account.user.lastName"
                                         >
-                                    <p v-if="hasError('lastName')" class="text-red-600 ml-1 mt-1">{{ showError('lastName') }}</p>
+                                    <p v-if="hasError('lastName')" class="error-message">{{ showError('lastName') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Birthdate
                             </label>
-                            <p v-if="hasError('birthDate')" class="text-red-600 ml-1 mt-1">{{ showError('birthDate') }}</p>
+                            <p v-if="hasError('birthDate')" class="error-message">{{ showError('birthDate') }}</p>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2 flex-col">
                                     <label class="text-gray-700 text-sm">Day</label>
@@ -147,7 +147,7 @@
                                 <label class="text-gray-700 text-md font-medium mb-3">
                                     Adress 
                                 </label>
-                                <p v-if="hasError('address')" class="text-red-600 ml-1 mt-1">{{ showError('address') }}</p>
+                                <p v-if="hasError('address')" class="error-message">{{ showError('address') }}</p>
                                 <div class="w-full flex flex-col">
                                     <label class="text-gray-700 text-sm">Country</label>
                                     <select class="w-1/2 mb-4 form-select input-select"
@@ -157,7 +157,7 @@
                                         <option :value="''" >Select a Country</option>
                                         <option v-for="country in countries" :key="country">{{ country }}</option>
                                     </select>
-                                    <p v-if="hasError('country')" class="text-red-600 ml-1 mt-1">{{ showError('country') }}</p>
+                                    <p v-if="hasError('country')" class="error-message">{{ showError('country') }}</p>
                                 </div>
                             <div class="flex flex-row ">
                                 <div class="w-full pr-2 mb-4 flex flex-col">
@@ -167,7 +167,7 @@
                                         :class="{error: hasError('street')}"
                                         placeholder="Street"
 										v-model="account.user.address.street">
-                                    <p v-if="hasError('street')" class="text-red-600 ml-1 mt-1">{{ showError('street') }}</p>
+                                    <p v-if="hasError('street')" class="error-message">{{ showError('street') }}</p>
                                 </div>
                                 <div class="pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Number</label>
@@ -176,7 +176,7 @@
                                         :class="{error: hasError('houseNumber')}"
                                         placeholder="Number"
 										v-model="account.user.address.houseNumber">
-                                    <p v-if="hasError('houseNumber')" class="text-red-600 ml-1 mt-1">{{ showError('houseNumber') }}</p>
+                                    <p v-if="hasError('houseNumber')" class="error-message">{{ showError('houseNumber') }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-row ">
@@ -187,7 +187,7 @@
                                         :class="{error: hasError('zipCode')}"
                                         placeholder="Zip Code"
 										v-model="account.user.address.zipCode">
-                                    <p v-if="hasError('zipCode')" class="text-red-600 ml-1 mt-1">{{ showError('zipCode') }}</p>
+                                    <p v-if="hasError('zipCode')" class="error-message">{{ showError('zipCode') }}</p>
                                 </div>
                                  <div class="w-full pl-2 flex flex-col">
                                  <label class="text-gray-700 text-sm">City</label>
@@ -196,7 +196,7 @@
                                         :class="{error: hasError('city')}"
                                         placeholder="City"
 										v-model="account.user.address.city">
-                                    <p v-if="hasError('city')" class="text-red-600 ml-1 mt-1">{{ showError('city') }}</p>
+                                    <p v-if="hasError('city')" class="error-message">{{ showError('city') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -220,7 +220,7 @@
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
 								v-model="account.lecturer.freeText">
                             </textarea>
-                            <p v-if="hasError('freeText')" class="text-red-600 ml-1 mt-1">{{ showError('freeText') }}</p>
+                            <p v-if="hasError('freeText')" class="error-message">{{ showError('freeText') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research (optional)</label>
@@ -229,7 +229,7 @@
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
 								v-model="account.lecturer.researchArea">>
                             </textarea>
-                            <p v-if="hasError('researchArea')" class="text-red-600 ml-1 mt-1">{{ showError('researchArea') }}</p>
+                            <p v-if="hasError('researchArea')" class="error-message">{{ showError('researchArea') }}</p>
                         </div>
                     </div>
 				</div>
@@ -253,7 +253,7 @@
                                                 :class="{error: hasError('immatriculationStatus')}"
                                                 placeholder="Immatriculation Status"
                                                 v-model="account.student.immatriculationStatus">
-                                    <p v-if="hasError('immatriculationStatus')" class="text-red-600 ml-1 mt-1">{{ showError('immatriculationStatus') }}</p>
+                                    <p v-if="hasError('immatriculationStatus')" class="error-message">{{ showError('immatriculationStatus') }}</p>
                                 </div>
                                  <div class="w-1/4 flex flex-col pl-2">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Matriculation-ID</label>
@@ -262,7 +262,7 @@
                                                 :class="{error: hasError('matriculationId')}"
                                                 placeholder="Matriculation-ID"
                                                 v-model="account.student.matriculationId">
-                                    <p v-if="hasError('matriculationId')" class="text-red-600 ml-1 mt-1">{{ showError('matriculationId') }}</p>
+                                    <p v-if="hasError('matriculationId')" class="error-message">{{ showError('matriculationId') }}</p>
                                  </div>
                             </div>
                         </div>
@@ -272,7 +272,7 @@
                                 <div class="w-1/2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Fields of Study</label>
                                     <multi-select :inputList="fieldsOfStudy" :preSelection="account.student.fieldsOfStudy" placeholder="Select a Field of Study" v-on:changed="updateFieldsOfStudy"/>
-                                    <p v-if="hasError('fieldsOfStudy')" class="text-red-600 ml-1 mt-1">{{ showError('fieldsOfStudy') }}</p>
+                                    <p v-if="hasError('fieldsOfStudy')" class="error-message">{{ showError('fieldsOfStudy') }}</p>
                                 </div>
 								<div class="w-1/4 pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
@@ -281,7 +281,7 @@
                                         :class="{error: hasError('semesterCount')}"
                                         placeholder="Semester Count"
 										v-model="account.student.semesterCount">
-                                    <p v-if="hasError('semesterCount')" class="text-red-600 ml-1 mt-1">{{ showError('semesterCount') }}</p>
+                                    <p v-if="hasError('semesterCount')" class="error-message">{{ showError('semesterCount') }}</p>
                                 </div>
                             </div>
                         </div>
