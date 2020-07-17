@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="w-full flex flex-row items-center" v-for="index in output.length" :key="index">
-            <select class="w-4/5 mr-1 my-2 input-select form-select"
+            <select class="w-4/5 mr-1 input-select form-select"  
+                :class="{'mb-2' : index !== output.length}"
                 v-model="output[index-1]"
                 @change="addValue($event.target.value,index-1)"
             >
@@ -12,10 +13,11 @@
 
                 <option v-for="field in unchosenValues" :key="field">{{ field }}</option>
             </select>
-            <div class="w-1/6 items-center justify-center">
+            <div class="w-1/6 items-center justify-center" 
+                :class="{'mb-2' : index !== output.length}">
                 <button v-if="output[index-1] != ''" @click="removeValue(index-1)" 
                 title="Remove Selected Field Of Study"
-                class="w-1/2 m-1 btn-icon-red"> 
+                class="w-1/2 btn-icon-red"> 
                     <i class="inline far fa-trash-alt text-lg"></i>
                 </button>
             </div>

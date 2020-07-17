@@ -115,33 +115,8 @@
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Birthdate
                             </label>
+                            <birth-date-picker v-model:year="account.birthDate.year" v-model:month="account.birthDate.month" v-model:day="account.birthDate.day"/>
                             <p v-if="hasError('birthDate')" class="error-message">{{ showError('birthDate') }}</p>
-                            <div class="flex flex-row ">
-                                <div class="w-full pr-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Day</label>
-                                    <input type="number" id="day" name="day"
-                                        class="w-full form-input input-text"
-                                        placeholder="DD"
-										v-model="account.birthDate.day"
-                                        >
-                                </div> 
-								<div class="w-full px-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Month</label>
-                                    <input type="number" id="month" name="month"
-                                        class="w-full form-input input-text"
-                                        placeholder="MM"
-										v-model="account.birthDate.month"
-                                        >
-                                </div>
-								<div class="w-full pl-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Year</label>
-                                    <input type="number" id="year" name="year"
-                                        class="w-full form-input input-text"
-                                        placeholder="YYYY"
-										v-model="account.birthDate.year"
-                                        >
-                                </div>
-                            </div>
                         </div>
                         <div class="mb-4 flex flex-col">
                                 <label class="text-gray-700 text-md font-medium mb-3">
@@ -365,12 +340,14 @@ import useErrorHandler from '@/use/ErrorHandler';
 import ValidationResponseHandler from '../../use/ValidationResponseHandler';
 import GenericResponseHandler from "@/use/GenericResponseHandler"
 import MultiSelect from "@/components/MultiSelect.vue"
+import BirthDatePicker from "@/components/BirthDatePicker.vue"
 
 export default {
     name: "AdminCreateAccountForm",
     components: {
         DeleteAccountModal,
-        MultiSelect
+        MultiSelect,
+        BirthDatePicker
     },
     props: {
         editMode: {
@@ -434,9 +411,6 @@ export default {
             if (response.statusCode !== 200) {
                 alert("User not found")
             } else {
-                //TODO Remove next line when lagom finally manage to send a birthdate
-                result.birthDate = "1996-12-11";
-
                 account.user  = result;
                 initialAccount.user = JSON.parse(JSON.stringify(account.user)) ;
                 let dates = result.birthDate.split("-");
@@ -612,6 +586,7 @@ export default {
 
         function updateAccount() {
             const userManagement: UserManagement = new UserManagement();
+            account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
             var adaptedUser: Student | Lecturer | Admin = assembleAccount();
             userManagement.updateUser(adaptedUser).then( (response) => {
                 if(response) {
