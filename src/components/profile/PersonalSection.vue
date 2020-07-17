@@ -25,7 +25,7 @@
                 </div>
                 <div class="lg:w-1/2 mb-6 flex flex-col lg:pr-8">
                     <label class="text-gray-700 text-md font-medium mb-3">Date of Birth</label>
-                    <input type="text" readonly :value="birthDate" class="w-full input-text form-input" />
+                    <input type="text" readonly :value="shownBirthDate" class="w-full input-text form-input" />
                 </div>
             </div>
         </div>
@@ -34,11 +34,15 @@
 
 <script lang="ts">
     import { ref, reactive } from "vue";
+    import { Month } from "@/entities/Month.ts"
 
     export default {
         props: ["firstName", "lastName", "birthDate"],
         emits: ["save", "update:firstName", "update:lastName"],
         setup(props: any, { emit }: any) {
+            let birthDateDates = props.birthDate.split("-");
+            let shownBirthDate = birthDateDates[2] + ". " + Object.values(Month)[parseInt(birthDateDates[1])-1] + " " + birthDateDates[0];
+
             const modification = reactive({
                 firstName: props.firstName,
                 lastName: props.lastName,
@@ -66,7 +70,7 @@
                 emit("save");
             }
 
-            return { isEditing, edit, cancelEdit, save, modification };
+            return { isEditing, edit, cancelEdit, save, modification, shownBirthDate};
         },
     };
 </script>
