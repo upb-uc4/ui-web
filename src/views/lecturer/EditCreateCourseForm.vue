@@ -29,7 +29,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <p v-if="hasError('courseType')" class="text-red-600 ml-1 mt-1">{{ showError('courseType') }}</p>
+                            <p v-if="hasError('courseType')" class="error-message">{{ showError('courseType') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
@@ -37,7 +37,7 @@
                                    class="w-full form-input input-text"
                                    :class="{error:hasError('courseName')}"
                                    placeholder="Course Name">
-                            <p v-if="hasError('courseName')" class="text-red-600 ml-1 mt-1">{{ showError('courseName') }}</p>
+                            <p v-if="hasError('courseName')" class="error-message">{{ showError('courseName') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
@@ -45,7 +45,7 @@
                                 <option disabled :value="''">Select a Language</option>
                                 <option v-for="language in languages" :key="language">{{ language }}</option>
                             </select>
-                            <p v-if="hasError('courseLanguage')" class="text-red-600 ml-1 mt-1">{{ showError('courseLanguage') }}</p>
+                            <p v-if="hasError('courseLanguage')" class="error-message">{{ showError('courseLanguage') }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="description" class="text-gray-700 text-md font-medium mb-3">
@@ -58,7 +58,7 @@
                                 :class="{error:hasError('courseDescription')}"
                                 v-model="course.courseDescription" placeholder="Add an optional description.">
                             </textarea>
-                            <p v-if="hasError('courseDescription')" class="text-red-600 ml-1 mt-1">{{ showError('courseDescription') }}</p>
+                            <p v-if="hasError('courseDescription')" class="error-message">{{ showError('courseDescription') }}</p>
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                             <input type="number" name="maxParticipants" id="limit" min="0" max="999" class="w-full form-input input-text"
                                 :class="{error:hasError('maxParticipants')}"
                                 v-model="course.maxParticipants">
-                            <p v-if="hasError('maxParticipants')" class="text-red-600 ml-1 mt-1">{{ showError('maxParticipants') }}</p>
+                            <p v-if="hasError('maxParticipants')" class="error-message">{{ showError('maxParticipants') }}</p>
                         </div>
                     </div>
                 </div>
@@ -98,14 +98,14 @@
                             <input type="text" readonly name="startDate" id="start" v-model="course.startDate"
                                     class="w-full form-input input-text"
                                     :class="{error:hasError('startDate')}">
-                            <p v-if="hasError('startDate')" class="text-red-600 ml-1 mt-1">{{ showError('startDate') }}</p>
+                            <p v-if="hasError('startDate')" class="error-message">{{ showError('startDate') }}</p>
                         </div>
                         <div class="w-1/2 mb-4 flex flex-col">
                             <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
                             <input type="text" readonly name="endDate" id="end" v-model="course.endDate"
                                     class="w-full form-input input-text"
                                     :class="{error:hasError('endDate')}">
-                            <p v-if="hasError('endDate')" class="text-red-600 ml-1 mt-1">{{ showError('endDate') }}</p>
+                            <p v-if="hasError('endDate')" class="error-message">{{ showError('endDate') }}</p>
                         </div>
                     </div>
                 </div>
