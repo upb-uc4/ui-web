@@ -626,71 +626,27 @@
                 return newUser;
             }
 
-            function isValid() {
-                if (
-                    account.user.role == Role.NONE ||
-                    account.user.username == "" ||
-                    account.user.email == "" ||
-                    account.authUser.password == "" ||
-                    account.user.firstName == "" ||
-                    account.user.lastName == "" ||
-                    account.birthDate.day == "" ||
-                    account.birthDate.month == "" ||
-                    account.birthDate.year == "" ||
-                    account.user.address.country == "Country" ||
-                    account.user.address.street == "" ||
-                    account.user.address.houseNumber == "" ||
-                    account.user.address.zipCode == "" ||
-                    account.user.address.city == ""
-                ) {
-                    return false;
-                }
-
-                if (account.user.role == Role.STUDENT) {
-                    //account.student.semesterCount can have typeof String due to a bug in vue, if the number input field is empty
-                    if (
-                        account.student.immatriculationStatus == "" ||
-                        account.student.matriculationId == "" ||
-                        account.student.semesterCount < 0 ||
-                        typeof account.student.semesterCount != "number" ||
-                        account.student.fieldsOfStudy.length == 0
-                    ) {
-                        return false;
-                    }
-                }
-
-                //For the Lecturer, there cannot be any invalid inputs as the inputs are optional at this point.
-                //Admin has no additional Inputs
-                return true;
-            }
-
             async function createAccount() {
-                if (isValid()) {
-                    const userManagement: UserManagement = new UserManagement();
-                    account.authUser.username = account.user.username;
-                    account.authUser.role = account.user.role;
-                    account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
+                const userManagement: UserManagement = new UserManagement();
+                account.authUser.username = account.user.username;
+                account.authUser.role = account.user.role;
+                account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
 
-                    var newUser: Student | Lecturer | Admin = assembleAccount();
+                var newUser: Student | Lecturer | Admin = assembleAccount();
 
-                    // delete old errors
-                    errors.length = 0;
-                    const response = await userManagement.createUser(account.authUser, newUser);
-                    const handler = new ValidationResponseHandler();
-                    success.value = handler.handleReponse(response);
-                    emit("update:success", success.value);
+                // delete old errors
+                errors.length = 0;
+                const response = await userManagement.createUser(account.authUser, newUser);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
 
-                    if (success.value) {
-                        back();
-                    } else {
-                        errors.push(...handler.errorList);
-                        //TODO: change the following line?
-                        this.$forceUpdate();
-                    }
+                if (success.value) {
+                    back();
                 } else {
-                    console.log("Error: Input Validation Failed!");
-                    success.value = false;
-                    emit("update:success", success.value);
+                    errors.push(...handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
                 }
             }
 
@@ -736,7 +692,6 @@
                 isStudent,
                 fieldsOfStudy,
                 hasInput,
-                isValid,
                 back,
                 createAccount,
                 updateAccount,
