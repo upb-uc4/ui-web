@@ -34,8 +34,8 @@
                                     </label>
                                 </div>
                             </div>
-                            <p v-if="errorHandler.hasError('courseType')" class="error-message">
-                                {{ errorHandler.showError("courseType") }}
+                            <p v-if="errorBag.has('courseType')" class="error-message">
+                                {{ errorBag.get("courseType") }}
                             </p>
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -46,11 +46,11 @@
                                 type="text"
                                 name="courseName"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorHandler.hasError('courseName') }"
+                                :class="{ error: errorBag.has('courseName') }"
                                 placeholder="Course Name"
                             />
-                            <p v-if="errorHandler.hasError('courseName')" class="error-message">
-                                {{ errorHandler.showError("courseName") }}
+                            <p v-if="errorBag.has('courseName')" class="error-message">
+                                {{ errorBag.get("courseName") }}
                             </p>
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -61,13 +61,13 @@
                                 required
                                 name="language"
                                 class="w-full form-select input-select"
-                                :class="{ error: errorHandler.hasError('courseLanguage') }"
+                                :class="{ error: errorBag.has('courseLanguage') }"
                             >
                                 <option disabled :value="''">Select a Language</option>
                                 <option v-for="language in languages" :key="language">{{ language }}</option>
                             </select>
-                            <p v-if="errorHandler.hasError('courseLanguage')" class="error-message">
-                                {{ errorHandler.showError("courseLanguage") }}
+                            <p v-if="errorBag.has('courseLanguage')" class="error-message">
+                                {{ errorBag.get("courseLanguage") }}
                             </p>
                         </div>
                         <div class="mb-4 flex flex-col">
@@ -84,12 +84,12 @@
                                 cols="30"
                                 rows="10"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: errorHandler.hasError('courseDescription') }"
+                                :class="{ error: errorBag.has('courseDescription') }"
                                 placeholder="Add an optional description."
                             >
                             </textarea>
-                            <p v-if="errorHandler.hasError('courseDescription')" class="error-message">
-                                {{ errorHandler.showError("courseDescription") }}
+                            <p v-if="errorBag.has('courseDescription')" class="error-message">
+                                {{ errorBag.get("courseDescription") }}
                             </p>
                         </div>
                     </div>
@@ -115,10 +115,10 @@
                                 min="0"
                                 max="999"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorHandler.hasError('maxParticipants') }"
+                                :class="{ error: errorBag.has('maxParticipants') }"
                             />
-                            <p v-if="errorHandler.hasError('maxParticipants')" class="error-message">
-                                {{ errorHandler.showError("maxParticipants") }}
+                            <p v-if="errorBag.has('maxParticipants')" class="error-message">
+                                {{ errorBag.get("maxParticipants") }}
                             </p>
                         </div>
                     </div>
@@ -143,9 +143,9 @@
                                 readonly
                                 name="startDate"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorHandler.hasError('startDate') }"
+                                :class="{ error: errorBag.has('startDate') }"
                             />
-                            <p v-if="errorHandler.hasError('startDate')" class="error-message">{{ errorHandler.showError("startDate") }}</p>
+                            <p v-if="errorBag.has('startDate')" class="error-message">{{ errorBag.get("startDate") }}</p>
                         </div>
                         <div class="w-1/2 mb-4 flex flex-col">
                             <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
@@ -156,9 +156,9 @@
                                 readonly
                                 name="endDate"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorHandler.hasError('endDate') }"
+                                :class="{ error: errorBag.has('endDate') }"
                             />
-                            <p v-if="errorHandler.hasError('endDate')" class="error-message">{{ errorHandler.showError("endDate") }}</p>
+                            <p v-if="errorBag.has('endDate')" class="error-message">{{ errorBag.get("endDate") }}</p>
                         </div>
                     </div>
                 </div>
@@ -221,7 +221,7 @@
     import CourseManagement from "@/api/CourseManagement";
     import { ref, computed, reactive } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-    import ErrorHandler from "@/use/ErrorHandler";
+    import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
 
@@ -250,7 +250,7 @@
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
-            const errorHandler: ErrorHandler = reactive(new ErrorHandler());
+            const errorBag: ErrorBag = reactive(new ErrorBag());
 
             if (props.editMode) {
                 const courseManagement: CourseManagement = new CourseManagement();
@@ -296,7 +296,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorHandler.replaceErrors(handler.errorList);
+                    errorBag.replaceAllWith(handler.errorList);
                     //TODO: change the following line?
                     this.$forceUpdate();
                 }
@@ -311,7 +311,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorHandler.replaceErrors(handler.errorList);
+                    errorBag.replaceAllWith(handler.errorList);
                     //TODO: change the following line?
                     this.$forceUpdate();
                 }
@@ -365,7 +365,7 @@
                 deleteCourse,
                 confirmDeleteCourse,
                 deleteModal,
-                errorHandler,
+                errorBag: errorBag,
             };
         },
     };
