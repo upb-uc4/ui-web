@@ -665,17 +665,23 @@
                 }
             }
 
-            function updateAccount() {
+            async function updateAccount() {
                 const userManagement: UserManagement = new UserManagement();
                 account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
                 var adaptedUser: Student | Lecturer | Admin = assembleAccount();
-                userManagement.updateUser(adaptedUser).then((response) => {
-                    if (response) {
-                        success.value = true;
-                        emit("update:success", success.value);
-                        back();
-                    }
-                });
+
+                const response = await userManagement.updateUser(adaptedUser);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
+
+                if (success.value) {
+                    back();
+                } else {
+                    errorBag.replaceAllWith(handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
+                }
             }
 
             async function deleteAccount() {
