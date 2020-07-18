@@ -44,7 +44,7 @@
         "random-bigint": "0.0.1",
         "tailwindcss": "^1.4.6",
         "vue": "^3.0.0-beta.18",
-        "vue-property-decorator": "^8.4.2",
+        "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-beta.2",
         "vuex": "^4.0.0-beta.2"
     },
