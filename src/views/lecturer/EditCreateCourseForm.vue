@@ -15,50 +15,9 @@
                 v-model:description="course.courseDescription"
                 :error-bag="errorBag"
             />
+            <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
+            <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
 
-            <restrictions-section
-                v-model:participants-limit="course.maxParticipants"
-                :error-bag="errorBag"
-            />
-
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-md font-medium mb-2">Time</label>
-                        <label class="block text-gray-600">
-                            This section is disabled for now as there is no Vue3 datepicker plugin yet.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3 flex">
-                        <div class="w-1/2 mb-4 mr-12 flex flex-col">
-                            <label for="start" class="text-gray-700 text-md font-medium mb-3">Start Date</label>
-                            <input
-                                id="start"
-                                v-model="course.startDate"
-                                type="text"
-                                readonly
-                                name="startDate"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('startDate') }"
-                            />
-                            <p v-if="errorBag.has('startDate')" class="error-message">{{ errorBag.get("startDate") }}</p>
-                        </div>
-                        <div class="w-1/2 mb-4 flex flex-col">
-                            <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
-                            <input
-                                id="end"
-                                v-model="course.endDate"
-                                type="text"
-                                readonly
-                                name="endDate"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('endDate') }"
-                            />
-                            <p v-if="errorBag.has('endDate')" class="error-message">{{ errorBag.get("endDate") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
@@ -122,12 +81,14 @@
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import BasicsSection from "@/components/course/edit/BasicsSection.vue";
     import RestrictionsSection from "@/components/course/edit/RestrictionsSection.vue";
+    import TimeSection from "@/components/course/edit/TimeSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
             BasicsSection,
             RestrictionsSection,
+            TimeSection,
             DeleteCourseModal,
         },
         props: {
