@@ -8,101 +8,13 @@
         <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
 
         <div>
-
-            <basics-section :error-bag="errorBag"
-                            v-model:course-type="course.courseType"
-                            v-model:course-name="course.courseName"
-                            v-model:course-description="course.courseDescription"
-                            v-model:course-language="course.courseLanguage"/>
-
-
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
-                        <label class="block text-gray-600">
-                            This is some long detailed description which is part towards a better form.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <!-- TODO: create cards for better visual impact -->
-                            <label class="text-gray-700 text-md font-medium mb-3">Type</label>
-                            <div class="flex">
-                                <div v-for="courseType in courseTypes" :key="courseType" class="mr-4">
-                                    <label class="flex items-center">
-                                        <input
-                                            v-model="course.courseType"
-                                            type="radio"
-                                            class="form-radio radio"
-                                            name="type"
-                                            :value="courseType"
-                                        />
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ courseType }}</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <p v-if="errorBag.has('courseType')" class="error-message">
-                                {{ errorBag.get("courseType") }}
-                            </p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <input
-                                id="name"
-                                v-model="course.courseName"
-                                type="text"
-                                name="courseName"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('courseName') }"
-                                placeholder="Course Name"
-                            />
-                            <p v-if="errorBag.has('courseName')" class="error-message">
-                                {{ errorBag.get("courseName") }}
-                            </p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Language</label>
-                            <select
-                                id="language"
-                                v-model="course.courseLanguage"
-                                required
-                                name="language"
-                                class="w-full form-select input-select"
-                                :class="{ error: errorBag.has('courseLanguage') }"
-                            >
-                                <option disabled :value="''">Select a Language</option>
-                                <option v-for="language in languages" :key="language">{{ language }}</option>
-                            </select>
-                            <p v-if="errorBag.has('courseLanguage')" class="error-message">
-                                {{ errorBag.get("courseLanguage") }}
-                            </p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
-                                Description
-                                <span class="text-gray-600 font-normal">
-                                    (Optional)
-                                </span>
-                            </label>
-                            <textarea
-                                id="description"
-                                v-model="course.courseDescription"
-                                name="description"
-                                cols="30"
-                                rows="10"
-                                class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: errorBag.has('courseDescription') }"
-                                placeholder="Add an optional description."
-                            >
-                            </textarea>
-                            <p v-if="errorBag.has('courseDescription')" class="error-message">
-                                {{ errorBag.get("courseDescription") }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <basics-section
+                v-model:name="course.courseName"
+                v-model:type="course.courseType"
+                v-model:language="course.courseLanguage"
+                v-model:description="course.courseDescription"
+                :error-bag="errorBag"
+            />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">

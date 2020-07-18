@@ -11,16 +11,10 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Type</label>
                     <div class="flex">
-                        <div v-for="type in availableCourseTypes" :key="type" class="mr-4">
+                        <div v-for="availableType in availableCourseTypes" :key="availableType" class="mr-4">
                             <label class="flex items-center">
-                                <input
-                                    v-model="courseType"
-                                    type="radio"
-                                    class="form-radio radio"
-                                    name="type"
-                                    :value="type"
-                                />
-                                <span class="ml-2 text-gray-700 text-md font-medium">{{ type }}</span>
+                                <input v-model="courseType" type="radio" class="form-radio radio" :value="availableType" />
+                                <span class="ml-2 text-gray-700 text-md font-medium">{{ availableType }}</span>
                             </label>
                         </div>
                     </div>
@@ -29,12 +23,10 @@
                     </p>
                 </div>
                 <div class="mb-4 flex flex-col">
-                    <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
+                    <label class="text-gray-700 text-md font-medium mb-3">Name</label>
                     <input
-                        id="name"
                         v-model="courseName"
                         type="text"
-                        name="courseName"
                         class="w-full form-input input-text"
                         :class="{ error: errorBag.has('courseName') }"
                         placeholder="Course Name"
@@ -46,31 +38,29 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Language</label>
                     <select
-                        id="language"
                         v-model="courseLanguage"
-                        required
-                        name="language"
                         class="w-full form-select input-select"
+                        required
                         :class="{ error: errorBag.has('courseLanguage') }"
                     >
                         <option disabled :value="''">Select a Language</option>
-                        <option v-for="language in availableCourseLanguages" :key="language">{{ language }}</option>
+                        <option v-for="availableLanguage in availableCourseLanguages" :key="availableLanguage">{{
+                            availableLanguage
+                        }}</option>
                     </select>
                     <p v-if="errorBag.has('courseLanguage')" class="error-message">
                         {{ errorBag.get("courseLanguage") }}
                     </p>
                 </div>
                 <div class="mb-4 flex flex-col">
-                    <label for="description" class="text-gray-700 text-md font-medium mb-3">
+                    <label class="text-gray-700 text-md font-medium mb-3">
                         Description
                         <span class="text-gray-600 font-normal">
                             (Optional)
                         </span>
                     </label>
                     <textarea
-                        id="description"
                         v-model="courseDescription"
-                        name="description"
                         cols="30"
                         rows="10"
                         class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
@@ -87,22 +77,47 @@
 </template>
 
 <script lang="ts">
-    import ErrorBag from "../../../use/ErrorBag";
-    import {CourseType} from "@/entities/CourseType";
-    import {Language} from "@/entities/Language";
+    import ErrorBag from "@/use/ErrorBag";
+    import { CourseType } from "@/entities/CourseType";
+    import { Language } from "@/entities/Language";
+    import { useModelWrapper } from "@/use/ModelWrapper";
 
     export default {
         name: "BasicsSection",
         props: {
             errorBag: {
                 required: true,
-                type: ErrorBag
+                type: ErrorBag,
+            },
+            type: {
+                required: true,
+                type: String,
+            },
+            name: {
+                required: true,
+                type: String,
+            },
+            language: {
+                required: true,
+                type: String,
+            },
+            description: {
+                required: true,
+                type: String,
             },
         },
-        setup(props: any){
+        setup(props: any, { emit }: any) {
             const availableCourseLanguages = Object.values(Language).filter((e) => e != Language.NONE);
             const availableCourseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
-            return {availableCourseLanguages, availableCourseTypes};
-        }
-    }
+
+            return {
+                availableCourseLanguages,
+                availableCourseTypes,
+                courseType: useModelWrapper(props, emit, "type"),
+                courseName: useModelWrapper(props, emit, "name"),
+                courseLanguage: useModelWrapper(props, emit, "language"),
+                courseDescription: useModelWrapper(props, emit, "description"),
+            };
+        },
+    };
 </script>
