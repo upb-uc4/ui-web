@@ -36,9 +36,4 @@ export default class ErrorBag {
     isNotEmpty(): boolean {
         return !this.isEmpty();
     }
-
-    showError(name: string): string {
-        const result = this.errors.filter((e) => e.name == name)[0]?.reason;
-        return result ? result : "";
-    }
 }
