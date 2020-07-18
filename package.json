@@ -7,6 +7,7 @@
         "build": "vue-cli-service build",
         "test:unit": "vue-cli-service test:unit",
         "lint": "vue-cli-service lint",
+        "lint-staged": "lint-staged",
         "pretty-quick": "pretty-quick",
         "test": "jest",
         "//": "Docker scripts from: https://github.com/expertly-simple/mrm-task-npm-docker",
@@ -65,16 +66,17 @@
         "babel-eslint": "^10.1.0",
         "cross-conf-env": "^1.1.2",
         "eslint": "^6.7.2",
-        "eslint-plugin-vue": "^7.0.0-alpha.0",
-        "jest-serializer-vue": "^2.0.2",
-        "npm-run-all": "^4.1.5",
-        "typescript": "~3.9.3",
-        "vue-cli-plugin-vue-next": "~0.1.3",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-vue": "^7.0.0-alpha.0",
         "husky": "^4.2.5",
+        "jest-serializer-vue": "^2.0.2",
+        "lint-staged": "^10.2.11",
+        "npm-run-all": "^4.1.5",
         "prettier": "^2.0.5",
-        "pretty-quick": "^2.0.1"
+        "pretty-quick": "^2.0.1",
+        "typescript": "~3.9.3",
+        "vue-cli-plugin-vue-next": "~0.1.3"
     },
     "eslintConfig": {
         "root": true,
@@ -143,12 +145,15 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm run lint"
+            "pre-commit": "lint-staged"
         }
     },
     "browserslist": [
         "> 1%",
         "last 2 versions",
         "not dead"
-    ]
+    ],
+    "lint-staged": {
+        "*": "vue-cli-service lint"
+    }
 }
