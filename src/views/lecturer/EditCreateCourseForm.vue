@@ -159,12 +159,10 @@
             },
         },
 
-        async setup(props: any, { emit }) {
+        async setup(props: any, { emit }: any) {
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
-            let languages = Object.values(Language).filter((e) => e != Language.NONE);
-            let courseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
             let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
             let deleteModal = ref();
@@ -276,8 +274,6 @@
                 course,
                 initialCourseState,
                 heading,
-                languages,
-                courseTypes,
                 success,
                 hasInput,
                 isValid,
