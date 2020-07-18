@@ -280,50 +280,38 @@
             });
 
             async function createCourse() {
-                if (hasInput.value && isValid.value) {
-                    const courseManagement: CourseManagement = new CourseManagement();
+                const courseManagement: CourseManagement = new CourseManagement();
 
-                    // delete old errors
-                    errors.length = 0;
-                    const response = await courseManagement.createCourse(course.value);
-                    const handler = new ValidationResponseHandler();
-                    success.value = handler.handleReponse(response);
-                    emit("update:success", success.value);
+                // delete old errors
+                errors.length = 0;
+                const response = await courseManagement.createCourse(course.value);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
 
-                    if (success.value) {
-                        back();
-                    } else {
-                        errors.push(...handler.errorList);
-                        //TODO: change the following line?
-                        this.$forceUpdate();
-                    }
+                if (success.value) {
+                    back();
                 } else {
-                    success.value = false;
-                    emit("update:success", success.value);
-                    console.log("Error: Input Validation Failed!");
+                    errors.push(...handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
                 }
             }
 
             async function updateCourse() {
-                if (hasInput.value && isValid.value) {
-                    // delete old errors
-                    errors.length = 0;
-                    const response = await courseManagement.updateCourse(course.value);
-                    const handler = new ValidationResponseHandler();
-                    success.value = handler.handleReponse(response);
-                    emit("update:success", success.value);
+                // delete old errors
+                errors.length = 0;
+                const response = await courseManagement.updateCourse(course.value);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
 
-                    if (success.value) {
-                        back();
-                    } else {
-                        errors.push(...handler.errorList);
-                        //TODO: change the following line?
-                        this.$forceUpdate();
-                    }
+                if (success.value) {
+                    back();
                 } else {
-                    success.value = false;
-                    emit("update:success", success.value);
-                    console.log("Error: Input Validation Failed!");
+                    errors.push(...handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
                 }
             }
 
