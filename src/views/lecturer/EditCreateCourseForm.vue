@@ -8,6 +8,14 @@
         <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
 
         <div>
+
+            <basics-section :error-bag="errorBag"
+                            v-model:course-type="course.courseType"
+                            v-model:course-name="course.courseName"
+                            v-model:course-description="course.courseDescription"
+                            v-model:course-language="course.courseLanguage"/>
+
+
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
                     <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
@@ -224,10 +232,12 @@
     import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import BasicsSection from "@/components/course/edit/BasicsSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
+            BasicsSection,
             DeleteCourseModal,
         },
         props: {
