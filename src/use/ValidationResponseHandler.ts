@@ -39,7 +39,6 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
                 return false;
             }
             case 422: {
-                alert("Validation error!");
                 console.log(response);
                 console.log(this.errorList);
                 return false;
