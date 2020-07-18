@@ -34,7 +34,9 @@
                                     </label>
                                 </div>
                             </div>
-                            <p v-if="hasError('courseType')" class="error-message">{{ showError("courseType") }}</p>
+                            <p v-if="errorHandler.hasError('courseType')" class="error-message">
+                                {{ errorHandler.showError("courseType") }}
+                            </p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
@@ -44,10 +46,12 @@
                                 type="text"
                                 name="courseName"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('courseName') }"
+                                :class="{ error: errorHandler.hasError('courseName') }"
                                 placeholder="Course Name"
                             />
-                            <p v-if="hasError('courseName')" class="error-message">{{ showError("courseName") }}</p>
+                            <p v-if="errorHandler.hasError('courseName')" class="error-message">
+                                {{ errorHandler.showError("courseName") }}
+                            </p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Language</label>
@@ -57,12 +61,14 @@
                                 required
                                 name="language"
                                 class="w-full form-select input-select"
-                                :class="{ error: hasError('courseLanguage') }"
+                                :class="{ error: errorHandler.hasError('courseLanguage') }"
                             >
                                 <option disabled :value="''">Select a Language</option>
                                 <option v-for="language in languages" :key="language">{{ language }}</option>
                             </select>
-                            <p v-if="hasError('courseLanguage')" class="error-message">{{ showError("courseLanguage") }}</p>
+                            <p v-if="errorHandler.hasError('courseLanguage')" class="error-message">
+                                {{ errorHandler.showError("courseLanguage") }}
+                            </p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label for="description" class="text-gray-700 text-md font-medium mb-3">
@@ -78,11 +84,13 @@
                                 cols="30"
                                 rows="10"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: hasError('courseDescription') }"
+                                :class="{ error: errorHandler.hasError('courseDescription') }"
                                 placeholder="Add an optional description."
                             >
                             </textarea>
-                            <p v-if="hasError('courseDescription')" class="error-message">{{ showError("courseDescription") }}</p>
+                            <p v-if="errorHandler.hasError('courseDescription')" class="error-message">
+                                {{ errorHandler.showError("courseDescription") }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -107,9 +115,11 @@
                                 min="0"
                                 max="999"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('maxParticipants') }"
+                                :class="{ error: errorHandler.hasError('maxParticipants') }"
                             />
-                            <p v-if="hasError('maxParticipants')" class="error-message">{{ showError("maxParticipants") }}</p>
+                            <p v-if="errorHandler.hasError('maxParticipants')" class="error-message">
+                                {{ errorHandler.showError("maxParticipants") }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -133,9 +143,9 @@
                                 readonly
                                 name="startDate"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('startDate') }"
+                                :class="{ error: errorHandler.hasError('startDate') }"
                             />
-                            <p v-if="hasError('startDate')" class="error-message">{{ showError("startDate") }}</p>
+                            <p v-if="errorHandler.hasError('startDate')" class="error-message">{{ errorHandler.showError("startDate") }}</p>
                         </div>
                         <div class="w-1/2 mb-4 flex flex-col">
                             <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
@@ -146,9 +156,9 @@
                                 readonly
                                 name="endDate"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('endDate') }"
+                                :class="{ error: errorHandler.hasError('endDate') }"
                             />
-                            <p v-if="hasError('endDate')" class="error-message">{{ showError("endDate") }}</p>
+                            <p v-if="errorHandler.hasError('endDate')" class="error-message">{{ errorHandler.showError("endDate") }}</p>
                         </div>
                     </div>
                 </div>
@@ -209,11 +219,9 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
-    import { Role } from "@/entities/Role";
-    import Course from "@/api/api_models/course_management/Course";
-    import { ref, onMounted, computed, reactive } from "vue";
+    import { ref, computed, reactive } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-    import useErrorHandler from "@/use/ErrorHandler";
+    import ErrorHandler from "@/use/ErrorHandler";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
 
@@ -242,8 +250,7 @@
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
-            let { errorList, hasError, showError } = useErrorHandler();
-            let errors = reactive(errorList);
+            const errorHandler: ErrorHandler = reactive(new ErrorHandler());
 
             if (props.editMode) {
                 const courseManagement: CourseManagement = new CourseManagement();
@@ -281,9 +288,6 @@
 
             async function createCourse() {
                 const courseManagement: CourseManagement = new CourseManagement();
-
-                // delete old errors
-                errors.length = 0;
                 const response = await courseManagement.createCourse(course.value);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
@@ -292,15 +296,13 @@
                 if (success.value) {
                     back();
                 } else {
-                    errors.push(...handler.errorList);
+                    errorHandler.replaceErrors(handler.errorList);
                     //TODO: change the following line?
                     this.$forceUpdate();
                 }
             }
 
             async function updateCourse() {
-                // delete old errors
-                errors.length = 0;
                 const response = await courseManagement.updateCourse(course.value);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
@@ -309,7 +311,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errors.push(...handler.errorList);
+                    errorHandler.replaceErrors(handler.errorList);
                     //TODO: change the following line?
                     this.$forceUpdate();
                 }
@@ -363,8 +365,7 @@
                 deleteCourse,
                 confirmDeleteCourse,
                 deleteModal,
-                hasError,
-                showError,
+                errorHandler,
             };
         },
     };
