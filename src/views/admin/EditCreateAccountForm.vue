@@ -30,7 +30,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <p v-if="hasError('role')" class="error-message">{{ showError("role") }} bla</p>
+                            <p v-if="errorHandler.hasError('role')" class="error-message">{{ errorHandler.showError("role") }} bla</p>
                         </div>
                     </div>
                 </div>
@@ -53,11 +53,11 @@
                                 type="text"
                                 name="Username"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('username') }"
+                                :class="{ error: errorHandler.hasError('username') }"
                                 placeholder="Username"
                                 :readonly="editMode"
                             />
-                            <p v-if="hasError('username')" class="error-message">{{ showError("username") }}</p>
+                            <p v-if="errorHandler.hasError('username')" class="error-message">{{ errorHandler.showError("username") }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
@@ -67,10 +67,10 @@
                                 type="text"
                                 name="email"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('email') }"
+                                :class="{ error: errorHandler.hasError('email') }"
                                 placeholder="example@mail.com"
                             />
-                            <p v-if="hasError('email')" class="error-message">{{ showError("email") }}</p>
+                            <p v-if="errorHandler.hasError('email')" class="error-message">{{ errorHandler.showError("email") }}</p>
                         </div>
                         <div v-if="!editMode" class="mb-4 flex flex-col">
                             <label for="password" class="text-gray-700 text-md font-medium mb-3">
@@ -82,10 +82,10 @@
                                 type="text"
                                 name="password"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('password') }"
+                                :class="{ error: errorHandler.hasError('password') }"
                                 placeholder="Password"
                             />
-                            <p v-if="hasError('password')" class="error-message">{{ showError("password") }}</p>
+                            <p v-if="errorHandler.hasError('password')" class="error-message">{{ errorHandler.showError("password") }}</p>
                         </div>
                     </div>
                 </div>
@@ -113,10 +113,12 @@
                                         type="text"
                                         name="firstName"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('firstName') }"
+                                        :class="{ error: errorHandler.hasError('firstName') }"
                                         placeholder="Firstname"
                                     />
-                                    <p v-if="hasError('firstName')" class="error-message">{{ showError("firstName") }}</p>
+                                    <p v-if="errorHandler.hasError('firstName')" class="error-message">
+                                        {{ errorHandler.showError("firstName") }}
+                                    </p>
                                 </div>
                                 <div class="w-full pl-2 flex-col">
                                     <label class="text-gray-700 text-sm">Lastname</label>
@@ -126,10 +128,12 @@
                                         type="text"
                                         name="lastName"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('lastName') }"
+                                        :class="{ error: errorHandler.hasError('lastName') }"
                                         placeholder="Lastname"
                                     />
-                                    <p v-if="hasError('lastName')" class="error-message">{{ showError("lastName") }}</p>
+                                    <p v-if="errorHandler.hasError('lastName')" class="error-message">
+                                        {{ errorHandler.showError("lastName") }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -142,26 +146,26 @@
                                 v-model:month="account.birthDate.month"
                                 v-model:day="account.birthDate.day"
                             />
-                            <p v-if="hasError('birthDate')" class="error-message">{{ showError("birthDate") }}</p>
+                            <p v-if="errorHandler.hasError('birthDate')" class="error-message">{{ errorHandler.showError("birthDate") }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Adress
                             </label>
-                            <p v-if="hasError('address')" class="error-message">{{ showError("address") }}</p>
+                            <p v-if="errorHandler.hasError('address')" class="error-message">{{ errorHandler.showError("address") }}</p>
                             <div class="w-full flex flex-col">
                                 <label class="text-gray-700 text-sm">Country</label>
                                 <select
                                     id="country"
                                     v-model="account.user.address.country"
                                     class="w-1/2 mb-4 form-select input-select"
-                                    :class="{ error: hasError('country') }"
+                                    :class="{ error: errorHandler.hasError('country') }"
                                     name="country"
                                 >
                                     <option :value="''">Select a Country</option>
                                     <option v-for="country in countries" :key="country">{{ country }}</option>
                                 </select>
-                                <p v-if="hasError('country')" class="error-message">{{ showError("country") }}</p>
+                                <p v-if="errorHandler.hasError('country')" class="error-message">{{ errorHandler.showError("country") }}</p>
                             </div>
                             <div class="flex flex-row">
                                 <div class="w-full pr-2 mb-4 flex flex-col">
@@ -172,10 +176,12 @@
                                         type="text"
                                         name="street"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('street') }"
+                                        :class="{ error: errorHandler.hasError('street') }"
                                         placeholder="Street"
                                     />
-                                    <p v-if="hasError('street')" class="error-message">{{ showError("street") }}</p>
+                                    <p v-if="errorHandler.hasError('street')" class="error-message">
+                                        {{ errorHandler.showError("street") }}
+                                    </p>
                                 </div>
                                 <div class="pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Number</label>
@@ -185,10 +191,12 @@
                                         type="text"
                                         name="number"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('houseNumber') }"
+                                        :class="{ error: errorHandler.hasError('houseNumber') }"
                                         placeholder="Number"
                                     />
-                                    <p v-if="hasError('houseNumber')" class="error-message">{{ showError("houseNumber") }}</p>
+                                    <p v-if="errorHandler.hasError('houseNumber')" class="error-message">
+                                        {{ errorHandler.showError("houseNumber") }}
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex flex-row">
@@ -200,10 +208,12 @@
                                         type="text"
                                         name="zipcode"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('zipCode') }"
+                                        :class="{ error: errorHandler.hasError('zipCode') }"
                                         placeholder="Zip Code"
                                     />
-                                    <p v-if="hasError('zipCode')" class="error-message">{{ showError("zipCode") }}</p>
+                                    <p v-if="errorHandler.hasError('zipCode')" class="error-message">
+                                        {{ errorHandler.showError("zipCode") }}
+                                    </p>
                                 </div>
                                 <div class="w-full pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">City</label>
@@ -213,10 +223,10 @@
                                         type="text"
                                         name="city"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('city') }"
+                                        :class="{ error: errorHandler.hasError('city') }"
                                         placeholder="City"
                                     />
-                                    <p v-if="hasError('city')" class="error-message">{{ showError("city") }}</p>
+                                    <p v-if="errorHandler.hasError('city')" class="error-message">{{ errorHandler.showError("city") }}</p>
                                 </div>
                             </div>
                         </div>
@@ -242,11 +252,11 @@
                                 cols="30"
                                 rows="5"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: hasError('freeText') }"
+                                :class="{ error: errorHandler.hasError('freeText') }"
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
                             >
                             </textarea>
-                            <p v-if="hasError('freeText')" class="error-message">{{ showError("freeText") }}</p>
+                            <p v-if="errorHandler.hasError('freeText')" class="error-message">{{ errorHandler.showError("freeText") }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research (optional)</label>
@@ -257,12 +267,14 @@
                                 cols="30"
                                 rows="3"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: hasError('researchArea') }"
+                                :class="{ error: errorHandler.hasError('researchArea') }"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
                             >
 >
                             </textarea>
-                            <p v-if="hasError('researchArea')" class="error-message">{{ showError("researchArea") }}</p>
+                            <p v-if="errorHandler.hasError('researchArea')" class="error-message">
+                                {{ errorHandler.showError("researchArea") }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -287,11 +299,11 @@
                                         type="text"
                                         name="immatriculationStatus"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('immatriculationStatus') }"
+                                        :class="{ error: errorHandler.hasError('immatriculationStatus') }"
                                         placeholder="Immatriculation Status"
                                     />
-                                    <p v-if="hasError('immatriculationStatus')" class="error-message">
-                                        {{ showError("immatriculationStatus") }}
+                                    <p v-if="errorHandler.hasError('immatriculationStatus')" class="error-message">
+                                        {{ errorHandler.showError("immatriculationStatus") }}
                                     </p>
                                 </div>
                                 <div class="w-1/4 flex flex-col pl-2">
@@ -302,10 +314,12 @@
                                         type="text"
                                         name="matriculationId"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('matriculationId') }"
+                                        :class="{ error: errorHandler.hasError('matriculationId') }"
                                         placeholder="Matriculation-ID"
                                     />
-                                    <p v-if="hasError('matriculationId')" class="error-message">{{ showError("matriculationId") }}</p>
+                                    <p v-if="errorHandler.hasError('matriculationId')" class="error-message">
+                                        {{ errorHandler.showError("matriculationId") }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -320,7 +334,9 @@
                                         placeholder="Select a Field of Study"
                                         @changed="updateFieldsOfStudy"
                                     />
-                                    <p v-if="hasError('fieldsOfStudy')" class="error-message">{{ showError("fieldsOfStudy") }}</p>
+                                    <p v-if="errorHandler.hasError('fieldsOfStudy')" class="error-message">
+                                        {{ errorHandler.showError("fieldsOfStudy") }}
+                                    </p>
                                 </div>
                                 <div class="w-1/4 pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
@@ -330,10 +346,12 @@
                                         type="number"
                                         name="semesterCount"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('semesterCount') }"
+                                        :class="{ error: errorHandler.hasError('semesterCount') }"
                                         placeholder="Semester Count"
                                     />
-                                    <p v-if="hasError('semesterCount')" class="error-message">{{ showError("semesterCount") }}</p>
+                                    <p v-if="errorHandler.hasError('semesterCount')" class="error-message">
+                                        {{ errorHandler.showError("semesterCount") }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -423,7 +441,7 @@
     import Lecturer from "../../api/api_models/user_management/Lecturer";
     import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
     import { Country } from "@/entities/Country";
-    import useErrorHandler from "@/use/ErrorHandler";
+    import ErrorHandler from "@/use/ErrorHandler";
     import ValidationResponseHandler from "../../use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import MultiSelect from "@/components/MultiSelect.vue";
@@ -476,8 +494,7 @@
             let countries = Object.values(Country).filter((e) => e != Country.NONE);
             let deleteModal = ref();
 
-            let { errorList, hasError, showError } = useErrorHandler();
-            let errors = reactive(errorList);
+            const errorHandler: ErrorHandler = reactive(new ErrorHandler());
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -634,8 +651,6 @@
 
                 var newUser: Student | Lecturer | Admin = assembleAccount();
 
-                // delete old errors
-                errors.length = 0;
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
@@ -644,7 +659,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errors.push(...handler.errorList);
+                    errorHandler.replaceErrors(handler.errorList);
                     //TODO: change the following line?
                     this.$forceUpdate();
                 }
@@ -698,8 +713,7 @@
                 deleteAccount,
                 confirmDeleteAccount,
                 deleteModal,
-                hasError,
-                showError,
+                errorHandler,
                 updateFieldsOfStudy,
             };
         },
