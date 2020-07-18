@@ -112,7 +112,6 @@
             const errorBag: ErrorBag = reactive(new ErrorBag());
 
             if (props.editMode) {
-                const courseManagement: CourseManagement = new CourseManagement();
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
                 const genericResponseHandler = new GenericResponseHandler();
                 const result = genericResponseHandler.handleReponse(response);
@@ -146,7 +145,6 @@
             });
 
             async function createCourse() {
-                const courseManagement: CourseManagement = new CourseManagement();
                 const response = await courseManagement.createCourse(course.value);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
