@@ -45,6 +45,7 @@
         props: {
             action: {
                 required: true,
+                type: Number,
             },
         },
         emits: ["cancel"],
