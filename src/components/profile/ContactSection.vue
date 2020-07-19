@@ -32,7 +32,12 @@
     import { ref } from "vue";
 
     export default {
-        props: ["email"],
+        props: {
+            email: {
+                required: true,
+                type: String,
+            },
+        },
         emits: ["save", "update:email"],
         setup(props: any, { emit }: any) {
             const editedEmail = ref(props.email);
