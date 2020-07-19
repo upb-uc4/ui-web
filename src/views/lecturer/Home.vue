@@ -15,7 +15,7 @@
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
 
     export default {
-        name: "Lecturer.Home",
+        name: "LecturerHome",
         components: {
             CourseList,
             DevNavBar,
