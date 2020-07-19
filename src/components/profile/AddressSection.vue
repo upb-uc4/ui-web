@@ -50,6 +50,7 @@
     export default {
         props: {
             address: {
+                required: true,
                 type: Object,
             },
         },
