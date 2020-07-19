@@ -32,7 +32,16 @@
     import { ref } from "vue";
 
     export default {
-        props: ["description", "researchArea"],
+        props: {
+            description: {
+                required: true,
+                type: String,
+            },
+            researchArea: {
+                required: true,
+                type: String,
+            },
+        },
         emits: ["save", "update:researchArea", "update:freeText"],
         setup(props: any, { emit }: any) {
             const editedDescription = ref(props.description);
