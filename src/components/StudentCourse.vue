@@ -21,7 +21,7 @@
                         <read-more more-str="Show more" :text="course.courseDescription" less-str="Show less" :max-chars="180"></read-more>
                     </div>
                 </div>
-                <div class="lg:w-1/6 w-1/3 lg:ml-8 ml-12">
+                <div class="lg:w-1/6 w-1/3 lg:ml-8 ml-12 mb-4">
                     <div class="mt-6 flex h-full items-center justify-center">
                         <!-- v-if directive just for design purposes here -> replace with state of myCourses-->
                         <button
@@ -30,7 +30,7 @@
                         >
                             Leave
                         </button>
-                        <button v-else-if="course.currentParticipants < course.maxParticipants" class="w-48 btn btn-blue-primary">
+                        <button v-else-if="course.currentParticipants < course.maxParticipants" class="w-48 py-2 btn btn-blue-primary">
                             Join
                         </button>
                         <p v-else class="flex text-red-600 text-opacity-50 text-center py-2 px-8 rounded-lg font-semibold">
@@ -45,11 +45,17 @@
 
 <script lang="ts">
     import ReadMore from "./ReadMore.vue";
+    import Course from "@/api/api_models/course_management/Course";
     export default {
         name: "Course",
         components: {
             ReadMore,
         },
-        props: ["course"],
+        props: {
+            course: {
+                required: true,
+                type: Object as () => Course,
+            },
+        },
     };
 </script>

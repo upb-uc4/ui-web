@@ -15,7 +15,7 @@
     import AdminAccountList from "../../components/AdminAccountList.vue";
 
     export default {
-        name: "Admin.Home",
+        name: "AdminHome",
         components: {
             DevNavBar,
             AdminAccountList,
