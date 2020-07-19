@@ -45,11 +45,17 @@
 
 <script lang="ts">
     import ReadMore from "./ReadMore.vue";
+    import Course from "@/api/api_models/course_management/Course";
     export default {
         name: "Course",
         components: {
             ReadMore,
         },
-        props: ["course"],
+        props: {
+            course: {
+                required: true,
+                type: Object as () => Course,
+            },
+        },
     };
 </script>

@@ -74,17 +74,17 @@
     import Student from "@/api/api_models/user_management/Student";
 
     export default {
-        props: {
-            user: {
-                required: true,
-                type: Object as () => Student,
-            },
-        },
         components: {
             PersonalSection,
             ContactSection,
             AddressSection,
             CourseOfStudySection,
+        },
+        props: {
+            user: {
+                required: true,
+                type: Object as () => Student,
+            },
         },
         async setup(props: any) {
             const student = ref(props.user);

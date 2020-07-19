@@ -15,7 +15,7 @@
     import { Role } from "../../entities/Role";
 
     export default {
-        name: "Student.Home",
+        name: "StudentHome",
         components: {
             CourseList,
             DevNavBar,

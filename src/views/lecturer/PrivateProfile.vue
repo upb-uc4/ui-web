@@ -70,17 +70,17 @@
     import Lecturer from "../../api/api_models/user_management/Lecturer";
 
     export default {
-        props: {
-            user: {
-                required: true,
-                type: Object as () => Lecturer,
-            },
-        },
         components: {
             PersonalSection,
             ContactSection,
             AddressSection,
             ResearchSection,
+        },
+        props: {
+            user: {
+                required: true,
+                type: Object as () => Lecturer,
+            },
         },
         setup(props: any) {
             const auth: UserManagement = new UserManagement();

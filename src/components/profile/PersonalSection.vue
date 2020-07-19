@@ -37,7 +37,20 @@
     import { Month } from "@/entities/Month.ts";
 
     export default {
-        props: ["firstName", "lastName", "birthDate"],
+        props: {
+            firstName: {
+                required: true,
+                type: String,
+            },
+            lastName: {
+                required: true,
+                type: String,
+            },
+            birthDate: {
+                required: true,
+                type: String,
+            },
+        },
         emits: ["save", "update:firstName", "update:lastName"],
         setup(props: any, { emit }: any) {
             let birthDateDates = props.birthDate.split("-");
