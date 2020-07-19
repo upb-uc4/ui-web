@@ -24,7 +24,7 @@ Implements issue #24 (delete if no issue)
 ## Changes in this PR
 - [INSERT HERE CHANGES]
 
-### Dependencie update
+### Dependency update
 - List all dependency updates
 - remove if none
 
