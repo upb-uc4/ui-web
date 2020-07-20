@@ -46,6 +46,7 @@
                 required: true,
             },
         },
+        emits: ["changed"],
         setup(props: any, { emit }) {
             let input = ref(props.inputList);
             let output = ref([] as string[]);
