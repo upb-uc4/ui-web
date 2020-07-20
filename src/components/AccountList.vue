@@ -1,33 +1,98 @@
 <template>
-    <div>
-        <table class="table w-full">
-            <thead>
-                <tr class="border border-black bg-gray-400">
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>Matriculation Number</th>
-                    <th>Lastname</th>
-                    <th>Firstname</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody v-for="userListByRole in usersByRole" :key="userListByRole">
-                <tr v-for="user in userListByRole" :key="user.username" class="bg-gray-100 hover:bg-gray-400 py-2 cursor-pointer">
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.username }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.role }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.matriculationId }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.lastName }}</td>
-                    <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.firstName }}</td>
-                    <td class="px-2 border border-black">
-                        <div class="flex">
-                            <button title="Edit Account" class="w-full m-1 btn-icon-blue" @click="editAccount(user.username)">
-                                <i class="inline fas fa-pencil-alt text-lg"></i>
-                            </button>
+    <div class="bg-white rounded-lg shadow flex flex-col">
+        <div class="px-8 py-4 whitespace-no-wrap border-b border-gray-200 cursor-pointer rounded-t-lg hover:bg-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-12 h-12">
+                        <img
+                            class="w-12 h-12 rounded-full"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt=""
+                        />
+                    </div>
+                    <div class="mx-8">
+                        <div class="text leading-5 font-medium text-blue-900 mb-1">Max Mustermann</div>
+                        <div class="text leading-5 text-gray-500">@theovier</div>
+                    </div>
+                    <div class="mx-8">
+                        <div class="text leading-5 text-blue-900 mb-1">Student</div>
+                    </div>
+                    <div class="ml-8 flex flex-col items-baseline">
+                        <div class="leading-5 text-blue-900 ml-1 mb-1">421769</div>
+                        <div class="flex items-center leading-5 text-gray-500">
+                            <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em;">
+                                <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
+                                <i class="fas fa-check fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <div>
+                                Immatriculated
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+                <div class="flex">
+                    <i class="fas fa-chevron-right text-gray-500" />
+                </div>
+            </div>
+        </div>
+        <div class="px-8 py-4 whitespace-no-wrap border-b border-gray-200 cursor-pointer hover:bg-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-12 h-12">
+                        <img
+                            class="w-12 h-12 rounded-full"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt=""
+                        />
+                    </div>
+                    <div class="mx-8">
+                        <div class="text leading-5 font-medium text-blue-900 mb-1">Prof. Dr. Max Mustermann</div>
+                        <div class="text leading-5 text-gray-500">@theovier</div>
+                    </div>
+                    <div class="mx-8">
+                        <div class="text leading-5 text-blue-900 mb-1">Student</div>
+                    </div>
+                    <div class="ml-8 flex flex-col items-baseline">
+                        <div class="leading-5 text-blue-900 ml-1 mb-1">1234567</div>
+                        <div class="flex items-center leading-5 text-gray-500">
+                            <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em;">
+                                <i class="fas fa-circle text-red-500 fa-stack-2x"></i>
+                                <i class="fas fa-times fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <div>
+                                Exmatriculated
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <i class="fas fa-chevron-right text-gray-500" />
+                </div>
+            </div>
+        </div>
+        <div class="px-8 py-4 whitespace-no-wrap border-b border-gray-200 cursor-pointer hover:bg-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-12 h-12">
+                        <img
+                            class="w-12 h-12 rounded-full"
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt=""
+                        />
+                    </div>
+                    <div class="mx-8">
+                        <div class="text leading-5 font-medium text-blue-900 mb-1">Max Mustermann</div>
+                        <div class="text leading-5 text-gray-500">@theovier</div>
+                    </div>
+                    <div class="mx-8">
+                        <div class="text leading-5 text-blue-900 mb-1">Lecturer</div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <i class="fas fa-chevron-right text-gray-500" />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
