@@ -10,7 +10,7 @@ import ProfileWrapper from "../components/profile/Wrapper.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
-const prefix: string = "UC4";
+const suffix: string = " - UC4";
 
 const router = createRouter({
     history: routerHistory,
@@ -20,7 +20,7 @@ const router = createRouter({
             name: "login",
             component: LoginView,
             meta: {
-                title: prefix + " - Login",
+                title: "Login" + suffix,
             },
         },
         {
@@ -28,7 +28,7 @@ const router = createRouter({
             name: "student.home",
             component: StudentHomeView,
             meta: {
-                title: prefix + " - Home",
+                title: "Home" + suffix,
             },
         },
         {
@@ -36,7 +36,7 @@ const router = createRouter({
             name: "lecturer.home",
             component: LecturerHomeView,
             meta: {
-                title: prefix + " - Home",
+                title: "Home" + suffix,
             },
         },
 
@@ -45,7 +45,7 @@ const router = createRouter({
             name: "admin.home",
             component: AdminHomeView,
             meta: {
-                title: prefix + " - Home",
+                title: "Home" + suffix,
             },
         },
 
@@ -57,7 +57,7 @@ const router = createRouter({
             },
             component: CourseFormSuspenseWrapper,
             meta: {
-                title: prefix + " - Course Creation",
+                title: "Course Creation" + suffix,
             },
         },
         {
@@ -68,7 +68,7 @@ const router = createRouter({
             },
             component: CourseFormSuspenseWrapper,
             meta: {
-                title: prefix + " - Course Editing",
+                title: "Course Editing" + suffix,
             },
         },
         {
@@ -83,7 +83,7 @@ const router = createRouter({
             props: { isPrivate: true },
             component: ProfileWrapper,
             meta: {
-                title: prefix + " - My Profile",
+                title: "My Profile" + suffix,
             },
         },
         {
@@ -91,7 +91,7 @@ const router = createRouter({
             name: "home",
             component: LoginView,
             meta: {
-                title: prefix + " - Welcome",
+                title: "Welcome" + suffix,
             },
         },
         {
@@ -102,7 +102,7 @@ const router = createRouter({
             },
             component: AccountFormSuspenseWrapper,
             meta: {
-                title: prefix + " - Account Creation",
+                title: "Account Creation" + suffix,
             },
         },
         {
@@ -113,7 +113,7 @@ const router = createRouter({
             },
             component: AccountFormSuspenseWrapper,
             meta: {
-                title: prefix + " - Account Editing",
+                title: "Account Editing" + suffix,
             },
         },
         {
@@ -121,7 +121,7 @@ const router = createRouter({
             name: "redirect",
             component: Redirect,
             meta: {
-                title: prefix + " - Permission Denied",
+                title: "Permission Denied" + suffix,
             },
         },
         {
@@ -129,7 +129,7 @@ const router = createRouter({
             name: "pageNotFound",
             component: PageNotFound,
             meta: {
-                title: prefix + " - 404",
+                title: "404" + suffix,
             },
         },
     ],
