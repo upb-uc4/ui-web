@@ -2,29 +2,34 @@
     <div class="bg-white rounded-lg shadow flex flex-col">
         <div class="px-8 py-4 whitespace-no-wrap border-b border-gray-200 cursor-pointer rounded-t-lg hover:bg-gray-200">
             <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 w-12 h-12">
-                        <img
-                            class="w-12 h-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                        />
+                <div class="flex items-center justify-between">
+                    <div class="flex">
+                        <div class="hidden sm:flex flex-shrink-0 w-12 h-12">
+                            <img
+                                class="w-12 h-12 rounded-full"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
+                            />
+                        </div>
+                        <div class="sm:ml-8">
+                            <div class="text leading-5 font-medium text-blue-900 mb-1 lg:w-48 w-32 truncate">
+                                Maximilian Mustermann von und zu Lange
+                            </div>
+                            <div class="text leading-5 text-gray-500 lg:w-48 w-32 truncate">@MaximilianMustermannLange</div>
+                        </div>
                     </div>
-                    <div class="mx-8">
-                        <div class="text leading-5 font-medium text-blue-900 mb-1">Max Mustermann</div>
-                        <div class="text leading-5 text-gray-500">@theovier</div>
-                    </div>
-                    <div class="mx-8">
+
+                    <div class="mx-8 w-24">
                         <div class="text leading-5 text-blue-900 mb-1">Student</div>
                     </div>
-                    <div class="ml-8 flex flex-col items-baseline">
+                    <div class="flex flex-col items-baseline">
                         <div class="leading-5 text-blue-900 ml-1 mb-1">421769</div>
-                        <div class="flex items-center leading-5 text-gray-500">
+                        <div class="hidden sm:flex items-center leading-5 text-gray-500">
                             <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em;">
                                 <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
                                 <i class="fas fa-check fa-stack-1x fa-inverse"></i>
                             </span>
-                            <div>
+                            <div class="hidden sm:block">
                                 Immatriculated
                             </div>
                         </div>
@@ -37,29 +42,32 @@
         </div>
         <div class="px-8 py-4 whitespace-no-wrap border-b border-gray-200 cursor-pointer hover:bg-gray-200">
             <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 w-12 h-12">
-                        <img
-                            class="w-12 h-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                        />
+                <div class="flex items-center justify-between">
+                    <div class="flex">
+                        <div class="hidden sm:flex flex-shrink-0 w-12 h-12">
+                            <img
+                                class="w-12 h-12 rounded-full"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
+                            />
+                        </div>
+                        <div class="sm:ml-8">
+                            <div class="text leading-5 font-medium text-blue-900 mb-1 lg:w-48 w-32 truncate">Maximilian Mustermann</div>
+                            <div class="text leading-5 text-gray-500 lg:w-48 w-32 truncate">@MaxiMax</div>
+                        </div>
                     </div>
-                    <div class="mx-8">
-                        <div class="text leading-5 font-medium text-blue-900 mb-1">Prof. Dr. Max Mustermann</div>
-                        <div class="text leading-5 text-gray-500">@theovier</div>
-                    </div>
-                    <div class="mx-8">
+
+                    <div class="mx-8 w-24">
                         <div class="text leading-5 text-blue-900 mb-1">Student</div>
                     </div>
-                    <div class="ml-8 flex flex-col items-baseline">
-                        <div class="leading-5 text-blue-900 ml-1 mb-1">1234567</div>
-                        <div class="flex items-center leading-5 text-gray-500">
+                    <div class="flex flex-col items-baseline">
+                        <div class="leading-5 text-blue-900 ml-1 mb-1">421769</div>
+                        <div class="hidden sm:flex items-center leading-5 text-gray-500">
                             <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em;">
                                 <i class="fas fa-circle text-red-500 fa-stack-2x"></i>
                                 <i class="fas fa-times fa-stack-1x fa-inverse"></i>
                             </span>
-                            <div>
+                            <div class="hidden sm:block">
                                 Exmatriculated
                             </div>
                         </div>
@@ -70,22 +78,37 @@
                 </div>
             </div>
         </div>
-        <div class="px-8 py-4 whitespace-no-wrap border-b border-gray-200 cursor-pointer hover:bg-gray-200">
+        <div class="px-8 py-4 whitespace-no-wrap rounded-b-lg cursor-pointer hover:bg-gray-200">
             <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 w-12 h-12">
-                        <img
-                            class="w-12 h-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                        />
+                <div class="flex items-center justify-between">
+                    <div class="flex">
+                        <div class="hidden sm:flex flex-shrink-0 w-12 h-12">
+                            <img
+                                class="w-12 h-12 rounded-full"
+                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
+                            />
+                        </div>
+                        <div class="sm:ml-8">
+                            <div class="text leading-5 font-medium text-blue-900 mb-1 lg:w-48 w-32 truncate">Maximilian Mustermann</div>
+                            <div class="text leading-5 text-gray-500 lg:w-48 w-32 truncate">@MaxiMax</div>
+                        </div>
                     </div>
-                    <div class="mx-8">
-                        <div class="text leading-5 font-medium text-blue-900 mb-1">Max Mustermann</div>
-                        <div class="text leading-5 text-gray-500">@theovier</div>
-                    </div>
-                    <div class="mx-8">
+
+                    <div class="mx-8 w-24">
                         <div class="text leading-5 text-blue-900 mb-1">Lecturer</div>
+                    </div>
+                    <div class="invisible flex flex-col items-baseline">
+                        <div class="leading-5 text-blue-900 ml-1 mb-1">421769</div>
+                        <div class="hidden sm:flex items-center leading-5 text-gray-500">
+                            <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em;">
+                                <i class="fas fa-circle text-red-500 fa-stack-2x"></i>
+                                <i class="fas fa-times fa-stack-1x fa-inverse"></i>
+                            </span>
+                            <div class="hidden sm:block">
+                                Exmatriculated
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="flex">
