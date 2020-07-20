@@ -28,8 +28,8 @@ Implements issue #24 (delete if no issue)
 - List all dependency updates
 - remove if none
 
-## Type of change
-
+## Type of change (remove all that don't apply)
+- [ ] Refactoring
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
@@ -46,17 +46,17 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - OS: Windows Mac
 - Browser: Firefox Chrome Safari
 
-- Frontend:
+- Frontend: (remove all that don't apply)
   - [ ] Development build
   - [ ] Production build
   - [ ] Dockerized production build
-- Backend:
+- Backend: (remove all that don't apply)
   - [ ] No backend needed to test this
   - [ ] Deployed master version X.X.X
   - [ ] Deployed develop version X.X.X
   - [ ] Local backend version X.X.X (commit hash [XXXXXXX])
 
-# Checklist:
+# Checklist: (remove all that don't apply)
 
 - [ ] I have performed a self-review of my own code
 - [ ] I have made corresponding changes to the documentation
