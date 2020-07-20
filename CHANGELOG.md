@@ -19,6 +19,7 @@
 - updated @vue/compiler-sfc from 3.0.0-beta.1 to 3.0.0-rc.2
 - updated eslint-plugin-vue from 7.0.0-alpha.0 to 7.0.0-beta.0
 - updated typescript from 3.9.3 to 3.9.7
+- updated lodash from 4.17.15 to 4.17.19
 
 # [v0.4.3](https://github.com/upb-uc4/ui-web/compare/v0.4.2...v0.4.3) (2020-07-19)
 
