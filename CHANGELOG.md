@@ -1,6 +1,10 @@
 # [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
 
 ## Bug Fixes
+
+### Usability
+- change input type of semester count in student's private profile to text
+
 ### Technical
 - declare emits in various components (adds type safety to emit)
 
