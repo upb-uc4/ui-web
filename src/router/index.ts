@@ -10,7 +10,7 @@ import ProfileWrapper from "../components/profile/Wrapper.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
-const suffix: string = " - UC4";
+const suffix: string = " | UC4";
 
 const router = createRouter({
     history: routerHistory,
