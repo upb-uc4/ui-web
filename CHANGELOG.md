@@ -1,8 +1,10 @@
 # [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
 
 ## Bug Fixes
+
 ### Technical
 - declare emits in various components (adds type safety to emit)
+- Refactor CreateEditCourse (split into components) 
 
 ## Dependencies
 - updated @fortawesome/fontawesome-free from 5.13.0 to 5.14.0
@@ -28,6 +30,7 @@
 ### Usability
 - Fix lecturer not being able to edit a course (#187)
 - Fix course accounts not displaying backend validation (a1198f2)
+  
 ### Technical
 - Remove linter warnings (#189)
 
