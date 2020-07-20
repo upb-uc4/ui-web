@@ -82,6 +82,9 @@ const router = createRouter({
             name: "profile.private",
             props: { isPrivate: true },
             component: ProfileWrapper,
+            meta: {
+                title: prefix + " - My Profile",
+            },
         },
         {
             path: "/",
