@@ -14,10 +14,11 @@
                         <i class="inline fas fa-redo-alt text-gray-600 hover:text-gray-700" />
                     </button>
                 </div>
-                <router-link to="/createAccount" class="w-1/12 ml-4">
+                <router-link to="/createAccount" class="w-2/12 w- ml-4">
                     <button title="Add a new User" class="w-full h-full btn-icon-green items-center justify-center flex flex-row">
-                        <p class="mr-1 text-xl font-semibold">Add</p><i class="inline fas fa-user-plus text-xl" />
-                    </button> 
+                        <p class="mr-3 text-lg font-semibold">Add</p>
+                        <i class="inline fas fa-user-plus text-lg" />
+                    </button>
                 </router-link>
             </div>
         </div>
