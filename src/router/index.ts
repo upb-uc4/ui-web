@@ -76,6 +76,7 @@ const router = createRouter({
             name: "profile.public",
             props: { isPrivate: false },
             component: ProfileWrapper,
+            // The page title is set within the component depending on the username
         },
         {
             path: "/profile",
