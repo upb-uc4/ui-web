@@ -18,12 +18,12 @@
         },
         async setup() {
             const username: string = Router.currentRoute.value.params.username as string;
-            window.document.title = username + " - UC4";
             const auth: UserManagement = new UserManagement();
 
             const responseHandler = new ProfileResponseHandler();
             const response = await auth.getSpecificUser(username);
             const user = responseHandler.handleReponse(response);
+            window.document.title = user.firstName + " " + user.lastName + " (@" + username + ") | UC4";
             return { Role, user };
         },
     };
