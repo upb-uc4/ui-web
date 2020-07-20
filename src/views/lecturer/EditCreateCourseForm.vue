@@ -48,7 +48,7 @@
                         v-if="editMode"
                         :disabled="!hasInput"
                         type="button"
-                        class="mb-4 w-full w-full btn btn-blue-primary"
+                        class="mb-4 w-full btn btn-blue-primary"
                         @click="updateCourse"
                     >
                         Save Changes
