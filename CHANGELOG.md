@@ -1,3 +1,21 @@
+# [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
+
+## Dependencies
+- updated @fortawesome/fontawesome-free from 5.13.0 to 5.14.0
+- updated @vue/cli from 4.4.1 to 4.4.6
+- updated tailwindcss from 1.4.6 to 1.5.1
+- updated vue from 3.0.0-beta.18 to 3.0.0-rc.2
+- updated vuex from 4.0.0-beta.2 to 4.0.0-beta.4
+- updated @types/jest from 26.0.4 to 26.0.5
+- updated @vue/cli-plugin-babel from 4.4.0 to 4.4.6
+- updated @vue/cli-plugin-eslint from 4.4.0 to 4.4.6
+- updated @vue/cli-plugin-typescript from 4.4.1 to 4.4.6
+- updated @vue/cli-plugin-unit-jest from 4.4.1 to 4.4.6
+- updated @vue/clie-service from 4.4.0 to 4.4.6
+- updated @vue/compiler-sfc from 3.0.0-beta.1 to 3.0.0-rc.2
+- updated eslint-plugin-vue from 7.0.0-alpha.0 to 7.0.0-beta.0
+- updated typescript from 3.9.3 to 3.9.7
+
 # [v0.4.3](https://github.com/upb-uc4/ui-web/compare/v0.4.2...v0.4.3) (2020-07-19)
 
 ## Bug Fixes
