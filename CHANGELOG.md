@@ -2,6 +2,9 @@
 
 ## Bug Fixes
 
+## Usability 
+- Add a new "Add" button next to the search bar in the account/course lists for usability(#178)
+
 ### Technical
 - declare emits in various components (adds type safety to emit)
 - Refactor CreateEditCourse (split into components) 
