@@ -19,10 +19,10 @@ Fixes issue #24 (delete if no issue)
 Implements issue #24 (delete if no issue)
 
 ## Reason for this PR
-- [INSERT HERE REASONS]
+- [INSERT REASONS HERE]
 
 ## Changes in this PR
-- [INSERT HERE CHANGES]
+- [INSERT CHANGES HERE]
 
 ### Dependency update
 - List all dependency updates
