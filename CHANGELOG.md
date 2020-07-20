@@ -1,6 +1,9 @@
 # [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
 
 ## Bug Fixes
+### Usability
+- add proper page titling based on route (#195)
+
 ### Technical
 - declare emits in various components (adds type safety to emit)
 
