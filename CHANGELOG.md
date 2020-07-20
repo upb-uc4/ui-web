@@ -1,5 +1,9 @@
 # [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
 
+## Bug Fixes
+### Technical
+- declare emits in various components (adds type safety to emit)
+
 ## Dependencies
 - updated @fortawesome/fontawesome-free from 5.13.0 to 5.14.0
 - updated @vue/cli from 4.4.1 to 4.4.6
