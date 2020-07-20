@@ -10,6 +10,7 @@ import ProfileWrapper from "../components/profile/Wrapper.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
+const prefix: string = "UC4";
 
 const router = createRouter({
     history: routerHistory,
@@ -18,22 +19,34 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: LoginView,
+            meta: {
+                title: prefix + " - Login",
+            },
         },
         {
             path: "/student",
             name: "student.home",
             component: StudentHomeView,
+            meta: {
+                title: prefix + " - Home",
+            },
         },
         {
             path: "/lecturer",
             name: "lecturer.home",
             component: LecturerHomeView,
+            meta: {
+                title: prefix + " - Home",
+            },
         },
 
         {
             path: "/admin",
             name: "admin.home",
             component: AdminHomeView,
+            meta: {
+                title: prefix + " - Home",
+            },
         },
 
         {
@@ -43,6 +56,9 @@ const router = createRouter({
                 editMode: false,
             },
             component: CourseFormSuspenseWrapper,
+            meta: {
+                title: prefix + " - Course Creation",
+            },
         },
         {
             path: "/editCourse/:id",
@@ -51,6 +67,9 @@ const router = createRouter({
                 editMode: true,
             },
             component: CourseFormSuspenseWrapper,
+            meta: {
+                title: prefix + " - Course Editing",
+            },
         },
         {
             path: "/user/:username",
@@ -68,6 +87,9 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: LoginView,
+            meta: {
+                title: prefix + " - Welcome",
+            },
         },
         {
             path: "/createAccount",
@@ -76,6 +98,9 @@ const router = createRouter({
                 editMode: false,
             },
             component: AccountFormSuspenseWrapper,
+            meta: {
+                title: prefix + " - Account Creation",
+            },
         },
         {
             path: "/editAccount/:username",
@@ -84,16 +109,25 @@ const router = createRouter({
                 editMode: true,
             },
             component: AccountFormSuspenseWrapper,
+            meta: {
+                title: prefix + " - Account Editing",
+            },
         },
         {
             path: "/redirect",
             name: "redirect",
             component: Redirect,
+            meta: {
+                title: prefix + " - Permission Denied",
+            },
         },
         {
             path: "/:catchAll(.*)",
             name: "pageNotFound",
             component: PageNotFound,
+            meta: {
+                title: prefix + " - 404",
+            },
         },
     ],
 
@@ -103,6 +137,11 @@ const router = createRouter({
         }
         return { left: 0, top: 0 };
     },
+});
+
+router.beforeEach((to, from, next) => {
+    window.document.title = to.meta && to.meta.title ? to.meta.title : "UC4";
+    next();
 });
 
 export default router;
