@@ -2,6 +2,7 @@
     <div>
         <div v-for="index in output.length" :key="index" class="w-full flex flex-row items-center">
             <select
+                :id="'fieldsOfStudy-' + index"
                 v-model="output[index - 1]"
                 class="w-4/5 mr-1 input-select form-select"
                 :class="{ 'mb-2': index !== output.length }"
@@ -10,13 +11,14 @@
                 <option disabled :value="''">{{ placeholder }}</option>
 
                 <!-- add selected option, because the computed "unchosenValues" will not contain it -->
-                <option v-if="output[index - 1] != ''">{{ output[index - 1] }}</option>
+                <option v-if="output[index - 1] != ''" :id="'selectedFieldofStudy' + output[index - 1]">{{ output[index - 1] }}</option>
 
-                <option v-for="field in unchosenValues" :key="field">{{ field }}</option>
+                <option v-for="field in unchosenValues" :id="'fieldOfStudy-' + field" :key="field">{{ field }}</option>
             </select>
             <div class="w-1/6 items-center justify-center" :class="{ 'mb-2': index !== output.length }">
                 <button
                     v-if="output[index - 1] != ''"
+                    :id="'removeFieldOfStudy' + index"
                     title="Remove Selected Field Of Study"
                     class="w-1/2 btn-icon-red"
                     @click="removeValue(index - 1)"
