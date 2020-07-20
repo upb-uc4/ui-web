@@ -43,7 +43,7 @@
                 required: true,
             },
         },
-
+        emits: ["update:day", "update:month", "update:year"],
         setup(props: any, { emit }) {
             let months = Month;
 
