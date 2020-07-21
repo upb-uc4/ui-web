@@ -8,13 +8,10 @@
 
 <script lang="ts">
     import UserManagement from "../api/UserManagement";
-    import User_List from "../api/api_models/user_management/User_List";
     import { Role } from "@/entities/Role";
-    import { ref } from "vue";
     import router from "../router";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import UserRow from "@/components/account/UserRow.vue";
-    import User from "@/api/api_models/user_management/User";
 
     export default {
         name: "AccountList",
@@ -25,27 +22,17 @@
             const userManagement: UserManagement = new UserManagement();
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
 
-            let usersByRole = ref({} as User_List);
-
             const genericResponseHandler = new GenericResponseHandler();
             const response = await userManagement.getAllUsers();
-            const result = genericResponseHandler.handleReponse(response);
-
-            usersByRole.value = result;
+            const userLists = genericResponseHandler.handleReponse(response);
+            let users = Object.values(userLists).flat();
 
             function editAccount(username: string) {
                 router.push({ path: "/editAccount/" + username });
             }
 
-            //todo move into UserList?
-            let users: User[] = [];
-            result.students.forEach((student) => users.push(student));
-            result.lecturer.forEach((lecturer) => users.push(lecturer));
-            result.admins.forEach((admin) => users.push(admin));
-
             return {
                 roles,
-                usersByRole,
                 editAccount,
                 users,
             };
