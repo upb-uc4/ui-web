@@ -1,5 +1,3 @@
-import { createPartiallyEmittedExpression } from "typescript";
-
 /*
  * Login as admin
  * check if admin, lecturer and student exist
