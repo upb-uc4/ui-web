@@ -69,14 +69,5 @@
                 type: Object as () => Course,
             },
         },
-        setup(props: any) {
-            function showLecturerProfile() {
-                Router.push("/user/" + props.course.lecturerId);
-            }
-
-            return {
-                showLecturerProfile,
-            };
-        },
     };
 </script>
