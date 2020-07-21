@@ -2,6 +2,9 @@
 
 ## Bug Fixes
 
+### Usability
+- add proper page titling based on route (#195)
+
 ### Technical
 - declare emits in various components (adds type safety to emit)
 - Refactor CreateEditCourse (split into components) 
