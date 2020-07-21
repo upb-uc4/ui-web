@@ -13,7 +13,7 @@
                     <div class="flex">
                         <div v-for="availableType in availableCourseTypes" :key="availableType" class="mr-4">
                             <label class="flex items-center">
-                                <input v-model="courseType" type="radio" class="form-radio radio" :value="availableType" />
+                                <input id="courseType" v-model="courseType" type="radio" class="form-radio radio" :value="availableType" />
                                 <span class="ml-2 text-gray-700 text-md font-medium">{{ availableType }}</span>
                             </label>
                         </div>
@@ -25,6 +25,7 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Name</label>
                     <input
+                        id="courseName"
                         v-model="courseName"
                         type="text"
                         class="w-full form-input input-text"
@@ -38,6 +39,7 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Language</label>
                     <select
+                        id="courseLanguage"
                         v-model="courseLanguage"
                         class="w-full form-select input-select"
                         required
@@ -60,6 +62,7 @@
                         </span>
                     </label>
                     <textarea
+                        id="courseDescription"
                         v-model="courseDescription"
                         cols="30"
                         rows="10"

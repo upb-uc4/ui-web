@@ -1,6 +1,6 @@
 <template>
     <div class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
-        <button class="flex items-center mb-4 navigation-link" @click="back">
+        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>

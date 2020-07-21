@@ -8,8 +8,8 @@
         By doing this you will lose all of your saved data and will not be able to restore it.
 
         <template #footer>
-            <button class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button class="w-24 py-2 px-2 btn btn-red-primary" @click="close(action.DELETE)">Delete</button>
+            <button id="deleteCourseModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
+            <button id="deleteCourseModalDelete" class="w-24 py-2 px-2 btn btn-red-primary" @click="close(action.DELETE)">Delete</button>
         </template>
     </modal>
 </template>
