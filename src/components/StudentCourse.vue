@@ -14,9 +14,11 @@
             </div>
 
             <div class="flex">
-                <div class="flex flex-col lg:w-5/6 w-2/3">
+                <div class="flex flex-col items-start lg:w-5/6 w-2/3">
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.courseName }}</div>
-                    <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturerId }}</div>
+                    <button class="mt-1 navigation-link font-semibold hover:cursor-pointer" @click="showLecturerProfile()">
+                        {{ course.lecturerId }}
+                    </button>
                     <div class="mt-3">
                         <read-more more-str="Show more" :text="course.courseDescription" less-str="Show less" :max-chars="180"></read-more>
                     </div>
@@ -46,6 +48,7 @@
 <script lang="ts">
     import ReadMore from "./ReadMore.vue";
     import Course from "@/api/api_models/course_management/Course";
+    import Router from "@/router/";
     export default {
         name: "Course",
         components: {
@@ -56,6 +59,15 @@
                 required: true,
                 type: Object as () => Course,
             },
+        },
+        setup(props: any) {
+            function showLecturerProfile() {
+                Router.push("/user/" + props.course.lecturerId);
+            }
+
+            return {
+                showLecturerProfile,
+            };
         },
     };
 </script>
