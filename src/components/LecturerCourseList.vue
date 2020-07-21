@@ -15,7 +15,7 @@
                     </button>
                 </div>
                 <router-link to="/createCourse" class="w-2/12 ml-4">
-                    <button title="Add a new Course" class="w-full h-full btn-icon-green items-center justify-center flex flex-row">
+                    <button id="createAccountIcon" title="Add a new Course" class="w-full h-full btn-icon-green items-center justify-center flex flex-row">
                         <p class="mr-3 text-lg font-semibold">Add</p>
                         <i class="inline fas fa-calendar-plus text-2xl" />
                     </button>
