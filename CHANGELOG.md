@@ -3,6 +3,7 @@
 ## Bug Fixes
 ### Technical
 - declare emits in various components (adds type safety to emit)
+- add view wide unique id attributes to all user interaction HTML elements
 
 ## Dependencies
 - updated @fortawesome/fontawesome-free from 5.13.0 to 5.14.0
