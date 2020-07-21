@@ -28,11 +28,16 @@
                         <!-- v-if directive just for design purposes here -> replace with state of myCourses-->
                         <button
                             v-if="course.id === 123456789"
+                            id="leaveCourse"
                             class="bg-white text-red-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold"
                         >
                             Leave
                         </button>
-                        <button v-else-if="course.currentParticipants < course.maxParticipants" class="w-48 py-2 btn btn-blue-primary">
+                        <button
+                            v-else-if="course.currentParticipants < course.maxParticipants"
+                            id="joinCourse"
+                            class="w-48 py-2 btn btn-blue-primary"
+                        >
                             Join
                         </button>
                         <p v-else class="flex text-red-600 text-opacity-50 text-center py-2 px-8 rounded-lg font-semibold">

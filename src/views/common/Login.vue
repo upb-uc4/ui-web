@@ -9,17 +9,18 @@
                     <div class="mb-6 text-center">
                         <i class="m-3 fas fa-envelope absolute text-gray-500"></i>
                         <input
+                            id="email"
                             v-model="email"
                             class="inline-block center lg:w-3/4 block appearance-none shadow-md font-semibold bg-gray-200 text-gray-600 placeholder-gray-600 focus:text-gray-600 p-2 pl-10 rounded hover:border-gray-300 focus:outline-none focus:shadow-outline"
                             type="text"
                             placeholder="Email"
-                            name="email"
                         />
                     </div>
 
                     <div class="mb-6 text-center">
                         <i class="m-3 fas fa-lock absolute text-gray-500"></i>
                         <input
+                            id="password"
                             v-model="password"
                             :type="passwordFieldType"
                             class="lg:w-3/4 shadow-md inline-block center appearance-none font-semibold bg-gray-200 text-gray-600 placeholder-gray-600 focus:text-gray-600 p-2 pl-10 rounded hover:border-gray-300 focus:outline-none focus:shadow-outline"
@@ -27,6 +28,7 @@
                             @input="hideErrors()"
                         />
                         <button
+                            id="togglePassword"
                             type="button"
                             tabIndex="-1"
                             class="display-none absolute inline-block center ml-3 visible text-gray-500 text-sm hover:text-gray-600 focus:outline-none"
@@ -41,16 +43,17 @@
 
                     <div class="w-full text-center lg:text-left lg:pl-16 lg:ml-3">
                         <label class="block text-gray-500 font-semibold">
-                            <input class="mr-2 form-checkbox text-blue-500 hover:bg-blue-600" type="checkbox" checked />
+                            <input id="rememberMe" class="mr-2 form-checkbox text-blue-500 hover:bg-blue-600" type="checkbox" checked />
                             <span class="text-sm">Remember me</span>
                         </label>
-                        <a class="mt-2 inline-block font-semibold text-sm navigation-link" href="#">
+                        <a id="forgotPassword" class="mt-2 inline-block font-semibold text-sm navigation-link" href="#">
                             Forgot Password?
                         </a>
                     </div>
 
                     <div class="mt-10 mb-6 justify-center text-center">
                         <button
+                            id="login"
                             type="submit"
                             :disabled="isInputEmpty()"
                             class="w-2/5 sm:w-2/5 md:w-2/5 lg:w-2/4 inline-block center btn btn-blue-primary"

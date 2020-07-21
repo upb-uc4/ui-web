@@ -11,6 +11,7 @@
             </p>
             <p class="text-6xl text-center font-semibold mt-8">{{ countdown }}s</p>
             <button
+                id="redirect"
                 class="items-center text-xl mt-6 inline-block text-center text-blue-500 hover:text-blue-400 hover:cursor-pointer focus:outline-none"
                 @click="redirect"
             >
