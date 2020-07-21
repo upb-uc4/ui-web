@@ -16,13 +16,13 @@
             <div class="flex">
                 <div class="flex flex-col items-start lg:w-5/6 w-2/3">
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.courseName }}</div>
-                    <button
+                    <router-link
                         id="showLecturer"
+                        :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
                         class="mt-1 navigation-link font-semibold hover:cursor-pointer"
-                        @click="showLecturerProfile()"
                     >
                         {{ course.lecturerId }}
-                    </button>
+                    </router-link>
                     <div class="mt-3">
                         <read-more more-str="Show more" :text="course.courseDescription" less-str="Show less" :max-chars="180"></read-more>
                     </div>
