@@ -16,7 +16,11 @@
             <div class="flex">
                 <div class="flex flex-col items-start lg:w-5/6 w-2/3">
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.courseName }}</div>
-                    <button class="mt-1 navigation-link font-semibold hover:cursor-pointer" @click="showLecturerProfile()">
+                    <button
+                        id="showLecturer"
+                        class="mt-1 navigation-link font-semibold hover:cursor-pointer"
+                        @click="showLecturerProfile()"
+                    >
                         {{ course.lecturerId }}
                     </button>
                     <div class="mt-3">
