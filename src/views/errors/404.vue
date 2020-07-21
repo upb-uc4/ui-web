@@ -13,7 +13,7 @@
                     Unfortunately, this page does not exist :(
                 </div>
                 <div class="mt-10 text-xl font-medium">
-                    <router-link :to="{ name: 'home' }" class="p-3 btn btn-blue-secondary">
+                    <router-link id="takeMeHome" :to="{ name: 'home' }" class="p-3 btn btn-blue-secondary">
                         Take me Home
                     </router-link>
                 </div>

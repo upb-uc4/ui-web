@@ -4,9 +4,11 @@
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">
                     <label class="block text-gray-700 text-lg font-medium">Contact</label>
-                    <button v-show="!isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
-                    <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
-                    <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">Cancel</button>
+                    <button v-show="!isEditing" id="editContact" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
+                    <button v-show="isEditing" id="saveContact" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
+                    <button v-show="isEditing" id="cancelEditContact" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
+                        Cancel
+                    </button>
                 </div>
                 <label class="block text-gray-600">
                     How can we reach you?
@@ -16,12 +18,18 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                    <input v-model="editedEmail" type="email" :readonly="!isEditing" class="w-full input-text form-input" />
+                    <input
+                        id="email"
+                        v-model="editedEmail"
+                        type="email"
+                        :readonly="!isEditing"
+                        class="w-full input-text form-input"
+                    />
                 </div>
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Phone</label>
-                    <input placeholder="+123 456 789" readonly type="text" class="w-full input-text form-input" />
+                    <input id="phoneNumber" placeholder="+123 456 789" readonly type="text" class="w-full input-text form-input" />
                 </div>
             </div>
         </div>

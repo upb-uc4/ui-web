@@ -8,6 +8,7 @@
 
 ### Technical
 - declare emits in various components (adds type safety to emit)
+- add view wide unique id attributes to all user interaction HTML elements
 - Refactor CreateEditCourse (split into components) 
 
 ## Dependencies

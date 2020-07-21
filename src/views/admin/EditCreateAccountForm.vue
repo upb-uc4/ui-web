@@ -1,6 +1,6 @@
 <template>
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button class="flex items-center mb-4 navigation-link" @click="back()">
+        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
@@ -19,10 +19,10 @@
                                 <div v-for="role in roles" :key="role" class="mr-4 mb-3">
                                     <label class="flex items-center">
                                         <input
+                                            :id="'role-' + role"
                                             v-model="account.user.role"
                                             type="radio"
                                             class="form-radio radio"
-                                            name="role"
                                             :disabled="editMode"
                                             :value="role"
                                         />
@@ -51,7 +51,6 @@
                                 id="userName"
                                 v-model="account.user.username"
                                 type="text"
-                                name="Username"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.has('username') }"
                                 placeholder="Username"
@@ -65,7 +64,6 @@
                                 id="email"
                                 v-model="account.user.email"
                                 type="text"
-                                name="email"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.has('email') }"
                                 placeholder="example@mail.com"
@@ -80,7 +78,6 @@
                                 id="password"
                                 v-model="account.authUser.password"
                                 type="text"
-                                name="password"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.has('password') }"
                                 placeholder="Password"
@@ -111,7 +108,6 @@
                                         id="firstName"
                                         v-model="account.user.firstName"
                                         type="text"
-                                        name="firstName"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('firstName') }"
                                         placeholder="Firstname"
@@ -126,7 +122,6 @@
                                         id="lastName"
                                         v-model="account.user.lastName"
                                         type="text"
-                                        name="lastName"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('lastName') }"
                                         placeholder="Lastname"
@@ -160,10 +155,9 @@
                                     v-model="account.user.address.country"
                                     class="w-1/2 mb-4 form-select input-select"
                                     :class="{ error: errorBag.has('country') }"
-                                    name="country"
                                 >
                                     <option :value="''">Select a Country</option>
-                                    <option v-for="country in countries" :key="country">{{ country }}</option>
+                                    <option v-for="country in countries" :id="'country-' + country" :key="country">{{ country }}</option>
                                 </select>
                                 <p v-if="errorBag.has('country')" class="error-message">{{ errorBag.get("country") }}</p>
                             </div>
@@ -174,7 +168,6 @@
                                         id="street"
                                         v-model="account.user.address.street"
                                         type="text"
-                                        name="street"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('street') }"
                                         placeholder="Street"
@@ -186,10 +179,9 @@
                                 <div class="pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Number</label>
                                     <input
-                                        id="number"
+                                        id="houseNumber"
                                         v-model="account.user.address.houseNumber"
                                         type="text"
-                                        name="number"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('houseNumber') }"
                                         placeholder="Number"
@@ -203,10 +195,9 @@
                                 <div class="pr-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Zip Code</label>
                                     <input
-                                        id="zipcode"
+                                        id="zipCode"
                                         v-model="account.user.address.zipCode"
                                         type="text"
-                                        name="zipcode"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('zipCode') }"
                                         placeholder="Zip Code"
@@ -221,7 +212,6 @@
                                         id="city"
                                         v-model="account.user.address.city"
                                         type="text"
-                                        name="city"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('city') }"
                                         placeholder="City"
@@ -246,9 +236,8 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-sm font-medium mb-3">Free Text Description (optional)</label>
                             <textarea
-                                id="description"
+                                id="freeText"
                                 v-model="account.lecturer.freeText"
-                                name="description"
                                 cols="30"
                                 rows="5"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
@@ -261,16 +250,14 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research (optional)</label>
                             <textarea
-                                id="researchField"
+                                id="researchArea"
                                 v-model="account.lecturer.researchArea"
-                                name="researchField"
                                 cols="30"
                                 rows="3"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
                                 :class="{ error: errorBag.has('researchArea') }"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
                             >
->
                             </textarea>
                             <p v-if="errorBag.has('researchArea')" class="error-message">
                                 {{ errorBag.get("researchArea") }}
@@ -297,7 +284,6 @@
                                         id="immatriculationStatus"
                                         v-model="account.student.immatriculationStatus"
                                         type="text"
-                                        name="immatriculationStatus"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('immatriculationStatus') }"
                                         placeholder="Immatriculation Status"
@@ -312,7 +298,6 @@
                                         id="matriculationId"
                                         v-model="account.student.matriculationId"
                                         type="text"
-                                        name="matriculationId"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('matriculationId') }"
                                         placeholder="Matriculation-ID"
@@ -344,7 +329,6 @@
                                         id="semesterCount"
                                         v-model="account.student.semesterCount"
                                         type="number"
-                                        name="semesterCount"
                                         class="w-full form-input input-text"
                                         :class="{ error: errorBag.has('semesterCount') }"
                                         placeholder="Semester Count"
@@ -369,6 +353,7 @@
                     <div class="flex flex-col items-center justify-center">
                         <img class="object-contain h-48" :src="account.user.picture" />
                         <button
+                            id="updatePicture"
                             class="bg-transparent hover:bg-blue-800 border-blue-700 border-2 text-blue-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded-lg"
                             @click="updatePicture"
                         >
@@ -380,19 +365,31 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" type="button" class="w-32 btn btn-red-secondary" @click="confirmDeleteAccount">
+                        <button
+                            v-if="editMode"
+                            id="deleteAccount"
+                            type="button"
+                            class="w-32 btn btn-red-secondary"
+                            @click="confirmDeleteAccount"
+                        >
                             Delete
                         </button>
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
                             Cancel
                         </button>
-                        <button v-if="editMode" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary" @click="updateAccount">
+                        <button
+                            v-if="editMode"
+                            id="saveChanges"
+                            :disabled="!hasInput"
+                            class="w-48 w-full btn btn-blue-primary"
+                            @click="updateAccount"
+                        >
                             Save Changes
                         </button>
-                        <button v-else :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createAccount">
+                        <button v-else id="createAccount" :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createAccount">
                             Create Account
                         </button>
                     </div>
@@ -400,11 +397,12 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
+                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
                         Cancel
                     </button>
                     <button
                         v-if="editMode"
+                        id="mobileSaveChanges"
                         :disabled="!hasInput"
                         type="button"
                         class="mb-4 w-full w-full btn btn-blue-primary"
@@ -412,10 +410,16 @@
                     >
                         Save Changes
                     </button>
-                    <button v-else :disabled="!hasInput" class="mb-4 w-full btn btn-blue-primary" @click="createAccount">
+                    <button
+                        v-else
+                        id="mobleCreateAccount"
+                        :disabled="!hasInput"
+                        class="mb-4 w-full btn btn-blue-primary"
+                        @click="createAccount"
+                    >
                         Create Account
                     </button>
-                    <button class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
+                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
                         Delete
                     </button>
                 </div>

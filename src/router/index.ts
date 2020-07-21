@@ -5,7 +5,7 @@ import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue";
 import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
 import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
-import Redirect from "../views/common/Redirect.vue";
+import Redirect from "../views/errors/403.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
 import PageNotFound from "../views/errors/404.vue";
 

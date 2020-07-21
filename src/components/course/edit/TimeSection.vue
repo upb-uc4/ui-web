@@ -11,6 +11,7 @@
                 <div class="w-1/2 mb-4 mr-12 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Start Date</label>
                     <input
+                        id="startDate"
                         v-model="startDate"
                         type="text"
                         readonly
@@ -22,6 +23,7 @@
                 <div class="w-1/2 mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">End Date</label>
                     <input
+                        id="endDate"
                         v-model="endDate"
                         type="text"
                         readonly
