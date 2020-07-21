@@ -1,5 +1,8 @@
 # [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
 
+## Feature
+- add e2e tests using cypress (#218)
+
 ## Bug Fixes
 
 ### Usability
@@ -27,6 +30,7 @@
 - updated eslint-plugin-vue from 7.0.0-alpha.0 to 7.0.0-beta.0
 - updated typescript from 3.9.3 to 3.9.7
 - updated lodash from 4.17.15 to 4.17.19
+- added cypress version 4.10.0
 
 # [v0.4.3](https://github.com/upb-uc4/ui-web/compare/v0.4.2...v0.4.3) (2020-07-19)
 
