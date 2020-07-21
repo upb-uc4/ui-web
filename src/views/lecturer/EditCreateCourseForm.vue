@@ -8,161 +8,16 @@
         <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
 
         <div>
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
-                        <label class="block text-gray-600">
-                            This is some long detailed description which is part towards a better form.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <!-- TODO: create cards for better visual impact -->
-                            <label class="text-gray-700 text-md font-medium mb-3">Type</label>
-                            <div class="flex">
-                                <div v-for="courseType in courseTypes" :key="courseType" class="mr-4">
-                                    <label class="flex items-center">
-                                        <input
-                                            v-model="course.courseType"
-                                            type="radio"
-                                            class="form-radio radio"
-                                            name="type"
-                                            :value="courseType"
-                                        />
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ courseType }}</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <p v-if="errorBag.has('courseType')" class="error-message">
-                                {{ errorBag.get("courseType") }}
-                            </p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <input
-                                id="name"
-                                v-model="course.courseName"
-                                type="text"
-                                name="courseName"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('courseName') }"
-                                placeholder="Course Name"
-                            />
-                            <p v-if="errorBag.has('courseName')" class="error-message">
-                                {{ errorBag.get("courseName") }}
-                            </p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Language</label>
-                            <select
-                                id="language"
-                                v-model="course.courseLanguage"
-                                required
-                                name="language"
-                                class="w-full form-select input-select"
-                                :class="{ error: errorBag.has('courseLanguage') }"
-                            >
-                                <option disabled :value="''">Select a Language</option>
-                                <option v-for="language in languages" :key="language">{{ language }}</option>
-                            </select>
-                            <p v-if="errorBag.has('courseLanguage')" class="error-message">
-                                {{ errorBag.get("courseLanguage") }}
-                            </p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
-                                Description
-                                <span class="text-gray-600 font-normal">
-                                    (Optional)
-                                </span>
-                            </label>
-                            <textarea
-                                id="description"
-                                v-model="course.courseDescription"
-                                name="description"
-                                cols="30"
-                                rows="10"
-                                class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: errorBag.has('courseDescription') }"
-                                placeholder="Add an optional description."
-                            >
-                            </textarea>
-                            <p v-if="errorBag.has('courseDescription')" class="error-message">
-                                {{ errorBag.get("courseDescription") }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <basics-section
+                v-model:name="course.courseName"
+                v-model:type="course.courseType"
+                v-model:language="course.courseLanguage"
+                v-model:description="course.courseDescription"
+                :error-bag="errorBag"
+            />
+            <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
+            <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
 
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-md font-medium mb-2">Restrictions</label>
-                        <label class="block text-gray-600">
-                            This is some long detailed description which is part towards a better form.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
-                            <input
-                                id="limit"
-                                v-model="course.maxParticipants"
-                                type="number"
-                                name="maxParticipants"
-                                min="0"
-                                max="999"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('maxParticipants') }"
-                            />
-                            <p v-if="errorBag.has('maxParticipants')" class="error-message">
-                                {{ errorBag.get("maxParticipants") }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-md font-medium mb-2">Time</label>
-                        <label class="block text-gray-600">
-                            This section is disabled for now as there is no Vue3 datepicker plugin yet.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3 flex">
-                        <div class="w-1/2 mb-4 mr-12 flex flex-col">
-                            <label for="start" class="text-gray-700 text-md font-medium mb-3">Start Date</label>
-                            <input
-                                id="start"
-                                v-model="course.startDate"
-                                type="text"
-                                readonly
-                                name="startDate"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('startDate') }"
-                            />
-                            <p v-if="errorBag.has('startDate')" class="error-message">{{ errorBag.get("startDate") }}</p>
-                        </div>
-                        <div class="w-1/2 mb-4 flex flex-col">
-                            <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
-                            <input
-                                id="end"
-                                v-model="course.endDate"
-                                type="text"
-                                readonly
-                                name="endDate"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('endDate') }"
-                            />
-                            <p v-if="errorBag.has('endDate')" class="error-message">{{ errorBag.get("endDate") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
@@ -193,7 +48,7 @@
                         v-if="editMode"
                         :disabled="!hasInput"
                         type="button"
-                        class="mb-4 w-full w-full btn btn-blue-primary"
+                        class="mb-4 w-full btn btn-blue-primary"
                         @click="updateCourse"
                     >
                         Save Changes
@@ -224,10 +79,16 @@
     import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import BasicsSection from "@/components/course/edit/BasicsSection.vue";
+    import RestrictionsSection from "@/components/course/edit/RestrictionsSection.vue";
+    import TimeSection from "@/components/course/edit/TimeSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
+            BasicsSection,
+            RestrictionsSection,
+            TimeSection,
             DeleteCourseModal,
         },
         props: {
@@ -237,12 +98,10 @@
             },
         },
 
-        async setup(props: any, { emit }) {
+        async setup(props: any, { emit }: any) {
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
-            let languages = Object.values(Language).filter((e) => e != Language.NONE);
-            let courseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
             let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
             let deleteModal = ref();
@@ -253,7 +112,6 @@
             const errorBag: ErrorBag = reactive(new ErrorBag());
 
             if (props.editMode) {
-                const courseManagement: CourseManagement = new CourseManagement();
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
                 const genericResponseHandler = new GenericResponseHandler();
                 const result = genericResponseHandler.handleReponse(response);
@@ -287,7 +145,6 @@
             });
 
             async function createCourse() {
-                const courseManagement: CourseManagement = new CourseManagement();
                 const response = await courseManagement.createCourse(course.value);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
@@ -354,8 +211,6 @@
                 course,
                 initialCourseState,
                 heading,
-                languages,
-                courseTypes,
                 success,
                 hasInput,
                 isValid,
