@@ -17,7 +17,7 @@
                         type="text"
                         readonly
                         :value="matriculationId"
-                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                        class="w-full form-input input-text"
                     />
                 </div>
                 <div class="mb-6 flex flex-col">
@@ -28,7 +28,7 @@
                             type="text"
                             readonly
                             :value="val"
-                            class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                            class="w-full form-input input-text"
                             :class="{ 'mb-4': index !== fieldsOfStudy.length - 1 }"
                         />
                     </div>
@@ -40,7 +40,7 @@
                         type="text"
                         readonly
                         value="Master's Degree"
-                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                        class="w-full form-input input-text"
                     />
                 </div>
                 <div class="mb-6 flex flex-col">
@@ -50,7 +50,7 @@
                         type="number"
                         readonly
                         :value="semesterCount"
-                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                        class="w-full form-input input-text"
                     />
                 </div>
             </div>

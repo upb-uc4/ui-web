@@ -1,9 +1,15 @@
 # [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
 
 ## Bug Fixes
+
+### Usability
+- change input type of semester count in student's private profile to text (#118)
+- add proper page titling based on route (#195)
+
 ### Technical
 - declare emits in various components (adds type safety to emit)
 - add view wide unique id attributes to all user interaction HTML elements
+- Refactor CreateEditCourse (split into components) 
 
 ## Dependencies
 - updated @fortawesome/fontawesome-free from 5.13.0 to 5.14.0
@@ -29,6 +35,7 @@
 ### Usability
 - Fix lecturer not being able to edit a course (#187)
 - Fix course accounts not displaying backend validation (a1198f2)
+  
 ### Technical
 - Remove linter warnings (#189)
 

@@ -23,7 +23,7 @@
                         v-model="editedEmail"
                         type="email"
                         :readonly="!isEditing"
-                        class="w-full input-text form-input form-input"
+                        class="w-full input-text form-input"
                     />
                 </div>
 
