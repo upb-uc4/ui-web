@@ -1,5 +1,6 @@
 <template>
     <div
+        :id="'user_' + user.username"
         class="px-8 py-4 whitespace-no-wrap border-gray-200 cursor-pointer hover:bg-gray-200"
         :class="{ 'rounded-t-lg': isFirstRow, 'rounded-b-lg': isLastRow, 'border-b': !isLastRow }"
         @click="editAccount(user.username)"
