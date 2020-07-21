@@ -15,8 +15,8 @@ describe("Student course view", () => {
         cy.get('input[id="maxParticipants"]').clear().type("1");
         cy.get('button[id="createCourse"]').click();
         cy.url().should("contain", "lecturer");
-        cy.wait(1000)
-        cy.reload()
+        cy.wait(1000);
+        cy.reload();
     });
 
     it("Login as student", () => {
@@ -25,12 +25,12 @@ describe("Student course view", () => {
         cy.get("input[id='password']").type("student");
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "student");
-    })
+    });
 
     it("Course exists", () => {
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains("test-courseName-cypress");
-        cy.reload()
+        cy.reload();
     });
 
     it("Delete course as lecturer", () => {
@@ -38,10 +38,10 @@ describe("Student course view", () => {
         cy.get("input[id='email']").type("lecturer");
         cy.get("input[id='password']").type("lecturer");
         cy.get('button[id="login"]').click();
-        cy.url().should("contain", "lecturer");        
+        cy.url().should("contain", "lecturer");
 
         cy.get("div").contains("test-courseName-cypress").parent().parent().find("button[id='editCourse']").click();
         cy.get("button[id='deleteCourse']").click();
         cy.get('button[id="deleteCourseModalDelete"]').click();
-    })
+    });
 });
