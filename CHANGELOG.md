@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 ### Usability
+- change input type of semester count in student's private profile to text (#118)
 - add proper page titling based on route (#195)
 
 ### Technical
