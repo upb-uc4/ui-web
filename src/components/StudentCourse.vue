@@ -21,7 +21,7 @@
                         :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
                         class="mt-1 navigation-link font-semibold hover:cursor-pointer"
                     >
-                        {{ course.lecturerId }}
+                        {{ lecturerDisplayName }}
                     </router-link>
                     <div class="mt-3">
                         <read-more more-str="Show more" :text="course.courseDescription" less-str="Show less" :max-chars="180"></read-more>
@@ -58,8 +58,11 @@
     import ReadMore from "./ReadMore.vue";
     import Course from "@/api/api_models/course_management/Course";
     import Router from "@/router/";
+    import UserManagement from "@/api/UserManagement";
+    import ProfileResponseHandler from "@/use/ProfileResponseHandler";
+
     export default {
-        name: "Course",
+        name: "StudentCourse",
         components: {
             ReadMore,
         },
@@ -68,6 +71,19 @@
                 required: true,
                 type: Object as () => Course,
             },
+        },
+        async setup(props: any) {
+            const auth: UserManagement = new UserManagement();
+
+            const responseHandler = new ProfileResponseHandler();
+            const response = await auth.getSpecificUser(props.course.lecturerId);
+            const user = responseHandler.handleReponse(response);
+
+            const lecturerDisplayName = user.firstName + " " + user.lastName + " (@" + user.username + ")";
+
+            return {
+                lecturerDisplayName,
+            };
         },
     };
 </script>
