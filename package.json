@@ -45,7 +45,7 @@
         "tailwindcss": "^1.5.1",
         "vue": "^3.0.0-rc.2",
         "vue-property-decorator": "^8.5.1",
-        "vue-router": "^4.0.0-beta.2",
+        "vue-router": "^4.0.0-beta.3",
         "vuex": "^4.0.0-beta.4"
     },
     "devDependencies": {
