@@ -97,6 +97,8 @@
     import { Country } from "@/entities/Country";
     import { store } from "@/store/store";
     import EnterPasswordModal from "@/components/modals/EnterPasswordModal.vue";
+    import UserManagement from "@/api/UserManagement";
+    import GenericResponseHandler from "@/use/GenericResponseHandler";
 
     export default {
         components: {
@@ -147,15 +149,23 @@
                 editPassword.value = false;
             }
 
-            function updatePassword() {
-                //TODO API call for updating password
+            async function updatePassword() {
+                const genericResponseHandler = new GenericResponseHandler();
+                const userManagement: UserManagement = new UserManagement();
+                const response = await userManagement.changeOwnPassword(newPassword.value);
+                const result = genericResponseHandler.handleReponse(response);
 
-                //Remove local inputs (if the user wants to change twice in a row)
-                password.value = newPassword.value;
-                newPassword.value = "";
-                confirmationPassword.value = "";
-                passwordFieldType.value = "password";
-                editPassword.value = false;
+                if (result) {
+                    //Remove local inputs (if the user wants to change twice in a row)
+                    password.value = newPassword.value;
+                    store.state.loginData.password = password.value;
+                    newPassword.value = "";
+                    confirmationPassword.value = "";
+                    passwordFieldType.value = "password";
+                    editPassword.value = false;
+                } else {
+                    alert("Basti: 'Hääh'");
+                }
             }
 
             return {
