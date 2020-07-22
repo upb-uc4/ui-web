@@ -12,25 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Run e2e tests
-        uses: cypress-io/github-action@v2
-        with:
-          config: baseUrl=http://localhost:8080
-          browser: chrome
-          start: npm run serve
-          wait-on: 'http://localhost:8080'
-          
-      - uses: actions/upload-artifact@v1
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-      # Test run video was always captured, so this action uses "always()" condition
-      - uses: actions/upload-artifact@v1
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
           
       - name: Use Node.js
         uses: actions/setup-node@v1
@@ -42,3 +23,26 @@ jobs:
         
       - name: Run unit tests
         run: npm run test:unit
+
+      - name: Start server
+        run: npm run serve &
+
+      - name: Wait for server to start
+        run: sleep 60
+
+      - name: run e2e test
+        run: npm run test:e2e:headless
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      # Test run video was always captured, so this action uses "always()" condition
+      - name: Upload Videos
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
