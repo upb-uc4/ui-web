@@ -14,9 +14,15 @@
             </div>
 
             <div class="flex mb-4">
-                <div class="flex flex-col lg:w-5/6 w-2/3">
+                <div class="flex flex-col items-start lg:w-5/6 w-2/3">
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.courseName }}</div>
-                    <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturerId }}</div>
+                    <router-link
+                        id="showLecturer"
+                        :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
+                        class="mt-1 navigation-link font-semibold hover:cursor-pointer"
+                    >
+                        {{ lecturerDisplayName }}
+                    </router-link>
                     <div class="mt-3">
                         <read-more more-str="Show more" :text="course.courseDescription" less-str="Show less" :max-chars="180"></read-more>
                     </div>
@@ -35,6 +41,8 @@
     import ReadMore from "./ReadMore.vue";
     import router from "../router";
     import Course from "@/api/api_models/course_management/Course";
+    import UserManagement from "@/api/UserManagement";
+    import ProfileResponseHandler from "@/use/ProfileResponseHandler";
 
     export default {
         name: "LecturerCourse",
@@ -47,12 +55,21 @@
                 required: true,
             },
         },
-        setup(props: any) {
+        async setup(props: any) {
+            const auth: UserManagement = new UserManagement();
+
+            const responseHandler = new ProfileResponseHandler();
+            const response = await auth.getSpecificUser(props.course.lecturerId);
+            const user = responseHandler.handleReponse(response);
+
+            const lecturerDisplayName = user.firstName + " " + user.lastName;
+
             function editCourse() {
                 router.push({ path: "/editCourse/" + props.course.courseId });
             }
 
             return {
+                lecturerDisplayName,
                 editCourse,
             };
         },
