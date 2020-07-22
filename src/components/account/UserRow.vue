@@ -23,7 +23,16 @@
                     </div>
                 </div>
                 <div class="mx-8 w-24">
-                    <div class="text leading-5 text-blue-900 mb-1">{{ user.role }}</div>
+                    <span
+                        class="inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1"
+                        :class="{
+                            'bg-blue-200 text-blue-800': isStudent,
+                            'bg-red-200 text-red-800': isAdmin,
+                            'bg-green-200 text-green-800': isLecturer,
+                        }"
+                    >
+                        {{ user.role }}
+                    </span>
                 </div>
 
                 <div class="flex-col items-baseline" :class="[isStudent ? 'flex' : 'hidden']">
@@ -72,9 +81,11 @@
                 router.push({ path: "/editAccount/" + username });
             }
             const isStudent = props.user.role === Role.STUDENT;
+            const isLecturer = props.user.role === Role.LECTURER;
+            const isAdmin = props.user.role === Role.ADMIN;
             const student = props.user as Student;
 
-            return { editAccount, isStudent, student };
+            return { editAccount, isStudent, isLecturer, isAdmin, student };
         },
     };
 </script>
