@@ -97,10 +97,9 @@ test("Delete user", async () => {
 });
 
 test("Change password", async () => {
-    await new Promise((r) => setTimeout(r, 5000));
     let success = await userManagement.changeOwnPassword("testPassword");
     expect(success.returnValue).toBe(true);
-
+    await new Promise((r) => setTimeout(r, 5000));
     adminAuth.password = "testPassword";
     success = await userManagement.changeOwnPassword("admin");
     expect(success.returnValue).toBe(true);

@@ -264,7 +264,7 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .put(`/password/${username}`, acc, this._authHeader)
+            .post(`/password/${username}`, acc, this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
