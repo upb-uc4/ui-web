@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <profile-menu />
+        <profile-menu class="pt-4" />
     </header>
 </template>
 
