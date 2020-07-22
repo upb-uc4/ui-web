@@ -2,7 +2,7 @@
     <div class="relative cursor-pointer" @mouseleave="hide" @mouseover="show">
         <div>Courses</div>
 
-        <transition name="mega-menu-fade">
+        <transition name="menu-fade">
             <div
                 v-show="isVisible"
                 class="absolute normal-case font-normal bg-white shadow-md rounded-lg overflow-hidden border mt-4 z-30 lg:z-10 left-0 lg:-left-16"
@@ -40,16 +40,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .mega-menu-fade-enter-active,
-    .mega-menu-fade-leave-active {
-        transition: all 0.1s ease-in-out;
-    }
-
-    .mega-menu-fade-enter,
-    .mega-menu-fade-leave-to {
-        opacity: 0;
-        transform: translateY(-12px);
-    }
-</style>
