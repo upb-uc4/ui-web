@@ -24,8 +24,9 @@
                 type: String,
             },
             description: {
-                required: true,
+                required: false,
                 type: String,
+                default: "",
             },
             iconClass: {
                 required: true,
