@@ -5,7 +5,8 @@
 ### Usability
 - change input type of semester count in student's private profile to text (#118)
 - add proper page titling based on route (#195)
-- change type of lecturer name in student's courses to button, which routes to lecturer's public profile (#115)
+- change type of lecturer name in course components to button, which routes to lecturer's public profile (#215, #222)
+- display the full name of the lecturer in course components (#217)
 
 ### Technical
 - declare emits in various components (adds type safety to emit)
