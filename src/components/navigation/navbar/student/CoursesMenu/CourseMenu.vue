@@ -5,8 +5,7 @@
         <transition name="menu-fade">
             <div
                 v-show="isVisible"
-                class="absolute normal-case font-normal bg-white shadow-md rounded-lg overflow-hidden border mt-4 z-30 lg:z-10 left-0 lg:-left-16"
-                style="width: 700px;"
+                class="absolute normal-case font-normal bg-white shadow-md rounded-lg overflow-hidden border mt-4 z-30 lg:z-10 left-0 lg:w-180 lg:-left-16"
             >
                 <menu-body />
                 <menu-footer />

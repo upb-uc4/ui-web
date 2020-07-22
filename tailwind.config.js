@@ -17,7 +17,14 @@ module.exports = {
                 },
             },
         }),
-        extend: {},
+        extend: {
+            spacing: {
+                "80": "20rem",
+                "108": "27rem",
+                "160": "40rem",
+                "180": "45rem",
+            },
+        },
     },
     variants: {
         opacity: ["responsive", "hover", "focus", "disabled"],
