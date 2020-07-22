@@ -2,7 +2,7 @@
 
 ## Feature
 - add e2e tests using cypress (#218)
-
+- add workflow for automatic unit testing and e2e testing (#218)
 ## Bug Fixes
 
 ### Usability
