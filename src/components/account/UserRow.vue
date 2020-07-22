@@ -25,14 +25,16 @@
                 <div class="mx-8 w-24">
                     <div class="text leading-5 text-blue-900 mb-1">{{ user.role }}</div>
                 </div>
-                <div class="flex flex-col items-baseline">
-                    <div class="leading-5 text-blue-900 ml-1 mb-1">421769</div>
+
+                <div class="flex-col items-baseline" :class="[isStudent ? 'flex' : 'hidden']">
+                    <div class="leading-5 text-blue-900 ml-1 mb-1">{{ student.matriculationId }}</div>
                     <div class="hidden sm:flex items-center leading-5 text-gray-500">
                         <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em;">
                             <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
                             <i class="fas fa-check fa-stack-1x fa-inverse"></i>
                         </span>
                         <div class="hidden sm:block">
+                            <!-- TODO when new API is active -->
                             Immatriculated
                         </div>
                     </div>
@@ -48,6 +50,8 @@
 <script lang="ts">
     import User from "../../api/api_models/user_management/User";
     import router from "@/router";
+    import { Role } from "@/entities/Role";
+    import Student from "@/api/api_models/user_management/Student";
 
     export default {
         name: "AccountRow",
@@ -67,7 +71,10 @@
             function editAccount(username: string) {
                 router.push({ path: "/editAccount/" + username });
             }
-            return { editAccount };
+            const isStudent = props.user.role === Role.STUDENT;
+            const student = props.user as Student;
+
+            return { editAccount, isStudent, student };
         },
     };
 </script>
