@@ -15,18 +15,18 @@
                     <div v-if="!editPassword" class="w-1/2 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <div class="flex items-baseline">
                             <label class="text-gray-700 text-md font-medium mb-3">Password</label>
-                            <button class="ml-3 text-sm btn-blue-tertiary" @click="confirmIdentity">Update</button>
+                            <button id="updatePassword" class="ml-3 text-sm btn-blue-tertiary" @click="confirmIdentity">Update</button>
                         </div>
                         <div class="flex items-center">
                             <input
-                                id="password"
+                                id="currentPassword"
                                 v-model="password"
                                 disabled
                                 :type="passwordFieldType"
                                 class="w-10/12 input-text form-input"
                             />
                             <button
-                                id="togglePassword"
+                                id="toggleCurrentPassword"
                                 type="button"
                                 class="display-none inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
                                 @click="togglePassword"
@@ -39,14 +39,14 @@
                         <label class="text-gray-700 text-md font-medium mb-3">Change your password</label>
                         <div class="flex items-center">
                             <input
-                                id="password"
+                                id="newPassword"
                                 v-model="newPassword"
                                 :type="passwordFieldType"
                                 class="w-10/12 input-text form-input mb-2"
                                 placeholder="New Password"
                             />
                             <button
-                                id="togglePassword"
+                                id="toggleNewPassword"
                                 type="button"
                                 class="display-none mb-2 inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
                                 @click="togglePassword"
@@ -56,14 +56,14 @@
                         </div>
                         <div class="flex items-center">
                             <input
-                                id="password"
+                                id="confirmationPassword"
                                 v-model="confirmationPassword"
                                 :type="passwordFieldType"
                                 class="w-10/12 input-text form-input mb-2"
                                 placeholder="Confirm Password"
                             />
                             <button
-                                id="togglePassword"
+                                id="toggleConfirmationPassword"
                                 type="button"
                                 class="display-none mb-2 inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
                                 @click="togglePassword"
@@ -72,8 +72,15 @@
                             </button>
                         </div>
                         <div class="w-10/12 justify-end flex flex-row">
-                            <button class="px-2 btn btn-blue-secondary text-sm mr-3" @click="cancel">Cancel</button>
-                            <button class="px-2 btn btn-blue-primary text-sm" :disabled="passwordMatch" @click="updatePassword">
+                            <button id="cancelPasswordChange" class="px-2 btn btn-blue-secondary text-sm mr-3" @click="cancel">
+                                Cancel
+                            </button>
+                            <button
+                                id="changePassword"
+                                class="px-2 btn btn-blue-primary text-sm"
+                                :disabled="passwordMatch"
+                                @click="updatePassword"
+                            >
                                 Update Password
                             </button>
                         </div>
