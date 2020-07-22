@@ -1,4 +1,11 @@
-# [v.0.4.4 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
+# [v.0.4.5 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
+
+## Feature
+- add password change API + unit test (#213)
+- 
+# [v.0.4.4](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-22)
+
+- Requires backend version 0.4.2
 
 ## Bug Fixes
 
@@ -11,6 +18,7 @@
 - declare emits in various components (adds type safety to emit)
 - add view wide unique id attributes to all user interaction HTML elements
 - Refactor CreateEditCourse (split into components) 
+- Fix ambiguous routes bug (#224)
 
 ## Dependencies
 - updated @fortawesome/fontawesome-free from 5.13.0 to 5.14.0
