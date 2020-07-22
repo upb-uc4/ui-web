@@ -22,9 +22,7 @@
                 <courseList :key="refreshKey" />
             </template>
             <template #fallback>
-                <p class="text-center text-lg pt-20">
-                    Loading Courses...
-                </p>
+                <loading-component />
             </template>
         </suspense>
     </div>
@@ -32,12 +30,14 @@
 
 <script lang="ts">
     import CourseList from "./CourseList.vue";
+    import LoadingComponent from "./loading/Spinner.vue";
     import { ref } from "vue";
 
     export default {
         name: "StudentCourseList",
         components: {
             CourseList,
+            LoadingComponent,
         },
         setup() {
             let message = ref("");
