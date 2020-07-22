@@ -2,7 +2,9 @@
 
 ## Feature
 - add password change API + unit test (#213)
-- 
+- add option for user to change the password (atm. in lecturer private profile, will be moved to a settings page) (#208)
+
+
 # [v.0.4.4](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-22)
 
 - Requires backend version 0.4.2
