@@ -17,10 +17,9 @@
                             >Features</a>
                         </li>
                         <li>
-                            <a
+                            <course-menu
                                 class="py-1 mx-2 block border-b-2 border-transparent hover:border-gray-100 transition duration-500 ease-in-out"
-                                href="#"
-                            >Pricing</a>
+                            />
                         </li>
                         <li>
                             <a
@@ -45,11 +44,13 @@
 
 <script lang="ts">
     import ProfileMenu from "@/components/navigation/navbar/ProfileMenu.vue";
+    import CourseMenu from "@/components/navigation/navbar/student/CoursesMenu/CourseMenu.vue";
 
     export default {
         name: "Navbar",
         components: {
             ProfileMenu,
+            CourseMenu,
         },
     };
 </script>
