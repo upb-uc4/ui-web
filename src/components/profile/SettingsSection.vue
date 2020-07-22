@@ -17,25 +17,61 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Password</label>
                             <button class="ml-3 text-sm btn-blue-tertiary" @click="confirmIdentity">Update</button>
                         </div>
-                        <input id="password" v-model="password" disabled type="password" class="w-2/3 input-text form-input" />
+                        <div class="flex items-center">
+                            <input
+                                id="password"
+                                v-model="password"
+                                disabled
+                                :type="passwordFieldType"
+                                class="w-10/12 input-text form-input"
+                            />
+                            <button
+                                id="togglePassword"
+                                type="button"
+                                class="display-none inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
+                                @click="togglePassword"
+                            >
+                                <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="display-none mt-3 ml-1 fas mr-1"></i>
+                            </button>
+                        </div>
                     </div>
                     <div v-else class="w-1/2 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">Change your password</label>
-                        <input
-                            id="password"
-                            v-model="newPassword"
-                            type="password"
-                            class="w-full input-text form-input mb-2 mr-10"
-                            placeholder="New Password"
-                        />
-                        <input
-                            id="password"
-                            v-model="confirmationPassword"
-                            type="password"
-                            class="w-full input-text form-input mb-4"
-                            placeholder="Confirm Password"
-                        />
-                        <div class="w-full justify-end flex flex-row">
+                        <div class="flex items-center">
+                            <input
+                                id="password"
+                                v-model="newPassword"
+                                :type="passwordFieldType"
+                                class="w-10/12 input-text form-input mb-2"
+                                placeholder="New Password"
+                            />
+                            <button
+                                id="togglePassword"
+                                type="button"
+                                class="display-none mb-2 inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
+                                @click="togglePassword"
+                            >
+                                <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="display-none mt-3 ml-1 fas mr-1"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center">
+                            <input
+                                id="password"
+                                v-model="confirmationPassword"
+                                :type="passwordFieldType"
+                                class="w-10/12 input-text form-input mb-2"
+                                placeholder="Confirm Password"
+                            />
+                            <button
+                                id="togglePassword"
+                                type="button"
+                                class="display-none mb-2 inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
+                                @click="togglePassword"
+                            >
+                                <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="display-none mt-3 ml-1 fas mr-1"></i>
+                            </button>
+                        </div>
+                        <div class="w-10/12 justify-end flex flex-row">
                             <button class="px-2 btn btn-blue-secondary text-sm mr-3" @click="cancel">Cancel</button>
                             <button class="px-2 btn btn-blue-primary text-sm" :disabled="passwordMatch" @click="updatePassword">
                                 Update Password
@@ -60,6 +96,7 @@
             EnterPasswordModal,
         },
         setup() {
+            let passwordFieldType = ref("password");
             let password = ref(store.state.loginData.password);
             let editPassword = ref(false);
             let enterPasswordModal = ref();
@@ -69,6 +106,14 @@
             let passwordMatch = computed(() => {
                 return !(newPassword.value === confirmationPassword.value && newPassword.value != "");
             });
+
+            function togglePassword() {
+                passwordFieldType.value = isPasswordVisible() ? "password" : "text";
+            }
+
+            function isPasswordVisible() {
+                return passwordFieldType.value === "text";
+            }
 
             async function confirmIdentity() {
                 let modal = enterPasswordModal.value;
@@ -80,6 +125,7 @@
                             break;
                         }
                         case action.CONFIRM: {
+                            passwordFieldType.value = "password";
                             editPassword.value = true;
                             break;
                         }
@@ -88,6 +134,7 @@
             }
 
             function cancel() {
+                passwordFieldType.value = "password";
                 newPassword.value = "";
                 confirmationPassword.value = "";
                 editPassword.value = false;
@@ -100,16 +147,20 @@
                 password.value = newPassword.value;
                 newPassword.value = "";
                 confirmationPassword.value = "";
+                passwordFieldType.value = "password";
                 editPassword.value = false;
             }
 
             return {
+                isPasswordVisible,
+                passwordFieldType,
                 confirmIdentity,
                 updatePassword,
                 cancel,
                 password,
                 newPassword,
                 confirmationPassword,
+                togglePassword,
                 passwordMatch,
                 editPassword,
                 enterPasswordModal,
