@@ -14,7 +14,9 @@
                             <a
                                 class="py-1 mx-2 block border-b-2 border-transparent hover:border-gray-100 transition duration-500 ease-in-out"
                                 href="#"
-                            >Features</a>
+                            >
+                                Home
+                            </a>
                         </li>
                         <li>
                             <course-menu
