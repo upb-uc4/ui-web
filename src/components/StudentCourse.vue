@@ -79,7 +79,7 @@
             const response = await auth.getSpecificUser(props.course.lecturerId);
             const user = responseHandler.handleReponse(response);
 
-            const lecturerDisplayName = user.firstName + " " + user.lastName + " (@" + user.username + ")";
+            const lecturerDisplayName = user.firstName + " " + user.lastName;
 
             return {
                 lecturerDisplayName,
