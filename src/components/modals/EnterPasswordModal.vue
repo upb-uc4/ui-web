@@ -6,6 +6,7 @@
         <div class="flex flex-col">
             <p>You are about to change critical data! Please enter your password to continue.</p>
             <input
+                id="enterPasswordModalPassword"
                 v-model="password"
                 :disabled="checking"
                 type="password"
@@ -15,8 +16,8 @@
             />
         </div>
         <template #footer>
-            <button id="unsavedChangesModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="unsavedChangesModalConfirmLeave" class="w-24 py-2 px-2 btn btn-blue-primary" @click="checkPassword">
+            <button id="enterPasswordModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
+            <button id="enterPasswordModalConfirm" class="w-24 py-2 px-2 btn btn-blue-primary" @click="checkPassword">
                 Confirm
             </button>
         </template>
