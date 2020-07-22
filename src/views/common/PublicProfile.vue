@@ -23,6 +23,7 @@
             const responseHandler = new ProfileResponseHandler();
             const response = await auth.getSpecificUser(username);
             const user = responseHandler.handleReponse(response);
+            window.document.title = user.firstName + " " + user.lastName + " (@" + username + ") | UC4";
             return { Role, user };
         },
     };

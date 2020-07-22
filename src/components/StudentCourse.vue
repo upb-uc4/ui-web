@@ -14,9 +14,15 @@
             </div>
 
             <div class="flex">
-                <div class="flex flex-col lg:w-5/6 w-2/3">
+                <div class="flex flex-col items-start lg:w-5/6 w-2/3">
                     <div class="mt-2 font-semibold text-2xl leading-tight truncate text-gray-900">{{ course.courseName }}</div>
-                    <div class="mt-1 font-semibold text-sm text-gray-600">{{ course.lecturerId }}</div>
+                    <router-link
+                        id="showLecturer"
+                        :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
+                        class="mt-1 navigation-link font-semibold hover:cursor-pointer"
+                    >
+                        {{ course.lecturerId }}
+                    </router-link>
                     <div class="mt-3">
                         <read-more more-str="Show more" :text="course.courseDescription" less-str="Show less" :max-chars="180"></read-more>
                     </div>
@@ -26,11 +32,16 @@
                         <!-- v-if directive just for design purposes here -> replace with state of myCourses-->
                         <button
                             v-if="course.id === 123456789"
+                            id="leaveCourse"
                             class="bg-white text-red-600 border-2 shadow-md border-gray-300 py-2 px-8 rounded-lg focus:outline-none font-semibold"
                         >
                             Leave
                         </button>
-                        <button v-else-if="course.currentParticipants < course.maxParticipants" class="w-48 py-2 btn btn-blue-primary">
+                        <button
+                            v-else-if="course.currentParticipants < course.maxParticipants"
+                            id="joinCourse"
+                            class="w-48 py-2 btn btn-blue-primary"
+                        >
                             Join
                         </button>
                         <p v-else class="flex text-red-600 text-opacity-50 text-center py-2 px-8 rounded-lg font-semibold">
@@ -46,6 +57,7 @@
 <script lang="ts">
     import ReadMore from "./ReadMore.vue";
     import Course from "@/api/api_models/course_management/Course";
+    import Router from "@/router/";
     export default {
         name: "Course",
         components: {

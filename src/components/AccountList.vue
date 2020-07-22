@@ -20,7 +20,12 @@
                     <td class="px-2 border border-black text-center" @dblclick="editAccount(user.username)">{{ user.firstName }}</td>
                     <td class="px-2 border border-black">
                         <div class="flex">
-                            <button title="Edit Account" class="w-full m-1 btn-icon-blue" @click="editAccount(user.username)">
+                            <button
+                                :id="'editAccount-' + user.username"
+                                title="Edit Account"
+                                class="w-full m-1 btn-icon-blue"
+                                @click="editAccount(user.username)"
+                            >
                                 <i class="inline fas fa-pencil-alt text-lg"></i>
                             </button>
                         </div>
