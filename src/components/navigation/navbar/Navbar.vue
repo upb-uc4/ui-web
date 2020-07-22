@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-    import ProfileMenu from "@/components/navigation/navbar/ProfileMenu.vue";
+    import ProfileMenu from "@/components/navigation/navbar/common/profile/ProfileMenu.vue";
     import CourseMenu from "@/components/navigation/navbar/student/CoursesMenu/CourseMenu.vue";
 
     export default {

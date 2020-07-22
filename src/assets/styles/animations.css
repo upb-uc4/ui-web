@@ -1,0 +1,12 @@
+/* NAVBAR MENU ANIMATIONS */
+
+.menu-fade-enter-active,
+.menu-fade-leave-active {
+    transition: all 0.1s ease-in-out;
+}
+
+.menu-fade-enter,
+.menu-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-12px);
+}
