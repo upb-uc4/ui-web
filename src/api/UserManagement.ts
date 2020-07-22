@@ -124,7 +124,7 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .get(`/users/${username}/role`, this._authHeader)
+            .get(`/role/${username}`, this._authHeader)
             .then((response: AxiosResponse) => {
                 console.log(response);
                 result.statusCode = response.status;
@@ -278,7 +278,7 @@ export default class UserManagement extends Common {
     }
 
     static _createEndpointByRole(role: Role): string {
-        let endpoint = "/users";
+        let endpoint = "";
         switch (role) {
             case Role.STUDENT: {
                 endpoint += "/students";
