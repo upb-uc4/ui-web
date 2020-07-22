@@ -4,9 +4,11 @@
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">
                     <label class="block text-gray-700 text-lg font-medium">Personal Information</label>
-                    <button v-show="!isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
-                    <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
-                    <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">Cancel</button>
+                    <button v-show="!isEditing" id="editPersonal" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
+                    <button v-show="isEditing" id="savePersonal" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
+                    <button v-show="isEditing" id="cancelEditPersonal" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
+                        Cancel
+                    </button>
                 </div>
                 <label class="block text-gray-600">
                     This is some long detailed description which is part towards a better form.
@@ -16,16 +18,28 @@
                 <div class="lg:flex mb-6">
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">First Name</label>
-                        <input v-model="modification.firstName" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
+                        <input
+                            id="firstName"
+                            v-model="modification.firstName"
+                            type="text"
+                            :readonly="!isEditing"
+                            class="w-full input-text form-input"
+                        />
                     </div>
                     <div class="lg:w-1/2 mb-6 lg:mb-0 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Last Name</label>
-                        <input v-model="modification.lastName" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
+                        <input
+                            id="lastName"
+                            v-model="modification.lastName"
+                            type="text"
+                            :readonly="!isEditing"
+                            class="w-full input-text form-input"
+                        />
                     </div>
                 </div>
                 <div class="lg:w-1/2 mb-6 flex flex-col lg:pr-8">
                     <label class="text-gray-700 text-md font-medium mb-3">Date of Birth</label>
-                    <input type="text" readonly :value="shownBirthDate" class="w-full input-text form-input" />
+                    <input id="birthDate" type="text" readonly :value="shownBirthDate" class="w-full input-text form-input" />
                 </div>
             </div>
         </div>
@@ -37,7 +51,20 @@
     import { Month } from "@/entities/Month.ts";
 
     export default {
-        props: ["firstName", "lastName", "birthDate"],
+        props: {
+            firstName: {
+                required: true,
+                type: String,
+            },
+            lastName: {
+                required: true,
+                type: String,
+            },
+            birthDate: {
+                required: true,
+                type: String,
+            },
+        },
         emits: ["save", "update:firstName", "update:lastName"],
         setup(props: any, { emit }: any) {
             let birthDateDates = props.birthDate.split("-");

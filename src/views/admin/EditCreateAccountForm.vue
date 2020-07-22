@@ -1,6 +1,6 @@
 <template>
     <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button class="flex items-center mb-4 navigation-link" @click="back()">
+        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
@@ -19,10 +19,10 @@
                                 <div v-for="role in roles" :key="role" class="mr-4 mb-3">
                                     <label class="flex items-center">
                                         <input
+                                            :id="'role-' + role"
                                             v-model="account.user.role"
                                             type="radio"
                                             class="form-radio radio"
-                                            name="role"
                                             :disabled="editMode"
                                             :value="role"
                                         />
@@ -30,7 +30,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <p v-if="hasError('role')" class="error-message">{{ showError("role") }} bla</p>
+                            <p v-if="errorBag.has('role')" class="error-message">{{ errorBag.get("role") }} bla</p>
                         </div>
                     </div>
                 </div>
@@ -51,13 +51,12 @@
                                 id="userName"
                                 v-model="account.user.username"
                                 type="text"
-                                name="Username"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('username') }"
+                                :class="{ error: errorBag.has('username') }"
                                 placeholder="Username"
                                 :readonly="editMode"
                             />
-                            <p v-if="hasError('username')" class="error-message">{{ showError("username") }}</p>
+                            <p v-if="errorBag.has('username')" class="error-message">{{ errorBag.get("username") }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">Email</label>
@@ -65,12 +64,11 @@
                                 id="email"
                                 v-model="account.user.email"
                                 type="text"
-                                name="email"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('email') }"
+                                :class="{ error: errorBag.has('email') }"
                                 placeholder="example@mail.com"
                             />
-                            <p v-if="hasError('email')" class="error-message">{{ showError("email") }}</p>
+                            <p v-if="errorBag.has('email')" class="error-message">{{ errorBag.get("email") }}</p>
                         </div>
                         <div v-if="!editMode" class="mb-4 flex flex-col">
                             <label for="password" class="text-gray-700 text-md font-medium mb-3">
@@ -80,12 +78,11 @@
                                 id="password"
                                 v-model="account.authUser.password"
                                 type="text"
-                                name="password"
                                 class="w-full form-input input-text"
-                                :class="{ error: hasError('password') }"
+                                :class="{ error: errorBag.has('password') }"
                                 placeholder="Password"
                             />
-                            <p v-if="hasError('password')" class="error-message">{{ showError("password") }}</p>
+                            <p v-if="errorBag.has('password')" class="error-message">{{ errorBag.get("password") }}</p>
                         </div>
                     </div>
                 </div>
@@ -111,12 +108,13 @@
                                         id="firstName"
                                         v-model="account.user.firstName"
                                         type="text"
-                                        name="firstName"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('firstName') }"
+                                        :class="{ error: errorBag.has('firstName') }"
                                         placeholder="Firstname"
                                     />
-                                    <p v-if="hasError('firstName')" class="error-message">{{ showError("firstName") }}</p>
+                                    <p v-if="errorBag.has('firstName')" class="error-message">
+                                        {{ errorBag.get("firstName") }}
+                                    </p>
                                 </div>
                                 <div class="w-full pl-2 flex-col">
                                     <label class="text-gray-700 text-sm">Lastname</label>
@@ -124,12 +122,13 @@
                                         id="lastName"
                                         v-model="account.user.lastName"
                                         type="text"
-                                        name="lastName"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('lastName') }"
+                                        :class="{ error: errorBag.has('lastName') }"
                                         placeholder="Lastname"
                                     />
-                                    <p v-if="hasError('lastName')" class="error-message">{{ showError("lastName") }}</p>
+                                    <p v-if="errorBag.has('lastName')" class="error-message">
+                                        {{ errorBag.get("lastName") }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -142,26 +141,25 @@
                                 v-model:month="account.birthDate.month"
                                 v-model:day="account.birthDate.day"
                             />
-                            <p v-if="hasError('birthDate')" class="error-message">{{ showError("birthDate") }}</p>
+                            <p v-if="errorBag.has('birthDate')" class="error-message">{{ errorBag.get("birthDate") }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-md font-medium mb-3">
                                 Adress
                             </label>
-                            <p v-if="hasError('address')" class="error-message">{{ showError("address") }}</p>
+                            <p v-if="errorBag.has('address')" class="error-message">{{ errorBag.get("address") }}</p>
                             <div class="w-full flex flex-col">
                                 <label class="text-gray-700 text-sm">Country</label>
                                 <select
                                     id="country"
                                     v-model="account.user.address.country"
                                     class="w-1/2 mb-4 form-select input-select"
-                                    :class="{ error: hasError('country') }"
-                                    name="country"
+                                    :class="{ error: errorBag.has('country') }"
                                 >
                                     <option :value="''">Select a Country</option>
-                                    <option v-for="country in countries" :key="country">{{ country }}</option>
+                                    <option v-for="country in countries" :id="'country-' + country" :key="country">{{ country }}</option>
                                 </select>
-                                <p v-if="hasError('country')" class="error-message">{{ showError("country") }}</p>
+                                <p v-if="errorBag.has('country')" class="error-message">{{ errorBag.get("country") }}</p>
                             </div>
                             <div class="flex flex-row">
                                 <div class="w-full pr-2 mb-4 flex flex-col">
@@ -170,40 +168,43 @@
                                         id="street"
                                         v-model="account.user.address.street"
                                         type="text"
-                                        name="street"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('street') }"
+                                        :class="{ error: errorBag.has('street') }"
                                         placeholder="Street"
                                     />
-                                    <p v-if="hasError('street')" class="error-message">{{ showError("street") }}</p>
+                                    <p v-if="errorBag.has('street')" class="error-message">
+                                        {{ errorBag.get("street") }}
+                                    </p>
                                 </div>
                                 <div class="pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Number</label>
                                     <input
-                                        id="number"
+                                        id="houseNumber"
                                         v-model="account.user.address.houseNumber"
                                         type="text"
-                                        name="number"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('houseNumber') }"
+                                        :class="{ error: errorBag.has('houseNumber') }"
                                         placeholder="Number"
                                     />
-                                    <p v-if="hasError('houseNumber')" class="error-message">{{ showError("houseNumber") }}</p>
+                                    <p v-if="errorBag.has('houseNumber')" class="error-message">
+                                        {{ errorBag.get("houseNumber") }}
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex flex-row">
                                 <div class="pr-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">Zip Code</label>
                                     <input
-                                        id="zipcode"
+                                        id="zipCode"
                                         v-model="account.user.address.zipCode"
                                         type="text"
-                                        name="zipcode"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('zipCode') }"
+                                        :class="{ error: errorBag.has('zipCode') }"
                                         placeholder="Zip Code"
                                     />
-                                    <p v-if="hasError('zipCode')" class="error-message">{{ showError("zipCode") }}</p>
+                                    <p v-if="errorBag.has('zipCode')" class="error-message">
+                                        {{ errorBag.get("zipCode") }}
+                                    </p>
                                 </div>
                                 <div class="w-full pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm">City</label>
@@ -211,12 +212,11 @@
                                         id="city"
                                         v-model="account.user.address.city"
                                         type="text"
-                                        name="city"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('city') }"
+                                        :class="{ error: errorBag.has('city') }"
                                         placeholder="City"
                                     />
-                                    <p v-if="hasError('city')" class="error-message">{{ showError("city") }}</p>
+                                    <p v-if="errorBag.has('city')" class="error-message">{{ errorBag.get("city") }}</p>
                                 </div>
                             </div>
                         </div>
@@ -236,33 +236,32 @@
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-sm font-medium mb-3">Free Text Description (optional)</label>
                             <textarea
-                                id="description"
+                                id="freeText"
                                 v-model="account.lecturer.freeText"
-                                name="description"
                                 cols="30"
                                 rows="5"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: hasError('freeText') }"
+                                :class="{ error: errorBag.has('freeText') }"
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
                             >
                             </textarea>
-                            <p v-if="hasError('freeText')" class="error-message">{{ showError("freeText") }}</p>
+                            <p v-if="errorBag.has('freeText')" class="error-message">{{ errorBag.get("freeText") }}</p>
                         </div>
                         <div class="mb-4 flex flex-col">
                             <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research (optional)</label>
                             <textarea
-                                id="researchField"
+                                id="researchArea"
                                 v-model="account.lecturer.researchArea"
-                                name="researchField"
                                 cols="30"
                                 rows="3"
                                 class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: hasError('researchArea') }"
+                                :class="{ error: errorBag.has('researchArea') }"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
                             >
->
                             </textarea>
-                            <p v-if="hasError('researchArea')" class="error-message">{{ showError("researchArea") }}</p>
+                            <p v-if="errorBag.has('researchArea')" class="error-message">
+                                {{ errorBag.get("researchArea") }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -285,13 +284,12 @@
                                         id="immatriculationStatus"
                                         v-model="account.student.immatriculationStatus"
                                         type="text"
-                                        name="immatriculationStatus"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('immatriculationStatus') }"
+                                        :class="{ error: errorBag.has('immatriculationStatus') }"
                                         placeholder="Immatriculation Status"
                                     />
-                                    <p v-if="hasError('immatriculationStatus')" class="error-message">
-                                        {{ showError("immatriculationStatus") }}
+                                    <p v-if="errorBag.has('immatriculationStatus')" class="error-message">
+                                        {{ errorBag.get("immatriculationStatus") }}
                                     </p>
                                 </div>
                                 <div class="w-1/4 flex flex-col pl-2">
@@ -300,12 +298,13 @@
                                         id="matriculationId"
                                         v-model="account.student.matriculationId"
                                         type="text"
-                                        name="matriculationId"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('matriculationId') }"
+                                        :class="{ error: errorBag.has('matriculationId') }"
                                         placeholder="Matriculation-ID"
                                     />
-                                    <p v-if="hasError('matriculationId')" class="error-message">{{ showError("matriculationId") }}</p>
+                                    <p v-if="errorBag.has('matriculationId')" class="error-message">
+                                        {{ errorBag.get("matriculationId") }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -320,7 +319,9 @@
                                         placeholder="Select a Field of Study"
                                         @changed="updateFieldsOfStudy"
                                     />
-                                    <p v-if="hasError('fieldsOfStudy')" class="error-message">{{ showError("fieldsOfStudy") }}</p>
+                                    <p v-if="errorBag.has('fieldsOfStudy')" class="error-message">
+                                        {{ errorBag.get("fieldsOfStudy") }}
+                                    </p>
                                 </div>
                                 <div class="w-1/4 pl-2 flex flex-col">
                                     <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
@@ -328,12 +329,13 @@
                                         id="semesterCount"
                                         v-model="account.student.semesterCount"
                                         type="number"
-                                        name="semesterCount"
                                         class="w-full form-input input-text"
-                                        :class="{ error: hasError('semesterCount') }"
+                                        :class="{ error: errorBag.has('semesterCount') }"
                                         placeholder="Semester Count"
                                     />
-                                    <p v-if="hasError('semesterCount')" class="error-message">{{ showError("semesterCount") }}</p>
+                                    <p v-if="errorBag.has('semesterCount')" class="error-message">
+                                        {{ errorBag.get("semesterCount") }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -351,6 +353,7 @@
                     <div class="flex flex-col items-center justify-center">
                         <img class="object-contain h-48" :src="account.user.picture" />
                         <button
+                            id="updatePicture"
                             class="bg-transparent hover:bg-blue-800 border-blue-700 border-2 text-blue-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded-lg"
                             @click="updatePicture"
                         >
@@ -362,19 +365,31 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" type="button" class="w-32 btn btn-red-secondary" @click="confirmDeleteAccount">
+                        <button
+                            v-if="editMode"
+                            id="deleteAccount"
+                            type="button"
+                            class="w-32 btn btn-red-secondary"
+                            @click="confirmDeleteAccount"
+                        >
                             Delete
                         </button>
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
                             Cancel
                         </button>
-                        <button v-if="editMode" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary" @click="updateAccount">
+                        <button
+                            v-if="editMode"
+                            id="saveChanges"
+                            :disabled="!hasInput"
+                            class="w-48 w-full btn btn-blue-primary"
+                            @click="updateAccount"
+                        >
                             Save Changes
                         </button>
-                        <button v-else :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createAccount">
+                        <button v-else id="createAccount" :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createAccount">
                             Create Account
                         </button>
                     </div>
@@ -382,11 +397,12 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
+                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
                         Cancel
                     </button>
                     <button
                         v-if="editMode"
+                        id="mobileSaveChanges"
                         :disabled="!hasInput"
                         type="button"
                         class="mb-4 w-full w-full btn btn-blue-primary"
@@ -394,10 +410,16 @@
                     >
                         Save Changes
                     </button>
-                    <button v-else :disabled="!hasInput" class="mb-4 w-full btn btn-blue-primary" @click="createAccount">
+                    <button
+                        v-else
+                        id="mobleCreateAccount"
+                        :disabled="!hasInput"
+                        class="mb-4 w-full btn btn-blue-primary"
+                        @click="createAccount"
+                    >
                         Create Account
                     </button>
-                    <button class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
+                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
                         Delete
                     </button>
                 </div>
@@ -423,7 +445,7 @@
     import Lecturer from "../../api/api_models/user_management/Lecturer";
     import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
     import { Country } from "@/entities/Country";
-    import useErrorHandler from "@/use/ErrorHandler";
+    import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "../../use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import MultiSelect from "@/components/MultiSelect.vue";
@@ -476,8 +498,7 @@
             let countries = Object.values(Country).filter((e) => e != Country.NONE);
             let deleteModal = ref();
 
-            let { errorList, hasError, showError } = useErrorHandler();
-            let errors = reactive(errorList);
+            const errorBag: ErrorBag = reactive(new ErrorBag());
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -626,85 +647,45 @@
                 return newUser;
             }
 
-            function isValid() {
-                if (
-                    account.user.role == Role.NONE ||
-                    account.user.username == "" ||
-                    account.user.email == "" ||
-                    account.authUser.password == "" ||
-                    account.user.firstName == "" ||
-                    account.user.lastName == "" ||
-                    account.birthDate.day == "" ||
-                    account.birthDate.month == "" ||
-                    account.birthDate.year == "" ||
-                    account.user.address.country == "Country" ||
-                    account.user.address.street == "" ||
-                    account.user.address.houseNumber == "" ||
-                    account.user.address.zipCode == "" ||
-                    account.user.address.city == ""
-                ) {
-                    return false;
-                }
-
-                if (account.user.role == Role.STUDENT) {
-                    //account.student.semesterCount can have typeof String due to a bug in vue, if the number input field is empty
-                    if (
-                        account.student.immatriculationStatus == "" ||
-                        account.student.matriculationId == "" ||
-                        account.student.semesterCount < 0 ||
-                        typeof account.student.semesterCount != "number" ||
-                        account.student.fieldsOfStudy.length == 0
-                    ) {
-                        return false;
-                    }
-                }
-
-                //For the Lecturer, there cannot be any invalid inputs as the inputs are optional at this point.
-                //Admin has no additional Inputs
-                return true;
-            }
-
             async function createAccount() {
-                if (isValid()) {
-                    const userManagement: UserManagement = new UserManagement();
-                    account.authUser.username = account.user.username;
-                    account.authUser.role = account.user.role;
-                    account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
+                const userManagement: UserManagement = new UserManagement();
+                account.authUser.username = account.user.username;
+                account.authUser.role = account.user.role;
+                account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
 
-                    var newUser: Student | Lecturer | Admin = assembleAccount();
+                var newUser: Student | Lecturer | Admin = assembleAccount();
 
-                    // delete old errors
-                    errors.length = 0;
-                    const response = await userManagement.createUser(account.authUser, newUser);
-                    const handler = new ValidationResponseHandler();
-                    success.value = handler.handleReponse(response);
-                    emit("update:success", success.value);
+                const response = await userManagement.createUser(account.authUser, newUser);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
 
-                    if (success.value) {
-                        back();
-                    } else {
-                        errors.push(...handler.errorList);
-                        //TODO: change the following line?
-                        this.$forceUpdate();
-                    }
+                if (success.value) {
+                    back();
                 } else {
-                    console.log("Error: Input Validation Failed!");
-                    success.value = false;
-                    emit("update:success", success.value);
+                    errorBag.replaceAllWith(handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
                 }
             }
 
-            function updateAccount() {
+            async function updateAccount() {
                 const userManagement: UserManagement = new UserManagement();
                 account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
                 var adaptedUser: Student | Lecturer | Admin = assembleAccount();
-                userManagement.updateUser(adaptedUser).then((response) => {
-                    if (response) {
-                        success.value = true;
-                        emit("update:success", success.value);
-                        back();
-                    }
-                });
+
+                const response = await userManagement.updateUser(adaptedUser);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
+
+                if (success.value) {
+                    back();
+                } else {
+                    errorBag.replaceAllWith(handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
+                }
             }
 
             async function deleteAccount() {
@@ -736,15 +717,13 @@
                 isStudent,
                 fieldsOfStudy,
                 hasInput,
-                isValid,
                 back,
                 createAccount,
                 updateAccount,
                 deleteAccount,
                 confirmDeleteAccount,
                 deleteModal,
-                hasError,
-                showError,
+                errorBag: errorBag,
                 updateFieldsOfStudy,
             };
         },

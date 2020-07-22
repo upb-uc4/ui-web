@@ -2,6 +2,7 @@
     <div>
         <div v-for="index in output.length" :key="index" class="w-full flex flex-row items-center">
             <select
+                :id="'fieldsOfStudy-' + index"
                 v-model="output[index - 1]"
                 class="w-4/5 mr-1 input-select form-select"
                 :class="{ 'mb-2': index !== output.length }"
@@ -17,6 +18,7 @@
             <div class="w-1/6 items-center justify-center" :class="{ 'mb-2': index !== output.length }">
                 <button
                     v-if="output[index - 1] != ''"
+                    :id="'removeFieldOfStudy-' + index"
                     title="Remove Selected Field Of Study"
                     class="w-1/2 btn-icon-red"
                     @click="removeValue(index - 1)"
@@ -46,6 +48,7 @@
                 required: true,
             },
         },
+        emits: ["changed"],
         setup(props: any, { emit }) {
             let input = ref(props.inputList);
             let output = ref([] as string[]);

@@ -4,9 +4,11 @@
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">
                     <label class="block text-gray-700 text-lg font-medium">Address</label>
-                    <button v-show="!isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
-                    <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
-                    <button v-show="isEditing" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">Cancel</button>
+                    <button v-show="!isEditing" id="editAddress" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
+                    <button v-show="isEditing" id="saveAddress" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
+                    <button v-show="isEditing" id="cancelEditAddress" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
+                        Cancel
+                    </button>
                 </div>
                 <label class="block text-gray-600">
                     Please keep your address information as up to date as possible.
@@ -16,7 +18,7 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Country</label>
-                    <select v-model="editedAddress.country" :disabled="!isEditing" class="w-full form-select input-select">
+                    <select id="country" v-model="editedAddress.country" :disabled="!isEditing" class="w-full form-select input-select">
                         <option v-for="country in countries" :key="country" :selected="country === editedAddress.country">{{
                             country
                         }}</option>
@@ -26,17 +28,35 @@
                 <div class="lg:flex mb-6">
                     <div class="lg:w-2/3 mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">City</label>
-                        <input v-model="editedAddress.city" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
+                        <input
+                            id="city"
+                            v-model="editedAddress.city"
+                            type="text"
+                            :readonly="!isEditing"
+                            class="w-full input-text form-input"
+                        />
                     </div>
                     <div class="lg:w-1/3 mb-6 lg:mb-0 flex flex-col">
                         <label class="text-gray-700 text-md font-medium mb-3">Postal Code</label>
-                        <input v-model="editedAddress.zipCode" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
+                        <input
+                            id="zipCode"
+                            v-model="editedAddress.zipCode"
+                            type="text"
+                            :readonly="!isEditing"
+                            class="w-full input-text form-input"
+                        />
                     </div>
                 </div>
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Street</label>
-                    <input v-model="editedAddress.street" type="text" :readonly="!isEditing" class="w-full input-text form-input" />
+                    <input
+                        id="street"
+                        v-model="editedAddress.street"
+                        type="text"
+                        :readonly="!isEditing"
+                        class="w-full input-text form-input"
+                    />
                 </div>
             </div>
         </div>
@@ -50,6 +70,7 @@
     export default {
         props: {
             address: {
+                required: true,
                 type: Object,
             },
         },

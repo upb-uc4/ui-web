@@ -8,167 +8,44 @@
         <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
 
         <div>
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
-                        <label class="block text-gray-600">
-                            This is some long detailed description which is part towards a better form.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <!-- TODO: create cards for better visual impact -->
-                            <label class="text-gray-700 text-md font-medium mb-3">Type</label>
-                            <div class="flex">
-                                <div v-for="courseType in courseTypes" :key="courseType" class="mr-4">
-                                    <label class="flex items-center">
-                                        <input
-                                            v-model="course.courseType"
-                                            type="radio"
-                                            class="form-radio radio"
-                                            name="type"
-                                            :value="courseType"
-                                        />
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ courseType }}</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <p v-if="hasError('courseType')" class="error-message">{{ showError("courseType") }}</p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="name" class="text-gray-700 text-md font-medium mb-3">Name</label>
-                            <input
-                                id="name"
-                                v-model="course.courseName"
-                                type="text"
-                                name="courseName"
-                                class="w-full form-input input-text"
-                                :class="{ error: hasError('courseName') }"
-                                placeholder="Course Name"
-                            />
-                            <p v-if="hasError('courseName')" class="error-message">{{ showError("courseName") }}</p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Language</label>
-                            <select
-                                id="language"
-                                v-model="course.courseLanguage"
-                                required
-                                name="language"
-                                class="w-full form-select input-select"
-                                :class="{ error: hasError('courseLanguage') }"
-                            >
-                                <option disabled :value="''">Select a Language</option>
-                                <option v-for="language in languages" :key="language">{{ language }}</option>
-                            </select>
-                            <p v-if="hasError('courseLanguage')" class="error-message">{{ showError("courseLanguage") }}</p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label for="description" class="text-gray-700 text-md font-medium mb-3">
-                                Description
-                                <span class="text-gray-600 font-normal">
-                                    (Optional)
-                                </span>
-                            </label>
-                            <textarea
-                                id="description"
-                                v-model="course.courseDescription"
-                                name="description"
-                                cols="30"
-                                rows="10"
-                                class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: hasError('courseDescription') }"
-                                placeholder="Add an optional description."
-                            >
-                            </textarea>
-                            <p v-if="hasError('courseDescription')" class="error-message">{{ showError("courseDescription") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <basics-section
+                v-model:name="course.courseName"
+                v-model:type="course.courseType"
+                v-model:language="course.courseLanguage"
+                v-model:description="course.courseDescription"
+                :error-bag="errorBag"
+            />
+            <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
+            <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
 
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-md font-medium mb-2">Restrictions</label>
-                        <label class="block text-gray-600">
-                            This is some long detailed description which is part towards a better form.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label for="limit" class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
-                            <input
-                                id="limit"
-                                v-model="course.maxParticipants"
-                                type="number"
-                                name="maxParticipants"
-                                min="0"
-                                max="999"
-                                class="w-full form-input input-text"
-                                :class="{ error: hasError('maxParticipants') }"
-                            />
-                            <p v-if="hasError('maxParticipants')" class="error-message">{{ showError("maxParticipants") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-md font-medium mb-2">Time</label>
-                        <label class="block text-gray-600">
-                            This section is disabled for now as there is no Vue3 datepicker plugin yet.
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3 flex">
-                        <div class="w-1/2 mb-4 mr-12 flex flex-col">
-                            <label for="start" class="text-gray-700 text-md font-medium mb-3">Start Date</label>
-                            <input
-                                id="start"
-                                v-model="course.startDate"
-                                type="text"
-                                readonly
-                                name="startDate"
-                                class="w-full form-input input-text"
-                                :class="{ error: hasError('startDate') }"
-                            />
-                            <p v-if="hasError('startDate')" class="error-message">{{ showError("startDate") }}</p>
-                        </div>
-                        <div class="w-1/2 mb-4 flex flex-col">
-                            <label for="end" class="text-gray-700 text-md font-medium mb-3">End Date</label>
-                            <input
-                                id="end"
-                                v-model="course.endDate"
-                                type="text"
-                                readonly
-                                name="endDate"
-                                class="w-full form-input input-text"
-                                :class="{ error: hasError('endDate') }"
-                            />
-                            <p v-if="hasError('endDate')" class="error-message">{{ showError("endDate") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" type="button" class="w-32 btn btn-red-secondary" @click="confirmDeleteCourse">
+                        <button
+                            v-if="editMode"
+                            id="deleteCourse"
+                            type="button"
+                            class="w-32 btn btn-red-secondary"
+                            @click="confirmDeleteCourse"
+                        >
                             Delete
                         </button>
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
                             Cancel
                         </button>
-                        <button v-if="editMode" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary" @click="updateCourse">
+                        <button
+                            v-if="editMode"
+                            id="saveChanges"
+                            :disabled="!hasInput"
+                            class="w-48 w-full btn btn-blue-primary"
+                            @click="updateCourse"
+                        >
                             Save Changes
                         </button>
-                        <button v-else :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createCourse">
+                        <button v-else id="createCourse" :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createCourse">
                             Create Course
                         </button>
                     </div>
@@ -176,22 +53,29 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
+                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
                         Cancel
                     </button>
                     <button
                         v-if="editMode"
+                        id="mobileSaveChanges"
                         :disabled="!hasInput"
                         type="button"
-                        class="mb-4 w-full w-full btn btn-blue-primary"
+                        class="mb-4 w-full btn btn-blue-primary"
                         @click="updateCourse"
                     >
                         Save Changes
                     </button>
-                    <button v-else :disabled="!hasInput" class="mb-4 w-full btn btn-blue-primary" @click="createCourse">
+                    <button
+                        v-else
+                        id="mobileCreateCourse"
+                        :disabled="!hasInput"
+                        class="mb-4 w-full btn btn-blue-primary"
+                        @click="createCourse"
+                    >
                         Create Course
                     </button>
-                    <button class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
+                    <button id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
                         Delete
                     </button>
                 </div>
@@ -209,17 +93,21 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
-    import { Role } from "@/entities/Role";
-    import Course from "@/api/api_models/course_management/Course";
-    import { ref, onMounted, computed, reactive } from "vue";
+    import { ref, computed, reactive } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-    import useErrorHandler from "@/use/ErrorHandler";
+    import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import BasicsSection from "@/components/course/edit/BasicsSection.vue";
+    import RestrictionsSection from "@/components/course/edit/RestrictionsSection.vue";
+    import TimeSection from "@/components/course/edit/TimeSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
+            BasicsSection,
+            RestrictionsSection,
+            TimeSection,
             DeleteCourseModal,
         },
         props: {
@@ -229,12 +117,10 @@
             },
         },
 
-        async setup(props: any, { emit }) {
+        async setup(props: any, { emit }: any) {
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
-            let languages = Object.values(Language).filter((e) => e != Language.NONE);
-            let courseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
             let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
             let deleteModal = ref();
@@ -242,11 +128,9 @@
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
-            let { errorList, hasError, showError } = useErrorHandler();
-            let errors = reactive(errorList);
+            const errorBag: ErrorBag = reactive(new ErrorBag());
 
             if (props.editMode) {
-                const courseManagement: CourseManagement = new CourseManagement();
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
                 const genericResponseHandler = new GenericResponseHandler();
                 const result = genericResponseHandler.handleReponse(response);
@@ -280,50 +164,32 @@
             });
 
             async function createCourse() {
-                if (hasInput.value && isValid.value) {
-                    const courseManagement: CourseManagement = new CourseManagement();
+                const response = await courseManagement.createCourse(course.value);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
 
-                    // delete old errors
-                    errors.length = 0;
-                    const response = await courseManagement.createCourse(course.value);
-                    const handler = new ValidationResponseHandler();
-                    success.value = handler.handleReponse(response);
-                    emit("update:success", success.value);
-
-                    if (success.value) {
-                        back();
-                    } else {
-                        errors.push(...handler.errorList);
-                        //TODO: change the following line?
-                        this.$forceUpdate();
-                    }
+                if (success.value) {
+                    back();
                 } else {
-                    success.value = false;
-                    emit("update:success", success.value);
-                    console.log("Error: Input Validation Failed!");
+                    errorBag.replaceAllWith(handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
                 }
             }
 
             async function updateCourse() {
-                if (hasInput.value && isValid.value) {
-                    // delete old errors
-                    errors.length = 0;
-                    const response = await courseManagement.updateCourse(course.value);
-                    const handler = new ValidationResponseHandler();
-                    success.value = handler.handleReponse(response);
-                    emit("update:success", success.value);
+                const response = await courseManagement.updateCourse(course.value);
+                const handler = new ValidationResponseHandler();
+                success.value = handler.handleReponse(response);
+                emit("update:success", success.value);
 
-                    if (success.value) {
-                        back();
-                    } else {
-                        errors.push(...handler.errorList);
-                        //TODO: change the following line?
-                        this.$forceUpdate();
-                    }
+                if (success.value) {
+                    back();
                 } else {
-                    success.value = false;
-                    emit("update:success", success.value);
-                    console.log("Error: Input Validation Failed!");
+                    errorBag.replaceAllWith(handler.errorList);
+                    //TODO: change the following line?
+                    this.$forceUpdate();
                 }
             }
 
@@ -364,8 +230,6 @@
                 course,
                 initialCourseState,
                 heading,
-                languages,
-                courseTypes,
                 success,
                 hasInput,
                 isValid,
@@ -375,8 +239,7 @@
                 deleteCourse,
                 confirmDeleteCourse,
                 deleteModal,
-                hasError,
-                showError,
+                errorBag: errorBag,
             };
         },
     };

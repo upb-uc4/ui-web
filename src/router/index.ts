@@ -5,11 +5,12 @@ import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue";
 import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
 import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
-import Redirect from "../views/common/Redirect.vue";
+import Redirect from "../views/errors/403.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
+const suffix: string = " | UC4";
 
 const router = createRouter({
     history: routerHistory,
@@ -18,22 +19,34 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: LoginView,
+            meta: {
+                title: "Login" + suffix,
+            },
         },
         {
             path: "/student",
             name: "student.home",
             component: StudentHomeView,
+            meta: {
+                title: "Home" + suffix,
+            },
         },
         {
             path: "/lecturer",
             name: "lecturer.home",
             component: LecturerHomeView,
+            meta: {
+                title: "Home" + suffix,
+            },
         },
 
         {
             path: "/admin",
             name: "admin.home",
             component: AdminHomeView,
+            meta: {
+                title: "Home" + suffix,
+            },
         },
 
         {
@@ -43,6 +56,9 @@ const router = createRouter({
                 editMode: false,
             },
             component: CourseFormSuspenseWrapper,
+            meta: {
+                title: "Course Creation" + suffix,
+            },
         },
         {
             path: "/editCourse/:id",
@@ -51,23 +67,33 @@ const router = createRouter({
                 editMode: true,
             },
             component: CourseFormSuspenseWrapper,
+            meta: {
+                title: "Course Editing" + suffix,
+            },
         },
         {
             path: "/user/:username",
             name: "profile.public",
             props: { isPrivate: false },
             component: ProfileWrapper,
+            // The page title is set within the component depending on the username
         },
         {
             path: "/profile",
             name: "profile.private",
             props: { isPrivate: true },
             component: ProfileWrapper,
+            meta: {
+                title: "My Profile" + suffix,
+            },
         },
         {
             path: "/",
             name: "home",
             component: LoginView,
+            meta: {
+                title: "Welcome" + suffix,
+            },
         },
         {
             path: "/createAccount",
@@ -76,6 +102,9 @@ const router = createRouter({
                 editMode: false,
             },
             component: AccountFormSuspenseWrapper,
+            meta: {
+                title: "Account Creation" + suffix,
+            },
         },
         {
             path: "/editAccount/:username",
@@ -84,16 +113,25 @@ const router = createRouter({
                 editMode: true,
             },
             component: AccountFormSuspenseWrapper,
+            meta: {
+                title: "Account Editing" + suffix,
+            },
         },
         {
             path: "/redirect",
             name: "redirect",
             component: Redirect,
+            meta: {
+                title: "Permission Denied" + suffix,
+            },
         },
         {
             path: "/:catchAll(.*)",
             name: "pageNotFound",
             component: PageNotFound,
+            meta: {
+                title: "404" + suffix,
+            },
         },
     ],
 
@@ -103,6 +141,11 @@ const router = createRouter({
         }
         return { left: 0, top: 0 };
     },
+});
+
+router.beforeEach((to, from, next) => {
+    window.document.title = to.meta && to.meta.title ? to.meta.title : "UC4";
+    next();
 });
 
 export default router;

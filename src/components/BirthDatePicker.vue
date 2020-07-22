@@ -2,23 +2,27 @@
     <div class="flex flex-row">
         <div class="mr-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Day</label>
-            <select v-model="shownDay" class="form-select input-select" @change="updateDay($event.target.value)">
+            <select id="day" v-model="shownDay" class="form-select input-select" @change="updateDay($event.target.value)">
                 <option disabled :value="''"> Select a Day </option>
-                <option v-for="day in 31" :key="day">{{ day }}</option>
+                <option v-for="selectableDay in 31" :id="'day-' + selectableDay" :key="selectableDay">{{ selectableDay }}</option>
             </select>
         </div>
         <div class="mx-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Month </label>
-            <select v-model="shownMonth" class="form-select input-select" @change="updateMonth($event.target.value)">
+            <select id="month" v-model="shownMonth" class="form-select input-select" @change="updateMonth($event.target.value)">
                 <option disabled :value="''"> Select a Month </option>
-                <option v-for="month in months" :key="month">{{ month }}</option>
+                <option v-for="selectableMonth in months" :id="'month-' + selectableMonth" :key="selectableMonth">{{
+                    selectableMonth
+                }}</option>
             </select>
         </div>
         <div class="ml-2 w-full flex flex-col">
             <label class="text-gray-700 text-sm">Year</label>
-            <select v-model="shownYear" class="form-select input-select" @change="updateYear($event.target.value)">
+            <select id="year" v-model="shownYear" class="form-select input-select" @change="updateYear($event.target.value)">
                 <option disabled :value="''"> Select a Year </option>
-                <option v-for="year in selectableYears" :key="year">{{ year }}</option>
+                <option v-for="selectableYear in selectableYears" :id="'year-' + selectableYear" :key="selectableYear">{{
+                    selectableYear
+                }}</option>
             </select>
         </div>
     </div>
@@ -43,7 +47,7 @@
                 required: true,
             },
         },
-
+        emits: ["update:day", "update:month", "update:year"],
         setup(props: any, { emit }) {
             let months = Month;
 

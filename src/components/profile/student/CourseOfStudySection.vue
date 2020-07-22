@@ -13,20 +13,22 @@
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Matriculation Number</label>
                     <input
+                        id="matriculationId"
                         type="text"
                         readonly
                         :value="matriculationId"
-                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                        class="w-full form-input input-text"
                     />
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Field of Study</label>
                     <div v-for="(val, index) in fieldsOfStudy" :key="val">
                         <input
+                            id="fieldsOfStudy"
                             type="text"
                             readonly
                             :value="val"
-                            class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                            class="w-full form-input input-text"
                             :class="{ 'mb-4': index !== fieldsOfStudy.length - 1 }"
                         />
                     </div>
@@ -34,19 +36,21 @@
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Degree Sought</label>
                     <input
+                        id="degreeSought"
                         type="text"
                         readonly
                         value="Master's Degree"
-                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                        class="w-full form-input input-text"
                     />
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Semester Count</label>
                     <input
+                        id="semesterCount"
                         type="number"
                         readonly
                         :value="semesterCount"
-                        class="w-full border-2 border-gray-400 rounded-lg py-3 text-gray-600 form-input bg-gray-300 focus:outline-none focus:shadow-none focus:border-gray-400"
+                        class="w-full form-input input-text"
                     />
                 </div>
             </div>

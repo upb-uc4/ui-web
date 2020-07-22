@@ -1,18 +1,13 @@
 import ResponseHandler from "./ResponseHandler";
 import APIResponse from "../api/helpers/models/APIResponse";
 import ValidationError from "@/api/api_models/errors/ValidationError";
+import Error from "@/api/api_models/errors/Error";
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
  */
 export default class ValidationResponseHandler implements ResponseHandler<boolean> {
-    errorList: {
-        name: string;
-        reason: string;
-    }[] = [] as {
-        name: string;
-        reason: string;
-    }[];
+    errorList: Error[] = [] as Error[];
 
     isValidationError(object: any): object is ValidationError {
         return "type" in object && object.type == "validation error";
@@ -44,7 +39,6 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
                 return false;
             }
             case 422: {
-                alert("Validation error!");
                 console.log(response);
                 console.log(this.errorList);
                 return false;

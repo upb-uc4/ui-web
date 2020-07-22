@@ -1,8 +1,6 @@
 import APIError from "./APIError";
+import Error from "./Error";
 
 export default interface ValidationError extends APIError {
-    invalidParams: {
-        name: string;
-        reason: string;
-    }[];
+    invalidParams: Error[];
 }

@@ -8,7 +8,7 @@
                     <div class="py-8 px-10">
                         <div class="flex justify-between items-center">
                             <slot name="header"></slot>
-                            <button class="cursor-pointer z-50 focus:outline-none" @click="$emit('cancel')">
+                            <button id="baseModalCancel" class="cursor-pointer z-50 focus:outline-none" @click="$emit('cancel')">
                                 <svg
                                     class="fill-current text-gray-600 hover:text-gray-700"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -45,6 +45,7 @@
         props: {
             action: {
                 required: true,
+                type: Object,
             },
         },
         emits: ["cancel"],
