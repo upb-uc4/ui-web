@@ -11,5 +11,5 @@
 }
 
 .navbar-menu {
-    @apply py-1 mx-2 block;
+    @apply py-1 px-3 block;
 }
