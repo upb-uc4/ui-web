@@ -9,3 +9,11 @@
 .navigation-link:focus {
     @apply outline-none text-blue-800;
 }
+
+.navbar-menu {
+    @apply py-1 mx-2 block border-b-2 border-transparent transition duration-500 ease-in-out;
+}
+
+.navbar-menu:hover {
+    @apply border-gray-100;
+}
