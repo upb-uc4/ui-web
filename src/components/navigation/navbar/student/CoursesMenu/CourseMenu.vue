@@ -2,9 +2,13 @@
     <base-menu>
         <template #hook>Courses</template>
         <template #content>
-            <div class="absolute left-0 lg:-left-16 lg:w-160 mt-4 z-30 lg:z-10 bg-white shadow-md rounded-lg overflow-hidden border">
-                <menu-body />
-                <menu-footer />
+            <div>
+                <!-- hack to keep the menu open even when hovering over the gap between hook and content-->
+                <aside class="absolute bg-transparent lg:w-160 h-8" />
+                <div class="absolute left-0 lg:-left-16 lg:w-160 mt-4 z-30 lg:z-10 bg-white shadow-md rounded-lg overflow-hidden border">
+                    <menu-body />
+                    <menu-footer />
+                </div>
             </div>
         </template>
     </base-menu>
