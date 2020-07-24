@@ -12,7 +12,9 @@
 ### Usability
 - change input type of semester count in student's private profile to text (#118)
 - add proper page titling based on route (#195)
+- Add a new "Add" button next to the search bar in the account/course lists for usability (#178)
 - change type of lecturer name in student's courses to button, which routes to lecturer's public profile (#115)
+
 
 ### Technical
 - declare emits in various components (adds type safety to emit)
