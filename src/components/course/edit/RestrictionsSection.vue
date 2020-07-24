@@ -11,6 +11,7 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
                     <input
+                        id="maxParticipants"
                         v-model="maxParticipants"
                         type="number"
                         min="0"

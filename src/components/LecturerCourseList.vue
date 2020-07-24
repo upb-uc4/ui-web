@@ -5,12 +5,13 @@
                 <div class="w-full relative mx-auto text-gray-600 flex">
                     <i class="fas fa-search absolute left-0 top-0 mt-4 h-12 ml-4"></i>
                     <input
+                        id="message"
                         v-model="message"
                         class="w-full border-2 border-gray-300 bg-white h-12 px-12 rounded-lg focus:outline-none"
                         type="search"
                         placeholder="Filter"
                     />
-                    <button class="-ml-8 mr-5 focus:outline-none" title="Refresh" @click="refresh">
+                    <button id="refresh" class="-ml-8 mr-5 focus:outline-none" title="Refresh" @click="refresh">
                         <i class="inline fas fa-redo-alt text-gray-600 hover:text-gray-700" />
                     </button>
                 </div>
@@ -33,7 +34,7 @@
 
         <div class="flex justify-center mt-16">
             <router-link to="/createCourse">
-                <button class="px-4 btn btn-green-primary-500">New Course</button>
+                <button id="addCourse" class="px-4 btn btn-green-primary-500">New Course</button>
             </router-link>
         </div>
     </div>

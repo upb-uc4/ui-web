@@ -23,7 +23,7 @@
                 </div>
                 <div class="lg:w-1/6 w-1/3 lg:ml-8 ml-12">
                     <div class="mt-6 flex h-full items-center justify-center">
-                        <button class="w-48 btn btn-gray-primary py-2" @click="editCourse()">Edit</button>
+                        <button id="editCourse" class="w-48 btn btn-gray-primary py-2" @click="editCourse()">Edit</button>
                     </div>
                 </div>
             </div>
