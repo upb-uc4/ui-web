@@ -8,7 +8,6 @@
 
 <script lang="ts">
     import UserManagement from "../api/UserManagement";
-    import { Role } from "@/entities/Role";
     import router from "../router";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import UserRow from "@/components/account/UserRow.vue";
@@ -20,20 +19,13 @@
         },
         async setup() {
             const userManagement: UserManagement = new UserManagement();
-            const roles = Object.values(Role).filter((e) => e != Role.NONE);
 
             const genericResponseHandler = new GenericResponseHandler();
             const response = await userManagement.getAllUsers();
             const userLists = genericResponseHandler.handleReponse(response);
             let users = Object.values(userLists).flat();
 
-            function editAccount(username: string) {
-                router.push({ path: "/editAccount/" + username });
-            }
-
             return {
-                roles,
-                editAccount,
                 users,
             };
         },

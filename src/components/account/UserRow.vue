@@ -24,7 +24,7 @@
                 </div>
                 <div class="mx-8 w-24">
                     <span
-                        class="inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1"
+                        class="inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
                         :class="{
                             'bg-blue-200 text-blue-800': isStudent,
                             'bg-red-200 text-red-800': isAdmin,
