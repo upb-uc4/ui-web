@@ -17,23 +17,13 @@
                             <label class="text-gray-700 text-md font-medium mb-3">Password</label>
                             <button id="updatePassword" class="ml-3 text-sm btn-blue-tertiary" @click="confirmIdentity">Update</button>
                         </div>
-                        <div class="flex items-center">
-                            <input
-                                id="currentPassword"
-                                v-model="password"
-                                disabled
-                                :type="passwordFieldType"
-                                class="w-10/12 input-text form-input"
-                            />
-                            <button
-                                id="toggleCurrentPassword"
-                                type="button"
-                                class="display-none inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
-                                @click="togglePassword"
-                            >
-                                <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="display-none mt-3 ml-1 fas mr-1"></i>
-                            </button>
-                        </div>
+                        <input
+                            id="currentPassword"
+                            value="PLACEHOLDER"
+                            disabled
+                            :type="passwordFieldType"
+                            class="w-10/12 input-text form-input"
+                        />
                     </div>
                     <div v-else class="w-1/2 lg:mb-0 flex flex-col lg:mr-16">
                         <label class="text-gray-700 text-md font-medium mb-3">Change your password</label>
@@ -106,7 +96,6 @@
         },
         setup() {
             let passwordFieldType = ref("password");
-            let password = ref(store.state.loginData.password);
             let editPassword = ref(false);
             let enterPasswordModal = ref();
             let newPassword = ref("");
@@ -157,8 +146,7 @@
 
                 if (result) {
                     //Remove local inputs (if the user wants to change twice in a row)
-                    password.value = newPassword.value;
-                    store.state.loginData.password = password.value;
+                    store.state.loginData.password = newPassword.value;
                     newPassword.value = "";
                     confirmationPassword.value = "";
                     passwordFieldType.value = "password";
@@ -174,7 +162,6 @@
                 confirmIdentity,
                 updatePassword,
                 cancel,
-                password,
                 newPassword,
                 confirmationPassword,
                 togglePassword,
