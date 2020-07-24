@@ -21,19 +21,31 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-start items-center">
-                        <button v-if="editMode" type="button" class="w-32 btn btn-red-secondary" @click="confirmDeleteCourse">
+                        <button
+                            v-if="editMode"
+                            id="deleteCourse"
+                            type="button"
+                            class="w-32 btn btn-red-secondary"
+                            @click="confirmDeleteCourse"
+                        >
                             Delete
                         </button>
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
                             Cancel
                         </button>
-                        <button v-if="editMode" :disabled="!hasInput" class="w-48 w-full btn btn-blue-primary" @click="updateCourse">
+                        <button
+                            v-if="editMode"
+                            id="saveChanges"
+                            :disabled="!hasInput"
+                            class="w-48 w-full btn btn-blue-primary"
+                            @click="updateCourse"
+                        >
                             Save Changes
                         </button>
-                        <button v-else :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createCourse">
+                        <button v-else id="createCourse" :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createCourse">
                             Create Course
                         </button>
                     </div>
@@ -41,11 +53,12 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
+                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
                         Cancel
                     </button>
                     <button
                         v-if="editMode"
+                        id="mobileSaveChanges"
                         :disabled="!hasInput"
                         type="button"
                         class="mb-4 w-full btn btn-blue-primary"
@@ -53,10 +66,16 @@
                     >
                         Save Changes
                     </button>
-                    <button v-else :disabled="!hasInput" class="mb-4 w-full btn btn-blue-primary" @click="createCourse">
+                    <button
+                        v-else
+                        id="mobileCreateCourse"
+                        :disabled="!hasInput"
+                        class="mb-4 w-full btn btn-blue-primary"
+                        @click="createCourse"
+                    >
                         Create Course
                     </button>
-                    <button class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
+                    <button id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
                         Delete
                     </button>
                 </div>
