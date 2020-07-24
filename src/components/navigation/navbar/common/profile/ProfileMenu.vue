@@ -9,7 +9,7 @@
             </div>
         </template>
         <template #content>
-            <div class="absolute top-auto right-0 bg-white z-30 lg:z-10 shadow-md rounded-lg overflow-hidden border lg:w-64">
+            <div class="absolute top-auto right-0 bg-white z-30 lg:z-10 shadow-md rounded-lg overflow-hidden border lg:w-48">
                 <menu-body />
             </div>
         </template>
