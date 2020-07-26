@@ -7,31 +7,34 @@
 
                 <div class="w-full lg:w-3/5 mx-4 flex-auto items-center justify-center">
                     <div class="mb-6 text-center">
-                        <i class="m-3 fas fa-envelope absolute text-gray-500"></i>
+                        <i class="mt-4 m-3 ml-4 fas fa-envelope absolute text-gray-500"></i>
                         <input
                             id="email"
                             v-model="email"
-                            class="inline-block center lg:w-3/4 block appearance-none shadow-md font-semibold bg-gray-200 text-gray-600 placeholder-gray-600 focus:text-gray-600 p-2 pl-10 rounded hover:border-gray-300 focus:outline-none focus:shadow-outline"
+                            class="inline-block center lg:w-3/4 block font-semibold p-2 pl-10 form-input input-text"
                             type="text"
                             placeholder="Email"
+                            :class="{ error: error }"
+                            @change="hideErrors()"
                         />
                     </div>
 
                     <div class="mb-6 text-center">
-                        <i class="m-3 fas fa-lock absolute text-gray-500"></i>
+                        <i class="mt-4 m-3 ml-4 fas fa-lock absolute text-gray-500"></i>
                         <input
                             id="password"
                             v-model="password"
                             :type="passwordFieldType"
-                            class="lg:w-3/4 shadow-md inline-block center appearance-none font-semibold bg-gray-200 text-gray-600 placeholder-gray-600 focus:text-gray-600 p-2 pl-10 rounded hover:border-gray-300 focus:outline-none focus:shadow-outline"
+                            class="lg:w-3/4 inline-block center appearance-none font-semibold p-2 pl-10 form-input input-text"
                             placeholder="Password"
-                            @input="hideErrors()"
+                            :class="{ error: error }"
+                            @change="hideErrors()"
                         />
                         <button
                             id="togglePassword"
                             type="button"
                             tabIndex="-1"
-                            class="display-none absolute inline-block center ml-3 visible text-gray-500 text-sm hover:text-gray-600 focus:outline-none"
+                            class="display-none absolute inline-block center ml-3 mt-2 visible text-gray-500 text-sm hover:text-gray-600 focus:outline-none"
                             @click="togglePassword"
                         >
                             <i
@@ -39,6 +42,7 @@
                                 class="display-none absolute mt-3 ml-1 fas mr-1"
                             ></i>
                         </button>
+                        <p v-if="error" class="lg:w-3/4 ml-3 mt-2 error-message">Wrong username and password combination!</p>
                     </div>
 
                     <div class="w-full text-center lg:text-left lg:pl-16 lg:ml-3">
@@ -84,7 +88,7 @@
             let email = ref("");
             let password = ref("");
             let passwordFieldType = ref("password");
-            let error: boolean = false;
+            let error = ref(false);
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
             function togglePassword() {
@@ -92,7 +96,7 @@
             }
 
             function hideErrors() {
-                error = false;
+                error.value = false;
             }
 
             function isPasswordVisible() {
@@ -126,6 +130,8 @@
                             break;
                         }
                     }
+                } else {
+                    error.value = true;
                 }
             }
 
