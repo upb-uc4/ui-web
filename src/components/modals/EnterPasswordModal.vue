@@ -13,6 +13,7 @@
                 class="w-full form-input input-text mt-3"
                 :class="{ error: hasError }"
                 placeholder="Password"
+                @keypress.enter="checkPassword"
             />
             <p v-if="hasError" class="error-message">
                 Wrong Password!
