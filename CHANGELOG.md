@@ -2,7 +2,15 @@
 
 ## Feature
 - add password change API + unit test (#213)
-- 
+
+## Bug Fixes
+
+## Refactor
+- extract searchbar component for better adaptability (#131)
+
+### Usability
+- rework login error validation (#232)
+
 # [v.0.4.4](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-22)
 
 - Requires backend version 0.4.2
