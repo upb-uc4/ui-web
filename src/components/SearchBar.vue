@@ -28,6 +28,8 @@
                 required: true,
             },
         },
+
+        emits: ["refresh"],
         setup(props: any, { emit }: any) {
             return {
                 filterMessage: useModelWrapper(props, emit, "message"),
