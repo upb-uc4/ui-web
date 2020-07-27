@@ -3,7 +3,6 @@
         <button id="refresh" class="items-center mb-3" title="Search" @click="$emit('refresh')">
             <i class="fas fa-search ml-3 absolute text-gray-600 hover:text-gray-700" />
         </button>
-        <i class=""></i>
         <input
             id="message"
             v-model="filterMessage"
