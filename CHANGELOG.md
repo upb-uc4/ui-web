@@ -5,6 +5,9 @@
 
 ## Bug Fixes
 
+## Refactor
+- extract searchbar component for better adaptability (#131)
+
 ### Usability
 - rework login error validation (#232)
 
