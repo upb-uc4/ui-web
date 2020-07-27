@@ -151,8 +151,6 @@
                     confirmationPassword.value = "";
                     passwordFieldType.value = "password";
                     editPassword.value = false;
-                } else {
-                    alert("Basti: 'Hääh'");
                 }
             }
 
