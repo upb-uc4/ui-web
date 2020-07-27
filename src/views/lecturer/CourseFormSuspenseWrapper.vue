@@ -13,7 +13,7 @@
 <script lang="ts">
     import LecturerCreateCourseForm from "./EditCreateCourseForm.vue";
     import LoadingComponent from "../../components/loading/Spinner.vue";
-    import { store } from "@/store/store";
+    import { checkPrivilege } from "@/use/PermissionHelper";
     import { Role } from "@/entities/Role";
     import { ref } from "vue";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
@@ -26,8 +26,10 @@
             UnsavedChangesModal,
         },
 
-        beforeRouteEnter(_to: any, _from: any, next: any) {
-            if (store.state.myRole == Role.LECTURER) {
+        async beforeRouteEnter(_to: any, _from: any, next: any) {
+            const allowed = await checkPrivilege(Role.LECTURER);
+
+            if (allowed) {
                 return next();
             }
             return next("/redirect");

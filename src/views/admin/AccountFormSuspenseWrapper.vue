@@ -13,9 +13,9 @@
 <script lang="ts">
     import AdminCreateAccountForm from "./EditCreateAccountForm.vue";
     import LoadingComponent from "../../components/loading/Spinner.vue";
-    import { store } from "@/store/store";
     import { Role } from "@/entities/Role";
     import { ref } from "vue";
+    import { checkPrivilege } from "@/use/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
     export default {
@@ -26,8 +26,10 @@
             UnsavedChangesModal,
         },
 
-        beforeRouteEnter(_to: any, _from: any, next: any) {
-            if (store.state.myRole == Role.ADMIN) {
+        async beforeRouteEnter(_to: any, _from: any, next: any) {
+            const allowed = await checkPrivilege(Role.ADMIN);
+
+            if (allowed) {
                 return next();
             }
             return next("/redirect");
