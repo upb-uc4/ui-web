@@ -33,7 +33,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
     import LoginResponseHandler from "@/use/LoginResponseHandler";
-    import { store, useStore } from "../../store/store";
+    import { useStore } from "../../store/store";
 
     export default {
         components: {
