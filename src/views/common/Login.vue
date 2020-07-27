@@ -1,9 +1,9 @@
 <template>
     <div>
         <dev-nav-bar></dev-nav-bar>
-        <div class="md:mt-32 container max-w-full h-full h-auto flex flex-col lg:flex-row lg:items-center">
+        <div class="md:mt-32 container max-w-full h-auto flex flex-col lg:flex-row lg:items-center">
             <form method="POST" action="" class="xl:w-3/4 w-full flex items-center flex-col mx-auto" @submit.prevent="login">
-                <h1 class="lg:text-5xl mt-2 text-4xl font-bold mb-4 text-center text-gray-900 mb-10">Login to Your Account</h1>
+                <h1 class="lg:text-5xl mt-2 text-4xl font-bold text-center text-gray-900 mb-10">Login to Your Account</h1>
 
                 <div class="w-full lg:w-3/5 mx-4 flex-auto items-center justify-center">
                     <div class="mb-6 text-center">
@@ -11,7 +11,7 @@
                         <input
                             id="email"
                             v-model="email"
-                            class="inline-block center lg:w-3/4 block font-semibold p-2 pl-10 form-input input-text"
+                            class="inline-block center lg:w-3/4 font-semibold p-2 pl-10 form-input input-text"
                             type="text"
                             placeholder="Email"
                             :class="{ error: error }"
