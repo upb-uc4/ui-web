@@ -1,52 +1,25 @@
 <template>
-    <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
+    <div class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
         <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
-            <i class="fas text-xl fa-chevron-left"></i>
-            <span class="font-bold text-sm ml-1">Back</span>
+            <i class="text-xl fas fa-chevron-left"></i>
+            <span class="ml-1 text-sm font-bold">Back</span>
         </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ title }}</h1>
+        <h1 class="mb-8 text-2xl font-medium text-gray-700">{{ title }}</h1>
 
         <div>
-            <section class="border-t-2 py-8 border-gray-400">
+            <role-section v-model:role="account.user.role" :edit-mode="editMode" :error-bag="errorBag" />
+            <section class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Select a Role</label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <div class="w-full flex">
-                                <div v-for="role in roles" :key="role" class="mr-4 mb-3">
-                                    <label class="flex items-center">
-                                        <input
-                                            :id="'role-' + role"
-                                            v-model="account.user.role"
-                                            type="radio"
-                                            class="form-radio radio"
-                                            :disabled="editMode"
-                                            :value="role"
-                                        />
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <p v-if="errorBag.has('role')" class="error-message">{{ errorBag.get("role") }} bla</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">User Security</label>
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                        <label class="block mb-2 text-lg font-medium text-gray-700">User Security</label>
                         <label class="block text-gray-600">
                             Basic Information of the User for Authentication
                         </label>
                     </div>
                     <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Username</label>
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 font-medium text-gray-700 text-md">Username</label>
                             <input
                                 id="userName"
                                 v-model="account.user.username"
@@ -58,8 +31,8 @@
                             />
                             <p v-if="errorBag.has('username')" class="error-message">{{ errorBag.get("username") }}</p>
                         </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Email</label>
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 font-medium text-gray-700 text-md">Email</label>
                             <input
                                 id="email"
                                 v-model="account.user.email"
@@ -70,8 +43,8 @@
                             />
                             <p v-if="errorBag.has('email')" class="error-message">{{ errorBag.get("email") }}</p>
                         </div>
-                        <div v-if="!editMode" class="mb-4 flex flex-col">
-                            <label for="password" class="text-gray-700 text-md font-medium mb-3">
+                        <div v-if="!editMode" class="flex flex-col mb-4">
+                            <label for="password" class="mb-3 font-medium text-gray-700 text-md">
                                 Password
                             </label>
                             <input
@@ -88,22 +61,22 @@
                 </div>
             </section>
 
-            <section class="border-t-2 py-8 border-gray-400">
+            <section class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Personal Information</label>
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                        <label class="block mb-2 text-lg font-medium text-gray-700">Personal Information</label>
                         <label class="block text-gray-600">
                             Personal Information and Contact Data for the User
                         </label>
                     </div>
                     <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 font-medium text-gray-700 text-md">
                                 Name
                             </label>
                             <div class="flex flex-row">
-                                <div class="w-full pr-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Firstname</label>
+                                <div class="flex-col w-full pr-2">
+                                    <label class="text-sm text-gray-700">Firstname</label>
                                     <input
                                         id="firstName"
                                         v-model="account.user.firstName"
@@ -116,8 +89,8 @@
                                         {{ errorBag.get("firstName") }}
                                     </p>
                                 </div>
-                                <div class="w-full pl-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Lastname</label>
+                                <div class="flex-col w-full pl-2">
+                                    <label class="text-sm text-gray-700">Lastname</label>
                                     <input
                                         id="lastName"
                                         v-model="account.user.lastName"
@@ -132,8 +105,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 font-medium text-gray-700 text-md">
                                 Birthdate
                             </label>
                             <birth-date-picker
@@ -143,13 +116,13 @@
                             />
                             <p v-if="errorBag.has('birthDate')" class="error-message">{{ errorBag.get("birthDate") }}</p>
                         </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 font-medium text-gray-700 text-md">
                                 Adress
                             </label>
                             <p v-if="errorBag.has('address')" class="error-message">{{ errorBag.get("address") }}</p>
-                            <div class="w-full flex flex-col">
-                                <label class="text-gray-700 text-sm">Country</label>
+                            <div class="flex flex-col w-full">
+                                <label class="text-sm text-gray-700">Country</label>
                                 <select
                                     id="country"
                                     v-model="account.user.address.country"
@@ -162,8 +135,8 @@
                                 <p v-if="errorBag.has('country')" class="error-message">{{ errorBag.get("country") }}</p>
                             </div>
                             <div class="flex flex-row">
-                                <div class="w-full pr-2 mb-4 flex flex-col">
-                                    <label class="text-gray-700 text-sm">Street</label>
+                                <div class="flex flex-col w-full pr-2 mb-4">
+                                    <label class="text-sm text-gray-700">Street</label>
                                     <input
                                         id="street"
                                         v-model="account.user.address.street"
@@ -176,8 +149,8 @@
                                         {{ errorBag.get("street") }}
                                     </p>
                                 </div>
-                                <div class="pl-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm">Number</label>
+                                <div class="flex flex-col pl-2">
+                                    <label class="text-sm text-gray-700">Number</label>
                                     <input
                                         id="houseNumber"
                                         v-model="account.user.address.houseNumber"
@@ -192,8 +165,8 @@
                                 </div>
                             </div>
                             <div class="flex flex-row">
-                                <div class="pr-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm">Zip Code</label>
+                                <div class="flex flex-col pr-2">
+                                    <label class="text-sm text-gray-700">Zip Code</label>
                                     <input
                                         id="zipCode"
                                         v-model="account.user.address.zipCode"
@@ -206,8 +179,8 @@
                                         {{ errorBag.get("zipCode") }}
                                     </p>
                                 </div>
-                                <div class="w-full pl-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm">City</label>
+                                <div class="flex flex-col w-full pl-2">
+                                    <label class="text-sm text-gray-700">City</label>
                                     <input
                                         id="city"
                                         v-model="account.user.address.city"
@@ -223,38 +196,38 @@
                     </div>
                 </div>
             </section>
-            <section v-if="isLecturer" class="border-t-2 py-8 border-gray-400">
+            <section v-if="isLecturer" class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Lecturer Information</label>
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                        <label class="block mb-2 text-lg font-medium text-gray-700">Lecturer Information</label>
                         <label class="block text-gray-600">
                             Information Specifically for a Lecturer
                         </label>
                     </div>
-                    <div class="w-full lg:w-2/3 flex flex-col">
-                        <label class="text-gray-700 text-md font-medium mb-3">Description</label>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-sm font-medium mb-3">Free Text Description (optional)</label>
+                    <div class="flex flex-col w-full lg:w-2/3">
+                        <label class="mb-3 font-medium text-gray-700 text-md">Description</label>
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 text-sm font-medium text-gray-700">Free Text Description (optional)</label>
                             <textarea
                                 id="freeText"
                                 v-model="account.lecturer.freeText"
                                 cols="30"
                                 rows="5"
-                                class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
+                                class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
                                 :class="{ error: errorBag.has('freeText') }"
                                 placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
                             >
                             </textarea>
                             <p v-if="errorBag.has('freeText')" class="error-message">{{ errorBag.get("freeText") }}</p>
                         </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research (optional)</label>
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 text-sm font-medium text-gray-700">Fields of Research (optional)</label>
                             <textarea
                                 id="researchArea"
                                 v-model="account.lecturer.researchArea"
                                 cols="30"
                                 rows="3"
-                                class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
+                                class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
                                 :class="{ error: errorBag.has('researchArea') }"
                                 placeholder="Add an optional Description of the Lecturer's Fields of Research"
                             >
@@ -266,20 +239,20 @@
                     </div>
                 </div>
             </section>
-            <section v-if="isStudent" class="border-t-2 py-8 border-gray-400">
+            <section v-if="isStudent" class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Student Information</label>
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                        <label class="block mb-2 text-lg font-medium text-gray-700">Student Information</label>
                         <label class="block text-gray-600">
                             Information Specifically for a Student
                         </label>
                     </div>
                     <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Immatriculation Status</label>
+                        <div class="flex flex-col mb-4">
+                            <label class="mb-3 font-medium text-gray-700 text-md">Immatriculation Status</label>
                             <div class="flex flex-row">
-                                <div class="w-1/2 flex flex-col">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Status</label>
+                                <div class="flex flex-col w-1/2">
+                                    <label class="mb-3 text-sm font-medium text-gray-700">Status</label>
                                     <input
                                         id="immatriculationStatus"
                                         v-model="account.student.immatriculationStatus"
@@ -292,8 +265,8 @@
                                         {{ errorBag.get("immatriculationStatus") }}
                                     </p>
                                 </div>
-                                <div class="w-1/4 flex flex-col pl-2">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Matriculation-ID</label>
+                                <div class="flex flex-col w-1/4 pl-2">
+                                    <label class="mb-3 text-sm font-medium text-gray-700">Matriculation-ID</label>
                                     <input
                                         id="matriculationId"
                                         v-model="account.student.matriculationId"
@@ -308,11 +281,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-4 mt-8 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
+                        <div class="flex flex-col mt-8 mb-4">
+                            <label class="mb-3 font-medium text-gray-700 text-md">Study Status</label>
                             <div class="flex flex-row">
-                                <div class="w-1/2 flex flex-col">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Fields of Study</label>
+                                <div class="flex flex-col w-1/2">
+                                    <label class="mb-3 text-sm font-medium text-gray-700">Fields of Study</label>
                                     <multi-select
                                         :input-list="fieldsOfStudy"
                                         :pre-selection="account.student.fieldsOfStudy"
@@ -323,8 +296,8 @@
                                         {{ errorBag.get("fieldsOfStudy") }}
                                     </p>
                                 </div>
-                                <div class="w-1/4 pl-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
+                                <div class="flex flex-col w-1/4 pl-2">
+                                    <label class="mb-3 text-sm font-medium text-gray-700">Semester Count</label>
                                     <input
                                         id="semesterCount"
                                         v-model="account.student.semesterCount"
@@ -342,10 +315,10 @@
                     </div>
                 </div>
             </section>
-            <section class="border-t-2 py-8 border-gray-400" :hidden="!editMode">
+            <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
                 <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Profile Picture</label>
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                        <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
                         <label class="block text-gray-600">
                             Change the Profile Picture
                         </label>
@@ -354,7 +327,7 @@
                         <img class="object-contain h-48" :src="account.user.picture" />
                         <button
                             id="updatePicture"
-                            class="bg-transparent hover:bg-blue-800 border-blue-700 border-2 text-blue-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded-lg"
+                            class="px-4 py-2 font-semibold text-blue-700 bg-transparent border border-2 border-blue-700 rounded-lg hover:bg-blue-800 hover:text-white hover:border-transparent"
                             @click="updatePicture"
                         >
                             Update Profile Picture
@@ -362,9 +335,9 @@
                     </div>
                 </div>
             </section>
-            <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
-                <div class="hidden sm:flex justify-between">
-                    <div class="flex justify-start items-center">
+            <section class="py-8 border-t-2 border-gray-400 lg:mt-8">
+                <div class="justify-between hidden sm:flex">
+                    <div class="flex items-center justify-start">
                         <button
                             v-if="editMode"
                             id="deleteAccount"
@@ -376,7 +349,7 @@
                         </button>
                     </div>
 
-                    <div class="flex justify-end items-center">
+                    <div class="flex items-center justify-end">
                         <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
                             Cancel
                         </button>
@@ -397,7 +370,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
+                    <button id="mobileCancel" type="button" class="w-full mb-4 btn btn-blue-secondary" @click="back">
                         Cancel
                     </button>
                     <button
@@ -405,7 +378,7 @@
                         id="mobileSaveChanges"
                         :disabled="!hasInput"
                         type="button"
-                        class="mb-4 w-full w-full btn btn-blue-primary"
+                        class="w-full mb-4 btn btn-blue-primary"
                         @click="updateAccount"
                     >
                         Save Changes
@@ -414,7 +387,7 @@
                         v-else
                         id="mobleCreateAccount"
                         :disabled="!hasInput"
-                        class="mb-4 w-full btn btn-blue-primary"
+                        class="w-full mb-4 btn btn-blue-primary"
                         @click="createAccount"
                     >
                         Create Account
@@ -450,6 +423,7 @@
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import MultiSelect from "@/components/MultiSelect.vue";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
+    import RoleSection from "@/components/account/edit/RoleSection.vue";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -457,6 +431,7 @@
             DeleteAccountModal,
             MultiSelect,
             BirthDatePicker,
+            RoleSection,
         },
         props: {
             editMode: {
@@ -491,9 +466,7 @@
             };
 
             let title = props.editMode ? "Account Editing" : "Account Creation";
-
             let success = ref(false);
-            let roles = Object.values(Role).filter((e) => e != Role.NONE);
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let countries = Object.values(Country).filter((e) => e != Country.NONE);
             let deleteModal = ref();
@@ -710,7 +683,6 @@
                 title,
                 account,
                 success,
-                roles,
                 countries,
                 updatePicture,
                 isLecturer,
