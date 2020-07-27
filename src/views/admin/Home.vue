@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-    import { store } from "../../store/store";
+    import { checkPrivilege } from "../../use/PermissionHelper";
     import { Role } from "../../entities/Role";
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import AdminAccountList from "../../components/AdminAccountList.vue";
@@ -21,12 +21,13 @@
             AdminAccountList,
         },
 
-        beforeRouteEnter(_to: any, _from: any, next: any) {
-            const myRole = store.state.myRole;
-            if (myRole != Role.ADMIN) {
-                return next("/redirect");
+        async beforeRouteEnter(_to: any, _from: any, next: any) {
+            const allowed = await checkPrivilege(Role.ADMIN);
+
+            if (allowed) {
+                return next();
             }
-            return next();
+            return next("/redirect");
         },
     };
 </script>
