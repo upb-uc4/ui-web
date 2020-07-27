@@ -18,13 +18,7 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                    <input
-                        id="email"
-                        v-model="editedEmail"
-                        type="email"
-                        :readonly="!isEditing"
-                        class="w-full input-text form-input"
-                    />
+                    <input id="email" v-model="editedEmail" type="email" :readonly="!isEditing" class="w-full input-text form-input" />
                 </div>
 
                 <div class="mb-6 flex flex-col">
