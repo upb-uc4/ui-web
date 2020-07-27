@@ -37,82 +37,15 @@
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
-            <section v-if="isStudent" class="py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                        <label class="block mb-2 text-lg font-medium text-gray-700">Student Information</label>
-                        <label class="block text-gray-600">
-                            Information Specifically for a Student
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 font-medium text-gray-700 text-md">Immatriculation Status</label>
-                            <div class="flex flex-row">
-                                <div class="flex flex-col w-1/2">
-                                    <label class="mb-3 text-sm font-medium text-gray-700">Status</label>
-                                    <input
-                                        id="immatriculationStatus"
-                                        v-model="account.student.immatriculationStatus"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('immatriculationStatus') }"
-                                        placeholder="Immatriculation Status"
-                                    />
-                                    <p v-if="errorBag.has('immatriculationStatus')" class="error-message">
-                                        {{ errorBag.get("immatriculationStatus") }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col w-1/4 pl-2">
-                                    <label class="mb-3 text-sm font-medium text-gray-700">Matriculation-ID</label>
-                                    <input
-                                        id="matriculationId"
-                                        v-model="account.student.matriculationId"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('matriculationId') }"
-                                        placeholder="Matriculation-ID"
-                                    />
-                                    <p v-if="errorBag.has('matriculationId')" class="error-message">
-                                        {{ errorBag.get("matriculationId") }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col mt-8 mb-4">
-                            <label class="mb-3 font-medium text-gray-700 text-md">Study Status</label>
-                            <div class="flex flex-row">
-                                <div class="flex flex-col w-1/2">
-                                    <label class="mb-3 text-sm font-medium text-gray-700">Fields of Study</label>
-                                    <multi-select
-                                        :input-list="fieldsOfStudy"
-                                        :pre-selection="account.student.fieldsOfStudy"
-                                        placeholder="Select a Field of Study"
-                                        @changed="updateFieldsOfStudy"
-                                    />
-                                    <p v-if="errorBag.has('fieldsOfStudy')" class="error-message">
-                                        {{ errorBag.get("fieldsOfStudy") }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col w-1/4 pl-2">
-                                    <label class="mb-3 text-sm font-medium text-gray-700">Semester Count</label>
-                                    <input
-                                        id="semesterCount"
-                                        v-model="account.student.semesterCount"
-                                        type="number"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('semesterCount') }"
-                                        placeholder="Semester Count"
-                                    />
-                                    <p v-if="errorBag.has('semesterCount')" class="error-message">
-                                        {{ errorBag.get("semesterCount") }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <student-information-section
+                v-if="isStudent"
+                v-model:immatriculation-status="account.student.immatriculationStatus"
+                v-model:matriculation-id="account.student.matriculationId"
+                v-model:selected-fields-of-study="account.student.fieldsOfStudy"
+                v-model:semester-count="account.student.semesterCount"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
             <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
                 <div class="lg:flex">
                     <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
@@ -219,22 +152,22 @@
     import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "../../use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
-    import MultiSelect from "@/components/MultiSelect.vue";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/UserSecuritySection.vue";
     import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
     import LecturerInformationSection from "@/components/account/edit/LecturerInformationSection.vue";
+    import StudentInformationSection from "@/components/account/edit/StudentInformationSection.vue";
 
     export default {
         name: "AdminCreateAccountForm",
         components: {
             DeleteAccountModal,
-            MultiSelect,
             RoleSection,
             UserSecuritySection,
             PersonalInformationSection,
             LecturerInformationSection,
+            StudentInformationSection,
         },
         props: {
             editMode: {
@@ -270,7 +203,6 @@
 
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
-            let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let deleteModal = ref();
 
             const errorBag: ErrorBag = reactive(new ErrorBag());
@@ -312,10 +244,6 @@
                         initialAccount.admin = JSON.parse(JSON.stringify(account.admin));
                     }
                 }
-            }
-
-            function updateFieldsOfStudy(value: any) {
-                account.student.fieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE);
             }
 
             function updatePicture() {
@@ -488,7 +416,6 @@
                 updatePicture,
                 isLecturer,
                 isStudent,
-                fieldsOfStudy,
                 hasInput,
                 back,
                 createAccount,
@@ -497,7 +424,6 @@
                 confirmDeleteAccount,
                 deleteModal,
                 errorBag: errorBag,
-                updateFieldsOfStudy,
             };
         },
     };
