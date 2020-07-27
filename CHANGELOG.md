@@ -20,8 +20,10 @@
 ## Bug Fixes
 
 ### Usability
-- Change input type of semester count in student's private profile to text (#118)
-- Add proper page titling based on route (#195)
+- change input type of semester count in student's private profile to text (#118)
+- add proper page titling based on route (#195)
+- change type of lecturer name in course components to button, which routes to lecturer's public profile (#215, #222)
+- display the full name of the lecturer in course components (#217)
 - Add a new "Add" button next to the search bar in the account/course lists for usability (#178)
 - Change type of lecturer name in student's courses to button, which routes to lecturer's public profile (#115)
 
