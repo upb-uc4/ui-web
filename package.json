@@ -145,6 +145,7 @@
         "trailingComma": "es5",
         "tabWidth": 4,
         "semi": true,
+        "endOfLine": "auto",
         "jsxBracketSameLine": true,
         "vueIndentScriptAndStyle": true,
         "html-whitespace-sensitivity": "ignore",
