@@ -9,57 +9,13 @@
 
         <div>
             <role-section v-model:role="account.user.role" :edit-mode="editMode" :error-bag="errorBag" />
-            <section class="py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                        <label class="block mb-2 text-lg font-medium text-gray-700">User Security</label>
-                        <label class="block text-gray-600">
-                            Basic Information of the User for Authentication
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 font-medium text-gray-700 text-md">Username</label>
-                            <input
-                                id="userName"
-                                v-model="account.user.username"
-                                type="text"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('username') }"
-                                placeholder="Username"
-                                :readonly="editMode"
-                            />
-                            <p v-if="errorBag.has('username')" class="error-message">{{ errorBag.get("username") }}</p>
-                        </div>
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 font-medium text-gray-700 text-md">Email</label>
-                            <input
-                                id="email"
-                                v-model="account.user.email"
-                                type="text"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('email') }"
-                                placeholder="example@mail.com"
-                            />
-                            <p v-if="errorBag.has('email')" class="error-message">{{ errorBag.get("email") }}</p>
-                        </div>
-                        <div v-if="!editMode" class="flex flex-col mb-4">
-                            <label for="password" class="mb-3 font-medium text-gray-700 text-md">
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                v-model="account.authUser.password"
-                                type="text"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('password') }"
-                                placeholder="Password"
-                            />
-                            <p v-if="errorBag.has('password')" class="error-message">{{ errorBag.get("password") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <user-security-section
+                v-model:username="account.user.username"
+                v-model:email="account.user.email"
+                v-model:password="account.authUser.password"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
 
             <section class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
@@ -424,6 +380,7 @@
     import MultiSelect from "@/components/MultiSelect.vue";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/RoleSection.vue";
+    import UserSecuritySection from "@/components/account/edit/UserSecuritySection.vue";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -432,6 +389,7 @@
             MultiSelect,
             BirthDatePicker,
             RoleSection,
+            UserSecuritySection,
         },
         props: {
             editMode: {
