@@ -1,7 +1,7 @@
 <template>
     <div class="w-full max-w-4xl">
         <div class="flex">
-            <div class="w-full h-auto items-center flex flex-row pt-2 mb-8">
+            <div class="w-full flex flex-row pt-2 mb-8">
                 <seach-bar v-model:message="message" @refresh="refresh" />
                 <router-link to="/createAccount" class="w-2/12 w- ml-4">
                     <button title="Add a new User" class="w-full p-2 btn-icon-green items-center justify-center flex flex-row">
