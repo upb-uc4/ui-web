@@ -2,7 +2,16 @@
 
 ## Feature
 - Add password change API + unit test (#213)
+- Add option for user to change the password (atm. in lecturer private profile, will be moved to a settings page) (#208)
 - Redesign admin account list to have a more modern look [#226](https://github.com/upb-uc4/ui-web/pull/226)
+
+## Bug Fixes
+
+## Refactor
+- extract searchbar component for better adaptability (#131)
+
+### Usability
+- rework login error validation (#232)
 
 # [v.0.4.4](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-22)
 
@@ -13,6 +22,7 @@
 ### Usability
 - Change input type of semester count in student's private profile to text (#118)
 - Add proper page titling based on route (#195)
+- Add a new "Add" button next to the search bar in the account/course lists for usability (#178)
 - Change type of lecturer name in student's courses to button, which routes to lecturer's public profile (#115)
 
 ### Technical
