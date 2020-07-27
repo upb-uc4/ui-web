@@ -14,6 +14,9 @@
                 :class="{ error: hasError }"
                 placeholder="Password"
             />
+            <p v-if="hasError" class="error-message">
+                Wrong Password!
+            </p>
         </div>
         <template #footer>
             <button id="enterPasswordModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
