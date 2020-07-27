@@ -115,6 +115,7 @@
                 required: true,
             },
         },
+        emits: ["update:selectedFieldsOfStudy"],
 
         setup(props: any, { emit }: any) {
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);

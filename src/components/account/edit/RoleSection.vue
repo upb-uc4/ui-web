@@ -7,17 +7,17 @@
             <div class="w-full lg:w-2/3">
                 <div class="flex flex-col mb-4">
                     <div class="flex w-full">
-                        <div v-for="role in roles" :key="role" class="mb-3 mr-4">
+                        <div v-for="vrole in roles" :key="vrole" class="mb-3 mr-4">
                             <label class="flex items-center">
                                 <input
-                                    :id="'role-' + role"
+                                    :id="'role-' + vrole"
                                     v-model="accountRole"
                                     type="radio"
                                     class="form-radio radio"
                                     :disabled="editMode"
-                                    :value="role"
+                                    :value="vrole"
                                 />
-                                <span class="ml-2 font-medium text-gray-700 text-md">{{ role }}</span>
+                                <span class="ml-2 font-medium text-gray-700 text-md">{{ vrole }}</span>
                             </label>
                         </div>
                     </div>

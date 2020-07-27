@@ -175,6 +175,7 @@
                 required: true,
             },
         },
+        emits: ["update:hasInput", "update:success"],
         async setup(props: any, { emit }) {
             let account = reactive({
                 authUser: new Account(),

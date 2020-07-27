@@ -68,7 +68,7 @@
                             :class="{ error: errorBag.has('country') }"
                         >
                             <option :value="''">Select a Country</option>
-                            <option v-for="country in countries" :id="'country-' + country" :key="country">{{ country }}</option>
+                            <option v-for="vcountry in countries" :id="'country-' + country" :key="vcountry">{{ vcountry }}</option>
                         </select>
                         <p v-if="errorBag.has('country')" class="error-message">{{ errorBag.get("country") }}</p>
                     </div>
