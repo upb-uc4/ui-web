@@ -88,7 +88,7 @@
 
 <script lang="ts">
     import Router from "@/router/";
-    import { store } from "@/store/store";
+    import { useStore } from "@/store/store";
     import { CourseEntity } from "@/entities/CourseEntity";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
@@ -125,7 +125,8 @@
             let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
             let deleteModal = ref();
-            course.value.lecturerId = store.state.myId;
+            const store = useStore();
+            course.value.lecturerId = store.getters.loginData.username;
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
