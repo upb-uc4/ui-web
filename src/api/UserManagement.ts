@@ -1,5 +1,5 @@
 import Common from "./Common";
-import { store } from "@/store/store";
+import { useStore } from "@/store/store";
 import User_List from "./api_models/user_management/User_List";
 import { AxiosResponse, AxiosError } from "axios";
 import Student from "./api_models/user_management/Student";
@@ -10,6 +10,7 @@ import { Account } from "@/entities/Account";
 import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import ValidationError from "./api_models/errors/ValidationError";
+import { MutationTypes } from "@/store/mutation-types";
 
 export default class UserManagement extends Common {
     constructor() {
@@ -108,9 +109,10 @@ export default class UserManagement extends Common {
             statusCode: response.statusCode,
         };
 
-        store.state.myRole = response.returnValue;
-        store.state.myId = loginData.username;
-        store.state.loginData = loginData;
+        const store = useStore();
+
+        store.commit(MutationTypes.SET_LOGINDATA, loginData);
+        store.commit(MutationTypes.SET_ROLE, response.returnValue);
 
         return result;
     }
@@ -183,7 +185,8 @@ export default class UserManagement extends Common {
     }
 
     async getOwnUser(): Promise<APIResponse<Student | Lecturer | Admin>> {
-        const username = store.state.loginData.username;
+        const store = useStore();
+        const username = store.getters.loginData.username;
         return await this.getSpecificUser(username);
     }
 
@@ -247,8 +250,9 @@ export default class UserManagement extends Common {
     }
 
     async changeOwnPassword(password: string): Promise<APIResponse<boolean>> {
-        const username = store.state.loginData.username;
-        const role = store.state.myRole;
+        const store = useStore();
+        const username = store.getters.loginData.username;
+        const role = await store.getters.role;
 
         const acc: Account = {
             username: username,
