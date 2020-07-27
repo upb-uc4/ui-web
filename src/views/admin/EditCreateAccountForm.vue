@@ -26,54 +26,17 @@
                 v-model:street="account.user.address.street"
                 v-model:house-number="account.user.address.houseNumber"
                 v-model:zip-code="account.user.address.zipCode"
-                :edit-mode="editMode"
                 v-model:city="account.user.address.city"
+                :edit-mode="editMode"
                 :error-bag="errorBag"
             />
-
-            <section v-if="isLecturer" class="py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                        <label class="block mb-2 text-lg font-medium text-gray-700">Lecturer Information</label>
-                        <label class="block text-gray-600">
-                            Information Specifically for a Lecturer
-                        </label>
-                    </div>
-                    <div class="flex flex-col w-full lg:w-2/3">
-                        <label class="mb-3 font-medium text-gray-700 text-md">Description</label>
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 text-sm font-medium text-gray-700">Free Text Description (optional)</label>
-                            <textarea
-                                id="freeText"
-                                v-model="account.lecturer.freeText"
-                                cols="30"
-                                rows="5"
-                                class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
-                                :class="{ error: errorBag.has('freeText') }"
-                                placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
-                            >
-                            </textarea>
-                            <p v-if="errorBag.has('freeText')" class="error-message">{{ errorBag.get("freeText") }}</p>
-                        </div>
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 text-sm font-medium text-gray-700">Fields of Research (optional)</label>
-                            <textarea
-                                id="researchArea"
-                                v-model="account.lecturer.researchArea"
-                                cols="30"
-                                rows="3"
-                                class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
-                                :class="{ error: errorBag.has('researchArea') }"
-                                placeholder="Add an optional Description of the Lecturer's Fields of Research"
-                            >
-                            </textarea>
-                            <p v-if="errorBag.has('researchArea')" class="error-message">
-                                {{ errorBag.get("researchArea") }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <lecturer-information-section
+                v-if="isLecturer"
+                v-model:free-text="account.lecturer.freeText"
+                v-model:research-area="account.lecturer.researchArea"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
             <section v-if="isStudent" class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
                     <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
@@ -261,6 +224,7 @@
     import RoleSection from "@/components/account/edit/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/UserSecuritySection.vue";
     import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
+    import LecturerInformationSection from "@/components/account/edit/LecturerInformationSection.vue";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -270,6 +234,7 @@
             RoleSection,
             UserSecuritySection,
             PersonalInformationSection,
+            LecturerInformationSection,
         },
         props: {
             editMode: {
