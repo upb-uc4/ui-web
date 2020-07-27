@@ -4,6 +4,7 @@ import { Role } from "@/entities/Role";
 import UserManagement from "@/api/UserManagement";
 import { useStore } from "./store";
 import GenericResponseHandler from "@/use/GenericResponseHandler";
+import { MutationTypes } from "./mutation-types";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -15,8 +16,8 @@ export type Getters = {
 export const getters: GetterTree<State, State> & Getters = {
     loginData: (state) => {
         if (state.loginData.username == "" && state.loginData.password == "") {
-            state.loginData.username = "admin";
-            state.loginData.password = "admin";
+            const store = useStore();
+            store.commit(MutationTypes.SET_LOGINDATA, { username: "admin", password: "admin" });
         }
 
         return state.loginData;
