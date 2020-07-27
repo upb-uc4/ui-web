@@ -12,7 +12,7 @@
 
             <div class="w-full lg:w-2/3">
                 <div class="lg:flex mb-6">
-                    <div v-if="!editPassword" class="w-1/2 mb-6 lg:mb-0 flex flex-col lg:mr-16">
+                    <div v-if="!editPassword" class="lg:w-1/2 w-full mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <div class="flex items-baseline">
                             <label class="text-gray-700 text-md font-medium mb-3">Password</label>
                             <button id="updatePassword" class="ml-3 text-sm btn-blue-tertiary" @click="confirmIdentity">Update</button>
@@ -22,52 +22,59 @@
                             value="PLACEHOLDER"
                             disabled
                             :type="passwordFieldType"
-                            class="w-10/12 input-text form-input"
+                            class="w-full input-text form-input"
                         />
                     </div>
-                    <div v-else class="w-1/2 lg:mb-0 flex flex-col lg:mr-16">
-                        <label class="text-gray-700 text-md font-medium mb-3">Change your password</label>
-                        <div class="flex items-center">
-                            <input
-                                id="newPassword"
-                                v-model="newPassword"
-                                :type="passwordFieldType"
-                                class="w-10/12 input-text form-input mb-2"
-                                placeholder="New Password"
-                            />
-                            <button
-                                id="toggleNewPassword"
-                                type="button"
-                                class="display-none mb-2 inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
-                                @click="togglePassword"
-                            >
-                                <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="display-none mt-3 ml-1 fas mr-1"></i>
-                            </button>
+                    <div v-else class="lg:w-1/2 w-full lg:mb-0 flex flex-col lg:mr-16 lg:pr-8">
+                        <div class="flex flex-col mb-6">
+                            <label class="text-gray-700 text-md font-medium mb-3">Change your password</label>
+                            <div class="relative flex items-center">
+                                <input
+                                    id="newPassword"
+                                    v-model="newPassword"
+                                    :type="passwordFieldType"
+                                    class="w-full input-text form-input pr-10"
+                                    placeholder="New Password"
+                                />
+                                <button
+                                    id="toggleNewPassword"
+                                    type="button"
+                                    class="absolute right-0 text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
+                                    @click="togglePassword"
+                                >
+                                    <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="fas mr-4"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <input
-                                id="confirmationPassword"
-                                v-model="confirmationPassword"
-                                :type="passwordFieldType"
-                                class="w-10/12 input-text form-input mb-2"
-                                placeholder="Confirm Password"
-                            />
-                            <button
-                                id="toggleConfirmationPassword"
-                                type="button"
-                                class="display-none mb-2 inline-block ml-3 visible text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
-                                @click="togglePassword"
-                            >
-                                <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="display-none mt-3 ml-1 fas mr-1"></i>
-                            </button>
+
+                        <div class="flex flex-col mb-6">
+                            <label class="text-gray-700 text-md font-medium mb-3">Confirm your new password</label>
+                            <div class="relative flex items-center">
+                                <input
+                                    id="confirmationPassword"
+                                    v-model="confirmationPassword"
+                                    :type="passwordFieldType"
+                                    class="w-full input-text form-input pr-10"
+                                    placeholder="Confirm Password"
+                                />
+                                <button
+                                    id="toggleConfirmationPassword"
+                                    type="button"
+                                    class="absolute right-0 text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
+                                    @click="togglePassword"
+                                >
+                                    <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="fas mr-4"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="w-10/12 justify-end flex flex-row">
-                            <button id="cancelPasswordChange" class="px-2 btn btn-blue-secondary text-sm mr-3" @click="cancel">
+
+                        <div class="flex justify-end">
+                            <button id="cancelPasswordChange" class="px-2 btn btn-blue-secondary w-24 mr-6 text-sm" @click="cancel">
                                 Cancel
                             </button>
                             <button
                                 id="changePassword"
-                                class="px-2 btn btn-blue-primary text-sm"
+                                class="px-2 btn btn-blue-primary text-sm w-48"
                                 :disabled="passwordMatch"
                                 @click="updatePassword"
                             >
