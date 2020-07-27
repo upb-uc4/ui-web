@@ -70,7 +70,7 @@
 <script lang="ts">
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
-    import { store } from "../../store/store";
+    import { useStore } from "../../store/store";
     import { Role } from "../../entities/Role";
     import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
@@ -113,7 +113,8 @@
                 const loginSuccess = loginResponseHandler.handleReponse(response);
 
                 if (loginSuccess) {
-                    switch (store.state.myRole) {
+                    const store = useStore();
+                    switch (await store.getters.role) {
                         case Role.ADMIN: {
                             Router.push("/admin");
                             break;
