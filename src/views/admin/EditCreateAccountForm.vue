@@ -16,142 +16,21 @@
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
+            <personal-information-section
+                v-model:first-name="account.user.firstName"
+                v-model:last-name="account.user.lastName"
+                v-model:birthday-day="account.birthDate.day"
+                v-model:birthday-month="account.birthDate.month"
+                v-model:birthday-year="account.birthDate.year"
+                v-model:country="account.user.address.country"
+                v-model:street="account.user.address.street"
+                v-model:house-number="account.user.address.houseNumber"
+                v-model:zip-code="account.user.address.zipCode"
+                :edit-mode="editMode"
+                v-model:city="account.user.address.city"
+                :error-bag="errorBag"
+            />
 
-            <section class="py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                        <label class="block mb-2 text-lg font-medium text-gray-700">Personal Information</label>
-                        <label class="block text-gray-600">
-                            Personal Information and Contact Data for the User
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 font-medium text-gray-700 text-md">
-                                Name
-                            </label>
-                            <div class="flex flex-row">
-                                <div class="flex-col w-full pr-2">
-                                    <label class="text-sm text-gray-700">Firstname</label>
-                                    <input
-                                        id="firstName"
-                                        v-model="account.user.firstName"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('firstName') }"
-                                        placeholder="Firstname"
-                                    />
-                                    <p v-if="errorBag.has('firstName')" class="error-message">
-                                        {{ errorBag.get("firstName") }}
-                                    </p>
-                                </div>
-                                <div class="flex-col w-full pl-2">
-                                    <label class="text-sm text-gray-700">Lastname</label>
-                                    <input
-                                        id="lastName"
-                                        v-model="account.user.lastName"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('lastName') }"
-                                        placeholder="Lastname"
-                                    />
-                                    <p v-if="errorBag.has('lastName')" class="error-message">
-                                        {{ errorBag.get("lastName") }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 font-medium text-gray-700 text-md">
-                                Birthdate
-                            </label>
-                            <birth-date-picker
-                                v-model:year="account.birthDate.year"
-                                v-model:month="account.birthDate.month"
-                                v-model:day="account.birthDate.day"
-                            />
-                            <p v-if="errorBag.has('birthDate')" class="error-message">{{ errorBag.get("birthDate") }}</p>
-                        </div>
-                        <div class="flex flex-col mb-4">
-                            <label class="mb-3 font-medium text-gray-700 text-md">
-                                Adress
-                            </label>
-                            <p v-if="errorBag.has('address')" class="error-message">{{ errorBag.get("address") }}</p>
-                            <div class="flex flex-col w-full">
-                                <label class="text-sm text-gray-700">Country</label>
-                                <select
-                                    id="country"
-                                    v-model="account.user.address.country"
-                                    class="w-1/2 mb-4 form-select input-select"
-                                    :class="{ error: errorBag.has('country') }"
-                                >
-                                    <option :value="''">Select a Country</option>
-                                    <option v-for="country in countries" :id="'country-' + country" :key="country">{{ country }}</option>
-                                </select>
-                                <p v-if="errorBag.has('country')" class="error-message">{{ errorBag.get("country") }}</p>
-                            </div>
-                            <div class="flex flex-row">
-                                <div class="flex flex-col w-full pr-2 mb-4">
-                                    <label class="text-sm text-gray-700">Street</label>
-                                    <input
-                                        id="street"
-                                        v-model="account.user.address.street"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('street') }"
-                                        placeholder="Street"
-                                    />
-                                    <p v-if="errorBag.has('street')" class="error-message">
-                                        {{ errorBag.get("street") }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col pl-2">
-                                    <label class="text-sm text-gray-700">Number</label>
-                                    <input
-                                        id="houseNumber"
-                                        v-model="account.user.address.houseNumber"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('houseNumber') }"
-                                        placeholder="Number"
-                                    />
-                                    <p v-if="errorBag.has('houseNumber')" class="error-message">
-                                        {{ errorBag.get("houseNumber") }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex flex-row">
-                                <div class="flex flex-col pr-2">
-                                    <label class="text-sm text-gray-700">Zip Code</label>
-                                    <input
-                                        id="zipCode"
-                                        v-model="account.user.address.zipCode"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('zipCode') }"
-                                        placeholder="Zip Code"
-                                    />
-                                    <p v-if="errorBag.has('zipCode')" class="error-message">
-                                        {{ errorBag.get("zipCode") }}
-                                    </p>
-                                </div>
-                                <div class="flex flex-col w-full pl-2">
-                                    <label class="text-sm text-gray-700">City</label>
-                                    <input
-                                        id="city"
-                                        v-model="account.user.address.city"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.has('city') }"
-                                        placeholder="City"
-                                    />
-                                    <p v-if="errorBag.has('city')" class="error-message">{{ errorBag.get("city") }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <section v-if="isLecturer" class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
                     <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
@@ -381,15 +260,16 @@
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/UserSecuritySection.vue";
+    import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
 
     export default {
         name: "AdminCreateAccountForm",
         components: {
             DeleteAccountModal,
             MultiSelect,
-            BirthDatePicker,
             RoleSection,
             UserSecuritySection,
+            PersonalInformationSection,
         },
         props: {
             editMode: {
@@ -426,7 +306,6 @@
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
-            let countries = Object.values(Country).filter((e) => e != Country.NONE);
             let deleteModal = ref();
 
             const errorBag: ErrorBag = reactive(new ErrorBag());
@@ -590,7 +469,7 @@
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
-
+                console.log(account);
                 if (success.value) {
                     back();
                 } else {
@@ -641,7 +520,6 @@
                 title,
                 account,
                 success,
-                countries,
                 updatePicture,
                 isLecturer,
                 isStudent,
