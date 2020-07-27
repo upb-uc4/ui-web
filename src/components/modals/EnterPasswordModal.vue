@@ -59,8 +59,6 @@
                 const userManagement: UserManagement = new UserManagement();
                 const response = await userManagement.login({ username: store.state.loginData.username, password: password.value });
                 if (loginResponseHandler.handleReponse(response)) {
-                    password.value = "";
-                    hasError.value = false;
                     close(action.CONFIRM);
                 } else {
                     hasError.value = true;
@@ -69,6 +67,8 @@
             }
 
             function close(action: action) {
+                password.value = "";
+                hasError.value = false;
                 baseModal.value.close(action);
             }
 
