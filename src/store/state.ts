@@ -1,7 +1,9 @@
+import { Role } from "@/entities/Role";
+
 export const state = {
     apiUrl: "",
     myId: "",
-    myRole: "",
+    myRole: Role.NONE,
     loginData: {
         username: "",
         password: "",
