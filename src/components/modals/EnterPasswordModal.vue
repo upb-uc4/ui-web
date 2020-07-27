@@ -33,7 +33,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
     import LoginResponseHandler from "@/use/LoginResponseHandler";
-    import { store } from "../../store/store";
+    import { store, useStore } from "../../store/store";
 
     export default {
         components: {
@@ -58,7 +58,8 @@
             async function checkPassword() {
                 checking.value = true;
                 const userManagement: UserManagement = new UserManagement();
-                const response = await userManagement.login({ username: store.state.loginData.username, password: password.value });
+                const store = useStore();
+                const response = await userManagement.login({ username: store.getters.loginData.username, password: password.value });
                 if (loginResponseHandler.handleReponse(response)) {
                     close(action.CONFIRM);
                 } else {
