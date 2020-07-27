@@ -15,7 +15,6 @@ export default class LoginResponseHandler implements ResponseHandler<boolean> {
                 return false;
             }
             case 401: {
-                alert("Wrong password or username combination!");
                 return false;
             }
             case 404: {
