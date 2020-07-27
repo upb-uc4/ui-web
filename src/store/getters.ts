@@ -27,7 +27,8 @@ export const getters: GetterTree<State, State> & Getters = {
         if (state.myRole == Role.NONE) {
             const usermanagement = new UserManagement();
             const store = useStore();
-            state.myRole = new GenericResponseHandler().handleReponse(await usermanagement.getRole(store.getters.loginData.username));
+            const role: Role = new GenericResponseHandler().handleReponse(await usermanagement.getRole(store.getters.loginData.username));
+            store.commit(MutationTypes.SET_ROLE, role);
         }
 
         return state.myRole;
