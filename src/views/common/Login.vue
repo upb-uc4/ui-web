@@ -11,7 +11,7 @@
                         <input
                             id="email"
                             v-model="email"
-                            class="inline-block center lg:w-3/4 font-semibold p-2 pl-10 form-input input-text"
+                            class="lg:w-3/4 font-semibold pl-10 form-input input-text"
                             type="text"
                             placeholder="Email"
                             :class="{ error: error }"
@@ -25,7 +25,7 @@
                             id="password"
                             v-model="password"
                             :type="passwordFieldType"
-                            class="lg:w-3/4 inline-block center appearance-none font-semibold p-2 pl-10 form-input input-text"
+                            class="lg:w-3/4 font-semibold pl-10 form-input input-text"
                             placeholder="Password"
                             :class="{ error: error }"
                             @change="hideErrors()"
@@ -34,15 +34,12 @@
                             id="togglePassword"
                             type="button"
                             tabIndex="-1"
-                            class="display-none absolute inline-block center ml-3 mt-2 visible text-gray-500 text-sm hover:text-gray-600 focus:outline-none"
+                            class="absolute ml-3 mt-1 text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
                             @click="togglePassword"
                         >
-                            <i
-                                :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                                class="display-none absolute mt-3 ml-1 fas mr-1"
-                            ></i>
+                            <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="absolute mt-3 ml-1 fas mr-1"></i>
                         </button>
-                        <p v-if="error" class="lg:w-3/4 ml-3 mt-2 error-message">Wrong username and password combination!</p>
+                        <p v-if="error" class="lg:w-3/4 lg:ml-3 xl:ml-5 mt-2 error-message">Wrong username and password combination!</p>
                     </div>
 
                     <div class="w-full text-center lg:text-left lg:pl-16 lg:ml-3">
