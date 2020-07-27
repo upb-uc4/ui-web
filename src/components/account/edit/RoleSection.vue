@@ -25,7 +25,8 @@
                 </div>
             </div>
         </div>
-    </section> </template>>
+    </section>
+</template>
 
 <script lang="ts">
     import { Role } from "@/entities/Role";
