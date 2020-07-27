@@ -9,3 +9,11 @@
 .input-text:read-only:focus {
     @apply outline-none shadow-none border-gray-400 !important;
 }
+
+.input-text:disabled {
+    @apply bg-gray-300 !important;
+}
+
+.input-text:disabled:focus {
+    @apply outline-none shadow-none border-gray-400 !important;
+}

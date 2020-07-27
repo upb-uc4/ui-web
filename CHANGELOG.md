@@ -2,6 +2,7 @@
 
 ## Feature
 - add password change API + unit test (#213)
+- add option for user to change the password (atm. in lecturer private profile, will be moved to a settings page) (#208)
 
 ## Bug Fixes
 
