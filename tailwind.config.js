@@ -24,6 +24,9 @@ module.exports = {
                 "160": "40rem",
                 "180": "45rem",
             },
+            minHeight: {
+                "20": "5rem",
+            },
         },
     },
     variants: {
