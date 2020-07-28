@@ -1,9 +1,9 @@
 <template>
     <div class="relative cursor-pointer" @mouseleave="hide" @mouseover="show">
         <slot name="hook"></slot>
-        <transition v-show="isVisible" name="menu-fade">
+        <div v-show="isVisible">
             <slot name="content"></slot>
-        </transition>
+        </div>
     </div>
 </template>
 
