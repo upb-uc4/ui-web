@@ -1,350 +1,49 @@
 <template>
-    <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
+    <div class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
         <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
-            <i class="fas text-xl fa-chevron-left"></i>
-            <span class="font-bold text-sm ml-1">Back</span>
+            <i class="text-xl fas fa-chevron-left"></i>
+            <span class="ml-1 text-sm font-bold">Back</span>
         </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ title }}</h1>
+        <h1 class="mb-8 text-2xl font-medium text-gray-700">{{ title }}</h1>
 
         <div>
-            <section class="border-t-2 py-8 border-gray-400">
+            <role-section v-model:role="account.user.role" :edit-mode="editMode" :error-bag="errorBag" />
+            <user-security-section
+                v-model:username="account.user.username"
+                v-model:email="account.user.email"
+                v-model:password="account.authUser.password"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
+            <personal-information-section
+                v-model:firstname="account.user.firstName"
+                v-model:lastname="account.user.lastName"
+                v-model:birthdate="account.birthDate"
+                v-model:address="account.user.address"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
+            <lecturer-information-section
+                v-if="isLecturer"
+                v-model:freetext="account.lecturer.freeText"
+                v-model:researcharea="account.lecturer.researchArea"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
+            <student-information-section
+                v-if="isStudent"
+                v-model:immatriculationstatus="account.student.immatriculationStatus"
+                v-model:matriculationid="account.student.matriculationId"
+                v-model:selected-fields-of-study="account.student.fieldsOfStudy"
+                v-model:semestercount="account.student.semesterCount"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
+            <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
                 <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Select a Role</label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <div class="w-full flex">
-                                <div v-for="role in roles" :key="role" class="mr-4 mb-3">
-                                    <label class="flex items-center">
-                                        <input
-                                            :id="'role-' + role"
-                                            v-model="account.user.role"
-                                            type="radio"
-                                            class="form-radio radio"
-                                            :disabled="editMode"
-                                            :value="role"
-                                        />
-                                        <span class="ml-2 text-gray-700 text-md font-medium">{{ role }}</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <p v-if="errorBag.hasNested('role')" class="error-message">{{ errorBag.getNested("role") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">User Security</label>
-                        <label class="block text-gray-600">
-                            Basic Information of the User for Authentication
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Username</label>
-                            <input
-                                id="userName"
-                                v-model="account.user.username"
-                                type="text"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.hasNested('username') }"
-                                placeholder="Username"
-                                :readonly="editMode"
-                            />
-                            <p v-if="errorBag.hasNested('username')" class="error-message">{{ errorBag.getNested("username") }}</p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                            <input
-                                id="email"
-                                v-model="account.user.email"
-                                type="text"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('email') }"
-                                placeholder="example@mail.com"
-                            />
-                            <p v-if="errorBag.hasNested('email')" class="error-message">{{ errorBag.getNested("email") }}</p>
-                        </div>
-                        <div v-if="!editMode" class="mb-4 flex flex-col">
-                            <label for="password" class="text-gray-700 text-md font-medium mb-3">
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                v-model="account.authUser.password"
-                                type="text"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('password') }"
-                                placeholder="Password"
-                            />
-                            <p v-if="errorBag.hasNested('password')" class="error-message">{{ errorBag.getNested("password") }}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Personal Information</label>
-                        <label class="block text-gray-600">
-                            Personal Information and Contact Data for the User
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">
-                                Name
-                            </label>
-                            <div class="flex flex-row">
-                                <div class="w-full pr-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Firstname</label>
-                                    <input
-                                        id="firstName"
-                                        v-model="account.user.firstName"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('firstName') }"
-                                        placeholder="Firstname"
-                                    />
-                                    <p v-if="errorBag.hasNested('firstName')" class="error-message">
-                                        {{ errorBag.getNested("firstName") }}
-                                    </p>
-                                </div>
-                                <div class="w-full pl-2 flex-col">
-                                    <label class="text-gray-700 text-sm">Lastname</label>
-                                    <input
-                                        id="lastName"
-                                        v-model="account.user.lastName"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('lastName') }"
-                                        placeholder="Lastname"
-                                    />
-                                    <p v-if="errorBag.hasNested('lastName')" class="error-message">
-                                        {{ errorBag.getNested("lastName") }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">
-                                Birthdate
-                            </label>
-                            <birth-date-picker
-                                v-model:year="account.birthDate.year"
-                                v-model:month="account.birthDate.month"
-                                v-model:day="account.birthDate.day"
-                            />
-                            <p v-if="errorBag.hasNested('birthDate')" class="error-message">{{ errorBag.getNested("birthDate") }}</p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">
-                                Adress
-                            </label>
-                            <div class="w-full flex flex-col">
-                                <label class="text-gray-700 text-sm">Country</label>
-                                <select
-                                    id="country"
-                                    v-model="account.user.address.country"
-                                    class="w-1/2 mb-4 form-select input-select"
-                                    :class="{ error: errorBag.hasNested('country') }"
-                                >
-                                    <option :value="''">Select a Country</option>
-                                    <option v-for="country in countries" :id="'country-' + country" :key="country">{{ country }}</option>
-                                </select>
-                                <p v-if="errorBag.hasNested('country')" class="error-message">{{ errorBag.getNested("country") }}</p>
-                            </div>
-                            <div class="flex flex-row">
-                                <div class="w-full pr-2 mb-4 flex flex-col">
-                                    <label class="text-gray-700 text-sm">Street</label>
-                                    <input
-                                        id="street"
-                                        v-model="account.user.address.street"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('street') }"
-                                        placeholder="Street"
-                                    />
-                                    <p v-if="errorBag.hasNested('street')" class="error-message">
-                                        {{ errorBag.getNested("street") }}
-                                    </p>
-                                </div>
-                                <div class="pl-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm">Number</label>
-                                    <input
-                                        id="houseNumber"
-                                        v-model="account.user.address.houseNumber"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('houseNumber') }"
-                                        placeholder="Number"
-                                    />
-                                    <p v-if="errorBag.hasNested('houseNumber')" class="error-message">
-                                        {{ errorBag.getNested("houseNumber") }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex flex-row">
-                                <div class="pr-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm">Zip Code</label>
-                                    <input
-                                        id="zipCode"
-                                        v-model="account.user.address.zipCode"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('zipCode') }"
-                                        placeholder="Zip Code"
-                                    />
-                                    <p v-if="errorBag.hasNested('zipCode')" class="error-message">
-                                        {{ errorBag.getNested("zipCode") }}
-                                    </p>
-                                </div>
-                                <div class="w-full pl-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm">City</label>
-                                    <input
-                                        id="city"
-                                        v-model="account.user.address.city"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('city') }"
-                                        placeholder="City"
-                                    />
-                                    <p v-if="errorBag.hasNested('city')" class="error-message">{{ errorBag.getNested("city") }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section v-if="isLecturer" class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Lecturer Information</label>
-                        <label class="block text-gray-600">
-                            Information Specifically for a Lecturer
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3 flex flex-col">
-                        <label class="text-gray-700 text-md font-medium mb-3">Description</label>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-sm font-medium mb-3">Free Text Description (optional)</label>
-                            <textarea
-                                id="freeText"
-                                v-model="account.lecturer.freeText"
-                                cols="30"
-                                rows="5"
-                                class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: errorBag.hasNested('freeText') }"
-                                placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
-                            >
-                            </textarea>
-                            <p v-if="errorBag.hasNested('freeText')" class="error-message">{{ errorBag.getNested("freeText") }}</p>
-                        </div>
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-sm font-medium mb-3">Fields of Research (optional)</label>
-                            <textarea
-                                id="researchArea"
-                                v-model="account.lecturer.researchArea"
-                                cols="30"
-                                rows="3"
-                                class="w-full form-textarea border-2 border-gray-400 rounded-lg text-gray-600"
-                                :class="{ error: errorBag.hasNested('researchArea') }"
-                                placeholder="Add an optional Description of the Lecturer's Fields of Research"
-                            >
-                            </textarea>
-                            <p v-if="errorBag.hasNested('researchArea')" class="error-message">
-                                {{ errorBag.getNested("researchArea") }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section v-if="isStudent" class="border-t-2 py-8 border-gray-400">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Student Information</label>
-                        <label class="block text-gray-600">
-                            Information Specifically for a Student
-                        </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="mb-4 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Immatriculation Status</label>
-                            <div class="flex flex-row">
-                                <div class="w-1/2 flex flex-col">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Status</label>
-                                    <input
-                                        id="immatriculationStatus"
-                                        v-model="account.student.immatriculationStatus"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('immatriculationStatus') }"
-                                        placeholder="Immatriculation Status"
-                                    />
-                                    <p v-if="errorBag.hasNested('immatriculationStatus')" class="error-message">
-                                        {{ errorBag.getNested("immatriculationStatus") }}
-                                    </p>
-                                </div>
-                                <div class="w-1/4 flex flex-col pl-2">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Matriculation-ID</label>
-                                    <input
-                                        id="matriculationId"
-                                        v-model="account.student.matriculationId"
-                                        type="text"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('matriculationId') }"
-                                        placeholder="Matriculation-ID"
-                                    />
-                                    <p v-if="errorBag.hasNested('matriculationId')" class="error-message">
-                                        {{ errorBag.getNested("matriculationId") }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-4 mt-8 flex flex-col">
-                            <label class="text-gray-700 text-md font-medium mb-3">Study Status</label>
-                            <div class="flex flex-row">
-                                <div class="w-1/2 flex flex-col">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Fields of Study</label>
-                                    <multi-select
-                                        :input-list="fieldsOfStudy"
-                                        :pre-selection="account.student.fieldsOfStudy"
-                                        placeholder="Select a Field of Study"
-                                        @changed="updateFieldsOfStudy"
-                                    />
-                                    <p v-if="errorBag.hasNested('fieldsOfStudy')" class="error-message">
-                                        {{ errorBag.getNested("fieldsOfStudy") }}
-                                    </p>
-                                </div>
-                                <div class="w-1/4 pl-2 flex flex-col">
-                                    <label class="text-gray-700 text-sm font-medium mb-3">Semester Count</label>
-                                    <input
-                                        id="semesterCount"
-                                        v-model="account.student.semesterCount"
-                                        type="number"
-                                        class="w-full form-input input-text"
-                                        :class="{ error: errorBag.hasNested('semesterCount') }"
-                                        placeholder="Semester Count"
-                                    />
-                                    <p v-if="errorBag.hasNested('semesterCount')" class="error-message">
-                                        {{ errorBag.getNested("semesterCount") }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="border-t-2 py-8 border-gray-400" :hidden="!editMode">
-                <div class="lg:flex">
-                    <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                        <label class="block text-gray-700 text-lg font-medium mb-2">Profile Picture</label>
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                        <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
                         <label class="block text-gray-600">
                             Change the Profile Picture
                         </label>
@@ -353,7 +52,7 @@
                         <img class="object-contain h-48" :src="account.user.picture" />
                         <button
                             id="updatePicture"
-                            class="bg-transparent hover:bg-blue-800 border-blue-700 border-2 text-blue-700 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded-lg"
+                            class="px-4 py-2 font-semibold text-blue-700 bg-transparent border border-2 border-blue-700 rounded-lg hover:bg-blue-800 hover:text-white hover:border-transparent"
                             @click="updatePicture"
                         >
                             Update Profile Picture
@@ -361,9 +60,9 @@
                     </div>
                 </div>
             </section>
-            <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
-                <div class="hidden sm:flex justify-between">
-                    <div class="flex justify-start items-center">
+            <section class="py-8 border-t-2 border-gray-400 lg:mt-8">
+                <div class="justify-between hidden sm:flex">
+                    <div class="flex items-center justify-start">
                         <button
                             v-if="editMode"
                             id="deleteAccount"
@@ -375,7 +74,7 @@
                         </button>
                     </div>
 
-                    <div class="flex justify-end items-center">
+                    <div class="flex items-center justify-end">
                         <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
                             Cancel
                         </button>
@@ -383,7 +82,7 @@
                             v-if="editMode"
                             id="saveChanges"
                             :disabled="!hasInput"
-                            class="w-48 w-full btn btn-blue-primary"
+                            class="w-full btn btn-blue-primary"
                             @click="updateAccount"
                         >
                             Save Changes
@@ -396,7 +95,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
+                    <button id="mobileCancel" type="button" class="w-full mb-4 btn btn-blue-secondary" @click="back">
                         Cancel
                     </button>
                     <button
@@ -404,16 +103,16 @@
                         id="mobileSaveChanges"
                         :disabled="!hasInput"
                         type="button"
-                        class="mb-4 w-full w-full btn btn-blue-primary"
+                        class="w-full mb-4 btn btn-blue-primary"
                         @click="updateAccount"
                     >
                         Save Changes
                     </button>
                     <button
                         v-else
-                        id="mobleCreateAccount"
+                        id="mobileCreateAccount"
                         :disabled="!hasInput"
-                        class="mb-4 w-full btn btn-blue-primary"
+                        class="w-full mb-4 btn btn-blue-primary"
                         @click="createAccount"
                     >
                         Create Account
@@ -447,15 +146,22 @@
     import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "../../use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
-    import MultiSelect from "@/components/MultiSelect.vue";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
+    import RoleSection from "@/components/account/edit/RoleSection.vue";
+    import UserSecuritySection from "@/components/account/edit/UserSecuritySection.vue";
+    import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
+    import LecturerInformationSection from "@/components/account/edit/LecturerInformationSection.vue";
+    import StudentInformationSection from "@/components/account/edit/StudentInformationSection.vue";
 
     export default {
         name: "AdminCreateAccountForm",
         components: {
             DeleteAccountModal,
-            MultiSelect,
-            BirthDatePicker,
+            RoleSection,
+            UserSecuritySection,
+            PersonalInformationSection,
+            LecturerInformationSection,
+            StudentInformationSection,
         },
         props: {
             editMode: {
@@ -463,7 +169,8 @@
                 required: true,
             },
         },
-        async setup(props: any, { emit }) {
+        emits: ["update:hasInput", "update:success"],
+        async setup(props: any, { emit }: any) {
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
@@ -490,11 +197,7 @@
             };
 
             let title = props.editMode ? "Account Editing" : "Account Creation";
-
             let success = ref(false);
-            let roles = Object.values(Role).filter((e) => e != Role.NONE);
-            let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
-            let countries = Object.values(Country).filter((e) => e != Country.NONE);
             let deleteModal = ref();
 
             const errorBag: ErrorBag = reactive(new ErrorBag());
@@ -536,10 +239,6 @@
                         initialAccount.admin = JSON.parse(JSON.stringify(account.admin));
                     }
                 }
-            }
-
-            function updateFieldsOfStudy(value: any) {
-                account.student.fieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE);
             }
 
             function updatePicture() {
@@ -658,7 +357,6 @@
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
-
                 if (success.value) {
                     back();
                 } else {
@@ -709,12 +407,9 @@
                 title,
                 account,
                 success,
-                roles,
-                countries,
                 updatePicture,
                 isLecturer,
                 isStudent,
-                fieldsOfStudy,
                 hasInput,
                 back,
                 createAccount,
@@ -723,7 +418,6 @@
                 confirmDeleteAccount,
                 deleteModal,
                 errorBag: errorBag,
-                updateFieldsOfStudy,
             };
         },
     };

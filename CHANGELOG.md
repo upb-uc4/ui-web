@@ -10,6 +10,7 @@
 
 ## Refactor
 - extract searchbar component for better adaptability (#131)
+- extract sections from account form in single components (#238)
 
 ### Usability
 - rework login error validation (#232)
