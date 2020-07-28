@@ -1,19 +1,17 @@
 <template>
     <base-navbar>
-        <ul class="lg:flex items-center justify-between font-semibold text-gray-100 tracking-wider pt-4 lg:pt-0">
-            <li>
-                <a href="#" class="navbar-menu">Home</a>
-            </li>
-            <li>
-                <course-menu class="navbar-menu" />
-            </li>
-            <li>
-                <a href="#" class="navbar-menu">Documentation</a>
-            </li>
-            <li>
-                <a href="#" class="navbar-menu">Support</a>
-            </li>
-        </ul>
+        <li>
+            <a href="#" class="navbar-menu">Home</a>
+        </li>
+        <li>
+            <course-menu class="navbar-menu" />
+        </li>
+        <li>
+            <a href="#" class="navbar-menu">Documentation</a>
+        </li>
+        <li>
+            <a href="#" class="navbar-menu">Support</a>
+        </li>
         <template #right>
             <profile-menu class="pt-4" />
         </template>
