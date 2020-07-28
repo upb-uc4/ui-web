@@ -98,11 +98,11 @@
                 type: Boolean,
                 required: true,
             },
-            immatriculationStatus: {
+            immatriculationstatus: {
                 type: String,
                 required: true,
             },
-            matriculationId: {
+            matriculationid: {
                 type: String,
                 required: true,
             },
@@ -110,28 +110,27 @@
                 type: Array,
                 required: true,
             },
-            semesterCount: {
+            semestercount: {
                 type: Number,
                 required: true,
             },
         },
-        emits: ["update:selectedFieldsOfStudy"],
-
+        emits: ["update:selected-fields-of-study", "update:immatriculationstatus", "update:matriculationid", "update:semestercount"],
         setup(props: any, { emit }: any) {
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let studentFieldsOfStudy = ref(props.selectedFieldsOfStudy);
 
             function updateFieldsOfStudy(value: any) {
                 studentFieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE);
-                emit("update:selectedFieldsOfStudy", studentFieldsOfStudy);
+                emit("update:selected-fields-of-study", studentFieldsOfStudy);
             }
 
             return {
                 fieldsOfStudy,
                 updateFieldsOfStudy,
-                studentImmatriculationStatus: useModelWrapper(props, emit, "immatriculationStatus"),
-                studentMatriculationId: useModelWrapper(props, emit, "matriculationId"),
-                studentSemesterCount: useModelWrapper(props, emit, "semesterCount"),
+                studentImmatriculationStatus: useModelWrapper(props, emit, "immatriculationstatus"),
+                studentMatriculationId: useModelWrapper(props, emit, "matriculationid"),
+                studentSemesterCount: useModelWrapper(props, emit, "semestercount"),
             };
         },
     };

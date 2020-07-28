@@ -49,7 +49,7 @@
                 required: true,
             },
         },
-
+        emits: ["update:role"],
         setup(props: any, { emit }: any) {
             let roles = Object.values(Role).filter((e) => e != Role.NONE);
 

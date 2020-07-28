@@ -157,11 +157,11 @@
                 type: Boolean,
                 required: true,
             },
-            firstName: {
+            firstname: {
                 type: String,
                 required: true,
             },
-            lastName: {
+            lastname: {
                 type: String,
                 required: true,
             },
@@ -175,7 +175,7 @@
             },
         },
 
-        emits: ["update:birthdate", "update:address"],
+        emits: ["update:birthdate", "update:address", "update:firstname", "update:lastname"],
         setup(props: any, { emit }: any) {
             let countries = Object.values(Country).filter((e) => e != Country.NONE);
             let accountBirthdate = ref(props.birthdate);
@@ -193,8 +193,8 @@
                 countries,
                 accountBirthdate,
                 accountAddress,
-                accountFirstName: useModelWrapper(props, emit, "firstName"),
-                accountLastName: useModelWrapper(props, emit, "lastName"),
+                accountFirstName: useModelWrapper(props, emit, "firstname"),
+                accountLastName: useModelWrapper(props, emit, "lastname"),
             };
         },
     };

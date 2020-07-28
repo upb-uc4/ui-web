@@ -80,7 +80,7 @@
                 required: true,
             },
         },
-
+        emits: ["update:username", "update:email", "update:password"],
         setup(props: any, { emit }: any) {
             return {
                 accountUsername: useModelWrapper(props, emit, "username"),
