@@ -170,7 +170,7 @@
             },
         },
         emits: ["update:hasInput", "update:success"],
-        async setup(props: any, { emit }) {
+        async setup(props: any, { emit }: any) {
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
