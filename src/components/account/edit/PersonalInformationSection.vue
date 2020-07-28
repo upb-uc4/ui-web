@@ -48,9 +48,9 @@
                         Birthdate
                     </label>
                     <birth-date-picker
-                        v-model:year="accountBirthdayYear"
-                        v-model:month="accountBirthdayMonth"
-                        v-model:day="accountBirthdayDay"
+                        v-model:year="accountBirthdate.year"
+                        v-model:month="accountBirthdate.month"
+                        v-model:day="accountBirthdate.day"
                     />
                     <p v-if="errorBag.has('birthDate')" class="error-message">{{ errorBag.get("birthDate") }}</p>
                 </div>
@@ -63,12 +63,12 @@
                         <label class="text-sm text-gray-700">Country</label>
                         <select
                             id="country"
-                            v-model="accountCountry"
+                            v-model="accountAddress.country"
                             class="w-1/2 mb-4 form-select input-select"
                             :class="{ error: errorBag.has('country') }"
                         >
                             <option :value="''">Select a Country</option>
-                            <option v-for="vcountry in countries" :id="'country-' + country" :key="vcountry">{{ vcountry }}</option>
+                            <option v-for="vcountry in countries" :id="'country-' + vcountry" :key="vcountry">{{ vcountry }}</option>
                         </select>
                         <p v-if="errorBag.has('country')" class="error-message">{{ errorBag.get("country") }}</p>
                     </div>
@@ -77,7 +77,7 @@
                             <label class="text-sm text-gray-700">Street</label>
                             <input
                                 id="street"
-                                v-model="accountStreet"
+                                v-model="accountAddress.street"
                                 type="text"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.has('street') }"
@@ -91,7 +91,7 @@
                             <label class="text-sm text-gray-700">Number</label>
                             <input
                                 id="houseNumber"
-                                v-model="accountHouseNumber"
+                                v-model="accountAddress.houseNumber"
                                 type="text"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.has('houseNumber') }"
@@ -107,7 +107,7 @@
                             <label class="text-sm text-gray-700">Zip Code</label>
                             <input
                                 id="zipCode"
-                                v-model="accountZipCode"
+                                v-model="accountAddress.zipCode"
                                 type="text"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.has('zipCode') }"
@@ -121,7 +121,7 @@
                             <label class="text-sm text-gray-700">City</label>
                             <input
                                 id="city"
-                                v-model="accountCity"
+                                v-model="accountAddress.city"
                                 type="text"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.has('city') }"
@@ -141,6 +141,7 @@
     import { Country } from "@/entities/Country";
     import ErrorBag from "@/use/ErrorBag";
     import BirthDatePicker from "../../BirthDatePicker.vue";
+    import { ref, watch } from "vue";
 
     export default {
         name: "RoleSection",
@@ -164,55 +165,36 @@
                 type: String,
                 required: true,
             },
-            birthdayDay: {
-                type: String,
+            birthdate: {
+                type: Object,
                 required: true,
             },
-            birthdayMonth: {
-                type: String,
-                required: true,
-            },
-            birthdayYear: {
-                type: String,
-                required: true,
-            },
-            country: {
-                type: String,
-                required: true,
-            },
-            street: {
-                type: String,
-                required: true,
-            },
-            houseNumber: {
-                type: String,
-                required: true,
-            },
-            zipCode: {
-                type: String,
-                required: true,
-            },
-            city: {
-                type: String,
+            address: {
+                type: Object,
                 required: true,
             },
         },
 
+        emits: ["update:birthdate", "update:address"],
         setup(props: any, { emit }: any) {
             let countries = Object.values(Country).filter((e) => e != Country.NONE);
+            let accountBirthdate = ref(props.birthdate);
+            let accountAddress = ref(props.address);
+
+            watch(accountBirthdate, () => {
+                emit("update:birthdate", accountBirthdate.value);
+            });
+
+            watch(accountAddress, () => {
+                emit("update:address", accountAddress.value);
+            });
 
             return {
                 countries,
+                accountBirthdate,
+                accountAddress,
                 accountFirstName: useModelWrapper(props, emit, "firstName"),
                 accountLastName: useModelWrapper(props, emit, "lastName"),
-                accountBirthdayDay: useModelWrapper(props, emit, "birthdayDay"),
-                accountBirthdayMonth: useModelWrapper(props, emit, "birthdayMonth"),
-                accountBirthdayYear: useModelWrapper(props, emit, "birthdayYear"),
-                accountCountry: useModelWrapper(props, emit, "country"),
-                accountStreet: useModelWrapper(props, emit, "street"),
-                accountHouseNumber: useModelWrapper(props, emit, "houseNumber"),
-                accountZipCode: useModelWrapper(props, emit, "zipCode"),
-                accountCity: useModelWrapper(props, emit, "city"),
             };
         },
     };

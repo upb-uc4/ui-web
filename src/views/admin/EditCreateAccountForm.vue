@@ -19,14 +19,8 @@
             <personal-information-section
                 v-model:first-name="account.user.firstName"
                 v-model:last-name="account.user.lastName"
-                v-model:birthday-day="account.birthDate.day"
-                v-model:birthday-month="account.birthDate.month"
-                v-model:birthday-year="account.birthDate.year"
-                v-model:country="account.user.address.country"
-                v-model:street="account.user.address.street"
-                v-model:house-number="account.user.address.houseNumber"
-                v-model:zip-code="account.user.address.zipCode"
-                v-model:city="account.user.address.city"
+                v-model:birthdate="account.birthDate"
+                v-model:address="account.user.address"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
@@ -363,7 +357,6 @@
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
-                console.log(account);
                 if (success.value) {
                     back();
                 } else {
