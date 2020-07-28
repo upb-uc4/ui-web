@@ -82,7 +82,7 @@
                             v-if="editMode"
                             id="saveChanges"
                             :disabled="!hasInput"
-                            class="w-48 w-full btn btn-blue-primary"
+                            class="w-full btn btn-blue-primary"
                             @click="updateAccount"
                         >
                             Save Changes
@@ -110,7 +110,7 @@
                     </button>
                     <button
                         v-else
-                        id="mobleCreateAccount"
+                        id="mobileCreateAccount"
                         :disabled="!hasInput"
                         class="w-full mb-4 btn btn-blue-primary"
                         @click="createAccount"

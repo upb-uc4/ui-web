@@ -15,11 +15,11 @@
                         v-model="accountUsername"
                         type="text"
                         class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('username') }"
+                        :class="{ error: errorBag.hasNested('username') }"
                         placeholder="Username"
                         :readonly="editMode"
                     />
-                    <p v-if="errorBag.has('username')" class="error-message">{{ errorBag.get("username") }}</p>
+                    <p v-if="errorBag.hasNested('username')" class="error-message">{{ errorBag.getNested("username") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
                     <label class="mb-3 font-medium text-gray-700 text-md">Email</label>
@@ -28,10 +28,10 @@
                         v-model="accountEmail"
                         type="text"
                         class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('email') }"
+                        :class="{ error: errorBag.hasNested('email') }"
                         placeholder="example@mail.com"
                     />
-                    <p v-if="errorBag.has('email')" class="error-message">{{ errorBag.get("email") }}</p>
+                    <p v-if="errorBag.hasNested('email')" class="error-message">{{ errorBag.getNested("email") }}</p>
                 </div>
                 <div v-if="!editMode" class="flex flex-col mb-4">
                     <label for="password" class="mb-3 font-medium text-gray-700 text-md">
@@ -42,10 +42,10 @@
                         v-model="accountPassword"
                         type="text"
                         class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('password') }"
+                        :class="{ error: errorBag.hasNested('password') }"
                         placeholder="Password"
                     />
-                    <p v-if="errorBag.has('password')" class="error-message">{{ errorBag.get("password") }}</p>
+                    <p v-if="errorBag.hasNested('password')" class="error-message">{{ errorBag.getNested("password") }}</p>
                 </div>
             </div>
         </div>

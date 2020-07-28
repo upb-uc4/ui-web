@@ -21,7 +21,7 @@
                             </label>
                         </div>
                     </div>
-                    <p v-if="errorBag.has('role')" class="error-message">{{ errorBag.get("role") }}</p>
+                    <p v-if="errorBag.hasNested('role')" class="error-message">{{ errorBag.getNested("role") }}</p>
                 </div>
             </div>
         </div>

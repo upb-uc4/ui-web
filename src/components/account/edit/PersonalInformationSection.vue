@@ -20,11 +20,11 @@
                                 v-model="accountFirstName"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('firstName') }"
+                                :class="{ error: errorBag.hasNested('firstName') }"
                                 placeholder="Firstname"
                             />
-                            <p v-if="errorBag.has('firstName')" class="error-message">
-                                {{ errorBag.get("firstName") }}
+                            <p v-if="errorBag.hasNested('firstName')" class="error-message">
+                                {{ errorBag.getNested("firstName") }}
                             </p>
                         </div>
                         <div class="flex-col w-full pl-2">
@@ -34,11 +34,11 @@
                                 v-model="accountLastName"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('lastName') }"
+                                :class="{ error: errorBag.hasNested('lastName') }"
                                 placeholder="Lastname"
                             />
-                            <p v-if="errorBag.has('lastName')" class="error-message">
-                                {{ errorBag.get("lastName") }}
+                            <p v-if="errorBag.hasNested('lastName')" class="error-message">
+                                {{ errorBag.getNested("lastName") }}
                             </p>
                         </div>
                     </div>
@@ -52,25 +52,25 @@
                         v-model:month="accountBirthdate.month"
                         v-model:day="accountBirthdate.day"
                     />
-                    <p v-if="errorBag.has('birthDate')" class="error-message">{{ errorBag.get("birthDate") }}</p>
+                    <p v-if="errorBag.hasNested('birthDate')" class="error-message">{{ errorBag.getNested("birthDate") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
                     <label class="mb-3 font-medium text-gray-700 text-md">
                         Adress
                     </label>
-                    <p v-if="errorBag.has('address')" class="error-message">{{ errorBag.get("address") }}</p>
+                    <p v-if="errorBag.hasNested('address')" class="error-message">{{ errorBag.getNested("address") }}</p>
                     <div class="flex flex-col w-full">
                         <label class="text-sm text-gray-700">Country</label>
                         <select
                             id="country"
                             v-model="accountAddress.country"
                             class="w-1/2 mb-4 form-select input-select"
-                            :class="{ error: errorBag.has('country') }"
+                            :class="{ error: errorBag.hasNested('country') }"
                         >
                             <option :value="''">Select a Country</option>
                             <option v-for="vcountry in countries" :id="'country-' + vcountry" :key="vcountry">{{ vcountry }}</option>
                         </select>
-                        <p v-if="errorBag.has('country')" class="error-message">{{ errorBag.get("country") }}</p>
+                        <p v-if="errorBag.hasNested('country')" class="error-message">{{ errorBag.getNested("country") }}</p>
                     </div>
                     <div class="flex flex-row">
                         <div class="flex flex-col w-full pr-2 mb-4">
@@ -80,11 +80,11 @@
                                 v-model="accountAddress.street"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('street') }"
+                                :class="{ error: errorBag.hasNested('street') }"
                                 placeholder="Street"
                             />
-                            <p v-if="errorBag.has('street')" class="error-message">
-                                {{ errorBag.get("street") }}
+                            <p v-if="errorBag.hasNested('street')" class="error-message">
+                                {{ errorBag.getNested("street") }}
                             </p>
                         </div>
                         <div class="flex flex-col pl-2">
@@ -94,11 +94,11 @@
                                 v-model="accountAddress.houseNumber"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('houseNumber') }"
+                                :class="{ error: errorBag.hasNested('houseNumber') }"
                                 placeholder="Number"
                             />
-                            <p v-if="errorBag.has('houseNumber')" class="error-message">
-                                {{ errorBag.get("houseNumber") }}
+                            <p v-if="errorBag.hasNested('houseNumber')" class="error-message">
+                                {{ errorBag.getNested("houseNumber") }}
                             </p>
                         </div>
                     </div>
@@ -110,11 +110,11 @@
                                 v-model="accountAddress.zipCode"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('zipCode') }"
+                                :class="{ error: errorBag.hasNested('zipCode') }"
                                 placeholder="Zip Code"
                             />
-                            <p v-if="errorBag.has('zipCode')" class="error-message">
-                                {{ errorBag.get("zipCode") }}
+                            <p v-if="errorBag.hasNested('zipCode')" class="error-message">
+                                {{ errorBag.getNested("zipCode") }}
                             </p>
                         </div>
                         <div class="flex flex-col w-full pl-2">
@@ -124,10 +124,10 @@
                                 v-model="accountAddress.city"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('city') }"
+                                :class="{ error: errorBag.hasNested('city') }"
                                 placeholder="City"
                             />
-                            <p v-if="errorBag.has('city')" class="error-message">{{ errorBag.get("city") }}</p>
+                            <p v-if="errorBag.hasNested('city')" class="error-message">{{ errorBag.getNested("city") }}</p>
                         </div>
                     </div>
                 </div>

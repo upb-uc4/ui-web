@@ -18,11 +18,11 @@
                                 v-model="studentImmatriculationStatus"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('immatriculationStatus') }"
+                                :class="{ error: errorBag.hasNested('immatriculationStatus') }"
                                 placeholder="Immatriculation Status"
                             />
-                            <p v-if="errorBag.has('immatriculationStatus')" class="error-message">
-                                {{ errorBag.get("immatriculationStatus") }}
+                            <p v-if="errorBag.hasNested('immatriculationStatus')" class="error-message">
+                                {{ errorBag.getNested("immatriculationStatus") }}
                             </p>
                         </div>
                         <div class="flex flex-col w-1/4 pl-2">
@@ -32,11 +32,11 @@
                                 v-model="studentMatriculationId"
                                 type="text"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('matriculationId') }"
+                                :class="{ error: errorBag.hasNested('matriculationId') }"
                                 placeholder="Matriculation-ID"
                             />
-                            <p v-if="errorBag.has('matriculationId')" class="error-message">
-                                {{ errorBag.get("matriculationId") }}
+                            <p v-if="errorBag.hasNested('matriculationId')" class="error-message">
+                                {{ errorBag.getNested("matriculationId") }}
                             </p>
                         </div>
                     </div>
@@ -52,8 +52,8 @@
                                 placeholder="Select a Field of Study"
                                 @changed="updateFieldsOfStudy"
                             />
-                            <p v-if="errorBag.has('fieldsOfStudy')" class="error-message">
-                                {{ errorBag.get("fieldsOfStudy") }}
+                            <p v-if="errorBag.hasNested('fieldsOfStudy')" class="error-message">
+                                {{ errorBag.getNested("fieldsOfStudy") }}
                             </p>
                         </div>
                         <div class="flex flex-col w-1/4 pl-2">
@@ -63,11 +63,11 @@
                                 v-model="studentSemesterCount"
                                 type="number"
                                 class="w-full form-input input-text"
-                                :class="{ error: errorBag.has('semesterCount') }"
+                                :class="{ error: errorBag.hasNested('semesterCount') }"
                                 placeholder="Semester Count"
                             />
-                            <p v-if="errorBag.has('semesterCount')" class="error-message">
-                                {{ errorBag.get("semesterCount") }}
+                            <p v-if="errorBag.hasNested('semesterCount')" class="error-message">
+                                {{ errorBag.getNested("semesterCount") }}
                             </p>
                         </div>
                     </div>

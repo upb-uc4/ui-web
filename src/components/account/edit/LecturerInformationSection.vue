@@ -17,11 +17,11 @@
                         cols="30"
                         rows="5"
                         class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
-                        :class="{ error: errorBag.has('freeText') }"
+                        :class="{ error: errorBag.hasNested('freeText') }"
                         placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
                     >
                     </textarea>
-                    <p v-if="errorBag.has('freeText')" class="error-message">{{ errorBag.get("freeText") }}</p>
+                    <p v-if="errorBag.hasNested('freeText')" class="error-message">{{ errorBag.getNested("freeText") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
                     <label class="mb-3 text-sm font-medium text-gray-700">Fields of Research (optional)</label>
@@ -31,12 +31,12 @@
                         cols="30"
                         rows="3"
                         class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
-                        :class="{ error: errorBag.has('researchArea') }"
+                        :class="{ error: errorBag.hasNested('researchArea') }"
                         placeholder="Add an optional Description of the Lecturer's Fields of Research"
                     >
                     </textarea>
-                    <p v-if="errorBag.has('researchArea')" class="error-message">
-                        {{ errorBag.get("researchArea") }}
+                    <p v-if="errorBag.hasNested('researchArea')" class="error-message">
+                        {{ errorBag.getNested("researchArea") }}
                     </p>
                 </div>
             </div>
