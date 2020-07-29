@@ -1,10 +1,11 @@
-# [v.0.4.5 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
+# [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.5) (2020-07-29)
 
 ## Feature
 - Add password change API + unit test (#213)
 - adds errors for nested objects, like the street of one's address (#233)
 - Add option for user to change the password (atm. in lecturer private profile, will be moved to a settings page) (#208)
 - Redesign admin account list to have a more modern look [#226](https://github.com/upb-uc4/ui-web/pull/226)
+- Allow re-authentication on page reload (#248)
 
 ## Bug Fixes
 
