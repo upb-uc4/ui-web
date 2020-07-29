@@ -58,7 +58,6 @@ export default class UserManagement extends Common {
                 result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
-                console.log(error);
                 if (error.response) {
                     result.statusCode = error.response.status;
                 } else {
@@ -119,7 +118,6 @@ export default class UserManagement extends Common {
         await instance
             .get(`/role/${loginData.username}`, authHeader)
             .then((response: AxiosResponse) => {
-                console.log(response);
                 intermediateResult.statusCode = response.status;
                 intermediateResult.returnValue = response.data.role;
             })
@@ -159,7 +157,6 @@ export default class UserManagement extends Common {
         await this._axios
             .get(`/role/${username}`, await this._authHeader)
             .then((response: AxiosResponse) => {
-                console.log(response);
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
             })
@@ -244,7 +241,6 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                console.log(error);
             });
 
         return result;
@@ -273,7 +269,6 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                console.log(error);
             });
 
         return result;
@@ -300,7 +295,6 @@ export default class UserManagement extends Common {
         await this._axios
             .post(`/password/${username}`, acc, await this._authHeader)
             .then((response: AxiosResponse) => {
-                console.log(response);
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
@@ -311,7 +305,6 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                console.log(error);
             });
 
         return result;

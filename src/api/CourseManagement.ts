@@ -31,7 +31,6 @@ export default class CourseManagement extends Common {
                 result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
-                console.log(error);
                 if (error.response) {
                     result.statusCode = error.response.status;
                 } else {
@@ -106,7 +105,6 @@ export default class CourseManagement extends Common {
         await this._axios
             .put(`/courses/${id}`, course, await this._authHeader)
             .then((response: AxiosResponse) => {
-                console.log(response);
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
