@@ -6,7 +6,7 @@
                     title="All Courses"
                     description="Complete overview of all courses"
                     icon-class="fa-globe-americas"
-                    target-route-name="home"
+                    target-route-name="student.home"
                 />
             </li>
             <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
