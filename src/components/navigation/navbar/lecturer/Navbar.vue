@@ -6,9 +6,6 @@
         <li>
             <course-menu class="navbar-menu" />
         </li>
-        <li>
-            <a href="#" class="navbar-menu">Others</a>
-        </li>
     </base-navbar>
 </template>
 
