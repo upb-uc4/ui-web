@@ -7,6 +7,7 @@ import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapp
 import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
 import Redirect from "../views/errors/403.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
+import Settings from "../views/common/Settings.vue";
 import PageNotFound from "../views/errors/404.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -123,6 +124,14 @@ const router = createRouter({
             component: Redirect,
             meta: {
                 title: "Permission Denied" + suffix,
+            },
+        },
+        {
+            path: "/settings",
+            name: "settings",
+            component: Settings,
+            meta: {
+                title: "Settings" + suffix,
             },
         },
         {
