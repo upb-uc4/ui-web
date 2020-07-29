@@ -542,10 +542,7 @@
                 account.student.fieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE);
             }
 
-            function updatePicture() {
-                console.log(account);
-                console.log(initialAccount);
-            }
+            function updatePicture() {}
 
             let hasInput = computed(() => {
                 if (

@@ -17,10 +17,7 @@ var createdCourse: Course = {} as Course;
 jest.useFakeTimers();
 
 beforeAll(async () => {
-    console.log("hm");
     const success = await UserManagement.login(adminAuth);
-    console.log(success);
-    console.log(store.state.loginData);
     courseManagement = new CourseManagement();
     expect(success.returnValue).toBe(true);
 });
@@ -38,7 +35,6 @@ test("Create course", async () => {
     course.lecturerId = "lecturer";
     course.maxParticipants = 10;
 
-    console.log(courseManagement._authHeader);
     const success = await courseManagement.createCourse(course);
 
     expect(success.returnValue).toBe(true);
