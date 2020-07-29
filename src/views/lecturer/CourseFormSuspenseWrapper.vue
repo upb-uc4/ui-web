@@ -27,11 +27,15 @@
         },
 
         async beforeRouteEnter(_to: any, _from: any, next: any) {
-            const allowed = await checkPrivilege(Role.LECTURER);
+            const response = await checkPrivilege(Role.LECTURER);
 
-            if (allowed) {
+            if (response.allowed) {
                 return next();
             }
+            if (!response.authenticated) {
+                return next("/login");
+            }
+
             return next("/redirect");
         },
 

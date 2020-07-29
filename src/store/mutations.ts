@@ -6,12 +6,20 @@ import { Role } from "@/entities/Role";
 export type Mutations<S = State> = {
     [MutationTypes.SET_ID](state: S, payload: string): void;
     [MutationTypes.SET_ROLE](state: S, payload: string): void;
+    [MutationTypes.SET_MODAL](state: S, payload: string): void;
+    [MutationTypes.SET_LOGGEDIN](state: S, payload: boolean): void;
     [MutationTypes.SET_LOGINDATA](state: S, payload: { username: string; password: string }): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
     [MutationTypes.SET_ID](state: State, payload: string) {
         state.myId = payload;
+    },
+    [MutationTypes.SET_MODAL](state: State, payload: any) {
+        state.modal = payload;
+    },
+    [MutationTypes.SET_LOGGEDIN](state: State, payload: boolean) {
+        state.loggedIn = payload;
     },
     [MutationTypes.SET_ROLE](state: State, payload: Role) {
         state.myRole = payload;

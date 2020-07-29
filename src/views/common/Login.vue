@@ -70,10 +70,10 @@
 <script lang="ts">
     import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
-    import { useStore } from "../../store/store";
+    import { useStore, store } from "../../store/store";
     import { Role } from "../../entities/Role";
     import UserManagement from "@/api/UserManagement";
-    import { ref } from "vue";
+    import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/LoginResponseHandler";
 
     export default {
@@ -106,9 +106,7 @@
 
             async function login() {
                 const username = email.value;
-                const userManagement: UserManagement = new UserManagement();
-
-                const response = await userManagement.login({ username: username, password: password.value });
+                const response = await UserManagement.login({ username: username, password: password.value });
 
                 const loginSuccess = loginResponseHandler.handleReponse(response);
 

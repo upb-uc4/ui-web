@@ -11,6 +11,7 @@ import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import ValidationError from "./api_models/errors/ValidationError";
 import { MutationTypes } from "@/store/mutation-types";
+import axios from "axios";
 
 export default class UserManagement extends Common {
     constructor() {
@@ -26,7 +27,7 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .get("/users", this._authHeader)
+            .get("/users", await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data;
                 result.statusCode = response.status;
@@ -51,7 +52,7 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .delete(`/users/${username}`, this._authHeader)
+            .delete(`/users/${username}`, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
@@ -78,7 +79,7 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .get(endpoint, this._authHeader)
+            .get(endpoint, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data;
                 result.statusCode = response.status;
@@ -98,21 +99,52 @@ export default class UserManagement extends Common {
      * Authenticate against Lagom endpoint, return true if successful
      * @param loginData
      */
-    async login(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
-        this._authHeader = { auth: loginData };
-        const response: APIResponse<Role> = await this.getRole(loginData.username);
+    static async login(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
+        const authHeader = { auth: loginData };
+        const instance = axios.create({
+            baseURL: process.env.VUE_APP_API_BASE_URL + "/user-management",
+            headers: {
+                "Accept": "*/*",
+                "Content-Type": "application/json;charset=UTF-8",
+            },
+        });
+
+        let intermediateResult: APIResponse<Role> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: Role.NONE,
+            statusCode: 0,
+        };
+
+        await instance
+            .get(`/role/${loginData.username}`, authHeader)
+            .then((response: AxiosResponse) => {
+                console.log(response);
+                intermediateResult.statusCode = response.status;
+                intermediateResult.returnValue = response.data.role;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    intermediateResult.statusCode = error.response.status;
+                } else {
+                    intermediateResult.networkError = true;
+                }
+            });
 
         let result: APIResponse<boolean> = {
-            error: response.error,
-            returnValue: response.returnValue != Role.NONE,
-            networkError: response.networkError,
-            statusCode: response.statusCode,
+            error: intermediateResult.error,
+            returnValue: intermediateResult.returnValue != Role.NONE,
+            networkError: intermediateResult.networkError,
+            statusCode: intermediateResult.statusCode,
         };
 
         const store = useStore();
 
-        store.commit(MutationTypes.SET_LOGINDATA, loginData);
-        store.commit(MutationTypes.SET_ROLE, response.returnValue);
+        if (result.returnValue) {
+            store.commit(MutationTypes.SET_LOGINDATA, loginData);
+            store.commit(MutationTypes.SET_ROLE, intermediateResult.returnValue);
+            store.commit(MutationTypes.SET_LOGGEDIN, true);
+        }
 
         return result;
     }
@@ -124,9 +156,8 @@ export default class UserManagement extends Common {
             returnValue: Role.NONE,
             statusCode: 0,
         };
-
         await this._axios
-            .get(`/role/${username}`, this._authHeader)
+            .get(`/role/${username}`, await this._authHeader)
             .then((response: AxiosResponse) => {
                 console.log(response);
                 result.statusCode = response.status;
@@ -139,7 +170,6 @@ export default class UserManagement extends Common {
                     result.networkError = true;
                 }
             });
-
         return result;
     }
 
@@ -168,7 +198,7 @@ export default class UserManagement extends Common {
         let endpoint = UserManagement._createEndpointByRole(role.returnValue);
 
         await this._axios
-            .get(`${endpoint}/${username}`, this._authHeader)
+            .get(`${endpoint}/${username}`, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
@@ -186,7 +216,7 @@ export default class UserManagement extends Common {
 
     async getOwnUser(): Promise<APIResponse<Student | Lecturer | Admin>> {
         const store = useStore();
-        const username = store.getters.loginData.username;
+        const username = (await store.getters.loginData).username;
         return await this.getSpecificUser(username);
     }
 
@@ -202,7 +232,7 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .post(endpoint, message, this._authHeader)
+            .post(endpoint, message, await this._authHeader)
             .then((reponse: AxiosResponse) => {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
@@ -231,7 +261,7 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .put(`${endpoint}/${user.username}`, user, this._authHeader)
+            .put(`${endpoint}/${user.username}`, user, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
@@ -251,7 +281,7 @@ export default class UserManagement extends Common {
 
     async changeOwnPassword(password: string): Promise<APIResponse<boolean>> {
         const store = useStore();
-        const username = store.getters.loginData.username;
+        const username = (await store.getters.loginData).username;
         const role = await store.getters.role;
 
         const acc: Account = {
@@ -268,8 +298,9 @@ export default class UserManagement extends Common {
         };
 
         await this._axios
-            .post(`/password/${username}`, acc, this._authHeader)
+            .post(`/password/${username}`, acc, await this._authHeader)
             .then((response: AxiosResponse) => {
+                console.log(response);
                 result.returnValue = true;
                 result.statusCode = response.status;
             })

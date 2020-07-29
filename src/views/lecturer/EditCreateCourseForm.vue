@@ -126,7 +126,7 @@
             const courseManagement: CourseManagement = new CourseManagement();
             let deleteModal = ref();
             const store = useStore();
-            course.value.lecturerId = store.getters.loginData.username;
+            course.value.lecturerId = (await store.getters.loginData).username;
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
