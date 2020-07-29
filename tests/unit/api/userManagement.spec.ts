@@ -24,7 +24,7 @@ var authUser: Account = {
 
 var address: Address = {
     street: "Sandy Street",
-    houseNumber: "5C",
+    houseNumber: "5c",
     zipCode: "42069",
     city: "Mos Eisley",
     country: "Tatooine",

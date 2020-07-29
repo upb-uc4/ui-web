@@ -31,8 +31,8 @@ test("Create course", async () => {
     course.courseType = CourseType.LECTURE;
     course.currentParticipants = 5;
     course.ects = 60;
-    course.startDate = "0420-69-69";
-    course.endDate = "6969-69-69";
+    course.startDate = "1999-01-01";
+    course.endDate = "2000-01-01";
     course.lecturerId = "lecturer";
     course.maxParticipants = 10;
 
