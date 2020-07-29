@@ -6,12 +6,6 @@
         <li>
             <course-menu class="navbar-menu" />
         </li>
-        <li>
-            <a href="#" class="navbar-menu">Documentation</a>
-        </li>
-        <li>
-            <a href="#" class="navbar-menu">Support</a>
-        </li>
         <template #right>
             <profile-menu class="pt-4" />
         </template>
