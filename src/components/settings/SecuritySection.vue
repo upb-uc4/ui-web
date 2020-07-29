@@ -3,10 +3,10 @@
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">
-                    <label class="block text-gray-700 text-lg font-medium">Settings</label>
+                    <label class="block text-gray-700 text-lg font-medium">Security</label>
                 </div>
                 <label class="block text-gray-600">
-                    This section will be moved to an own view as soon as we can navigate properly with the mega menu on profile hover.
+                    Make sure to choose a strong password; Longer password are generally more secure.
                 </label>
             </div>
 
@@ -91,13 +91,13 @@
 
 <script lang="ts">
     import { ref, computed } from "vue";
-    import { Country } from "@/entities/Country";
     import { store } from "@/store/store";
     import EnterPasswordModal from "@/components/modals/EnterPasswordModal.vue";
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
 
     export default {
+        name: "SecuritySection",
         components: {
             EnterPasswordModal,
         },
