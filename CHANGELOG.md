@@ -5,7 +5,8 @@
 - adds errors for nested objects, like the street of one's address (#233)
 - Add option for user to change the password (atm. in lecturer private profile, will be moved to a settings page) (#208)
 - Redesign admin account list to have a more modern look [#226](https://github.com/upb-uc4/ui-web/pull/226)
-
+- add api version endpoints (#249) (just api calls, no vue)
+  
 ## Bug Fixes
 
 ## Refactor
