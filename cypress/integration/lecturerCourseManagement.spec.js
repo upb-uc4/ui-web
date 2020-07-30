@@ -19,7 +19,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Show new course page", () => {
-        cy.get('a[href*="/createCourse"]').click({ force: true });
+        cy.get('button[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
     });
 
@@ -47,7 +47,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Show new course page", () => {
-        cy.get('a[href*="/createCourse"]').click({ force: true });
+        cy.get('button[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
     });
 
