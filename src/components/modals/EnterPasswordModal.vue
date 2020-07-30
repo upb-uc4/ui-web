@@ -57,9 +57,8 @@
 
             async function checkPassword() {
                 checking.value = true;
-                const userManagement: UserManagement = new UserManagement();
                 const store = useStore();
-                const response = await userManagement.login({ username: store.getters.loginData.username, password: password.value });
+                const response = await UserManagement.login({ username: store.getters.user.username, password: password.value });
                 if (loginResponseHandler.handleReponse(response)) {
                     close(action.CONFIRM);
                 } else {
