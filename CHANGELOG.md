@@ -5,6 +5,7 @@
 - adds errors for nested objects, like the street of one's address (#233)
 - Add option for user to change the password (#208)
 - Redesign admin account list to have a more modern look [#226](https://github.com/upb-uc4/ui-web/pull/226)
+- add api version endpoints (#249) (just api calls, no vue)
 - Allow re-authentication on page reload (#248)
 - Add settings page [#250](https://github.com/upb-uc4/ui-web/pull/250)
 - Add private profile page for admin (#252)
