@@ -1,14 +1,29 @@
+# WIP [v.0.4.6](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.6) (XXXX-XX-XX)
+
+## Feature
+- add api version endpoints (#249) (just api calls, no vue)
+
+## Bug Fixes
+- Fix bug, that birthday was not shown, when day was < 10 [#270](https://github.com/upb-uc4/ui-web/pull/270)
+
+## Refactor
+
+### Usability
+
 # [v.0.4.5-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.5-hotfix.1) (2020-07-30)
+
 ## Bug Fixes
 - User was not able to update his password, because the confirmation modal used an older version of the API and the store (#272)
 
-# [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.4...v0.4.5) (2020-07-29)
+
+# [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.4...v0.4.5) (2020-07-30)
 
 ## Feature
 - Add password change API + unit test (#213)
 - adds errors for nested objects, like the street of one's address (#233)
 - Add option for user to change the password (#208)
 - Redesign admin account list to have a more modern look [#226](https://github.com/upb-uc4/ui-web/pull/226)
+- add api version endpoints (#249) (just api calls, no vue)
 - Allow re-authentication on page reload (#248)
 - Add settings page [#250](https://github.com/upb-uc4/ui-web/pull/250)
 - Add private profile page for admin (#252)
