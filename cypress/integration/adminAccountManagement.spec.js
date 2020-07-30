@@ -27,7 +27,7 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Show new account page", () => {
-        cy.get('a[href*="/createAccount"]').click({ force: true });
+        cy.get('button[id="addAccount"]').click({ force: true });
         cy.url().should("contain", "/createAccount");
         //todo check if everything is there
     });
@@ -68,7 +68,7 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Show new account page", () => {
-        cy.get('a[href*="/createAccount"]').click({ force: true });
+        cy.get('button[id="addAccount"]').click({ force: true });
         cy.url().should("contain", "/createAccount");
         //todo check if everything is there
     });
@@ -141,7 +141,7 @@ describe("Account creation, edition and deletion", () => {
 
     // edit account
     it("Show student edit page", () => {
-        cy.get("button[id='user-cypress']").click();
+        cy.get("button[id='user_cypress']").click();
 
         //todo check if everything is there
     });
