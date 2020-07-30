@@ -12,13 +12,7 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Matriculation Number</label>
-                    <input
-                        id="matriculationId"
-                        type="text"
-                        readonly
-                        :value="matriculationId"
-                        class="w-full form-input input-text"
-                    />
+                    <input id="matriculationId" type="text" readonly :value="matriculationId" class="w-full form-input input-text" />
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Field of Study</label>
@@ -35,23 +29,11 @@
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Degree Sought</label>
-                    <input
-                        id="degreeSought"
-                        type="text"
-                        readonly
-                        value="Master's Degree"
-                        class="w-full form-input input-text"
-                    />
+                    <input id="degreeSought" type="text" readonly value="Master's Degree" class="w-full form-input input-text" />
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Semester Count</label>
-                    <input
-                        id="semesterCount"
-                        type="number"
-                        readonly
-                        :value="semesterCount"
-                        class="w-full form-input input-text"
-                    />
+                    <input id="semesterCount" type="number" readonly :value="semesterCount" class="w-full form-input input-text" />
                 </div>
             </div>
         </div>

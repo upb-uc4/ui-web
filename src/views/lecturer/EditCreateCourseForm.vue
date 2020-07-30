@@ -116,6 +116,7 @@
                 required: true,
             },
         },
+        emits: ["update:hasInput", "update:succes"],
 
         async setup(props: any, { emit }: any) {
             let course = ref(new CourseEntity());
