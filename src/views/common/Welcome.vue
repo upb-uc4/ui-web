@@ -6,7 +6,7 @@
             management.
         </h2>
         <div class="flex flex-col mt-5">
-            <h2>
+            <h2 class="text-xl">
                 This application is work in progress. If you find any bugs, please report them at
                 <a
                     class="text-blue-800 cursor-pointer"
@@ -14,10 +14,10 @@
                 >GitHub</a>
                 and refer to the version numbers below.
             </h2>
-            <p>Frontend version: {{ frontEndVersion }}</p>
-            <p>Authentication version: {{ authenticationManagementVersion }}</p>
-            <p>Course management version: {{ courseManagementVersion }}</p>
-            <p>User management version: {{ userManagementVersion }}</p>
+            <p class="mt-2 text-lg">Frontend version: {{ frontEndVersion }}</p>
+            <p class="text-lg">Authentication version: {{ authenticationManagementVersion }}</p>
+            <p class="text-lg">Course management version: {{ courseManagementVersion }}</p>
+            <p class="text-lg">User management version: {{ userManagementVersion }}</p>
         </div>
     </div>
 </template>
