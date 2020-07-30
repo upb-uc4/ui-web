@@ -11,7 +11,7 @@
 
 <script lang="ts">
     import BaseNavbar from "@/components/navigation/navbar/common/BaseNavbar.vue";
-    import CourseMenu from "@/components/navigation/navbar/student/CoursesMenu/CourseMenu.vue";
+    import CourseMenu from "@/components/navigation/navbar/lecturer/CoursesMenu/CourseMenu.vue";
 
     export default {
         name: "LecturerNavbar",
