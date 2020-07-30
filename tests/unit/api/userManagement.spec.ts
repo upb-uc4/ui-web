@@ -5,14 +5,15 @@ import Student from "@/api/api_models/user_management/Student";
 import Address from "@/api/api_models/user_management/Address";
 import User from "@/api/api_models/user_management/User";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+import { store } from "@/store/store";
 
 var userManagement: UserManagement;
 const adminAuth = { username: "admin", password: "admin" };
 jest.setTimeout(30000);
 
 beforeAll(async () => {
+    const success = await UserManagement.login(adminAuth);
     userManagement = new UserManagement();
-    const success = await userManagement.login(adminAuth);
     expect(success.returnValue).toBe(true);
 });
 
@@ -93,5 +94,17 @@ test("Update user", async () => {
 test("Delete user", async () => {
     await new Promise((r) => setTimeout(r, 5000));
     const success = await userManagement.deleteUser(student.username);
+    expect(success.returnValue).toBe(true);
+});
+
+test("Change password", async () => {
+    let success = await userManagement.changeOwnPassword("testPassword");
+    expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 10000));
+
+    adminAuth.password = "testPassword";
+    const loginSuccess = await UserManagement.login(adminAuth);
+    userManagement = new UserManagement();
+    success = await userManagement.changeOwnPassword("admin");
     expect(success.returnValue).toBe(true);
 });

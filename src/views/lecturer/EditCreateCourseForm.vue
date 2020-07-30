@@ -88,7 +88,7 @@
 
 <script lang="ts">
     import Router from "@/router/";
-    import { store } from "@/store/store";
+    import { useStore } from "@/store/store";
     import { CourseEntity } from "@/entities/CourseEntity";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
@@ -116,6 +116,7 @@
                 required: true,
             },
         },
+        emits: ["update:hasInput", "update:succes"],
 
         async setup(props: any, { emit }: any) {
             let course = ref(new CourseEntity());
@@ -124,7 +125,8 @@
             let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
             let deleteModal = ref();
-            course.value.lecturerId = store.state.myId;
+            const store = useStore();
+            course.value.lecturerId = (await store.getters.loginData).username;
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 

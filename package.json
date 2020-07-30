@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -145,6 +145,7 @@
         "trailingComma": "es5",
         "tabWidth": 4,
         "semi": true,
+        "endOfLine": "auto",
         "jsxBracketSameLine": true,
         "vueIndentScriptAndStyle": true,
         "html-whitespace-sensitivity": "ignore",

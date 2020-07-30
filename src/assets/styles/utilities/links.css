@@ -9,3 +9,7 @@
 .navigation-link:focus {
     @apply outline-none text-blue-800;
 }
+
+.navbar-menu {
+    @apply py-1 px-3 block;
+}

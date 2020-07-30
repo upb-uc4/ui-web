@@ -1,15 +1,14 @@
-import { store } from "@/store/store";
+import { useStore } from "@/store/store";
 import axios from "axios";
 import { AxiosInstance } from "axios";
 
 export default class Common {
-    _authHeader: { auth: { username: string; password: string } } = { auth: { username: "", password: "" } };
-    _requestParameter: { auth: { username: string; password: string }; params: any };
+    _authHeader!: Promise<{ auth: { username: string; password: string } }>;
     _axios: AxiosInstance;
 
     constructor(endpoint: string) {
-        this._authHeader = { auth: store.state.loginData };
-        this._requestParameter = { ...this._authHeader, params: {} };
+        this._authHeader = this._getLoginData();
+
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
             headers: {
@@ -21,11 +20,9 @@ export default class Common {
         this._axios = instance;
     }
 
-    getAuthHeader() {
-        return this._authHeader;
-    }
-
-    setAuthHeader(authHeader: { auth: { username: string; password: string } }) {
-        this._authHeader = authHeader;
+    async _getLoginData() {
+        const store = useStore();
+        const auth = await store.getters.loginData;
+        return { auth: auth };
     }
 }

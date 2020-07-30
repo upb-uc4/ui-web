@@ -1,6 +1,5 @@
 <template>
     <div>
-        <dev-nav-bar></dev-nav-bar>
         <div class="flex-1 items-center text-center">
             <h2 class="text-4xl text-center mt-4 font-semibold">
                 403 Forbidden
@@ -20,16 +19,12 @@
         </div>
     </div>
 </template>
+
 <script lang="ts">
-    import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
     import { ref } from "vue";
 
     export default {
-        components: {
-            DevNavBar,
-        },
-
         beforeRouteLeave(_from: any, _to: any, next: any) {
             clearInterval(this.timeout);
             return next();
