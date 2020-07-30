@@ -21,9 +21,9 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("List contains admin, student and lecturer", () => {
-        cy.get("tr").get("tr>td").contains("student");
-        cy.get("tr").get("tr>td").contains("lecturer");
-        cy.get("tr").get("tr>td").contains("admin");
+        cy.get("div").contains("@student");
+        cy.get("div").contains("@lecturer");
+        cy.get("div").contains("@admin");
     });
 
     it("Show new account page", () => {
@@ -77,7 +77,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[type='radio']").eq(2).click();
     });
     it("Can edit username", () => {
-        cy.get("input[id='userName']").type("test-username-cypress");
+        cy.get("input[id='userName']").type("cypress");
     });
 
     it("Can edit password", () => {
@@ -136,12 +136,12 @@ describe("Account creation, edition and deletion", () => {
         cy.url().should("contain", "admin");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("tr").get("tr>td").contains("test-username-cypress");
+        cy.get("div").contains("cypress");
     });
 
     // edit account
     it("Show student edit page", () => {
-        cy.get("button[id='editAccount-test-username-cypress']").click();
+        cy.get("button[id='user-cypress']").click();
 
         //todo check if everything is there
     });
@@ -200,7 +200,7 @@ describe("Account creation, edition and deletion", () => {
 
     //delete account
     it("Show edit page", () => {
-        cy.get("button[id='editAccount-test-username-cypress']").click();
+        cy.get("button[id='user_cypress']").click();
 
         //todo check if everything is there
     });
