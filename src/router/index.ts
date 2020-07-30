@@ -9,6 +9,7 @@ import Redirect from "../views/errors/403.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
 import Settings from "../views/common/Settings.vue";
 import PageNotFound from "../views/errors/404.vue";
+import WelcomePage from "../views/common/WelcomePageWrapper.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -16,6 +17,14 @@ const suffix: string = " | UC4";
 const router = createRouter({
     history: routerHistory,
     routes: [
+        {
+            path: "/welcome",
+            name: "welcome",
+            component: WelcomePage,
+            meta: {
+                title: "Welcome" + suffix,
+            },
+        },
         {
             path: "/login",
             name: "login",
