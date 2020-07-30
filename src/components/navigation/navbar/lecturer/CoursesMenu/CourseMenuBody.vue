@@ -4,7 +4,7 @@
             <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
                     title="All Courses"
-                    description="Complete overview of all courses"
+                    description="Overview of all courses"
                     icon-class="fa-globe-americas"
                     target-route-name="lecturer.home"
                 />
