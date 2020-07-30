@@ -12,6 +12,7 @@ import APIError from "./api_models/errors/APIError";
 import ValidationError from "./api_models/errors/ValidationError";
 import { MutationTypes } from "@/store/mutation-types";
 import axios from "axios";
+import GenericResponseHandler from "@/use/GenericResponseHandler";
 
 export default class UserManagement extends Common {
     constructor() {
@@ -140,8 +141,14 @@ export default class UserManagement extends Common {
 
         if (result.returnValue) {
             store.commit(MutationTypes.SET_LOGINDATA, loginData);
-            store.commit(MutationTypes.SET_ROLE, intermediateResult.returnValue);
             store.commit(MutationTypes.SET_LOGGEDIN, true);
+            const userManagement = new UserManagement();
+            const handler = new GenericResponseHandler();
+            const response = await userManagement.getOwnUser();
+            const user = handler.handleReponse(response);
+            store.commit(MutationTypes.SET_USER, user);
+            // set role after user, because the navbar is loaded as soon as the role is set.
+            store.commit(MutationTypes.SET_ROLE, intermediateResult.returnValue);
         }
 
         return result;

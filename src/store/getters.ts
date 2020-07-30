@@ -16,7 +16,7 @@ export type Getters = {
     loginData(state: State): Promise<{ username: string; password: string }>;
     syncLoginData(state: State): { username: string; password: string };
     role(state: State): Promise<Role>;
-    user(state: State): Promise<Student | Lecturer | Admin>;
+    user(state: State): Student | Lecturer | Admin;
     loggedIn(state: State): boolean;
 };
 
@@ -34,14 +34,7 @@ export const getters: GetterTree<State, State> & Getters = {
     syncLoginData: (state) => {
         return state.loginData;
     },
-    user: async (state) => {
-        if (state.user.username != state.loginData.username) {
-            const usermanagement = new UserManagement();
-            const response = await usermanagement.getOwnUser();
-            const user: Student | Lecturer | Admin = new GenericResponseHandler().handleReponse(response);
-            const store = useStore();
-            store.commit(MutationTypes.SET_USER, user);
-        }
+    user: (state) => {
         return state.user;
     },
     role: async (state) => {

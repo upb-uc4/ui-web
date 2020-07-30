@@ -3,7 +3,7 @@
         <template #hook>
             <div class="flex items-center">
                 <div class="mr-2 text-gray-100 font-semibold tracking-wide">
-                    Theo
+                    {{ user.firstName }}
                 </div>
                 <img class="rounded-full w-10 h-10 ml-2" src="@/assets/blank_profile_picture.png" alt="profile_image" />
             </div>
@@ -19,11 +19,25 @@
 <script lang="ts">
     import BaseMenu from "@/components/navigation/navbar/common/BaseMenu.vue";
     import MenuBody from "@/components/navigation/navbar/common/profile/ProfileMenuBody.vue";
+    import { useStore } from "../../../../../store/store";
+    import { ref } from "vue";
+    import User from "../../../../../api/api_models/user_management/User";
+    import Lecturer from "../../../../../api/api_models/user_management/Lecturer";
+    import Admin from "../../../../../api/api_models/user_management/Admin";
+    import Student from "../../../../../api/api_models/user_management/Student";
+    import { MutationTypes } from "../../../../../store/mutation-types";
 
     export default {
         components: {
             BaseMenu,
             MenuBody,
+        },
+
+        setup() {
+            const store = useStore();
+            let user = store.getters.user;
+            console.log(user);
+            return { user };
         },
     };
 </script>
