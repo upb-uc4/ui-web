@@ -11,6 +11,9 @@
 
 ### Usability
 
+# [v.0.4.5-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.5-hotfix.1) (2020-07-30)
+## Bug Fixes
+- User was not able to update his password, because the confirmation modal used an older version of the API and the store (#272)
 
 # [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.4...v0.4.5) (2020-07-30)
 
