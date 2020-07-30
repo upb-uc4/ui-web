@@ -10,6 +10,7 @@
 - Add private profile page for admin (#252)
 
 ## Bug Fixes
+- prevent user from editing personal information (#259)
 
 ## Refactor
 - extract searchbar component for better adaptability (#131)
