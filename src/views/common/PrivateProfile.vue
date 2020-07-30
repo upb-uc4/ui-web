@@ -1,11 +1,13 @@
 <template>
     <private-student-profile v-if="user.role === Role.STUDENT" :user="user" />
     <private-lecturer-profile v-else-if="user.role === Role.LECTURER" :user="user" />
+    <private-admin-profile v-else-if="user.role === Role.ADMIN" :user="user" />
 </template>
 
 <script lang="ts">
     import PrivateStudentProfile from "@/views/student/PrivateProfile.vue";
     import PrivateLecturerProfile from "@/views/lecturer/PrivateProfile.vue";
+    import PrivateAdminProfile from "@/views/admin/PrivateProfile.vue";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";
     import { Role } from "@/entities/Role";
@@ -14,6 +16,7 @@
         components: {
             PrivateStudentProfile,
             PrivateLecturerProfile,
+            PrivateAdminProfile,
         },
         async setup() {
             const auth: UserManagement = new UserManagement();
