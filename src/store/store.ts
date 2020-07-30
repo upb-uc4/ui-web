@@ -9,6 +9,7 @@ export const store = createStore({
     getters,
     mutations,
     actions,
+    strict: true,
 });
 
 export function useStore() {

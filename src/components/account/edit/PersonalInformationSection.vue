@@ -47,11 +47,7 @@
                     <label class="mb-3 font-medium text-gray-700 text-md">
                         Birthdate
                     </label>
-                    <birth-date-picker
-                        v-model:year="accountBirthdate.year"
-                        v-model:month="accountBirthdate.month"
-                        v-model:day="accountBirthdate.day"
-                    />
+                    <birth-date-picker v-model:birthdate="accountBirthdate" />
                     <p v-if="errorBag.hasNested('birthDate')" class="error-message">{{ errorBag.getNested("birthDate") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
@@ -166,7 +162,7 @@
                 required: true,
             },
             birthdate: {
-                type: Object,
+                type: String,
                 required: true,
             },
             address: {
@@ -181,20 +177,16 @@
             let accountBirthdate = ref(props.birthdate);
             let accountAddress = ref(props.address);
 
-            watch(accountBirthdate, () => {
-                emit("update:birthdate", accountBirthdate.value);
-            });
-
             watch(accountAddress, () => {
                 emit("update:address", accountAddress.value);
             });
 
             return {
                 countries,
-                accountBirthdate,
                 accountAddress,
                 accountFirstName: useModelWrapper(props, emit, "firstname"),
                 accountLastName: useModelWrapper(props, emit, "lastname"),
+                accountBirthdate: useModelWrapper(props, emit, "birthdate"),
             };
         },
     };

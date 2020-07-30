@@ -10,6 +10,7 @@
 <script lang="ts">
     import CourseList from "../../components/StudentCourseList.vue";
     import { store } from "../../store/store";
+    import { checkPrivilege } from "../../use/PermissionHelper";
     import { Role } from "../../entities/Role";
 
     export default {
@@ -17,12 +18,17 @@
         components: {
             CourseList,
         },
-        beforeRouteEnter(_to: any, _from: any, next: any) {
-            const myRole = store.state.myRole;
-            if (myRole != Role.STUDENT) {
-                return next("/redirect");
+        async beforeRouteEnter(_to: any, _from: any, next: any) {
+            const response = await checkPrivilege(Role.STUDENT);
+
+            if (response.allowed) {
+                return next();
             }
-            return next();
+            if (!response.authenticated) {
+                return next("/login");
+            }
+
+            return next("/redirect");
         },
     };
 </script>
