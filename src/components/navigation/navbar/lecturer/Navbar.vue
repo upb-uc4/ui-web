@@ -1,7 +1,7 @@
 <template>
     <base-navbar>
         <li>
-            <a href="#" class="navbar-menu">Home</a>
+            <router-link :to="{ name: 'lecturer.home' }" class="navbar-menu">Home</router-link>
         </li>
         <li>
             <course-menu class="navbar-menu" />
