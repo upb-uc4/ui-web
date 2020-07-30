@@ -3,7 +3,6 @@ import APIResponse from "../api/helpers/models/APIResponse";
 
 export default class GenericResponseHandler implements ResponseHandler<boolean> {
     handleReponse<T>(response: APIResponse<T>): T {
-        console.log(response);
         if (response.networkError) {
             //TODO show toast
             alert("Network Error");

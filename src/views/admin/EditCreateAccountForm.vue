@@ -226,10 +226,7 @@
                 }
             }
 
-            function updatePicture() {
-                console.log(account);
-                console.log(initialAccount);
-            }
+            function updatePicture() {}
 
             let hasInput = computed(() => {
                 if (
