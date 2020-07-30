@@ -10,7 +10,12 @@
                 />
             </li>
             <li class="hover:bg-gray-200 rounded-lg p-2">
-                <menu-item title="New Account" description="Create a new user" icon-class="fa-star" target-route-name="admin.home" />
+                <menu-item
+                    title="New Account"
+                    description="Create a new user"
+                    icon-class="fa-star"
+                    target-route-name="accountForm.create"
+                />
             </li>
         </ul>
     </section>
