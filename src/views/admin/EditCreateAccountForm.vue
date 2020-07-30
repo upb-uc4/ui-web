@@ -19,7 +19,7 @@
             <personal-information-section
                 v-model:firstname="account.user.firstName"
                 v-model:lastname="account.user.lastName"
-                v-model:birthdate="account.birthDate"
+                v-model:birthdate="account.user.birthDate"
                 v-model:address="account.user.address"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -177,11 +177,6 @@
                 admin: new AdminEntity(false),
                 student: new StudentEntity(false),
                 lecturer: new LecturerEntity(false),
-                birthDate: {
-                    day: "",
-                    month: "",
-                    year: "",
-                },
             });
             let initialAccount = {
                 authUser: new Account(),
@@ -189,11 +184,6 @@
                 admin: new AdminEntity(false),
                 student: new StudentEntity(false),
                 lecturer: new LecturerEntity(false),
-                birthDate: {
-                    day: "",
-                    month: "",
-                    year: "",
-                },
             };
 
             let title = props.editMode ? "Account Editing" : "Account Creation";
@@ -223,11 +213,6 @@
                 } else {
                     account.user = result;
                     initialAccount.user = JSON.parse(JSON.stringify(account.user));
-                    let dates = result.birthDate.split("-");
-                    account.birthDate.day = initialAccount.birthDate.day = dates[2];
-                    account.birthDate.month = initialAccount.birthDate.month = dates[1];
-                    account.birthDate.year = initialAccount.birthDate.year = dates[0];
-
                     if (result.role == Role.LECTURER) {
                         account.lecturer = result as Lecturer;
                         initialAccount.lecturer = JSON.parse(JSON.stringify(account.lecturer));
@@ -254,9 +239,7 @@
                     account.user.lastName != initialAccount.user.lastName ||
                     account.user.email != initialAccount.user.email ||
                     //default user birthdate from the form
-                    account.birthDate.day != initialAccount.birthDate.day ||
-                    account.birthDate.month != initialAccount.birthDate.month ||
-                    account.birthDate.year != initialAccount.birthDate.year ||
+                    account.user.birthDate != initialAccount.user.birthDate ||
                     //default user address
                     account.user.address.country != initialAccount.user.address.country ||
                     account.user.address.street != initialAccount.user.address.street ||
@@ -346,7 +329,6 @@
                 const userManagement: UserManagement = new UserManagement();
                 account.authUser.username = account.user.username;
                 account.authUser.role = account.user.role;
-                account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
 
                 var newUser: Student | Lecturer | Admin = assembleAccount();
 
@@ -365,7 +347,6 @@
 
             async function updateAccount() {
                 const userManagement: UserManagement = new UserManagement();
-                account.user.birthDate = account.birthDate.year + "-" + account.birthDate.month + "-" + account.birthDate.day;
                 var adaptedUser: Student | Lecturer | Admin = assembleAccount();
 
                 const response = await userManagement.updateUser(adaptedUser);

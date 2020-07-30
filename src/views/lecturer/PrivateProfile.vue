@@ -22,7 +22,6 @@
                 :birth-date="lecturer.birthDate"
                 @save="save"
             />
-            <settings-section />
 
             <contact-section v-model:email="lecturer.email" @save="save" />
 
@@ -69,7 +68,6 @@
     import Router from "@/router";
     import UserManagement from "@/api/UserManagement";
     import Lecturer from "../../api/api_models/user_management/Lecturer";
-    import SettingsSection from "@/components/profile/SettingsSection.vue";
 
     export default {
         components: {
@@ -77,7 +75,6 @@
             ContactSection,
             AddressSection,
             ResearchSection,
-            SettingsSection,
         },
         props: {
             user: {
