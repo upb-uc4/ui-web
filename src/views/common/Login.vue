@@ -1,6 +1,5 @@
 <template>
     <div>
-        <dev-nav-bar></dev-nav-bar>
         <div class="md:mt-32 container max-w-full h-auto flex flex-col lg:flex-row lg:items-center">
             <form method="POST" action="" class="xl:w-3/4 w-full flex items-center flex-col mx-auto" @submit.prevent="login">
                 <h1 class="lg:text-5xl mt-2 text-4xl font-bold text-center text-gray-900 mb-10">Login to Your Account</h1>
@@ -68,7 +67,6 @@
     </div>
 </template>
 <script lang="ts">
-    import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
     import { useStore, store } from "../../store/store";
     import { Role } from "../../entities/Role";
@@ -77,9 +75,7 @@
     import LoginResponseHandler from "@/use/LoginResponseHandler";
 
     export default {
-        components: {
-            DevNavBar,
-        },
+        components: {},
         props: [],
         setup() {
             let email = ref("");

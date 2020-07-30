@@ -8,7 +8,8 @@
 - Allow re-authentication on page reload (#248)
 - Add settings page [#250](https://github.com/upb-uc4/ui-web/pull/250)
 - Add private profile page for admin (#252)
-
+- add new navbar and navigation [#265](https://github.com/upb-uc4/ui-web/pull/265)
+- 
 ## Bug Fixes
 - prevent user from editing personal information (#259)
 
