@@ -1,6 +1,5 @@
 <template>
     <div>
-        <dev-nav-bar></dev-nav-bar>
         <div class="md:mt-32 container max-w-full h-auto flex flex-col lg:flex-row lg:items-center">
             <form method="POST" action="" class="xl:w-3/4 w-full flex items-center flex-col mx-auto" @submit.prevent="login">
                 <h1 class="lg:text-5xl mt-2 text-4xl font-bold text-center text-gray-900 mb-10">Login to Your Account</h1>
@@ -68,18 +67,15 @@
     </div>
 </template>
 <script lang="ts">
-    import DevNavBar from "../../components/dev_components/DevNavBar.vue";
     import Router from "@/router/";
-    import { store } from "../../store/store";
+    import { useStore, store } from "../../store/store";
     import { Role } from "../../entities/Role";
     import UserManagement from "@/api/UserManagement";
-    import { ref } from "vue";
+    import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/LoginResponseHandler";
 
     export default {
-        components: {
-            DevNavBar,
-        },
+        components: {},
         props: [],
         setup() {
             let email = ref("");
@@ -106,14 +102,13 @@
 
             async function login() {
                 const username = email.value;
-                const userManagement: UserManagement = new UserManagement();
-
-                const response = await userManagement.login({ username: username, password: password.value });
+                const response = await UserManagement.login({ username: username, password: password.value });
 
                 const loginSuccess = loginResponseHandler.handleReponse(response);
 
                 if (loginSuccess) {
-                    switch (store.state.myRole) {
+                    const store = useStore();
+                    switch (await store.getters.role) {
                         case Role.ADMIN: {
                             Router.push("/admin");
                             break;
