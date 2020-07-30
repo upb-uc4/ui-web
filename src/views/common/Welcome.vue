@@ -1,6 +1,24 @@
 <template>
-    <div class="flex flex-col justify-center w-full">
-        <h1>Welcome, {{ name }}!</h1>
+    <div class="flex flex-col items-center justify-center w-full mt-20">
+        <h1 class="text-4xl font-semibold text-blue-800">Welcome back, {{ name }}!</h1>
+        <h2 class="mt-5 text-2xl font-semibold">
+            Welcome to <label class="text-blue-800 text"> University Credits 4.0</label>, the best awesome tool for your university
+            management.
+        </h2>
+        <div class="flex flex-col mt-5">
+            <h2>
+                This application is work in progress. If you find any bugs, please report them at
+                <a
+                    class="text-blue-800 cursor-pointer"
+                    href="https://github.com/upb-uc4/ui-web/issues/new?assignees=&labels=&template=bug_report.md&title="
+                >GitHub</a>
+                and refer to the version numbers below.
+            </h2>
+            <p>Frontend version: {{ frontEndVersion }}</p>
+            <p>Authentication version: {{ authenticationManagementVersion }}</p>
+            <p>Course management version: {{ courseManagementVersion }}</p>
+            <p>User management version: {{ userManagementVersion }}</p>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -10,6 +28,7 @@
     //import HyperledgerManagement from "@/api/HyperledgerManagement";
     //import HyperledgerCourseManagement from "@/api/HyperledgerCourseManagement";
     import { useStore } from "@/store/store";
+    import { ref } from "vue";
     export default {
         name: "WelcomePage",
         async setup() {
