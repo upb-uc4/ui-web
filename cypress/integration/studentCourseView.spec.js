@@ -7,7 +7,7 @@ describe("Student course view", () => {
         cy.url().should("contain", "lecturer");
 
         // create course
-        cy.get('a[href*="/createCourse"]').click({ force: true });
+        cy.get('button[id="addCourse"]').click({ force: true });
         cy.get("input[type='radio']").eq(0).click();
         cy.get('input[id="courseName"]').type("test-courseName-cypress");
         cy.get("select").select("German");
@@ -23,6 +23,7 @@ describe("Student course view", () => {
         cy.visit("/");
         cy.get("input[id='email']").type("student");
         cy.get("input[id='password']").type("student");
+        cy.wait(1000);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "student");
     });
