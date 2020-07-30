@@ -1,26 +1,23 @@
 <template>
     <base-navbar>
         <li>
-            <a href="#" class="navbar-menu">Home</a>
+            <router-link :to="{ name: 'admin.home' }" class="navbar-menu">Home</router-link>
         </li>
         <li>
-            <course-menu class="navbar-menu" />
-        </li>
-        <li>
-            <a href="#" class="navbar-menu">Others</a>
+            <manage-accounts-menu class="navbar-menu" />
         </li>
     </base-navbar>
 </template>
 
 <script lang="ts">
     import BaseNavbar from "@/components/navigation/navbar/common/BaseNavbar.vue";
-    import CourseMenu from "@/components/navigation/navbar/student/CoursesMenu/CourseMenu.vue";
+    import ManageAccountsMenu from "@/components/navigation/navbar/admin/administration/ManageAccountsMenu.vue";
 
     export default {
         name: "AdminNavbar",
         components: {
             BaseNavbar,
-            CourseMenu,
+            ManageAccountsMenu,
         },
     };
 </script>
