@@ -28,7 +28,12 @@
         </ul>
         <ul class="w-full lg:w-1/2 px-4">
             <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
-                <menu-item title="My Courses" description="All courses you ever took" icon-class="fa-meteor" target-route-name="home" />
+                <menu-item
+                    title="My Courses"
+                    description="All courses you ever participated in"
+                    icon-class="fa-meteor"
+                    target-route-name="home"
+                />
             </li>
             <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
