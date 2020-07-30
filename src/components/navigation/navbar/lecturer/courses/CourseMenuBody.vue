@@ -11,24 +11,16 @@
             </li>
             <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
-                    title="Course Drafts"
-                    description="Continue to work on your drafts"
+                    title="Create Course"
+                    description="Create a new course"
                     icon-class="fa-star"
-                    target-route-name="lecturer.home"
+                    target-route-name="courseForm.create"
                 />
             </li>
         </ul>
         <ul class="w-full lg:w-1/2 px-4">
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
-                <menu-item
-                    title="Created Course"
-                    description="Courses you created"
-                    icon-class="fa-meteor"
-                    target-route-name="lecturer.home"
-                />
-            </li>
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
-                <menu-item title="Organisational Stuff" description="Stuff" icon-class="fa-sitemap" target-route-name="lecturer.home" />
+            <li class="hover:bg-gray-200 rounded-lg p-2">
+                <menu-item title="My Courses" description="Courses you created" icon-class="fa-meteor" target-route-name="lecturer.home" />
             </li>
         </ul>
     </section>
