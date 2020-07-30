@@ -1,4 +1,4 @@
-# [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.5) (2020-07-29)
+# [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.4...v0.4.5) (2020-07-30)
 
 ## Feature
 - Add password change API + unit test (#213)
