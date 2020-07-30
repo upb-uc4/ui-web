@@ -11,6 +11,9 @@
     import StudentNavbar from "@/components/navigation/navbar/student/Navbar.vue";
     import AdminNavbar from "@/components/navigation/navbar/admin/Navbar.vue";
     import { Role } from "@/entities/Role";
+    import { useStore } from "../../../store/store";
+    import { ref } from "vue";
+    import { MutationTypes } from "../../../store/mutation-types";
 
     export default {
         name: "Navbar",
@@ -21,8 +24,15 @@
             AdminNavbar,
         },
         setup() {
-            //mock role for demo; todo: get current role from store
-            const role = Role.STUDENT;
+            const store = useStore();
+            let role = ref(Role.NONE);
+
+            store.subscribe((mutation, state) => {
+                if (mutation.type === MutationTypes.SET_ROLE) {
+                    role.value = mutation.payload;
+                }
+            });
+
             return { role, Role };
         },
     };
