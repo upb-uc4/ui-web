@@ -4,6 +4,7 @@
 - add api version endpoints (#249) (just api calls, no vue)
 
 ## Bug Fixes
+- Fix bug, that birthday was not shown, when day was < 10 [#270](https://github.com/upb-uc4/ui-web/pull/270)
 
 ## Refactor
 
