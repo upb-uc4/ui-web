@@ -9,10 +9,13 @@
             <h2 class="text-xl">
                 This application is work in progress. If you find any bugs, please report them at
                 <a
+                    target="_blank"
                     class="text-blue-800 cursor-pointer"
                     href="https://github.com/upb-uc4/ui-web/issues/new?assignees=&labels=&template=bug_report.md&title="
-                >GitHub</a>
+                >GitHub</a
+                >
                 and refer to the version numbers below.
+                <a class="text-blue-800 cursor-pointer" target="_blank" href="https://github.com/upb-uc4/ui-web/blob/master/CHANGELOG.md">(Changelog)</a>
             </h2>
             <p class="mt-2 text-lg">Frontend version: {{ frontEndVersion }}</p>
             <p class="text-lg">Authentication version: {{ authenticationManagementVersion }}</p>
