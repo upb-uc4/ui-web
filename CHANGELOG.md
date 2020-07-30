@@ -1,3 +1,16 @@
+# [v.0.4.6](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.6) (XXXX-XX-XX)
+
+## Feature
+- add api version endpoints (#249) (just api calls, no vue)
+
+## Bug Fixes
+
+## Refactor
+
+
+### Usability
+
+
 # [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.4...v0.4.5) (2020-07-30)
 
 ## Feature
