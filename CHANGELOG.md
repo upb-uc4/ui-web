@@ -1,7 +1,8 @@
-# WIP [v.0.4.6](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.6) (XXXX-XX-XX)
+# [v.0.5.0](https://github.com/upb-uc4/ui-web/compare/v0.4.5-hotfix.1...v0.5.0) (2020-07-31)
 
 ## Feature
 - add api version endpoints (#249) (just api calls, no vue)
+- add welcome landing page showing all version numbers of services [#271](https://github.com/upb-uc4/ui-web/pull/271)
 
 ## Bug Fixes
 - Fix bug, that birthday was not shown, when day was < 10 [#270](https://github.com/upb-uc4/ui-web/pull/270)
