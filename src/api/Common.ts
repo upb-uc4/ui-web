@@ -27,10 +27,9 @@ export default class Common {
         await this._axios
             .get(`/version`)
             .then((response: AxiosResponse) => {
-                version = response.data.version;
+                version = response.data.versionNumber;
             })
             .catch((error: AxiosError) => {});
-
         return version;
     }
 
