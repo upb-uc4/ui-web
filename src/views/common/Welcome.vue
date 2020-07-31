@@ -8,7 +8,9 @@
                     target="_blank"
                     class="text-blue-800 cursor-pointer"
                     href="https://github.com/upb-uc4/ui-web/issues/new?assignees=&labels=&template=bug_report.md&title="
-                >GitHub</a>
+                >
+                    GitHub
+                </a>
                 and refer to the version numbers below.
             </h2>
             <p class="mt-2 text-lg">
@@ -20,6 +22,8 @@
             <p class="text-lg">Authentication version: {{ authenticationManagementVersion }}</p>
             <p class="text-lg">Course management version: {{ courseManagementVersion }}</p>
             <p class="text-lg">User management version: {{ userManagementVersion }}</p>
+            <p class="text-lg">Hyperledger management version: {{ hyperledgerManagementVersion }}</p>
+            <p class="text-lg">Hyperledger course management version: {{ hyperledgerCourseManagementVersion }}</p>
         </div>
     </div>
 </template>
@@ -27,8 +31,8 @@
     import UserManagement from "@/api/UserManagement";
     import CourseManagement from "@/api/CourseManagement";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
-    //import HyperledgerManagement from "@/api/HyperledgerManagement";
-    //import HyperledgerCourseManagement from "@/api/HyperledgerCourseManagement";
+    import HyperledgerManagement from "@/api/HyperledgerManagement";
+    import HyperledgerCourseManagement from "@/api/HyperledgerCourseManagement";
     import { useStore } from "@/store/store";
     import { ref } from "vue";
     export default {
@@ -47,12 +51,20 @@
             let userManagement = new UserManagement();
             let userManagementVersion = await userManagement.getVersion();
 
+            let hyperledgerManagement = new HyperledgerManagement();
+            let hyperledgerManagementVersion = await hyperledgerManagement.getVersion();
+
+            let hyperledgerCourseManagement = new HyperledgerCourseManagement();
+            let hyperledgerCourseManagementVersion = await hyperledgerCourseManagement.getVersion();
+
             return {
                 name,
                 frontEndVersion,
                 authenticationManagementVersion,
                 courseManagementVersion,
                 userManagementVersion,
+                hyperledgerManagementVersion,
+                hyperledgerCourseManagementVersion,
             };
         },
     };
