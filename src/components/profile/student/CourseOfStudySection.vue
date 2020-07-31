@@ -33,7 +33,7 @@
                 </div>
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Semester Count</label>
-                    <input id="semesterCount" type="number" readonly :value="semesterCount" class="w-full form-input input-text" />
+                    <input id="semesterCount" type="text" readonly :value="semesterCount" class="w-full form-input input-text" />
                 </div>
             </div>
         </div>
