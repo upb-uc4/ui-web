@@ -1,4 +1,4 @@
-# [v.0.4.6](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.6) (XXXX-XX-XX)
+# WIP [v.0.4.6](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.6) (XXXX-XX-XX)
 
 ## Feature
 - add api version endpoints (#249) (just api calls, no vue)
@@ -7,7 +7,7 @@
 - Fix bug, that birthday was not shown, when day was < 10 [#270](https://github.com/upb-uc4/ui-web/pull/270)
 
 ## Refactor
-
+- change input type of semester count in student's profile to text (removes buttons for increasing and decreasing)
 
 ### Usability
 
