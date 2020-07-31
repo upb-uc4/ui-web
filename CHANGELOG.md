@@ -5,7 +5,7 @@
 - add welcome landing page showing all version numbers of services [#271](https://github.com/upb-uc4/ui-web/pull/271)
 
 ## Bug Fixes
-- Fix bug, that birthday was not shown, when day was < 10 [#270](https://github.com/upb-uc4/ui-web/pull/270)
+- User was not able to update his password, because the confirmation modal used an older version of the API and the store (#272)
 
 ## Refactor
 - change input type of semester count in student's profile to text (removes buttons for increasing and decreasing)
@@ -23,7 +23,6 @@
 - adds errors for nested objects, like the street of one's address (#233)
 - Add option for user to change the password (#208)
 - Redesign admin account list to have a more modern look [#226](https://github.com/upb-uc4/ui-web/pull/226)
-- add api version endpoints (#249) (just api calls, no vue)
 - Allow re-authentication on page reload (#248)
 - Add settings page [#250](https://github.com/upb-uc4/ui-web/pull/250)
 - Add private profile page for admin (#252)
