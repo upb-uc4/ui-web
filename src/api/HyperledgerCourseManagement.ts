@@ -18,19 +18,19 @@ export default class HyperledgerCourseManagement extends Common {
             statusCode: 0,
         };
 
+        const requestParameter = { ...(await this._authHeader), params: {} as any };
         //optional name to search by
         if (name != undefined) {
-            this._requestParameter.params.courseName = name;
+            requestParameter.params.courseName = name;
         }
 
         await this._axios
-            .get(`/courses`, this._requestParameter)
+            .get(`/courses`, requestParameter)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data as Course[];
                 result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
-                console.log(error);
                 if (error.response) {
                     result.statusCode = error.response.status;
                 } else {
@@ -50,7 +50,7 @@ export default class HyperledgerCourseManagement extends Common {
         };
 
         await this._axios
-            .get(`/courses/${id}`, this._authHeader)
+            .get(`/courses/${id}`, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data as Course;
@@ -75,7 +75,7 @@ export default class HyperledgerCourseManagement extends Common {
         };
 
         await this._axios
-            .post("/courses", course, this._authHeader)
+            .post("/courses", course, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = true;
@@ -103,9 +103,8 @@ export default class HyperledgerCourseManagement extends Common {
         const id = course.courseId;
 
         await this._axios
-            .put(`/courses/${id}`, course, this._authHeader)
+            .put(`/courses/${id}`, course, await this._authHeader)
             .then((response: AxiosResponse) => {
-                console.log(response);
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
@@ -130,7 +129,7 @@ export default class HyperledgerCourseManagement extends Common {
         };
 
         await this._axios
-            .delete(`/courses/${id}`, this._authHeader)
+            .delete(`/courses/${id}`, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
