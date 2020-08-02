@@ -19,6 +19,10 @@ export default class UserManagement extends Common {
         super("/user-management");
     }
 
+    static async getVersion(): Promise<String> {
+        return super.getVersion("/user-management");
+    }
+
     async getAllUsers(): Promise<APIResponse<User_List>> {
         let result: APIResponse<User_List> = {
             error: {} as APIError,

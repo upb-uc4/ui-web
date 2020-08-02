@@ -42,20 +42,15 @@
             let name = await store.getters.user.firstName;
             let frontEndVersion = "v" + process.env.VUE_APP_VERSION;
 
-            let authenticationManagement = new AuthenticationManagement();
-            let authenticationManagementVersion = await authenticationManagement.getVersion();
+            let authenticationManagementVersion = await AuthenticationManagement.getVersion();
 
-            let courseManagement = new CourseManagement();
-            let courseManagementVersion = await courseManagement.getVersion();
+            let courseManagementVersion = await CourseManagement.getVersion();
 
-            let userManagement = new UserManagement();
-            let userManagementVersion = await userManagement.getVersion();
+            let userManagementVersion = await UserManagement.getVersion();
 
-            let hyperledgerManagement = new HyperledgerManagement();
-            let hyperledgerManagementVersion = await hyperledgerManagement.getVersion();
+            let hyperledgerManagementVersion = await HyperledgerManagement.getVersion();
 
-            let hyperledgerCourseManagement = new HyperledgerCourseManagement();
-            let hyperledgerCourseManagementVersion = await hyperledgerCourseManagement.getVersion();
+            let hyperledgerCourseManagementVersion = await HyperledgerCourseManagement.getVersion();
 
             return {
                 name,

@@ -13,36 +13,31 @@ import HyperledgerCourseManagement from "@/api/HyperledgerCourseManagement";
 jest.useFakeTimers();
 
 test("course service version", async () => {
-    const courseManagement = new CourseManagement();
-    const version = await courseManagement.getVersion();
+    const version = await CourseManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });
 
 test("authentication service version", async () => {
-    const authenticationManagement = new AuthenticationManagement();
-    const version = await authenticationManagement.getVersion();
+    const version = await AuthenticationManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });
 
 test("user service version", async () => {
-    const userManagement = new UserManagement();
-    const version = await userManagement.getVersion();
+    const version = await UserManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });
 
 test("hyperledger management service version", async () => {
-    const hyperledgerManagement = new HyperledgerManagement();
-    const version = await hyperledgerManagement.getVersion();
+    const version = await HyperledgerManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });
 
 test("hyperledger course management service version", async () => {
-    const hyperledgerCourseManagement = new HyperledgerCourseManagement();
-    const version = await hyperledgerCourseManagement.getVersion();
+    const version = await HyperledgerCourseManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });

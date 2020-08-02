@@ -10,6 +10,10 @@ export default class HyperledgerCourseManagement extends Common {
         super("/hl-course-management");
     }
 
+    static async getVersion(): Promise<String> {
+        return super.getVersion("/hl-course-management");
+    }
+
     async getCourses(name?: string): Promise<APIResponse<Course[]>> {
         let result: APIResponse<Course[]> = {
             error: {} as APIError,
