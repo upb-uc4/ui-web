@@ -1,17 +1,17 @@
 import Common from "./Common";
-import Course from "./api_models/course_management/Course";
 import APIResponse from "./helpers/models/APIResponse";
+import Course from "./api_models/course_management/Course";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
 import ValidationError from "./api_models/errors/ValidationError";
 
-export default class CourseManagement extends Common {
+export default class HyperledgerCourseManagement extends Common {
     constructor() {
-        super("/course-management");
+        super("/hl-course-management");
     }
 
     static async getVersion(): Promise<String> {
-        return super.getVersion("/course-management");
+        return super.getVersion("/hl-course-management");
     }
 
     async getCourses(name?: string): Promise<APIResponse<Course[]>> {

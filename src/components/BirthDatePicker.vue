@@ -40,14 +40,14 @@
             },
         },
         emits: ["update:birthdate"],
-        setup(props: any, { emit }) {
+        setup(props: any, { emit }: any) {
             let months = Month;
             let shownDay = ref("");
             let shownMonth = ref("");
             let shownYear = ref("");
             if (props.birthdate != "") {
                 let dates = props.birthdate.split("-");
-                shownDay.value = dates[2];
+                shownDay.value = parseInt(dates[2]).toString();
                 shownMonth.value = dates[1] == "" ? "" : Object.values(Month)[parseInt(dates[1]) - 1];
                 shownYear.value = dates[0];
             }
