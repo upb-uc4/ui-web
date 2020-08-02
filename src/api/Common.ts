@@ -1,7 +1,6 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
 import { useStore } from "@/store/store";
+import axios, { AxiosResponse, AxiosError } from "axios";
 import { AxiosInstance } from "axios";
-import ValidationError from "./api_models/errors/ValidationError";
 
 export default class Common {
     _authHeader!: Promise<{ auth: { username: string; password: string } }>;
