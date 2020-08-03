@@ -6,6 +6,8 @@ import Address from "@/api/api_models/user_management/Address";
 import User from "@/api/api_models/user_management/User";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { store } from "@/store/store";
+import { MutationTypes } from "@/store/mutation-types";
+import GenericResponseHandler from "@/use/GenericResponseHandler";
 
 var userManagement: UserManagement;
 const adminAuth = { username: "admin", password: "admin" };
@@ -13,6 +15,9 @@ jest.setTimeout(30000);
 
 beforeAll(async () => {
     const success = await UserManagement.login(adminAuth);
+    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
+    store.commit(MutationTypes.SET_LOGGEDIN, true);
+    store.commit(MutationTypes.SET_ROLE, "Admin");
     userManagement = new UserManagement();
     expect(success.returnValue).toBe(true);
 });
@@ -28,7 +33,7 @@ var address: Address = {
     houseNumber: "5c",
     zipCode: "42069",
     city: "Mos Eisley",
-    country: "Tatooine",
+    country: "Germany",
 };
 
 var user: User = {
@@ -94,17 +99,5 @@ test("Update user", async () => {
 test("Delete user", async () => {
     await new Promise((r) => setTimeout(r, 5000));
     const success = await userManagement.deleteUser(student.username);
-    expect(success.returnValue).toBe(true);
-});
-
-test("Change password", async () => {
-    let success = await userManagement.changeOwnPassword("testPassword");
-    expect(success.returnValue).toBe(true);
-    await new Promise((r) => setTimeout(r, 10000));
-
-    adminAuth.password = "testPassword";
-    const loginSuccess = await UserManagement.login(adminAuth);
-    userManagement = new UserManagement();
-    success = await userManagement.changeOwnPassword("admin");
     expect(success.returnValue).toBe(true);
 });

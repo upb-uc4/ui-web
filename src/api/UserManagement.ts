@@ -170,6 +170,7 @@ export default class UserManagement extends Common {
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
+                console.log(response);
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
@@ -177,6 +178,7 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
+                console.log(error);
             });
         return result;
     }
@@ -244,6 +246,7 @@ export default class UserManagement extends Common {
             .then((reponse: AxiosResponse) => {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
+                console.log(reponse);
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
@@ -252,6 +255,7 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
+                console.log(error);
             });
 
         return result;
@@ -269,42 +273,6 @@ export default class UserManagement extends Common {
 
         await this._axios
             .put(`${endpoint}/${user.username}`, user, await this._authHeader)
-            .then((response: AxiosResponse) => {
-                result.returnValue = true;
-                result.statusCode = response.status;
-            })
-            .catch((error: AxiosError) => {
-                if (error.response) {
-                    result.statusCode = error.response.status;
-                    result.error = error.response.data as ValidationError;
-                } else {
-                    result.networkError = true;
-                }
-            });
-
-        return result;
-    }
-
-    async changeOwnPassword(password: string): Promise<APIResponse<boolean>> {
-        const store = useStore();
-        const username = (await store.getters.loginData).username;
-        const role = await store.getters.role;
-
-        const acc: Account = {
-            username: username,
-            password: password,
-            role: role as Role,
-        };
-
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
-        await this._axios
-            .post(`/password/${username}`, acc, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
