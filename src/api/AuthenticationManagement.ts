@@ -23,8 +23,6 @@ export default class AuthenticationManagement extends Common {
         const store = useStore();
         const username = (await store.getters.loginData).username;
         const role = await store.getters.role;
-        console.log(username);
-        console.log(role);
         const acc: Account = {
             username: username,
             password: password,
