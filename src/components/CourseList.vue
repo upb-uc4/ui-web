@@ -28,7 +28,7 @@
             let isLecturer: boolean = role == Role.LECTURER;
             let isStudent: boolean = role == Role.STUDENT;
             let courseManagement: CourseManagement = new CourseManagement();
-            let myId = store.getters.loginData.username;
+            let myId = (await store.getters.loginData).username;
 
             const genericResponseHandler = new GenericResponseHandler();
             const response = await courseManagement.getCourses();
