@@ -170,7 +170,7 @@ export default class UserManagement extends Common {
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
-                console.log(response);
+                
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
