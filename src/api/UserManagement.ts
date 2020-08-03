@@ -255,7 +255,7 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                console.log(error);
+                
             });
 
         return result;
