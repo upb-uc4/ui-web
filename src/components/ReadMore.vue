@@ -37,7 +37,7 @@
             },
         },
 
-        setup(props) {
+        setup(props: any) {
             let isReadMore = ref(new Boolean(false));
 
             let formattedString = computed(() => {
