@@ -1,0 +1,28 @@
+/* NAVBAR MENU ANIMATIONS */
+
+.menu-fade-enter-active,
+.menu-fade-leave-active {
+    transition: all 0.1s ease-in-out;
+}
+
+.menu-fade-enter,
+.menu-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-12px);
+}
+
+/* BORDER ANIMATION OF NAVBAR MENUS */
+.navbar-menu:after {
+    display:block;
+    margin-top: 5px;
+    content: '';
+    border-bottom: solid 2px #F7FAFC;
+    transform: scaleX(0);
+    opacity: 0.0;
+    transition: transform 250ms ease-in-out, opacity 250ms ease-in-out;
+    transform-origin: 0 50%;
+}
+.navbar-menu:hover:after {
+    transform: scaleX(1);
+    opacity: 1;
+}

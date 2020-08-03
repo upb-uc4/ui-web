@@ -10,7 +10,7 @@
                 v-model="password"
                 :disabled="checking"
                 type="password"
-                class="w-full form-input input-text mt-3"
+                class="w-full mt-3 form-input input-text"
                 :class="{ error: hasError }"
                 placeholder="Password"
                 @keypress.enter="checkPassword"
@@ -21,7 +21,7 @@
         </div>
         <template #footer>
             <button id="enterPasswordModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="enterPasswordModalConfirm" class="w-24 py-2 px-2 btn btn-blue-primary" @click="checkPassword">
+            <button id="enterPasswordModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">
                 Confirm
             </button>
         </template>
@@ -33,7 +33,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
     import LoginResponseHandler from "@/use/LoginResponseHandler";
-    import { store } from "../../store/store";
+    import { useStore } from "../../store/store";
 
     export default {
         components: {
@@ -57,8 +57,8 @@
 
             async function checkPassword() {
                 checking.value = true;
-                const userManagement: UserManagement = new UserManagement();
-                const response = await userManagement.login({ username: store.state.loginData.username, password: password.value });
+                const store = useStore();
+                const response = await UserManagement.login({ username: store.getters.user.username, password: password.value });
                 if (loginResponseHandler.handleReponse(response)) {
                     close(action.CONFIRM);
                 } else {

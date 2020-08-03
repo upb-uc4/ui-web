@@ -1,4 +1,3 @@
-import CourseManagement from "@/api/CourseManagement";
 import { Role } from "@/entities/Role";
 import { Account } from "@/entities/Account";
 import { CourseEntity } from "@/entities/CourseEntity";
@@ -6,8 +5,9 @@ import Course from "@/api/api_models/course_management/Course";
 import { Language } from "@/entities/Language";
 import { CourseType } from "@/entities/CourseType";
 import UserManagement from "@/api/UserManagement";
+import CourseManagement from "@/api/CourseManagement";
+import { store } from "@/store/store";
 
-var userManagement: UserManagement;
 var courseManagement: CourseManagement;
 const adminAuth = { username: "admin", password: "admin" };
 const studentAuth = { username: "student", password: "student" };
@@ -17,10 +17,9 @@ var createdCourse: Course = {} as Course;
 jest.useFakeTimers();
 
 beforeAll(async () => {
-    userManagement = new UserManagement();
-    const success = await userManagement.login(lecturerAuth);
-    expect(success.returnValue).toBe(true);
+    const success = await UserManagement.login(adminAuth);
     courseManagement = new CourseManagement();
+    expect(success.returnValue).toBe(true);
 });
 
 test("Create course", async () => {
@@ -31,12 +30,11 @@ test("Create course", async () => {
     course.courseType = CourseType.LECTURE;
     course.currentParticipants = 5;
     course.ects = 60;
-    course.startDate = "0420-69-69";
-    course.endDate = "6969-69-69";
+    course.startDate = "1999-01-01";
+    course.endDate = "2000-01-01";
     course.lecturerId = "lecturer";
     course.maxParticipants = 10;
 
-    console.log(courseManagement._authHeader);
     const success = await courseManagement.createCourse(course);
 
     expect(success.returnValue).toBe(true);

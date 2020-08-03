@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-    import { store } from "@/store/store";
+    import { useStore } from "@/store/store";
     import { Role } from "@/entities/Role";
     import LecturerCourse from "./LecturerCourse.vue";
     import StudentCourse from "./StudentCourse.vue";
@@ -22,12 +22,13 @@
             StudentCourse,
         },
         async setup() {
-            let role = store.state.myRole;
+            const store = useStore();
+            let role = await store.getters.role;
             let roles = Object.values(Role).filter((e) => e != Role.NONE);
             let isLecturer: boolean = role == Role.LECTURER;
             let isStudent: boolean = role == Role.STUDENT;
             let courseManagement: CourseManagement = new CourseManagement();
-            let myId = store.state.myId;
+            let myId = store.getters.loginData.username;
 
             const genericResponseHandler = new GenericResponseHandler();
             const response = await courseManagement.getCourses();

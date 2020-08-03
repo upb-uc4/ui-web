@@ -1,24 +1,24 @@
 <template>
     <div class="flex flex-row">
-        <div class="mr-2 w-full flex flex-col">
-            <label class="text-gray-700 text-sm">Day</label>
-            <select id="day" v-model="shownDay" class="form-select input-select" @change="updateDay($event.target.value)">
+        <div class="flex flex-col w-full mr-2">
+            <label class="text-sm text-gray-700">Day</label>
+            <select id="day" v-model="shownDay" class="form-select input-select">
                 <option disabled :value="''"> Select a Day </option>
                 <option v-for="selectableDay in 31" :id="'day-' + selectableDay" :key="selectableDay">{{ selectableDay }}</option>
             </select>
         </div>
-        <div class="mx-2 w-full flex flex-col">
-            <label class="text-gray-700 text-sm">Month </label>
-            <select id="month" v-model="shownMonth" class="form-select input-select" @change="updateMonth($event.target.value)">
+        <div class="flex flex-col w-full mx-2">
+            <label class="text-sm text-gray-700">Month </label>
+            <select id="month" v-model="shownMonth" class="form-select input-select">
                 <option disabled :value="''"> Select a Month </option>
                 <option v-for="selectableMonth in months" :id="'month-' + selectableMonth" :key="selectableMonth">{{
                     selectableMonth
                 }}</option>
             </select>
         </div>
-        <div class="ml-2 w-full flex flex-col">
-            <label class="text-gray-700 text-sm">Year</label>
-            <select id="year" v-model="shownYear" class="form-select input-select" @change="updateYear($event.target.value)">
+        <div class="flex flex-col w-full ml-2">
+            <label class="text-sm text-gray-700">Year</label>
+            <select id="year" v-model="shownYear" class="form-select input-select">
                 <option disabled :value="''"> Select a Year </option>
                 <option v-for="selectableYear in selectableYears" :id="'year-' + selectableYear" :key="selectableYear">{{
                     selectableYear
@@ -30,30 +30,27 @@
 
 <script lang="ts">
     import { Month } from "@/entities/Month";
-    import { ref } from "vue";
+    import { ref, reactive, computed, watch } from "vue";
     export default {
         name: "BirthDatePicker",
         props: {
-            year: {
-                type: String,
-                required: true,
-            },
-            month: {
-                type: String,
-                required: true,
-            },
-            day: {
+            birthdate: {
                 type: String,
                 required: true,
             },
         },
-        emits: ["update:day", "update:month", "update:year"],
-        setup(props: any, { emit }) {
+        emits: ["update:birthdate"],
+        setup(props: any, { emit }: any) {
             let months = Month;
-
-            let shownDay: string = ref(props.day).value == "" ? "" : parseInt(ref(props.day).value).toString();
-            let shownMonth: string = ref(props.month).value == "" ? "" : Object.values(Month)[parseInt(ref(props.month).value) - 1];
-            let shownYear: string = ref(props.year).value;
+            let shownDay = ref("");
+            let shownMonth = ref("");
+            let shownYear = ref("");
+            if (props.birthdate != "") {
+                let dates = props.birthdate.split("-");
+                shownDay.value = parseInt(dates[2]).toString();
+                shownMonth.value = dates[1] == "" ? "" : Object.values(Month)[parseInt(dates[1]) - 1];
+                shownYear.value = dates[0];
+            }
 
             let currentYear = new Date().getFullYear();
             let selectableYears = [];
@@ -61,21 +58,16 @@
                 selectableYears.push(index);
             }
 
-            function updateDay(day: string) {
-                if (parseInt(day) < 10) {
-                    day = "0" + day;
-                }
-                emit("update:day", day);
-            }
-
-            function updateMonth(month: string) {
-                let monthIndex = Object.values(months).indexOf(month as Month) + 1;
-                emit("update:month", monthIndex < 10 ? "0" + monthIndex : monthIndex.toString());
-            }
-
-            function updateYear(year: string) {
-                emit("update:year", year.toString());
-            }
+            watch([shownDay, shownMonth, shownYear], () => {
+                let monthIndex = Object.values(months).indexOf(shownMonth.value as Month) + 1;
+                let date: string =
+                    shownYear.value +
+                    "-" +
+                    (monthIndex < 10 ? "0" + monthIndex : monthIndex.toString()) +
+                    "-" +
+                    (parseInt(shownDay.value) < 10 ? "0" + shownDay.value : shownDay.value);
+                emit("update:birthdate", date);
+            });
 
             return {
                 shownDay,
@@ -83,9 +75,6 @@
                 shownYear,
                 months,
                 selectableYears,
-                updateDay,
-                updateMonth,
-                updateYear,
             };
         },
     };

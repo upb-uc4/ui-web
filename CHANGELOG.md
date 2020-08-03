@@ -1,16 +1,40 @@
-# [v.0.4.5 WIP](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-XX)
+# [v.0.5.0](https://github.com/upb-uc4/ui-web/compare/v0.4.5-hotfix.1...v0.5.0) (2020-07-31)
+
+## Feature
+- add api version endpoints (#249) (just api calls, no vue)
+- add welcome landing page showing all version numbers of services [#271](https://github.com/upb-uc4/ui-web/pull/271)
+
+## Bug Fixes
+- User was not able to update his password, because the confirmation modal used an older version of the API and the store (#272)
+
+## Refactor
+- change input type of semester count in student's profile to text (removes buttons for increasing and decreasing)
+
+### Usability
+
+# [v.0.4.5-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.4.5...v0.4.5-hotfix.1) (2020-07-30)
+## Bug Fixes
+- User was not able to update his password, because the confirmation modal used an older version of the API and the store (#272)
+
+# [v.0.4.5](https://github.com/upb-uc4/ui-web/compare/v0.4.4...v0.4.5) (2020-07-30)
 
 ## Feature
 - Add password change API + unit test (#213)
 - adds errors for nested objects, like the street of one's address (#233)
-- Add option for user to change the password (atm. in lecturer private profile, will be moved to a settings page) (#208)
+- Add option for user to change the password (#208)
 - Redesign admin account list to have a more modern look [#226](https://github.com/upb-uc4/ui-web/pull/226)
-
+- Allow re-authentication on page reload (#248)
+- Add settings page [#250](https://github.com/upb-uc4/ui-web/pull/250)
+- Add private profile page for admin (#252)
+- add new navbar and navigation [#265](https://github.com/upb-uc4/ui-web/pull/265)
+- 
 ## Bug Fixes
+- prevent user from editing personal information (#259)
 
 ## Refactor
 - extract searchbar component for better adaptability (#131)
 - extract sections from account form in single components (#238)
+- bundle birthdate logic in birthdate picker component and remove the old birthdate object within the account (#241)
 
 ### Usability
 - rework login error validation (#232)

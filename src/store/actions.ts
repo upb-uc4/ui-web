@@ -9,28 +9,27 @@ type AugmentedActionContext = {
 } & Omit<ActionContext<State, State>, "commit">;
 
 export interface Actions {
-    [ActionTypes.GET_ID]({ commit }: AugmentedActionContext, payload: string): Promise<string>;
-
-    [ActionTypes.GET_ROLE]({ commit }: AugmentedActionContext, payload: string): Promise<string>;
+    // [ActionTypes.GET_ID]({ commit }: AugmentedActionContext, payload: string): Promise<string>;
+    // [ActionTypes.GET_ROLE]({ commit }: AugmentedActionContext, payload: string): Promise<string>;
 }
 
 export const actions: ActionTree<State, State> & Actions = {
-    [ActionTypes.GET_ID]({ commit }) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const data = "";
-                commit(MutationTypes.SET_ID, data);
-                resolve(data);
-            }, 500);
-        });
-    },
-    [ActionTypes.GET_ROLE]({ commit }) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const data = "256";
-                commit(MutationTypes.SET_ROLE, data);
-                resolve(data);
-            }, 500);
-        });
-    },
+    // [ActionTypes.GET_ID]({ commit }) {
+    //     return new Promise((resolve) => {
+    //         setTimeout(() => {
+    //             const data = "";
+    //             commit(MutationTypes.SET_ID, data);
+    //             resolve(data);
+    //         }, 500);
+    //     });
+    // },
+    // [ActionTypes.GET_ROLE]({ commit }) {
+    //     return new Promise((resolve) => {
+    //         setTimeout(() => {
+    //             const data = "256";
+    //             commit(MutationTypes.SET_ROLE, data);
+    //             resolve(data);
+    //         }, 500);
+    //     });
+    // },
 };
