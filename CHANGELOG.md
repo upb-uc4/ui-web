@@ -6,6 +6,9 @@
 - fix lecturers not seeing their own courses
 - fix missing route enter restrictions of settings page [#294](https://github.com/upb-uc4/ui-web/pull/294)
 
+## Feature
+- add routing to landing page behind logo in navbar [#296](https://github.com/upb-uc4/ui-web/pull/296)
+
 # [v.0.5.0](https://github.com/upb-uc4/ui-web/compare/v0.4.5-hotfix.1...v0.5.0) (2020-07-31)
 
 ## Feature
