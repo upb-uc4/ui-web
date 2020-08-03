@@ -21,11 +21,11 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Navigate to accountlist", () => {
-        cy.get("div").contains("Administration").children().eq(0).should("not.be.visible");
-        cy.get("div").contains("Administration").trigger("mouseover");
-        cy.get("div").contains("Administration").children().eq(0).get("span").contains("All Users").should("be.visible");
-        cy.get("div").contains("Administration").children().eq(0).get("a").contains("All Users").click();
-        cy.get("div").contains("Administration").trigger("mouseleave");
+        cy.get("div[id='menu_manageAccounts']").children().eq(0).should("not.be.visible");
+        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
+        cy.get("div[id='menu_manageAccounts']").children().eq(0).get("span").contains("All Users").should("be.visible");
+        cy.get("div[id='menu_manageAccounts']").children().eq(0).get("a").contains("All Users").click();
+        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
         cy.url().should("contain", "admin");
     });    
 

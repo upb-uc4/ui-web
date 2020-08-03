@@ -15,8 +15,17 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='email']").type("lecturer");
         cy.get("input[id='password']").type("lecturer");
         cy.get('button[id="login"]').click();
-        cy.url().should("contain", "lecturer");
+        cy.url().should("contain", "welcome");
     });
+
+    it("Navigate to course list", () => {
+        cy.get("div[id='menu_courses']").children().eq(0).should("not.be.visible");
+        cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
+        cy.get("div[id='menu_courses']").children().eq(0).get("span").contains("All Courses").should("be.visible");
+        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("All Courses").click();
+        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.url().should("contain", "lecturer");
+    }); 
 
     it("Show new course page", () => {
         cy.get('button[id="addCourse"]').click({ force: true });
