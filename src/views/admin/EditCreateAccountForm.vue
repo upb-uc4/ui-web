@@ -17,26 +17,26 @@
                 :error-bag="errorBag"
             />
             <personal-information-section
-                v-model:firstname="account.user.firstName"
-                v-model:lastname="account.user.lastName"
-                v-model:birthdate="account.user.birthDate"
+                v-model:first-name="account.user.firstName"
+                v-model:last-name="account.user.lastName"
+                v-model:birth-date="account.user.birthDate"
                 v-model:address="account.user.address"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
             <lecturer-information-section
                 v-if="isLecturer"
-                v-model:freetext="account.lecturer.freeText"
-                v-model:researcharea="account.lecturer.researchArea"
+                v-model:description="account.lecturer.freeText"
+                v-model:research-area="account.lecturer.researchArea"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
             <student-information-section
                 v-if="isStudent"
-                v-model:immatriculationstatus="account.student.immatriculationStatus"
-                v-model:matriculationid="account.student.matriculationId"
+                v-model:immatriculation-status="account.student.immatriculationStatus"
+                v-model:matriculation-id="account.student.matriculationId"
                 v-model:selected-fields-of-study="account.student.fieldsOfStudy"
-                v-model:semestercount="account.student.semesterCount"
+                v-model:semester-count="account.student.semesterCount"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
