@@ -169,7 +169,7 @@
                 required: true,
             },
         },
-        emits: ["update:hasInput", "update:success"],
+        emits: ["update:has-input", "update:success"],
         async setup(props: any, { emit }: any) {
             let account = reactive({
                 authUser: new Account(),
@@ -255,25 +255,25 @@
                     account.student.matriculationId != initialAccount.student.matriculationId ||
                     account.student.semesterCount != initialAccount.student.semesterCount
                 ) {
-                    emit("update:hasInput", true);
+                    emit("update:has-input", true);
                     return true;
                 }
 
                 //check whether a field of study has been added or removed
                 for (let field of account.student.fieldsOfStudy) {
                     if (!initialAccount.student.fieldsOfStudy.includes(field)) {
-                        emit("update:hasInput", true);
+                        emit("update:has-input", true);
                         return true;
                     }
                 }
 
                 for (let field of initialAccount.student.fieldsOfStudy) {
                     if (!account.student.fieldsOfStudy.includes(field)) {
-                        emit("update:hasInput", true);
+                        emit("update:has-input", true);
                         return true;
                     }
                 }
-                emit("update:hasInput", false);
+                emit("update:has-input", false);
                 return false;
             });
 
