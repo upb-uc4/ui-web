@@ -70,7 +70,7 @@
             });
             versions.push({
                 name: "Hyperledger Course Management",
-                version: "unavailable",
+                version: hyperledgerCourseManagementVersion,
                 link: "",
             });
 
