@@ -4,7 +4,7 @@
             <router-link :to="{ name: 'welcome' }" class="navbar-menu">Home</router-link>
         </li>
         <li>
-            <course-menu class="navbar-menu" />
+            <course-menu id="menu_courses" class="navbar-menu" />
         </li>
         <template #right>
             <profile-menu class="pt-4" />
