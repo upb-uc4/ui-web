@@ -10,7 +10,9 @@
                 <a v-if="v.link != ''" :href="v.link" target="_blank" rel="noopener noreferrer">
                     <i v-if="v.version != 'unavailable'" class="text-grey-600 text-2xl pr-4 far fa-file-alt"></i>
                 </a>
-                <p class="text-lg rounded-lg bg-blue-200 px-3 py-1">{{ v.version }}</p>
+                <p class="text-lg rounded-lg px-3 py-1" :class="[v.version == 'unavailable' ? 'bg-red-200' : 'bg-blue-200']">
+                    {{ v.version }}
+                </p>
             </div>
         </div>
     </div>
@@ -68,7 +70,7 @@
             });
             versions.push({
                 name: "Hyperledger Course Management",
-                version: hyperledgerCourseManagementVersion,
+                version: "unavailable",
                 link: "",
             });
 
