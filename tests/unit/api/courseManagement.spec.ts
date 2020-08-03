@@ -7,6 +7,8 @@ import { CourseType } from "@/entities/CourseType";
 import UserManagement from "@/api/UserManagement";
 import CourseManagement from "@/api/CourseManagement";
 import { store } from "@/store/store";
+import { MutationTypes } from "@/store/mutation-types";
+import GenericResponseHandler from "@/use/GenericResponseHandler";
 
 var courseManagement: CourseManagement;
 const adminAuth = { username: "admin", password: "admin" };
@@ -17,7 +19,10 @@ var createdCourse: Course = {} as Course;
 jest.useFakeTimers();
 
 beforeAll(async () => {
-    const success = await UserManagement.login(adminAuth);
+    const success = await UserManagement.login(lecturerAuth);
+    store.commit(MutationTypes.SET_LOGINDATA, lecturerAuth);
+    store.commit(MutationTypes.SET_LOGGEDIN, true);
+    store.commit(MutationTypes.SET_ROLE, "Lecturer");
     courseManagement = new CourseManagement();
     expect(success.returnValue).toBe(true);
 });

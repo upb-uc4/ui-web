@@ -1,4 +1,7 @@
 # [v.0.5.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-XX)
+## Refactor
+- Move Password change API endpoint [#293](https://github.com/upb-uc4/ui-web/pull/293)
+- 
 ## Bug Fixes
 - fix lecturers not seeing their own courses
 
