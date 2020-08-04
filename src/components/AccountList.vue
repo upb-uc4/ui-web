@@ -12,8 +12,7 @@
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import UserRow from "@/components/account/UserRow.vue";
     import { Role } from "@/entities/Role";
-    import { computed, ref } from 'vue'; 
-    
+    import { computed, ref } from "vue";
 
     export default {
         name: "AccountList",
@@ -24,9 +23,9 @@
             selectedRole: {
                 type: String,
                 required: true,
-            }
+            },
         },
-        async setup(props:any) {
+        async setup(props: any) {
             const userManagement: UserManagement = new UserManagement();
 
             const genericResponseHandler = new GenericResponseHandler();
@@ -34,12 +33,11 @@
             const userLists = genericResponseHandler.handleReponse(response);
             let users = Object.values(userLists).flat();
             let shownUsers = computed(() => {
-                return props.selectedRole == "All" as Role ? users : users.filter(e => e.role == props.selectedRole)
-            })
+                return props.selectedRole == ("All" as Role) ? users : users.filter((e) => e.role == props.selectedRole);
+            });
 
-            
             return {
-                shownUsers
+                shownUsers,
             };
         },
     };
