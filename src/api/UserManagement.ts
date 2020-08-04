@@ -203,10 +203,82 @@ export default class UserManagement extends Common {
 
         //successfully received role
 
-        let endpoint = UserManagement._createEndpointByRole(role.returnValue);
+        switch (role.returnValue) {
+            case Role.ADMIN:
+                return await this.getAdmin(username);
+                break;
+            case Role.STUDENT:
+                return await this.getStudent(username);
+                break;
+            case Role.LECTURER:
+                return await this.getLecturer(username);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    async getLecturer(username: string): Promise<APIResponse<Lecturer>> {
+        let result: APIResponse<Lecturer> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Lecturer,
+            statusCode: 0,
+        };
 
         await this._axios
-            .get(`${endpoint}/${username}`, await this._authHeader)
+            .get(`/lecturers/${username}`, await this._authHeader)
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status;
+                result.returnValue = response.data;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
+
+        return result;
+    }
+
+    async getStudent(username: string): Promise<APIResponse<Student>> {
+        let result: APIResponse<Student> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Student,
+            statusCode: 0,
+        };
+
+        await this._axios
+            .get(`/students/${username}`, await this._authHeader)
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status;
+                result.returnValue = response.data;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
+
+        return result;
+    }
+
+    async getAdmin(username: string): Promise<APIResponse<Admin>> {
+        let result: APIResponse<Admin> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Admin,
+            statusCode: 0,
+        };
+
+        await this._axios
+            .get(`/admins/${username}`, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
