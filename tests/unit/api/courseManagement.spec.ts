@@ -41,13 +41,33 @@ test("Create course", async () => {
     course.maxParticipants = 10;
 
     const success = await courseManagement.createCourse(course);
-
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });
 
 test("Get all courses", async () => {
-    await new Promise((r) => setTimeout(r, 5000));
     const courses = await courseManagement.getCourses();
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    expect(filteredCourses.length > 0).toBe(true);
+    createdCourse = filteredCourses[0];
+});
+
+test("Get lecturers courses", async () => {
+    const courses = await courseManagement.getCourses(undefined, "lecturer");
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    expect(filteredCourses.length > 0).toBe(true);
+    createdCourse = filteredCourses[0];
+});
+
+test("Get courses by name", async () => {
+    const courses = await courseManagement.getCourses("Best test course ever!", undefined);
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    expect(filteredCourses.length > 0).toBe(true);
+    createdCourse = filteredCourses[0];
+});
+
+test("Get lecturers courses by name", async () => {
+    const courses = await courseManagement.getCourses("Best test course ever!", "lecturer");
     const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
     expect(filteredCourses.length > 0).toBe(true);
     createdCourse = filteredCourses[0];

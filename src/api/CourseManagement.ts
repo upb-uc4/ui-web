@@ -14,7 +14,7 @@ export default class CourseManagement extends Common {
         return super.getVersion("/course-management");
     }
 
-    async getCourses(name?: string): Promise<APIResponse<Course[]>> {
+    async getCourses(courseName?: string, lecturerId?: string): Promise<APIResponse<Course[]>> {
         let result: APIResponse<Course[]> = {
             error: {} as APIError,
             networkError: false,
@@ -24,8 +24,11 @@ export default class CourseManagement extends Common {
 
         const requestParameter = { ...(await this._authHeader), params: {} as any };
         //optional name to search by
-        if (name != undefined) {
-            requestParameter.params.courseName = name;
+        if (courseName != undefined) {
+            requestParameter.params.courseName = courseName;
+        }
+        if (lecturerId != undefined) {
+            requestParameter.params.lecturerId = lecturerId;
         }
 
         await this._axios
