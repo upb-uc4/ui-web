@@ -1,6 +1,10 @@
-# [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-08-XX)
+# [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-XX-XX)
+## Feature
+- add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
+
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
+
 
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)
 ## Refactor
