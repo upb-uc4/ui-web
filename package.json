@@ -45,8 +45,8 @@
         "core-js": "^3.6.5",
         "jest": "^26.2.2",
         "random-bigint": "0.0.1",
+        "vue": "^3.0.0-rc.5",
         "tailwindcss": "^1.6.2",
-        "vue": "^3.0.0-rc.2",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-beta.2",
         "vuex": "^4.0.0-beta.4"
@@ -63,7 +63,7 @@
         "@vue/cli-plugin-unit-jest": "^4.4.6",
         "@vue/cli-plugin-vuex": "^4.4.6",
         "@vue/cli-service": "^4.4.6",
-        "@vue/compiler-sfc": "^3.0.0-rc.2",
+        "@vue/compiler-sfc": "^3.0.0-rc.5",
         "@vue/eslint-config-typescript": "^5.0.2",
         "@vue/test-utils": "^2.0.0-beta.0",
         "babel-eslint": "^10.1.0",
