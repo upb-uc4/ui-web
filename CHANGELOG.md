@@ -4,7 +4,13 @@
 
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
+  
+## Feature
+- add e2e tests using cypress (#218)
+- add workflow for automatic unit testing and e2e testing (#218)
 
+## Bugfix
+- Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
 
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)
 ## Refactor
@@ -57,6 +63,9 @@
 
 ### Usability
 - rework login error validation (#232)
+
+## Dependencies
+- - added cypress version 4.10.0
 
 # [v.0.4.4](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-22)
 
