@@ -1,3 +1,5 @@
 CHANGELOG.md
 LICENSE
 src/assets/*
+.env*
+Dockerfile
