@@ -5,6 +5,8 @@
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
 
+## Bugfix
+- Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
 
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)
 ## Refactor
