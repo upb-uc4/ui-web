@@ -7,7 +7,7 @@
                     <student-course v-if="isStudent" :course="course" class="mb-8" />
                 </div>
             </template>
-            <template #fallback/>
+            <template #fallback />
         </suspense>
     </div>
 </template>
@@ -19,8 +19,8 @@
     import StudentCourse from "./StudentCourse.vue";
     import CourseManagement from "@/api/CourseManagement";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
-    import { computed } from 'vue';
-    import { CourseType } from '@/entities/CourseType';
+    import { computed } from "vue";
+    import { CourseType } from "@/entities/CourseType";
 
     export default {
         name: "CourseList",
@@ -32,10 +32,10 @@
             selectedType: {
                 type: String,
                 required: true,
-            }
+            },
         },
 
-        async setup(props:any) {
+        async setup(props: any) {
             const store = useStore();
             let role = await store.getters.role;
             let isLecturer: boolean = role == Role.LECTURER;
@@ -52,8 +52,8 @@
             }
 
             let shownCourses = computed(() => {
-                return props.selectedType == "All" as CourseType ? courses : courses.filter(e => e.courseType == props.selectedType)
-            })
+                return props.selectedType == ("All" as CourseType) ? courses : courses.filter((e) => e.courseType == props.selectedType);
+            });
 
             return {
                 role,

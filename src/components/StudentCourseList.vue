@@ -4,11 +4,11 @@
             <div class="w-full pt-2 mb-8">
                 <seach-bar v-model:message="message" @refresh="refresh" />
             </div>
-            <course-type-filter v-model:selected-type="selectedType"/>
+            <course-type-filter v-model:selected-type="selectedType" />
         </div>
         <suspense>
             <template #default>
-                <courseList :key="refreshKey" :selected-type="selectedType"/>
+                <courseList :key="refreshKey" :selected-type="selectedType" />
             </template>
             <template #fallback>
                 <loading-component />
@@ -31,7 +31,7 @@
             CourseList,
             LoadingComponent,
             SeachBar,
-            CourseTypeFilter
+            CourseTypeFilter,
         },
         setup() {
             let message = ref("");
@@ -46,7 +46,7 @@
                 refreshKey,
                 refresh,
                 message,
-                selectedType
+                selectedType,
             };
         },
     };

@@ -14,7 +14,7 @@
                     </button>
                 </router-link>
             </div>
-            <course-type-filter v-model:selected-type="selectedType"/>
+            <course-type-filter v-model:selected-type="selectedType" />
         </div>
         <suspense>
             <template #default>
@@ -39,7 +39,7 @@
     import SeachBar from "./SearchBar.vue";
     import { ref } from "vue";
     import CourseTypeFilter from "./CourseTypeFilter.vue";
-    import { CourseType } from "@/entities/CourseType"
+    import { CourseType } from "@/entities/CourseType";
 
     export default {
         name: "LecturerCourseList",
@@ -47,7 +47,7 @@
             CourseList,
             LoadingComponent,
             SeachBar,
-            CourseTypeFilter
+            CourseTypeFilter,
         },
         setup() {
             let message = ref("");
@@ -63,7 +63,7 @@
                 refreshKey,
                 refresh,
                 message,
-                selectedType
+                selectedType,
             };
         },
     };
