@@ -8,6 +8,7 @@ import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { store } from "@/store/store";
 import { MutationTypes } from "@/store/mutation-types";
 import GenericResponseHandler from "@/use/GenericResponseHandler";
+import { authUser, address, user, student } from "./testData";
 
 var userManagement: UserManagement;
 const adminAuth = { username: "admin", password: "admin" };
@@ -21,39 +22,6 @@ beforeAll(async () => {
     userManagement = new UserManagement();
     expect(success.returnValue).toBe(true);
 });
-
-var authUser: Account = {
-    username: "testUser",
-    password: "testUser",
-    role: Role.STUDENT,
-};
-
-var address: Address = {
-    street: "Sandy Street",
-    houseNumber: "5c",
-    zipCode: "42069",
-    city: "Mos Eisley",
-    country: "Germany",
-};
-
-var user: User = {
-    username: "testUser",
-    role: Role.STUDENT,
-    address: address,
-    firstName: "Luke",
-    lastName: "Skywalker",
-    picture: "string",
-    email: "luke@skywalker.com",
-    birthDate: "1950-12-24",
-};
-
-var student: Student = {
-    ...user,
-    immatriculationStatus: "Is still a Jedi Knight",
-    matriculationId: "2187",
-    semesterCount: 69,
-    fieldsOfStudy: [FieldOfStudy.COMPUTER_SCIENCE],
-};
 
 test("Create user", async () => {
     const success = await userManagement.createUser(authUser, student);
@@ -91,7 +59,7 @@ test("Get all students", async () => {
 
 test("Update user", async () => {
     await new Promise((r) => setTimeout(r, 5000));
-    student.immatriculationStatus = "Is a Jedi Master";
+    student.firstName = "Hans";
     const success = await userManagement.updateUser(student);
     expect(success.returnValue).toBe(true);
 });
