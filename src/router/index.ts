@@ -10,6 +10,7 @@ import ProfileWrapper from "../components/profile/Wrapper.vue";
 import Settings from "../views/common/Settings.vue";
 import PageNotFound from "../views/errors/404.vue";
 import WelcomePage from "../views/common/WelcomePageWrapper.vue";
+import AboutPage from "../views/common/AboutWrapper.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -23,6 +24,14 @@ const router = createRouter({
             component: WelcomePage,
             meta: {
                 title: "Welcome" + suffix,
+            },
+        },
+        {
+            path: "/about",
+            name: "about",
+            component: AboutPage,
+            meta: {
+                title: "About" + suffix,
             },
         },
         {
