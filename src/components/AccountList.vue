@@ -12,7 +12,7 @@
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import UserRow from "@/components/account/UserRow.vue";
     import { Role } from "@/entities/Role";
-    import { computed, ref } from 'vue';
+    import { computed, ref } from 'vue'; 
     
 
     export default {
