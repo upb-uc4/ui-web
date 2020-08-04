@@ -170,7 +170,6 @@ export default class UserManagement extends Common {
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
-                
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
@@ -178,7 +177,6 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                
             });
         return result;
     }
@@ -246,7 +244,6 @@ export default class UserManagement extends Common {
             .then((reponse: AxiosResponse) => {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
-                
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
@@ -255,7 +252,6 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                
             });
 
         return result;
