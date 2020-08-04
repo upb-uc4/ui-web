@@ -1,23 +1,24 @@
 <template>
     <div class="w-full max-w-4xl">
-        <div class="flex">
-            <div class="w-full flex flex-row pt-2 mb-8">
+        <div class="flex flex-col">
+            <div class="flex flex-row w-full pt-2 mb-8">
                 <seach-bar v-model:message="message" @refresh="refresh" />
                 <router-link to="/createCourse" class="w-2/12 ml-4">
                     <button
                         id="createAccountIcon"
                         title="Add a new Course"
-                        class="w-full h-full btn-icon-green items-center justify-center flex flex-row"
+                        class="flex flex-row items-center justify-center w-full h-full btn-icon-green"
                     >
                         <p class="mr-3 text-lg font-semibold">Add</p>
-                        <i class="inline fas fa-calendar-plus text-2xl" />
+                        <i class="inline text-2xl fas fa-calendar-plus" />
                     </button>
                 </router-link>
             </div>
+            <course-type-filter v-model:selected-type="selectedType"/>
         </div>
         <suspense>
             <template #default>
-                <course-list :key="refreshKey" />
+                <course-list :key="refreshKey" :selected-type="selectedType" />
             </template>
             <template #fallback>
                 <loading-component />
@@ -37,6 +38,8 @@
     import LoadingComponent from "./loading/Spinner.vue";
     import SeachBar from "./SearchBar.vue";
     import { ref } from "vue";
+    import CourseTypeFilter from "./CourseTypeFilter.vue";
+    import { CourseType } from "@/entities/CourseType"
 
     export default {
         name: "LecturerCourseList",
@@ -44,10 +47,13 @@
             CourseList,
             LoadingComponent,
             SeachBar,
+            CourseTypeFilter
         },
         setup() {
             let message = ref("");
             let refreshKey = ref(false);
+
+            let selectedType = ref("All" as CourseType);
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;
@@ -57,6 +63,7 @@
                 refreshKey,
                 refresh,
                 message,
+                selectedType
             };
         },
     };
