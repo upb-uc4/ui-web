@@ -1,3 +1,8 @@
+# WIP [v.0.5.2](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-XX-XX)
+## Feature
+- add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
+
+
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)
 ## Refactor
 - Move Password change API endpoint [#293](https://github.com/upb-uc4/ui-web/pull/293)
