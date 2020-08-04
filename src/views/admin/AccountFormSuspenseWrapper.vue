@@ -1,7 +1,7 @@
 <template>
     <suspense>
         <template #default>
-            <admin-create-account-form v-model:success="success" v-model:hasInput="hasInput" :edit-mode="editMode" />
+            <admin-create-account-form v-model:success="success" v-model:has-input="hasInput" :edit-mode="editMode" />
             <unsaved-changes-modal ref="unsavedChangesModal" />
         </template>
         <template #fallback>

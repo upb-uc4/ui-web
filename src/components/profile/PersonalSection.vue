@@ -49,7 +49,7 @@
             },
         },
 
-        setup(props: any, { emit }: any) {
+        setup(props: any) {
             let birthDateDates = props.birthDate.split("-");
             let shownBirthDate = birthDateDates[2] + ". " + Object.values(Month)[parseInt(birthDateDates[1]) - 1] + " " + birthDateDates[0];
 

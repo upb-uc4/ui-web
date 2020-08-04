@@ -47,7 +47,7 @@
                     <label class="mb-3 font-medium text-gray-700 text-md">
                         Birthdate
                     </label>
-                    <birth-date-picker v-model:birthdate="accountBirthdate" />
+                    <birth-date-picker v-model:birth-date="accountBirthdate" />
                     <p v-if="errorBag.hasNested('birthDate')" class="error-message">{{ errorBag.getNested("birthDate") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
@@ -153,15 +153,15 @@
                 type: Boolean,
                 required: true,
             },
-            firstname: {
+            firstName: {
                 type: String,
                 required: true,
             },
-            lastname: {
+            lastName: {
                 type: String,
                 required: true,
             },
-            birthdate: {
+            birthDate: {
                 type: String,
                 required: true,
             },
@@ -171,10 +171,10 @@
             },
         },
 
-        emits: ["update:birthdate", "update:address", "update:firstname", "update:lastname"],
+        emits: ["update:birthDate", "update:address", "update:firstName", "update:lastName"],
         setup(props: any, { emit }: any) {
             let countries = Object.values(Country).filter((e) => e != Country.NONE);
-            let accountBirthdate = ref(props.birthdate);
+            let accountBirthdate = ref(props.birthDate);
             let accountAddress = ref(props.address);
 
             watch(accountAddress, () => {
@@ -184,9 +184,9 @@
             return {
                 countries,
                 accountAddress,
-                accountFirstName: useModelWrapper(props, emit, "firstname"),
-                accountLastName: useModelWrapper(props, emit, "lastname"),
-                accountBirthdate: useModelWrapper(props, emit, "birthdate"),
+                accountFirstName: useModelWrapper(props, emit, "firstName"),
+                accountLastName: useModelWrapper(props, emit, "lastName"),
+                accountBirthdate: useModelWrapper(props, emit, "birthDate"),
             };
         },
     };
