@@ -1,11 +1,22 @@
-# [v.0.5.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-XX)
-## Bug Fixes
-- fix lecturers not seeing their own courses
+# [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-08-XX)
+## Refactor
+- restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
   
 ## Feature
 - add e2e tests using cypress (#218)
 - add workflow for automatic unit testing and e2e testing (#218)
   
+# [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)
+## Refactor
+- Move Password change API endpoint [#293](https://github.com/upb-uc4/ui-web/pull/293)
+- 
+## Bug Fixes
+- fix lecturers not seeing their own courses
+- fix missing route enter restrictions of settings page [#294](https://github.com/upb-uc4/ui-web/pull/294)
+
+## Feature
+- add routing to landing page behind logo in navbar [#296](https://github.com/upb-uc4/ui-web/pull/296)
+
 # [v.0.5.0](https://github.com/upb-uc4/ui-web/compare/v0.4.5-hotfix.1...v0.5.0) (2020-07-31)
 
 ## Feature

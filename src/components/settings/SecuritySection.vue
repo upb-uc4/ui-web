@@ -95,6 +95,7 @@
     import EnterPasswordModal from "@/components/modals/EnterPasswordModal.vue";
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import AuthenticationManagement from "../../api/AuthenticationManagement";
 
     export default {
         name: "SecuritySection",
@@ -147,13 +148,12 @@
 
             async function updatePassword() {
                 const genericResponseHandler = new GenericResponseHandler();
-                const userManagement: UserManagement = new UserManagement();
-                const response = await userManagement.changeOwnPassword(newPassword.value);
+                const authenticationManagement: AuthenticationManagement = new AuthenticationManagement();
+                const response = await authenticationManagement.changeOwnPassword(newPassword.value);
                 const result = genericResponseHandler.handleReponse(response);
 
                 if (result) {
                     //Remove local inputs (if the user wants to change twice in a row)
-                    store.state.loginData.password = newPassword.value;
                     newPassword.value = "";
                     confirmationPassword.value = "";
                     passwordFieldType.value = "password";
