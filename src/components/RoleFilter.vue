@@ -3,6 +3,7 @@
         <div v-for="(vrole,index) in roles" :key="vrole" class="mb-3">
             <label class="inline-flex">
                 <button 
+                    :id="'role-' + vrole"
                     class="px-4 py-2 text-gray-800 bg-gray-100 border-gray-200 shadow-md focus:outline-none hover:bg-blue-200" 
                     :class="{ 'bg-blue-300 text-white hover:bg-blue-300 shadow-inner' : selectedRole == vrole , 'rounded-l' : index == 0, 'rounded-r' : index == roles.length-1}" @click="select(vrole)">
                     {{vrole}}
