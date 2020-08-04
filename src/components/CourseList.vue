@@ -14,6 +14,8 @@
     import StudentCourse from "./StudentCourse.vue";
     import CourseManagement from "@/api/CourseManagement";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import Course from "../api/api_models/course_management/Course";
+    import APIResponse from "../api/helpers/models/APIResponse";
 
     export default {
         name: "CourseList",
@@ -23,25 +25,27 @@
         },
         async setup() {
             const store = useStore();
-            let role = await store.getters.role;
-            let roles = Object.values(Role).filter((e) => e != Role.NONE);
-            let isLecturer: boolean = role == Role.LECTURER;
-            let isStudent: boolean = role == Role.STUDENT;
-            let courseManagement: CourseManagement = new CourseManagement();
-            let myId = (await store.getters.loginData).username;
-
+            const role = await store.getters.role;
+            const roles = Object.values(Role).filter((e) => e != Role.NONE);
+            const isLecturer: boolean = role == Role.LECTURER;
+            const isStudent: boolean = role == Role.STUDENT;
+            const courseManagement: CourseManagement = new CourseManagement();
             const genericResponseHandler = new GenericResponseHandler();
-            const response = await courseManagement.getCourses();
-            let courses = genericResponseHandler.handleReponse(response);
+            let courses: Course[] = [];
+            let response: APIResponse<Course[]>;
 
             if (isLecturer) {
-                courses = courses.filter((course) => course.lecturerId == myId);
+                let username = (await store.getters.loginData).username;
+                response = await courseManagement.getCourses(undefined, username);
+                courses = genericResponseHandler.handleReponse(response);
+            } else if (isStudent) {
+                response = await courseManagement.getCourses();
+                courses = genericResponseHandler.handleReponse(response);
             }
 
             return {
                 role,
                 roles,
-                myId,
                 courses,
                 isLecturer,
                 isStudent,
