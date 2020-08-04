@@ -1,13 +1,13 @@
 # [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-XX-XX)
 ## Feature
 - add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
+- add filtering by course type for course lists of lecturer and student [#313](https://github.com/upb-uc4/ui-web/pull/313)
+- add e2e tests using cypress (#218)
+- add workflow for automatic unit testing and e2e testing (#218)
 
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
-  
-## Feature
-- add e2e tests using cypress (#218)
-- add workflow for automatic unit testing and e2e testing (#218)
+
 
 ## Bugfix
 - Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
