@@ -116,7 +116,7 @@
                 required: true,
             },
         },
-        emits: ["update:hasInput", "update:succes"],
+        emits: ["update:has-input", "update:success"],
 
         async setup(props: any, { emit }: any) {
             let course = ref(new CourseEntity());
@@ -149,7 +149,7 @@
             let hasInput = computed(() => {
                 // TODO not tested yet (too lazy to start intellij)
                 let returnValue: boolean = !course.value.editableInfoEquals(initialCourseState);
-                emit("update:hasInput", returnValue);
+                emit("update:has-input", returnValue);
                 return returnValue;
             });
 

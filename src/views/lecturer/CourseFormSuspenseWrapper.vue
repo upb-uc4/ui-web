@@ -1,7 +1,7 @@
 <template>
     <suspense>
         <template #default>
-            <lecturer-create-course-form v-model:success="success" v-model:hasInput="hasInput" :edit-mode="editMode" />
+            <lecturer-create-course-form v-model:success="success" v-model:has-input="hasInput" :edit-mode="editMode" />
             <unsaved-changes-modal ref="unsavedChangesModal" />
         </template>
         <template #fallback>

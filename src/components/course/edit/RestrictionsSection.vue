@@ -44,6 +44,7 @@
                 type: Number,
             },
         },
+        emits: ["update:participantsLimit"],
         setup(props: any, { emit }: any) {
             return {
                 maxParticipants: useModelWrapper(props, emit, "participantsLimit"),

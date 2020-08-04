@@ -57,6 +57,7 @@
                 type: String,
             },
         },
+        emits: ["update:start", "update:end"],
         setup(props: any, { emit }: any) {
             return {
                 startDate: useModelWrapper(props, emit, "start"),
