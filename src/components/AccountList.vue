@@ -1,17 +1,13 @@
 <template>
     <div class="flex flex-col">
-        <div class="flex justify-between w-1/2 mb-3">
-            <label >Show:</label>
-            <div v-for="vrole in roles" :key="vrole" class="mb-3 mr-4">
-                <label class="flex items-center">
-                    <input
-                        :id="'role-' + vrole"
-                        type="radio"
-                        class="form-radio radio"
-                        v-model="selectedRole"
-                        :value="vrole"
-                    />
-                    <span class="ml-2 font-medium text-gray-700 text-md">{{ vrole }}</span>
+        <div class="flex items-baseline w-1/2 mb-3">
+            <div v-for="vrole in roles" :key="vrole" class="mb-3">
+                <label class="inline-flex">
+                    <button 
+                        class="px-4 py-2 text-gray-800 bg-gray-400 border-gray-500 shadow-sm outline-none hover:bg-gray-500" 
+                        :class="{ 'bg-gray-500 shadow-none' : selectedRole == vrole }" @click="select(vrole)">
+                        {{vrole}}
+                    </button>
                 </label>
             </div>
         </div> 
@@ -48,9 +44,13 @@
             let shownUsers = computed(() => {
                 return selectedRole.value == "All" as Role ? users : users.filter(e => e.role == selectedRole.value)
             })
+
+            function select(role:string) {
+                selectedRole.value = role as Role;
+            }
             
             return {
-                roles, shownUsers,selectedRole
+                roles, shownUsers,selectedRole,select
             };
         },
     };
