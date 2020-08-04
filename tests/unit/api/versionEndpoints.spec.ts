@@ -9,6 +9,7 @@ import { CourseType } from "@/entities/CourseType";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import HyperledgerManagement from "@/api/HyperledgerManagement";
 import HyperledgerCourseManagement from "@/api/HyperledgerCourseManagement";
+import MatriculationManagement from "@/api/MatriculationManagement";
 
 jest.useFakeTimers();
 
@@ -38,6 +39,12 @@ test("hyperledger management service version", async () => {
 
 test("hyperledger course management service version", async () => {
     const version = await HyperledgerCourseManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+});
+
+test("matriculation service version", async () => {
+    const version = await MatriculationManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });
