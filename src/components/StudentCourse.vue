@@ -76,7 +76,8 @@
             const auth: UserManagement = new UserManagement();
 
             const responseHandler = new ProfileResponseHandler();
-            const response = await auth.getSpecificUser(props.course.lecturerId);
+            //todo this might not be a lecturer in the future
+            const response = await auth.getLecturer(props.course.lecturerId);
             const lecturer = responseHandler.handleReponse(response);
 
             const lecturerDisplayName = lecturer.firstName + " " + lecturer.lastName;
