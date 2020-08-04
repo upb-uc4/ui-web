@@ -15,24 +15,5 @@ export default class LecturerEntity implements Lecturer {
     email = "";
     birthDate = "";
 
-    constructor(example: boolean) {
-        if (example) {
-            this.username = "palpatine";
-
-            this.address.city = "Creepy City";
-            this.address.country = "Exegol";
-            this.address.houseNumber = "666";
-            this.address.street = "Sith Temple";
-            this.address.zipCode = "666";
-
-            this.firstName = "The";
-            this.lastName = "Senate";
-            this.picture = "https://cdn3.iconfinder.com/data/icons/star-wars-color/216/emperor-palpatine-512.png";
-            this.email = "gooooood@anakin.goood";
-            this.birthDate = "4200-05-03";
-
-            this.freeText = "Did you ever hear the tragedy of Darth Plaguies the wise?";
-            this.researchArea = "Many abilities some consider to be unnatural";
-        }
-    }
+    constructor() {}
 }
