@@ -21,8 +21,8 @@
     </section>
 </template>
 
-<script>
-    import MenuItem from "../../common/MenuItem";
+<script lang="ts">
+    import MenuItem from "../../common/MenuItem.vue";
 
     export default {
         name: "CourseMenuBody",
