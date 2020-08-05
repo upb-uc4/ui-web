@@ -45,13 +45,14 @@
         "core-js": "^3.6.5",
         "jest": "^26.2.2",
         "random-bigint": "0.0.1",
-        "vue": "^3.0.0-rc.5",
         "tailwindcss": "^1.6.2",
+        "vue": "^3.0.0-rc.5",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-beta.5",
         "vuex": "^4.0.0-beta.4"
     },
     "devDependencies": {
+        "@cypress/code-coverage": "^3.8.1",
         "@tailwindcss/custom-forms": "^0.2.1",
         "@types/jest": "^26.0.8",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -67,6 +68,7 @@
         "@vue/eslint-config-typescript": "^5.0.2",
         "@vue/test-utils": "^2.0.0-beta.1",
         "babel-eslint": "^10.1.0",
+        "babel-plugin-istanbul": "^6.0.0",
         "cross-conf-env": "^1.1.2",
         "cypress": "^4.12.0",
         "dotenv": "^8.2.0",

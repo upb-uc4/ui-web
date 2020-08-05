@@ -31,3 +31,7 @@ node_modules/
 public/
 .deploy*/
 src/_drafts
+
+# test coverage
+.nyc_output/
+coverage/
