@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col">
-        <div v-for="(user, index) in shownUsers" :key="user" class="bg-white rounded-lg shadow">
+    <div class="flex flex-col bg-white rounded-lg shadow">
+        <div v-for="(user, index) in shownUsers" :key="user">
             <user-row :user="user" :is-first-row="index === 0" :is-last-row="index === shownUsers.length - 1" />
         </div>
     </div>
