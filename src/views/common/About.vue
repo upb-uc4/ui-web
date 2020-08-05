@@ -4,10 +4,10 @@
         <div class="flex flex-col items-center w-full mt-5">
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
                         <label class="block mb-2 text-xl text-gray-700">What is UC4?</label>
                     </div>
-                    <div class="flex flex-col w-full lg:w-2/3">
+                    <div class="flex flex-col w-full lg:w-3/4">
                         <label class="mb-3 text-lg font-medium text-gray-700">
                             UC4 is short for 'University Credits 4.0'. It is an educational research project located at
                             <a
@@ -15,11 +15,11 @@
                                 target="_blank"
                                 href="https://cs.uni-paderborn.de/en/studies/degree-programs/computer-science/"
                             >
-                                Paderborn University
+                                Paderborn University.
                             </a>
-                            . This software is a work in progress prototype of an university management system, that is based on a
-                            blockchain to ensure privacy and data persistence. For further information about the vision of this project,
-                            visit us on our
+                            This software is a work in progress prototype of an university management system, that is based on a blockchain
+                            to ensure privacy and data persistence. For further information about the vision of this project, visit us on
+                            our
                             <a
                                 class="text-blue-700 hover:text-blue-800 hover:underline"
                                 target="_blank"
@@ -34,10 +34,10 @@
             </section>
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
                         <label class="block mb-2 text-xl text-gray-700">Who are we?</label>
                     </div>
-                    <div class="flex flex-col w-full lg:w-2/3">
+                    <div class="flex flex-col w-full lg:w-3/4">
                         <label class="mb-3 text-lg font-medium text-gray-700">
                             We are 16 motivated students in the masters program of the computer science departement of Paderborn University.
                             Our group now works together on the realization of the vision of a user secure and reliable credit system for a
@@ -48,10 +48,10 @@
             </section>
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
                         <label class="block mb-2 text-xl text-gray-700">Contacts</label>
                     </div>
-                    <div class="flex flex-col w-full lg:w-2/3">
+                    <div class="flex flex-col w-full lg:w-3/4">
                         <label class="mb-3 text-lg font-medium text-gray-700">
                             Interested in our project? So lets get in touch! You can contact us over different channels:
                         </label>
@@ -92,21 +92,18 @@
             </section>
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
+                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
                         <label class="block mb-2 text-xl text-gray-700">Work in Progress</label>
                     </div>
-                    <div class="flex flex-col items-start w-full lg:w-2/3">
+                    <div class="flex flex-col items-start w-full lg:w-3/4">
                         <label class="mb-3 text-lg font-medium text-gray-700">
                             In this project group, we are prototyping a university management system from scratch. Hence, this application
                             is work in progress. If you encounter any problems, you can contact us via the channels given above or report
                             them here.
                         </label>
-                        <button
-                            class="w-1/5 p-2 my-4 font-semibold text-gray-100 bg-blue-700 rounded-lg shadow-lg hover:bg-blue-800 text-md"
-                            @click="reportProblem"
-                        >
+                        <button class="w-56 my-6 btn btn-blue-primary" @click="reportProblem">
                             <i class="mr-2 fas fa-exclamation-triangle"></i>
-                            Report problem
+                            Report a problem
                         </button>
                         <versions @versions="updateVersions" />
                     </div>
