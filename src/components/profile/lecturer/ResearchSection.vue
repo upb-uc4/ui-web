@@ -56,7 +56,7 @@
                 type: String,
             },
         },
-        emits: ["save", "update:researchArea", "update:freeText"],
+        emits: ["save", "update:research-area", "update:description"],
         setup(props: any, { emit }: any) {
             const editedDescription = ref(props.description);
             const editedResearchArea = ref(props.researchArea);
@@ -78,8 +78,8 @@
 
             function save() {
                 isEditing.value = false;
-                emit("update:freeText", editedDescription.value);
-                emit("update:researchArea", editedResearchArea.value);
+                emit("update:description", editedDescription.value);
+                emit("update:research-area", editedResearchArea.value);
                 emit("save");
             }
 
