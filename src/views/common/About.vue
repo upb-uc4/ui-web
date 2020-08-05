@@ -127,7 +127,7 @@
         },
         async setup() {
             let versions: { name: String; version: String }[] = reactive([]);
-            let template = "";
+            let template: String = "";
             let bugReportURL = ref("");
             const base = "https://github.com/upb-uc4/ui-web/issues/new?";
             const labels = "&labels=bug";
@@ -143,8 +143,8 @@
             instance.get("/bug_report.md").then((response: AxiosResponse) => {
                 template = response.data;
                 template = template.substring(template.indexOf("**Describe the bug**"));
-                template = template.replaceAll(" ", "%20");
-                template = template.replaceAll("\n", "%0A");
+                template = template.replace(/ /g, "%20");
+                template = template.replace(/\n/g, "%0A");
             });
 
             function updateVersions(emittedVersions: { name: string; version: string }[]) {
