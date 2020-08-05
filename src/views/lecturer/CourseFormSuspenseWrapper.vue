@@ -39,28 +39,27 @@
             return next("/redirect");
         },
 
-        beforeRouteLeave(to: any, from: any, next: any) {
+        async beforeRouteLeave(to: any, from: any, next: any) {
             if (this.success) {
                 return next();
             }
             if (this.hasInput) {
                 const modal = this.unsavedChangesModal;
                 let action = modal.action;
-                modal.show().then((response: typeof action) => {
-                    switch (response) {
-                        case action.CANCEL: {
-                            next(false);
-                            break;
-                        }
-                        case action.CONFIRM: {
-                            next(true);
-                            break;
-                        }
-                        default: {
-                            next(true);
-                        }
+                const response = await modal.show();
+                switch (response) {
+                    case action.CANCEL: {
+                        next(false);
+                        break;
                     }
-                });
+                    case action.CONFIRM: {
+                        next(true);
+                        break;
+                    }
+                    default: {
+                        next(true);
+                    }
+                }
             } else {
                 next(true);
             }

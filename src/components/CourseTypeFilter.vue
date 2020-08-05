@@ -1,18 +1,18 @@
 <template>
     <div class="flex items-baseline w-1/2 mb-3">
-        <div v-for="(vrole, index) in roles" :key="vrole" class="mb-3">
+        <div v-for="(type, index) in types" :key="type" class="mb-3">
             <label class="inline-flex">
                 <button
-                    :id="'role-' + vrole"
+                    :id="'courseType-' + type"
                     class="px-4 py-2 text-gray-800 bg-gray-100 border-gray-200 shadow-md focus:outline-none hover:bg-blue-200"
                     :class="{
-                        'bg-blue-300 text-white hover:bg-blue-300 shadow-inner': selectedRole == vrole,
+                        'bg-blue-300 text-white hover:bg-blue-300 shadow-inner': selectedType == type,
                         'rounded-l': index == 0,
-                        'rounded-r': index == roles.length - 1,
+                        'rounded-r': index == types.length - 1,
                     }"
-                    @click="select(vrole)"
+                    @click="select(type)"
                 >
-                    {{ vrole }}
+                    {{ type }}
                 </button>
             </label>
         </div>
@@ -20,27 +20,27 @@
 </template>
 <script lang="ts">
     import Vue from "vue";
-    import { Role } from "@/entities/Role";
+    import { CourseType } from "@/entities/CourseType";
 
     export default {
-        name: "RoleFilter",
+        name: "CourseTypeFilter",
         props: {
-            selectedRole: {
+            selectedType: {
                 type: String,
                 required: true,
             },
         },
-        emits: ["update:selectedRole"],
+        emits: ["update:selectedType"],
         setup(props: any, { emit }: any) {
-            let roles = Object.values(Role).filter((e) => e != Role.NONE);
-            roles.unshift("All" as Role);
+            let types = Object.values(CourseType).filter((e) => e != CourseType.NONE);
+            types.unshift("All" as CourseType);
 
-            function select(role: string) {
-                emit("update:selectedRole", role);
+            function select(type: string) {
+                emit("update:selectedType", type);
             }
 
             return {
-                roles,
+                types,
                 select,
             };
         },

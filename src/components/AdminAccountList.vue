@@ -10,7 +10,7 @@
                     </button>
                 </router-link>
             </div>
-            <role-filter v-model:selected-role="selectedRole"/>
+            <role-filter v-model:selected-role="selectedRole" />
         </div>
         <suspense>
             <template #default>
@@ -34,7 +34,7 @@
     import LoadingComponent from "./loading/Spinner.vue";
     import SeachBar from "./SearchBar.vue";
     import { ref } from "vue";
-    import { Role } from "@/entities/Role"
+    import { Role } from "@/entities/Role";
     import RoleFilter from "./RoleFilter.vue";
 
     export default {
@@ -58,7 +58,7 @@
                 refreshKey,
                 refresh,
                 message,
-                selectedRole
+                selectedRole,
             };
         },
     };

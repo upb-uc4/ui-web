@@ -1,9 +1,14 @@
 <template>
     <div>
-        <div v-for="course in courses" :key="course.courseId">
-            <lecturer-course v-if="isLecturer" :course="course" class="mb-8" />
-            <student-course v-if="isStudent" :course="course" class="mb-8" />
-        </div>
+        <suspense>
+            <template #default>
+                <div v-for="course in shownCourses" :key="course.courseId">
+                    <lecturer-course v-if="isLecturer" :course="course" class="mb-8" />
+                    <student-course v-if="isStudent" :course="course" class="mb-8" />
+                </div>
+            </template>
+            <template #fallback />
+        </suspense>
     </div>
 </template>
 
@@ -16,6 +21,8 @@
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import Course from "../api/api_models/course_management/Course";
     import APIResponse from "../api/helpers/models/APIResponse";
+    import { computed } from "vue";
+    import { CourseType } from "@/entities/CourseType";
 
     export default {
         name: "CourseList",
@@ -23,13 +30,21 @@
             LecturerCourse,
             StudentCourse,
         },
-        async setup() {
+        props: {
+            selectedType: {
+                type: String,
+                required: true,
+            },
+        },
+
+        async setup(props: any) {
             const store = useStore();
             const role = await store.getters.role;
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
             const isLecturer: boolean = role == Role.LECTURER;
             const isStudent: boolean = role == Role.STUDENT;
             const courseManagement: CourseManagement = new CourseManagement();
+
             const genericResponseHandler = new GenericResponseHandler();
             let courses: Course[] = [];
             let response: APIResponse<Course[]>;
@@ -43,10 +58,14 @@
                 courses = genericResponseHandler.handleReponse(response);
             }
 
+            let shownCourses = computed(() => {
+                return props.selectedType == ("All" as CourseType) ? courses : courses.filter((e) => e.courseType == props.selectedType);
+            });
+
             return {
                 role,
                 roles,
-                courses,
+                shownCourses,
                 isLecturer,
                 isStudent,
             };
