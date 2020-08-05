@@ -11,7 +11,11 @@
                         id="routeAboutLink"
                         :to="{ name: 'about' }"
                         class="font-semibold text-blue-800 hover:text-blue-900 hover:underline"
-                    >here</router-link> </a>.
+                    >
+                        here
+                    </router-link>
+                </a>
+                .
             </h2>
         </div>
     </div>
