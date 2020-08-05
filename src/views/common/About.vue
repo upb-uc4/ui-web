@@ -1,15 +1,15 @@
 <template>
     <div class="flex flex-col items-center justify-center w-full mt-20">
-        <h1 class="text-4xl font-semibold">This is <a class="text-blue-800">UC4</a>!</h1>
+        <h1 class="text-4xl font-semibold text-blue-800">University Credits 4.0</h1>
         <div class="flex flex-col items-center w-full mt-5">
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
-                        <label class="block mb-2 text-xl text-gray-700">What is UC4?</label>
+                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
+                        <label class="block mb-2 text-lg font-semibold text-gray-700">What is UC4?</label>
                     </div>
                     <div class="flex flex-col w-full lg:w-3/4">
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            UC4 is short for 'University Credits 4.0'. It is an educational research project located at
+                        <label class="mb-3 text-gray-700 text-lg leading-relaxed">
+                            UC4 is short for 'University Credits 4.0' - an educational research project at the
                             <a
                                 class="text-blue-700 hover:text-blue-800 hover:underline"
                                 target="_blank"
@@ -17,94 +17,105 @@
                             >
                                 Paderborn University.
                             </a>
-                            This software is a work in progress prototype of an university management system, that is based on a blockchain
-                            to ensure privacy and data persistence. For further information about the vision of this project, visit us on
-                            our
+                            This software is a work in progress prototype of an university management system. It is based on cutting edge
+                            blockchain technology to securely ensure privacy and data persistence. If you wish to learn more about us, our
+                            vision or the technology we use, pay us a visit at
                             <a
                                 class="text-blue-700 hover:text-blue-800 hover:underline"
                                 target="_blank"
                                 href="https://uc4.cs.uni-paderborn.de/"
                             >
-                                website
+                                uc4.cs.uni-paderborn.de.
                             </a>
-                            .
                         </label>
                     </div>
                 </div>
             </section>
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
-                        <label class="block mb-2 text-xl text-gray-700">Who are we?</label>
+                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
+                        <label class="block mb-2 text-lg font-semibold text-gray-700">About us</label>
                     </div>
                     <div class="flex flex-col w-full lg:w-3/4">
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            We are 16 motivated students in the masters program of the computer science departement of Paderborn University.
-                            Our group now works together on the realization of the vision of a user secure and reliable credit system for a
-                            period of one year, starting in April 2020.
+                        <label class="mb-3 text-gray-700 text-lg leading-relaxed">
+                            We are a group of passionate Master's students at the Paderborn University who work hard to make your everyday
+                            life at campus more simple. Starting from April 2020 onwards, we will provide continuous support for this
+                            project until Q2 2021.
                         </label>
                     </div>
                 </div>
             </section>
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
-                        <label class="block mb-2 text-xl text-gray-700">Contacts</label>
+                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
+                        <label class="block mb-2 text-lg font-semibold text-gray-700">Get in touch</label>
                     </div>
                     <div class="flex flex-col w-full lg:w-3/4">
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            Interested in our project? So lets get in touch! You can contact us over different channels:
+                        <label class="mb-6 text-gray-700 text-lg">
+                            Did we spark your interest in our project? Let's get in touch! You can reach out to us on various channels.
                         </label>
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            <a
-                                class="text-blue-700 hover:text-blue-800 hover:underline"
-                                target="_blank"
-                                href="https://uc4.cs.uni-paderborn.de/"
-                            >
-                                <i class="mr-2 fas fa-globe"></i>
-                                Website
-                            </a>
-                        </label>
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            <a class="text-blue-700 hover:text-blue-800 hover:underline" target="_blank" href="https://github.com/upb-uc4">
-                                <i class="mr-2 fab fa-github"></i>
-                                GitHub
-                            </a>
-                        </label>
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            <a
-                                class="text-blue-700 hover:text-blue-800 hover:underline"
-                                target="_blank"
-                                href="https://twitter.com/Uc4_Official"
-                            >
-                                <i class="mr-2 fab fa-twitter"></i>
-                                Twitter
-                            </a>
-                        </label>
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            <a class="text-blue-700 hover:text-blue-800 hover:underline" target="_blank" href="mailto:uc4_official@web.de">
-                                <i class="mr-2 fas fa-envelope"></i>
-                                Email
-                            </a>
-                        </label>
+
+                        <div class="flex flex-col md:flex-row justify-between">
+                            <label class="mb-3 md:mb-0 text-lg font-medium text-gray-700">
+                                <a
+                                    class="text-blue-700 hover:text-blue-800 hover:underline"
+                                    target="_blank"
+                                    href="https://uc4.cs.uni-paderborn.de/"
+                                >
+                                    <i class="mr-2 fas fa-globe" />
+                                    Website
+                                </a>
+                            </label>
+                            <label class="mb-3 md:mb-0 text-lg font-medium text-gray-700">
+                                <a
+                                    class="text-blue-700 hover:text-blue-800 hover:underline"
+                                    target="_blank"
+                                    href="https://github.com/upb-uc4"
+                                >
+                                    <i class="mr-2 fab fa-github" />
+                                    GitHub
+                                </a>
+                            </label>
+                            <label class="mb-3 md:mb-0 text-lg font-medium text-gray-700">
+                                <a
+                                    class="text-blue-700 hover:text-blue-800 hover:underline"
+                                    target="_blank"
+                                    href="https://twitter.com/Uc4_Official"
+                                >
+                                    <i class="mr-2 fab fa-twitter" />
+                                    Twitter
+                                </a>
+                            </label>
+                            <label class="mb-0 text-lg font-medium text-gray-700">
+                                <a
+                                    class="text-blue-700 hover:text-blue-800 hover:underline"
+                                    target="_blank"
+                                    href="mailto:uc4_official@web.de"
+                                >
+                                    <i class="mr-2 fas fa-envelope"></i>
+                                    Email
+                                </a>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </section>
             <section class="w-full py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/4 lg:block">
-                        <label class="block mb-2 text-xl text-gray-700">Work in Progress</label>
+                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
+                        <label class="block mb-2 text-lg font-semibold text-gray-700">Work in Progress</label>
                     </div>
                     <div class="flex flex-col items-start w-full lg:w-3/4">
-                        <label class="mb-3 text-lg font-medium text-gray-700">
-                            In this project group, we are prototyping a university management system from scratch. Hence, this application
-                            is work in progress. If you encounter any problems, you can contact us via the channels given above or report
-                            them here.
+                        <label class="text-gray-700 text-lg">
+                            This application is still work in progress. If you encounter any problems, please do not hesitate to contact us.
                         </label>
-                        <button class="w-56 my-6 btn btn-blue-primary" @click="reportProblem">
-                            <i class="mr-2 fas fa-exclamation-triangle"></i>
-                            Report a problem
-                        </button>
+                        <div class="flex justify-center w-full">
+                            <button class="w-56 my-6 btn btn-blue-primary" @click="reportProblem">
+                                <i class="mr-2 fas fa-exclamation-triangle" />
+                                Report a problem
+                            </button>
+                        </div>
+
                         <versions @versions="updateVersions" />
                     </div>
                 </div>

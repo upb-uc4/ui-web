@@ -1,5 +1,5 @@
 <template>
-    <div class="w-5/6">
+    <div class="w-full">
         <div v-for="v in versions" :key="v.name" class="flex justify-between h-10 px-4 py-8 my-2 bg-white rounded-lg">
             <div class="flex items-center">
                 <i v-if="v.version == 'unavailable'" class="pr-4 text-2xl text-red-600 fas fa-times-circle"></i>
