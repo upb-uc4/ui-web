@@ -32,8 +32,8 @@
     </section>
 </template>
 
-<script>
-    import MenuItem from "@/components/navigation/navbar/common/MenuItem";
+<script lang="ts">
+    import MenuItem from "@/components/navigation/navbar/common/MenuItem.vue";
 
     export default {
         name: "CourseMenuFooter",
