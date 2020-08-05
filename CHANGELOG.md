@@ -5,6 +5,8 @@
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
 - unify usage of v-models and emits in codebase [#305](https://github.com/upb-uc4/ui-web/pull/305)
+- increase performance of course loading [#317](https://github.com/upb-uc4/ui-web/pull/317)
+- move course filtering for lecturer from frontend to backend [#317](https://github.com/upb-uc4/ui-web/pull/317)
   
 ## Feature
 - add e2e tests using cypress (#218)
