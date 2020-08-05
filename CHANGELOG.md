@@ -4,6 +4,7 @@
 - add filtering by course type for course lists of lecturer and student [#313](https://github.com/upb-uc4/ui-web/pull/313)
 - add e2e tests using cypress (#218)
 - add workflow for automatic unit testing and e2e testing (#218)
+- add code coverage reporting [#323](https://github.com/upb-uc4/ui-web/pull/323)
 
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
