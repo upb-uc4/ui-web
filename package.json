@@ -54,7 +54,7 @@
     "devDependencies": {
         "@cypress/code-coverage": "^3.8.1",
         "@tailwindcss/custom-forms": "^0.2.1",
-        "@types/jest": "^26.0.8",
+        "@types/jest": "^26.0.9",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "@vue/cli-plugin-babel": "^4.4.6",
