@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <span v-html="formattedString"></span>
+            {{ formattedString }}
             <span v-show="text.length > maxChars" class="ml-2 text-gray-700 uppercase text-xs font-semibold tracking-wide">
                 <span v-show="!isReadMore" id="readMore" class="cursor-pointer" @click="triggerReadMore($event, true)">{{ moreStr }}</span>
                 <span v-show="isReadMore" id="readLess" class="cursor-pointer" @click="triggerReadMore($event, false)">{{ lessStr }}</span>
@@ -36,9 +36,8 @@
                 default: 100,
             },
         },
-
-        setup(props) {
-            let isReadMore = ref(new Boolean(false));
+        setup(props: any) {
+            let isReadMore = ref(false);
 
             let formattedString = computed(() => {
                 var val_container = props.text;

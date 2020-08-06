@@ -51,27 +51,47 @@
             versions.push({
                 name: "Authentication Management",
                 version: authenticationManagementVersion,
-                link: "",
+                link:
+                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                    "authentication_" +
+                    authenticationManagementVersion +
+                    "/product_code/lagom/authentication_service/CHANGELOG.md",
             });
             versions.push({
                 name: "Course Management",
                 version: courseManagementVersion,
-                link: "",
+                link:
+                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                    "course_" +
+                    courseManagementVersion +
+                    "/product_code/lagom/course_service/CHANGELOG.md",
             });
             versions.push({
                 name: "User Management",
                 version: userManagementVersion,
-                link: "",
+                link:
+                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                    "user_" +
+                    userManagementVersion +
+                    "/product_code/lagom/user_service/CHANGELOG.md",
             });
             versions.push({
                 name: "Hyperledger Management",
                 version: hyperledgerManagementVersion,
-                link: "",
+                link:
+                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                    "hyperledger_" +
+                    hyperledgerManagementVersion +
+                    "/product_code/lagom/hyperledger_service/CHANGELOG.md",
             });
             versions.push({
                 name: "Hyperledger Course Management",
                 version: hyperledgerCourseManagementVersion,
-                link: "",
+                link:
+                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                    "hlcourse_" +
+                    hyperledgerCourseManagementVersion +
+                    "/product_code/lagom/hl_course_service/CHANGELOG.md",
             });
 
             let versionsArray = Array.from(versions);

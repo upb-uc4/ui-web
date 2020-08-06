@@ -1,6 +1,20 @@
-# [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-08-XX)
+# [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-XX-XX)
+## Feature
+- add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
+- add filtering by course type for course lists of lecturer and student [#313](https://github.com/upb-uc4/ui-web/pull/313)
+- add e2e tests using cypress (#218)
+- add workflow for automatic unit testing and e2e testing (#218)
+- add code coverage reporting [#323](https://github.com/upb-uc4/ui-web/pull/323)
+
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
+- unify usage of v-models and emits in codebase [#305](https://github.com/upb-uc4/ui-web/pull/305)
+- increase performance of course loading [#317](https://github.com/upb-uc4/ui-web/pull/317)
+- move course filtering for lecturer from frontend to backend [#317](https://github.com/upb-uc4/ui-web/pull/317)
+  
+## Bugfix
+- Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
+
 
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)
 ## Refactor
@@ -53,6 +67,9 @@
 
 ### Usability
 - rework login error validation (#232)
+
+## Dependencies
+- - added cypress version 4.10.0
 
 # [v.0.4.4](https://github.com/upb-uc4/ui-web/compare/v0.4.3...v0.4.4) (2020-07-22)
 

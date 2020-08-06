@@ -1,19 +1,20 @@
 <template>
     <div class="w-full max-w-4xl">
-        <div class="flex">
-            <div class="w-full flex flex-row pt-2 mb-8">
+        <div class="flex flex-col">
+            <div class="flex flex-row w-full pt-2 mb-8">
                 <seach-bar v-model:message="message" @refresh="refresh" />
-                <router-link to="/createAccount" class="w-2/12 w- ml-4">
-                    <button title="Add a new User" class="w-full p-2 btn-icon-green items-center justify-center flex flex-row">
+                <router-link to="/createAccount" class="w-2/12 ml-4 w-">
+                    <button title="Add a new User" class="flex flex-row items-center justify-center w-full p-2 btn-icon-green">
                         <p class="mr-3 text-lg font-semibold">Add</p>
-                        <i class="inline fas fa-user-plus text-lg" />
+                        <i class="inline text-lg fas fa-user-plus" />
                     </button>
                 </router-link>
             </div>
+            <role-filter v-model:selected-role="selectedRole" />
         </div>
         <suspense>
             <template #default>
-                <accountList :key="refreshKey" />
+                <accountList :key="refreshKey" :selected-role="selectedRole" />
             </template>
             <template #fallback>
                 <loading-component />
@@ -33,6 +34,8 @@
     import LoadingComponent from "./loading/Spinner.vue";
     import SeachBar from "./SearchBar.vue";
     import { ref } from "vue";
+    import { Role } from "@/entities/Role";
+    import RoleFilter from "./RoleFilter.vue";
 
     export default {
         name: "AdminAccountList",
@@ -40,10 +43,13 @@
             AccountList,
             LoadingComponent,
             SeachBar,
+            RoleFilter,
         },
         setup() {
             let message = ref("");
             let refreshKey = ref(false);
+
+            let selectedRole = ref("All" as Role);
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;
@@ -52,6 +58,7 @@
                 refreshKey,
                 refresh,
                 message,
+                selectedRole,
             };
         },
     };

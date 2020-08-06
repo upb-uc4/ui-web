@@ -109,6 +109,7 @@
                 type: String,
             },
         },
+        emits: ["update:type", "update:name", "update:language", "update:description"],
         setup(props: any, { emit }: any) {
             const availableCourseLanguages = Object.values(Language).filter((e) => e != Language.NONE);
             const availableCourseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);

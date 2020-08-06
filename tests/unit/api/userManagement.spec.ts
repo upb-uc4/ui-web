@@ -26,18 +26,38 @@ beforeAll(async () => {
 test("Create user", async () => {
     const success = await userManagement.createUser(authUser, student);
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });
 
 test("Get specific user", async () => {
-    await new Promise((r) => setTimeout(r, 10000));
     var result = false;
     const user = await userManagement.getSpecificUser(student.username);
     result = user.returnValue.username == student.username;
     expect(result).toBe(true);
 });
 
+test("Get lecturer user", async () => {
+    var result = false;
+    const user = await userManagement.getLecturer("lecturer");
+    result = user.returnValue.username == "lecturer";
+    expect(result).toBe(true);
+});
+
+test("Get admin user", async () => {
+    var result = false;
+    const user = await userManagement.getAdmin("admin");
+    result = user.returnValue.username == "admin";
+    expect(result).toBe(true);
+});
+
+test("Get student user", async () => {
+    var result = false;
+    const user = await userManagement.getStudent("student");
+    result = user.returnValue.username == "student";
+    expect(result).toBe(true);
+});
+
 test("Get own user", async () => {
-    await new Promise((r) => setTimeout(r, 10000));
     var result = false;
     const user = await userManagement.getOwnUser();
     result = user.returnValue.username == adminAuth.username;
@@ -58,14 +78,14 @@ test("Get all students", async () => {
 });
 
 test("Update user", async () => {
-    await new Promise((r) => setTimeout(r, 5000));
     student.firstName = "Hans";
     const success = await userManagement.updateUser(student);
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });
 
 test("Delete user", async () => {
-    await new Promise((r) => setTimeout(r, 5000));
     const success = await userManagement.deleteUser(student.username);
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });

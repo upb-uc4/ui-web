@@ -34,19 +34,19 @@
     export default {
         name: "BirthDatePicker",
         props: {
-            birthdate: {
+            birthDate: {
                 type: String,
                 required: true,
             },
         },
-        emits: ["update:birthdate"],
+        emits: ["update:birthDate"],
         setup(props: any, { emit }: any) {
             let months = Month;
             let shownDay = ref("");
             let shownMonth = ref("");
             let shownYear = ref("");
-            if (props.birthdate != "") {
-                let dates = props.birthdate.split("-");
+            if (props.birthDate != "") {
+                let dates = props.birthDate.split("-");
                 shownDay.value = parseInt(dates[2]).toString();
                 shownMonth.value = dates[1] == "" ? "" : Object.values(Month)[parseInt(dates[1]) - 1];
                 shownYear.value = dates[0];
@@ -66,7 +66,7 @@
                     (monthIndex < 10 ? "0" + monthIndex : monthIndex.toString()) +
                     "-" +
                     (parseInt(shownDay.value) < 10 ? "0" + shownDay.value : shownDay.value);
-                emit("update:birthdate", date);
+                emit("update:birthDate", date);
             });
 
             return {

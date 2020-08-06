@@ -98,11 +98,11 @@
                 type: Boolean,
                 required: true,
             },
-            immatriculationstatus: {
+            immatriculationStatus: {
                 type: String,
                 required: true,
             },
-            matriculationid: {
+            matriculationId: {
                 type: String,
                 required: true,
             },
@@ -110,12 +110,12 @@
                 type: Array,
                 required: true,
             },
-            semestercount: {
+            semesterCount: {
                 type: Number,
                 required: true,
             },
         },
-        emits: ["update:selected-fields-of-study", "update:immatriculationstatus", "update:matriculationid", "update:semestercount"],
+        emits: ["update:selected-fields-of-study", "update:immatriculationStatus", "update:matriculationId", "update:semesterCount"],
         setup(props: any, { emit }: any) {
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let studentFieldsOfStudy = ref(props.selectedFieldsOfStudy);
@@ -128,9 +128,9 @@
             return {
                 fieldsOfStudy,
                 updateFieldsOfStudy,
-                studentImmatriculationStatus: useModelWrapper(props, emit, "immatriculationstatus"),
-                studentMatriculationId: useModelWrapper(props, emit, "matriculationid"),
-                studentSemesterCount: useModelWrapper(props, emit, "semestercount"),
+                studentImmatriculationStatus: useModelWrapper(props, emit, "immatriculationStatus"),
+                studentMatriculationId: useModelWrapper(props, emit, "matriculationId"),
+                studentSemesterCount: useModelWrapper(props, emit, "semesterCount"),
             };
         },
     };
