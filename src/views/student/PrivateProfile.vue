@@ -27,11 +27,7 @@
 
             <address-section v-model:address="student.address" @save="save" />
 
-            <course-of-study-section
-                :fields-of-study="student.fieldsOfStudy"
-                :matriculation-id="student.matriculationId"
-                :semester-count="student.semesterCount"
-            />
+            <course-of-study-section :matriculation-id="student.matriculationId" />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
