@@ -36,6 +36,7 @@
                 v-model:matriculation-id="account.student.matriculationId"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
+                :username="account.user.username"
             />
             <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
                 <div class="lg:flex">
