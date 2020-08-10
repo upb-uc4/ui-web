@@ -2,13 +2,13 @@
     <div class="flex flex-col items-center justify-center w-full mt-20">
         <h1 class="text-4xl font-semibold text-blue-800">University Credits 4.0</h1>
         <div class="flex flex-col items-center w-full mt-5">
-            <section class="w-full py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
+            <section class="w-full py-4">
+                <div class="">
+                    <div class="flex flex-col w-full mb-1">
                         <label class="block mb-2 text-lg font-semibold text-gray-700">What is UC4?</label>
                     </div>
-                    <div class="flex flex-col w-full lg:w-3/4">
-                        <label class="mb-3 text-gray-700 text-lg leading-relaxed">
+                    <div class="flex flex-col w-full justify-center">
+                        <label class="text-gray-700 text-lg leading-relaxed">
                             UC4 is short for 'University Credits 4.0' - an educational research project at the
                             <a
                                 class="text-blue-700 hover:text-blue-800 hover:underline"
@@ -31,13 +31,13 @@
                     </div>
                 </div>
             </section>
-            <section class="w-full py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
-                        <label class="block mb-2 text-lg font-semibold text-gray-700">About us</label>
+            <section class="w-full py-4">
+                <div>
+                    <div class="flex flex-col w-full mb-1">
+                        <label class="block text-lg font-semibold text-gray-700">About us</label>
                     </div>
-                    <div class="flex flex-col w-full lg:w-3/4">
-                        <label class="mb-3 text-gray-700 text-lg leading-relaxed">
+                    <div class="flex flex-col w-full">
+                        <label class="text-gray-700 text-lg leading-relaxed">
                             We are a group of passionate Master's students at the Paderborn University who work hard to make your everyday
                             life at campus more simple. Starting from April 2020 onwards, we will provide continuous support for this
                             project until Q2 2021.
@@ -45,54 +45,54 @@
                     </div>
                 </div>
             </section>
-            <section class="w-full py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
-                        <label class="block mb-2 text-lg font-semibold text-gray-700">Get in touch</label>
+            <section class="w-full py-4">
+                <div>
+                    <div class="flex flex-col w-full mb-1">
+                        <label class="block text-lg font-semibold text-gray-700">Get in touch</label>
                     </div>
-                    <div class="flex flex-col w-full lg:w-3/4">
-                        <label class="mb-6 text-gray-700 text-lg">
+                    <div class="flex flex-col w-full">
+                        <label class="mb-3 text-gray-700 text-lg">
                             Did we spark your interest in our project? Let's get in touch! You can reach out to us on various channels.
                         </label>
 
-                        <div class="flex flex-col md:flex-row justify-between">
-                            <label class="mb-3 md:mb-0 text-lg font-medium text-gray-700">
+                        <div class="flex flex-col md:flex-row md:justify-start justify-between">
+                            <label class="mb-3 md:mb-0 md:mr-8 text-lg font-medium text-gray-700">
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
                                     href="https://uc4.cs.uni-paderborn.de/"
                                 >
-                                    <i class="mr-2 fas fa-globe" />
+                                    <i class="mr-1 fas fa-globe" />
                                     Website
                                 </a>
                             </label>
-                            <label class="mb-3 md:mb-0 text-lg font-medium text-gray-700">
+                            <label class="mb-3 md:mb-0 md:mr-8 text-lg font-medium text-gray-700">
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
                                     href="https://github.com/upb-uc4"
                                 >
-                                    <i class="mr-2 fab fa-github" />
+                                    <i class="mr-1 fab fa-github" />
                                     GitHub
                                 </a>
                             </label>
-                            <label class="mb-3 md:mb-0 text-lg font-medium text-gray-700">
+                            <label class="mb-3 md:mb-0 md:mr-8 text-lg font-medium text-gray-700">
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
                                     href="https://twitter.com/Uc4_Official"
                                 >
-                                    <i class="mr-2 fab fa-twitter" />
+                                    <i class="mr-1 fab fa-twitter" />
                                     Twitter
                                 </a>
                             </label>
-                            <label class="mb-0 text-lg font-medium text-gray-700">
+                            <label class="mb-0 text-lg md:mr-8 font-medium text-gray-700">
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
                                     href="mailto:uc4_official@web.de"
                                 >
-                                    <i class="mr-2 fas fa-envelope"></i>
+                                    <i class="mr-1 fas fa-envelope"></i>
                                     Email
                                 </a>
                             </label>
@@ -100,17 +100,17 @@
                     </div>
                 </div>
             </section>
-            <section class="w-full py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 lg:w-1/4 lg:block">
-                        <label class="block mb-2 text-lg font-semibold text-gray-700">Work in Progress</label>
+            <section class="w-full py-4">
+                <div class="flex flex-col justify-center">
+                    <div class="flex flex-col w-full mb-1">
+                        <label class="block text-lg font-semibold text-gray-700">Work in Progress</label>
                     </div>
-                    <div class="flex flex-col items-start w-full lg:w-3/4">
+                    <div class="flex flex-col items-start w-full">
                         <label class="text-gray-700 text-lg">
                             This application is still work in progress. If you encounter any problems, please do not hesitate to contact us.
                         </label>
                         <div class="flex justify-center w-full">
-                            <button class="w-56 my-6 btn btn-blue-primary" @click="reportProblem">
+                            <button class="w-56 mt-12 mb-8 btn btn-blue-primary" @click="reportProblem">
                                 <i class="mr-2 fas fa-exclamation-triangle" />
                                 Report a problem
                             </button>
