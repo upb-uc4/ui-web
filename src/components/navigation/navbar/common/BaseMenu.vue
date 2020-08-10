@@ -1,5 +1,5 @@
 <template>
-    <div class="relative cursor-pointer" @mouseleave="hide" @mouseover="show">
+    <div class="relative" @mouseleave="hide" @mouseover="show">
         <slot name="hook"></slot>
         <div v-show="isVisible">
             <slot name="content"></slot>
