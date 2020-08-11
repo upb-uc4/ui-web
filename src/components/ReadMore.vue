@@ -36,7 +36,7 @@
                 default: 100,
             },
         },
-        setup(props:any) {
+        setup(props: any) {
             let isReadMore = ref(false);
 
             let formattedString = computed(() => {
