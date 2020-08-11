@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-    import BaseMenu from "@/components/navigation/navbar/common/BaseMenu.vue";
+    import BaseMenu from "../../common/BaseMenu.vue";
     import MenuBody from "./ManageAccountsMenuBody.vue";
 
     export default {

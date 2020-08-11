@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts">
-    import GuestNavbar from "@/components/navigation/navbar/guest/Navbar.vue";
-    import LecturerNavbar from "@/components/navigation/navbar/lecturer/Navbar.vue";
-    import StudentNavbar from "@/components/navigation/navbar/student/Navbar.vue";
-    import AdminNavbar from "@/components/navigation/navbar/admin/Navbar.vue";
+    import GuestNavbar from "@/components/navigation/navbar/desktop/guest/Navbar.vue";
+    import LecturerNavbar from "@/components/navigation/navbar/desktop/lecturer/Navbar.vue";
+    import StudentNavbar from "@/components/navigation/navbar/desktop/student/Navbar.vue";
+    import AdminNavbar from "@/components/navigation/navbar/desktop/admin/Navbar.vue";
     import { Role } from "@/entities/Role";
     import { useStore } from "../../../store/store";
     import { ref } from "vue";
