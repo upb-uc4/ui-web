@@ -4,7 +4,7 @@
         <div class="flex flex-col items-start">
             <div v-for="pair in chronologicalList" :key="pair">
                 <div v-for="fieldOfStudy in pair.fieldsOfStudy" :key="fieldOfStudy" class="flex flex-row">
-                    <input disabled type="text" class="my-1 w-1/2 form-input input-text mr-2" :value="pair.semester" />
+                    <input disabled type="text" class="my-1 w-1/2 form-input input-text mr-2 opacity-0" :value="pair.semester" />
                     <input disabled type="text" class="my-1 w-1/2 form-input input-text" :value="fieldOfStudy" />
                 </div>
             </div>
@@ -41,6 +41,9 @@
     import MatriculationManagement from "@/api/MatriculationManagement";
     import { onBeforeMount, ref, computed } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+    import { historyToSortedList } from "@/use/ImmatriculationHistoryHandler";
+    import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
+    import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 
     export default {
         components: {
@@ -57,39 +60,24 @@
             let semesterType = ref("");
             let year = ref("");
             let selectedFieldsOfStudy = ref([] as String[]);
-            const history = {
+            const history: MatriculationData = {
                 matriculationId: "egal",
                 firstName: "egal",
                 lastName: "egal",
                 birthDate: "egal",
                 matriculationStatus: [
                     {
-                        fieldOfStudy: "Computer Science",
-                        semesters: ["WS2020/21", "SS2020"],
-                    },
+                        fieldOfStudy: "Computer Science" as FieldOfStudy,
+                        semesters: ["WS2020/21", "WS2019/20", "SS2020"],
+                    } as SubjectMatriculation,
                     {
-                        fieldOfStudy: "Mathematic",
-                        semesters: ["SS2020"],
-                    },
+                        fieldOfStudy: "Mathematic" as FieldOfStudy,
+                        semesters: ["SS2020", "WS2019/20", "SS2020"],
+                    } as SubjectMatriculation,
                 ],
             };
-            //TODO  sort by semester
-            let chronologicalList: { semester: String; fieldsOfStudy: String[] }[] = [];
-            history.matriculationStatus.forEach((e) => {
-                e.semesters.forEach((s) => {
-                    let exists = false;
-                    chronologicalList.forEach((data) => {
-                        if (data.semester == s) {
-                            exists = true;
-                            data.fieldsOfStudy.push(e.fieldOfStudy);
-                            return;
-                        }
-                    });
-                    if (!exists) {
-                        chronologicalList.push({ semester: s, fieldsOfStudy: [e.fieldOfStudy] });
-                    }
-                });
-            });
+
+            let chronologicalList = historyToSortedList(history);
 
             let currentYear = new Date().getFullYear();
             let selectableYears = [];
