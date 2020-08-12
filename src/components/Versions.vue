@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full">
+    <div v-if="!busy" class="w-full">
         <div v-for="v in versions" :key="v.name" class="flex justify-between h-10 px-4 py-8 my-2 bg-white rounded-lg">
             <div class="flex items-center">
                 <i v-if="v.version == 'unavailable'" class="pr-4 text-2xl text-red-600 fas fa-times-circle"></i>
@@ -16,7 +16,11 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <loading-spinner />
+    </div>
 </template>
+
 <script lang="ts">
     import { useStore } from "../store/store";
     import AuthenticationManagement from "../api/AuthenticationManagement";
@@ -24,19 +28,31 @@
     import UserManagement from "../api/UserManagement";
     import HyperledgerManagement from "../api/HyperledgerManagement";
     import HyperledgerCourseManagement from "../api/HyperledgerCourseManagement";
+    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { Role } from "@/entities/Role";
+    import { ref, onBeforeMount } from "vue";
+    import LoadingSpinner from "@/components/loading/Spinner.vue";
 
     export default {
+        components: {
+            LoadingSpinner,
+        },
+
+        async beforeRouteEnter(_from: any, _to: any, next: any) {
+            const response = await checkPrivilege(Role.LECTURER, Role.STUDENT, Role.ADMIN);
+
+            if (response.allowed) {
+                return next();
+            }
+            if (!response.authenticated) {
+                return next("/login");
+            }
+
+            return next("/redirect");
+        },
         emits: ["versions"],
-        async setup(props: any, { emit }: any) {
-            let store = useStore();
-
-            let frontEndVersion = "v" + process.env.VUE_APP_VERSION;
-
-            let authenticationManagementVersion = await AuthenticationManagement.getVersion();
-            let courseManagementVersion = await CourseManagement.getVersion();
-            let userManagementVersion = await UserManagement.getVersion();
-            let hyperledgerManagementVersion = await HyperledgerManagement.getVersion();
-            let hyperledgerCourseManagementVersion = await HyperledgerCourseManagement.getVersion();
+        setup(props: any, { emit }: any) {
+            let busy = ref(false);
 
             interface version {
                 name: String;
@@ -45,61 +61,80 @@
             }
 
             let versions: version[] = [];
-            versions.push({
-                name: "Frontend",
-                version: frontEndVersion,
-                link: "https://github.com/upb-uc4/ui-web/blob/" + frontEndVersion + "/CHANGELOG.md",
-            });
-            versions.push({
-                name: "Authentication Management",
-                version: authenticationManagementVersion,
-                link:
-                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                    "authentication_" +
-                    authenticationManagementVersion +
-                    "/product_code/lagom/authentication_service/CHANGELOG.md",
-            });
-            versions.push({
-                name: "Course Management",
-                version: courseManagementVersion,
-                link:
-                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                    "course_" +
-                    courseManagementVersion +
-                    "/product_code/lagom/course_service/CHANGELOG.md",
-            });
-            versions.push({
-                name: "User Management",
-                version: userManagementVersion,
-                link:
-                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                    "user_" +
-                    userManagementVersion +
-                    "/product_code/lagom/user_service/CHANGELOG.md",
-            });
-            versions.push({
-                name: "Hyperledger Management",
-                version: hyperledgerManagementVersion,
-                link:
-                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                    "hyperledger_" +
-                    hyperledgerManagementVersion +
-                    "/product_code/lagom/hyperledger_service/CHANGELOG.md",
-            });
-            versions.push({
-                name: "Hyperledger Course Management",
-                version: hyperledgerCourseManagementVersion,
-                link:
-                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                    "hlcourse_" +
-                    hyperledgerCourseManagementVersion +
-                    "/product_code/lagom/hl_course_service/CHANGELOG.md",
+            onBeforeMount(() => {
+                getVersions();
             });
 
-            emit("versions", versions);
+            async function getVersions() {
+                busy.value = true;
+                let store = useStore();
+
+                let frontEndVersion = "v" + process.env.VUE_APP_VERSION;
+
+                let authenticationManagementVersion = await AuthenticationManagement.getVersion();
+                let courseManagementVersion = await CourseManagement.getVersion();
+                let userManagementVersion = await UserManagement.getVersion();
+                let hyperledgerManagementVersion = await HyperledgerManagement.getVersion();
+                let hyperledgerCourseManagementVersion = await HyperledgerCourseManagement.getVersion();
+
+                versions.push({
+                    name: "Frontend",
+                    version: frontEndVersion,
+                    link: "https://github.com/upb-uc4/ui-web/blob/" + frontEndVersion + "/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Authentication Management",
+                    version: authenticationManagementVersion,
+                    link:
+                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "authentication_" +
+                        authenticationManagementVersion +
+                        "/product_code/lagom/authentication_service/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Course Management",
+                    version: courseManagementVersion,
+                    link:
+                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "course_" +
+                        courseManagementVersion +
+                        "/product_code/lagom/course_service/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "User Management",
+                    version: userManagementVersion,
+                    link:
+                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "user_" +
+                        userManagementVersion +
+                        "/product_code/lagom/user_service/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Hyperledger Management",
+                    version: hyperledgerManagementVersion,
+                    link:
+                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "hyperledger_" +
+                        hyperledgerManagementVersion +
+                        "/product_code/lagom/hyperledger_service/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Hyperledger Course Management",
+                    version: hyperledgerCourseManagementVersion,
+                    link:
+                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "hlcourse_" +
+                        hyperledgerCourseManagementVersion +
+                        "/product_code/lagom/hl_course_service/CHANGELOG.md",
+                });
+
+                emit("versions", versions);
+                busy.value = false;
+            }
 
             return {
                 versions,
+                busy,
             };
         },
     };
