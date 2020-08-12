@@ -50,7 +50,7 @@ var user: User = {
 var student: Student = {
     ...user,
     immatriculationStatus: "Is still a Jedi Knight",
-    matriculationId: "2187",
+    matriculationId: "1234567",
     semesterCount: 69,
     fieldsOfStudy: [FieldOfStudy.COMPUTER_SCIENCE],
 };

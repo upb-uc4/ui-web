@@ -132,7 +132,7 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Can enter matriculationId", () => {
-        cy.get("input[id='matriculationId']").type("15");
+        cy.get("input[id='matriculationId']").type("1234567");
     });
 
     it("Can enter semesterCount", () => {
