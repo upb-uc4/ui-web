@@ -15,6 +15,8 @@
   
 ## Bugfix
 - Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
+- Fix cursor styling of menus [#301](https://github.com/upb-uc4/ui-web/issues/301)
+- Fix a bug that made menus close on smaller screen sizes [#306](https://github.com/upb-uc4/ui-web/issues/306)
 
 
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)
