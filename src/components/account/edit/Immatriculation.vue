@@ -4,18 +4,6 @@
         <div class="flex flex-col items-start">
             <div v-if="chronologicalList.length > 0">
                 <div v-for="(pair, index) in chronologicalList" :key="pair">
-                    <!-- 
-                    <div v-for="(fieldOfStudy, index) in pair.fieldsOfStudy" :key="fieldOfStudy" class="flex flex-row">
-                        <input
-                            disabled
-                            type="text"
-                            class="my-1 w-1/2 form-input input-text mr-2"
-                            :class="[index > 0 ? 'invisible' : 'visible']"
-                            :value="pair.semester"
-                        />
-                        <input disabled type="text" class="my-1 w-1/2 form-input input-text" :value="fieldOfStudy" />
-                    </div>
-                    -->
                     <immatriculation-history-entry
                         class="w-1/2"
                         :is-first-row="index == 0"
