@@ -23,11 +23,7 @@
                         <option>SS</option>
                         <option>WS</option>
                     </select>
-                    <select v-if="semesterType == 'WS'" v-model="year" class="form-select input-select mx-2">
-                        <option disabled :value="''">Year</option>
-                        <option v-for="year in selectableYears" :key="year">{{ year }}/{{ year - 1999 }}</option>
-                    </select>
-                    <select v-else v-model="year" class="form-select input-select mx-2">
+                    <select v-model="year" class="form-select input-select mx-2">
                         <option disabled :value="''">Year</option>
                         <option v-for="year in selectableYears" :key="year">{{ year }}</option>
                     </select>
@@ -93,10 +89,19 @@
             let chronologicalList = ref({});
 
             let currentYear = new Date().getFullYear();
-            let selectableYears = [];
-            for (let index = currentYear; index >= currentYear - 5; index--) {
-                selectableYears.push(index);
-            }
+            let selectableYears = computed(() => {
+                let array: String[] = [];
+                for (let index = currentYear; index >= currentYear - 10; index--) {
+                    if (semesterType.value == "WS") {
+                        array.push(
+                            index.toString() + "/" + (index + 1).toString().substring(index.toString().length - 2, index.toString().length)
+                        );
+                    } else {
+                        array.push(index.toString());
+                    }
+                }
+                return array;
+            });
 
             function updateSelectedFieldsOfStudy(value: any) {
                 selectedFieldsOfStudy.value = value.value;
