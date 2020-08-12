@@ -25,6 +25,10 @@
                                 {{ errorBag.getNested("matriculationId") }}
                             </p>
                         </div>
+                        <div v-if="editMode && latest != ''" class="ml-4 flex flex-col">
+                            <label class="mb-3 text-sm font-medium text-gray-700">Latest Immatriculation</label>
+                            <input disabled class="form-input input-text" :value="latest" />
+                        </div>
                     </div>
                     <immatriculation-history v-if="editMode" :username="username" />
                 </div>
@@ -47,6 +51,10 @@
         },
         props: {
             username: {
+                type: String,
+                required: true,
+            },
+            latest: {
                 type: String,
                 required: true,
             },
