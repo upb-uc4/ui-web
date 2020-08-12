@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center justify-center w-full mt-20">
+    <div v-if="!busy" class="flex flex-col items-center justify-center w-full mt-20">
         <h1 class="text-4xl font-semibold text-blue-800">University Credits 4.0</h1>
         <div class="flex flex-col items-center w-full mt-5">
             <section class="w-full py-4">
@@ -115,45 +115,59 @@
                                 Report a problem
                             </button>
                         </div>
-
                         <versions @versions="updateVersions" />
                     </div>
                 </div>
             </section>
         </div>
     </div>
+    <div v-else>
+        <loading-spinner />
+    </div>
 </template>
 
 <script lang="ts">
     import Versions from "@/components/Versions.vue";
-    import { reactive, computed, ref } from "vue";
+    import { reactive, computed, ref, onBeforeMount } from "vue";
     import axios, { AxiosResponse } from "axios";
+    import LoadingSpinner from "@/components/loading/Spinner.vue";
 
     export default {
         components: {
             Versions,
+            LoadingSpinner,
         },
-        async setup() {
+        setup() {
+            let busy = ref(false);
             let versions: { name: String; version: String }[] = reactive([]);
             let template: String = "";
             let bugReportURL = ref("");
             const base = "https://github.com/upb-uc4/ui-web/issues/new?";
             const labels = "&labels=bug";
             const bodyBase = "&body=";
-            const instance = axios.create({
-                baseURL: "https://raw.githubusercontent.com/upb-uc4/.github/master/.github/ISSUE_TEMPLATE/",
-                headers: {
-                    "Accept": "*/*",
-                    "Content-Type": "application/json;charset=UTF-8",
-                },
+
+            onBeforeMount(() => {
+                createURL();
             });
 
-            instance.get("/bug_report.md").then((response: AxiosResponse) => {
-                template = response.data;
-                template = template.substring(template.indexOf("**Describe the bug**"));
-                template = template.replace(/ /g, "%20");
-                template = template.replace(/\n/g, "%0A");
-            });
+            async function createURL() {
+                busy.value = true;
+                const instance = axios.create({
+                    baseURL: "https://raw.githubusercontent.com/upb-uc4/.github/master/.github/ISSUE_TEMPLATE/",
+                    headers: {
+                        "Accept": "*/*",
+                        "Content-Type": "application/json;charset=UTF-8",
+                    },
+                });
+
+                await instance.get("/bug_report.md").then((response: AxiosResponse) => {
+                    template = response.data;
+                    template = template.substring(template.indexOf("**Describe the bug**"));
+                    template = template.replace(/ /g, "%20");
+                    template = template.replace(/\n/g, "%0A");
+                });
+                busy.value = false;
+            }
 
             function updateVersions(emittedVersions: { name: string; version: string }[]) {
                 let versionsBody = `**Versions%20(Do%20not%20change)**%0A`;
@@ -169,6 +183,7 @@
                 window.open(bugReportURL.value, "_blank");
             }
             return {
+                busy,
                 updateVersions,
                 reportProblem,
             };
