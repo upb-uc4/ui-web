@@ -17,13 +17,13 @@
                 <label class="text-lg">There is no matriculation data, yet!</label>
             </div>
             <div class="w-full flex mt-5">
-                <div class="flex flex-row items-start">
-                    <select v-model="semesterType" class="form-select input-select" @change="resetYear">
+                <div class="flex flex-row items-center">
+                    <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
                         <option disabled :value="''">Semester</option>
                         <option>SS</option>
                         <option>WS</option>
                     </select>
-                    <select v-model="year" class="form-select input-select mx-2">
+                    <select id="semesterYear" v-model="year" class="form-select input-select mx-2">
                         <option disabled :value="''">Year</option>
                         <option v-for="year in selectableYears" :key="year">{{ year }}</option>
                     </select>
@@ -34,7 +34,12 @@
                         :pre-selection="selectedFieldsOfStudy"
                         @changed="updateSelectedFieldsOfStudy"
                     />
-                    <button :disabled="!validSelection" class="btn btn-green-primary-500 px-2" @click="updateImmatriculation">
+                    <button
+                        id="addImmatirculationData"
+                        :disabled="!validSelection"
+                        class="btn btn-green-primary-500 px-2 py-2"
+                        @click="updateImmatriculation"
+                    >
                         Add
                     </button>
                 </div>
