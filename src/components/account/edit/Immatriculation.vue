@@ -1,9 +1,10 @@
 <template>
     <div class="flex flex-col pl-2 mt-5">
-        <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation</label>
+        <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
         <div class="flex flex-col items-start">
             <div v-if="chronologicalList.length > 0">
-                <div v-for="pair in chronologicalList" :key="pair">
+                <div v-for="(pair, index) in chronologicalList" :key="pair">
+                    <!-- 
                     <div v-for="(fieldOfStudy, index) in pair.fieldsOfStudy" :key="fieldOfStudy" class="flex flex-row">
                         <input
                             disabled
@@ -14,6 +15,14 @@
                         />
                         <input disabled type="text" class="my-1 w-1/2 form-input input-text" :value="fieldOfStudy" />
                     </div>
+                    -->
+                    <immatriculation-history-entry
+                        class="w-1/2"
+                        :is-first-row="index == 0"
+                        :is-last-row="index == chronologicalList.length - 1"
+                        :fields-of-study="pair.fieldsOfStudy"
+                        :semester="pair.semester"
+                    />
                 </div>
             </div>
             <div v-else>
@@ -59,10 +68,12 @@
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import ImmatriculationHistoryEntry from "@/components/ImmatriculationHistoryEntry.vue";
 
     export default {
         components: {
             MultiSelect,
+            ImmatriculationHistoryEntry,
         },
         props: {
             username: {
