@@ -2,17 +2,22 @@
     <div class="flex flex-col pl-2 mt-5">
         <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation</label>
         <div class="flex flex-col items-start">
-            <div v-for="pair in chronologicalList" :key="pair">
-                <div v-for="(fieldOfStudy, index) in pair.fieldsOfStudy" :key="fieldOfStudy" class="flex flex-row">
-                    <input
-                        disabled
-                        type="text"
-                        class="my-1 w-1/2 form-input input-text mr-2"
-                        :class="[index > 0 ? 'invisible' : 'visible']"
-                        :value="pair.semester"
-                    />
-                    <input disabled type="text" class="my-1 w-1/2 form-input input-text" :value="fieldOfStudy" />
+            <div v-if="chronologicalList.length > 0">
+                <div v-for="pair in chronologicalList" :key="pair">
+                    <div v-for="(fieldOfStudy, index) in pair.fieldsOfStudy" :key="fieldOfStudy" class="flex flex-row">
+                        <input
+                            disabled
+                            type="text"
+                            class="my-1 w-1/2 form-input input-text mr-2"
+                            :class="[index > 0 ? 'invisible' : 'visible']"
+                            :value="pair.semester"
+                        />
+                        <input disabled type="text" class="my-1 w-1/2 form-input input-text" :value="fieldOfStudy" />
+                    </div>
                 </div>
+            </div>
+            <div v-else>
+                <label class="text-lg">There is no matriculation data, yet!</label>
             </div>
             <div class="w-full flex mt-5">
                 <div class="flex flex-row items-start">
@@ -37,7 +42,7 @@
                         @changed="updateSelectedFieldsOfStudy"
                     />
                     <button :disabled="!validSelection" class="btn btn-green-primary-500 px-2" @click="updateImmatriculation">
-                        Update
+                        Add
                     </button>
                 </div>
             </div>
