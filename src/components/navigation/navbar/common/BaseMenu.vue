@@ -1,6 +1,9 @@
 <template>
     <div class="relative" @mouseleave="hide" @mouseover="show">
-        <slot name="hook"></slot>
+        <div class="cursor-default">
+            <slot name="hook"></slot>
+        </div>
+
         <div v-show="isVisible">
             <slot name="content"></slot>
         </div>
