@@ -16,18 +16,18 @@
             </div>
             <div class="w-full flex mt-5">
                 <div class="flex flex-row items-start">
-                    <select v-model="semesterType" class="form-select input-select">
+                    <select v-model="semesterType" class="form-select input-select" @change="resetYear">
                         <option disabled :value="''">Semester</option>
                         <option>SS</option>
                         <option>WS</option>
                     </select>
-                    <select v-if="semesterType == 'WS'" v-model="year" type="text" class="form-select input-select mx-2">
+                    <select v-if="semesterType == 'WS'" v-model="year" class="form-select input-select mx-2">
                         <option disabled :value="''">Year</option>
-                        <option v-for="year in selectableYears" :key="year">{{ year }}</option>
+                        <option v-for="year in selectableYears" :key="year">{{ year }}/{{ year - 1999 }}</option>
                     </select>
                     <select v-else v-model="year" class="form-select input-select mx-2">
                         <option disabled :value="''">Year</option>
-                        <option v-for="year in selectableYears" :key="year">{{ year }}/{{ year - 1999 }}</option>
+                        <option v-for="year in selectableYears" :key="year">{{ year }}</option>
                     </select>
                 </div>
                 <multi-select
@@ -102,9 +102,18 @@
                 return { fieldsOfStudy: selectedFieldsOfStudy.value, semester: semesterType.value + year.value };
             });
 
-            // async function getHistory() {
-            //     const matriculationManagement:MatriculationManagement = new MatriculationManagement();
-            //     history = await matriculationManagement.getMatriculationHistory(props.username);
+            let validSelection = computed(() => {
+                return (
+                    semesterType.value != "" &&
+                    year.value != "" &&
+                    selectedFieldsOfStudy.value.length != 0 &&
+                    selectedFieldsOfStudy.value[0] != ""
+                );
+            });
+
+            function resetYear() {
+                year.value = "";
+            }
             // }
 
             // onBeforeMount(() => {
