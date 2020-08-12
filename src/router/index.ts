@@ -3,7 +3,7 @@ import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue";
-import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
+import CourseFormSuspenseWrapper from "../views/lecturer/EditCreateCourseForm.vue";
 import AccountFormSuspenseWrapper from "../views/admin/EditCreateAccountForm.vue";
 import Redirect from "../views/errors/403.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
