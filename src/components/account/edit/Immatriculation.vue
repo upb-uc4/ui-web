@@ -120,8 +120,7 @@
             //     getHistory()
             //  })
             return {
-                history,
-                list,
+                resetYear,
                 fieldsOfStudy,
                 chronologicalList,
                 selectableYears,
