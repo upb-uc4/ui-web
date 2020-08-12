@@ -29,14 +29,17 @@
                         <option disabled :value="''">Year</option>
                         <option v-for="year in selectableYears" :key="year">{{ year }}</option>
                     </select>
+                    <multi-select
+                        class="w-1/2"
+                        :input-list="fieldsOfStudy"
+                        :placeholder="'Select a Field of Study'"
+                        :pre-selection="selectedFieldsOfStudy"
+                        @changed="updateSelectedFieldsOfStudy"
+                    />
+                    <button :disabled="!validSelection" class="btn btn-green-primary-500 px-2" @click="updateImmatriculation">
+                        Update
+                    </button>
                 </div>
-                <multi-select
-                    class="w-1/2"
-                    :input-list="fieldsOfStudy"
-                    :placeholder="'Select a Field of Study'"
-                    :pre-selection="[]"
-                    @changed="updateFieldsOfStudy"
-                />
             </div>
         </div>
     </div>
@@ -45,11 +48,12 @@
 <script lang="ts">
     import MultiSelect from "@/components/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import { onBeforeMount, ref, computed } from "vue";
+    import { onBeforeMount, ref, computed, reactive } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import { historyToSortedList } from "@/use/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
+    import GenericResponseHandler from "@/use/GenericResponseHandler";
 
     export default {
         components: {
@@ -65,8 +69,8 @@
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let semesterType = ref("");
             let year = ref("");
-            let selectedFieldsOfStudy = ref([] as String[]);
-            const history: MatriculationData = {
+            let selectedFieldsOfStudy = ref([] as FieldOfStudy[]);
+            let history: MatriculationData = reactive({
                 matriculationId: "egal",
                 firstName: "egal",
                 lastName: "egal",
@@ -81,9 +85,8 @@
                         semesters: ["SS2020", "WS2019/20", "SS2020"],
                     } as SubjectMatriculation,
                 ],
-            };
-
-            let chronologicalList = historyToSortedList(history);
+            });
+            let chronologicalList = ref({});
 
             let currentYear = new Date().getFullYear();
             let selectableYears = [];
@@ -91,15 +94,12 @@
                 selectableYears.push(index);
             }
 
-            let list: String[] = [];
-            history.matriculationStatus.forEach((e) => list.unshift(e.fieldOfStudy));
-
-            function updateFieldsOfStudy(value: any) {
+            function updateSelectedFieldsOfStudy(value: any) {
                 selectedFieldsOfStudy.value = value.value;
             }
 
-            let newMatriculation = computed(() => {
-                return { fieldsOfStudy: selectedFieldsOfStudy.value, semester: semesterType.value + year.value };
+            let selectedSemester = computed(() => {
+                return semesterType.value + year.value;
             });
 
             let validSelection = computed(() => {
@@ -114,11 +114,55 @@
             function resetYear() {
                 year.value = "";
             }
-            // }
 
-            // onBeforeMount(() => {
-            //     getHistory()
-            //  })
+            async function getHistory() {
+                // const matriculationManagement:MatriculationManagement = new MatriculationManagement();
+                // const response = await matriculationManagement.getMatriculationHistory(props.username);
+                // const responseHandler = new GenericResponseHandler();
+                // const result = responseHandler.handleReponse(response);
+                // if(response.statusCode != 200) {
+                //     console.log("Something went wrong!")
+                // }
+                // else {
+                //     history = result;
+                //     chronologicalList = historyToSortedList(history);
+                // }
+                chronologicalList.value = historyToSortedList(history);
+            }
+
+            onBeforeMount(() => {
+                getHistory();
+            });
+
+            async function updateImmatriculation() {
+                let error = false;
+                let successfullUpdates: number[] = [];
+                const matriculationManagement: MatriculationManagement = new MatriculationManagement();
+                // for(let i = 0; i < selectedFieldsOfStudy.value.length; i++ ) {
+                //     const response = await matriculationManagement.updateMatriculationData(props.username, selectedFieldsOfStudy.value[i], selectedSemester.value);
+                //     const responseHandler = new GenericResponseHandler();
+                //     const result = responseHandler.handleReponse(response);
+                //     if(response.statusCode != 200) {
+                //         error = true;
+                //         console.log("Something went wrong!")
+                //     }
+                //     else {
+                //         console.log("Update: new Matriculationdata --->" + selectedSemester.value + " : " + selectedFieldsOfStudy.value[i]);
+                //         successfullUpdates.push(i);
+                //     }
+                // }
+                if (error) {
+                    successfullUpdates.forEach((i) => {
+                        selectedFieldsOfStudy.value = selectedFieldsOfStudy.value.filter((e) => e != selectedFieldsOfStudy.value[i]);
+                    });
+                } else {
+                    semesterType.value = "";
+                    year.value = "";
+                    selectedFieldsOfStudy.value = [];
+                }
+                getHistory();
+            }
+
             return {
                 resetYear,
                 fieldsOfStudy,
@@ -127,8 +171,9 @@
                 year,
                 semesterType,
                 selectedFieldsOfStudy,
-                newMatriculation,
-                updateFieldsOfStudy,
+                updateSelectedFieldsOfStudy,
+                updateImmatriculation,
+                validSelection,
             };
         },
     };
