@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col pl-2 mt-5">
         <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
-        <div class="flex flex-col items-start">
+        <div v-if="!busy" class="flex flex-col items-start">
             <div v-if="chronologicalList.length > 0">
                 <div v-for="(pair, index) in chronologicalList" :key="pair">
                     <immatriculation-history-entry
@@ -17,7 +17,7 @@
                 <label class="text-lg">There is no matriculation data, yet!</label>
             </div>
             <div class="w-full flex mt-5">
-                <div class="flex flex-row items-center">
+                <div class="flex flex-row items-start">
                     <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
                         <option disabled :value="''">Semester</option>
                         <option>SS</option>
@@ -45,6 +45,9 @@
                 </div>
             </div>
         </div>
+        <div v-else>
+            <loading-spinner />
+        </div>
     </div>
 </template>
 
@@ -58,11 +61,13 @@
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import ImmatriculationHistoryEntry from "@/components/ImmatriculationHistoryEntry.vue";
+    import LoadingSpinner from "@/components/loading/Spinner.vue";
 
     export default {
         components: {
             MultiSelect,
             ImmatriculationHistoryEntry,
+            LoadingSpinner,
         },
         props: {
             username: {
@@ -71,6 +76,7 @@
             },
         },
         setup(props: any) {
+            let busy = ref(false);
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let semesterType = ref("");
             let year = ref("");
@@ -130,6 +136,7 @@
             }
 
             async function getHistory() {
+                busy.value = true;
                 // const matriculationManagement:MatriculationManagement = new MatriculationManagement();
                 // const response = await matriculationManagement.getMatriculationHistory(props.username);
                 // const responseHandler = new GenericResponseHandler();
@@ -142,6 +149,7 @@
                 //     chronologicalList = historyToSortedList(history);
                 // }
                 chronologicalList.value = historyToSortedList(history);
+                busy.value = false;
             }
 
             onBeforeMount(() => {
@@ -149,6 +157,7 @@
             });
 
             async function updateImmatriculation() {
+                busy.value = true;
                 let error = false;
                 let successfullUpdates: number[] = [];
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
@@ -178,6 +187,7 @@
             }
 
             return {
+                busy,
                 resetYear,
                 fieldsOfStudy,
                 chronologicalList,
