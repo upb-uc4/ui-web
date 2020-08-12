@@ -51,9 +51,9 @@
         emits: ["changed"],
         setup(props: any, { emit }: any) {
             let input = ref(props.inputList);
-            let output = ref([] as string[]);
-            output.value.push(...(props.preSelection as string[]));
-            output.value.push("");
+            let output = computed(() => {
+                return props.preSelection.length == 0 ? [...(props.preSelection as string[]), ""] : [...(props.preSelection as string[])];
+            });
 
             let unchosenValues = computed(() => {
                 return input.value.filter((f) => !output.value.includes(f as string));
