@@ -12,13 +12,12 @@
                     <label class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
                     <input
                         id="maxParticipants"
-                        v-model.number="maxParticipants"
+                        v-model="maxParticipants"
                         type="number"
                         min="0"
-                        max="999"
                         class="w-full form-input input-text"
                         :class="{ error: errorBag.has('maxParticipants') }"
-                        @change="updateLimit($event.target.value)"
+                        @keyup="updateLimit($event.target.value)"
                     />
                     <p v-if="errorBag.has('maxParticipants')" class="error-message">
                         {{ errorBag.get("maxParticipants") }}
@@ -51,11 +50,10 @@
             let maxParticipants = ref(props.participantsLimit);
 
             function updateLimit(value: any) {
-                if (/[0-9]{1,4}/g.test(value)) {
+                if (/[0-9]/g.test(value)) {
                     emit("update:participantsLimit", parseInt(value));
                 } else {
-                    emit("update:participantsLimit", 0);
-                    maxParticipants.value = 0;
+                    emit("update:participantsLimit", -1);
                 }
             }
             return {
