@@ -49,11 +49,11 @@
         setup(props: any, { emit }: any) {
             let maxParticipants = ref(props.participantsLimit);
 
-            function updateLimit(value: any) {
+            function updateLimit(value: string) {
                 if (/[0-9]/g.test(value)) {
                     emit("update:participantsLimit", parseInt(value));
                 } else {
-                    emit("update:participantsLimit", -1);
+                    emit("update:participantsLimit", 0);
                 }
             }
             return {
