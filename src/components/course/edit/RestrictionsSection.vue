@@ -51,7 +51,7 @@
             let maxParticipants = ref(props.participantsLimit);
 
             function updateLimit(value: any) {
-                if (/[0-9]{3}/g.test(value)) {
+                if (/[0-9]{1,3}/g.test(value)) {
                     emit("update:participantsLimit", parseInt(value));
                 } else {
                     emit("update:participantsLimit", 0);
