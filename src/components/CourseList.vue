@@ -66,12 +66,13 @@
                 let filteredCourses =
                     props.selectedType == ("All" as CourseType) ? courses : courses.filter((e) => e.courseType == props.selectedType);
                 if (props.filter != "") {
+                    let filter = props.filter.toLowerCase();
                     filteredCourses = filteredCourses.filter(
                         (e) =>
-                            e.courseName.includes(props.filter) ||
-                            e.courseDescription.includes(props.filter) ||
-                            e.courseId.includes(props.filter) ||
-                            e.lecturerId.includes(props.filter)
+                            e.courseName.toLowerCase().includes(filter) ||
+                            e.courseDescription.toLowerCase().includes(filter) ||
+                            e.courseId.toLowerCase().includes(filter) ||
+                            e.lecturerId.toLowerCase().includes(filter)
                     );
                 }
                 return filteredCourses;
