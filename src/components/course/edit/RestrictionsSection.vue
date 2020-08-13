@@ -12,12 +12,13 @@
                     <label class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
                     <input
                         id="maxParticipants"
-                        v-model="maxParticipants"
+                        v-model.number="maxParticipants"
                         type="number"
                         min="0"
                         max="999"
                         class="w-full form-input input-text"
                         :class="{ error: errorBag.has('maxParticipants') }"
+                        @change="updateLimit($event.target.value)"
                     />
                     <p v-if="errorBag.has('maxParticipants')" class="error-message">
                         {{ errorBag.get("maxParticipants") }}
@@ -31,6 +32,7 @@
 <script lang="ts">
     import ErrorBag from "@/use/ErrorBag";
     import { useModelWrapper } from "@/use/ModelWrapper";
+    import { ref } from "vue";
 
     export default {
         name: "RestrictionsSection",
@@ -46,8 +48,19 @@
         },
         emits: ["update:participantsLimit"],
         setup(props: any, { emit }: any) {
+            let maxParticipants = ref(props.participantsLimit);
+
+            function updateLimit(value: any) {
+                if (/[0-9]{3}/g.test(value)) {
+                    emit("update:participantsLimit", parseInt(value));
+                } else {
+                    emit("update:participantsLimit", 0);
+                    maxParticipants.value = 0;
+                }
+            }
             return {
-                maxParticipants: useModelWrapper(props, emit, "participantsLimit"),
+                maxParticipants,
+                updateLimit,
             };
         },
     };
