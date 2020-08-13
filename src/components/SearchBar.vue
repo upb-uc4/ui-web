@@ -27,7 +27,7 @@
                 required: true,
             },
         },
-        emits: ["refresh"],
+        emits: ["refresh", "update:message"],
         setup(props: any, { emit }: any) {
             return {
                 filterMessage: useModelWrapper(props, emit, "message"),
