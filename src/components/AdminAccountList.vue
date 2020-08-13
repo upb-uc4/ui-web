@@ -14,7 +14,7 @@
         </div>
         <suspense>
             <template #default>
-                <accountList :key="refreshKey" :selected-role="selectedRole" />
+                <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
             </template>
             <template #fallback>
                 <loading-component />

@@ -24,6 +24,10 @@
                 type: String,
                 required: true,
             },
+            filter: {
+                type: String,
+                required: true,
+            },
         },
         async setup(props: any) {
             const userManagement: UserManagement = new UserManagement();
@@ -33,7 +37,13 @@
             const userLists = genericResponseHandler.handleReponse(response);
             let users = Object.values(userLists).flat();
             let shownUsers = computed(() => {
-                return props.selectedRole == ("All" as Role) ? users : users.filter((e) => e.role == props.selectedRole);
+                let filteredUsers = props.selectedRole == ("All" as Role) ? users : users.filter((e) => e.role == props.selectedRole);
+                if (props.filter != "") {
+                    filteredUsers = filteredUsers.filter(
+                        (e) => e.firstName.includes(props.filter) || e.lastName.includes(props.filter) || e.username.includes(props.filter)
+                    );
+                }
+                return filteredUsers;
             });
 
             return {
