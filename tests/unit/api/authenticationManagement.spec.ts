@@ -91,3 +91,19 @@ test("Change password", async () => {
     success = await authenticationManagement.changeOwnPassword("student");
     expect(success.returnValue).toBe(true);
 });
+
+test("Login as admin", async () => {
+    const success = await UserManagement.login(adminAuth);
+    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
+    store.commit(MutationTypes.SET_LOGGEDIN, true);
+    store.commit(MutationTypes.SET_ROLE, "Admin");
+    authenticationManagement = new AuthenticationManagement();
+    userManagement = new UserManagement();
+    expect(success.returnValue).toBe(true);
+});
+
+test("Delete user", async () => {
+    const success = await userManagement.deleteUser(student.username);
+    expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
+});
