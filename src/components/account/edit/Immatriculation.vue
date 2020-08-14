@@ -1,21 +1,8 @@
 <template>
     <div class="flex flex-col pl-2 mt-5">
         <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
+        <immatriculation-history :key="refreshKey" v-model:busy="busy" class="w-3/5" />
         <div v-if="!busy" class="flex flex-col items-start">
-            <div v-if="chronologicalList.length > 0">
-                <div v-for="(pair, index) in chronologicalList" :key="pair">
-                    <immatriculation-history-entry
-                        class="w-1/2"
-                        :is-first-row="index == 0"
-                        :is-last-row="index == chronologicalList.length - 1"
-                        :fields-of-study="pair.fieldsOfStudy"
-                        :semester="pair.semester"
-                    />
-                </div>
-            </div>
-            <div v-else>
-                <label class="text-lg">There is no matriculation data, yet!</label>
-            </div>
             <div class="w-full flex mt-5">
                 <div class="flex flex-row items-start">
                     <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
@@ -62,12 +49,13 @@
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import ImmatriculationHistoryEntry from "@/components/ImmatriculationHistoryEntry.vue";
     import LoadingSpinner from "@/components/loading/Spinner.vue";
+    import ImmatriculationHistory from "@/components/ImmatriculationHistory.vue";
 
     export default {
         components: {
             MultiSelect,
-            ImmatriculationHistoryEntry,
             LoadingSpinner,
+            ImmatriculationHistory,
         },
         props: {
             username: {
@@ -76,28 +64,12 @@
             },
         },
         setup(props: any) {
-            let busy = ref(false);
+            let refreshKey = ref(false);
+            let busy = ref(true);
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let semesterType = ref("");
             let year = ref("");
             let selectedFieldsOfStudy = ref([] as FieldOfStudy[]);
-            let history: MatriculationData = reactive({
-                matriculationId: "egal",
-                firstName: "egal",
-                lastName: "egal",
-                birthDate: "egal",
-                matriculationStatus: [
-                    {
-                        fieldOfStudy: "Computer Science" as FieldOfStudy,
-                        semesters: ["WS2020/21", "WS2019/20", "SS2020"],
-                    } as SubjectMatriculation,
-                    {
-                        fieldOfStudy: "Mathematic" as FieldOfStudy,
-                        semesters: ["SS2020", "WS2019/20"],
-                    } as SubjectMatriculation,
-                ],
-            });
-            let chronologicalList = ref({});
 
             let currentYear = new Date().getFullYear();
             let selectableYears = computed(() => {
@@ -135,27 +107,6 @@
                 year.value = "";
             }
 
-            async function getHistory() {
-                busy.value = true;
-                // const matriculationManagement:MatriculationManagement = new MatriculationManagement();
-                // const response = await matriculationManagement.getMatriculationHistory(props.username);
-                // const responseHandler = new GenericResponseHandler();
-                // const result = responseHandler.handleReponse(response);
-                // if(response.statusCode != 200) {
-                //     console.log("Something went wrong!")
-                // }
-                // else {
-                //     history = result;
-                //     chronologicalList = historyToSortedList(history);
-                // }
-                chronologicalList.value = historyToSortedList(history);
-                busy.value = false;
-            }
-
-            onBeforeMount(() => {
-                getHistory();
-            });
-
             async function updateImmatriculation() {
                 busy.value = true;
                 let error = false;
@@ -183,14 +134,13 @@
                     year.value = "";
                     selectedFieldsOfStudy.value = [];
                 }
-                getHistory();
+                refreshKey.value = !refreshKey.value;
             }
 
             return {
                 busy,
                 resetYear,
                 fieldsOfStudy,
-                chronologicalList,
                 selectableYears,
                 year,
                 semesterType,
@@ -198,6 +148,7 @@
                 updateSelectedFieldsOfStudy,
                 updateImmatriculation,
                 validSelection,
+                refreshKey,
             };
         },
     };
