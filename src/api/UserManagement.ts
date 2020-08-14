@@ -48,6 +48,34 @@ export default class UserManagement extends Common {
         return result;
     }
 
+    async getUsers(...usernames: string[]): Promise<APIResponse<User_List>> {
+        let result: APIResponse<User_List> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as User_List,
+            statusCode: 0,
+        };
+
+        const requestParameter = { ...(await this._authHeader), params: {} as any };
+        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b);
+
+        await this._axios
+            .get("/users", requestParameter)
+            .then((response: AxiosResponse) => {
+                result.returnValue = response.data;
+                result.statusCode = response.status;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
+
+        return result;
+    }
+
     async deleteUser(username: string): Promise<APIResponse<boolean>> {
         let result: APIResponse<boolean> = {
             error: {} as APIError,
