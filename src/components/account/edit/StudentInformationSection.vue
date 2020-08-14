@@ -66,6 +66,7 @@
                                 :class="{ error: errorBag.hasNested('semesterCount') }"
                                 placeholder="Semester Count"
                                 @keyup="updateSemesterCount($event.target.value)"
+                                @change="clearField($event.target.value)"
                             />
                             <p v-if="errorBag.hasNested('semesterCount')" class="error-message">
                                 {{ errorBag.getNested("semesterCount") }}
@@ -135,6 +136,12 @@
                 }
             }
 
+            function clearField(value: string) {
+                if (!/[0-9]/g.test(value)) {
+                    studentSemesterCount.value = -1;
+                }
+            }
+
             return {
                 fieldsOfStudy,
                 updateFieldsOfStudy,
@@ -142,6 +149,7 @@
                 studentMatriculationId: useModelWrapper(props, emit, "matriculationId"),
                 studentSemesterCount,
                 updateSemesterCount,
+                clearField,
             };
         },
     };

@@ -18,6 +18,7 @@
                         class="w-full form-input input-text"
                         :class="{ error: errorBag.has('maxParticipants') }"
                         @keyup="updateLimit($event.target.value)"
+                        @change="clearField($event.target.value)"
                     />
                     <p v-if="errorBag.has('maxParticipants')" class="error-message">
                         {{ errorBag.get("maxParticipants") }}
@@ -56,9 +57,17 @@
                     emit("update:participantsLimit", 0);
                 }
             }
+
+            function clearField(value: string) {
+                if (!/[0-9]/g.test(value)) {
+                    maxParticipants.value = 0;
+                }
+            }
+
             return {
                 maxParticipants,
                 updateLimit,
+                clearField,
             };
         },
     };
