@@ -49,26 +49,30 @@ export default class UserManagement extends Common {
     }
 
     async getUsers(...usernames: string[]): Promise<APIResponse<User_List>> {
-        return await this._getByUsername(usernames, "/users");
+        let resp = await this._getByUsername(usernames, "/users");
+        return resp as APIResponse<User_List>;
     }
 
-    async getStudents(...usernames: string[]): Promise<APIResponse<User_List>> {
-        return await this._getByUsername(usernames, "/students");
+    async getStudents(...usernames: string[]): Promise<APIResponse<Student[]>> {
+        let resp = await this._getByUsername(usernames, "/students");
+        return resp as APIResponse<Student[]>;
     }
 
-    async getLecturers(...usernames: string[]): Promise<APIResponse<User_List>> {
-        return await this._getByUsername(usernames, "/lecturers");
+    async getLecturers(...usernames: string[]): Promise<APIResponse<Lecturer[]>> {
+        let resp = await this._getByUsername(usernames, "/lecturers");
+        return resp as APIResponse<Lecturer[]>;
     }
 
-    async getAdmins(...usernames: string[]): Promise<APIResponse<User_List>> {
-        return await this._getByUsername(usernames, "/admins");
+    async getAdmins(...usernames: string[]): Promise<APIResponse<Admin[]>> {
+        let resp = await this._getByUsername(usernames, "/admins");
+        return resp as APIResponse<Admin[]>;
     }
 
     async _getByUsername(usernames: string[], endpoint: string) {
-        let result: APIResponse<User_List> = {
+        let result: APIResponse<User_List | Student[] | Lecturer[] | Admin[]> = {
             error: {} as APIError,
             networkError: false,
-            returnValue: {} as User_List,
+            returnValue: {} as User_List | Student[] | Lecturer[] | Admin[],
             statusCode: 0,
         };
 
