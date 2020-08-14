@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!busy" class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
+    <div v-if="busy">
+        <loading-component />
+    </div>
+    <div v-else class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
         <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
             <i class="text-xl fas fa-chevron-left"></i>
             <span class="ml-1 text-sm font-bold">Back</span>
@@ -125,9 +128,6 @@
             <delete-account-modal ref="deleteModal" />
             <unsaved-changes-modal ref="unsavedChangesModal" />
         </div>
-    </div>
-    <div v-else>
-        <loading-component />
     </div>
 </template>
 
