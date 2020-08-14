@@ -6,6 +6,7 @@
 - add e2e tests using cypress (#218)
 - add workflow for automatic unit testing and e2e testing (#218)
 - add code coverage reporting [#323](https://github.com/upb-uc4/ui-web/pull/323)
+- add simple search function for the search bars above account/course lists [#347](https://github.com/upb-uc4/ui-web/pull/347)
 
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
@@ -18,6 +19,7 @@
 - Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
 - Fix cursor styling of menus [#301](https://github.com/upb-uc4/ui-web/issues/301)
 - Fix a bug that made menus close on smaller screen sizes [#306](https://github.com/upb-uc4/ui-web/issues/306)
+- Fix a bug that strings were emitted for the participant limit of a course and the semester count in account form, but expected was a number [#348](https://github.com/upb-uc4/ui-web/issues/348)
 
 
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)

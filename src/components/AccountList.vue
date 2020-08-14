@@ -30,6 +30,10 @@
                 type: String,
                 required: true,
             },
+            filter: {
+                type: String,
+                required: true,
+            },
         },
         setup(props: any) {
             let busy = ref(false);
@@ -51,7 +55,17 @@
             }
 
             let shownUsers = computed(() => {
-                return props.selectedRole == ("All" as Role) ? users.value : users.value.filter((e) => e.role == props.selectedRole);
+                let filteredUsers = props.selectedRole == ("All" as Role) ? users : users.filter((e) => e.role == props.selectedRole);
+                if (props.filter != "") {
+                    let filter = props.filter.toLowerCase();
+                    filteredUsers = filteredUsers.filter(
+                        (e) =>
+                            e.firstName.toLowerCase().includes(filter) ||
+                            e.lastName.toLowerCase().includes(filter) ||
+                            e.username.toLowerCase().includes(filter)
+                    );
+                }
+                return filteredUsers;
             });
 
             return {
