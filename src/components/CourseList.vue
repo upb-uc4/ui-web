@@ -35,6 +35,10 @@
                 type: String,
                 required: true,
             },
+            filter: {
+                type: String,
+                required: true,
+            },
         },
 
         async setup(props: any) {
@@ -59,7 +63,19 @@
             }
 
             let shownCourses = computed(() => {
-                return props.selectedType == ("All" as CourseType) ? courses : courses.filter((e) => e.courseType == props.selectedType);
+                let filteredCourses =
+                    props.selectedType == ("All" as CourseType) ? courses : courses.filter((e) => e.courseType == props.selectedType);
+                if (props.filter != "") {
+                    let filter = props.filter.toLowerCase();
+                    filteredCourses = filteredCourses.filter(
+                        (e) =>
+                            e.courseName.toLowerCase().includes(filter) ||
+                            e.courseDescription.toLowerCase().includes(filter) ||
+                            e.courseId.toLowerCase().includes(filter) ||
+                            e.lecturerId.toLowerCase().includes(filter)
+                    );
+                }
+                return filteredCourses;
             });
 
             return {

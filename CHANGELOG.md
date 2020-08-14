@@ -6,6 +6,7 @@
 - add e2e tests using cypress (#218)
 - add workflow for automatic unit testing and e2e testing (#218)
 - add code coverage reporting [#323](https://github.com/upb-uc4/ui-web/pull/323)
+- add simple search function for the search bars above account/course lists [#347](https://github.com/upb-uc4/ui-web/pull/347)
 
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
