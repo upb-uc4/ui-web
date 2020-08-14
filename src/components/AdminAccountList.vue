@@ -12,7 +12,7 @@
             </div>
             <role-filter v-model:selected-role="selectedRole" />
         </div>
-        <accountList :key="refreshKey" :selected-role="selectedRole" />
+        <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
         <div class="flex justify-center mt-16">
             <router-link to="/createAccount">
                 <button id="addAccount" title="Add a new User" class="px-4 btn btn-green-primary-500">New Account</button>

@@ -55,7 +55,8 @@
             }
 
             let shownUsers = computed(() => {
-                let filteredUsers = props.selectedRole == ("All" as Role) ? users : users.filter((e) => e.role == props.selectedRole);
+                let filteredUsers =
+                    props.selectedRole == ("All" as Role) ? users.value : users.value.filter((e) => e.role == props.selectedRole);
                 if (props.filter != "") {
                     let filter = props.filter.toLowerCase();
                     filteredUsers = filteredUsers.filter(
