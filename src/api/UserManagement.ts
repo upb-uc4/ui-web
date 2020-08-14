@@ -49,6 +49,22 @@ export default class UserManagement extends Common {
     }
 
     async getUsers(...usernames: string[]): Promise<APIResponse<User_List>> {
+        return await this._getByUsername(usernames, "/users");
+    }
+
+    async getStudents(...usernames: string[]): Promise<APIResponse<User_List>> {
+        return await this._getByUsername(usernames, "/students");
+    }
+
+    async getLecturers(...usernames: string[]): Promise<APIResponse<User_List>> {
+        return await this._getByUsername(usernames, "/lecturers");
+    }
+
+    async getAdmins(...usernames: string[]): Promise<APIResponse<User_List>> {
+        return await this._getByUsername(usernames, "/admins");
+    }
+
+    async _getByUsername(usernames: string[], endpoint: string) {
         let result: APIResponse<User_List> = {
             error: {} as APIError,
             networkError: false,
@@ -60,7 +76,7 @@ export default class UserManagement extends Common {
         requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b);
 
         await this._axios
-            .get("/users", requestParameter)
+            .get(endpoint, requestParameter)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data;
                 result.statusCode = response.status;

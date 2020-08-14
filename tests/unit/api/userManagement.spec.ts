@@ -115,6 +115,24 @@ test("Get users by usernames", async () => {
     expect(result).toHaveLength(2);
 });
 
+test("Get lecturers by usernames", async () => {
+    const users = await userManagement.getLecturers("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
+test("Get students by usernames", async () => {
+    const users = await userManagement.getStudents("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
+test("Get admins by usernames", async () => {
+    const users = await userManagement.getAdmins("student", "lecturer", "admin");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
 test("Update user", async () => {
     student.immatriculationStatus = "Is a Jedi Master";
     const success = await userManagement.updateUser(student);
