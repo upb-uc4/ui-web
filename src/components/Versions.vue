@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!busy" class="w-full">
+    <div v-if="busy">
+        <loading-spinner />
+    </div>
+    <div v-else class="w-full">
         <div v-for="v in versions" :key="v.name" class="flex justify-between h-10 px-4 py-8 my-2 bg-white rounded-lg">
             <div class="flex items-center">
                 <i v-if="v.version == 'unavailable'" class="pr-4 text-2xl text-red-600 fas fa-times-circle"></i>
@@ -16,9 +19,6 @@
             </div>
         </div>
     </div>
-    <div v-else>
-        <loading-spinner />
-    </div>
 </template>
 
 <script lang="ts">
@@ -28,8 +28,6 @@
     import UserManagement from "../api/UserManagement";
     import HyperledgerManagement from "../api/HyperledgerManagement";
     import HyperledgerCourseManagement from "../api/HyperledgerCourseManagement";
-    import { checkPrivilege } from "@/use/PermissionHelper";
-    import { Role } from "@/entities/Role";
     import { ref, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/loading/Spinner.vue";
 
@@ -38,18 +36,6 @@
             LoadingSpinner,
         },
 
-        async beforeRouteEnter(_from: any, _to: any, next: any) {
-            const response = await checkPrivilege(Role.LECTURER, Role.STUDENT, Role.ADMIN);
-
-            if (response.allowed) {
-                return next();
-            }
-            if (!response.authenticated) {
-                return next("/login");
-            }
-
-            return next("/redirect");
-        },
         emits: ["versions"],
         setup(props: any, { emit }: any) {
             let busy = ref(false);
