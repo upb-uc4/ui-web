@@ -27,7 +27,7 @@
 
             <address-section v-model:address="student.address" @save="save" />
 
-            <course-of-study-section :matriculation-id="student.matriculationId" />
+            <course-of-study-section :matriculation-id="student.matriculationId" :latest="student.latestImmatriculation" />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
@@ -83,9 +83,8 @@
             },
         },
         async setup(props: any) {
-            const student = ref(props.user);
+            const student = ref(props.user as Student);
             const auth: UserManagement = new UserManagement();
-
             function back() {
                 Router.back();
             }
