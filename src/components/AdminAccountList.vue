@@ -12,15 +12,7 @@
             </div>
             <role-filter v-model:selected-role="selectedRole" />
         </div>
-        <suspense>
-            <template #default>
-                <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
-            </template>
-            <template #fallback>
-                <loading-component />
-            </template>
-        </suspense>
-
+        <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
         <div class="flex justify-center mt-16">
             <router-link to="/createAccount">
                 <button id="addAccount" title="Add a new User" class="px-4 btn btn-green-primary-500">New Account</button>
@@ -31,7 +23,6 @@
 
 <script lang="ts">
     import AccountList from "./AccountList.vue";
-    import LoadingComponent from "./loading/Spinner.vue";
     import SeachBar from "./SearchBar.vue";
     import { ref } from "vue";
     import { Role } from "@/entities/Role";
@@ -41,7 +32,6 @@
         name: "AdminAccountList",
         components: {
             AccountList,
-            LoadingComponent,
             SeachBar,
             RoleFilter,
         },
