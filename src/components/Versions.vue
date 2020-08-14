@@ -100,7 +100,7 @@
                     version: hyperledgerManagementVersion,
                     link:
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                        "hyperledger_" +
+                        "hyperledger-" +
                         hyperledgerManagementVersion +
                         "/product_code/lagom/hyperledger_service/CHANGELOG.md",
                 });
