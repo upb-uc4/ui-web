@@ -61,6 +61,7 @@
             onBeforeMount(() => {
                 getName();
             });
+            
             async function getName() {
                 busy.value = true;
                 let store = useStore();
