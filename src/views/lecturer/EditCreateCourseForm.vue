@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!busy" class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
+    <div v-if="busy">
+        <loading-component />
+    </div>
+    <div v-else class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
         <button class="flex items-center mb-4 navigation-link" @click="back">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Course List</span>
@@ -83,9 +86,6 @@
             <delete-course-modal ref="deleteModal" />
             <unsaved-changes-modal ref="unsavedChangesModal" />
         </div>
-    </div>
-    <div v-else>
-        <loading-component />
     </div>
 </template>
 
