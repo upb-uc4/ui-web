@@ -109,7 +109,7 @@
                     version: hyperledgerCourseManagementVersion,
                     link:
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                        "hlcourse_" +
+                        "hlcourse-" +
                         hyperledgerCourseManagementVersion +
                         "/product_code/lagom/hl_course_service/CHANGELOG.md",
                 });
