@@ -3,8 +3,8 @@
         <suspense>
             <template #default>
                 <div v-for="course in shownCourses" :key="course.courseId">
-                    <lecturer-course v-if="isLecturer" :course="course" class="mb-8" />
-                    <student-course v-if="isStudent" :course="course" class="mb-8" />
+                    <lecturer-course v-if="isLecturer" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+                    <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
                 </div>
             </template>
             <template #fallback />
@@ -23,6 +23,7 @@
     import APIResponse from "../api/helpers/models/APIResponse";
     import { computed } from "vue";
     import { CourseType } from "@/entities/CourseType";
+    import UserManagement from "@/api/UserManagement";
 
     export default {
         name: "CourseList",
@@ -48,6 +49,7 @@
             const isLecturer: boolean = role == Role.LECTURER;
             const isStudent: boolean = role == Role.STUDENT;
             const courseManagement: CourseManagement = new CourseManagement();
+            const userManagement: UserManagement = new UserManagement();
 
             const genericResponseHandler = new GenericResponseHandler();
             let courses: Course[] = [];
@@ -60,6 +62,14 @@
             } else if (isStudent) {
                 response = await courseManagement.getCourses();
                 courses = genericResponseHandler.handleReponse(response);
+            }
+
+            const lecturerIds = new Set(courses.map((course) => course.lecturerId));
+            const resp = await userManagement.getLecturers(...lecturerIds);
+            const lecturers = genericResponseHandler.handleReponse(resp);
+
+            function findLecturer(course: Course) {
+                return lecturers.filter((lecturer) => lecturer.username === course.lecturerId)[0];
             }
 
             let shownCourses = computed(() => {
@@ -84,6 +94,7 @@
                 shownCourses,
                 isLecturer,
                 isStudent,
+                findLecturer,
             };
         },
     };

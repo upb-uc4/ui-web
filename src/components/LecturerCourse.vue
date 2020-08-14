@@ -43,6 +43,7 @@
     import Course from "@/api/api_models/course_management/Course";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {
         name: "LecturerCourse",
@@ -54,16 +55,14 @@
                 type: Object as () => Course,
                 required: true,
             },
+            lecturer: {
+                type: Object as () => Lecturer,
+                required: true,
+            },
         },
-        async setup(props: any) {
-            const auth: UserManagement = new UserManagement();
-
-            const responseHandler = new ProfileResponseHandler();
+        setup(props: any) {
             //todo this might not be a lecturer in the future
-            const response = await auth.getLecturer(props.course.lecturerId);
-            const lecturer = responseHandler.handleReponse(response);
-
-            const lecturerDisplayName = lecturer.firstName + " " + lecturer.lastName;
+            const lecturerDisplayName = props.lecturer.firstName + " " + props.lecturer.lastName;
 
             function editCourse() {
                 router.push({ path: "/editCourse/" + props.course.courseId });
