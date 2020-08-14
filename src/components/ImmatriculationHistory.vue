@@ -29,6 +29,10 @@
             ImmatriculationHistoryEntry,
         },
         props: {
+            username: {
+                type: String,
+                required: true,
+            },
             busy: {
                 type: Boolean,
                 required: true,

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col pl-2 mt-5">
         <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
-        <immatriculation-history :key="refreshKey" v-model:busy="busy" class="w-3/5" />
+        <immatriculation-history :key="refreshKey" v-model:busy="busy" class="w-3/5" :username="username" />
         <div v-if="!busy" class="flex flex-col items-start">
             <div class="w-full flex mt-5">
                 <div class="flex flex-row items-start">
