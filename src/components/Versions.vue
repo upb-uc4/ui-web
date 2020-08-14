@@ -73,7 +73,7 @@
                     version: authenticationManagementVersion,
                     link:
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                        "authentication_" +
+                        "authentication-" +
                         authenticationManagementVersion +
                         "/product_code/lagom/authentication_service/CHANGELOG.md",
                 });
