@@ -91,7 +91,7 @@
                     version: userManagementVersion,
                     link:
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                        "user_" +
+                        "user-" +
                         userManagementVersion +
                         "/product_code/lagom/user_service/CHANGELOG.md",
                 });
