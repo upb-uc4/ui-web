@@ -82,7 +82,7 @@
                     version: courseManagementVersion,
                     link:
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                        "course_" +
+                        "course-" +
                         courseManagementVersion +
                         "/product_code/lagom/course_service/CHANGELOG.md",
                 });
