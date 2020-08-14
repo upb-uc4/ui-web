@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!busy" class="flex flex-col items-center justify-center w-full mt-20">
+    <div v-if="busy">
+        <loading-spinner />
+    </div>
+    <div v-else class="flex flex-col items-center justify-center w-full mt-20">
         <h1 class="text-4xl font-semibold text-blue-800">Welcome back, {{ name }}!</h1>
         <div class="flex flex-col items-center mt-5">
             <h2 class="text-xl">
@@ -18,9 +21,6 @@
                 .
             </h2>
         </div>
-    </div>
-    <div v-else>
-        <loading-spinner />
     </div>
 </template>
 <script lang="ts">
@@ -61,7 +61,7 @@
             onBeforeMount(() => {
                 getName();
             });
-            
+
             async function getName() {
                 busy.value = true;
                 let store = useStore();
