@@ -35,3 +35,7 @@ src/_drafts
 # test coverage
 .nyc_output/
 coverage/
+
+# cypress output
+cypress/screenshots/
+cypress/videos/
