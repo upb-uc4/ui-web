@@ -17,7 +17,7 @@
                 <div class="flex flex-col items-start w-2/3 lg:w-5/6">
                     <div class="mt-2 text-2xl font-semibold leading-tight text-gray-900 truncate">{{ course.courseName }}</div>
                     <router-link
-                        :id="'showLecturer_' + course.courseId"
+                        id="showLecturer"
                         :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
                         class="mt-1 font-semibold navigation-link hover:cursor-pointer"
                     >
@@ -29,9 +29,7 @@
                 </div>
                 <div class="w-1/3 ml-12 lg:w-1/6 lg:ml-8">
                     <div class="flex items-center justify-center h-full mt-6">
-                        <button :id="'editCourse_' + course.courseId" class="w-48 py-2 btn btn-gray-primary" @click="editCourse()">
-                            Edit
-                        </button>
+                        <button id="editCourse" class="w-48 py-2 btn btn-gray-primary" @click="editCourse()">Edit</button>
                     </div>
                 </div>
             </div>
