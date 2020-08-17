@@ -6,7 +6,7 @@
                     <label class="block text-gray-700 text-lg font-medium">Security</label>
                 </div>
                 <label class="block text-gray-600">
-                    Make sure to choose a strong password; Longer password are generally more secure.
+                    Make sure to choose a strong password; Longer passwords are generally more secure.
                 </label>
             </div>
 
