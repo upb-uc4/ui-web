@@ -26,7 +26,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
         cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
     });    
 
     it("List contains admin, student and lecturer", () => {
@@ -142,7 +142,7 @@ describe("Account creation, edition and deletion", () => {
     it("Create account works", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains("cypress");
@@ -204,7 +204,7 @@ describe("Account creation, edition and deletion", () => {
 
     it("Update working correctly", () => {
         cy.get("button[id='saveChanges']").click();
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
     });
 
     //delete account
@@ -229,7 +229,7 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Assert account deletion", () => {
-        cy.url().should("contain", "/admin");
+        cy.url().should("contain", "/accounts");
         cy.get("div[id='user_cypress']").should("not.exist")
         cy.get("div[id='user_student']").should("exist")
         cy.get("div[id='user_lecturer']").should("exist")
