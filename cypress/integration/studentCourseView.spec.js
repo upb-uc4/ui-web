@@ -36,7 +36,7 @@ describe("Student course view", () => {
         cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
         cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "student");
+        cy.url().should("contain", "courses");
     }); 
 
     it("Course exists", () => {
