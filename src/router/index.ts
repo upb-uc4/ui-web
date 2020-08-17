@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
-import LecturerHomeView from "../views/lecturer/Home.vue";
+import LecturerCourseView from "../views/lecturer/LecturerCourseList.vue";
 import AdminAccountListView from "../views/admin/AdminAccountList.vue";
 import CourseFormSuspenseWrapper from "../views/lecturer/EditCreateCourseForm.vue";
 import AccountFormSuspenseWrapper from "../views/admin/EditCreateAccountForm.vue";
@@ -51,11 +51,11 @@ const router = createRouter({
             },
         },
         {
-            path: "/lecturer",
-            name: "lecturer.home",
-            component: LecturerHomeView,
+            path: "/course-management",
+            name: "lecturer.courses",
+            component: LecturerCourseView,
             meta: {
-                title: "Home" + suffix,
+                title: "Courses" + suffix,
             },
         },
 
