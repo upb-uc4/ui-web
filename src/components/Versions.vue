@@ -24,6 +24,8 @@
     import UserManagement from "../api/UserManagement";
     import HyperledgerManagement from "../api/HyperledgerManagement";
     import HyperledgerCourseManagement from "../api/HyperledgerCourseManagement";
+    import MatriculationManagement from "@/api/MatriculationManagement";
+
     export default {
         async setup() {
             let store = useStore();
@@ -35,6 +37,7 @@
             let userManagementVersion = await UserManagement.getVersion();
             let hyperledgerManagementVersion = await HyperledgerManagement.getVersion();
             let hyperledgerCourseManagementVersion = await HyperledgerCourseManagement.getVersion();
+            let matriculationManagementVersion = await MatriculationManagement.getVersion();
 
             interface version {
                 name: String;
@@ -91,6 +94,15 @@
                     "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
                     "hlcourse_" +
                     hyperledgerCourseManagementVersion +
+                    "/product_code/lagom/hl_course_service/CHANGELOG.md",
+            });
+            versions.push({
+                name: "Matriculation Management",
+                version: matriculationManagementVersion,
+                link:
+                    "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                    "matriculation-" +
+                    matriculationManagementVersion +
                     "/product_code/lagom/hl_course_service/CHANGELOG.md",
             });
 
