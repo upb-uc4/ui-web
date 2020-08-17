@@ -1,5 +1,8 @@
 <template>
-    <div class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
+    <div v-if="busy">
+        <loading-component />
+    </div>
+    <div v-else class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
         <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
             <i class="text-xl fas fa-chevron-left"></i>
             <span class="ml-1 text-sm font-bold">Back</span>
@@ -17,26 +20,26 @@
                 :error-bag="errorBag"
             />
             <personal-information-section
-                v-model:firstname="account.user.firstName"
-                v-model:lastname="account.user.lastName"
-                v-model:birthdate="account.user.birthDate"
+                v-model:first-name="account.user.firstName"
+                v-model:last-name="account.user.lastName"
+                v-model:birth-date="account.user.birthDate"
                 v-model:address="account.user.address"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
             <lecturer-information-section
                 v-if="isLecturer"
-                v-model:freetext="account.lecturer.freeText"
-                v-model:researcharea="account.lecturer.researchArea"
+                v-model:description="account.lecturer.freeText"
+                v-model:research-area="account.lecturer.researchArea"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
             <student-information-section
                 v-if="isStudent"
-                v-model:immatriculationstatus="account.student.immatriculationStatus"
-                v-model:matriculationid="account.student.matriculationId"
+                v-model:immatriculation-status="account.student.immatriculationStatus"
+                v-model:matriculation-id="account.student.matriculationId"
                 v-model:selected-fields-of-study="account.student.fieldsOfStudy"
-                v-model:semestercount="account.student.semesterCount"
+                v-model:semester-count="account.student.semesterCount"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
@@ -123,6 +126,7 @@
                 </div>
             </section>
             <delete-account-modal ref="deleteModal" />
+            <unsaved-changes-modal ref="unsavedChangesModal" />
         </div>
     </div>
 </template>
@@ -130,7 +134,7 @@
 <script lang="ts">
     import Router from "@/router/";
     import { Role } from "@/entities/Role";
-    import { ref, reactive, computed } from "vue";
+    import { ref, reactive, computed, onBeforeMount } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import UserManagement from "@/api/UserManagement";
     import StudentEntity from "@/entities/StudentEntity";
@@ -152,6 +156,9 @@
     import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
     import LecturerInformationSection from "@/components/account/edit/LecturerInformationSection.vue";
     import StudentInformationSection from "@/components/account/edit/StudentInformationSection.vue";
+    import LoadingComponent from "../../components/loading/Spinner.vue";
+    import { checkPrivilege } from "@/use/PermissionHelper";
+    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -162,6 +169,46 @@
             PersonalInformationSection,
             LecturerInformationSection,
             StudentInformationSection,
+            UnsavedChangesModal,
+            LoadingComponent,
+        },
+        async beforeRouteEnter(_to: any, _from: any, next: any) {
+            const response = await checkPrivilege(Role.ADMIN);
+
+            if (response.allowed) {
+                return next();
+            }
+            if (!response.authenticated) {
+                return next("/login");
+            }
+
+            return next("/redirect");
+        },
+
+        async beforeRouteLeave(to: any, from: any, next: any) {
+            if (this.success) {
+                return next();
+            }
+            if (this.hasInput) {
+                const modal = this.unsavedChangesModal;
+                let action = modal.action;
+                const response = await modal.show();
+                switch (response) {
+                    case action.CANCEL: {
+                        next(false);
+                        break;
+                    }
+                    case action.CONFIRM: {
+                        next(true);
+                        break;
+                    }
+                    default: {
+                        next(true);
+                    }
+                }
+            } else {
+                next(true);
+            }
         },
         props: {
             editMode: {
@@ -169,8 +216,9 @@
                 required: true,
             },
         },
-        emits: ["update:hasInput", "update:success"],
-        async setup(props: any, { emit }: any) {
+        emits: ["update:has-input", "update:success"],
+        setup(props: any, { emit }: any) {
+            let busy = ref(false);
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
@@ -189,6 +237,7 @@
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
             let deleteModal = ref();
+            let unsavedChangesModal = ref();
 
             const errorBag: ErrorBag = reactive(new ErrorBag());
 
@@ -200,7 +249,14 @@
                 return account.user.role === Role.STUDENT;
             });
 
-            if (props.editMode) {
+            onBeforeMount(() => {
+                if (props.editMode) {
+                    getUser();
+                }
+            });
+
+            async function getUser() {
+                busy.value = true;
                 const userManagement: UserManagement = new UserManagement();
 
                 const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string);
@@ -224,6 +280,7 @@
                         initialAccount.admin = JSON.parse(JSON.stringify(account.admin));
                     }
                 }
+                busy.value = false;
             }
 
             function updatePicture() {}
@@ -255,25 +312,25 @@
                     account.student.matriculationId != initialAccount.student.matriculationId ||
                     account.student.semesterCount != initialAccount.student.semesterCount
                 ) {
-                    emit("update:hasInput", true);
+                    emit("update:has-input", true);
                     return true;
                 }
 
                 //check whether a field of study has been added or removed
                 for (let field of account.student.fieldsOfStudy) {
                     if (!initialAccount.student.fieldsOfStudy.includes(field)) {
-                        emit("update:hasInput", true);
+                        emit("update:has-input", true);
                         return true;
                     }
                 }
 
                 for (let field of initialAccount.student.fieldsOfStudy) {
                     if (!account.student.fieldsOfStudy.includes(field)) {
-                        emit("update:hasInput", true);
+                        emit("update:has-input", true);
                         return true;
                     }
                 }
-                emit("update:hasInput", false);
+                emit("update:has-input", false);
                 return false;
             });
 
@@ -382,6 +439,7 @@
             }
 
             return {
+                busy,
                 title,
                 account,
                 success,
@@ -395,6 +453,7 @@
                 deleteAccount,
                 confirmDeleteAccount,
                 deleteModal,
+                unsavedChangesModal,
                 errorBag: errorBag,
             };
         },

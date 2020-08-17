@@ -60,6 +60,7 @@
     import Router from "@/router/";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {
         name: "StudentCourse",
@@ -71,15 +72,14 @@
                 required: true,
                 type: Object as () => Course,
             },
+            lecturer: {
+                type: Object as () => Lecturer,
+                required: true,
+            },
         },
-        async setup(props: any) {
-            const auth: UserManagement = new UserManagement();
-
-            const responseHandler = new ProfileResponseHandler();
-            const response = await auth.getSpecificUser(props.course.lecturerId);
-            const lecturer = responseHandler.handleReponse(response);
-
-            const lecturerDisplayName = lecturer.firstName + " " + lecturer.lastName;
+        setup(props: any) {
+            //todo this might not be a lecturer in the future
+            const lecturerDisplayName = props.lecturer.firstName + " " + props.lecturer.lastName;
 
             return {
                 lecturerDisplayName,

@@ -65,6 +65,8 @@
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.hasNested('semesterCount') }"
                                 placeholder="Semester Count"
+                                @keyup="updateSemesterCount($event.target.value)"
+                                @change="clearField($event.target.value)"
                             />
                             <p v-if="errorBag.hasNested('semesterCount')" class="error-message">
                                 {{ errorBag.getNested("semesterCount") }}
@@ -98,11 +100,11 @@
                 type: Boolean,
                 required: true,
             },
-            immatriculationstatus: {
+            immatriculationStatus: {
                 type: String,
                 required: true,
             },
-            matriculationid: {
+            matriculationId: {
                 type: String,
                 required: true,
             },
@@ -110,27 +112,44 @@
                 type: Array,
                 required: true,
             },
-            semestercount: {
+            semesterCount: {
                 type: Number,
                 required: true,
             },
         },
-        emits: ["update:selected-fields-of-study", "update:immatriculationstatus", "update:matriculationid", "update:semestercount"],
+        emits: ["update:selected-fields-of-study", "update:immatriculationStatus", "update:matriculationId", "update:semesterCount"],
         setup(props: any, { emit }: any) {
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
             let studentFieldsOfStudy = ref(props.selectedFieldsOfStudy);
+            let studentSemesterCount = ref(props.semesterCount);
 
             function updateFieldsOfStudy(value: any) {
                 studentFieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE);
                 emit("update:selected-fields-of-study", studentFieldsOfStudy);
             }
 
+            function updateSemesterCount(value: string) {
+                if (/[0-9]/g.test(value)) {
+                    emit("update:semesterCount", parseInt(value));
+                } else {
+                    emit("update:semesterCount", -1);
+                }
+            }
+
+            function clearField(value: string) {
+                if (!/[0-9]/g.test(value)) {
+                    studentSemesterCount.value = -1;
+                }
+            }
+
             return {
                 fieldsOfStudy,
                 updateFieldsOfStudy,
-                studentImmatriculationStatus: useModelWrapper(props, emit, "immatriculationstatus"),
-                studentMatriculationId: useModelWrapper(props, emit, "matriculationid"),
-                studentSemesterCount: useModelWrapper(props, emit, "semestercount"),
+                studentImmatriculationStatus: useModelWrapper(props, emit, "immatriculationStatus"),
+                studentMatriculationId: useModelWrapper(props, emit, "matriculationId"),
+                studentSemesterCount,
+                updateSemesterCount,
+                clearField,
             };
         },
     };

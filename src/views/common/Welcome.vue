@@ -1,29 +1,25 @@
 <template>
-    <div class="flex flex-col items-center justify-center w-full mt-20">
+    <div v-if="busy">
+        <loading-spinner />
+    </div>
+    <div v-else class="flex flex-col items-center justify-center w-full mt-20">
         <h1 class="text-4xl font-semibold text-blue-800">Welcome back, {{ name }}!</h1>
-        <div class="flex flex-col mt-5">
+        <div class="flex flex-col items-center mt-5">
             <h2 class="text-xl">
-                This application is work in progress. If you encounter any problems, please let us know on
-                <a
-                    target="_blank"
-                    class="text-blue-800 cursor-pointer"
-                    href="https://github.com/upb-uc4/ui-web/issues/new?assignees=&labels=&template=bug_report.md&title="
-                >
-                    GitHub
+                This application is work in progress. If you encounter any problems, please contact us via one of our communication
+                channels. These channels, as well as detailed information of versions of the individual services and a linked Github bug
+                report template can be found
+                <a>
+                    <router-link
+                        id="routeAboutLink"
+                        :to="{ name: 'about' }"
+                        class="font-semibold text-blue-800 hover:text-blue-900 hover:underline"
+                    >
+                        here
+                    </router-link>
                 </a>
-                and refer to the version numbers below.
+                .
             </h2>
-            <p class="mt-2 text-lg">
-                Frontend version:
-                <a class="text-blue-800 cursor-pointer" target="_blank" href="https://github.com/upb-uc4/ui-web/blob/master/CHANGELOG.md">{{
-                    frontEndVersion
-                }}</a>
-            </p>
-            <p class="text-lg">Authentication version: {{ authenticationManagementVersion }}</p>
-            <p class="text-lg">Course management version: {{ courseManagementVersion }}</p>
-            <p class="text-lg">User management version: {{ userManagementVersion }}</p>
-            <p class="text-lg">Hyperledger management version: {{ hyperledgerManagementVersion }}</p>
-            <p class="text-lg">Hyperledger course management version: {{ hyperledgerCourseManagementVersion }}</p>
         </div>
     </div>
 </template>
@@ -34,32 +30,48 @@
     import HyperledgerManagement from "@/api/HyperledgerManagement";
     import HyperledgerCourseManagement from "@/api/HyperledgerCourseManagement";
     import { useStore } from "@/store/store";
-    import { ref } from "vue";
+    import { ref, onBeforeMount } from "vue";
+    import LoadingSpinner from "@/components/loading/Spinner.vue";
+    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { Role } from "@/entities/Role";
+
     export default {
         name: "WelcomePage",
-        async setup() {
-            let store = useStore();
-            let name = await store.getters.user.firstName;
-            let frontEndVersion = "v" + process.env.VUE_APP_VERSION;
+        components: {
+            LoadingSpinner,
+        },
 
-            let authenticationManagementVersion = await AuthenticationManagement.getVersion();
+        async beforeRouteEnter(_from: any, _to: any, next: any) {
+            const response = await checkPrivilege(Role.LECTURER, Role.STUDENT, Role.ADMIN);
 
-            let courseManagementVersion = await CourseManagement.getVersion();
+            if (response.allowed) {
+                return next();
+            }
+            if (!response.authenticated) {
+                return next("/login");
+            }
 
-            let userManagementVersion = await UserManagement.getVersion();
+            return next("/redirect");
+        },
 
-            let hyperledgerManagementVersion = await HyperledgerManagement.getVersion();
+        setup() {
+            let busy = ref(false);
+            let name = ref("");
 
-            let hyperledgerCourseManagementVersion = await HyperledgerCourseManagement.getVersion();
+            onBeforeMount(() => {
+                getName();
+            });
+
+            async function getName() {
+                busy.value = true;
+                let store = useStore();
+                name.value = await store.getters.user.firstName;
+                busy.value = false;
+            }
 
             return {
                 name,
-                frontEndVersion,
-                authenticationManagementVersion,
-                courseManagementVersion,
-                userManagementVersion,
-                hyperledgerManagementVersion,
-                hyperledgerCourseManagementVersion,
+                busy,
             };
         },
     };

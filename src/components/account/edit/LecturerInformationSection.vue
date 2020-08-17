@@ -60,20 +60,20 @@
                 type: Boolean,
                 required: true,
             },
-            freetext: {
+            description: {
                 type: String,
                 required: true,
             },
-            researcharea: {
+            researchArea: {
                 type: String,
                 required: true,
             },
         },
-        emits: ["update:freetext", "update:researcharea"],
+        emits: ["update:description", "update:researchArea"],
         setup(props: any, { emit }: any) {
             return {
-                lecturerFreeText: useModelWrapper(props, emit, "freetext"),
-                lecturerResearchArea: useModelWrapper(props, emit, "researcharea"),
+                lecturerFreeText: useModelWrapper(props, emit, "description"),
+                lecturerResearchArea: useModelWrapper(props, emit, "researchArea"),
             };
         },
     };

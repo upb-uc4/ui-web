@@ -50,7 +50,6 @@ export default class AuthenticationManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                
             });
 
         if (result.returnValue) {

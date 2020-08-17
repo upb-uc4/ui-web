@@ -17,8 +17,8 @@
 
         <div>
             <personal-section
-                v-model:firstName="lecturer.firstName"
-                v-model:lastName="lecturer.lastName"
+                v-model:first-name="lecturer.firstName"
+                v-model:last-name="lecturer.lastName"
                 :birth-date="lecturer.birthDate"
                 @save="save"
             />

@@ -50,7 +50,7 @@ var user: User = {
 var student: Student = {
     ...user,
     immatriculationStatus: "Is still a Jedi Knight",
-    matriculationId: "2187",
+    matriculationId: "1234567",
     semesterCount: 69,
     fieldsOfStudy: [FieldOfStudy.COMPUTER_SCIENCE],
 };
@@ -58,18 +58,38 @@ var student: Student = {
 test("Create user", async () => {
     const success = await userManagement.createUser(authUser, student);
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });
 
 test("Get specific user", async () => {
-    await new Promise((r) => setTimeout(r, 10000));
     var result = false;
     const user = await userManagement.getSpecificUser(student.username);
     result = user.returnValue.username == student.username;
     expect(result).toBe(true);
 });
 
+test("Get lecturer user", async () => {
+    var result = false;
+    const user = await userManagement.getLecturer("lecturer");
+    result = user.returnValue.username == "lecturer";
+    expect(result).toBe(true);
+});
+
+test("Get admin user", async () => {
+    var result = false;
+    const user = await userManagement.getAdmin("admin");
+    result = user.returnValue.username == "admin";
+    expect(result).toBe(true);
+});
+
+test("Get student user", async () => {
+    var result = false;
+    const user = await userManagement.getStudent("student");
+    result = user.returnValue.username == "student";
+    expect(result).toBe(true);
+});
+
 test("Get own user", async () => {
-    await new Promise((r) => setTimeout(r, 10000));
     var result = false;
     const user = await userManagement.getOwnUser();
     result = user.returnValue.username == adminAuth.username;
@@ -89,15 +109,39 @@ test("Get all students", async () => {
     expect(result).toBe(true);
 });
 
+test("Get users by usernames", async () => {
+    const users = await userManagement.getUsers("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(2);
+});
+
+test("Get lecturers by usernames", async () => {
+    const users = await userManagement.getLecturers("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
+test("Get students by usernames", async () => {
+    const users = await userManagement.getStudents("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
+test("Get admins by usernames", async () => {
+    const users = await userManagement.getAdmins("student", "lecturer", "admin");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
 test("Update user", async () => {
-    await new Promise((r) => setTimeout(r, 5000));
     student.immatriculationStatus = "Is a Jedi Master";
     const success = await userManagement.updateUser(student);
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });
 
 test("Delete user", async () => {
-    await new Promise((r) => setTimeout(r, 5000));
     const success = await userManagement.deleteUser(student.username);
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });

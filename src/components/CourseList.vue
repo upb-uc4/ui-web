@@ -1,9 +1,14 @@
 <template>
     <div>
-        <div v-for="course in courses" :key="course.courseId">
-            <lecturer-course v-if="isLecturer" :course="course" class="mb-8" />
-            <student-course v-if="isStudent" :course="course" class="mb-8" />
-        </div>
+        <suspense>
+            <template #default>
+                <div v-for="course in shownCourses" :key="course.courseId">
+                    <lecturer-course v-if="isLecturer" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+                    <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+                </div>
+            </template>
+            <template #fallback />
+        </suspense>
     </div>
 </template>
 
@@ -14,6 +19,11 @@
     import StudentCourse from "./StudentCourse.vue";
     import CourseManagement from "@/api/CourseManagement";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import Course from "../api/api_models/course_management/Course";
+    import APIResponse from "../api/helpers/models/APIResponse";
+    import { computed } from "vue";
+    import { CourseType } from "@/entities/CourseType";
+    import UserManagement from "@/api/UserManagement";
 
     export default {
         name: "CourseList",
@@ -21,30 +31,70 @@
             LecturerCourse,
             StudentCourse,
         },
-        async setup() {
+        props: {
+            selectedType: {
+                type: String,
+                required: true,
+            },
+            filter: {
+                type: String,
+                required: true,
+            },
+        },
+
+        async setup(props: any) {
             const store = useStore();
-            let role = await store.getters.role;
-            let roles = Object.values(Role).filter((e) => e != Role.NONE);
-            let isLecturer: boolean = role == Role.LECTURER;
-            let isStudent: boolean = role == Role.STUDENT;
-            let courseManagement: CourseManagement = new CourseManagement();
-            let myId = (await store.getters.loginData).username;
+            const role = await store.getters.role;
+            const roles = Object.values(Role).filter((e) => e != Role.NONE);
+            const isLecturer: boolean = role == Role.LECTURER;
+            const isStudent: boolean = role == Role.STUDENT;
+            const courseManagement: CourseManagement = new CourseManagement();
+            const userManagement: UserManagement = new UserManagement();
 
             const genericResponseHandler = new GenericResponseHandler();
-            const response = await courseManagement.getCourses();
-            let courses = genericResponseHandler.handleReponse(response);
+            let courses: Course[] = [];
+            let response: APIResponse<Course[]>;
 
             if (isLecturer) {
-                courses = courses.filter((course) => course.lecturerId == myId);
+                let username = (await store.getters.loginData).username;
+                response = await courseManagement.getCourses(undefined, username);
+                courses = genericResponseHandler.handleReponse(response);
+            } else if (isStudent) {
+                response = await courseManagement.getCourses();
+                courses = genericResponseHandler.handleReponse(response);
             }
+
+            const lecturerIds = new Set(courses.map((course) => course.lecturerId));
+            const resp = await userManagement.getLecturers(...lecturerIds);
+            const lecturers = genericResponseHandler.handleReponse(resp);
+
+            function findLecturer(course: Course) {
+                return lecturers.filter((lecturer) => lecturer.username === course.lecturerId)[0];
+            }
+
+            let shownCourses = computed(() => {
+                let filteredCourses =
+                    props.selectedType == ("All" as CourseType) ? courses : courses.filter((e) => e.courseType == props.selectedType);
+                if (props.filter != "") {
+                    let filter = props.filter.toLowerCase();
+                    filteredCourses = filteredCourses.filter(
+                        (e) =>
+                            e.courseName.toLowerCase().includes(filter) ||
+                            e.courseDescription.toLowerCase().includes(filter) ||
+                            e.courseId.toLowerCase().includes(filter) ||
+                            e.lecturerId.toLowerCase().includes(filter)
+                    );
+                }
+                return filteredCourses;
+            });
 
             return {
                 role,
                 roles,
-                myId,
-                courses,
+                shownCourses,
                 isLecturer,
                 isStudent,
+                findLecturer,
             };
         },
     };

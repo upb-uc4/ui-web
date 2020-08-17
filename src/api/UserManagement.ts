@@ -48,6 +48,54 @@ export default class UserManagement extends Common {
         return result;
     }
 
+    async getUsers(...usernames: string[]): Promise<APIResponse<User_List>> {
+        let resp = await this._getByUsername(usernames, "/users");
+        return resp as APIResponse<User_List>;
+    }
+
+    async getStudents(...usernames: string[]): Promise<APIResponse<Student[]>> {
+        let resp = await this._getByUsername(usernames, "/students");
+        return resp as APIResponse<Student[]>;
+    }
+
+    async getLecturers(...usernames: string[]): Promise<APIResponse<Lecturer[]>> {
+        let resp = await this._getByUsername(usernames, "/lecturers");
+        return resp as APIResponse<Lecturer[]>;
+    }
+
+    async getAdmins(...usernames: string[]): Promise<APIResponse<Admin[]>> {
+        let resp = await this._getByUsername(usernames, "/admins");
+        return resp as APIResponse<Admin[]>;
+    }
+
+    async _getByUsername(usernames: string[], endpoint: string) {
+        let result: APIResponse<User_List | Student[] | Lecturer[] | Admin[]> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as User_List | Student[] | Lecturer[] | Admin[],
+            statusCode: 0,
+        };
+
+        const requestParameter = { ...(await this._authHeader), params: {} as any };
+        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b);
+
+        await this._axios
+            .get(endpoint, requestParameter)
+            .then((response: AxiosResponse) => {
+                result.returnValue = response.data;
+                result.statusCode = response.status;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
+
+        return result;
+    }
+
     async deleteUser(username: string): Promise<APIResponse<boolean>> {
         let result: APIResponse<boolean> = {
             error: {} as APIError,
@@ -170,7 +218,6 @@ export default class UserManagement extends Common {
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
-                
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
@@ -178,7 +225,6 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                
             });
         return result;
     }
@@ -205,10 +251,82 @@ export default class UserManagement extends Common {
 
         //successfully received role
 
-        let endpoint = UserManagement._createEndpointByRole(role.returnValue);
+        switch (role.returnValue) {
+            case Role.ADMIN:
+                return await this.getAdmin(username);
+                break;
+            case Role.STUDENT:
+                return await this.getStudent(username);
+                break;
+            case Role.LECTURER:
+                return await this.getLecturer(username);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    async getLecturer(username: string): Promise<APIResponse<Lecturer>> {
+        let result: APIResponse<Lecturer> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Lecturer,
+            statusCode: 0,
+        };
 
         await this._axios
-            .get(`${endpoint}/${username}`, await this._authHeader)
+            .get(`/lecturers/${username}`, await this._authHeader)
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status;
+                result.returnValue = response.data;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
+
+        return result;
+    }
+
+    async getStudent(username: string): Promise<APIResponse<Student>> {
+        let result: APIResponse<Student> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Student,
+            statusCode: 0,
+        };
+
+        await this._axios
+            .get(`/students/${username}`, await this._authHeader)
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status;
+                result.returnValue = response.data;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
+
+        return result;
+    }
+
+    async getAdmin(username: string): Promise<APIResponse<Admin>> {
+        let result: APIResponse<Admin> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: {} as Admin,
+            statusCode: 0,
+        };
+
+        await this._axios
+            .get(`/admins/${username}`, await this._authHeader)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
@@ -246,7 +364,6 @@ export default class UserManagement extends Common {
             .then((reponse: AxiosResponse) => {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
-                
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
@@ -255,7 +372,6 @@ export default class UserManagement extends Common {
                 } else {
                     result.networkError = true;
                 }
-                
             });
 
         return result;

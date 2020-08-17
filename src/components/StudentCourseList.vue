@@ -1,13 +1,14 @@
 <template>
     <div class="w-full max-w-4xl">
-        <div class="flex">
+        <div class="flex flex-col">
             <div class="w-full pt-2 mb-8">
                 <seach-bar v-model:message="message" @refresh="refresh" />
             </div>
+            <course-type-filter v-model:selected-type="selectedType" />
         </div>
         <suspense>
             <template #default>
-                <courseList :key="refreshKey" />
+                <courseList :key="refreshKey" :selected-type="selectedType" :filter="message" />
             </template>
             <template #fallback>
                 <loading-component />
@@ -21,6 +22,8 @@
     import LoadingComponent from "./loading/Spinner.vue";
     import SeachBar from "./SearchBar.vue";
     import { ref } from "vue";
+    import CourseTypeFilter from "./CourseTypeFilter.vue";
+    import { CourseType } from "@/entities/CourseType";
 
     export default {
         name: "StudentCourseList",
@@ -28,10 +31,13 @@
             CourseList,
             LoadingComponent,
             SeachBar,
+            CourseTypeFilter,
         },
         setup() {
             let message = ref("");
             let refreshKey = ref(false);
+
+            let selectedType = ref("All" as CourseType);
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;
@@ -40,6 +46,7 @@
                 refreshKey,
                 refresh,
                 message,
+                selectedType,
             };
         },
     };

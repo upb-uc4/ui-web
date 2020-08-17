@@ -49,7 +49,7 @@
             },
         },
         emits: ["changed"],
-        setup(props: any, { emit }) {
+        setup(props: any, { emit }: any) {
             let input = ref(props.inputList);
             let output = ref([] as string[]);
             output.value.push(...(props.preSelection as string[]));

@@ -1,13 +1,16 @@
 <template>
-    <div class="relative cursor-pointer" @mouseleave="hide" @mouseover="show">
-        <slot name="hook"></slot>
+    <div class="relative" @mouseleave="hide" @mouseover="show">
+        <div class="cursor-default">
+            <slot name="hook"></slot>
+        </div>
+
         <div v-show="isVisible">
             <slot name="content"></slot>
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
     import { ref } from "vue";
 
     export default {

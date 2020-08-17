@@ -16,7 +16,7 @@ const studentAuth = { username: "student", password: "student" };
 const lecturerAuth = { username: "lecturer", password: "lecturer" };
 var course = new CourseEntity();
 var createdCourse: Course = {} as Course;
-jest.useFakeTimers();
+jest.setTimeout(30000);
 
 beforeAll(async () => {
     const success = await UserManagement.login(lecturerAuth);
@@ -41,30 +41,45 @@ test("Create course", async () => {
     course.maxParticipants = 10;
 
     const success = await courseManagement.createCourse(course);
-
     expect(success.returnValue).toBe(true);
+    await new Promise((r) => setTimeout(r, 5000));
 });
 
 test("Get all courses", async () => {
-    setTimeout(async () => {
-        const courses = await courseManagement.getCourses();
-        const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
-        expect(filteredCourses.length > 0).toBe(true);
-        createdCourse = filteredCourses[0];
-    }, 10000);
+    const courses = await courseManagement.getCourses();
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    expect(filteredCourses.length > 0).toBe(true);
+    createdCourse = filteredCourses[0];
+});
+
+test("Get lecturers courses", async () => {
+    const courses = await courseManagement.getCourses(undefined, "lecturer");
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    expect(filteredCourses.length > 0).toBe(true);
+    createdCourse = filteredCourses[0];
+});
+
+test("Get courses by name", async () => {
+    const courses = await courseManagement.getCourses("Best test course ever!", undefined);
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    expect(filteredCourses.length > 0).toBe(true);
+    createdCourse = filteredCourses[0];
+});
+
+test("Get lecturers courses by name", async () => {
+    const courses = await courseManagement.getCourses("Best test course ever!", "lecturer");
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    expect(filteredCourses.length > 0).toBe(true);
+    createdCourse = filteredCourses[0];
 });
 
 test("Update course", async () => {
-    setTimeout(async () => {
-        createdCourse.courseName = "Worst test course ever!";
-        const success = await courseManagement.updateCourse(createdCourse);
-        expect(success.returnValue).toBe(true);
-    }, 10000);
+    createdCourse.courseName = "Worst test course ever!";
+    const success = await courseManagement.updateCourse(createdCourse);
+    expect(success.returnValue).toBe(true);
 });
 
 test("Delete course", async () => {
-    setTimeout(async () => {
-        const success = await courseManagement.deleteCourse(createdCourse.courseId);
-        expect(success.returnValue).toBe(true);
-    }, 10000);
+    const success = await courseManagement.deleteCourse(createdCourse.courseId);
+    expect(success.returnValue).toBe(true);
 });

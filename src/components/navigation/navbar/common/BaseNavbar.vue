@@ -2,7 +2,7 @@
     <header class="flex items-center justify-between px-4 bg-gray-800 lg:px-8 md:h-20 min-h-20">
         <div class="flex items-center w-full">
             <div class="flex items-center pr-8 mr-8 border-r-4 border-gray-100">
-                <button @click="routeLogo" class="flex text-3xl font-semibold tracking-wider text-gray-100 outline-none">
+                <button class="flex text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">
                     UC4
                 </button>
             </div>
@@ -11,7 +11,11 @@
                 <nav class="items-center justify-between w-full md:flex" :class="{ hidden: !isBurgerMenuOpen }">
                     <ul class="justify-between pt-2 font-semibold tracking-wider text-gray-100 md:flex">
                         <slot></slot>
+                        <li>
+                            <router-link id="routeAbout" :to="{ name: 'about' }" class="navbar-menu">About</router-link>
+                        </li>
                     </ul>
+
                     <div class="pb-3">
                         <slot name="right"></slot>
                     </div>
@@ -39,7 +43,7 @@
 <script lang="ts">
     import { ref, computed } from "vue";
     import { useStore } from "@/store/store";
-    import Router from "@/router/index"
+    import Router from "@/router/index";
 
     export default {
         name: "BaseNavbar",

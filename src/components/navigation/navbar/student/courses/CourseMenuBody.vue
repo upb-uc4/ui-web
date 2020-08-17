@@ -1,7 +1,7 @@
 <template>
     <section class="flex flex-col lg:flex-row px-8 py-6 border-b -mx-4">
         <ul class="w-full lg:w-1/2 px-2">
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
                     title="All Courses"
                     description="Complete overview of all courses"
@@ -9,7 +9,7 @@
                     target-route-name="student.home"
                 />
             </li>
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
                     title="Favorite Courses"
                     description="All courses you marked as favorite"
@@ -17,7 +17,7 @@
                     target-route-name="home"
                 />
             </li>
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
                     title="Active Courses"
                     description="Courses you are currently enrolled in"
@@ -27,7 +27,7 @@
             </li>
         </ul>
         <ul class="w-full lg:w-1/2 px-4">
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
                     title="My Courses"
                     description="All courses you ever participated in"
@@ -35,7 +35,7 @@
                     target-route-name="home"
                 />
             </li>
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item
                     title="Organisational Stuff"
                     description="Probably meant to click this one"
@@ -43,15 +43,15 @@
                     target-route-name="home"
                 />
             </li>
-            <li class="mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
                 <menu-item title="Play Chess" description="Check mate" icon-class="fa-chess-knight" target-route-name="home" />
             </li>
         </ul>
     </section>
 </template>
 
-<script>
-    import MenuItem from "../../common/MenuItem";
+<script lang="ts">
+    import MenuItem from "../../common/MenuItem.vue";
 
     export default {
         name: "CourseMenuBody",

@@ -4,7 +4,7 @@
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
                 <label class="block text-gray-600">
-                    This is some long detailed description which is part towards a better form.
+                    General Information about the Course
                 </label>
             </div>
             <div class="w-full lg:w-2/3">
@@ -109,6 +109,7 @@
                 type: String,
             },
         },
+        emits: ["update:type", "update:name", "update:language", "update:description"],
         setup(props: any, { emit }: any) {
             const availableCourseLanguages = Object.values(Language).filter((e) => e != Language.NONE);
             const availableCourseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
