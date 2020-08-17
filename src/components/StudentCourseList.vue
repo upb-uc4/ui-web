@@ -6,20 +6,12 @@
             </div>
             <course-type-filter v-model:selected-type="selectedType" />
         </div>
-        <suspense>
-            <template #default>
-                <courseList :key="refreshKey" :selected-type="selectedType" :filter="message" />
-            </template>
-            <template #fallback>
-                <loading-component />
-            </template>
-        </suspense>
+        <courseList :key="refreshKey" :selected-type="selectedType" :filter="message" />
     </div>
 </template>
 
 <script lang="ts">
     import CourseList from "./CourseList.vue";
-    import LoadingComponent from "./loading/Spinner.vue";
     import SeachBar from "./SearchBar.vue";
     import { ref } from "vue";
     import CourseTypeFilter from "./CourseTypeFilter.vue";
@@ -29,7 +21,6 @@
         name: "StudentCourseList",
         components: {
             CourseList,
-            LoadingComponent,
             SeachBar,
             CourseTypeFilter,
         },
