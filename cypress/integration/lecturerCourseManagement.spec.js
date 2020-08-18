@@ -24,7 +24,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
         cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "lecturer");
+        cy.url().should("contain", "course-management");
     }); 
 
     it("Show new course page", () => {
@@ -93,7 +93,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Create Course works", () => {
         cy.get('button[id="createCourse"]').click();
-        cy.url().should("contain", "lecturer");
+        cy.url().should("contain", "course-management");
     });
 
     it("Course was created", () => {
@@ -148,7 +148,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Assert course deletion", () => {
-        cy.url().should("contain", "/lecturer");
+        cy.url().should("contain", "/course-management");
         cy.get("div").contains("test-CourseName-cypress").should("not.exist");
     });
 });

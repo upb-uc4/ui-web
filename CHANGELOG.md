@@ -1,4 +1,4 @@
-# [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-XX-XX)
+# [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
 - add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
 - add about page containing information of our software, team and currently running versions [#322](https://github.com/upb-uc4/ui-web/pull/322)
