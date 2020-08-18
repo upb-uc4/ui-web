@@ -53,7 +53,7 @@
             }
 
             let currentYear = new Date().getFullYear();
-            let selectableYears = [];
+            let selectableYears: number[] = [];
             for (let index = currentYear; index >= currentYear - 80; index--) {
                 selectableYears.push(index);
             }

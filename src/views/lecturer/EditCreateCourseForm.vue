@@ -108,6 +108,7 @@
     import { checkPrivilege } from "@/use/PermissionHelper";
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
+    import { onBeforeRouteLeave } from "vue-router";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -131,32 +132,6 @@
 
             return next("/redirect");
         },
-
-        async beforeRouteLeave(to: any, from: any, next: any) {
-            if (this.success) {
-                return next();
-            }
-            if (this.hasInput) {
-                const modal = this.unsavedChangesModal;
-                let action = modal.action;
-                const response = await modal.show();
-                switch (response) {
-                    case action.CANCEL: {
-                        next(false);
-                        break;
-                    }
-                    case action.CONFIRM: {
-                        next(true);
-                        break;
-                    }
-                    default: {
-                        next(true);
-                    }
-                }
-            } else {
-                next(true);
-            }
-        },
         props: {
             editMode: {
                 type: Boolean,
@@ -177,7 +152,33 @@
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
-            const errorBag: ErrorBag = reactive(new ErrorBag());
+            var errorBag: ErrorBag = reactive(new ErrorBag());
+
+            onBeforeRouteLeave(async (to, from, next) => {
+                if (success.value) {
+                    return next();
+                }
+                if (hasInput.value) {
+                    const modal = unsavedChangesModal.value;
+                    let action = modal.action;
+                    const response = await modal.show();
+                    switch (response) {
+                        case action.CANCEL: {
+                            next(false);
+                            break;
+                        }
+                        case action.CONFIRM: {
+                            next(true);
+                            break;
+                        }
+                        default: {
+                            next(true);
+                        }
+                    }
+                } else {
+                    next(true);
+                }
+            });
 
             onBeforeMount(() => {
                 getLecturerUsername();
@@ -235,9 +236,10 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag.replaceAllWith(handler.errorList);
+                    errorBag = new ErrorBag(handler.errorList);
+                    //errorBag.replaceAllWith(handler.errorList);
                     //TODO: change the following line?
-                    this.$forceUpdate();
+                    //this.$forceUpdate();
                 }
             }
 
@@ -250,9 +252,9 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag.replaceAllWith(handler.errorList);
+                    //errorBag.replaceAllWith(handler.errorList);
                     //TODO: change the following line?
-                    this.$forceUpdate();
+                    //this.$forceUpdate();
                 }
             }
 
