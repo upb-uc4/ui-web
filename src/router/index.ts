@@ -1,15 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/common/Login.vue";
-import StudentHomeView from "../views/student/Home.vue";
-import LecturerHomeView from "../views/lecturer/Home.vue";
-import AdminHomeView from "../views/admin/Home.vue";
-import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
-import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
+import StudentCourseView from "../views/student/StudentCourseList.vue";
+import LecturerCourseView from "../views/lecturer/LecturerCourseList.vue";
+import AdminAccountListView from "../views/admin/AdminAccountList.vue";
+import CourseFormSuspenseWrapper from "../views/lecturer/EditCreateCourseForm.vue";
+import AccountFormSuspenseWrapper from "../views/admin/EditCreateAccountForm.vue";
 import Redirect from "../views/errors/403.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
 import Settings from "../views/common/Settings.vue";
 import PageNotFound from "../views/errors/404.vue";
-import WelcomePage from "../views/common/WelcomePageWrapper.vue";
+import WelcomePage from "../views/common/Welcome.vue";
+import AboutPage from "../views/common/About.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -26,6 +27,14 @@ const router = createRouter({
             },
         },
         {
+            path: "/about",
+            name: "about",
+            component: AboutPage,
+            meta: {
+                title: "About" + suffix,
+            },
+        },
+        {
             path: "/login",
             name: "login",
             component: LoginView,
@@ -34,28 +43,28 @@ const router = createRouter({
             },
         },
         {
-            path: "/student",
-            name: "student.home",
-            component: StudentHomeView,
+            path: "/courses",
+            name: "student.courses",
+            component: StudentCourseView,
             meta: {
                 title: "Home" + suffix,
             },
         },
         {
-            path: "/lecturer",
-            name: "lecturer.home",
-            component: LecturerHomeView,
+            path: "/course-management",
+            name: "lecturer.courses",
+            component: LecturerCourseView,
             meta: {
-                title: "Home" + suffix,
+                title: "Courses" + suffix,
             },
         },
 
         {
-            path: "/admin",
-            name: "admin.home",
-            component: AdminHomeView,
+            path: "/accounts",
+            name: "accountlist",
+            component: AdminAccountListView,
             meta: {
-                title: "Home" + suffix,
+                title: "Accounts" + suffix,
             },
         },
 

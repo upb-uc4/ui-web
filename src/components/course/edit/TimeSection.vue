@@ -4,7 +4,8 @@
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-md font-medium mb-2">Time</label>
                 <label class="block text-gray-600">
-                    This section is disabled for now as there is no Vue3 datepicker plugin yet.
+                    Information about Start and End Dates of the Course as well as Slot Times. This section is disabled for now as there is
+                    no Vue3 datepicker plugin yet.
                 </label>
             </div>
             <div class="w-full lg:w-2/3 flex">

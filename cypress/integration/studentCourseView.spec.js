@@ -8,7 +8,7 @@ describe("Student course view", () => {
         cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
         cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("All Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "lecturer");
+        cy.url().should("contain", "course-management");
         // create course
         cy.get('button[id="addCourse"]').click({ force: true });
         cy.get("input[type='radio']").eq(0).click();
@@ -17,7 +17,7 @@ describe("Student course view", () => {
         cy.get('textarea[id="courseDescription"]').type("test-courseDescription-cypress");
         cy.get('input[id="maxParticipants"]').clear().type("1");
         cy.get('button[id="createCourse"]').click();
-        cy.url().should("contain", "lecturer");
+        cy.url().should("contain", "course-management");
         cy.wait(1000);
     });
 
@@ -31,12 +31,12 @@ describe("Student course view", () => {
     });
 
     it("Navigate to course list", () => {
-        cy.get("div[id='menu_courses']").children().eq(0).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(0).get("span").contains("All Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("All Courses").click();
+        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
+        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
+        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
+        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "student");
+        cy.url().should("contain", "courses");
     }); 
 
     it("Course exists", () => {
@@ -55,7 +55,7 @@ describe("Student course view", () => {
         cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
         cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("All Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "lecturer");
+        cy.url().should("contain", "course-management");
         cy.get("div").contains("test-courseName-cypress").parent().parent().find("button[id='editCourse']").click();
         cy.get("button[id='deleteCourse']").click();
         cy.get('button[id="deleteCourseModalDelete"]').click();
