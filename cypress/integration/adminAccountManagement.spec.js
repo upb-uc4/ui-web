@@ -21,12 +21,12 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Navigate to accountlist", () => {
-        cy.get("div[id='menu_manageAccounts']").children().eq(0).should("not.be.visible");
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
         cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(0).get("span").contains("All Users").should("be.visible");
-        cy.get("div[id='menu_manageAccounts']").children().eq(0).get("a").contains("All Users").click();
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
     });    
 
     it("List contains admin, student and lecturer", () => {
@@ -58,22 +58,19 @@ describe("Account creation, edition and deletion", () => {
 
         // student
         cy.get("input[type='radio']").eq(2).click();
-        cy.get("input[id='immatriculationStatus']").should("exist");
         cy.get("input[id='matriculationId']").should("exist");
-        cy.get("input[id='semesterCount']").should("exist");
-        cy.get("select[id='fieldsOfStudy-1']").should("exist");
     });
 
     it("Show unsaved changes modal", () => {
-        cy.get("button").contains("Cancel").click();
+        cy.get("button[id='cancel']").click();
         cy.wait(100);
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains("Do you really want to continue and leave this page? You have unsaved changes.");
-        cy.get("#modal-wrapper").contains("Cancel").click();
 
-        cy.get("button").contains("Cancel").click();
+        cy.get("button[id='unsavedChangesModalCancel']").click();
         cy.wait(100);
-        cy.get("button").contains("Leave").click();
+        cy.get("button[id='cancel']").click();
+        cy.get("button[id='unsavedChangesModalConfirmLeave']").click();
     });
 
     it("Show new account page", () => {
@@ -127,22 +124,14 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
-    it("Can enter immatriculationStatus", () => {
-        cy.get("input[id='immatriculationStatus']").type("IN");
-    });
-
     it("Can enter matriculationId", () => {
-        cy.get("input[id='matriculationId']").type("15");
-    });
-
-    it("Can enter semesterCount", () => {
-        cy.get("input[id='semesterCount']").clear().type("1");
+        cy.get("input[id='matriculationId']").type("1234567");
     });
 
     it("Create account works", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains("cypress");
@@ -188,23 +177,13 @@ describe("Account creation, edition and deletion", () => {
         cy.get('select[id="country"]').select("United States");
     });
 
-    it("Select fields of study is working properly", () => {
-        cy.get("select[id='fieldsOfStudy-1']").select("Economics");
-        cy.get("select[id='fieldsOfStudy-2']").select("Physics");
-        cy.get("select[id='fieldsOfStudy-3']").find("option").contains("Computer Science").should("exist");
-        cy.get("select[id='fieldsOfStudy-3']").find("option").contains("Physics").should("not.exist");
-        cy.get("select[id='fieldsOfStudy-3']").select("Education");
-        cy.get("button[id='removeFieldOfStudy-2']").click();
-        cy.get("select[id='fieldsOfStudy-3']").select("Computer Science");
-    });
-
     it("Can change name", () => {
         cy.get('input[id="firstName"]').clear().type("newName");
     });
 
     it("Update working correctly", () => {
         cy.get("button[id='saveChanges']").click();
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
     });
 
     //delete account
@@ -229,7 +208,7 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Assert account deletion", () => {
-        cy.url().should("contain", "/admin");
+        cy.url().should("contain", "/accounts");
         cy.get("div[id='user_cypress']").should("not.exist")
         cy.get("div[id='user_student']").should("exist")
         cy.get("div[id='user_lecturer']").should("exist")

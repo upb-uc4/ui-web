@@ -1,5 +1,8 @@
 <template>
-    <div class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
+    <div v-if="busy">
+        <loading-component />
+    </div>
+    <div v-else class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
         <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
             <i class="text-xl fas fa-chevron-left"></i>
             <span class="ml-1 text-sm font-bold">Back</span>
@@ -122,6 +125,7 @@
                 </div>
             </section>
             <delete-account-modal ref="deleteModal" />
+            <unsaved-changes-modal ref="unsavedChangesModal" />
         </div>
     </div>
 </template>
@@ -129,7 +133,7 @@
 <script lang="ts">
     import Router from "@/router/";
     import { Role } from "@/entities/Role";
-    import { ref, reactive, computed } from "vue";
+    import { ref, reactive, computed, onBeforeMount } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import UserManagement from "@/api/UserManagement";
     import StudentEntity from "@/entities/StudentEntity";
@@ -151,6 +155,9 @@
     import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
     import LecturerInformationSection from "@/components/account/edit/LecturerInformationSection.vue";
     import StudentInformationSection from "@/components/account/edit/StudentInformationSection.vue";
+    import LoadingComponent from "../../components/loading/Spinner.vue";
+    import { checkPrivilege } from "@/use/PermissionHelper";
+    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -161,6 +168,46 @@
             PersonalInformationSection,
             LecturerInformationSection,
             StudentInformationSection,
+            UnsavedChangesModal,
+            LoadingComponent,
+        },
+        async beforeRouteEnter(_to: any, _from: any, next: any) {
+            const response = await checkPrivilege(Role.ADMIN);
+
+            if (response.allowed) {
+                return next();
+            }
+            if (!response.authenticated) {
+                return next("/login");
+            }
+
+            return next("/redirect");
+        },
+
+        async beforeRouteLeave(to: any, from: any, next: any) {
+            if (this.success) {
+                return next();
+            }
+            if (this.hasInput) {
+                const modal = this.unsavedChangesModal;
+                let action = modal.action;
+                const response = await modal.show();
+                switch (response) {
+                    case action.CANCEL: {
+                        next(false);
+                        break;
+                    }
+                    case action.CONFIRM: {
+                        next(true);
+                        break;
+                    }
+                    default: {
+                        next(true);
+                    }
+                }
+            } else {
+                next(true);
+            }
         },
         props: {
             editMode: {
@@ -169,7 +216,8 @@
             },
         },
         emits: ["update:has-input", "update:success"],
-        async setup(props: any, { emit }: any) {
+        setup(props: any, { emit }: any) {
+            let busy = ref(false);
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
@@ -188,6 +236,7 @@
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
             let deleteModal = ref();
+            let unsavedChangesModal = ref();
 
             const errorBag: ErrorBag = reactive(new ErrorBag());
 
@@ -199,7 +248,14 @@
                 return account.user.role === Role.STUDENT;
             });
 
-            if (props.editMode) {
+            onBeforeMount(() => {
+                if (props.editMode) {
+                    getUser();
+                }
+            });
+
+            async function getUser() {
+                busy.value = true;
                 const userManagement: UserManagement = new UserManagement();
 
                 const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string);
@@ -223,6 +279,7 @@
                         initialAccount.admin = JSON.parse(JSON.stringify(account.admin));
                     }
                 }
+                busy.value = false;
             }
 
             function updatePicture() {}
@@ -361,6 +418,7 @@
             }
 
             return {
+                busy,
                 title,
                 account,
                 success,
@@ -374,6 +432,7 @@
                 deleteAccount,
                 confirmDeleteAccount,
                 deleteModal,
+                unsavedChangesModal,
                 errorBag: errorBag,
             };
         },

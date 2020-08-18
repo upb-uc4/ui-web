@@ -11,7 +11,11 @@
                 <nav class="items-center justify-between w-full md:flex" :class="{ hidden: !isBurgerMenuOpen }">
                     <ul class="justify-between pt-2 font-semibold tracking-wider text-gray-100 md:flex">
                         <slot></slot>
+                        <li>
+                            <router-link id="routeAbout" :to="{ name: 'about' }" class="navbar-menu">About</router-link>
+                        </li>
                     </ul>
+
                     <div class="pb-3">
                         <slot name="right"></slot>
                     </div>
