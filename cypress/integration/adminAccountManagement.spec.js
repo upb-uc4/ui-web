@@ -58,10 +58,7 @@ describe("Account creation, edition and deletion", () => {
 
         // student
         cy.get("input[type='radio']").eq(2).click();
-        cy.get("input[id='immatriculationStatus']").should("exist");
         cy.get("input[id='matriculationId']").should("exist");
-        cy.get("input[id='semesterCount']").should("exist");
-        cy.get("select[id='fieldsOfStudy-1']").should("exist");
     });
 
     it("Show unsaved changes modal", () => {
@@ -127,16 +124,8 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
-    it("Can enter immatriculationStatus", () => {
-        cy.get("input[id='immatriculationStatus']").type("IN");
-    });
-
     it("Can enter matriculationId", () => {
         cy.get("input[id='matriculationId']").type("1234567");
-    });
-
-    it("Can enter semesterCount", () => {
-        cy.get("input[id='semesterCount']").clear().type("1");
     });
 
     it("Create account works", () => {
@@ -186,16 +175,6 @@ describe("Account creation, edition and deletion", () => {
     it("Country enum is filled", () => {
         cy.get('select[id="country"]').select("Germany");
         cy.get('select[id="country"]').select("United States");
-    });
-
-    it("Select fields of study is working properly", () => {
-        cy.get("select[id='fieldsOfStudy-1']").select("Economics");
-        cy.get("select[id='fieldsOfStudy-2']").select("Physics");
-        cy.get("select[id='fieldsOfStudy-3']").find("option").contains("Computer Science").should("exist");
-        cy.get("select[id='fieldsOfStudy-3']").find("option").contains("Physics").should("not.exist");
-        cy.get("select[id='fieldsOfStudy-3']").select("Education");
-        cy.get("button[id='removeFieldOfStudy-2']").click();
-        cy.get("select[id='fieldsOfStudy-3']").select("Computer Science");
     });
 
     it("Can change name", () => {
