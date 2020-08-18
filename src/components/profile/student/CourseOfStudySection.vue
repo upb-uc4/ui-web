@@ -24,13 +24,13 @@
                             />
                         </div>
                         <div v-if="latest != ''" class="ml-4 flex flex-col">
-                            <label class="mb-3 text-sm font-medium text-gray-700 flex">Latest Immatriculation (<button
-                                class="cursor-pointer text-sm font-medium navigation-link"
-                                @click="showHistory"
-                            >
-                                view history
-                            </button>
-                                )</label>
+                            <label class="mb-3 text-sm font-medium text-gray-700 flex">
+                                Latest Immatriculation (
+                                <button class="cursor-pointer text-sm font-medium navigation-link" @click="showHistory">
+                                    view history
+                                </button>
+                                )
+                            </label>
                             <input disabled class="form-input input-text" :value="latest" />
                         </div>
                     </div>
