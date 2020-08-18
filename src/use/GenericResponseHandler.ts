@@ -5,7 +5,7 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
     handleReponse<T>(response: APIResponse<T>): T {
         if (response.networkError) {
             //TODO show toast
-            alert("Network Error");
+            console.log("Network Error");
             return response.returnValue;
         }
         switch (response.statusCode) {
