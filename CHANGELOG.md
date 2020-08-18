@@ -1,3 +1,7 @@
+# [v.0.6.1](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-XX-XX)
+## Bugfix
+- add a timeout of 100ms to prevent refreshing the page too fast (caused application to crash) [#358](https://github.com/upb-uc4/ui-web/pull/358)
+
 # [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
 - add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
