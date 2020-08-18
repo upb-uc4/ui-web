@@ -24,6 +24,8 @@
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import { historyToSortedList } from "@/use/ImmatriculationHistoryHandler";
     import ImmatriculationHistoryEntry from "@/components/ImmatriculationHistoryEntry.vue";
+    import MatriculationManagement from "@/api/MatriculationManagement";
+    import GenericResponseHandler from "@/use/GenericResponseHandler";
     export default {
         components: {
             ImmatriculationHistoryEntry,
@@ -40,6 +42,7 @@
         },
         emits: ["update:busy"],
         setup(props: any, { emit }: any) {
+            //TODO Remove mock data as soon as the endpoint in backend provides data
             let history: MatriculationData = reactive({
                 matriculationId: "egal",
                 firstName: "egal",
@@ -60,19 +63,16 @@
 
             async function getHistory() {
                 emit("update:busy", true);
-                // const matriculationManagement:MatriculationManagement = new MatriculationManagement();
-                // const response = await matriculationManagement.getMatriculationHistory(props.username);
-                // const responseHandler = new GenericResponseHandler();
-                // const result = responseHandler.handleReponse(response);
-                // if(response.statusCode != 200) {
-                //     console.log("Something went wrong!")
-                // }
-                // else {
-                //     history = result;
-                //     chronologicalList = historyToSortedList(history);
-                // }
-                //TODO remove promise as it just simulates waiting for an API call
-                await new Promise((r) => setTimeout(r, 3000));
+                const matriculationManagement: MatriculationManagement = new MatriculationManagement();
+                const response = await matriculationManagement.getMatriculationHistory(props.username);
+                const responseHandler = new GenericResponseHandler();
+                const result = responseHandler.handleReponse(response);
+                if (response.statusCode != 200) {
+                    console.log("Error: Getting Immatriculation History Failed!");
+                } else {
+                    history = result;
+                    chronologicalList.value = historyToSortedList(history);
+                }
                 chronologicalList.value = historyToSortedList(history);
                 emit("update:busy", false);
             }

@@ -112,19 +112,26 @@
                 let error = false;
                 let successfullUpdates: number[] = [];
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
-                // for(let i = 0; i < selectedFieldsOfStudy.value.length; i++ ) {
-                //     const response = await matriculationManagement.updateMatriculationData(props.username, selectedFieldsOfStudy.value[i], selectedSemester.value);
-                //     const responseHandler = new GenericResponseHandler();
-                //     const result = responseHandler.handleReponse(response);
-                //     if(response.statusCode != 200) {
-                //         error = true;
-                //         console.log("Something went wrong!")
-                //     }
-                //     else {
-                //         console.log("Update: new Matriculationdata --->" + selectedSemester.value + " : " + selectedFieldsOfStudy.value[i]);
-                //         successfullUpdates.push(i);
-                //     }
-                // }
+
+                //TODO Replace the for-loop with a single call containing a list of FoSs  as soon as provided by backend
+                for (let i = 0; i < selectedFieldsOfStudy.value.length; i++) {
+                    const response = await matriculationManagement.updateMatriculationData(
+                        props.username,
+                        selectedFieldsOfStudy.value[i],
+                        selectedSemester.value
+                    );
+                    const responseHandler = new GenericResponseHandler();
+                    const result = responseHandler.handleReponse(response);
+                    if (response.statusCode != 200) {
+                        error = true;
+                        console.log(
+                            "Error: Updating Entry '" + selectedSemester.value + " : " + selectedFieldsOfStudy.value[i] + "' Failed!"
+                        );
+                    } else {
+                        console.log("Update: new Matriculationdata --->" + selectedSemester.value + " : " + selectedFieldsOfStudy.value[i]);
+                        successfullUpdates.push(i);
+                    }
+                }
                 if (error) {
                     successfullUpdates.forEach((i) => {
                         selectedFieldsOfStudy.value = selectedFieldsOfStudy.value.filter((e) => e != selectedFieldsOfStudy.value[i]);
