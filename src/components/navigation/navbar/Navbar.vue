@@ -1,27 +1,21 @@
 <template>
-    <admin-navbar v-if="role === Role.ADMIN" />
-    <lecturer-navbar v-else-if="role === Role.LECTURER" />
-    <student-navbar v-else-if="role === Role.STUDENT" />
-    <guest-navbar v-else />
+    <guest-navbar-desktop class="hidden md:flex" />
+    <guest-navbar-mobile class="flex md:hidden" />
 </template>
 
 <script lang="ts">
-    import GuestNavbar from "@/components/navigation/navbar/desktop/guest/Navbar.vue";
-    import LecturerNavbar from "@/components/navigation/navbar/desktop/lecturer/Navbar.vue";
-    import StudentNavbar from "@/components/navigation/navbar/desktop/student/Navbar.vue";
-    import AdminNavbar from "@/components/navigation/navbar/desktop/admin/Navbar.vue";
+    import GuestNavbarDesktop from "@/components/navigation/navbar/desktop/guest/Navbar.vue";
+    import GuestNavbarMobile from "@/components/navigation/navbar/mobile/guest/Navbar.vue";
     import { Role } from "@/entities/Role";
-    import { useStore } from "../../../store/store";
+    import { useStore } from "@/store/store";
     import { ref } from "vue";
-    import { MutationTypes } from "../../../store/mutation-types";
+    import { MutationTypes } from "@/store/mutation-types";
 
     export default {
         name: "Navbar",
         components: {
-            GuestNavbar,
-            LecturerNavbar,
-            StudentNavbar,
-            AdminNavbar,
+            GuestNavbarDesktop,
+            GuestNavbarMobile,
         },
         setup() {
             const store = useStore();
