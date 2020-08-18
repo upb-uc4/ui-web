@@ -50,7 +50,7 @@ var user: User = {
 var student: Student = {
     ...user,
     immatriculationStatus: "Is still a Jedi Knight",
-    matriculationId: "2187",
+    matriculationId: "1234567",
     semesterCount: 69,
     fieldsOfStudy: [FieldOfStudy.COMPUTER_SCIENCE],
 };
@@ -107,6 +107,30 @@ test("Get all students", async () => {
     const users = await userManagement.getAllUsersByRole(Role.STUDENT);
     let result = users.returnValue.length > 0;
     expect(result).toBe(true);
+});
+
+test("Get users by usernames", async () => {
+    const users = await userManagement.getUsers("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(2);
+});
+
+test("Get lecturers by usernames", async () => {
+    const users = await userManagement.getLecturers("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
+test("Get students by usernames", async () => {
+    const users = await userManagement.getStudents("student", "lecturer");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
+test("Get admins by usernames", async () => {
+    const users = await userManagement.getAdmins("student", "lecturer", "admin");
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
 });
 
 test("Update user", async () => {

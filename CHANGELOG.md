@@ -1,4 +1,4 @@
-# [v.0.5.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.5.2) (2020-XX-XX)
+# [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
 - add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
 - add about page containing information of our software, team and currently running versions [#322](https://github.com/upb-uc4/ui-web/pull/322)
@@ -6,15 +6,23 @@
 - add e2e tests using cypress (#218)
 - add workflow for automatic unit testing and e2e testing (#218)
 - add code coverage reporting [#323](https://github.com/upb-uc4/ui-web/pull/323)
+- add simple search function for the search bars above account/course lists [#347](https://github.com/upb-uc4/ui-web/pull/347)
+- add user serivce API 0.5.2 [#352](https://github.com/upb-uc4/ui-web/pull/352)
+- increase performance of course rendering [#352](https://github.com/upb-uc4/ui-web/pull/352)
 
 ## Refactor
 - restyle versions [#298](https://github.com/upb-uc4/ui-web/pull/298)
 - unify usage of v-models and emits in codebase [#305](https://github.com/upb-uc4/ui-web/pull/305)
 - increase performance of course loading [#317](https://github.com/upb-uc4/ui-web/pull/317)
 - move course filtering for lecturer from frontend to backend [#317](https://github.com/upb-uc4/ui-web/pull/317)
+- remove unused wrapper components for asynchronous data loading [#341](https://github.com/upb-uc4/ui-web/pull/341)
+- replace placeholder descriptions in edit/create course form
   
 ## Bugfix
 - Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
+- Fix cursor styling of menus [#301](https://github.com/upb-uc4/ui-web/issues/301)
+- Fix a bug that made menus close on smaller screen sizes [#306](https://github.com/upb-uc4/ui-web/issues/306)
+- Fix a bug that strings were emitted for the participant limit of a course and the semester count in account form, but expected was a number [#348](https://github.com/upb-uc4/ui-web/issues/348)
 
 
 # [v.0.5.1](https://github.com/upb-uc4/ui-web/compare/v0.5.0...v0.5.1) (2020-08-03)

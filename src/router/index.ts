@@ -3,14 +3,14 @@ import LoginView from "../views/common/Login.vue";
 import StudentHomeView from "../views/student/Home.vue";
 import LecturerHomeView from "../views/lecturer/Home.vue";
 import AdminHomeView from "../views/admin/Home.vue";
-import CourseFormSuspenseWrapper from "../views/lecturer/CourseFormSuspenseWrapper.vue";
-import AccountFormSuspenseWrapper from "../views/admin/AccountFormSuspenseWrapper.vue";
+import CourseFormSuspenseWrapper from "../views/lecturer/EditCreateCourseForm.vue";
+import AccountFormSuspenseWrapper from "../views/admin/EditCreateAccountForm.vue";
 import Redirect from "../views/errors/403.vue";
 import ProfileWrapper from "../components/profile/Wrapper.vue";
 import Settings from "../views/common/Settings.vue";
 import PageNotFound from "../views/errors/404.vue";
-import WelcomePage from "../views/common/WelcomePageWrapper.vue";
-import AboutPage from "../views/common/AboutWrapper.vue";
+import WelcomePage from "../views/common/Welcome.vue";
+import AboutPage from "../views/common/About.vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";

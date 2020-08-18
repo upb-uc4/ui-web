@@ -18,7 +18,7 @@
         </div>
         <suspense>
             <template #default>
-                <course-list :key="refreshKey" :selected-type="selectedType" />
+                <course-list :key="refreshKey" :selected-type="selectedType" :filter="message" />
             </template>
             <template #fallback>
                 <loading-component />

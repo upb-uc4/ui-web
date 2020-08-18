@@ -21,10 +21,10 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Navigate to accountlist", () => {
-        cy.get("div[id='menu_manageAccounts']").children().eq(0).should("not.be.visible");
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
         cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(0).get("span").contains("All Users").should("be.visible");
-        cy.get("div[id='menu_manageAccounts']").children().eq(0).get("a").contains("All Users").click();
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
         cy.url().should("contain", "admin");
     });    
@@ -65,15 +65,15 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Show unsaved changes modal", () => {
-        cy.get("button").contains("Cancel").click();
+        cy.get("button[id='cancel']").click();
         cy.wait(100);
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains("Do you really want to continue and leave this page? You have unsaved changes.");
-        cy.get("#modal-wrapper").contains("Cancel").click();
 
-        cy.get("button").contains("Cancel").click();
+        cy.get("button[id='unsavedChangesModalCancel']").click();
         cy.wait(100);
-        cy.get("button").contains("Leave").click();
+        cy.get("button[id='cancel']").click();
+        cy.get("button[id='unsavedChangesModalConfirmLeave']").click();
     });
 
     it("Show new account page", () => {
@@ -132,7 +132,7 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Can enter matriculationId", () => {
-        cy.get("input[id='matriculationId']").type("15");
+        cy.get("input[id='matriculationId']").type("1234567");
     });
 
     it("Can enter semesterCount", () => {
