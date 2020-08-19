@@ -1,5 +1,5 @@
 <template>
-    <div class="flex shadow-xl">
+    <div :id="'course_' + course.courseId" class="flex shadow-xl">
         <div class="flex flex-col w-full px-8 py-4 bg-white rounded-lg">
             <div class="flex items-baseline">
                 <span class="inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase bg-teal-200 rounded-full">{{
