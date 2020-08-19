@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!busy">
+    <div v-if="busy">
+        <loading-component />
+    </div>
+    <div v-else">
         <div v-if="chronologicalList.length > 0">
             <div v-for="(pair, index) in chronologicalList" :key="pair">
                 <immatriculation-history-entry
@@ -54,7 +57,7 @@
                         semesters: ["WS2020/21", "WS2019/20", "SS2020"],
                     } as SubjectMatriculation,
                     {
-                        fieldOfStudy: "Mathematic" as FieldOfStudy,
+                        fieldOfStudy: "Mathematics" as FieldOfStudy,
                         semesters: ["SS2020", "WS2019/20"],
                     } as SubjectMatriculation,
                 ],

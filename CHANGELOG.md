@@ -4,7 +4,6 @@
     - add component containing the immatriculation history
     - add latest immatriculation fields to account form and student's private profile
     - add modal for showing the immatriculation history to the student in private profile
-    - add helper functions to sort semesters
 - 
 
 ## Bugfix
