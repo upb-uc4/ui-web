@@ -102,8 +102,6 @@
             }
 
             function findLecturer(course: Course) {
-                console.log(lecturers.value.filter((lecturer) => lecturer.username === course.lecturerId)[0]);
-                console.log(course);
                 return lecturers.value.filter((lecturer) => lecturer.username === course.lecturerId)[0];
             }
 
