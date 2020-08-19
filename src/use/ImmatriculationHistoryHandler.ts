@@ -16,6 +16,9 @@ export function compareSemesters(s1: String, s2: String): number {
 }
 
 export function historyToSortedList(history: MatriculationData): { semester: String; fieldsOfStudy: String[] }[] {
+    if (history.matriculationStatus == undefined) {
+        return [];
+    }
     let chronologicalList: { semester: String; fieldsOfStudy: String[] }[] = [];
     history.matriculationStatus.forEach((e) => {
         e.semesters.forEach((s) => {

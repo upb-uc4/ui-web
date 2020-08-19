@@ -67,12 +67,7 @@
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
                 const responseHandler = new GenericResponseHandler();
                 const result = responseHandler.handleReponse(response);
-                if (response.statusCode != 200) {
-                    console.log("Error: Getting Immatriculation History Failed!");
-                } else {
-                    history = result;
-                    chronologicalList.value = historyToSortedList(history);
-                }
+                history = result;
                 chronologicalList.value = historyToSortedList(history);
                 emit("update:busy", false);
             }
