@@ -1,10 +1,14 @@
 # [v.0.6.1](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-XX-XX)
 
+## Feature
+- add a course list for the lecturer containing all lectures [376](https://github.com/upb-uc4/ui-web/pull/376)
+
 ## Refactor
 - randomize test data to allow for concurrent testing [#353](https://github.com/upb-uc4/ui-web/pull/353)
 
 ## Bugfix
 - add a timeout of 100ms to prevent refreshing the page too fast (caused application to crash) [#358](https://github.com/upb-uc4/ui-web/pull/358)
+- fixes a bug that caused the application to crash if you want to view your own courses without having one
 
 # [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
