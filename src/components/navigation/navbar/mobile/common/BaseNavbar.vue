@@ -27,7 +27,7 @@
             <ul class="pb-4 font-semibold tracking-wider text-gray-100">
                 <slot></slot>
                 <li>
-                    <router-link id="routeAbout" :to="{ name: 'about' }" class="mobile-navbar-menu">About</router-link>
+                    <router-link id="routeAbout" :to="{ name: 'about' }" class="hover:bg-blue-800 rounded-lg mobile-navbar-menu">About</router-link>
                 </li>
             </ul>
         </nav>
