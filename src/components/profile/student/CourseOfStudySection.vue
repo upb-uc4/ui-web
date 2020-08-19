@@ -27,7 +27,7 @@
                             <label class="mb-3 text-sm font-medium text-gray-700 flex">
                                 Latest Immatriculation (
                                 <button class="cursor-pointer text-sm font-medium navigation-link" @click="showHistory">
-                                    view history
+                                    View History
                                 </button>
                                 )
                             </label>
