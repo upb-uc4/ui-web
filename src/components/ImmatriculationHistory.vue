@@ -1,8 +1,5 @@
 <template>
-    <div v-if="busy">
-        <loading-component />
-    </div>
-    <div v-else>
+    <div v-if="!busy">
         <div v-if="chronologicalList.length > 0">
             <div v-for="(pair, index) in chronologicalList" :key="pair">
                 <immatriculation-history-entry

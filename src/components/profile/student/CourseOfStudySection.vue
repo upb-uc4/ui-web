@@ -67,7 +67,7 @@
                 let action = modal.action;
                 modal.show().then((response: typeof action) => {
                     switch (response) {
-                        case action.CANCEL: {
+                        case action.CLOSE: {
                             //do nothing
                             break;
                         }
