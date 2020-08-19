@@ -15,3 +15,18 @@
 - edit course
 - delete course
 - test account deletion modal
+
+# Admin Account Management
+- navigate to account list, check whether it contains the default accounts
+- check existence of role filter buttons
+- check function of role filtering
+- show account form and check whether all input fields exist
+- create a student account
+- edit student account
+- create a lecturer account
+- edit lecturer account
+- create an admin account
+- edit admin account
+- delete all accounts
+
+
