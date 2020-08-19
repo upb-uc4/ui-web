@@ -6,7 +6,13 @@
         <suspense v-else>
             <template #default>
                 <div v-for="course in shownCourses" :key="course.courseId">
-                    <lecturer-course v-if="isLecturer" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+                    <lecturer-course
+                        v-if="isLecturer"
+                        :course="course"
+                        :username="username"
+                        :lecturer="findLecturer(course)"
+                        class="mb-8"
+                    />
                     <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
                 </div>
             </template>
@@ -24,7 +30,7 @@
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import Course from "../api/api_models/course_management/Course";
     import APIResponse from "../api/helpers/models/APIResponse";
-    import { computed, ref, onBeforeMount } from "vue";
+    import { computed, ref, onBeforeMount, watch } from "vue";
     import { CourseType } from "@/entities/CourseType";
     import UserManagement from "@/api/UserManagement";
     import LoadingComponent from "@/components/loading/Spinner.vue";
@@ -46,6 +52,10 @@
                 type: String,
                 required: true,
             },
+            showAllCourses: {
+                type: Boolean,
+                required: true,
+            },
         },
 
         setup(props: any) {
@@ -56,11 +66,20 @@
             let isLecturer = ref(false);
             let isStudent = ref(false);
             let courses = ref([] as Course[]);
+            let username = ref("");
 
             onBeforeMount(() => {
                 getCourses();
             });
-
+            async function getRole() {
+                const store = useStore();
+                role.value = await store.getters.role;
+                isLecturer.value = role.value == Role.LECTURER;
+                isStudent.value = role.value == Role.STUDENT;
+                if (isLecturer.value) {
+                    username.value = (await store.getters.loginData).username;
+                }
+            }
             async function getCourses() {
                 busy.value = true;
                 const store = useStore();
@@ -72,8 +91,12 @@
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
                 if (isLecturer.value) {
-                    let username = (await store.getters.loginData).username;
-                    response = await courseManagement.getCourses(undefined, username);
+                    username.value = (await store.getters.loginData).username;
+                    if (props.showAllCourses) {
+                        response = await courseManagement.getCourses();
+                    } else {
+                        response = await courseManagement.getCourses(undefined, username.value);
+                    }
                     courses.value = genericResponseHandler.handleReponse(response);
                 } else if (isStudent.value) {
                     response = await courseManagement.getCourses();
@@ -88,6 +111,13 @@
             function findLecturer(course: Course) {
                 return lecturers.value.filter((lecturer) => lecturer.username === course.lecturerId)[0];
             }
+
+            watch(
+                () => props.showAllCourses,
+                () => {
+                    getCourses();
+                }
+            );
 
             let shownCourses = computed(() => {
                 let filteredCourses =
@@ -115,6 +145,7 @@
                 isLecturer,
                 isStudent,
                 findLecturer,
+                username,
             };
         },
     };
