@@ -57,7 +57,7 @@
                         semesters: ["WS2020/21", "WS2019/20", "SS2020"],
                     } as SubjectMatriculation,
                     {
-                        fieldOfStudy: "Mathematic" as FieldOfStudy,
+                        fieldOfStudy: "Mathematics" as FieldOfStudy,
                         semesters: ["SS2020", "WS2019/20"],
                     } as SubjectMatriculation,
                 ],
