@@ -67,7 +67,7 @@
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
                 const responseHandler = new GenericResponseHandler();
                 const result = responseHandler.handleReponse(response);
-                history = result;
+                //history = result;
                 chronologicalList.value = historyToSortedList(history);
                 emit("update:busy", false);
             }

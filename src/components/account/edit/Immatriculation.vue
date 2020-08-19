@@ -1,38 +1,39 @@
 <template>
     <div class="flex flex-col pl-2 mt-5">
         <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
-        <immatriculation-history :key="refreshKey" v-model:busy="busy" class="w-3/5" :username="username" />
-        <div v-if="busy" >
+        <div class="w-2/3">
+            <immatriculation-history :key="refreshKey" v-model:busy="busy" :username="username" />
+        </div>
+        <div v-if="busy">
             <loading-spinner />
         </div>
-        <div v-else class="flex flex-col items-start">
-            <div class="w-full flex mt-5">
-                <div class="flex flex-row items-start">
-                    <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
-                        <option disabled :value="''">Semester</option>
-                        <option>SS</option>
-                        <option>WS</option>
-                    </select>
-                    <select id="semesterYear" v-model="year" class="form-select input-select mx-2">
-                        <option disabled :value="''">Year</option>
-                        <option v-for="year in selectableYears" :key="year">{{ year }}</option>
-                    </select>
-                    <multi-select
-                        class="w-1/2"
-                        :input-list="fieldsOfStudy"
-                        :placeholder="'Select a Field of Study'"
-                        :pre-selection="selectedFieldsOfStudy"
-                        @changed="updateSelectedFieldsOfStudy"
-                    />
-                    <button
-                        id="addImmatirculationData"
-                        :disabled="!validSelection"
-                        class="btn btn-green-primary-500 px-2 py-2"
-                        @click="updateImmatriculation"
-                    >
-                        Add
-                    </button>
-                </div>
+        <div v-else class="w-full flex flex-row mt-5">
+            <div class="flex flex-row items-start justify-between w-2/3">
+                <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
+                    <option disabled :value="''">Semester</option>
+                    <option>SS</option>
+                    <option>WS</option>
+                </select>
+                <select id="semesterYear" v-model="year" class="form-select input-select mx-2">
+                    <option disabled :value="''">Year</option>
+                    <option v-for="year in selectableYears" :key="year">{{ year }}</option>
+                </select>
+                <multi-select
+                    :input-list="fieldsOfStudy"
+                    :placeholder="'Select a Field of Study'"
+                    :pre-selection="selectedFieldsOfStudy"
+                    @changed="updateSelectedFieldsOfStudy"
+                />
+            </div>
+            <div class="flex-none">
+                <button
+                    id="addImmatirculationData"
+                    :disabled="!validSelection"
+                    class="btn btn-green-primary-500 px-3 py-3"
+                    @click="updateImmatriculation"
+                >
+                    Add
+                </button>
             </div>
         </div>
     </div>

@@ -6,7 +6,9 @@
         <div v-if="busy" class="w-full items-center justify-center">
             <loading-spinner />
         </div>
-        <immatriculation-history :key="historyRefreshKey" v-model:busy="busy" :username="username" />
+        <div class="w-full">
+            <immatriculation-history :key="historyRefreshKey" v-model:busy="busy" :username="username" />
+        </div>
         <template #footer>
             <div class="flex justify-between">
                 <button id="immatriculationHistoryRefresh" title="Refresh" class="btn-tertiary mr-10" @click="refresh">Refresh</button>
