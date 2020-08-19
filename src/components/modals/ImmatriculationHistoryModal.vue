@@ -39,7 +39,6 @@
 
             enum action {
                 CANCEL,
-                DELETE,
             }
 
             async function show() {
