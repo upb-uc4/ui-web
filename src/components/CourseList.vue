@@ -71,15 +71,6 @@
             onBeforeMount(() => {
                 getCourses();
             });
-            async function getRole() {
-                const store = useStore();
-                role.value = await store.getters.role;
-                isLecturer.value = role.value == Role.LECTURER;
-                isStudent.value = role.value == Role.STUDENT;
-                if (isLecturer.value) {
-                    username.value = (await store.getters.loginData).username;
-                }
-            }
             async function getCourses() {
                 busy.value = true;
                 const store = useStore();
@@ -103,12 +94,16 @@
                     courses.value = genericResponseHandler.handleReponse(response);
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
-                const resp = await userManagement.getLecturers(...lecturerIds);
-                lecturers.value = genericResponseHandler.handleReponse(resp);
+                if (lecturerIds.size != 0) {
+                    const resp = await userManagement.getLecturers(...lecturerIds);
+                    lecturers.value = genericResponseHandler.handleReponse(resp);
+                }
                 busy.value = false;
             }
 
             function findLecturer(course: Course) {
+                console.log(lecturers.value.filter((lecturer) => lecturer.username === course.lecturerId)[0]);
+                console.log(course);
                 return lecturers.value.filter((lecturer) => lecturer.username === course.lecturerId)[0];
             }
 
