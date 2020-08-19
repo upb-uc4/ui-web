@@ -52,6 +52,7 @@
         setup(props: any, { emit }: any) {
             let input = ref(props.inputList);
             let output = computed(() => {
+                // add empty element of enumeration, if prop list is empty
                 return props.preSelection.length == 0 ? [...(props.preSelection as string[]), ""] : [...(props.preSelection as string[])];
             });
 
