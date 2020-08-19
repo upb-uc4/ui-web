@@ -27,7 +27,7 @@
                         </div>
                         <div v-if="editMode && latest != ''" class="ml-4 flex flex-col">
                             <label class="mb-3 text-sm font-medium text-gray-700">Latest Immatriculation</label>
-                            <input disabled class="form-input input-text" :value="latest" />
+                            <input disabled id="latestImmatriculation" class="form-input input-text" :value="latest" />
                         </div>
                     </div>
                     <immatriculation-history v-if="editMode" :username="username" />
