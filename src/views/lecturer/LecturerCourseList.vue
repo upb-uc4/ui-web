@@ -18,7 +18,7 @@
                 </div>
                 <course-type-filter v-model:selected-type="selectedType" />
             </div>
-            <course-list :key="refreshKey" :selected-type="selectedType" :filter="message" />
+            <course-list :key="refreshKey" :show-all-courses="showAllCourses" :selected-type="selectedType" :filter="message" />
 
             <div class="flex justify-center mt-16">
                 <router-link to="/createCourse">
@@ -59,6 +59,12 @@
             }
 
             return next("/redirect");
+        },
+        props: {
+            showAllCourses: {
+                type: Boolean,
+                required: true,
+            },
         },
         setup() {
             let message = ref("");
