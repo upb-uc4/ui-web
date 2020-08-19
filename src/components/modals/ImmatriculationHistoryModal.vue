@@ -1,5 +1,5 @@
 <template>
-    <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
+    <modal ref="baseModal" :action="action" @cancel="close(action.CLOSE)">
         <template #header>
             <p class="text-2xl text-gray-900">Immatriculation History</p>
         </template>
@@ -8,7 +8,7 @@
         </div>
         <immatriculation-history v-if="alreadyLoadedOnce" v-model:busy="busy" :username="username" />
         <template #footer>
-            <button id="immatriculationHistoryCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
+            <button id="immatriculationHistoryClose" class="mr-10 btn-tertiary" @click="close(action.CLOSE)">Close</button>
         </template>
     </modal>
 </template>
@@ -38,7 +38,7 @@
             }
 
             enum action {
-                CANCEL,
+                CLOSE,
             }
 
             async function show() {
