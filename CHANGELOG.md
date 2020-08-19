@@ -1,4 +1,11 @@
 # [v.0.6.1](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-XX-XX)
+## Feature
+- add immatriculation components [##368](https://github.com/upb-uc4/ui-web/pull/368)
+    - add component containing the immatriculation history
+    - add latest immatriculation fields to account form and student's private profile
+    - add modal for showing the immatriculation history to the student in private profile
+- 
+
 ## Bugfix
 - add a timeout of 100ms to prevent refreshing the page too fast (caused application to crash) [#358](https://github.com/upb-uc4/ui-web/pull/358)
 

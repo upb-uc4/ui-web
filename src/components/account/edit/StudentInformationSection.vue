@@ -8,13 +8,14 @@
                 </label>
             </div>
             <div class="w-full lg:w-2/3">
-                <div class="flex flex-col mb-4">
-                    <div class="flex flex-row">
-                        <div class="flex flex-col w-1/3 pl-2">
+                <div class="flex flex-col w-full mb-4">
+                    <div class="flex flex-row w-2/3 justify-between">
+                        <div class="flex flex-col pl-2">
                             <label class="mb-3 text-sm font-medium text-gray-700">Matriculation-ID</label>
                             <input
                                 id="matriculationId"
                                 v-model="studentMatriculationId"
+                                :disabled="editMode"
                                 type="text"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.hasNested('matriculationId') }"
@@ -24,7 +25,12 @@
                                 {{ errorBag.getNested("matriculationId") }}
                             </p>
                         </div>
+                        <div v-if="editMode && latest != ''" class="flex flex-col">
+                            <label class="mb-3 text-sm font-medium text-gray-700">Latest Immatriculation</label>
+                            <input id="latestImmatriculation" disabled class="form-input input-text" :value="latest" />
+                        </div>
                     </div>
+                    <immatriculation v-if="editMode" :username="username" />
                 </div>
             </div>
         </div>
@@ -36,10 +42,22 @@
     import ErrorBag from "@/use/ErrorBag";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import { ref } from "vue";
+    import Immatriculation from "./Immatriculation.vue";
 
     export default {
         name: "RoleSection",
+        components: {
+            Immatriculation,
+        },
         props: {
+            username: {
+                type: String,
+                required: true,
+            },
+            latest: {
+                type: String,
+                required: true,
+            },
             errorBag: {
                 type: ErrorBag,
                 required: true,

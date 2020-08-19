@@ -4,7 +4,7 @@
             <select
                 :id="'fieldsOfStudy-' + index"
                 v-model="output[index - 1]"
-                class="w-4/5 mr-1 input-select form-select"
+                class="input-select form-select mr-2 w--full"
                 :class="{ 'mb-2': index !== output.length }"
                 @change="addValue($event.target.value, index - 1)"
             >
@@ -15,12 +15,12 @@
 
                 <option v-for="field in unchosenValues" :key="field">{{ field }}</option>
             </select>
-            <div class="w-1/6 items-center justify-center" :class="{ 'mb-2': index !== output.length }">
+            <div class="w-10 items-center justify-center" :class="{ 'mb-2': index !== output.length }">
                 <button
                     v-if="output[index - 1] != ''"
                     :id="'removeFieldOfStudy-' + index"
                     title="Remove Selected Field Of Study"
-                    class="w-1/2 btn-icon-red"
+                    class="btn-icon-red"
                     @click="removeValue(index - 1)"
                 >
                     <i class="inline far fa-trash-alt text-lg"></i>
@@ -51,9 +51,10 @@
         emits: ["changed"],
         setup(props: any, { emit }: any) {
             let input = ref(props.inputList);
-            let output = ref([] as string[]);
-            output.value.push(...(props.preSelection as string[]));
-            output.value.push("");
+            let output = computed(() => {
+                // add empty element of enumeration, if prop list is empty
+                return props.preSelection.length == 0 ? [...(props.preSelection as string[]), ""] : [...(props.preSelection as string[])];
+            });
 
             let unchosenValues = computed(() => {
                 return input.value.filter((f) => !output.value.includes(f as string));
