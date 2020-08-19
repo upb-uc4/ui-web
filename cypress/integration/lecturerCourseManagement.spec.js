@@ -36,6 +36,16 @@ describe("Course creation, edition and deletion", () => {
         cy.url().should("contain", "/createCourse");
     });
 
+    it("Check existence of all fields", () => {
+        cy.get("input[id='courseType']").should("exist");
+        cy.get("input[id='courseName']").should("exist");
+        cy.get("select[id='courseLanguage']").should("exist");
+        cy.get("textarea[id='courseDescription']").should("exist");
+        cy.get("input[id='maxParticipants']").should("exist");
+        cy.get("input[id='startDate']").should("exist");
+        cy.get("input[id='endDate']").should("exist");
+    })
+
     it("Can not submit empty course", () => {
         cy.get('button[id="createCourse"]').should("be.disabled");
     });
