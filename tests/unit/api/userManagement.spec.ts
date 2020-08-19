@@ -13,15 +13,6 @@ var userManagement: UserManagement;
 const adminAuth = { username: "admin", password: "admin" };
 jest.setTimeout(30000);
 
-beforeAll(async () => {
-    const success = await UserManagement.login(adminAuth);
-    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
-    store.commit(MutationTypes.SET_LOGGEDIN, true);
-    store.commit(MutationTypes.SET_ROLE, "Admin");
-    userManagement = new UserManagement();
-    expect(success.returnValue).toBe(true);
-});
-
 var authUser: Account = {
     username: "testUser",
     password: "testUser",
@@ -54,6 +45,20 @@ var student: Student = {
     semesterCount: 69,
     fieldsOfStudy: [FieldOfStudy.COMPUTER_SCIENCE],
 };
+
+beforeAll(async () => {
+    const success = await UserManagement.login(adminAuth);
+    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
+    store.commit(MutationTypes.SET_LOGGEDIN, true);
+    store.commit(MutationTypes.SET_ROLE, "Admin");
+    userManagement = new UserManagement();
+    expect(success.returnValue).toBe(true);
+
+    // randomize user primary key to support concurrent testing
+    const random = Math.floor(Math.random() * 500);
+    authUser.username = authUser.username += random;
+    user.username = authUser.username;
+});
 
 test("Create user", async () => {
     const success = await userManagement.createUser(authUser, student);

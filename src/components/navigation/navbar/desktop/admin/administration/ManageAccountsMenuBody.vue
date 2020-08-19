@@ -6,7 +6,7 @@
                     title="All Users"
                     description="List of all users"
                     icon-class="fa-globe-americas"
-                    target-route-name="admin.home"
+                    target-route-name="accountlist"
                 />
             </li>
             <li class="cursor-pointer hover:bg-gray-200 rounded-lg p-2">

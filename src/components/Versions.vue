@@ -26,8 +26,6 @@
     import AuthenticationManagement from "../api/AuthenticationManagement";
     import CourseManagement from "../api/CourseManagement";
     import UserManagement from "../api/UserManagement";
-    import HyperledgerManagement from "../api/HyperledgerManagement";
-    import HyperledgerCourseManagement from "../api/HyperledgerCourseManagement";
     import { ref, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/loading/Spinner.vue";
 
@@ -60,9 +58,6 @@
                 let authenticationManagementVersion = await AuthenticationManagement.getVersion();
                 let courseManagementVersion = await CourseManagement.getVersion();
                 let userManagementVersion = await UserManagement.getVersion();
-                let hyperledgerManagementVersion = await HyperledgerManagement.getVersion();
-                let hyperledgerCourseManagementVersion = await HyperledgerCourseManagement.getVersion();
-
                 versions.push({
                     name: "Frontend",
                     version: frontEndVersion,
@@ -94,24 +89,6 @@
                         "user-" +
                         userManagementVersion +
                         "/product_code/lagom/user_service/CHANGELOG.md",
-                });
-                versions.push({
-                    name: "Hyperledger Management",
-                    version: hyperledgerManagementVersion,
-                    link:
-                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                        "hyperledger-" +
-                        hyperledgerManagementVersion +
-                        "/product_code/lagom/hyperledger_service/CHANGELOG.md",
-                });
-                versions.push({
-                    name: "Hyperledger Course Management",
-                    version: hyperledgerCourseManagementVersion,
-                    link:
-                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
-                        "hlcourse-" +
-                        hyperledgerCourseManagementVersion +
-                        "/product_code/lagom/hl_course_service/CHANGELOG.md",
                 });
 
                 emit("versions", versions);
