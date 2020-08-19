@@ -1,11 +1,19 @@
 <template>
-    <guest-navbar-desktop class="hidden md:flex" />
-    <guest-navbar-mobile class="flex md:hidden" />
+    <div v-if="role === Role.ADMIN">
+        <admin-navbar-desktop class="hidden md:flex" />
+        <admin-navbar-mobile class="flex md:hidden" />
+    </div>
+    <div v-else>
+        <guest-navbar-desktop class="hidden md:flex" />
+        <guest-navbar-mobile class="flex md:hidden" />
+    </div>
 </template>
 
 <script lang="ts">
     import GuestNavbarDesktop from "@/components/navigation/navbar/desktop/guest/Navbar.vue";
     import GuestNavbarMobile from "@/components/navigation/navbar/mobile/guest/Navbar.vue";
+    import AdminNavbarDesktop from "@/components/navigation/navbar/desktop/admin/Navbar.vue";
+    import AdminNavbarMobile from "@/components/navigation/navbar/mobile/admin/Navbar.vue";
     import { Role } from "@/entities/Role";
     import { useStore } from "@/store/store";
     import { ref } from "vue";
@@ -16,6 +24,8 @@
         components: {
             GuestNavbarDesktop,
             GuestNavbarMobile,
+            AdminNavbarDesktop,
+            AdminNavbarMobile,
         },
         setup() {
             const store = useStore();
