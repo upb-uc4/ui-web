@@ -74,12 +74,31 @@ describe("Account creation, edition and deletion", () => {
     it("Show new account page", () => {
         cy.get('button[id="addAccount"]').click({ force: true });
         cy.url().should("contain", "/createAccount");
-        //todo check if everything is there
     });
 
     it("Create Account button is disabled", () => {
         cy.get("button").contains("Create Account").should("be.disabled");
     });
+
+    it("Check existence of all input fields", () => {
+        cy.get("input[id='role-Admin']").should("exist");
+        cy.get("input[id='role-Lecturer']").should("exist");
+        cy.get("input[id='role-Student']").should("exist");
+
+        cy.get("input[id='userName']").should("exist");
+        cy.get("input[id='email']").should("exist");
+        cy.get("input[id='password']").should("exist");
+        cy.get("input[id='firstName']").should("exist");
+        cy.get("input[id='lastName']").should("exist");
+        cy.get("select[id='day']").should("exist");
+        cy.get("select[id='month']").should("exist");
+        cy.get("select[id='year']").should("exist");
+        cy.get("select[id='country']").should("exist");
+        cy.get("input[id='street']").should("exist");
+        cy.get("input[id='houseNumber']").should("exist");
+        cy.get("input[id='zipCode']").should("exist");
+        cy.get("input[id='city']").should("exist");
+    })
 
     it("Can edit role", () => {
         cy.get("input[type='radio']").should("be.enabled");
