@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="cursor-pointer" @click="toggleOpen">
+        <div class="cursor-pointer select-none" @click="toggleOpen">
             <i class="fas mr-2 w-4" :class="[isOpen ? 'fa-chevron-down' : 'fa-chevron-right']" />
             <slot name="hook"></slot>
         </div>
