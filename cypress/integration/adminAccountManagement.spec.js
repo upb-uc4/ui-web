@@ -29,7 +29,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
         cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
     });    
 
     it("List contains admin, student and lecturer", () => {
@@ -68,15 +68,15 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Show unsaved changes modal", () => {
-        cy.get("button").contains("Cancel").click();
+        cy.get("button[id='cancel']").click();
         cy.wait(100);
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains("Do you really want to continue and leave this page? You have unsaved changes.");
-        cy.get("#modal-wrapper").contains("Cancel").click();
 
-        cy.get("button").contains("Cancel").click();
+        cy.get("button[id='unsavedChangesModalCancel']").click();
         cy.wait(100);
-        cy.get("button").contains("Leave").click();
+        cy.get("button[id='cancel']").click();
+        cy.get("button[id='unsavedChangesModalConfirmLeave']").click();
     });
 
     it("Show new account page", () => {
@@ -145,7 +145,7 @@ describe("Account creation, edition and deletion", () => {
     it("Create account works", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.get(`div[id='user_${username}']`).should("exist");
@@ -207,7 +207,7 @@ describe("Account creation, edition and deletion", () => {
 
     it("Update working correctly", () => {
         cy.get("button[id='saveChanges']").click();
-        cy.url().should("contain", "admin");
+        cy.url().should("contain", "accounts");
     });
 
     //delete account
@@ -232,7 +232,7 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Assert account deletion", () => {
-        cy.url().should("contain", "/admin");
+        cy.url().should("contain", "/accounts");
         cy.get(`div[id='user_${username}']`).should("not.exist")
         cy.get("div[id='user_student']").should("exist")
         cy.get("div[id='user_lecturer']").should("exist")

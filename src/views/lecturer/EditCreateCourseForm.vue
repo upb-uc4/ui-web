@@ -1,5 +1,8 @@
 <template>
-    <div class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
+    <div v-if="busy">
+        <loading-component />
+    </div>
+    <div v-else class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
         <button class="flex items-center mb-4 navigation-link" @click="back">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Course List</span>
@@ -80,8 +83,8 @@
                     </button>
                 </div>
             </section>
-
             <delete-course-modal ref="deleteModal" />
+            <unsaved-changes-modal ref="unsavedChangesModal" />
         </div>
     </div>
 </template>
@@ -93,7 +96,7 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
-    import { ref, computed, reactive } from "vue";
+    import { ref, computed, reactive, onBeforeMount } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
     import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
@@ -101,6 +104,10 @@
     import BasicsSection from "@/components/course/edit/BasicsSection.vue";
     import RestrictionsSection from "@/components/course/edit/RestrictionsSection.vue";
     import TimeSection from "@/components/course/edit/TimeSection.vue";
+    import LoadingComponent from "../../components/loading/Spinner.vue";
+    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { Role } from "@/entities/Role";
+    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -109,6 +116,46 @@
             RestrictionsSection,
             TimeSection,
             DeleteCourseModal,
+            UnsavedChangesModal,
+            LoadingComponent,
+        },
+        async beforeRouteEnter(_to: any, _from: any, next: any) {
+            const response = await checkPrivilege(Role.LECTURER);
+
+            if (response.allowed) {
+                return next();
+            }
+            if (!response.authenticated) {
+                return next("/login");
+            }
+
+            return next("/redirect");
+        },
+
+        async beforeRouteLeave(to: any, from: any, next: any) {
+            if (this.success) {
+                return next();
+            }
+            if (this.hasInput) {
+                const modal = this.unsavedChangesModal;
+                let action = modal.action;
+                const response = await modal.show();
+                switch (response) {
+                    case action.CANCEL: {
+                        next(false);
+                        break;
+                    }
+                    case action.CONFIRM: {
+                        next(true);
+                        break;
+                    }
+                    default: {
+                        next(true);
+                    }
+                }
+            } else {
+                next(true);
+            }
         },
         props: {
             editMode: {
@@ -118,21 +165,34 @@
         },
         emits: ["update:has-input", "update:success"],
 
-        async setup(props: any, { emit }: any) {
+        setup(props: any, { emit }: any) {
+            let busy = ref(false);
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
             let success = ref(false);
             const courseManagement: CourseManagement = new CourseManagement();
             let deleteModal = ref();
-            const store = useStore();
-            course.value.lecturerId = (await store.getters.loginData).username;
+            let unsavedChangesModal = ref();
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
             const errorBag: ErrorBag = reactive(new ErrorBag());
 
-            if (props.editMode) {
+            onBeforeMount(() => {
+                getLecturerUsername();
+                if (props.editMode) {
+                    getCourse();
+                }
+            });
+
+            async function getLecturerUsername() {
+                const store = useStore();
+                course.value.lecturerId = (await store.getters.loginData).username;
+            }
+
+            async function getCourse() {
+                busy.value = true;
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
                 const genericResponseHandler = new GenericResponseHandler();
                 const result = genericResponseHandler.handleReponse(response);
@@ -144,6 +204,7 @@
                     course.value = new CourseEntity(result);
                     initialCourseState = JSON.parse(JSON.stringify(course.value));
                 }
+                busy.value = false;
             }
 
             let hasInput = computed(() => {
@@ -229,6 +290,7 @@
             }
 
             return {
+                busy,
                 course,
                 initialCourseState,
                 heading,
@@ -241,6 +303,7 @@
                 deleteCourse,
                 confirmDeleteCourse,
                 deleteModal,
+                unsavedChangesModal,
                 errorBag: errorBag,
             };
         },

@@ -6,7 +6,7 @@
                     title="All Courses"
                     description="Overview of all courses"
                     icon-class="fa-globe-americas"
-                    target-route-name="lecturer.home"
+                    target-route-name="lecturer.courses"
                 />
             </li>
             <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
@@ -20,7 +20,12 @@
         </ul>
         <ul class="w-full lg:w-1/2 px-4">
             <li class="cursor-pointer hover:bg-gray-200 rounded-lg p-2">
-                <menu-item title="My Courses" description="Courses you created" icon-class="fa-meteor" target-route-name="lecturer.home" />
+                <menu-item
+                    title="My Courses"
+                    description="Courses you created"
+                    icon-class="fa-meteor"
+                    target-route-name="lecturer.courses"
+                />
             </li>
         </ul>
     </section>
