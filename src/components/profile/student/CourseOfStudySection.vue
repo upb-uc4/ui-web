@@ -31,7 +31,7 @@
                                 </button>
                                 )
                             </label>
-                            <input disabled class="form-input input-text" :value="latest" />
+                            <input disabled id="latestImmatriculation" class="form-input input-text" :value="latest" />
                         </div>
                     </div>
                 </div>
