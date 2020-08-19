@@ -24,10 +24,10 @@
         </div>
 
         <nav class="" :class="{ hidden: !isBurgerMenuOpen }">
-            <ul class="pt-2 font-semibold tracking-wider text-gray-100">
+            <ul class="pb-4 font-semibold tracking-wider text-gray-100">
                 <slot></slot>
                 <li>
-                    <router-link id="routeAbout" :to="{ name: 'about' }" class="navbar-menu">About</router-link>
+                    <router-link id="routeAbout" :to="{ name: 'about' }" class="mobile-navbar-menu">About</router-link>
                 </li>
             </ul>
         </nav>
