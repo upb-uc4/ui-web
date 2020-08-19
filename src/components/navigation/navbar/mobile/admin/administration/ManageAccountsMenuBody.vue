@@ -1,7 +1,7 @@
 <template>
-    <section class="flex flex-col px-4 py-3">
+    <section class="flex flex-col px-4 pt-3 pb-1">
         <ul class="w-full px-2">
-            <li class="cursor-pointer mb-4 rounded-lg">
+            <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
                 <menu-item
                     title="All Users"
                     description="List of all users"
@@ -9,7 +9,7 @@
                     target-route-name="accountlist"
                 />
             </li>
-            <li class="cursor-pointer rounded-lg">
+            <li class="cursor-pointer rounded-lg p-2 hover:bg-blue-800">
                 <menu-item
                     title="New Account"
                     description="Create a new user"
