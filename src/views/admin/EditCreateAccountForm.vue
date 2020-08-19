@@ -405,7 +405,6 @@
                     back();
                 } else {
                     errorBag = new ErrorBag(handler.errorList);
-                    //errorBag.replaceAllWith(handler.errorList);
                     //TODO: change the following line?
                     //this.$forceUpdate();
                 }
