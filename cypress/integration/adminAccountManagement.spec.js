@@ -38,6 +38,39 @@ describe("Account creation, edition and deletion", () => {
         cy.get("div").contains("@admin");
     });
 
+    it("Role filter buttons exist", () => {
+        cy.get("button[id='role-All']").should("exist");
+        cy.get("button[id='role-Admin']").should("exist");
+        cy.get("button[id='role-Lecturer']").should("exist");
+        cy.get("button[id='role-Student']").should("exist");
+    })
+
+    it("Check if role filtering works", () => {
+        // test admin role
+        cy.get("button[id='role-Admin']").click();
+        cy.get("div").contains("@admin");
+        cy.get("div").contains("@lecturer").should("not.exist");
+        cy.get("div").contains("@student").should("not.exist");
+        // test lecturer role
+        cy.get("button[id='role-Lecturer']").click();
+        cy.get("div").contains("@lecturer");
+        cy.get("div").contains("@admin").should("not.exist");
+        cy.get("div").contains("@student").should("not.exist");
+
+        // test student role
+        cy.get("button[id='role-Student']").click();
+        cy.get("div").contains("@student");
+        cy.get("div").contains("@admin").should("not.exist");
+        cy.get("div").contains("@lecturer").should("not.exist");
+
+        //test all roles
+        cy.get("button[id='role-All']").click();
+        cy.get("div").contains("@admin").should("exist");
+        cy.get("div").contains("@lecturer").should("exist");
+        cy.get("div").contains("@student").should("exist");
+       
+    })
+
     it("Show new account page", () => {
         cy.get('button[id="addAccount"]').click({ force: true });
         cy.url().should("contain", "/createAccount");
