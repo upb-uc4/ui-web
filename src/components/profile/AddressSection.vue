@@ -9,6 +9,7 @@
                     <button v-show="isEditing" id="cancelEditAddress" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
                         Cancel
                     </button>
+                    {{ address }}
                 </div>
                 <label class="block text-gray-600">
                     Please keep your address information as up to date as possible.
@@ -77,7 +78,7 @@
         emits: ["save", "update:address"],
         setup(props: any, { emit }: any) {
             const countries = Object.values(Country).filter((e) => e != Country.NONE);
-            const editedAddress = ref(props.address);
+            const editedAddress = ref({ ...props.address });
             const isEditing = ref(false);
 
             function edit() {
