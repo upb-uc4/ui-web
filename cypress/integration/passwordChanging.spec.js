@@ -77,7 +77,7 @@ describe("Change password", () => {
         cy.get("input[id='enterPasswordModalPassword']").type("test-password-cypress-wrong");
         cy.get("button[id='enterPasswordModalConfirm']").click();
         
-        cy.get("p").invoke("hasClass", "error-message").should("exist");
+        cy.get("p").should("have.class", "error-message").should("exist");
     })
 
     it("Enter correct password", () => {
