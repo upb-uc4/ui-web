@@ -202,7 +202,7 @@
             let deleteModal = ref();
             let unsavedChangesModal = ref();
 
-            var errorBag: ErrorBag = reactive(new ErrorBag());
+            const errorBag = ref(new ErrorBag());
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -385,10 +385,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag = new ErrorBag(handler.errorList);
-                    //errorBag.replaceAllWith(handler.errorList);
-                    //TODO: change the following line?
-                    //this.$forceUpdate();
+                    errorBag.value = new ErrorBag(handler.errorList);
                 }
             }
 
@@ -404,9 +401,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag = new ErrorBag(handler.errorList);
-                    //TODO: change the following line?
-                    //this.$forceUpdate();
+                    errorBag.value = new ErrorBag(handler.errorList);
                 }
             }
 

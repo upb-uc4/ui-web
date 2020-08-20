@@ -152,7 +152,7 @@
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
 
-            var errorBag: ErrorBag = reactive(new ErrorBag());
+            const errorBag = ref(new ErrorBag());
 
             onBeforeRouteLeave(async (to, from, next) => {
                 if (success.value) {
@@ -236,10 +236,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag = new ErrorBag(handler.errorList);
-                    //errorBag.replaceAllWith(handler.errorList);
-                    //TODO: change the following line?
-                    //this.$forceUpdate();
+                    errorBag.value = new ErrorBag(handler.errorList);
                 }
             }
 
@@ -252,9 +249,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    //errorBag.replaceAllWith(handler.errorList);
-                    //TODO: change the following line?
-                    //this.$forceUpdate();
+                    errorBag.value = new ErrorBag(handler.errorList);
                 }
             }
 
@@ -306,7 +301,7 @@
                 confirmDeleteCourse,
                 deleteModal,
                 unsavedChangesModal,
-                errorBag: errorBag,
+                errorBag,
             };
         },
     };

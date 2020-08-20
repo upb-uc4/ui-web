@@ -122,7 +122,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
 
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
+        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
 
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
@@ -178,7 +178,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("button").contains("Save Changes").should("be.enabled");
         cy.get("button").contains("Save Changes").click();
 
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
+        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
 
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
