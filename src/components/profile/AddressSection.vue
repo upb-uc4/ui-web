@@ -9,7 +9,6 @@
                     <button v-show="isEditing" id="cancelEditAddress" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
                         Cancel
                     </button>
-                    {{ address }}
                 </div>
                 <label class="block text-gray-600">
                     Please keep your address information as up to date as possible.
