@@ -9,7 +9,7 @@ describe("Student course view", () => {
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
         cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("All Courses").click();
+        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("My Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
         cy.url().should("contain", "course-management");
         // create course
@@ -56,7 +56,7 @@ describe("Student course view", () => {
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
         cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("All Courses").click();
+        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("My Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
         cy.url().should("contain", "course-management");
         cy.get("div").contains(courseName).parent().parent().find("button[id='editCourse']").click();
