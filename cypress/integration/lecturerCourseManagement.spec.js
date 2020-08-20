@@ -10,6 +10,10 @@
  */
 
 describe("Course creation, edition and deletion", () => {
+    const random = Math.floor(Math.random() * 500);
+    const courseName = "test-course-cypress" + random;
+    const updatedCourseName = courseName + "-update";
+
     it("Login as lecturer", () => {
         cy.visit("/");
         cy.get("input[id='email']").type("lecturer");
@@ -21,8 +25,8 @@ describe("Course creation, edition and deletion", () => {
     it("Navigate to course list", () => {
         cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
         cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
+        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
+        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
         cy.url().should("contain", "course-management");
     }); 
@@ -65,7 +69,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit courseName", () => {
-        cy.get('input[id="courseName"]').type("test-courseName-cypress");
+        cy.get('input[id="courseName"]').type(courseName);
     });
 
     it("Can edit courseLanguage", () => {
@@ -99,14 +103,14 @@ describe("Course creation, edition and deletion", () => {
     it("Course was created", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains("test-courseName-cypress");
+        cy.get("div").contains(courseName);
     });
 
     // edit course
     it("Show course edit page", () => {
-        cy.get("div").contains("test-courseName-cypress").parent().parent().find("button[id='editCourse']").click();
+        cy.get("div").contains(courseName).parent().parent().find("button[id='editCourse']").click();
 
-        cy.get('input[id="courseName"]').should("have.value", "test-courseName-cypress");
+        cy.get('input[id="courseName"]').should("have.value", courseName);
     });
 
     it("Can not save unchanged course", () => {
@@ -124,7 +128,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit courseName", () => {
-        cy.get('input[id="courseName"]').clear().type("test-CourseName-cypress");
+        cy.get('input[id="courseName"]').clear().type(updatedCourseName);
     });
 
     it("Can save course", () => {
@@ -135,12 +139,12 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains("test-CourseName-cypress").parent().parent().find("button[id='editCourse']").should("exist");
+        cy.get("div").contains(updatedCourseName).parent().parent().find("button[id='editCourse']").should("exist");
     });
 
     //delete course
     it("Show edit page", () => {
-        cy.get("div").contains("test-CourseName-cypress").parent().parent().find("button[id='editCourse']").click();
+        cy.get("div").contains(updatedCourseName).parent().parent().find("button[id='editCourse']").click();
     });
 
     it("Delete course", () => {
@@ -159,6 +163,6 @@ describe("Course creation, edition and deletion", () => {
 
     it("Assert course deletion", () => {
         cy.url().should("contain", "/course-management");
-        cy.get("div").contains("test-CourseName-cypress").should("not.exist");
+        cy.get("div").contains(updatedCourseName).should("not.exist");
     });
 });

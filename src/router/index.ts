@@ -56,10 +56,21 @@ const router = createRouter({
         },
         {
             path: "/course-management",
-            name: "lecturer.courses",
+            name: "lecturer.myCourses",
+            props: { showAllCourses: false },
             component: LecturerCourseView,
             meta: {
-                title: "Courses" + suffix,
+                title: "My Courses" + suffix,
+            },
+        },
+
+        {
+            path: "/all-courses",
+            name: "lecturer.courses",
+            props: { showAllCourses: true },
+            component: LecturerCourseView,
+            meta: {
+                title: "All Courses" + suffix,
                 roles: ["Lecturer"],
             },
         },
