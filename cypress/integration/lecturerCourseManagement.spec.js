@@ -52,9 +52,18 @@ describe("Course creation, edition and deletion", () => {
 
     it("Can change courseType", () => {
         cy.get("input[type='radio']").should("be.enabled");
+    });
+
+    it("Show validation errors", () => {
+        cy.get("input[id='courseName']").type("test");
+        cy.get('button[id="createCourse"]').click();
+        cy.get("input[id='courseType']").siblings().get("p").should("have.class", "error-message");
+        cy.get("select[id='courseLanguage']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='maxParticipants']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='courseName']").clear();
         cy.get("input[type='radio']").eq(0).click();
-        cy.get("input[type='radio']").eq(1).click();
-        cy.get("input[type='radio']").eq(2).click();
+        cy.get('button[id="createCourse"]').click();
+        cy.get("input[id='courseName']").siblings().get("p").should("have.class", "error-message");
     });
 
     it("Show unsaved changes modal", () => {
@@ -88,12 +97,6 @@ describe("Course creation, edition and deletion", () => {
 
     it("Can edit description", () => {
         cy.get('textarea[id="courseDescription"]').type("test-courseDescription-cypress");
-    });
-
-    it("Validation errors are shown", () => {
-        cy.get('button[id="createCourse"]').click();
-        cy.get('input[id="maxParticipants"]').clear().type("-1");
-        cy.get("input[id='maxParticipants']").siblings().get("p").invoke("hasClass", "error-message");
     });
 
     it("Can edit maxParticipants", () => {
