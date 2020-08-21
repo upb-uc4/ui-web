@@ -40,7 +40,7 @@
     import Router from "@/router";
 
     export default {
-        name: "MobileGuestNavbar",
+        name: "MobileBaseNavbar",
         components: {},
         setup() {
             const isBurgerMenuOpen = ref(false);

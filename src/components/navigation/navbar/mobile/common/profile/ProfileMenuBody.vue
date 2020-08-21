@@ -30,7 +30,7 @@
     import { Role } from "@/entities/Role";
 
     export default {
-        name: "ProfileMenuBody",
+        name: "MobileProfileMenuBody",
         components: {
             MenuItem,
         },

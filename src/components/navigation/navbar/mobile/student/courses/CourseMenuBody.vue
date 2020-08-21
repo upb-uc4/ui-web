@@ -12,7 +12,7 @@
     import MenuItem from "../../common/MenuItem.vue";
 
     export default {
-        name: "CourseMenuBody",
+        name: "MobileStudentCourseMenuBody",
         components: {
             MenuItem,
         },

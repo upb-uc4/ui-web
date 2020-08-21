@@ -25,7 +25,7 @@
     import MenuItem from "@/components/navigation/navbar/mobile/common/MenuItem.vue";
 
     export default {
-        name: "CourseMenuBody",
+        name: "MobileManageAccountsMenuBody",
         components: {
             MenuItem,
         },

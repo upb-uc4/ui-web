@@ -11,7 +11,7 @@
 
 <script lang="ts">
     export default {
-        name: "GenericMenuItem",
+        name: "GenericMobileMenuItem",
         props: {
             title: {
                 required: true,

@@ -12,6 +12,7 @@
     import MenuBody from "./ManageAccountsMenuBody.vue";
 
     export default {
+        name: "MobileManageAccountsMenu",
         components: {
             BaseMenu,
             MenuBody,
