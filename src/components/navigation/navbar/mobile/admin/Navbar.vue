@@ -1,7 +1,7 @@
 <template>
     <base-navbar>
         <li>
-            <router-link id="routeLogin" :to="{ name: 'login' }" class="hover:bg-blue-800 rounded-lg mobile-navbar-menu">Login</router-link>
+            <router-link :to="{ name: 'welcome' }" class="hover:bg-blue-800 rounded-lg mobile-navbar-menu">Home</router-link>
         </li>
         <li>
             <manage-accounts-menu class="mobile-navbar-menu" />
