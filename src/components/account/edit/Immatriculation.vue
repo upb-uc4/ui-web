@@ -92,19 +92,6 @@
                 return array;
             });
 
-            let hasInput = computed(() => {
-                let hasInput: Boolean = year.value != "" || semesterType.value != "" || selectedFieldsOfStudy.value.length != 0;
-                return hasInput;
-            });
-
-            watch(hasInput, () => {
-                emit("update:immatriculationHasChange", hasInput);
-            });
-
-            function updateSelectedFieldsOfStudy(value: any) {
-                selectedFieldsOfStudy.value = value.value;
-            }
-
             let selectedSemester = computed(() => {
                 return semesterType.value + year.value;
             });
@@ -118,8 +105,21 @@
                 );
             });
 
+            let hasInput = computed(() => {
+                let hasInput: Boolean = year.value != "" || semesterType.value != "" || selectedFieldsOfStudy.value.length != 0;
+                return hasInput;
+            });
+
+            watch(hasInput, () => {
+                emit("update:immatriculationHasChange", hasInput);
+            });
+
             function resetYear() {
                 year.value = "";
+            }
+
+            function updateSelectedFieldsOfStudy(value: any) {
+                selectedFieldsOfStudy.value = value.value;
             }
 
             async function updateImmatriculation() {
