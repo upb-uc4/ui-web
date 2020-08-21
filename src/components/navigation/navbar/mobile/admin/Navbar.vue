@@ -18,7 +18,7 @@
     import ProfileMenu from "@/components/navigation/navbar/mobile/common/profile/ProfileMenu.vue";
 
     export default {
-        name: "MobileGuestNavbar",
+        name: "MobileAdminNavbar",
         components: {
             BaseNavbar,
             ManageAccountsMenu,
