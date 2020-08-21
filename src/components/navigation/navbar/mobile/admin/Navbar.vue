@@ -6,18 +6,23 @@
         <li>
             <manage-accounts-menu class="mobile-navbar-menu" />
         </li>
+        <li>
+            <profile-menu class="mobile-navbar-menu" />
+        </li>
     </base-navbar>
 </template>
 
 <script lang="ts">
     import BaseNavbar from "@/components/navigation/navbar/mobile/common/BaseNavbar.vue";
     import ManageAccountsMenu from "./administration/ManageAccountsMenu.vue";
+    import ProfileMenu from "@/components/navigation/navbar/mobile/common/profile/ProfileMenu.vue";
 
     export default {
         name: "MobileGuestNavbar",
         components: {
             BaseNavbar,
             ManageAccountsMenu,
+            ProfileMenu,
         },
     };
 </script>
