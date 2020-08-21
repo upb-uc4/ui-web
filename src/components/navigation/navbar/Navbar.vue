@@ -3,7 +3,11 @@
         <admin-navbar-desktop class="hidden md:flex" />
         <admin-navbar-mobile class="flex md:hidden" />
     </div>
-    <div v-if="role === Role.STUDENT">
+    <div v-else-if="role === Role.LECTURER">
+        <lecturer-navbar-desktop class="hidden md:flex" />
+        <lecturer-navbar-mobile class="flex md:hidden" />
+    </div>
+    <div v-else-if="role === Role.STUDENT">
         <student-navbar-desktop class="hidden md:flex" />
         <student-navbar-mobile class="flex md:hidden" />
     </div>
@@ -20,6 +24,8 @@
     import AdminNavbarMobile from "@/components/navigation/navbar/mobile/admin/Navbar.vue";
     import StudentNavbarDesktop from "@/components/navigation/navbar/desktop/student/Navbar.vue";
     import StudentNavbarMobile from "@/components/navigation/navbar/mobile/student/Navbar.vue";
+    import LecturerNavbarDesktop from "@/components/navigation/navbar/desktop/lecturer/Navbar.vue";
+    import LecturerNavbarMobile from "@/components/navigation/navbar/mobile/lecturer/Navbar.vue";
     import { Role } from "@/entities/Role";
     import { useStore } from "@/store/store";
     import { ref } from "vue";
@@ -34,6 +40,8 @@
             AdminNavbarMobile,
             StudentNavbarDesktop,
             StudentNavbarMobile,
+            LecturerNavbarDesktop,
+            LecturerNavbarMobile,
         },
         setup() {
             const store = useStore();
