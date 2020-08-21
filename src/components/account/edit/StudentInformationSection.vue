@@ -30,7 +30,11 @@
                             <input id="latestImmatriculation" disabled class="form-input input-text" :value="latest" />
                         </div>
                     </div>
-                    <immatriculation v-if="editMode" :username="username" />
+                    <immatriculation
+                        v-if="editMode"
+                        v-model:immatriculation-has-change="studentImmatriculationHasChange"
+                        :username="username"
+                    />
                 </div>
             </div>
         </div>
@@ -70,11 +74,16 @@
                 type: String,
                 required: true,
             },
+            immatriculationHasChange: {
+                type: Boolean,
+                required: true,
+            },
         },
-        emits: ["update:matriculationId"],
+        emits: ["update:matriculationId", "update:immatriculationHasChange"],
         setup(props: any, { emit }: any) {
             return {
                 studentMatriculationId: useModelWrapper(props, emit, "matriculationId"),
+                studentImmatriculationHasChange: useModelWrapper(props, emit, "immatriculationHasChange"),
             };
         },
     };

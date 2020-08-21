@@ -42,7 +42,7 @@
 <script lang="ts">
     import MultiSelect from "@/components/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import { onBeforeMount, ref, computed, reactive } from "vue";
+    import { onBeforeMount, ref, computed, reactive, watch } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import { historyToSortedList } from "@/use/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
@@ -63,8 +63,13 @@
                 type: String,
                 required: true,
             },
+            immatriculationHasChange: {
+                type: Boolean,
+                required: true,
+            },
         },
-        setup(props: any) {
+        emits: ["update:immatriculationHasChange"],
+        setup(props: any, { emit }: any) {
             let refreshKey = ref(false);
             let busy = ref(true);
             let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
@@ -85,6 +90,15 @@
                     }
                 }
                 return array;
+            });
+
+            let hasInput = computed(() => {
+                let hasInput: Boolean = year.value != "" || semesterType.value != "" || selectedFieldsOfStudy.value.length != 0;
+                return hasInput;
+            });
+
+            watch(hasInput, () => {
+                emit("update:immatriculationHasChange", hasInput);
             });
 
             function updateSelectedFieldsOfStudy(value: any) {
