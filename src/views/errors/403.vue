@@ -23,18 +23,20 @@
 <script lang="ts">
     import Router from "@/router/";
     import { ref } from "vue";
+    import { onBeforeRouteLeave } from "vue-router";
 
     export default {
-        beforeRouteLeave(_from: any, _to: any, next: any) {
-            clearInterval(this.timeout);
-            return next();
-        },
         setup() {
             let countdown = ref(10);
             let timeout = ref(0);
 
             //setup the timer
             countDownTimer();
+
+            onBeforeRouteLeave(async (to, from, next) => {
+                clearInterval(timeout.value);
+                return next();
+            });
 
             function countDownTimer() {
                 timeout.value = setInterval(() => {
