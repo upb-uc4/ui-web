@@ -28,7 +28,6 @@
     import UserManagement from "../api/UserManagement";
     import { ref, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/loading/Spinner.vue";
-
     import MatriculationManagement from "@/api/MatriculationManagement";
 
     export default {
