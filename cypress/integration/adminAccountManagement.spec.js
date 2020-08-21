@@ -12,6 +12,9 @@
  */
 
 describe("Account creation, edition and deletion", () => {
+    const random = Math.floor(Math.random() * 500);
+    const username = "cypress" + random;
+
     it("Login as admin", () => {
         cy.visit("/");
         cy.get("input[id='email']").type("admin");
@@ -83,7 +86,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[type='radio']").eq(2).click();
     });
     it("Can edit username", () => {
-        cy.get("input[id='userName']").type("cypress");
+        cy.get("input[id='userName']").type(username);
     });
 
     it("Can edit password", () => {
@@ -119,7 +122,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
 
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
+        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
 
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
@@ -134,12 +137,12 @@ describe("Account creation, edition and deletion", () => {
         cy.url().should("contain", "accounts");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains("cypress");
+        cy.get(`div[id='user_${username}']`).should("exist");
     });
 
     // edit account
     it("Show student edit page", () => {
-        cy.get("div[id='user_cypress']").click();
+        cy.get(`div[id='user_${username}']`).click();
 
         //todo check if everything is there
     });
@@ -167,7 +170,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("button").contains("Save Changes").should("be.enabled");
         cy.get("button").contains("Save Changes").click();
 
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
+        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
 
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
@@ -188,7 +191,7 @@ describe("Account creation, edition and deletion", () => {
 
     //delete account
     it("Show edit page", () => {
-        cy.get("div[id='user_cypress']").click();
+        cy.get(`div[id='user_${username}']`).click();
 
         //todo check if everything is there
     });
@@ -209,7 +212,7 @@ describe("Account creation, edition and deletion", () => {
 
     it("Assert account deletion", () => {
         cy.url().should("contain", "/accounts");
-        cy.get("div[id='user_cypress']").should("not.exist")
+        cy.get(`div[id='user_${username}']`).should("not.exist")
         cy.get("div[id='user_student']").should("exist")
         cy.get("div[id='user_lecturer']").should("exist")
         cy.get("div[id='user_admin']").should("exist")

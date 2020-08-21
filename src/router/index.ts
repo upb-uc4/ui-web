@@ -11,6 +11,8 @@ import Settings from "../views/common/Settings.vue";
 import PageNotFound from "../views/errors/404.vue";
 import WelcomePage from "../views/common/Welcome.vue";
 import AboutPage from "../views/common/About.vue";
+import { checkPrivilege } from "@/use/PermissionHelper";
+import { Role } from "@/entities/Role";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -24,6 +26,7 @@ const router = createRouter({
             component: WelcomePage,
             meta: {
                 title: "Welcome" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
             },
         },
         {
@@ -48,14 +51,27 @@ const router = createRouter({
             component: StudentCourseView,
             meta: {
                 title: "Home" + suffix,
+                roles: ["Student"],
             },
         },
         {
             path: "/course-management",
-            name: "lecturer.courses",
+            name: "lecturer.myCourses",
+            props: { showAllCourses: false },
             component: LecturerCourseView,
             meta: {
-                title: "Courses" + suffix,
+                title: "My Courses" + suffix,
+            },
+        },
+
+        {
+            path: "/all-courses",
+            name: "lecturer.courses",
+            props: { showAllCourses: true },
+            component: LecturerCourseView,
+            meta: {
+                title: "All Courses" + suffix,
+                roles: ["Lecturer"],
             },
         },
 
@@ -65,6 +81,7 @@ const router = createRouter({
             component: AdminAccountListView,
             meta: {
                 title: "Accounts" + suffix,
+                roles: ["Admin"],
             },
         },
 
@@ -77,6 +94,7 @@ const router = createRouter({
             component: CourseFormSuspenseWrapper,
             meta: {
                 title: "Course Creation" + suffix,
+                roles: ["Lecturer"],
             },
         },
         {
@@ -88,6 +106,7 @@ const router = createRouter({
             component: CourseFormSuspenseWrapper,
             meta: {
                 title: "Course Editing" + suffix,
+                roles: ["Lecturer"],
             },
         },
         {
@@ -96,6 +115,9 @@ const router = createRouter({
             props: { isPrivate: false },
             component: ProfileWrapper,
             // The page title is set within the component depending on the username
+            meta: {
+                roles: ["Admin", "Lecturer", "Student"],
+            },
         },
         {
             path: "/profile",
@@ -104,6 +126,7 @@ const router = createRouter({
             component: ProfileWrapper,
             meta: {
                 title: "My Profile" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
             },
         },
         {
@@ -123,6 +146,7 @@ const router = createRouter({
             component: AccountFormSuspenseWrapper,
             meta: {
                 title: "Account Creation" + suffix,
+                roles: ["Admin"],
             },
         },
         {
@@ -134,6 +158,7 @@ const router = createRouter({
             component: AccountFormSuspenseWrapper,
             meta: {
                 title: "Account Editing" + suffix,
+                roles: ["Admin"],
             },
         },
         {
@@ -150,6 +175,7 @@ const router = createRouter({
             component: Settings,
             meta: {
                 title: "Settings" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
             },
         },
         {
@@ -170,9 +196,24 @@ const router = createRouter({
     },
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     window.document.title = to.meta && to.meta.title ? to.meta.title : "UC4";
-    next();
+
+    const roles: Role[] = to.meta.roles;
+
+    if (roles == undefined || roles.length == 0) {
+        return next();
+    }
+
+    const response = await checkPrivilege(...roles);
+    if (response.allowed) {
+        return next();
+    }
+    if (!response.authenticated) {
+        return next("/login");
+    }
+
+    return next("/redirect");
 });
 
 export default router;

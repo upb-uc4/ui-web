@@ -15,6 +15,12 @@ beforeAll(async () => {
     store.commit(MutationTypes.SET_ROLE, "Admin");
     userManagement = new UserManagement();
     expect(success.returnValue).toBe(true);
+
+    // randomize user primary key to support concurrent testing
+    const random = Math.floor(Math.random() * 500);
+    authUser.username = authUser.username += random;
+    user.username = authUser.username;
+    student.username = authUser.username;
 });
 
 test("Create user", async () => {
@@ -81,6 +87,12 @@ test("Get lecturers by usernames", async () => {
     const users = await userManagement.getLecturers("student", "lecturer");
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(1);
+});
+
+test("Get empty list of lecturers by usernames", async () => {
+    const users = await userManagement.getLecturers();
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(0);
 });
 
 test("Get students by usernames", async () => {

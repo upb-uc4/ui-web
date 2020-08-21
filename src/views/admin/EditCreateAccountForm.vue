@@ -158,6 +158,7 @@
     import LoadingComponent from "../../components/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
+    import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -170,44 +171,6 @@
             StudentInformationSection,
             UnsavedChangesModal,
             LoadingComponent,
-        },
-        async beforeRouteEnter(_to: any, _from: any, next: any) {
-            const response = await checkPrivilege(Role.ADMIN);
-
-            if (response.allowed) {
-                return next();
-            }
-            if (!response.authenticated) {
-                return next("/login");
-            }
-
-            return next("/redirect");
-        },
-
-        async beforeRouteLeave(to: any, from: any, next: any) {
-            if (this.success) {
-                return next();
-            }
-            if (this.hasInput) {
-                const modal = this.unsavedChangesModal;
-                let action = modal.action;
-                const response = await modal.show();
-                switch (response) {
-                    case action.CANCEL: {
-                        next(false);
-                        break;
-                    }
-                    case action.CONFIRM: {
-                        next(true);
-                        break;
-                    }
-                    default: {
-                        next(true);
-                    }
-                }
-            } else {
-                next(true);
-            }
         },
         props: {
             editMode: {
@@ -238,7 +201,7 @@
             let deleteModal = ref();
             let unsavedChangesModal = ref();
 
-            const errorBag: ErrorBag = reactive(new ErrorBag());
+            const errorBag = ref(new ErrorBag());
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -246,6 +209,32 @@
 
             let isStudent = computed(() => {
                 return account.user.role === Role.STUDENT;
+            });
+
+            onBeforeRouteLeave(async (to, from, next) => {
+                if (success.value) {
+                    return next();
+                }
+                if (hasInput.value) {
+                    const modal = unsavedChangesModal.value;
+                    let action = modal.action;
+                    const response = await modal.show();
+                    switch (response) {
+                        case action.CANCEL: {
+                            next(false);
+                            break;
+                        }
+                        case action.CONFIRM: {
+                            next(true);
+                            break;
+                        }
+                        default: {
+                            next(true);
+                        }
+                    }
+                } else {
+                    next(true);
+                }
             });
 
             onBeforeMount(() => {
@@ -375,9 +364,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag.replaceAllWith(handler.errorList);
-                    //TODO: change the following line?
-                    this.$forceUpdate();
+                    errorBag.value = new ErrorBag(handler.errorList);
                 }
             }
 
@@ -393,9 +380,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag.replaceAllWith(handler.errorList);
-                    //TODO: change the following line?
-                    this.$forceUpdate();
+                    errorBag.value = new ErrorBag(handler.errorList);
                 }
             }
 

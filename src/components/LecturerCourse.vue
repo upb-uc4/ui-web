@@ -1,5 +1,5 @@
 <template>
-    <div class="flex shadow-xl">
+    <div :id="'course_' + course.courseId" class="flex shadow-xl">
         <div class="flex flex-col w-full px-8 py-4 bg-white rounded-lg">
             <div class="flex items-baseline">
                 <span class="inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase bg-teal-200 rounded-full">{{
@@ -27,7 +27,7 @@
                         <read-more more-str="Show more" :text="course.courseDescription" less-str="Show less" :max-chars="180"></read-more>
                     </div>
                 </div>
-                <div class="w-1/3 ml-12 lg:w-1/6 lg:ml-8">
+                <div v-if="course.lecturerId == username" class="w-1/3 ml-12 lg:w-1/6 lg:ml-8">
                     <div class="flex items-center justify-center h-full mt-6">
                         <button id="editCourse" class="w-48 py-2 btn btn-gray-primary" @click="editCourse()">Edit</button>
                     </div>
@@ -57,6 +57,10 @@
             },
             lecturer: {
                 type: Object as () => Lecturer,
+                required: true,
+            },
+            username: {
+                type: String,
                 required: true,
             },
         },

@@ -57,7 +57,7 @@
             });
 
             let unchosenValues = computed(() => {
-                return input.value.filter((f) => !output.value.includes(f as string));
+                return input.value.filter((f: any) => !output.value.includes(f as string));
             });
 
             function addValue(value: any, index: number) {

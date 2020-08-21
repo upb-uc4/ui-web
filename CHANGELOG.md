@@ -1,13 +1,16 @@
 # [v.0.6.1](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-XX-XX)
 ## Feature
+- add a course list for the lecturer containing all lectures [376](https://github.com/upb-uc4/ui-web/pull/376)
 - add immatriculation components [##368](https://github.com/upb-uc4/ui-web/pull/368)
     - add component containing the immatriculation history
     - add latest immatriculation fields to account form and student's private profile
     - add modal for showing the immatriculation history to the student in private profile
-- 
 
+## Refactor
+- randomize test data to allow for concurrent testing [#353](https://github.com/upb-uc4/ui-web/pull/353)
 ## Bugfix
 - add a timeout of 100ms to prevent refreshing the page too fast (caused application to crash) [#358](https://github.com/upb-uc4/ui-web/pull/358)
+- fixes a bug that caused the application to crash if you want to view your own courses without having one
 
 # [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
@@ -28,7 +31,7 @@
 - move course filtering for lecturer from frontend to backend [#317](https://github.com/upb-uc4/ui-web/pull/317)
 - remove unused wrapper components for asynchronous data loading [#341](https://github.com/upb-uc4/ui-web/pull/341)
 - replace placeholder descriptions in edit/create course form
-  
+
 ## Bugfix
 - Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
 - Fix cursor styling of menus [#301](https://github.com/upb-uc4/ui-web/issues/301)
