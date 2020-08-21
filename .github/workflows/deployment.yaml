@@ -2,7 +2,7 @@ name: Vue Deployment Pipeline
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   # Tag and then create a release
