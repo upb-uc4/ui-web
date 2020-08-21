@@ -111,7 +111,7 @@
             });
 
             watch(hasInput, () => {
-                emit("update:immatriculationHasChange", hasInput);
+                emit("update:immatriculationHasChange", hasInput.value);
             });
 
             function resetYear() {
