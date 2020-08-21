@@ -34,5 +34,5 @@ export var user: User = {
 export var student: Student = {
     ...user,
     latestImmatriculation: "",
-    matriculationId: "2187",
+    matriculationId: "1234567",
 };
