@@ -44,8 +44,8 @@ describe("Change password", () => {
         cy.get("input[id='email']").type(studentUsername);
         cy.get("input[id='password']").type("test-password-cypress");
         cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");        
-    })
+        cy.url().should("contain", "welcome");
+    });
 
     it("Navigate to settings page", () => {
         cy.get("div[id='menu_profile']").children().eq(1).should("not.be.visible");
@@ -54,7 +54,7 @@ describe("Change password", () => {
         cy.get("div[id='menu_profile']").children().eq(1).get("a").contains("Settings").click();
         cy.get("div[id='menu_profile']").trigger("mouseleave");
         cy.url().should("contain", "/settings");
-    })
+    });
 
     it("Open password change modal", () => {
         cy.get("#modal-wrapper").should("exist");
@@ -71,31 +71,31 @@ describe("Change password", () => {
         // open
         cy.get("button[id='updatePassword'").click();
         cy.get("div[id='modal-wrapper']").children().eq(0).should("be.visible");
-    })
+    });
 
     it("Enter wrong password should show error", () => {
         cy.get("input[id='enterPasswordModalPassword']").type("test-password-cypress-wrong");
         cy.get("button[id='enterPasswordModalConfirm']").click();
-        
+
         cy.get("p").should("have.class", "error-message").should("exist");
-    })
+    });
 
     it("Enter correct password", () => {
         cy.get("input[id='enterPasswordModalPassword']").clear().type("test-password-cypress");
         cy.get("button[id='enterPasswordModalConfirm']").click();
-        
+
         cy.get("p").invoke("hasClass", "error-message").should("not.be.visible");
         cy.get("div[id='modal-wrapper']").children().should("not.be.visible");
-    })
+    });
 
     it("Password fields should be password fields", () => {
         cy.get("input[id='newPassword']").invoke("attr", "type").should("equal", "password");
         cy.get("input[id='confirmationPassword']").invoke("attr", "type").should("equal", "password");
-    })
+    });
 
     it("Converting password fields to text fields works", () => {
         cy.get("button[id='toggleNewPassword']").click();
-    
+
         cy.get("input[id='newPassword']").invoke("attr", "type").should("equal", "text");
         cy.get("input[id='confirmationPassword']").invoke("attr", "type").should("equal", "text");
 
@@ -103,37 +103,37 @@ describe("Change password", () => {
 
         cy.get("input[id='newPassword']").invoke("attr", "type").should("equal", "password");
         cy.get("input[id='confirmationPassword']").invoke("attr", "type").should("equal", "password");
-    })    
+    });
 
     it("Entering different passwords should block button", () => {
         cy.get("button[id='changePassword']").should("be.disabled");
         cy.get("input[id='newPassword']").type("password-a");
         cy.get("input[id='confirmationPassword']").type("password-b");
         cy.get("button[id='changePassword']").should("be.disabled");
-    })
+    });
 
     it("Entering the same password should be valid", () => {
         cy.get("button[id='changePassword']").should("be.disabled");
         cy.get("input[id='newPassword']").clear().type("test-password-cypress-new");
-        cy.get("input[id='confirmationPassword']").clear().type("test-password-cypress-new"); 
+        cy.get("input[id='confirmationPassword']").clear().type("test-password-cypress-new");
         cy.get("button[id='changePassword']").should("not.be.disabled");
         cy.get("button[id='changePassword']").click();
-    })
+    });
 
     it("Password change should hide inputs", () => {
-        cy.get("input[id='newPassword']").should("not.exist")
-        cy.get("input[id='confirmationPassword']").should("not.exist")
-        cy.get("button[id='changePassword']").should("not.exist")
-        cy.wait(300)
-    })
+        cy.get("input[id='newPassword']").should("not.exist");
+        cy.get("input[id='confirmationPassword']").should("not.exist");
+        cy.get("button[id='changePassword']").should("not.exist");
+        cy.wait(300);
+    });
 
     it("Login with new password", () => {
         cy.visit("/");
         cy.get("input[id='email']").type(studentUsername);
         cy.get("input[id='password']").type("test-password-cypress-new");
         cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");        
-    })
+        cy.url().should("contain", "welcome");
+    });
 
     it("Login as admin", () => {
         cy.visit("/");
@@ -159,4 +159,4 @@ describe("Change password", () => {
         cy.wait(100);
         cy.get('button[id="deleteAccountModalDelete"]').click();
     });
-})
+});

@@ -32,7 +32,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
         cy.url().should("contain", "accounts");
-    });    
+    });
 
     it("List contains admin, student and lecturer", () => {
         cy.get("div").contains("@student");
@@ -45,7 +45,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("button[id='role-Admin']").should("exist");
         cy.get("button[id='role-Lecturer']").should("exist");
         cy.get("button[id='role-Student']").should("exist");
-    })
+    });
 
     it("Check if role filtering works", () => {
         // test admin role
@@ -70,8 +70,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("div").contains("@admin").should("exist");
         cy.get("div").contains("@lecturer").should("exist");
         cy.get("div").contains("@student").should("exist");
-       
-    })
+    });
 
     it("Show new account page", () => {
         cy.get('button[id="addAccount"]').click({ force: true });
@@ -100,7 +99,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='houseNumber']").should("exist");
         cy.get("input[id='zipCode']").should("exist");
         cy.get("input[id='city']").should("exist");
-    })
+    });
 
     it("Can edit role", () => {
         cy.get("input[type='radio']").should("be.enabled");
@@ -322,7 +321,6 @@ describe("Account creation, edition and deletion", () => {
         cy.get("textarea[id='researchArea']").type("Cypress-Test-FoS");
     });
 
-
     it("Create account works", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
@@ -438,8 +436,6 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
-
-
     it("Create account works", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
@@ -553,14 +549,13 @@ describe("Account creation, edition and deletion", () => {
         cy.get('button[id="deleteAccountModalDelete"]').click();
     });
 
-
     it("Assert account deletion", () => {
         cy.url().should("contain", "/accounts");
-        cy.get(`div[id='user_${studentUsername}']`).should("not.exist")
-        cy.get(`div[id='user_${lecturerUsername}']`).should("not.exist")
-        cy.get(`div[id='user_${adminUsername}']`).should("not.exist")
-        cy.get("div[id='user_student']").should("exist")
-        cy.get("div[id='user_lecturer']").should("exist")
-        cy.get("div[id='user_admin']").should("exist")
+        cy.get(`div[id='user_${studentUsername}']`).should("not.exist");
+        cy.get(`div[id='user_${lecturerUsername}']`).should("not.exist");
+        cy.get(`div[id='user_${adminUsername}']`).should("not.exist");
+        cy.get("div[id='user_student']").should("exist");
+        cy.get("div[id='user_lecturer']").should("exist");
+        cy.get("div[id='user_admin']").should("exist");
     });
 });

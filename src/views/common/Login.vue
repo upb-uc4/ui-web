@@ -2,7 +2,7 @@
     <div>
         <div class="container flex flex-col h-auto max-w-full md:mt-32 lg:flex-row lg:items-center">
             <form method="POST" action="" class="flex flex-col items-center w-full mx-auto xl:w-3/4" @submit.prevent="login">
-                <h1 class="mt-2 mb-10 text-4xl font-bold text-center text-gray-900 lg:text-5xl">Login to Your Account</h1>
+                <h1 class="mt-2 mb-10 text-4xl font-bold text-center text-gray-900 lg:text-5xl">Logins to Your Account</h1>
 
                 <div class="items-center justify-center flex-auto w-full mx-4 lg:w-3/5">
                     <div class="mb-6 text-center">

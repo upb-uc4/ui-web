@@ -40,7 +40,7 @@ describe("Student course view", () => {
         cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
         cy.url().should("contain", "courses");
-    }); 
+    });
 
     it("Course exists", () => {
         cy.wait(2000);

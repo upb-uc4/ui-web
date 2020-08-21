@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "esnext",
+        "lib": ["esnext", "dom"],
+        "types": ["jest"]
+    },
+    "include": ["**/*.ts"]
+}

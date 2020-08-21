@@ -7,7 +7,6 @@ describe("Change Profile Information", () => {
     const newZipCode = "54321";
     const newCity = "test-city-cypress-updated";
     const newEmail = "updated@valid.de";
-    
 
     it("Login as admin", () => {
         cy.visit("/");
@@ -51,7 +50,7 @@ describe("Change Profile Information", () => {
         cy.get("input[id='email']").type(studentUsername);
         cy.get("input[id='password']").type("test-password-cypress");
         cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");        
+        cy.url().should("contain", "welcome");
     });
 
     it("Navigate to private profile", () => {
@@ -83,7 +82,7 @@ describe("Change Profile Information", () => {
         cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='email']").should("have.value", "valid@valid.de");
-    })
+    });
 
     it("Change contact information", () => {
         cy.get("button[id='editContact']").click();
@@ -91,7 +90,7 @@ describe("Change Profile Information", () => {
         cy.get("button[id='saveContact']").click();
         cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
-    })
+    });
 
     it("Check address information section", () => {
         cy.get("select[id='country']").should("be.disabled");
@@ -111,11 +110,11 @@ describe("Change Profile Information", () => {
         cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
-        cy.get("select[id='country']").should("have.value", "Germany")
+        cy.get("select[id='country']").should("have.value", "Germany");
         cy.get("input[id='city']").should("have.value", "test-city-cypress");
         cy.get("input[id='zipCode']").should("have.value", "test-city-cypress");
         cy.get("input[id='street']").should("have.value", "test-street-cypress");
-    })
+    });
 
     it("Change address information", () => {
         cy.get("button[id='editAddress']").click();
@@ -128,13 +127,13 @@ describe("Change Profile Information", () => {
         cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
-    })
+    });
 
     it("Check course of study information section", () => {
         cy.get("input[id='matriculationId']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='degreeSought']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='semesterCount']").invoke("attr", "readonly").should("exist");
-    })
+    });
 
     it("Refresh", () => {
         cy.reload();
@@ -176,4 +175,4 @@ describe("Change Profile Information", () => {
         cy.wait(100);
         cy.get('button[id="deleteAccountModalDelete"]').click();
     });
-})
+});

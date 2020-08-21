@@ -29,7 +29,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
         cy.url().should("contain", "course-management");
-    }); 
+    });
 
     it("Show new course page", () => {
         cy.get('button[id="addCourse"]').click({ force: true });
@@ -44,7 +44,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='maxParticipants']").should("exist");
         cy.get("input[id='startDate']").should("exist");
         cy.get("input[id='endDate']").should("exist");
-    })
+    });
 
     it("Can not submit empty course", () => {
         cy.get('button[id="createCourse"]').should("be.disabled");
