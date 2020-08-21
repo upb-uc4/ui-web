@@ -1,5 +1,5 @@
 ---------------------------------------------
-Remove this, if this PR is not to master!
+Remove this, if this PR is not to main!
 
 <b>Version to release: v0.4.4</b>
 
@@ -52,7 +52,7 @@ Please describe the tests that you ran to verify your changes. Provide instructi
   - [ ] Dockerized production build
 - Backend: (remove all that don't apply)
   - [ ] No backend needed to test this
-  - [ ] Deployed master version X.X.X
+  - [ ] Deployed main version X.X.X
   - [ ] Deployed develop version X.X.X
   - [ ] Local backend version X.X.X (commit hash [XXXXXXX])
 
