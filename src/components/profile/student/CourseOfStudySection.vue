@@ -10,10 +10,10 @@
                 </label>
             </div>
             <div class="w-full lg:w-2/3">
-                <div class="mb-6 flex flex-col">
+                <div class="mb-6 flex flex-col w-2/3">
                     <div class="flex flex-row">
-                        <div class="flex flex-col pl-2">
-                            <label class="w-1/2 mb-3 text-sm font-medium text-gray-700">Matriculation-ID</label>
+                        <div class="flex flex-col w-1/2">
+                            <label class="mb-3 text-sm font-medium text-gray-700 w-full">Matriculation-ID</label>
                             <input
                                 id="matriculationId"
                                 :value="matriculationId"
@@ -23,7 +23,7 @@
                                 placeholder="Matriculation-ID"
                             />
                         </div>
-                        <div v-if="latest != ''" class="ml-4 flex flex-col">
+                        <div v-if="latest != ''" class="ml-4 flex flex-col w-1/2">
                             <label class="mb-3 text-sm font-medium text-gray-700 flex">
                                 Latest Immatriculation (
                                 <button class="cursor-pointer text-sm font-medium navigation-link" @click="showHistory">
@@ -31,7 +31,7 @@
                                 </button>
                                 )
                             </label>
-                            <input disabled id="latestImmatriculation" class="form-input input-text" :value="latest" />
+                            <input id="latestImmatriculation" disabled class="form-input input-text" :value="latest" />
                         </div>
                     </div>
                 </div>
