@@ -36,8 +36,6 @@
                 </button>
             </div>
         </div>
-        {{ selectedFieldsOfStudy }}
-        {{ hasInput }}
     </div>
 </template>
 
@@ -176,7 +174,6 @@
                 updateImmatriculation,
                 validSelection,
                 refreshKey,
-                hasInput,
             };
         },
     };
