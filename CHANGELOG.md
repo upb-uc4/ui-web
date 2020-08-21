@@ -8,6 +8,7 @@
 
 ## Bugfix
 - add a timeout of 100ms to prevent refreshing the page too fast (caused application to crash) [#358](https://github.com/upb-uc4/ui-web/pull/358)
+- make a deep copy of address prop in profile address section to avoid directly changing the prop [#381](https://github.com/upb-uc4/ui-web/pull/381)
 - fixes a bug that caused the application to crash if you want to view your own courses without having one
 
 # [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)

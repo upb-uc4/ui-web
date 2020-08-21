@@ -77,7 +77,7 @@
         emits: ["save", "update:address"],
         setup(props: any, { emit }: any) {
             const countries = Object.values(Country).filter((e) => e != Country.NONE);
-            const editedAddress = ref(props.address);
+            const editedAddress = ref({ ...props.address });
             const isEditing = ref(false);
 
             function edit() {
