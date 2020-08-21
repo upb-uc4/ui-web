@@ -36,6 +36,8 @@
                 </button>
             </div>
         </div>
+        {{ selectedFieldsOfStudy }}
+        {{ hasInput }}
     </div>
 </template>
 
@@ -106,7 +108,10 @@
             });
 
             let hasInput = computed(() => {
-                let hasInput: Boolean = year.value != "" || semesterType.value != "" || selectedFieldsOfStudy.value.length != 0;
+                let hasInput: Boolean =
+                    year.value != "" ||
+                    semesterType.value != "" ||
+                    (selectedFieldsOfStudy.value.length > 0 && selectedFieldsOfStudy.value[0] != "");
                 return hasInput;
             });
 
@@ -171,6 +176,7 @@
                 updateImmatriculation,
                 validSelection,
                 refreshKey,
+                hasInput,
             };
         },
     };
