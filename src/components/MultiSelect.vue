@@ -4,7 +4,7 @@
             <select
                 :id="'fieldsOfStudy-' + index"
                 v-model="output[index - 1]"
-                class="input-select form-select mr-2 w--full"
+                class="input-select form-select mr-2 w-full"
                 :class="{ 'mb-2': index !== output.length }"
                 @change="addValue($event.target.value, index - 1)"
             >
