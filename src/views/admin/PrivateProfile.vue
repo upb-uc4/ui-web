@@ -23,7 +23,7 @@
 
             <contact-section v-model:email="admin.email" @save="save" />
 
-            <address-section v-model:address="admin.address" @save="save" />
+            <address-section v-model:user="admin" />
 
             <section class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
