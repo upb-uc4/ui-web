@@ -14,6 +14,7 @@ export default class LecturerEntity implements Lecturer {
     picture = "";
     email = "";
     birthDate = "";
+    phoneNumber = "";
 
     constructor() {}
 }

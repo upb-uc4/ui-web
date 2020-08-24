@@ -15,6 +15,6 @@ export default class StudentEntity implements Student {
     picture = "";
     email = "";
     birthDate = "";
-
+    phoneNumber = "";
     constructor() {}
 }

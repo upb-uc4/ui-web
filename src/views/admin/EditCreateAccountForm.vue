@@ -350,6 +350,10 @@
                         break;
                     }
                 }
+
+                // TODO remove when phone number is implemented in UI
+                newUser.phoneNumber = "+49123456789";
+
                 return newUser;
             }
 
