@@ -47,16 +47,27 @@
                         />
                     </div>
                 </div>
-
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Street</label>
-                    <input
-                        id="street"
-                        v-model="editedAddress.street"
-                        type="text"
-                        :readonly="!isEditing"
-                        class="w-full input-text form-input"
-                    />
+                <div class="flex flex-row justify-between">
+                    <div class="mb-6 flex flex-col w-5/6 mr-3">
+                        <label class="text-gray-700 text-md font-medium mb-3">Street</label>
+                        <input
+                            id="street"
+                            v-model="editedAddress.street"
+                            type="text"
+                            :readonly="!isEditing"
+                            class="input-text form-input"
+                        />
+                    </div>
+                    <div class="mb-6 flex flex-col w-1/6">
+                        <label class="text-gray-700 text-md font-medium mb-3">Nr.</label>
+                        <input
+                            id="houseNumber"
+                            v-model="editedAddress.houseNumber"
+                            type="text"
+                            :readonly="!isEditing"
+                            class="input-text form-input"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
