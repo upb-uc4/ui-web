@@ -25,7 +25,7 @@
 
             <contact-section v-model:email="student.email" @save="save" />
 
-            <address-section v-model:address="student.address" @save="save" />
+            <address-section v-model:user="student" />
 
             <course-of-study-section
                 :fields-of-study="student.fieldsOfStudy"

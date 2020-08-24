@@ -22,10 +22,9 @@
                 :birth-date="lecturer.birthDate"
                 @save="save"
             />
-
             <contact-section v-model:email="lecturer.email" @save="save" />
 
-            <address-section v-model:address="lecturer.address" @save="save" />
+            <address-section v-model:user="lecturer" />
 
             <research-section v-model:description="lecturer.freeText" v-model:research-area="lecturer.researchArea" @save="save" />
 
