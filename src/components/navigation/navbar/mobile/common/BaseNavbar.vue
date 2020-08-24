@@ -7,7 +7,12 @@
                 </button>
             </div>
 
-            <button type="button" class="block text-gray-100 md:hidden hover:text-gray-500 focus:outline-none" @click="toggleBurgerMenu">
+            <button
+                id="nav_mobile_toggle_menu"
+                type="button"
+                class="block text-gray-100 md:hidden hover:text-gray-500 focus:outline-none"
+                @click="toggleBurgerMenu"
+            >
                 <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
                     <path
                         v-if="isBurgerMenuOpen"
@@ -27,7 +32,11 @@
             <ul class="pb-4 font-semibold tracking-wider text-gray-100">
                 <slot></slot>
                 <li>
-                    <router-link id="routeAbout" :to="{ name: 'about' }" class="hover:bg-blue-800 rounded-lg mobile-navbar-menu">About</router-link>
+                    <router-link
+                        id="nav_mobile_common_about"
+                        :to="{ name: 'about' }"
+                        class="hover:bg-blue-800 rounded-lg mobile-navbar-menu"
+                    >About</router-link>
                 </li>
             </ul>
         </nav>
