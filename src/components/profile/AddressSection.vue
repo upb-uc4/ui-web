@@ -101,7 +101,7 @@
             }
 
             function resetInputs() {
-                editedAddress.value = props.address;
+                editedAddress.value = { ...props.address };
             }
 
             function save() {
