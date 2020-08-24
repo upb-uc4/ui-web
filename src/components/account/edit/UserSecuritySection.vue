@@ -33,6 +33,18 @@
                     />
                     <p v-if="errorBag.hasNested('email')" class="error-message">{{ errorBag.getNested("email") }}</p>
                 </div>
+                <div class="flex flex-col mb-4">
+                    <label class="mb-3 font-medium text-gray-700 text-md">Phone Number (optional)</label>
+                    <input
+                        id="phoneNumber"
+                        v-model="accountPhoneNumber"
+                        type="text"
+                        class="w-full form-input input-text"
+                        :class="{ error: errorBag.hasNested('phoneNumber') }"
+                        placeholder="+49123456789"
+                    />
+                    <p v-if="errorBag.hasNested('phoneNumber')" class="error-message">{{ errorBag.getNested("phoneNumber") }}</p>
+                </div>
                 <div v-if="!editMode" class="flex flex-col mb-4">
                     <label for="password" class="mb-3 font-medium text-gray-700 text-md">
                         Password
@@ -75,16 +87,21 @@
                 type: String,
                 required: true,
             },
+            phonenumber: {
+                type: String,
+                required: true,
+            },
             password: {
                 type: String,
                 required: true,
             },
         },
-        emits: ["update:username", "update:email", "update:password"],
+        emits: ["update:username", "update:email", "update:password", "update:phonenumber"],
         setup(props: any, { emit }: any) {
             return {
                 accountUsername: useModelWrapper(props, emit, "username"),
                 accountEmail: useModelWrapper(props, emit, "email"),
+                accountPhoneNumber: useModelWrapper(props, emit, "phonenumber"),
                 accountPassword: useModelWrapper(props, emit, "password"),
             };
         },

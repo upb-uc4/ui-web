@@ -15,6 +15,7 @@
             <user-security-section
                 v-model:username="account.user.username"
                 v-model:email="account.user.email"
+                v-model:phonenumber="account.user.phoneNumber"
                 v-model:password="account.authUser.password"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -285,6 +286,7 @@
                     account.user.firstName != initialAccount.user.firstName ||
                     account.user.lastName != initialAccount.user.lastName ||
                     account.user.email != initialAccount.user.email ||
+                    account.user.phoneNumber != initialAccount.user.phoneNumber ||
                     //default user birthdate from the form
                     account.user.birthDate != initialAccount.user.birthDate ||
                     //default user address
@@ -350,9 +352,6 @@
                         break;
                     }
                 }
-
-                // TODO remove when phone number is implemented in UI
-                newUser.phoneNumber = "+49123456789";
 
                 return newUser;
             }
