@@ -1,6 +1,6 @@
 <template>
     <base-menu>
-        <template #hook>Administration</template>
+        <template #hook>My Profile</template>
         <template #content>
             <menu-body />
         </template>
@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts">
-    import BaseMenu from "../../common/BaseMenu.vue";
-    import MenuBody from "./ManageAccountsMenuBody.vue";
+    import BaseMenu from "../BaseMenu.vue";
+    import MenuBody from "./ProfileMenuBody.vue";
 
     export default {
-        name: "MobileManageAccountsMenu",
+        name: "MobileProfileMenu",
         components: {
             BaseMenu,
             MenuBody,

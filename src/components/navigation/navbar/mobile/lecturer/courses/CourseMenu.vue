@@ -1,6 +1,6 @@
 <template>
     <base-menu>
-        <template #hook>Administration</template>
+        <template #hook>Courses</template>
         <template #content>
             <menu-body />
         </template>
@@ -9,10 +9,10 @@
 
 <script lang="ts">
     import BaseMenu from "../../common/BaseMenu.vue";
-    import MenuBody from "./ManageAccountsMenuBody.vue";
+    import MenuBody from "./CourseMenuBody.vue";
 
     export default {
-        name: "MobileManageAccountsMenu",
+        name: "MobileLecturerCourseMenu",
         components: {
             BaseMenu,
             MenuBody,
