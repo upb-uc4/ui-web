@@ -1,5 +1,5 @@
 ---------------------------------------------
-Remove this, if this PR is not to master!
+Remove this, if this PR is not to main!
 
 <b>Version to release: v0.7.0</b>
 
