@@ -10,6 +10,7 @@
  */
 
 describe("Course creation, edition and deletion", () => {
+    const navbar_lecturer_menu_courses = "div[id='menu_courses']";
     const random = Math.floor(Math.random() * 500);
     const courseName = "test-course-cypress" + random;
     const updatedCourseName = courseName + "-update";
@@ -23,11 +24,11 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Navigate to course list", () => {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "course-management");
     }); 
 

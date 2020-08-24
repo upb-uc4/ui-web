@@ -12,6 +12,7 @@
  */
 
 describe("Account creation, edition and deletion", () => {
+    const navbar_admin_menu_manage_accounts = "div[id='menu_manageAccounts']";
     const random = Math.floor(Math.random() * 500);
     const username = "cypress" + random;
 
@@ -24,11 +25,11 @@ describe("Account creation, edition and deletion", () => {
     });
 
     it("Navigate to accountlist", () => {
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).should("not.be.visible");
+        cy.get(navbar_admin_menu_manage_accounts).trigger("mouseover");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("span").contains("All Users").should("be.visible");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("a").contains("All Users").click();
+        cy.get(navbar_admin_menu_manage_accounts).trigger("mouseleave");
         cy.url().should("contain", "accounts");
     });    
 
