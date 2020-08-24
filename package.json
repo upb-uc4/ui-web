@@ -43,7 +43,7 @@
         "@vue/cli": "^4.5.4",
         "axios": "^0.19.2",
         "core-js": "^3.6.5",
-        "jest": "^26.4.1",
+        "jest": "^26.4.2",
         "random-bigint": "0.0.1",
         "tailwindcss": "^1.7.2",
         "vue": "^3.0.0-rc.6",
