@@ -21,7 +21,7 @@
                 @save="save"
             />
 
-            <contact-section v-model:email="admin.email" @save="save" />
+            <contact-section v-model:user="admin" />
 
             <address-section v-model:user="admin" />
 

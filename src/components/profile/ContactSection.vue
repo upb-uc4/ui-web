@@ -18,7 +18,17 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                    <input id="email" v-model="editedEmail" type="email" :readonly="!isEditing" class="w-full input-text form-input" />
+                    <input
+                        id="email"
+                        v-model="editedUser.email"
+                        type="email"
+                        :readonly="!isEditing"
+                        class="w-full input-text form-input"
+                        :class="{ error: errorBag.hasNested('email') }"
+                    />
+                    <p v-if="errorBag.hasNested('email')" class="error-message">
+                        {{ errorBag.getNested("email") }}
+                    </p>
                 </div>
 
                 <div class="mb-6 flex flex-col">
@@ -32,18 +42,22 @@
 
 <script lang="ts">
     import { ref } from "vue";
+    import UserManagement from "@/api/UserManagement";
+    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
+    import { cloneDeep } from "lodash";
+    import ErrorBag from "@/use/ErrorBag";
 
     export default {
         props: {
-            email: {
+            user: {
                 required: true,
-                type: String,
+                type: Object,
             },
         },
-        emits: ["save", "update:email"],
         setup(props: any, { emit }: any) {
-            const editedEmail = ref(props.email);
+            const editedUser = ref(cloneDeep(props.user));
             const isEditing = ref(false);
+            const errorBag = ref(new ErrorBag());
 
             function edit() {
                 isEditing.value = true;
@@ -55,16 +69,23 @@
             }
 
             function resetInputs() {
-                editedEmail.value = props.email;
+                editedUser.value = cloneDeep(props.user);
+                errorBag.value = new ErrorBag();
             }
 
-            function save() {
-                isEditing.value = false;
-                emit("update:email", editedEmail.value);
-                emit("save");
+            async function save() {
+                const auth: UserManagement = new UserManagement();
+                const response = await auth.updateUser(editedUser.value);
+                const handler = new ValidationResponseHandler();
+                if (handler.handleReponse(response)) {
+                    isEditing.value = false;
+                    errorBag.value = new ErrorBag();
+                } else {
+                    errorBag.value = new ErrorBag(handler.errorList);
+                }
             }
 
-            return { isEditing, edit, cancelEdit, save, editedEmail };
+            return { isEditing, edit, cancelEdit, save, editedUser, errorBag };
         },
     };
 </script>

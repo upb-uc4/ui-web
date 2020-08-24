@@ -23,7 +23,7 @@
                 @save="save"
             />
 
-            <contact-section v-model:email="student.email" @save="save" />
+            <contact-section v-model:user="student" />
 
             <address-section v-model:user="student" />
 
