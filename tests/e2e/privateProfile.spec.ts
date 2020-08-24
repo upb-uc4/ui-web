@@ -1,9 +1,9 @@
 describe("Change Profile Information", () => {
     const random = Math.floor(Math.random() * 500);
     const studentUsername = "cy-student" + random;
-    const newCountry = "United States";
+    const newCountry = "Germany";
     const newStreet = "test-street-cypress-updated";
-    const newHouseNumber = "1ab";
+    const newHouseNumber = "2a";
     const newZipCode = "54321";
     const newCity = "test-city-cypress-updated";
     const newEmail = "updated@valid.de";
@@ -27,7 +27,7 @@ describe("Change Profile Information", () => {
         cy.get("input[type='radio']").eq(2).click();
         cy.get("input[id='userName']").type(studentUsername);
         cy.get("input[id='password']").type("test-password-cypress");
-        cy.get('select[id="country"]').select("Germany");
+        cy.get('select[id="country"]').select("United States");
         cy.get("input[id='firstName']").type("firstName");
         cy.get("input[id='lastName']").type("lastName");
         cy.get("input[id='street']").type("test-street-cypress");
@@ -76,8 +76,6 @@ describe("Change Profile Information", () => {
     it("Reset contacts inputs on cancel", () => {
         cy.get("button[id='editContact']").click();
         cy.get("input[id='email']").clear().type("test");
-        //TODO include as soon as phone number is supported by API
-        //cy.get("input[id='phoneNumber']").should("be.enabled");
         cy.get("button[id='cancelEditContact']").click();
         cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
@@ -97,11 +95,13 @@ describe("Change Profile Information", () => {
         cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='houseNumber']").invoke("attr", "readonly").should("exist");
     });
 
     it("Reset address inputs on cancel", () => {
         cy.get("button[id='editAddress']").click();
-        cy.get("select[id='country']").select("United States");
+        cy.get("select[id='country']").select(newCountry);
+        cy.get("select[id='country']").should("have.value", newCountry);
         cy.get("input[id='city']").clear().type("test");
         cy.get("input[id='zipCode']").clear().type("test");
         cy.get("input[id='street']").clear().type("test");
@@ -110,10 +110,11 @@ describe("Change Profile Information", () => {
         cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
-        cy.get("select[id='country']").should("have.value", "Germany");
+        cy.get("select[id='country']").should("have.value", "United States");
         cy.get("input[id='city']").should("have.value", "test-city-cypress");
-        cy.get("input[id='zipCode']").should("have.value", "test-city-cypress");
+        cy.get("input[id='zipCode']").should("have.value", "12345");
         cy.get("input[id='street']").should("have.value", "test-street-cypress");
+        cy.get("input[id='houseNumber']").should("have.value", "1a");
     });
 
     it("Change address information", () => {
@@ -122,11 +123,13 @@ describe("Change Profile Information", () => {
         cy.get("input[id='city']").clear().type(newCity);
         cy.get("input[id='zipCode']").clear().type(newZipCode);
         cy.get("input[id='street']").clear().type(newStreet);
+        cy.get("input[id='houseNumber']").clear().type(newHouseNumber);
         cy.get("button[id='saveAddress']").click();
         cy.get("select[id='country']").should("be.disabled");
         cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='houseNumber']").invoke("attr", "readonly").should("exist");
     });
 
     it("Check course of study information section", () => {
@@ -149,6 +152,7 @@ describe("Change Profile Information", () => {
         cy.get("input[id='city']").should("have.value", newCity);
         cy.get("input[id='zipCode']").should("have.value", newZipCode);
         cy.get("input[id='street']").should("have.value", newStreet);
+        cy.get("input[id='houseNumber']").should("have.value", newHouseNumber);
     });
 
     it("Login as admin", () => {
