@@ -12,7 +12,7 @@
  */
 
 describe("Account creation, edition and deletion", () => {
-    const navbar_admin_menu_manage_accounts = "div[id='menu_manageAccounts']";
+    const navbar_admin_menu_manage_accounts = "div[id='nav_desktop_admin_menu_manage_accounts']";
     const random = Math.floor(Math.random() * 500);
     const username = "cypress" + random;
 

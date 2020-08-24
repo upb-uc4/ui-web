@@ -1,6 +1,6 @@
 describe("Course List Behavior", () => {
-    const navbar_admin_menu_manage_accounts = "div[id='menu_manageAccounts']";
-    const navbar_lecturer_menu_courses = "div[id='menu_courses']";
+    const navbar_admin_menu_manage_accounts = "div[id='nav_desktop_admin_menu_manage_accounts']";
+    const navbar_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
     const random = Math.floor(Math.random() * 500);
     const otherLecturer = "cy-lecturer" + random;
     const password = "testpassword"

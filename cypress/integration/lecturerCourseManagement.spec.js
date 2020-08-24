@@ -10,7 +10,7 @@
  */
 
 describe("Course creation, edition and deletion", () => {
-    const navbar_lecturer_menu_courses = "div[id='menu_courses']";
+    const navbar_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
     const random = Math.floor(Math.random() * 500);
     const courseName = "test-course-cypress" + random;
     const updatedCourseName = courseName + "-update";

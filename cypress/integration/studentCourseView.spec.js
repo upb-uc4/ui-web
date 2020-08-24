@@ -1,5 +1,6 @@
 describe("Student course view", () => {
-    const navbar_student_menu_courses = "div[id='menu_courses']";
+    const navbar_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
+    const navbar_student_menu_courses = "div[id='nav_desktop_student_menu_courses']";
     const random = Math.floor(Math.random() * 500);
     const courseName = "test-course-cypress" + random;
 
@@ -9,9 +10,9 @@ describe("Student course view", () => {
         cy.get("input[id='password']").type("lecturer");
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
-        cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(0).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(0).get("a").contains("My Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "course-management");
         // create course
         cy.get('button[id="addCourse"]').click({ force: true });
@@ -56,9 +57,9 @@ describe("Student course view", () => {
         cy.get("input[id='password']").type("lecturer");
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
-        cy.get(navbar_student_menu_courses).parents().eq(0).trigger("mouseover");
-        cy.get(navbar_student_menu_courses).children().eq(0).get("a").contains("My Courses").click();
-        cy.get(navbar_student_menu_courses).trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(0).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(0).get("a").contains("My Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "course-management");
         cy.get("div").contains(courseName).parent().parent().find("button[id='editCourse']").click();
         cy.get("button[id='deleteCourse']").click();

@@ -4,7 +4,7 @@
             <router-link :to="{ name: 'welcome' }" class="navbar-menu">Home</router-link>
         </li>
         <li>
-            <manage-accounts-menu id="menu_manageAccounts" class="navbar-menu" />
+            <manage-accounts-menu id="nav_desktop_admin_menu_manage_accounts" class="navbar-menu" />
         </li>
         <template #right>
             <profile-menu class="pt-4" />
