@@ -6,6 +6,7 @@
     - add latest immatriculation fields to account form and student's private profile
     - add modal for showing the immatriculation history to the student in private profile
 - change in immatriculation component within the account form will trigger unsaved changes modal on leave [#391](https://github.com/upb-uc4/ui-web/pull/391)
+- add phone number to user object and account form
 
 ## Refactor
 - randomize test data to allow for concurrent testing [#353](https://github.com/upb-uc4/ui-web/pull/353)
