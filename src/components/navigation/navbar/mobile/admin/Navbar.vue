@@ -4,7 +4,7 @@
             <router-link :to="{ name: 'welcome' }" class="hover:bg-blue-800 rounded-lg mobile-navbar-menu">Home</router-link>
         </li>
         <li>
-            <manage-accounts-menu class="mobile-navbar-menu" />
+            <manage-accounts-menu id="menu_manageAccounts" class="mobile-navbar-menu" />
         </li>
         <li>
             <profile-menu class="mobile-navbar-menu" />
