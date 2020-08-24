@@ -14,12 +14,7 @@
         </div>
 
         <div>
-            <personal-section
-                v-model:first-name="admin.firstName"
-                v-model:last-name="admin.lastName"
-                :birth-date="admin.birthDate"
-                @save="save"
-            />
+            <personal-section v-model:first-name="admin.firstName" v-model:last-name="admin.lastName" :birth-date="admin.birthDate" />
 
             <contact-section v-model:user="admin" />
 
@@ -73,17 +68,11 @@
             const auth: UserManagement = new UserManagement();
             const admin = ref(props.user);
 
-            async function save() {
-                const response = await auth.updateUser(admin.value);
-                //todo show toast
-                //todo error handling
-            }
-
             function back() {
                 Router.back();
             }
 
-            return { admin, save, back };
+            return { admin, back };
         },
     };
 </script>
