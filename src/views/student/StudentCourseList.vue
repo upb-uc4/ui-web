@@ -8,7 +8,7 @@
                 </div>
                 <course-type-filter v-model:selected-type="selectedType" />
             </div>
-            <courseList :key="refreshKey" :selected-type="selectedType" :filter="message" />
+            <courseList :key="refreshKey" :show-all-courses="true" :selected-type="selectedType" :filter="message" />
         </div>
     </div>
 </template>

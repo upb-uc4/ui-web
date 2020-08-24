@@ -24,7 +24,7 @@
                     title="My Courses"
                     description="Courses you created"
                     icon-class="fa-meteor"
-                    target-route-name="lecturer.courses"
+                    target-route-name="lecturer.myCourses"
                 />
             </li>
         </ul>

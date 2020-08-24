@@ -3,6 +3,12 @@ import Error from "@/api/api_models/errors/Error";
 export default class ErrorBag {
     errors: Error[] = [];
 
+    constructor(list?: Error[]) {
+        if (list != undefined) {
+            this.errors = list;
+        }
+    }
+
     has(key: string): boolean {
         return this.errors.some((e) => e.name === key);
     }
