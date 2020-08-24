@@ -166,6 +166,6 @@
         "not dead"
     ],
     "lint-staged": {
-        "*": "vue-cli-service lint"
+        "*.{js,ts,vue}": "vue-cli-service lint"
     }
 }
