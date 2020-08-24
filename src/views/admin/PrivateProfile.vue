@@ -14,7 +14,7 @@
         </div>
 
         <div>
-            <personal-section v-model:first-name="admin.firstName" v-model:last-name="admin.lastName" :birth-date="admin.birthDate" />
+            <personal-section :first-name="admin.firstName" :last-name="admin.lastName" :birth-date="admin.birthDate" />
 
             <contact-section v-model:user="admin" />
 

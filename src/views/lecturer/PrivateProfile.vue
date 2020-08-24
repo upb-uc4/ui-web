@@ -16,11 +16,8 @@
         </div>
 
         <div>
-            <personal-section
-                v-model:first-name="lecturer.firstName"
-                v-model:last-name="lecturer.lastName"
-                :birth-date="lecturer.birthDate"
-            />
+            <personal-section :first-name="lecturer.firstName" :last-name="lecturer.lastName" :birth-date="lecturer.birthDate" />
+
             <contact-section v-model:user="lecturer" />
 
             <address-section v-model:user="lecturer" />
