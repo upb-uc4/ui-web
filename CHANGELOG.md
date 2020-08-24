@@ -2,6 +2,7 @@
 
 ## Feature
 - add a course list for the lecturer containing all lectures [376](https://github.com/upb-uc4/ui-web/pull/376)
+- add error feedback for updating profile information via the private profile page [#402](https://github.com/upb-uc4/ui-web/pull/402)
 
 ## Refactor
 - randomize test data to allow for concurrent testing [#353](https://github.com/upb-uc4/ui-web/pull/353)
@@ -11,6 +12,9 @@
 - make a deep copy of address prop in profile address section to avoid directly changing the prop [#381](https://github.com/upb-uc4/ui-web/pull/381)
 - fixes a bug that caused the application to crash if you want to view your own courses without having one
 - add house number to private profile [#398](https://github.com/upb-uc4/ui-web/pull/398)
+
+## Dependency Updates
+- installed lodash 4.17.20
 
 # [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
