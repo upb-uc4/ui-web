@@ -34,7 +34,6 @@
         setup() {
             const baseModal = ref();
             let busy = ref(false);
-            let alreadyLoadedOnce = ref(false);
             let username = ref("");
             let historyRefreshKey = ref(false);
 
@@ -60,7 +59,7 @@
                 historyRefreshKey.value = !historyRefreshKey.value;
             }
 
-            return { baseModal, show, close, action, alreadyLoadedOnce, busy, username, refresh, historyRefreshKey };
+            return { baseModal, show, close, action, busy, username, refresh, historyRefreshKey };
         },
     };
 </script>
