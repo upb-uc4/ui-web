@@ -77,7 +77,7 @@ export default class UserManagement extends Common {
         };
 
         const requestParameter = { ...(await this._authHeader), params: {} as any };
-        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b);
+        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
 
         await this._axios
             .get(endpoint, requestParameter)

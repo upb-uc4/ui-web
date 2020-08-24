@@ -126,6 +126,12 @@ test("Get lecturers by usernames", async () => {
     expect(result).toHaveLength(1);
 });
 
+test("Get empty list of lecturers by usernames", async () => {
+    const users = await userManagement.getLecturers();
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(0);
+});
+
 test("Get students by usernames", async () => {
     const users = await userManagement.getStudents("student", "lecturer");
     let result = Object.values(users.returnValue).flat();

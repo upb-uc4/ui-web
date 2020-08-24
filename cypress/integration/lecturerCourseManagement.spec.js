@@ -25,8 +25,8 @@ describe("Course creation, edition and deletion", () => {
     it("Navigate to course list", () => {
         cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
         cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
+        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
+        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
         cy.url().should("contain", "course-management");
     }); 
@@ -83,7 +83,7 @@ describe("Course creation, edition and deletion", () => {
     it("Validation errors are shown", () => {
         cy.get('button[id="createCourse"]').click();
         cy.get('input[id="maxParticipants"]').clear().type("-1");
-        cy.get("input[id='maxParticipants']").siblings().get("p").invoke("hasClass", "error-message");
+        cy.get("input[id='maxParticipants']").siblings().get("p").should("have.class", "error-message");
     });
 
     it("Can edit maxParticipants", () => {
@@ -115,6 +115,16 @@ describe("Course creation, edition and deletion", () => {
 
     it("Can not save unchanged course", () => {
         cy.get('button[id="saveChanges"]').should("be.disabled");
+    });
+
+    it("Can edit courseName", () => {
+        cy.get('input[id="courseName"]').clear();
+    });
+
+    it("Invalid course should result in errors", () => {
+        cy.get('button[id="saveChanges"]').should("be.enabled");
+        cy.get('button[id="saveChanges"]').click();
+        cy.get("input[id='courseName']").siblings().get("p").should("have.class", "error-message");
     });
 
     it("Can edit courseName", () => {
