@@ -250,7 +250,7 @@
 
                 const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string);
                 const genericResponseHandler = new GenericResponseHandler();
-                const result = genericResponseHandler.handleReponse(response);
+                const result = genericResponseHandler.handleResponse(response);
 
                 //TODO move this to a non-generic response handler
                 if (response.statusCode !== 200) {
@@ -380,7 +380,7 @@
 
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler = new ValidationResponseHandler();
-                success.value = handler.handleReponse(response);
+                success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
                 if (success.value) {
                     back();
@@ -395,7 +395,7 @@
 
                 const response = await userManagement.updateUser(adaptedUser);
                 const handler = new ValidationResponseHandler();
-                success.value = handler.handleReponse(response);
+                success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
 
                 if (success.value) {
@@ -410,7 +410,7 @@
 
                 const genericResponseHandler = new GenericResponseHandler();
                 const response = await userManagement.deleteUser(account.user.username);
-                const result = genericResponseHandler.handleReponse(response);
+                const result = genericResponseHandler.handleResponse(response);
 
                 if (result) {
                     success.value = true;

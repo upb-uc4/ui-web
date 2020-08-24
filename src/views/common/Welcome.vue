@@ -60,7 +60,7 @@
             async function getName() {
                 busy.value = true;
                 let store = useStore();
-                name.value = await store.getters.user.firstName;
+                name.value = (await store.getters.user).firstName;
                 busy.value = false;
             }
 

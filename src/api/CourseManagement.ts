@@ -4,6 +4,7 @@ import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
 import ValidationError from "./api_models/errors/ValidationError";
+import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class CourseManagement extends Common {
     constructor() {
@@ -22,7 +23,7 @@ export default class CourseManagement extends Common {
             statusCode: 0,
         };
 
-        const requestParameter = { ...(await this._authHeader), params: {} as any };
+        const requestParameter = { params: {} as any };
         //optional name to search by
         if (courseName != undefined) {
             requestParameter.params.courseName = courseName;
@@ -31,19 +32,26 @@ export default class CourseManagement extends Common {
             requestParameter.params.lecturerId = lecturerId;
         }
 
+        var reloginSuccess = false;
+
         await this._axios
             .get(`/courses`, requestParameter)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data as Course[];
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getCourses(courseName, lecturerId);
+        }
 
         return result;
     }
@@ -56,19 +64,26 @@ export default class CourseManagement extends Common {
             statusCode: 0,
         };
 
+        var reloginSuccess = false;
+
         await this._axios
-            .get(`/courses/${id}`, await this._authHeader)
+            .get(`/courses/${id}`)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data as Course;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getCourse(id);
+        }
 
         return result;
     }
@@ -81,20 +96,27 @@ export default class CourseManagement extends Common {
             statusCode: 0,
         };
 
+        var reloginSuccess = false;
+
         await this._axios
-            .post("/courses", course, await this._authHeader)
+            .post("/courses", course)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = true;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.createCourse(course);
+        }
 
         return result;
     }
@@ -108,21 +130,27 @@ export default class CourseManagement extends Common {
         };
 
         const id = course.courseId;
+        var reloginSuccess = false;
 
         await this._axios
-            .put(`/courses/${id}`, course, await this._authHeader)
+            .put(`/courses/${id}`, course)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.updateCourse(course);
+        }
 
         return result;
     }
@@ -135,20 +163,26 @@ export default class CourseManagement extends Common {
             statusCode: 0,
         };
 
+        var reloginSuccess = false;
+
         await this._axios
-            .delete(`/courses/${id}`, await this._authHeader)
+            .delete(`/courses/${id}`)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
 
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.deleteCourse(id);
+        }
         return result;
     }
 }

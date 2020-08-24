@@ -11,8 +11,8 @@ import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import ValidationError from "./api_models/errors/ValidationError";
 import { MutationTypes } from "@/store/mutation-types";
-import axios from "axios";
 import GenericResponseHandler from "@/use/GenericResponseHandler";
+import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class UserManagement extends Common {
     constructor() {
@@ -31,19 +31,26 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        var reloginSuccess = false;
+
         await this._axios
-            .get("/users", await this._authHeader)
+            .get("/users")
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getAllUsers();
+        }
 
         return result;
     }
@@ -68,7 +75,7 @@ export default class UserManagement extends Common {
         return resp as APIResponse<Admin[]>;
     }
 
-    async _getByUsername(usernames: string[], endpoint: string) {
+    async _getByUsername(usernames: string[], endpoint: string): Promise<APIResponse<User_List | Student[] | Lecturer[] | Admin[]>> {
         let result: APIResponse<User_List | Student[] | Lecturer[] | Admin[]> = {
             error: {} as APIError,
             networkError: false,
@@ -76,8 +83,9 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
-        const requestParameter = { ...(await this._authHeader), params: {} as any };
+        const requestParameter = { params: {} as any };
         requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
+        var reloginSuccess = false;
 
         await this._axios
             .get(endpoint, requestParameter)
@@ -85,13 +93,18 @@ export default class UserManagement extends Common {
                 result.returnValue = response.data;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this._getByUsername(usernames, endpoint);
+        }
 
         return result;
     }
@@ -104,19 +117,26 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        var reloginSuccess = false;
+
         await this._axios
-            .delete(`/users/${username}`, await this._authHeader)
+            .delete(`/users/${username}`)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.deleteUser(username);
+        }
 
         return result;
     }
@@ -130,77 +150,25 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        var reloginSuccess = false;
+
         await this._axios
-            .get(endpoint, await this._authHeader)
+            .get(endpoint)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
 
-        return result;
-    }
-
-    /**
-     * Authenticate against Lagom endpoint, return true if successful
-     * @param loginData
-     */
-    static async login(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
-        const authHeader = { auth: loginData };
-        const instance = axios.create({
-            baseURL: process.env.VUE_APP_API_BASE_URL + "/user-management",
-            headers: {
-                "Accept": "*/*",
-                "Content-Type": "application/json;charset=UTF-8",
-            },
-        });
-
-        let intermediateResult: APIResponse<Role> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: Role.NONE,
-            statusCode: 0,
-        };
-
-        await instance
-            .get(`/role/${loginData.username}`, authHeader)
-            .then((response: AxiosResponse) => {
-                intermediateResult.statusCode = response.status;
-                intermediateResult.returnValue = response.data.role;
-            })
-            .catch((error: AxiosError) => {
-                if (error.response) {
-                    intermediateResult.statusCode = error.response.status;
-                } else {
-                    intermediateResult.networkError = true;
-                }
-            });
-
-        let result: APIResponse<boolean> = {
-            error: intermediateResult.error,
-            returnValue: intermediateResult.returnValue != Role.NONE,
-            networkError: intermediateResult.networkError,
-            statusCode: intermediateResult.statusCode,
-        };
-
-        const store = useStore();
-
-        if (result.returnValue) {
-            store.commit(MutationTypes.SET_LOGINDATA, loginData);
-            store.commit(MutationTypes.SET_LOGGEDIN, true);
-            const userManagement = new UserManagement();
-            const handler = new GenericResponseHandler();
-            const response = await userManagement.getOwnUser();
-            const user = handler.handleReponse(response);
-            store.commit(MutationTypes.SET_USER, user);
-            // set role after user, because the navbar is loaded as soon as the role is set.
-            store.commit(MutationTypes.SET_ROLE, intermediateResult.returnValue);
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getAllUsersByRole(role);
         }
 
         return result;
@@ -213,19 +181,27 @@ export default class UserManagement extends Common {
             returnValue: Role.NONE,
             statusCode: 0,
         };
+
+        var reloginSuccess = false;
+
         await this._axios
-            .get(`/role/${username}`, await this._authHeader)
+            .get(`/role/${username}`)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getRole(username);
+        }
         return result;
     }
 
@@ -275,19 +251,26 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        let reloginSuccess = false;
+
         await this._axios
-            .get(`/lecturers/${username}`, await this._authHeader)
+            .get(`/lecturers/${username}`)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getLecturer(username);
+        }
 
         return result;
     }
@@ -300,20 +283,26 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        let reloginSuccess = false;
+
         await this._axios
-            .get(`/students/${username}`, await this._authHeader)
+            .get(`/students/${username}`)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
 
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getStudent(username);
+        }
         return result;
     }
 
@@ -325,26 +314,33 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        let reloginSuccess = false;
+
         await this._axios
-            .get(`/admins/${username}`, await this._authHeader)
+            .get(`/admins/${username}`)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getAdmin(username);
+        }
 
         return result;
     }
 
     async getOwnUser(): Promise<APIResponse<Student | Lecturer | Admin>> {
         const store = useStore();
-        const username = (await store.getters.loginData).username;
+        const username = (await store.getters.user).username;
         return await this.getSpecificUser(username);
     }
 
@@ -359,20 +355,27 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        let reloginSuccess = false;
+
         await this._axios
-            .post(endpoint, message, await this._authHeader)
+            .post(endpoint, message)
             .then((reponse: AxiosResponse) => {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.createUser(authUser, user);
+        }
 
         return result;
     }
@@ -387,20 +390,27 @@ export default class UserManagement extends Common {
             statusCode: 0,
         };
 
+        let reloginSuccess = false;
+
         await this._axios
-            .put(`${endpoint}/${user.username}`, user, await this._authHeader)
+            .put(`${endpoint}/${user.username}`, user)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.updateUser(user);
+        }
 
         return result;
     }

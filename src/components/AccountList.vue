@@ -49,7 +49,7 @@
 
                 const genericResponseHandler = new GenericResponseHandler();
                 const response = await userManagement.getAllUsers();
-                const userLists = genericResponseHandler.handleReponse(response);
+                const userLists = genericResponseHandler.handleResponse(response);
                 users.value = Object.values(userLists).flat();
                 busy.value = false;
             }

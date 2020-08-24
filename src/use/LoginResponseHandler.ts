@@ -1,8 +1,9 @@
 import ResponseHandler from "./ResponseHandler";
 import APIResponse from "../api/helpers/models/APIResponse";
+import handleAuthenticationError from "../api/AuthenticationHelper";
 
 export default class LoginResponseHandler implements ResponseHandler<boolean> {
-    handleReponse(response: APIResponse<boolean>): boolean {
+    handleResponse(response: APIResponse<boolean>): boolean {
         if (response.networkError) {
             //TODO show toast
             alert("Network Error");
@@ -14,6 +15,7 @@ export default class LoginResponseHandler implements ResponseHandler<boolean> {
                 return false;
             }
             case 401: {
+                handleAuthenticationError(response);
                 return false;
             }
             case 404: {

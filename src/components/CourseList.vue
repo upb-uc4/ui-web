@@ -74,7 +74,7 @@
             async function getCourses() {
                 busy.value = true;
                 const store = useStore();
-                role.value = await store.getters.role;
+                role.value = (await store.getters.user).role;
                 isLecturer.value = role.value == Role.LECTURER;
                 isStudent.value = role.value == Role.STUDENT;
                 const genericResponseHandler = new GenericResponseHandler();
@@ -82,20 +82,20 @@
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
                 if (isLecturer.value) {
-                    username.value = (await store.getters.loginData).username;
+                    username.value = (await store.getters.user).username;
                     if (props.showAllCourses) {
                         response = await courseManagement.getCourses();
                     } else {
                         response = await courseManagement.getCourses(undefined, username.value);
                     }
-                    courses.value = genericResponseHandler.handleReponse(response);
+                    courses.value = genericResponseHandler.handleResponse(response);
                 } else if (isStudent.value) {
                     response = await courseManagement.getCourses();
-                    courses.value = genericResponseHandler.handleReponse(response);
+                    courses.value = genericResponseHandler.handleResponse(response);
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
                 const resp = await userManagement.getLecturers(...lecturerIds);
-                lecturers.value = genericResponseHandler.handleReponse(resp);
+                lecturers.value = genericResponseHandler.handleResponse(resp);
                 busy.value = false;
             }
 
