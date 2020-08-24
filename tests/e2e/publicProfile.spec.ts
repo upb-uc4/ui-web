@@ -1,5 +1,3 @@
-import { waitForDebugger } from "inspector";
-
 describe("Show public profile correctly", () => {
     const random = Math.floor(Math.random() * 500);
 
