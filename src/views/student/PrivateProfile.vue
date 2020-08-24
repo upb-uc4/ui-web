@@ -67,6 +67,7 @@
     import Router from "@/router";
     import UserManagement from "@/api/UserManagement";
     import Student from "@/api/api_models/user_management/Student";
+    import { useModelWrapper } from "@/use/ModelWrapper";
 
     export default {
         components: {
@@ -81,23 +82,16 @@
                 type: Object as () => Student,
             },
         },
-        async setup(props: any) {
+        emits: ["update:user"],
+        async setup(props: any, { emit }: any) {
             const student = ref(props.user);
-            const auth: UserManagement = new UserManagement();
 
             function back() {
                 Router.back();
             }
 
-            async function save() {
-                const response = await auth.updateUser(student.value);
-                //todo show toast
-                //todo error handling
-            }
-
             return {
-                student,
-                save,
+                student: useModelWrapper(props, emit, "user"),
                 back,
             };
         },

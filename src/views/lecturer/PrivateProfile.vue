@@ -63,6 +63,7 @@
     import Router from "@/router";
     import UserManagement from "@/api/UserManagement";
     import Lecturer from "../../api/api_models/user_management/Lecturer";
+    import { useModelWrapper } from "@/use/ModelWrapper";
 
     export default {
         components: {
@@ -77,15 +78,15 @@
                 type: Object as () => Lecturer,
             },
         },
-        setup(props: any) {
-            const auth: UserManagement = new UserManagement();
+        emits: ["update:user"],
+        setup(props: any, { emit }: any) {
             const lecturer = ref(props.user);
 
             function back() {
                 Router.back();
             }
 
-            return { lecturer, back };
+            return { lecturer: useModelWrapper(props, emit, "user"), back };
         },
     };
 </script>

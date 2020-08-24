@@ -51,6 +51,7 @@
     import Router from "@/router";
     import UserManagement from "@/api/UserManagement";
     import Admin from "../../api/api_models/user_management/Admin";
+    import { useModelWrapper } from "@/use/ModelWrapper";
 
     export default {
         components: {
@@ -64,15 +65,15 @@
                 type: Object as () => Admin,
             },
         },
-        setup(props: any) {
-            const auth: UserManagement = new UserManagement();
+        emits: ["update:user"],
+        setup(props: any, { emit }: any) {
             const admin = ref(props.user);
 
             function back() {
                 Router.back();
             }
 
-            return { admin, back };
+            return { admin: useModelWrapper(props, emit, "user"), back };
         },
     };
 </script>

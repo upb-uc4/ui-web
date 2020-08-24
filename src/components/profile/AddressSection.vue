@@ -96,12 +96,13 @@
 </template>
 
 <script lang="ts">
-    import { ref } from "vue";
+    import { ref, watch } from "vue";
     import { Country } from "@/entities/Country";
     import UserManagement from "@/api/UserManagement";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import { cloneDeep } from "lodash";
     import ErrorBag from "@/use/ErrorBag";
+    import Admin from "@/api/api_models/user_management/Admin";
 
     export default {
         props: {
@@ -110,11 +111,24 @@
                 type: Object,
             },
         },
+        emits: ["update:user"],
         setup(props: any, { emit }: any) {
             const countries = Object.values(Country).filter((e) => e != Country.NONE);
             const editedUser = ref(cloneDeep(props.user));
             const isEditing = ref(false);
             const errorBag = ref(new ErrorBag());
+
+            //react on saved changes from other components
+            watch(
+                () => props.user,
+                () => {
+                    let localAddressChanges = editedUser.value.address;
+                    //update user object
+                    editedUser.value = cloneDeep(props.user);
+                    // restore local changes
+                    editedUser.value.address = localAddressChanges;
+                }
+            );
 
             function edit() {
                 isEditing.value = true;
@@ -136,6 +150,7 @@
                 const handler = new ValidationResponseHandler();
                 if (handler.handleReponse(response)) {
                     isEditing.value = false;
+                    emit("update:user", editedUser.value);
                     errorBag.value = new ErrorBag();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
