@@ -20,13 +20,12 @@
                 v-model:first-name="lecturer.firstName"
                 v-model:last-name="lecturer.lastName"
                 :birth-date="lecturer.birthDate"
-                @save="save"
             />
             <contact-section v-model:user="lecturer" />
 
             <address-section v-model:user="lecturer" />
 
-            <research-section v-model:description="lecturer.freeText" v-model:research-area="lecturer.researchArea" @save="save" />
+            <research-section v-model:user="lecturer" />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">
@@ -85,17 +84,11 @@
             const auth: UserManagement = new UserManagement();
             const lecturer = ref(props.user);
 
-            async function save() {
-                const response = await auth.updateUser(lecturer.value);
-                //todo show toast
-                //todo error handling
-            }
-
             function back() {
                 Router.back();
             }
 
-            return { lecturer, save, back };
+            return { lecturer, back };
         },
     };
 </script>
