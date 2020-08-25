@@ -34,11 +34,15 @@ describe("admin", () => {
     });
 
     it("courses", () => {
-        const navbar_admin_manage_accounts = "#nav_mobile_admin_menu_manage_accounts";
         cy.get(navbar_burger_menu).click();
-        cy.get(navbar_admin_manage_accounts).trigger("mouseover");
 
-        // TODO test menu items
+        //all accounts
+        cy.get("#nav_mobile_admin_menu_manage_accounts_all").click();
+        cy.url().should("contain", "accounts");
+
+        //create account
+        cy.get("#nav_mobile_admin_menu_manage_accounts_create").click();
+        cy.url().should("contain", "createAccount");
     });
 
     it("profile", () => {
