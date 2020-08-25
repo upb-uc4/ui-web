@@ -13,6 +13,7 @@ import WelcomePage from "../views/common/Welcome.vue";
 import AboutPage from "../views/common/About.vue";
 import { checkPrivilege } from "@/use/PermissionHelper";
 import { Role } from "@/entities/Role";
+import { useStore } from "@/store/store";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -198,6 +199,15 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     window.document.title = to.meta && to.meta.title ? to.meta.title : "UC4";
+
+    if (to.name == "login" || to.name == "home") {
+        const store = useStore();
+        if ((await store.getters.loggedIn) != false) {
+            // We need to explicitly set the title here, because the component is not rendered again if going back from "/welcome" to "/login"
+            window.document.title = "Welcome" + suffix;
+            return next("/welcome");
+        }
+    }
 
     const roles: Role[] = to.meta.roles;
 
