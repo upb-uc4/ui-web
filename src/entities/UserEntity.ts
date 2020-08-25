@@ -12,4 +12,5 @@ export default class UserEntity implements User {
     picture = "https://cdn3.iconfinder.com/data/icons/faticons/32/user-01-512.png";
     email = "";
     birthDate = "";
+    phoneNumber = "";
 }

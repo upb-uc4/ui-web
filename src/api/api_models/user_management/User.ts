@@ -10,4 +10,5 @@ export default interface User {
     picture: string;
     email: string;
     birthDate: string;
+    phoneNumber: string;
 }

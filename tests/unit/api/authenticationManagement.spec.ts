@@ -36,14 +36,13 @@ var user: User = {
     picture: "string",
     email: "luke@skywalker.com",
     birthDate: "1950-12-24",
+    phoneNumber: "+49123456789",
 };
 
 var student: Student = {
     ...user,
-    immatriculationStatus: "Is still a Jedi Knight",
     matriculationId: "1234567",
-    semesterCount: 69,
-    fieldsOfStudy: [FieldOfStudy.COMPUTER_SCIENCE],
+    latestImmatriculation: "",
 };
 
 jest.setTimeout(30000);

@@ -36,6 +36,7 @@ describe("Course List Behavior", () => {
         cy.get("input[id='houseNumber']").type("1a");
         cy.get("input[id='zipCode']").type("12345");
         cy.get("input[id='city']").type("test-city-cypress");
+        cy.get("input[id='phoneNumber']").type("+49 123456789");
         cy.get("select").eq(0).select("15");
         cy.get("select").eq(1).select("November");
         cy.get("select").eq(2).select("1996");
