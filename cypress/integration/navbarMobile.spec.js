@@ -46,7 +46,17 @@ describe("admin", () => {
     });
 
     it("profile", () => {
-        // TODO implement
+        //profile
+        cy.get("#nav_mobile_admin_menu_profile_private").click();
+        cy.url().should("contain", "profile");
+
+        //settings
+        cy.get("#nav_mobile_admin_settings").click();
+        cy.url().should("contain", "settings");
+
+        //logout
+        cy.get("#nav_mobile_admin_logout").click();
+        cy.url().should("eq", Cypress.config().baseUrl);
     });
 });
 

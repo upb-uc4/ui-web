@@ -2,15 +2,20 @@
     <section class="flex flex-col px-2 pt-3 pb-1">
         <ul class="w-full px-2">
             <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
-                <menu-item title="Profile" icon-class="fa-user" target-route-name="profile.private" />
+                <menu-item
+                    id="nav_mobile_admin_menu_profile_private"
+                    title="Profile"
+                    icon-class="fa-user"
+                    target-route-name="profile.private"
+                />
             </li>
             <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
-                <menu-item title="Settings" icon-class="fa-cog" target-route-name="settings" />
+                <menu-item id="nav_mobile_admin_settings" title="Settings" icon-class="fa-cog" target-route-name="settings" />
             </li>
             <li class="cursor-pointer rounded-lg p-2 hover:bg-blue-800">
                 <menu-item
+                    id="nav_mobile_admin_logout"
                     title="Sign out"
-                    description="Create a new user"
                     icon-class="fa-sign-out-alt"
                     target-route-name="home"
                     @click="logOut"
