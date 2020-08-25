@@ -52,15 +52,15 @@ describe("admin", () => {
 
     it("profile", () => {
         //profile
-        cy.get("#nav_mobile_admin_menu_profile_private").click();
+        cy.get("#nav_mobile_profile").click();
         cy.url().should("contain", "profile");
 
         //settings
-        cy.get("#nav_mobile_admin_settings").click();
+        cy.get("#nav_mobile_settings").click();
         cy.url().should("contain", "settings");
 
         //logout
-        cy.get("#nav_mobile_admin_logout").click();
+        cy.get("#nav_mobile_logout").click();
         cy.url().should("eq", Cypress.config().baseUrl);
     });
 });
@@ -99,15 +99,15 @@ describe("lecturer", () => {
 
     it("profile", () => {
         //profile
-        cy.get("#nav_mobile_admin_menu_profile_private").click();
+        cy.get("#nav_mobile_profile").click();
         cy.url().should("contain", "profile");
 
         //settings
-        cy.get("#nav_mobile_admin_settings").click();
+        cy.get("#nav_mobile_settings").click();
         cy.url().should("contain", "settings");
 
         //logout
-        cy.get("#nav_mobile_admin_logout").click();
+        cy.get("#nav_mobile_logout").click();
         cy.url().should("eq", Cypress.config().baseUrl);
     });
 });
@@ -137,15 +137,15 @@ describe("student", () => {
 
     it("profile", () => {
         //profile
-        cy.get("#nav_mobile_admin_menu_profile_private").click();
+        cy.get("#nav_mobile_profile").click();
         cy.url().should("contain", "profile");
 
         //settings
-        cy.get("#nav_mobile_admin_settings").click();
+        cy.get("#nav_mobile_settings").click();
         cy.url().should("contain", "settings");
 
         //logout
-        cy.get("#nav_mobile_admin_logout").click();
+        cy.get("#nav_mobile_logout").click();
         cy.url().should("eq", Cypress.config().baseUrl);
     });
 });
