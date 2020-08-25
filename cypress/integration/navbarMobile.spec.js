@@ -49,20 +49,7 @@ describe("admin", () => {
         cy.get("#nav_mobile_admin_menu_manage_accounts_create").click();
         cy.url().should("contain", "createAccount");
     });
-
-    it("profile", () => {
-        //profile
-        cy.get("#nav_mobile_profile").click();
-        cy.url().should("contain", "profile");
-
-        //settings
-        cy.get("#nav_mobile_settings").click();
-        cy.url().should("contain", "settings");
-
-        //logout
-        cy.get("#nav_mobile_logout").click();
-        cy.url().should("eq", Cypress.config().baseUrl);
-    });
+    checkProfile();
 });
 
 describe("lecturer", () => {
@@ -96,20 +83,7 @@ describe("lecturer", () => {
         cy.url().should("contain", "all-courses");
 
     });
-
-    it("profile", () => {
-        //profile
-        cy.get("#nav_mobile_profile").click();
-        cy.url().should("contain", "profile");
-
-        //settings
-        cy.get("#nav_mobile_settings").click();
-        cy.url().should("contain", "settings");
-
-        //logout
-        cy.get("#nav_mobile_logout").click();
-        cy.url().should("eq", Cypress.config().baseUrl);
-    });
+    checkProfile();
 });
 
 describe("student", () => {
@@ -134,7 +108,11 @@ describe("student", () => {
         cy.get("#nav_mobile_student_menu_courses_all").click();
         cy.url().should("contain", "courses");
     });
+    checkProfile();
+});
 
+//checks the profile menu and implicityl logs the current user out.
+function checkProfile() {
     it("profile", () => {
         //profile
         cy.get("#nav_mobile_profile").click();
@@ -148,4 +126,4 @@ describe("student", () => {
         cy.get("#nav_mobile_logout").click();
         cy.url().should("eq", Cypress.config().baseUrl);
     });
-});
+}
