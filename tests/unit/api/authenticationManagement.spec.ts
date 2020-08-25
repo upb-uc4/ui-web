@@ -36,6 +36,7 @@ var user: User = {
     picture: "string",
     email: "luke@skywalker.com",
     birthDate: "1950-12-24",
+    phoneNumber: "+49123456789",
 };
 
 var student: Student = {
