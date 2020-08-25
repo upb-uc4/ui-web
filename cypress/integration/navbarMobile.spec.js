@@ -113,5 +113,39 @@ describe("lecturer", () => {
 });
 
 describe("student", () => {
-    //TODO implement
+    beforeEach(() => {
+        cy.viewport('iphone-x');
+    })
+
+    it("login", () => {
+        cy.visit("/");
+        cy.get(navbar_burger_menu).click();
+        cy.get(navbar_guest_login).click();
+        cy.get("input[id='email']").type("student");
+        cy.get("input[id='password']").type("student");
+        cy.get('button[id="login"]').click();
+        cy.url().should("contain", "welcome");
+    });
+
+    it("courses", () => {
+        cy.get(navbar_burger_menu).click();
+
+        //all courses
+        cy.get("#nav_mobile_student_menu_courses_all").click();
+        cy.url().should("contain", "courses");
+    });
+
+    it("profile", () => {
+        //profile
+        cy.get("#nav_mobile_admin_menu_profile_private").click();
+        cy.url().should("contain", "profile");
+
+        //settings
+        cy.get("#nav_mobile_admin_settings").click();
+        cy.url().should("contain", "settings");
+
+        //logout
+        cy.get("#nav_mobile_admin_logout").click();
+        cy.url().should("eq", Cypress.config().baseUrl);
+    });
 });
