@@ -2,6 +2,7 @@
 
 ## Feature
 - add a course list for the lecturer containing all lectures [376](https://github.com/upb-uc4/ui-web/pull/376)
+- add support for mobile navigation [#390](https://github.com/upb-uc4/ui-web/pull/390)
 
 ## Refactor
 - randomize test data to allow for concurrent testing [#353](https://github.com/upb-uc4/ui-web/pull/353)
