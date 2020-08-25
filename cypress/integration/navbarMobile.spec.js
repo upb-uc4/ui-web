@@ -2,11 +2,12 @@ const navbar_burger_menu = 'button[id="nav_mobile_toggle_menu"]';
 const navbar_about = "#nav_mobile_common_about";
 const navbar_guest_login = "#nav_mobile_guest_login";
 
-beforeEach(() => {
-    cy.viewport('iphone-x');
-})
 
 describe("guest", () => {
+    beforeEach(() => {
+        cy.viewport('iphone-x');
+    })
+
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
@@ -23,6 +24,10 @@ describe("guest", () => {
 });
 
 describe("admin", () => {
+    beforeEach(() => {
+        cy.viewport('iphone-x');
+    })
+
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
