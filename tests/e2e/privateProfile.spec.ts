@@ -7,6 +7,7 @@ describe("Change Profile Information", () => {
     const newZipCode = "54321";
     const newCity = "test-city-cypress-updated";
     const newEmail = "updated@valid.de";
+    const newPhoneNumber = "+49 987654321";
 
     it("Login as admin", () => {
         cy.visit("/");
@@ -39,7 +40,7 @@ describe("Change Profile Information", () => {
         cy.get("select[id='year']").select("1996");
         cy.get("input[id='email']").clear().type("valid@valid.de");
         cy.get("input[id='matriculationId']").type("1234567");
-        cy.get("input[id='semesterCount']").clear().type("1");
+        cy.get("input[id='phoneNumber']").type("+49 123456789");
 
         cy.get("button").contains("Create Account").click();
         cy.wait(300);
@@ -76,15 +77,18 @@ describe("Change Profile Information", () => {
     it("Reset contacts inputs on cancel", () => {
         cy.get("button[id='editContact']").click();
         cy.get("input[id='email']").clear().type("test");
+        cy.get("input[id='phoneNumber']").clear().type("test");
         cy.get("button[id='cancelEditContact']").click();
         cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='email']").should("not.contain", "test");
         cy.get("input[id='email']").should("have.value", "valid@valid.de");
     });
 
     it("Change contact information", () => {
         cy.get("button[id='editContact']").click();
         cy.get("input[id='email']").clear().type(newEmail);
+        cy.get("input[id='phoneNumber']").clear().type(newPhoneNumber);
         cy.get("button[id='saveContact']").click();
         cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
@@ -134,8 +138,6 @@ describe("Change Profile Information", () => {
 
     it("Check course of study information section", () => {
         cy.get("input[id='matriculationId']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='degreeSought']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='semesterCount']").invoke("attr", "readonly").should("exist");
     });
 
     it("Refresh", () => {
@@ -148,6 +150,7 @@ describe("Change Profile Information", () => {
 
     it("Check changed information", () => {
         cy.get("input[id='email']").should("have.value", newEmail);
+        cy.get("input[id='phoneNumber']").should("have.value", newPhoneNumber);
         cy.get("select[id='country']").should("have.value", newCountry);
         cy.get("input[id='city']").should("have.value", newCity);
         cy.get("input[id='zipCode']").should("have.value", newZipCode);

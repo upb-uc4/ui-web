@@ -33,7 +33,7 @@ describe("Change password", () => {
         cy.get("select[id='year']").select("1996");
         cy.get("input[id='email']").clear().type("valid@valid.de");
         cy.get("input[id='matriculationId']").type("1234567");
-        cy.get("input[id='semesterCount']").clear().type("1");
+        cy.get("input[id='phoneNumber']").type("+49 123456789");
 
         cy.get("button").contains("Create Account").click();
         cy.wait(300);

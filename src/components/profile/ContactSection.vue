@@ -23,7 +23,13 @@
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Phone</label>
-                    <input id="phoneNumber" placeholder="+123 456 789" readonly type="text" class="w-full input-text form-input" />
+                    <input
+                        id="phoneNumber"
+                        placeholder="+123 456 789"
+                        :readonly="!isEditing"
+                        type="text"
+                        class="w-full input-text form-input"
+                    />
                 </div>
             </div>
         </div>

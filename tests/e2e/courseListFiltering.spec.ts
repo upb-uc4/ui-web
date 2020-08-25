@@ -16,7 +16,7 @@ describe("Course Filtering", () => {
 
     it("Create Courses of each Type", () => {
         cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("All Courses").click();
+        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("My Courses").click();
         cy.get("div[id='menu_courses']").trigger("mouseleave");
         cy.url().should("contain", "course-management");
         // create course1

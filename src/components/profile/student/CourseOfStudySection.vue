@@ -10,51 +10,75 @@
                 </label>
             </div>
             <div class="w-full lg:w-2/3">
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Matriculation Number</label>
-                    <input id="matriculationId" type="text" readonly :value="matriculationId" class="w-full form-input input-text" />
-                </div>
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Field of Study</label>
-                    <div v-for="(val, index) in fieldsOfStudy" :key="val">
-                        <input
-                            id="fieldsOfStudy"
-                            type="text"
-                            readonly
-                            :value="val"
-                            class="w-full form-input input-text"
-                            :class="{ 'mb-4': index !== fieldsOfStudy.length - 1 }"
-                        />
+                <div class="mb-6 flex flex-col w-2/3">
+                    <div class="flex flex-row">
+                        <div class="flex flex-col w-1/2">
+                            <label class="mb-3 text-sm font-medium text-gray-700 w-full">Matriculation-ID</label>
+                            <input
+                                id="matriculationId"
+                                :value="matriculationId"
+                                readonly
+                                type="text"
+                                class="w-full form-input input-text"
+                                placeholder="Matriculation-ID"
+                            />
+                        </div>
+                        <div v-if="latest != ''" class="ml-4 flex flex-col w-1/2">
+                            <label class="mb-3 text-sm font-medium text-gray-700 flex">
+                                Latest Immatriculation (
+                                <button class="cursor-pointer text-sm font-medium navigation-link" @click="showHistory">
+                                    View History
+                                </button>
+                                )
+                            </label>
+                            <input id="latestImmatriculation" disabled class="form-input input-text" :value="latest" />
+                        </div>
                     </div>
-                </div>
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Degree Sought</label>
-                    <input id="degreeSought" type="text" readonly value="Master's Degree" class="w-full form-input input-text" />
-                </div>
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Semester Count</label>
-                    <input id="semesterCount" type="text" readonly :value="semesterCount" class="w-full form-input input-text" />
                 </div>
             </div>
         </div>
     </section>
+    <immatriculation-history-modal ref="historyModal" />
 </template>
 
 <script lang="ts">
+    import { ref } from "vue";
+    import ImmatriculationHistoryModal from "@/components/modals/ImmatriculationHistoryModal.vue";
+
     export default {
+        components: {
+            ImmatriculationHistoryModal,
+        },
         props: {
-            fieldsOfStudy: {
-                type: Array,
-                required: true,
-            },
             matriculationId: {
                 type: String,
                 required: true,
             },
-            semesterCount: {
-                type: Number,
+            latest: {
+                type: String,
                 required: true,
             },
+        },
+        setup() {
+            let historyModal = ref();
+
+            async function showHistory() {
+                let modal = historyModal.value;
+                let action = modal.action;
+                modal.show().then((response: typeof action) => {
+                    switch (response) {
+                        case action.CLOSE: {
+                            //do nothing
+                            break;
+                        }
+                    }
+                });
+            }
+
+            return {
+                showHistory,
+                historyModal,
+            };
         },
     };
 </script>

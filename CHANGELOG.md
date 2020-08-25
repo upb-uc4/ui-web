@@ -1,11 +1,15 @@
 # [v.0.6.1](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-XX-XX)
-
 ## Feature
-- add a course list for the lecturer containing all lectures [376](https://github.com/upb-uc4/ui-web/pull/376)
+- add a course list for the lecturer containing all lectures [#376](https://github.com/upb-uc4/ui-web/pull/376)
+- add immatriculation components [##368](https://github.com/upb-uc4/ui-web/pull/368)
+    - add component containing the immatriculation history
+    - add latest immatriculation fields to account form and student's private profile
+    - add modal for showing the immatriculation history to the student in private profile
+- change in immatriculation component within the account form will trigger unsaved changes modal on leave [#391](https://github.com/upb-uc4/ui-web/pull/391)
+- add phone number to user object and account form
 
 ## Refactor
 - randomize test data to allow for concurrent testing [#353](https://github.com/upb-uc4/ui-web/pull/353)
-
 ## Bugfix
 - add a timeout of 100ms to prevent refreshing the page too fast (caused application to crash) [#358](https://github.com/upb-uc4/ui-web/pull/358)
 - make a deep copy of address prop in profile address section to avoid directly changing the prop [#381](https://github.com/upb-uc4/ui-web/pull/381)

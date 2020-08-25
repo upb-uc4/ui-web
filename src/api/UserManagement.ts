@@ -394,6 +394,7 @@ export default class UserManagement extends Common {
                 result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;

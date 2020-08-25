@@ -7,6 +7,7 @@ import Course from "@/api/api_models/course_management/Course";
 import { Language } from "@/entities/Language";
 import { CourseType } from "@/entities/CourseType";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
+import MatriculationManagement from "@/api/MatriculationManagement";
 
 jest.useFakeTimers();
 
@@ -24,6 +25,12 @@ test("authentication service version", async () => {
 
 test("user service version", async () => {
     const version = await UserManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+});
+
+test.skip("matriculation service version", async () => {
+    const version = await MatriculationManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });
