@@ -131,6 +131,10 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='matriculationId']").type("1234567");
     });
 
+    it("Can enter phoneNumber", () => {
+        cy.get("input[id='phoneNumber']").type("+49 123456789");
+    })
+
     it("Create account works", () => {
         cy.get("button").contains("Create Account").should("be.enabled");
         cy.get("button").contains("Create Account").click();
