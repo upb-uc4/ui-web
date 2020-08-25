@@ -48,6 +48,7 @@
 
             async function show() {
                 getOwnUserName();
+                historyRefreshKey.value = !historyRefreshKey.value;
                 return await baseModal.value.show();
             }
 
