@@ -9,5 +9,5 @@ describe("Test that you cannot reach the login page via back button after loggin
     it("Login page not reachable", () => {
         cy.go(-1);
         cy.url().should("contain", "/welcome");
-    })
-})
+    });
+});
