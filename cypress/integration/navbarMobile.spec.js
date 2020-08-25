@@ -38,7 +38,7 @@ describe("admin", () => {
         cy.url().should("contain", "welcome");
     });
 
-    it("courses", () => {
+    it("accounts", () => {
         cy.get(navbar_burger_menu).click();
 
         //all accounts
@@ -66,7 +66,50 @@ describe("admin", () => {
 });
 
 describe("lecturer", () => {
-    //TODO implement
+    beforeEach(() => {
+        cy.viewport('iphone-x');
+    })
+
+    it("login", () => {
+        cy.visit("/");
+        cy.get(navbar_burger_menu).click();
+        cy.get(navbar_guest_login).click();
+        cy.get("input[id='email']").type("lecturer");
+        cy.get("input[id='password']").type("lecturer");
+        cy.get('button[id="login"]').click();
+        cy.url().should("contain", "welcome");
+    });
+
+    it("courses", () => {
+        cy.get(navbar_burger_menu).click();
+
+        //all courses
+        cy.get("#nav_mobile_lecturer_menu_courses_all").click();
+        cy.url().should("contain", "all-courses");
+
+        // create course
+        cy.get("#nav_mobile_lecturer_menu_courses_create").click();
+        cy.url().should("contain", "createCourse");
+
+        // my courses
+        cy.get("#nav_mobile_lecturer_menu_courses_my_courses").click();
+        cy.url().should("contain", "all-courses");
+
+    });
+
+    it("profile", () => {
+        //profile
+        cy.get("#nav_mobile_admin_menu_profile_private").click();
+        cy.url().should("contain", "profile");
+
+        //settings
+        cy.get("#nav_mobile_admin_settings").click();
+        cy.url().should("contain", "settings");
+
+        //logout
+        cy.get("#nav_mobile_admin_logout").click();
+        cy.url().should("eq", Cypress.config().baseUrl);
+    });
 });
 
 describe("student", () => {
