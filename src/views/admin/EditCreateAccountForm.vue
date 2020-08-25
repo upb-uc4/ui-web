@@ -1,6 +1,8 @@
 <template>
-    <div v-if="busy">
-        <loading-component />
+    <div v-if="busy" class="flex h-screen">
+        <div class="m-auto">
+            <loading-component />
+        </div>
     </div>
     <div v-else class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
         <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
