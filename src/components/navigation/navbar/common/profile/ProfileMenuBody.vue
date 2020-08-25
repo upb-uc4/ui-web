@@ -13,7 +13,7 @@
                     icon-class="fa-sign-out-alt"
                     target-route-name="home"
                     :is-horizontally-aligned="true"
-                    @click="executeLogout"
+                    @click="logout()"
                 />
             </li>
         </ul>
@@ -29,12 +29,6 @@
         components: {
             MenuItem,
         },
-        setup() {
-            function executeLogout() {
-                logout();
-            }
-
-            return { executeLogout };
-        },
+        setup() {},
     };
 </script>
