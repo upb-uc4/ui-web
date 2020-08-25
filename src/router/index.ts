@@ -202,7 +202,7 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.name == "login" || to.name == "home") {
         const store = useStore();
-        if ((await store.getters.loggedIn) != false) {
+        if (await store.getters.loggedIn) {
             // We need to explicitly set the title here, because the component is not rendered again if going back from "/welcome" to "/login"
             window.document.title = "Welcome" + suffix;
             return next("/welcome");
