@@ -22,11 +22,7 @@
 
             <address-section v-model:user="student" />
 
-            <course-of-study-section
-                :fields-of-study="student.fieldsOfStudy"
-                :matriculation-id="student.matriculationId"
-                :semester-count="student.semesterCount"
-            />
+            <course-of-study-section :matriculation-id="student.matriculationId" :latest="student.latestImmatriculation" />
 
             <section class="border-t-2 py-8 border-gray-400">
                 <div class="lg:flex">

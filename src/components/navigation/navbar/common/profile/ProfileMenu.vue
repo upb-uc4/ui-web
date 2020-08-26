@@ -37,7 +37,6 @@
         setup() {
             const store = useStore();
             let user = store.getters.user;
-            console.log(user);
             return { user };
         },
     };

@@ -12,22 +12,7 @@ export default class AdminEntity implements Admin {
     picture = "";
     email = "";
     birthDate = "";
+    phoneNumber = "";
 
-    constructor(example: boolean) {
-        if (example) {
-            this.username = "yoda";
-
-            this.address.city = "Coruscant";
-            this.address.country = "SomePlanet";
-            this.address.houseNumber = "5b";
-            this.address.street = "Jedi Temple";
-            this.address.zipCode = "12345";
-
-            this.firstName = "Master";
-            this.lastName = "Yoda";
-            this.picture = "https://cdn0.iconfinder.com/data/icons/star-wars/48/yoda-512.png";
-            this.email = "greenHobo@secretlysiths.edu";
-            this.birthDate = "0000-01-01";
-        }
-    }
+    constructor() {}
 }
