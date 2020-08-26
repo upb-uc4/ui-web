@@ -11,6 +11,7 @@ describe("Change Profile Information", () => {
     const newPhoneNumber = "+49987654321";
     const newResearchArea = "TestResearchArea-updated";
     const newDescription = "TestDescription-updated";
+    const testString100Characters = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut l";
 
     it("Login as admin", () => {
         cy.visit("/");
@@ -218,10 +219,16 @@ describe("Change Profile Information", () => {
         cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
     });
 
-    it("Reset research area inputs on cancel", () => {
+    it("Validation errors for research area information section are shown correctly", () => {
         cy.get("button[id='editResearchArea']").click();
-        cy.get("textarea[id='researchArea']").type("test");
-        cy.get("textarea[id='description']").type("test");
+        cy.get("textarea[id='researchArea']").type(testString100Characters.repeat(2), { delay: 1 });
+        cy.get("textarea[id='description']").type(testString100Characters.repeat(100), { delay: 1 });
+        cy.get("button[id='saveResearchArea']").click();
+        cy.get("textarea[id='researchArea']").siblings().get("p").should("have.class", "error-message");
+        cy.get("textarea[id='description']").siblings().get("p").should("have.class", "error-message");
+    });
+
+    it("Reset research area inputs on cancel", () => {
         cy.get("button[id='cancelEditResearchArea']").click();
         cy.get("textarea[id='researchArea']").invoke("attr", "readonly").should("exist");
         cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
