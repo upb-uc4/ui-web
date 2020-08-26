@@ -13,9 +13,6 @@
 - fixes a bug that caused the application to crash if you want to view your own courses without having one
 - add house number to private profile [#398](https://github.com/upb-uc4/ui-web/pull/398)
 
-## Dependency Updates
-- installed lodash 4.17.20
-
 # [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
 - add filtering by role for the admin account list [#302](https://github.com/upb-uc4/ui-web/pull/302)
