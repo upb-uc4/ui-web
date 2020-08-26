@@ -8,28 +8,14 @@
                 </label>
             </div>
             <div class="w-full lg:w-2/3">
-                <div class="flex flex-col mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md">Immatriculation Status</label>
-                    <div class="flex flex-row">
-                        <div class="flex flex-col w-1/2">
-                            <label class="mb-3 text-sm font-medium text-gray-700">Status</label>
-                            <input
-                                id="immatriculationStatus"
-                                v-model="studentImmatriculationStatus"
-                                type="text"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.hasNested('immatriculationStatus') }"
-                                placeholder="Immatriculation Status"
-                            />
-                            <p v-if="errorBag.hasNested('immatriculationStatus')" class="error-message">
-                                {{ errorBag.getNested("immatriculationStatus") }}
-                            </p>
-                        </div>
-                        <div class="flex flex-col w-1/4 pl-2">
+                <div class="flex flex-col w-full mb-4">
+                    <div class="flex flex-row w-2/3 justify-between">
+                        <div class="flex flex-col pl-2">
                             <label class="mb-3 text-sm font-medium text-gray-700">Matriculation-ID</label>
                             <input
                                 id="matriculationId"
                                 v-model="studentMatriculationId"
+                                :disabled="editMode"
                                 type="text"
                                 class="w-full form-input input-text"
                                 :class="{ error: errorBag.hasNested('matriculationId') }"
@@ -39,40 +25,16 @@
                                 {{ errorBag.getNested("matriculationId") }}
                             </p>
                         </div>
-                    </div>
-                </div>
-                <div class="flex flex-col mt-8 mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md">Study Status</label>
-                    <div class="flex flex-row">
-                        <div class="flex flex-col w-1/2">
-                            <label class="mb-3 text-sm font-medium text-gray-700">Fields of Study</label>
-                            <multi-select
-                                :input-list="fieldsOfStudy"
-                                :pre-selection="selectedFieldsOfStudy"
-                                placeholder="Select a Field of Study"
-                                @changed="updateFieldsOfStudy"
-                            />
-                            <p v-if="errorBag.hasNested('fieldsOfStudy')" class="error-message">
-                                {{ errorBag.getNested("fieldsOfStudy") }}
-                            </p>
-                        </div>
-                        <div class="flex flex-col w-1/4 pl-2">
-                            <label class="mb-3 text-sm font-medium text-gray-700">Semester Count</label>
-                            <input
-                                id="semesterCount"
-                                v-model="studentSemesterCount"
-                                type="number"
-                                class="w-full form-input input-text"
-                                :class="{ error: errorBag.hasNested('semesterCount') }"
-                                placeholder="Semester Count"
-                                @keyup="updateSemesterCount($event.target.value)"
-                                @change="clearField($event.target.value)"
-                            />
-                            <p v-if="errorBag.hasNested('semesterCount')" class="error-message">
-                                {{ errorBag.getNested("semesterCount") }}
-                            </p>
+                        <div v-if="editMode && latest != ''" class="flex flex-col">
+                            <label class="mb-3 text-sm font-medium text-gray-700">Latest Immatriculation</label>
+                            <input id="latestImmatriculation" disabled class="form-input input-text" :value="latest" />
                         </div>
                     </div>
+                    <immatriculation
+                        v-if="editMode"
+                        v-model:immatriculation-has-change="studentImmatriculationHasChange"
+                        :username="username"
+                    />
                 </div>
             </div>
         </div>
@@ -80,18 +42,26 @@
 </template>
 
 <script lang="ts">
-    import MultiSelect from "@/components/MultiSelect.vue";
     import { useModelWrapper } from "@/use/ModelWrapper";
     import ErrorBag from "@/use/ErrorBag";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import { ref } from "vue";
+    import Immatriculation from "./Immatriculation.vue";
 
     export default {
         name: "RoleSection",
         components: {
-            MultiSelect,
+            Immatriculation,
         },
         props: {
+            username: {
+                type: String,
+                required: true,
+            },
+            latest: {
+                type: String,
+                required: true,
+            },
             errorBag: {
                 type: ErrorBag,
                 required: true,
@@ -100,56 +70,20 @@
                 type: Boolean,
                 required: true,
             },
-            immatriculationStatus: {
-                type: String,
-                required: true,
-            },
             matriculationId: {
                 type: String,
                 required: true,
             },
-            selectedFieldsOfStudy: {
-                type: Array,
-                required: true,
-            },
-            semesterCount: {
-                type: Number,
+            immatriculationHasChange: {
+                type: Boolean,
                 required: true,
             },
         },
-        emits: ["update:selected-fields-of-study", "update:immatriculationStatus", "update:matriculationId", "update:semesterCount"],
+        emits: ["update:matriculationId", "update:immatriculationHasChange"],
         setup(props: any, { emit }: any) {
-            let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
-            let studentFieldsOfStudy = ref(props.selectedFieldsOfStudy);
-            let studentSemesterCount = ref(props.semesterCount);
-
-            function updateFieldsOfStudy(value: any) {
-                studentFieldsOfStudy = value.value.filter((f: String) => f != FieldOfStudy.NONE);
-                emit("update:selected-fields-of-study", studentFieldsOfStudy);
-            }
-
-            function updateSemesterCount(value: string) {
-                if (/[0-9]/g.test(value)) {
-                    emit("update:semesterCount", parseInt(value));
-                } else {
-                    emit("update:semesterCount", -1);
-                }
-            }
-
-            function clearField(value: string) {
-                if (!/[0-9]/g.test(value)) {
-                    studentSemesterCount.value = -1;
-                }
-            }
-
             return {
-                fieldsOfStudy,
-                updateFieldsOfStudy,
-                studentImmatriculationStatus: useModelWrapper(props, emit, "immatriculationStatus"),
                 studentMatriculationId: useModelWrapper(props, emit, "matriculationId"),
-                studentSemesterCount,
-                updateSemesterCount,
-                clearField,
+                studentImmatriculationHasChange: useModelWrapper(props, emit, "immatriculationHasChange"),
             };
         },
     };

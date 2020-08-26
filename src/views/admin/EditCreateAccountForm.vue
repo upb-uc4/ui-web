@@ -17,6 +17,7 @@
             <user-security-section
                 v-model:username="account.user.username"
                 v-model:email="account.user.email"
+                v-model:phonenumber="account.user.phoneNumber"
                 v-model:password="account.authUser.password"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -38,12 +39,12 @@
             />
             <student-information-section
                 v-if="isStudent"
-                v-model:immatriculation-status="account.student.immatriculationStatus"
                 v-model:matriculation-id="account.student.matriculationId"
-                v-model:selected-fields-of-study="account.student.fieldsOfStudy"
-                v-model:semester-count="account.student.semesterCount"
+                v-model:immatriculation-has-change="immatriculationHasChange"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
+                :username="account.user.username"
+                :latest="account.student.latestImmatriculation"
             />
             <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
                 <div class="lg:flex">
@@ -187,22 +188,23 @@
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
-                admin: new AdminEntity(false),
-                student: new StudentEntity(false),
-                lecturer: new LecturerEntity(false),
+                admin: new AdminEntity(),
+                student: new StudentEntity(),
+                lecturer: new LecturerEntity(),
             });
             let initialAccount = {
                 authUser: new Account(),
                 user: new UserEntity(),
-                admin: new AdminEntity(false),
-                student: new StudentEntity(false),
-                lecturer: new LecturerEntity(false),
+                admin: new AdminEntity(),
+                student: new StudentEntity(),
+                lecturer: new LecturerEntity(),
             };
 
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
             let deleteModal = ref();
             let unsavedChangesModal = ref();
+            let immatriculationHasChange = ref(false);
 
             const errorBag = ref(new ErrorBag());
 
@@ -286,6 +288,7 @@
                     account.user.firstName != initialAccount.user.firstName ||
                     account.user.lastName != initialAccount.user.lastName ||
                     account.user.email != initialAccount.user.email ||
+                    account.user.phoneNumber != initialAccount.user.phoneNumber ||
                     //default user birthdate from the form
                     account.user.birthDate != initialAccount.user.birthDate ||
                     //default user address
@@ -299,27 +302,11 @@
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
                     //student properties
-                    account.student.immatriculationStatus != initialAccount.student.immatriculationStatus ||
                     account.student.matriculationId != initialAccount.student.matriculationId ||
-                    account.student.semesterCount != initialAccount.student.semesterCount
+                    immatriculationHasChange.value
                 ) {
                     emit("update:has-input", true);
                     return true;
-                }
-
-                //check whether a field of study has been added or removed
-                for (let field of account.student.fieldsOfStudy) {
-                    if (!initialAccount.student.fieldsOfStudy.includes(field)) {
-                        emit("update:has-input", true);
-                        return true;
-                    }
-                }
-
-                for (let field of initialAccount.student.fieldsOfStudy) {
-                    if (!account.student.fieldsOfStudy.includes(field)) {
-                        emit("update:has-input", true);
-                        return true;
-                    }
                 }
                 emit("update:has-input", false);
                 return false;
@@ -357,9 +344,6 @@
                             ...account.student,
                             ...account.user,
                         } as Student;
-                        if ("fieldsOfStudy" in newUser) {
-                            newUser.fieldsOfStudy = newUser.fieldsOfStudy.filter((field) => field != FieldOfStudy.NONE);
-                        }
                         break;
                     }
                     case Role.LECTURER: {
@@ -370,6 +354,7 @@
                         break;
                     }
                 }
+
                 return newUser;
             }
 
@@ -442,6 +427,7 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag: errorBag,
+                immatriculationHasChange,
             };
         },
     };
