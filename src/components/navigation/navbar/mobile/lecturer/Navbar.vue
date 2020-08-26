@@ -7,7 +7,7 @@
             <course-menu id="nav_mobile_lecturer_menu_courses" class="mobile-navbar-menu" />
         </li>
         <li>
-            <profile-menu class="mobile-navbar-menu" />
+            <profile-menu class="nav_mobile_menu_profile mobile-navbar-menu" />
         </li>
     </base-navbar>
 </template>

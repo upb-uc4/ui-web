@@ -41,6 +41,9 @@ describe("admin", () => {
     it("accounts", () => {
         cy.get(navbar_burger_menu).click();
 
+        //open the menu
+        cy.get("#nav_mobile_admin_menu_manage_accounts").click();
+
         //all accounts
         cy.get("#nav_mobile_admin_menu_manage_accounts_all").click();
         cy.url().should("contain", "accounts");
@@ -69,6 +72,9 @@ describe("lecturer", () => {
 
     it("courses", () => {
         cy.get(navbar_burger_menu).click();
+
+        //open the menu
+        cy.get("#nav_mobile_lecturer_menu_courses").click();
 
         //all courses
         cy.get("#nav_mobile_lecturer_menu_courses_all").click();
@@ -104,6 +110,9 @@ describe("student", () => {
     it("courses", () => {
         cy.get(navbar_burger_menu).click();
 
+        //open the menu
+        cy.get("#nav_mobile_student_menu_courses").click();
+
         //all courses
         cy.get("#nav_mobile_student_menu_courses_all").click();
         cy.url().should("contain", "courses");
@@ -114,6 +123,9 @@ describe("student", () => {
 //checks the profile menu and implicityl logs the current user out.
 function checkProfile() {
     it("profile", () => {
+        //open the menu
+        cy.get(".nav_mobile_menu_profile").click();
+
         //profile
         cy.get("#nav_mobile_profile").click();
         cy.url().should("contain", "profile");

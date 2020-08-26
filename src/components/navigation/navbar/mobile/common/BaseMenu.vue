@@ -16,7 +16,7 @@
     export default {
         name: "MobileBaseMenu",
         setup() {
-            const isOpen = ref(true);
+            const isOpen = ref(false);
             function toggleOpen() {
                 isOpen.value = !isOpen.value;
             }
