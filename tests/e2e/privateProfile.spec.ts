@@ -112,18 +112,27 @@ describe("Change Profile Information", () => {
         cy.get("input[id='houseNumber']").invoke("attr", "readonly").should("exist");
     });
 
-    it("Reset address inputs on cancel", () => {
+    it("Validation errors for address information section are shown correctly", () => {
         cy.get("button[id='editAddress']").click();
+        cy.get("input[id='city']").clear().type("/");
+        cy.get("input[id='zipCode']").clear().type("/");
+        cy.get("input[id='street']").clear().type("/");
+        cy.get("input[id='houseNumber']").clear().type("/");
+        cy.get("button[id='saveAddress']").click();
+        cy.get("input[id='city']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='zipCode']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='street']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='houseNumber']").siblings().get("p").should("have.class", "error-message");
+    });
+
+    it("Reset address inputs on cancel", () => {
         cy.get("select[id='country']").select(newCountry);
-        cy.get("select[id='country']").should("have.value", newCountry);
-        cy.get("input[id='city']").clear().type("test");
-        cy.get("input[id='zipCode']").clear().type("test");
-        cy.get("input[id='street']").clear().type("test");
         cy.get("button[id='cancelEditAddress']").click();
         cy.get("select[id='country']").should("be.disabled");
         cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='houseNumber']").invoke("attr", "readonly").should("exist");
         cy.get("select[id='country']").should("have.value", "United States");
         cy.get("input[id='city']").should("have.value", "test-city-cypress");
         cy.get("input[id='zipCode']").should("have.value", "12345");
