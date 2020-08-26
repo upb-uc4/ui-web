@@ -36,6 +36,7 @@
 - move course filtering for lecturer from frontend to backend [#317](https://github.com/upb-uc4/ui-web/pull/317)
 - remove unused wrapper components for asynchronous data loading [#341](https://github.com/upb-uc4/ui-web/pull/341)
 - replace placeholder descriptions in edit/create course form
+- center loading spinner in course/account forms [#408](https://github.com/upb-uc4/ui-web/pull/408)
 
 ## Bugfix
 - Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
