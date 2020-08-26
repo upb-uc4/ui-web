@@ -51,23 +51,41 @@
 </template>
 
 <script lang="ts">
-    import { ref } from "vue";
+    import { ref, watch } from "vue";
     import UserManagement from "@/api/UserManagement";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import { cloneDeep } from "lodash";
     import ErrorBag from "@/use/ErrorBag";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {
         props: {
             user: {
                 required: true,
-                type: Object,
+                type: Object as () => Lecturer,
             },
         },
+        emits: ["update:user"],
         setup(props: any, { emit }: any) {
             const editedUser = ref(cloneDeep(props.user));
             const isEditing = ref(false);
             const errorBag = ref(new ErrorBag());
+
+            //react on saved changes from other components
+            watch(
+                () => props.user,
+                () => {
+                    let localResearchChanges = {
+                        researchArea: editedUser.value.researchArea,
+                        freeText: editedUser.value.freeText,
+                    };
+                    //update user object
+                    editedUser.value = cloneDeep(props.user);
+                    // restore local changes
+                    editedUser.value.researchArea = localResearchChanges.researchArea;
+                    editedUser.value.freeText = localResearchChanges.freeText;
+                }
+            );
 
             function edit() {
                 isEditing.value = true;
@@ -89,6 +107,7 @@
                 const handler = new ValidationResponseHandler();
                 if (handler.handleReponse(response)) {
                     isEditing.value = false;
+                    emit("update:user", editedUser.value);
                     errorBag.value = new ErrorBag();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
