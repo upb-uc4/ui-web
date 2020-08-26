@@ -129,15 +129,42 @@ describe("Account creation, edition and deletion", () => {
         cy.get("button[id='cancel']").click();
         cy.get("button[id='unsavedChangesModalConfirmLeave']").click();
     });
-    // create student account
+
     it("Show new account page", () => {
         cy.get('button[id="addAccount"]').click({ force: true });
         cy.url().should("contain", "/createAccount");
     });
 
-    it("Can edit role", () => {
+    it("Show validation errors", () => {
+        //TODO Include this when error with role is fixed
+        // cy.get("input[id='userName']").type(studentUsername);
+        // cy.get("button[id='createAccount']").click();
+        // cy.get("div[id='roleSelection']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[type='radio']").eq(1).click();
+        cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
+        cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
+        cy.get("input[id='userName']").clear();
+        cy.get("button[id='createAccount']").click();
+        cy.get("input[id='userName']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='phoneNumber']").siblings().get("p").should("have.class", "error-message");
+        //TODO include when password is not optional
+        //cy.get("input[id='password']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='firstName']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='lastName']").siblings().get("p").should("have.class", "error-message");
+        cy.get("div[id='birthdate']").siblings().get("p").should("have.class", "error-message");
+        cy.get("select[id='country']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='street']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='houseNumber']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='zipCode']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='city']").siblings().get("p").should("have.class", "error-message");
+        cy.get("textarea[id='researchArea']").siblings().get("p").should("have.class", "error-message");
+        cy.get("textarea[id='freeText']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[type='radio']").eq(2).click();
+        cy.get("button[id='createAccount']").click();
+        cy.get("input[id='matriculationId']").siblings().get("p").should("have.class", "error-message");
     });
+    // create student account
     it("Can edit username", () => {
         cy.get("input[id='userName']").type(studentUsername);
     });
@@ -170,13 +197,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("select").eq(2).select("1996");
     });
 
-    it("Invalid email address will show validation error", () => {
-        cy.get("input[id='email']").clear().type("fail");
-        cy.get("button").contains("Create Account").should("be.enabled");
-        cy.get("button").contains("Create Account").click();
-
-        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
-
+    it("Can change email address", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
@@ -222,13 +243,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='password']").should("not.exist");
     });
 
-    it("Invalid email address will show validation error", () => {
-        cy.get("input[id='email']").clear().type("fail");
-        cy.get("button").contains("Save Changes").should("be.enabled");
-        cy.get("button").contains("Save Changes").click();
-
-        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
-
+    it("Can change email address", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
@@ -291,13 +306,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("select").eq(2).select("1996");
     });
 
-    it("Invalid email address will show validation error", () => {
-        cy.get("input[id='email']").clear().type("fail");
-        cy.get("button").contains("Create Account").should("be.enabled");
-        cy.get("button").contains("Create Account").click();
-
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
-
+    it("Can change email address", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
@@ -341,13 +350,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='password']").should("not.exist");
     });
 
-    it("Invalid email address will show validation error", () => {
-        cy.get("input[id='email']").clear().type("fail");
-        cy.get("button").contains("Save Changes").should("be.enabled");
-        cy.get("button").contains("Save Changes").click();
-
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
-
+    it("Can change email address", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
@@ -418,13 +421,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("select").eq(2).select("1996");
     });
 
-    it("Invalid email address will show validation error", () => {
-        cy.get("input[id='email']").clear().type("fail");
-        cy.get("button").contains("Create Account").should("be.enabled");
-        cy.get("button").contains("Create Account").click();
-
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
-
+    it("Can change email address", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
@@ -460,13 +457,7 @@ describe("Account creation, edition and deletion", () => {
         cy.get("input[id='password']").should("not.exist");
     });
 
-    it("Invalid email address will show validation error", () => {
-        cy.get("input[id='email']").clear().type("fail");
-        cy.get("button").contains("Save Changes").should("be.enabled");
-        cy.get("button").contains("Save Changes").click();
-
-        cy.get("input[id='email']").siblings().get("p").invoke("hasClass", "error-message");
-
+    it("Can change email address", () => {
         cy.get("input[id='email']").clear().type("valid@valid.de");
     });
 
