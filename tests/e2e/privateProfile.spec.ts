@@ -7,7 +7,7 @@ describe("Change Profile Information", () => {
     const newZipCode = "54321";
     const newCity = "test-city-cypress-updated";
     const newEmail = "updated@valid.de";
-    const newPhoneNumber = "+49 987654321";
+    const newPhoneNumber = "+49987654321";
 
     it("Login as admin", () => {
         cy.visit("/");
@@ -40,7 +40,7 @@ describe("Change Profile Information", () => {
         cy.get("select[id='year']").select("1996");
         cy.get("input[id='email']").clear().type("valid@valid.de");
         cy.get("input[id='matriculationId']").type("1234567");
-        cy.get("input[id='phoneNumber']").type("+49 123456789");
+        cy.get("input[id='phoneNumber']").type("+49123456789");
 
         cy.get("button").contains("Create Account").click();
         cy.wait(300);
@@ -74,15 +74,25 @@ describe("Change Profile Information", () => {
         cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
     });
 
-    it("Reset contacts inputs on cancel", () => {
+    it("Validation errors for contact section are shown correctly", () => {
         cy.get("button[id='editContact']").click();
         cy.get("input[id='email']").clear().type("test");
         cy.get("input[id='phoneNumber']").clear().type("test");
+        cy.get("button[id='saveContact']").click();
+        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='phoneNumber']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='email']").clear();
+        cy.get("input[id='phoneNumber']").clear();
+    });
+
+    it("Reset contacts inputs on cancel", () => {
         cy.get("button[id='cancelEditContact']").click();
         cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='email']").should("not.contain", "test");
         cy.get("input[id='email']").should("have.value", "valid@valid.de");
+        cy.get("input[id='phoneNumber']").should("not.contain", "test");
+        cy.get("input[id='phoneNumber']").should("have.value", "+49123456789");
     });
 
     it("Change contact information", () => {
