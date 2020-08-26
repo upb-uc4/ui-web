@@ -1,6 +1,7 @@
 describe("Change Profile Information", () => {
     const random = Math.floor(Math.random() * 500);
     const studentUsername = "cy-student" + random;
+    const lecturerUsername = "cy-lecturer" + random;
     const newCountry = "Germany";
     const newStreet = "test-street-cypress-updated";
     const newHouseNumber = "2a";
@@ -8,6 +9,8 @@ describe("Change Profile Information", () => {
     const newCity = "test-city-cypress-updated";
     const newEmail = "updated@valid.de";
     const newPhoneNumber = "+49987654321";
+    const newResearchArea = "TestResearchArea-updated";
+    const newDescription = "TestDescription-updated";
 
     it("Login as admin", () => {
         cy.visit("/");
@@ -19,12 +22,13 @@ describe("Change Profile Information", () => {
 
     it("Show new account page", () => {
         cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("New Account").click();
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
-        cy.url().should("contain", "/createAccount");
+        cy.url().should("contain", "/accounts");
     });
 
-    it("Create account works", () => {
+    it("Create a student account works", () => {
+        cy.get("button[id='addAccount']").click();
         cy.get("input[type='radio']").eq(2).click();
         cy.get("input[id='userName']").type(studentUsername);
         cy.get("input[id='password']").type("test-password-cypress");
@@ -40,6 +44,30 @@ describe("Change Profile Information", () => {
         cy.get("select[id='year']").select("1996");
         cy.get("input[id='email']").clear().type("valid@valid.de");
         cy.get("input[id='matriculationId']").type("1234567");
+        cy.get("input[id='phoneNumber']").type("+49123456789");
+
+        cy.get("button").contains("Create Account").click();
+        cy.wait(300);
+    });
+
+    it("Create a Lecturer account works", () => {
+        cy.get("button[id='addAccount']").click();
+        cy.get("input[type='radio']").eq(1).click();
+        cy.get("input[id='userName']").type(lecturerUsername);
+        cy.get("input[id='password']").type("test-password-cypress");
+        cy.get('select[id="country"]').select("United States");
+        cy.get("input[id='firstName']").type("firstName");
+        cy.get("input[id='lastName']").type("lastName");
+        cy.get("input[id='street']").type("test-street-cypress");
+        cy.get("input[id='houseNumber']").type("1a");
+        cy.get("input[id='zipCode']").type("12345");
+        cy.get("input[id='city']").type("test-city-cypress");
+        cy.get("select[id='day']").select("15");
+        cy.get("select[id='month']").select("November");
+        cy.get("select[id='year']").select("1996");
+        cy.get("input[id='email']").clear().type("valid@valid.de");
+        cy.get("textarea[id='researchArea']").type("TestResearchArea");
+        cy.get("textarea[id='freeText']").type("TestDescription");
         cy.get("input[id='phoneNumber']").type("+49123456789");
 
         cy.get("button").contains("Create Account").click();
@@ -177,6 +205,52 @@ describe("Change Profile Information", () => {
         cy.get("input[id='houseNumber']").should("have.value", newHouseNumber);
     });
 
+    it("Login with new lecturer account", () => {
+        cy.reload();
+        cy.get("input[id='loginModalEmail']").type(lecturerUsername);
+        cy.get("input[id='loginModalPassword']").type("test-password-cypress");
+        cy.get("button[id='loginModalConfirm']").click();
+        cy.url().should("contain", "/profile");
+    });
+
+    it("Check research area information section", () => {
+        cy.get("textarea[id='researchArea']").invoke("attr", "readonly").should("exist");
+        cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
+    });
+
+    it("Reset research area inputs on cancel", () => {
+        cy.get("button[id='editResearchArea']").click();
+        cy.get("textarea[id='researchArea']").type("test");
+        cy.get("textarea[id='description']").type("test");
+        cy.get("button[id='cancelEditResearchArea']").click();
+        cy.get("textarea[id='researchArea']").invoke("attr", "readonly").should("exist");
+        cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
+        cy.get("textarea[id='researchArea']").should("have.value", "TestResearchArea");
+        cy.get("textarea[id='description']").should("have.value", "TestDescription");
+    });
+
+    it("Change research area information", () => {
+        cy.get("button[id='editResearchArea']").click();
+        cy.get("textarea[id='researchArea']").clear().type(newResearchArea);
+        cy.get("textarea[id='description']").clear().type(newDescription);
+        cy.get("button[id='saveResearchArea']").click();
+        cy.get("textarea[id='researchArea']").invoke("attr", "readonly").should("exist");
+        cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
+    });
+
+    it("Refresh", () => {
+        cy.reload();
+        cy.get("input[id='loginModalEmail']").type(lecturerUsername);
+        cy.get("input[id='loginModalPassword']").type("test-password-cypress");
+        cy.get("button[id='loginModalConfirm']").click();
+        cy.url().should("contain", "/profile");
+    });
+
+    it("Check changed information", () => {
+        cy.get("textarea[id='researchArea']").should("have.value", newResearchArea);
+        cy.get("textarea[id='description']").should("have.value", newDescription);
+    });
+
     it("Login as admin", () => {
         cy.visit("/");
         cy.get("input[id='email']").type("admin");
@@ -185,12 +259,29 @@ describe("Change Profile Information", () => {
         cy.url().should("contain", "welcome");
     });
 
-    it("Delete account", () => {
+    it("Delete student account", () => {
         cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
         cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
 
         cy.get(`div[id='user_${studentUsername}']`).click();
+        cy.wait(100);
+        cy.get("button[id='deleteAccount']").click();
+        cy.wait(100);
+        // show modal
+        cy.get("#modal-wrapper").should("exist");
+        cy.get("div").contains("Are you sure you want to delete this account").should("exist");
+        // cancel
+        cy.wait(100);
+        cy.get('button[id="deleteAccountModalDelete"]').click();
+    });
+
+    it("Delete lecturer account", () => {
+        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
+        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
+        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
+
+        cy.get(`div[id='user_${lecturerUsername}']`).click();
         cy.wait(100);
         cy.get("button[id='deleteAccount']").click();
         cy.wait(100);
