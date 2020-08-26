@@ -1,5 +1,6 @@
 # [v.0.6.1](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-XX-XX)
 ## Feature
+- add error feedback for updating profile information via the private profile page [#402](https://github.com/upb-uc4/ui-web/pull/402)
 - add a course list for the lecturer containing all lectures [#376](https://github.com/upb-uc4/ui-web/pull/376)
 - add immatriculation components [##368](https://github.com/upb-uc4/ui-web/pull/368)
     - add component containing the immatriculation history
