@@ -3,7 +3,11 @@
         "strict": true,
         "target": "esnext",
         "lib": ["esnext", "dom"],
-        "types": ["jest"]
+        "types": ["jest"],
+        "baseUrl": "../../",
+        "paths": {
+            "@/*": ["src/*"]
+        },
     },
     "include": ["**/*.ts"]
 }
