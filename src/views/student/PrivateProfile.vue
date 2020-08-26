@@ -16,16 +16,11 @@
         </div>
 
         <div>
-            <personal-section
-                v-model:first-name="student.firstName"
-                v-model:last-name="student.lastName"
-                :birth-date="student.birthDate"
-                @save="save"
-            />
+            <personal-section :first-name="student.firstName" :last-name="student.lastName" :birth-date="student.birthDate" />
 
-            <contact-section v-model:email="student.email" @save="save" />
+            <contact-section v-model:user="student" />
 
-            <address-section v-model:address="student.address" @save="save" />
+            <address-section v-model:user="student" />
 
             <course-of-study-section :matriculation-id="student.matriculationId" :latest="student.latestImmatriculation" />
 
@@ -68,6 +63,7 @@
     import Router from "@/router";
     import UserManagement from "@/api/UserManagement";
     import Student from "@/api/api_models/user_management/Student";
+    import { useModelWrapper } from "@/use/ModelWrapper";
 
     export default {
         components: {
@@ -82,22 +78,16 @@
                 type: Object as () => Student,
             },
         },
-        async setup(props: any) {
-            const student = ref(props.user as Student);
-            const auth: UserManagement = new UserManagement();
+        emits: ["update:user"],
+        async setup(props: any, { emit }: any) {
+            const student = ref(props.user);
+
             function back() {
                 Router.back();
             }
 
-            async function save() {
-                const response = await auth.updateUser(student.value);
-                //todo show toast
-                //todo error handling
-            }
-
             return {
-                student,
-                save,
+                student: useModelWrapper(props, emit, "user"),
                 back,
             };
         },

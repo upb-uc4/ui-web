@@ -20,22 +20,30 @@
                     <label class="text-gray-700 text-md font-medium mb-3">Research Area</label>
                     <input
                         id="researchArea"
-                        v-model="editedResearchArea"
+                        v-model="editedUser.researchArea"
                         :readonly="!isEditing"
                         type="text"
                         class="w-full input-text form-input"
+                        :class="{ error: errorBag.hasNested('description') }"
                     />
+                    <p v-if="errorBag.hasNested('description')" class="error-message">
+                        {{ errorBag.getNested("description") }}
+                    </p>
                 </div>
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Description</label>
                     <textarea
                         id="description"
-                        v-model="editedDescription"
+                        v-model="editedUser.freeText"
                         :readonly="!isEditing"
                         rows="3"
                         class="w-full input-text form-textarea"
+                        :class="{ error: errorBag.hasNested('freeText') }"
                     />
+                    <p v-if="errorBag.hasNested('freeText')" class="error-message">
+                        {{ errorBag.getNested("freeText") }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -43,24 +51,41 @@
 </template>
 
 <script lang="ts">
-    import { ref } from "vue";
+    import { ref, watch } from "vue";
+    import UserManagement from "@/api/UserManagement";
+    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
+    import { cloneDeep } from "lodash";
+    import ErrorBag from "@/use/ErrorBag";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {
         props: {
-            description: {
+            user: {
                 required: true,
-                type: String,
-            },
-            researchArea: {
-                required: true,
-                type: String,
+                type: Object as () => Lecturer,
             },
         },
-        emits: ["save", "update:research-area", "update:description"],
+        emits: ["update:user"],
         setup(props: any, { emit }: any) {
-            const editedDescription = ref(props.description);
-            const editedResearchArea = ref(props.researchArea);
+            const editedUser = ref(cloneDeep(props.user));
             const isEditing = ref(false);
+            const errorBag = ref(new ErrorBag());
+
+            //react on saved changes from other components
+            watch(
+                () => props.user,
+                () => {
+                    let localResearchChanges = {
+                        researchArea: editedUser.value.researchArea,
+                        freeText: editedUser.value.freeText,
+                    };
+                    //update user object
+                    editedUser.value = cloneDeep(props.user);
+                    // restore local changes
+                    editedUser.value.researchArea = localResearchChanges.researchArea;
+                    editedUser.value.freeText = localResearchChanges.freeText;
+                }
+            );
 
             function edit() {
                 isEditing.value = true;
@@ -72,18 +97,24 @@
             }
 
             function resetInputs() {
-                editedResearchArea.value = props.email;
-                editedDescription.value = props.description;
+                editedUser.value = cloneDeep(props.user);
+                errorBag.value = new ErrorBag();
             }
 
-            function save() {
-                isEditing.value = false;
-                emit("update:description", editedDescription.value);
-                emit("update:research-area", editedResearchArea.value);
-                emit("save");
+            async function save() {
+                const auth: UserManagement = new UserManagement();
+                const response = await auth.updateUser(editedUser.value);
+                const handler = new ValidationResponseHandler();
+                if (handler.handleReponse(response)) {
+                    isEditing.value = false;
+                    emit("update:user", editedUser.value);
+                    errorBag.value = new ErrorBag();
+                } else {
+                    errorBag.value = new ErrorBag(handler.errorList);
+                }
             }
 
-            return { isEditing, edit, cancelEdit, save, editedResearchArea, editedDescription };
+            return { isEditing, edit, cancelEdit, save, editedUser, errorBag };
         },
     };
 </script>
