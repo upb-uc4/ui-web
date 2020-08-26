@@ -11,7 +11,6 @@ describe("Change Profile Information", () => {
     const newPhoneNumber = "+49987654321";
     const newResearchArea = "TestResearchArea-updated";
     const newDescription = "TestDescription-updated";
-    const testString100Characters = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut l";
 
     it("Login as admin", () => {
         cy.visit("/");
@@ -221,12 +220,8 @@ describe("Change Profile Information", () => {
 
     it("Validation errors for research area information section are shown correctly", () => {
         cy.get("button[id='editResearchArea']").click();
-        cy.get("textarea[id='researchArea']")
-            .invoke("val", testString100Characters.repeat(2) + "1")
-            .trigger("input");
-        cy.get("textarea[id='description']")
-            .invoke("val", testString100Characters.repeat(100) + "1")
-            .trigger("input");
+        cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
+        cy.get("textarea[id='description']").invoke("val", "1".repeat(10001)).trigger("input");
         cy.get("button[id='saveResearchArea']").click();
         cy.get("textarea[id='researchArea']").siblings().get("p").should("have.class", "error-message");
         cy.get("textarea[id='description']").siblings().get("p").should("have.class", "error-message");
