@@ -33,7 +33,16 @@
 
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Phone</label>
-                    <input id="phoneNumber" placeholder="+123 456 789" readonly type="text" class="w-full input-text form-input" />
+                    <input
+                        id="phoneNumber"
+                        v-model="editedUser.phoneNumber"
+                        :readonly="!isEditing"
+                        class="w-full input-text form-input"
+                        :class="{ error: errorBag.hasNested('phoneNumber') }"
+                    />
+                    <p v-if="errorBag.hasNested('phoneNumber')" class="error-message">
+                        {{ errorBag.getNested("phoneNumber") }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -66,12 +75,13 @@
                 () => {
                     let localContactChanges = {
                         email: editedUser.value.email,
-                        // TODO phoneNumber: editedUser.value.phoneNumber,
+                        phoneNumber: editedUser.value.phoneNumber,
                     };
                     //update user object
                     editedUser.value = cloneDeep(props.user);
                     // restore local changes
                     editedUser.value.email = localContactChanges.email;
+                    editedUser.value.phoneNumber = localContactChanges.phoneNumber;
                 }
             );
 
