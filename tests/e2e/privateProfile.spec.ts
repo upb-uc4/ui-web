@@ -221,8 +221,12 @@ describe("Change Profile Information", () => {
 
     it("Validation errors for research area information section are shown correctly", () => {
         cy.get("button[id='editResearchArea']").click();
-        cy.get("textarea[id='researchArea']").type(testString100Characters.repeat(2), { delay: 1 });
-        cy.get("textarea[id='description']").type(testString100Characters.repeat(100), { delay: 1 });
+        cy.get("textarea[id='researchArea']")
+            .invoke("val", testString100Characters.repeat(2) + "1")
+            .trigger("input");
+        cy.get("textarea[id='description']")
+            .invoke("val", testString100Characters.repeat(100) + "1")
+            .trigger("input");
         cy.get("button[id='saveResearchArea']").click();
         cy.get("textarea[id='researchArea']").siblings().get("p").should("have.class", "error-message");
         cy.get("textarea[id='description']").siblings().get("p").should("have.class", "error-message");
