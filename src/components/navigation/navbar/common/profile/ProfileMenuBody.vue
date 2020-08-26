@@ -29,6 +29,10 @@
         components: {
             MenuItem,
         },
-        setup() {},
+        setup() {
+            return {
+                logout,
+            };
+        },
     };
 </script>
