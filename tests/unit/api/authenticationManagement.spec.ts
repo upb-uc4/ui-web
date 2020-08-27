@@ -8,44 +8,17 @@ import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { Role } from "@/entities/Role";
 import User from "@/api/api_models/user_management/User";
 import Address from "@/api/api_models/user_management/Address";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
+import { readFileSync } from "fs";
 
 var authenticationManagement: AuthenticationManagement;
 var userManagement: UserManagement;
-const adminAuth = { username: "admin", password: "admin" };
-
-var authUser: Account = {
-    username: "testUser",
-    password: "testUser",
-    role: Role.STUDENT,
-};
-
-var address: Address = {
-    street: "Sandy Street",
-    houseNumber: "5c",
-    zipCode: "42069",
-    city: "Mos Eisley",
-    country: "Germany",
-};
-
-var user: User = {
-    username: "testUser",
-    role: Role.STUDENT,
-    address: address,
-    firstName: "Luke",
-    lastName: "Skywalker",
-    picture: "string",
-    email: "luke@skywalker.com",
-    birthDate: "1950-12-24",
-    phoneNumber: "+49123456789",
-};
-
-var student: Student = {
-    ...user,
-    matriculationId: "1234567",
-    latestImmatriculation: "",
-};
-
 jest.setTimeout(30000);
+
+const adminAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const student = pair.student;
+const authUser = pair.authUser;
 
 beforeAll(async () => {
     const success = await UserManagement.login(adminAuth);
@@ -55,9 +28,6 @@ beforeAll(async () => {
     authenticationManagement = new AuthenticationManagement();
     userManagement = new UserManagement();
     expect(success.returnValue).toBe(true);
-    const random = Math.floor(Math.random() * 500);
-    authUser.username = authUser.username += random;
-    student.username = authUser.username;
 });
 
 test("Create user", async () => {

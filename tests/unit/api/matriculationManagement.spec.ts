@@ -10,14 +10,20 @@ import { store } from "@/store/store";
 import { MutationTypes } from "@/store/mutation-types";
 import GenericResponseHandler from "@/use/GenericResponseHandler";
 import MatriculationManagement from "@/api/MatriculationManagement";
-import { student, authUser } from "./testData";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+import { readFileSync } from "fs";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
+import Student from "@/api/api_models/user_management/Student";
 
 var matriculationManagement: MatriculationManagement;
 var userManagement: UserManagement;
-const adminAuth = { username: "admin", password: "admin" };
-const studentAuth = { username: "student", password: "student" };
+const adminAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
+const studentAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/student.json", "utf-8")) as { username: string; password: string };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const student = pair.student;
+const authUser = pair.authUser;
+
 jest.useFakeTimers();
 
 describe.skip("Matriculation management", () => {

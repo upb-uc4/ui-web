@@ -4,7 +4,7 @@
     "integrationFolder": "tests/e2e/",
     "supportFile": "tests/e2e/support/index.ts",
     "pluginsFile": "tests/e2e/plugins/index.ts",
-    "fixturesFolder": "tests/e2e/fixtures",
+    "fixturesFolder": "tests/fixtures/",
     "testFiles": ["**/*.spec.js", "**/*.spec.ts"],
     "ignoreTestFiles": ["**/__snapshots__/*", "**/__image_snapshots__/*"],
     "env": {

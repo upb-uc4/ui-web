@@ -28,7 +28,7 @@
     export default {
         setup() {
             let countdown = ref(10);
-            let timeout = ref(0);
+            let timeout = ref({} as NodeJS.Timeout);
 
             //setup the timer
             countDownTimer();

@@ -2,9 +2,12 @@
     "compilerOptions": {
         "strict": true,
         "target": "esnext",
-        "baseUrl": "../node_modules",
+        "baseUrl": "../../",
         "lib": ["esnext", "dom"],
-        "types": ["cypress", "node", "cypress-plugin-snapshots"]
+        "types": ["cypress", "node", "cypress-plugin-snapshots", "lodash"],
+        "paths": {
+            "@/*": ["src/*"]
+        },
     },
     "include": ["**/*.ts"]
 }

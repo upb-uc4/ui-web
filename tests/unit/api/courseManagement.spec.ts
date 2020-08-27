@@ -9,13 +9,17 @@ import CourseManagement from "@/api/CourseManagement";
 import { store } from "@/store/store";
 import { MutationTypes } from "@/store/mutation-types";
 import GenericResponseHandler from "@/use/GenericResponseHandler";
+import { getRandomizedCourse } from "@/../tests/helper/Courses";
+import { readFileSync } from "fs";
 
 var courseManagement: CourseManagement;
-const adminAuth = { username: "admin", password: "admin" };
-const studentAuth = { username: "student", password: "student" };
-const lecturerAuth = { username: "lecturer", password: "lecturer" };
-var course = new CourseEntity();
+const lecturerAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/lecturer.json", "utf-8")) as {
+    username: string;
+    password: string;
+};
+const course = getRandomizedCourse();
 var createdCourse: Course = {} as Course;
+
 jest.setTimeout(30000);
 
 beforeAll(async () => {
@@ -28,18 +32,6 @@ beforeAll(async () => {
 });
 
 test("Create course", async () => {
-    course.courseDescription = "This is a course description.";
-    course.courseId = "-1";
-    course.courseLanguage = Language.ENGLISH;
-    course.courseName = "Best test course ever!";
-    course.courseType = CourseType.LECTURE;
-    course.currentParticipants = 5;
-    course.ects = 60;
-    course.startDate = "1999-01-01";
-    course.endDate = "2000-01-01";
-    course.lecturerId = "lecturer";
-    course.maxParticipants = 10;
-
     const success = await courseManagement.createCourse(course);
     expect(success.returnValue).toBe(true);
     await new Promise((r) => setTimeout(r, 5000));
@@ -47,30 +39,26 @@ test("Create course", async () => {
 
 test("Get all courses", async () => {
     const courses = await courseManagement.getCourses();
-    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === course.courseName);
     expect(filteredCourses.length > 0).toBe(true);
-    createdCourse = filteredCourses[0];
 });
 
 test("Get lecturers courses", async () => {
-    const courses = await courseManagement.getCourses(undefined, "lecturer");
-    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    const courses = await courseManagement.getCourses(undefined, lecturerAuth.username);
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === course.courseName);
     expect(filteredCourses.length > 0).toBe(true);
-    createdCourse = filteredCourses[0];
 });
 
 test("Get courses by name", async () => {
-    const courses = await courseManagement.getCourses("Best test course ever!", undefined);
-    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
+    const courses = await courseManagement.getCourses(course.courseName, undefined);
+    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === course.courseName);
     expect(filteredCourses.length > 0).toBe(true);
-    createdCourse = filteredCourses[0];
 });
 
 test("Get lecturers courses by name", async () => {
-    const courses = await courseManagement.getCourses("Best test course ever!", "lecturer");
-    const filteredCourses = courses.returnValue.filter((c: Course) => c.courseName === "Best test course ever!");
-    expect(filteredCourses.length > 0).toBe(true);
-    createdCourse = filteredCourses[0];
+    const courses = await courseManagement.getCourses(course.courseName, lecturerAuth.username);
+    expect(courses.returnValue.length).toBeGreaterThan(0);
+    createdCourse = courses.returnValue[0];
 });
 
 test("Update course", async () => {
