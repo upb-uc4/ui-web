@@ -2,9 +2,7 @@
     <header class="flex items-center justify-between px-4 bg-gray-800 lg:px-8 md:h-20 min-h-20">
         <div class="flex items-center w-full">
             <div class="flex items-center pr-8 mr-8 border-r-4 border-gray-100">
-                <button class="flex text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">
-                    UC4
-                </button>
+                <button class="flex text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">UC4</button>
             </div>
 
             <div class="flex w-full">

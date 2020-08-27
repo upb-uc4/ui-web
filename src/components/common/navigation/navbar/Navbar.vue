@@ -6,14 +6,14 @@
 </template>
 
 <script lang="ts">
-    import GuestNavbar from "@/components/navigation/navbar/guest/Navbar.vue";
-    import LecturerNavbar from "@/components/navigation/navbar/lecturer/Navbar.vue";
-    import StudentNavbar from "@/components/navigation/navbar/student/Navbar.vue";
-    import AdminNavbar from "@/components/navigation/navbar/admin/Navbar.vue";
+    import GuestNavbar from "./guest/Navbar.vue";
+    import LecturerNavbar from "./lecturer/Navbar.vue";
+    import StudentNavbar from "./student/Navbar.vue";
+    import AdminNavbar from "./admin/Navbar.vue";
     import { Role } from "@/entities/Role";
-    import { useStore } from "../../../store/store";
+    import { useStore } from "@/store/store";
     import { ref } from "vue";
-    import { MutationTypes } from "../../../store/mutation-types";
+    import { MutationTypes } from "@/store/mutation-types";
 
     export default {
         name: "Navbar",
