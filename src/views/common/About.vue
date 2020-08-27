@@ -127,7 +127,7 @@
 </template>
 
 <script lang="ts">
-    import Versions from "@/components/Versions.vue";
+    import Versions from "@/components/common/dev/Versions.vue";
     import { reactive, computed, ref, onBeforeMount } from "vue";
     import axios, { AxiosResponse } from "axios";
     import LoadingSpinner from "@/components/loading/Spinner.vue";

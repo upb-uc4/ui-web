@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts">
-    import { useStore } from "../store/store";
-    import AuthenticationManagement from "../api/AuthenticationManagement";
-    import CourseManagement from "../api/CourseManagement";
-    import UserManagement from "../api/UserManagement";
+    import { useStore } from "@/store/store";
+    import AuthenticationManagement from "@/api/AuthenticationManagement";
+    import CourseManagement from "@/api/CourseManagement";
+    import UserManagement from "@/api/UserManagement";
     import { ref, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/loading/Spinner.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
