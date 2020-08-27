@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-    import ReadMore from "@/components/ReadMore.vue";
+    import ReadMore from "@/components/common/ReadMore.vue";
     import Course from "@/api/api_models/course_management/Course";
     import Router from "@/router/";
     import UserManagement from "@/api/UserManagement";

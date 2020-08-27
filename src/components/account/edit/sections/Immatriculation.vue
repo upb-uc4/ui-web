@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-    import MultiSelect from "@/components/MultiSelect.vue";
+    import MultiSelect from "@/components/common/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
     import { onBeforeMount, ref, computed, reactive, watch } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
