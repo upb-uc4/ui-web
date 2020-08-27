@@ -1,7 +1,7 @@
 import UserManagement from "@/api/UserManagement";
-import { store } from "@/store/store";
+import { store } from "@/use/store/store";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
-import { MutationTypes } from "@/store/mutation-types";
+import { MutationTypes } from "@/use/store/mutation-types";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
