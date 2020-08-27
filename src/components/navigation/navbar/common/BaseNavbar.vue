@@ -41,7 +41,7 @@
 <script lang="ts">
     import { ref, computed } from "vue";
     import { useStore } from "@/use/store/store";
-    import Router from "@/router/index";
+    import Router from "@/use/router/index";
 
     export default {
         name: "BaseNavbar",

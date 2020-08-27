@@ -15,7 +15,7 @@
 
 <script lang="ts">
     import SecuritySection from "@/components/settings/SecuritySection.vue";
-    import Router from "@/router";
+    import Router from "@/use/router";
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/PermissionHelper";
 

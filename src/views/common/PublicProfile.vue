@@ -6,7 +6,7 @@
 <script lang="ts">
     import PublicStudentProfile from "@/views/student/PublicProfile.vue";
     import PublicLecturerProfile from "@/views/lecturer/PublicProfile.vue";
-    import Router from "@/router";
+    import Router from "@/use/router";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";
     import { Role } from "@/entities/Role";

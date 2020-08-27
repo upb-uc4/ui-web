@@ -67,7 +67,7 @@
     </div>
 </template>
 <script lang="ts">
-    import Router from "@/router/";
+    import Router from "@/use/router/";
     import { useStore, store } from "@/use/store/store";
     import { Role } from "../../entities/Role";
     import UserManagement from "@/api/UserManagement";

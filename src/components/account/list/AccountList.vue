@@ -11,7 +11,7 @@
 
 <script lang="ts">
     import UserManagement from "@/api/UserManagement";
-    import router from "@/router/index";
+    import router from "@/use/router/index";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import UserRow from "./UserRow.vue";
     import { Role } from "@/entities/Role";

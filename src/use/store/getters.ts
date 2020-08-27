@@ -5,8 +5,6 @@ import UserManagement from "@/api/UserManagement";
 import { useStore } from "./store";
 import GenericResponseHandler from "@/use/GenericResponseHandler";
 import { MutationTypes } from "./mutation-types";
-import { useRouter } from "vue-router";
-import router from "@/router";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";

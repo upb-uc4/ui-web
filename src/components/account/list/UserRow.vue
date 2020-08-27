@@ -58,7 +58,7 @@
 
 <script lang="ts">
     import User from "@/api/api_models/user_management/User";
-    import router from "@/router";
+    import router from "@/use/router";
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
 

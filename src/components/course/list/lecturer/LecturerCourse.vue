@@ -39,7 +39,7 @@
 
 <script lang="ts">
     import ReadMore from "@/components/common/ReadMore.vue";
-    import router from "@/router";
+    import router from "@/use/router";
     import Course from "@/api/api_models/course_management/Course";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";

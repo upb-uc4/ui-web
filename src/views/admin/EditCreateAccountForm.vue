@@ -127,7 +127,7 @@
 </template>
 
 <script lang="ts">
-    import Router from "@/router/";
+    import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
     import { ref, reactive, computed, onBeforeMount } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
