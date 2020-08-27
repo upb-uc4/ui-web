@@ -23,7 +23,7 @@
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import { historyToSortedList } from "@/use/ImmatriculationHistoryHandler";
-    import ImmatriculationHistoryEntry from "@/components/ImmatriculationHistoryEntry.vue";
+    import ImmatriculationHistoryEntry from "./ImmatriculationHistoryEntry.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     export default {
