@@ -1,4 +1,6 @@
 describe("Course List Behavior", () => {
+    const navbar_admin_menu_manage_accounts = "div[id='nav_desktop_admin_menu_manage_accounts']";
+    const navbar_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
     const random = Math.floor(Math.random() * 500);
     const otherLecturer = "cy-lecturer" + random;
     const password = "testpassword"
@@ -15,11 +17,11 @@ describe("Course List Behavior", () => {
 
     it("Create a new lecturer account", () => {
         // Navigate to Account Form
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("New Account").should("be.visible");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("New Account").click();
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).should("not.be.visible");
+        cy.get(navbar_admin_menu_manage_accounts).trigger("mouseover");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("span").contains("New Account").should("be.visible");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("a").contains("New Account").click();
+        cy.get(navbar_admin_menu_manage_accounts).trigger("mouseleave");
         cy.url().should("contain", "/createAccount");
 
         // create new Lecturer
@@ -55,11 +57,11 @@ describe("Course List Behavior", () => {
     });
 
     it("Create a course of other lecturer", () => {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "course-management");
         cy.get('button[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
@@ -83,11 +85,11 @@ describe("Course List Behavior", () => {
         cy.get("input[id='password']").type("lecturer");
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "course-management");
         cy.get('button[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
@@ -106,11 +108,11 @@ describe("Course List Behavior", () => {
     });
 
     it("Tab All Courses should contain both courses", () => {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("All Courses").should("be.visible");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("All Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "all-courses");
         cy.get("div").contains(courseName).should("exist");
         cy.get("div").contains(courseName).parent().parent().find("button[id='editCourse']").should("exist");
@@ -119,11 +121,11 @@ describe("Course List Behavior", () => {
     })
 
     it("Tab my course should just contain my courses", () => {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "course-management");
         cy.get("div").contains(courseName).should("exist");
         cy.get("div").contains(courseName).parent().parent().find("button[id='editCourse']").should("exist");
@@ -148,11 +150,11 @@ describe("Course List Behavior", () => {
         cy.get("input[id='password']").type(password);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+        cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
+        cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+        cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
         cy.url().should("contain", "course-management");
         cy.get("div").contains(otherCourseName).parent().parent().find("button[id='editCourse']").click();
         cy.wait(100);
@@ -172,11 +174,11 @@ describe("Course List Behavior", () => {
         cy.get("input[id='password']").type("admin");
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).should("not.be.visible");
+        cy.get(navbar_admin_menu_manage_accounts).trigger("mouseover");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("span").contains("All Users").should("be.visible");
+        cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("a").contains("All Users").click();
+        cy.get(navbar_admin_menu_manage_accounts).trigger("mouseleave");
         cy.url().should("contain", "accounts");
         cy.get(`div[id='user_${otherLecturer}']`).click();
         cy.get("button[id='deleteAccount']").click();

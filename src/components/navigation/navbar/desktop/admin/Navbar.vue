@@ -4,7 +4,7 @@
             <router-link :to="{ name: 'welcome' }" class="navbar-menu">Home</router-link>
         </li>
         <li>
-            <course-menu id="menu_courses" class="navbar-menu" />
+            <manage-accounts-menu id="nav_desktop_admin_menu_manage_accounts" class="navbar-menu" />
         </li>
         <template #right>
             <profile-menu class="pt-4" />
@@ -13,15 +13,15 @@
 </template>
 
 <script lang="ts">
-    import BaseNavbar from "@/components/navigation/navbar/common/BaseNavbar.vue";
-    import CourseMenu from "@/components/navigation/navbar/student/courses/CourseMenu.vue";
-    import ProfileMenu from "@/components/navigation/navbar/common/profile/ProfileMenu.vue";
+    import BaseNavbar from "../common/BaseNavbar.vue";
+    import ManageAccountsMenu from "./administration/ManageAccountsMenu.vue";
+    import ProfileMenu from "../common/profile/ProfileMenu.vue";
 
     export default {
         name: "AdminNavbar",
         components: {
             BaseNavbar,
-            CourseMenu,
+            ManageAccountsMenu,
             ProfileMenu,
         },
     };

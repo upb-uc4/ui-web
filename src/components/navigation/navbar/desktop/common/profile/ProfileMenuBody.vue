@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-    import MenuItem from "../../common/MenuItem.vue";
+    import MenuItem from "../MenuItem.vue";
     import { logout } from "@/use/Logout";
 
     export default {
