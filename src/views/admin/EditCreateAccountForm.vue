@@ -142,9 +142,9 @@
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
     import { Country } from "@/entities/Country";
-    import ErrorBag from "@/use/ErrorBag";
-    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
-    import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
@@ -152,7 +152,7 @@
     import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
     import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
 

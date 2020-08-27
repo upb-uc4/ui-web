@@ -61,7 +61,7 @@
     import Router from "@/use/router";
     import UserManagement from "@/api/UserManagement";
     import Student from "@/api/api_models/user_management/Student";
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         components: {

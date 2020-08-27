@@ -60,8 +60,8 @@
     import { ref } from "vue";
     import Router from "@/use/router";
     import UserManagement from "@/api/UserManagement";
-    import Lecturer from "../../api/api_models/user_management/Lecturer";
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         components: {

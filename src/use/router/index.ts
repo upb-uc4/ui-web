@@ -11,7 +11,7 @@ import Settings from "@/views/common/Settings.vue";
 import PageNotFound from "@/views/errors/404.vue";
 import WelcomePage from "@/views/common/Welcome.vue";
 import AboutPage from "@/views/common/About.vue";
-import { checkPrivilege } from "@/use/PermissionHelper";
+import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 import { Role } from "@/entities/Role";
 import { useStore } from "@/use/store/store";
 

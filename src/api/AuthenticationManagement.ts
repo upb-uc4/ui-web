@@ -7,8 +7,6 @@ import { AxiosResponse, AxiosError } from "axios";
 import ValidationError from "./api_models/errors/ValidationError";
 import { Account } from "@/entities/Account";
 import { MutationTypes } from "@/use/store/mutation-types";
-import UserManagement from "./UserManagement";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
 
 export default class AuthenticationManagement extends Common {
     constructor() {

@@ -1,5 +1,5 @@
 import ResponseHandler from "./ResponseHandler";
-import APIResponse from "../api/helpers/models/APIResponse";
+import APIResponse from "@/api/helpers/models/APIResponse";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
 

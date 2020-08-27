@@ -26,7 +26,7 @@
 
 <script lang="ts">
     import AccountList from "@/components/account/list/AccountList.vue";
-    import { checkPrivilege } from "../../use/PermissionHelper";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import SeachBar from "@/components/common/SearchBar.vue";
     import { ref } from "vue";
     import { Role } from "@/entities/Role";

@@ -59,7 +59,7 @@
     import Course from "@/api/api_models/course_management/Course";
     import Router from "@/use/router/";
     import UserManagement from "@/api/UserManagement";
-    import ProfileResponseHandler from "@/use/ProfileResponseHandler";
+    import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {

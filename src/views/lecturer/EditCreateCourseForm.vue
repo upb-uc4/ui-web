@@ -94,14 +94,14 @@
     import CourseManagement from "@/api/CourseManagement";
     import { ref, computed, reactive, onBeforeMount } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-    import ErrorBag from "@/use/ErrorBag";
-    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
-    import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BasicsSection from "@/components/course/edit/sections/BasicsSection.vue";
     import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
     import TimeSection from "@/components/course/edit/sections/TimeSection.vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";

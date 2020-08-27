@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { ref } from "vue";
 
     export default {

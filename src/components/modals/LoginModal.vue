@@ -54,7 +54,7 @@
     import ModalNoTeleport from "@/components/modals/ModalNoTeleport.vue";
     import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
-    import LoginResponseHandler from "@/use/LoginResponseHandler";
+    import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import { useStore } from "@/use/store/store";
 
     export default {

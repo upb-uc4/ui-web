@@ -17,7 +17,7 @@
     import SecuritySection from "@/components/settings/SecuritySection.vue";
     import Router from "@/use/router";
     import { Role } from "@/entities/Role";
-    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 
     export default {
         name: "Settings",

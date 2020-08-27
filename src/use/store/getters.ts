@@ -3,7 +3,7 @@ import { State } from "./state";
 import { Role } from "@/entities/Role";
 import UserManagement from "@/api/UserManagement";
 import { useStore } from "./store";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { MutationTypes } from "./mutation-types";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";

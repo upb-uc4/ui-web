@@ -76,10 +76,10 @@
 </template>
 
 <script lang="ts">
-    import ErrorBag from "@/use/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         name: "BasicsSection",

@@ -16,7 +16,7 @@
     import { store } from "@/use/store/store";
     import { Role } from "@/entities/Role";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 
     export default {
         components: {

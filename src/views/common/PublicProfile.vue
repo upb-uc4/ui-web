@@ -8,7 +8,7 @@
     import PublicLecturerProfile from "@/views/lecturer/PublicProfile.vue";
     import Router from "@/use/router";
     import UserManagement from "@/api/UserManagement";
-    import ProfileResponseHandler from "@/use/ProfileResponseHandler";
+    import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import { Role } from "@/entities/Role";
 
     export default {

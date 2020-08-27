@@ -22,10 +22,10 @@
     import { reactive, ref, onBeforeMount } from "vue";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
-    import { historyToSortedList } from "@/use/ImmatriculationHistoryHandler";
+    import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import ImmatriculationHistoryEntry from "./ImmatriculationHistoryEntry.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     export default {
         components: {
             ImmatriculationHistoryEntry,

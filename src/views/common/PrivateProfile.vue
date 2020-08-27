@@ -9,7 +9,7 @@
     import PrivateLecturerProfile from "@/views/lecturer/PrivateProfile.vue";
     import PrivateAdminProfile from "@/views/admin/PrivateProfile.vue";
     import UserManagement from "@/api/UserManagement";
-    import ProfileResponseHandler from "@/use/ProfileResponseHandler";
+    import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import { Role } from "@/entities/Role";
     import { ref } from "vue";
 

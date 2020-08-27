@@ -1,5 +1,5 @@
 import ResponseHandler from "./ResponseHandler";
-import APIResponse from "../api/helpers/models/APIResponse";
+import APIResponse from "@/api/helpers/models/APIResponse";
 
 export default class GenericResponseHandler implements ResponseHandler<boolean> {
     handleReponse<T>(response: APIResponse<T>): T {

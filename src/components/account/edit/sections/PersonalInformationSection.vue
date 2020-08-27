@@ -125,9 +125,9 @@
 </template>
 
 <script lang="ts">
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { Country } from "@/entities/Country";
-    import ErrorBag from "@/use/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import BirthDatePicker from "../BirthDatePicker.vue";
     import { ref, watch } from "vue";
 

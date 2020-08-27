@@ -40,8 +40,8 @@
 </template>
 
 <script lang="ts">
-    import { useModelWrapper } from "@/use/ModelWrapper";
-    import ErrorBag from "@/use/ErrorBag";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import { ref } from "vue";
     import Immatriculation from "./Immatriculation.vue";

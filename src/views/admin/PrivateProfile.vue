@@ -49,7 +49,7 @@
     import Router from "@/use/router";
     import UserManagement from "@/api/UserManagement";
     import Admin from "../../api/api_models/user_management/Admin";
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         components: {

@@ -44,8 +44,8 @@
 
 <script lang="ts">
     import { Role } from "@/entities/Role";
-    import { useModelWrapper } from "@/use/ModelWrapper";
-    import ErrorBag from "@/use/ErrorBag";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         name: "RoleSection",

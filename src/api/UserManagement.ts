@@ -12,7 +12,7 @@ import APIError from "./api_models/errors/APIError";
 import ValidationError from "./api_models/errors/ValidationError";
 import { MutationTypes } from "@/use/store/mutation-types";
 import axios from "axios";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 
 export default class UserManagement extends Common {
     constructor() {

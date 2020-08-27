@@ -44,10 +44,10 @@
     import MatriculationManagement from "@/api/MatriculationManagement";
     import { onBeforeMount, ref, computed, reactive, watch } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
-    import { historyToSortedList } from "@/use/ImmatriculationHistoryHandler";
+    import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
-    import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import ImmatriculationHistoryEntry from "@/components/common/immatriculation/ImmatriculationHistoryEntry.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";

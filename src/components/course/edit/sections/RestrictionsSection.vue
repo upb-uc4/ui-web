@@ -28,8 +28,8 @@
 </template>
 
 <script lang="ts">
-    import ErrorBag from "@/use/ErrorBag";
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { ref } from "vue";
 
     export default {
