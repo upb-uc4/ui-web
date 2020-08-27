@@ -16,7 +16,7 @@
     import UserRow from "./UserRow.vue";
     import { Role } from "@/entities/Role";
     import { computed, ref, onBeforeMount, watch } from "vue";
-    import LoadingSpinner from "@/components/loading/Spinner.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import User from "@/api/api_models/user_management/User";
 
     export default {

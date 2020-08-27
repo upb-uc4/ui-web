@@ -49,7 +49,7 @@
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import ImmatriculationHistoryEntry from "@/components/common/immatriculation/ImmatriculationHistoryEntry.vue";
-    import LoadingSpinner from "@/components/loading/Spinner.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
 
     export default {

@@ -22,7 +22,7 @@
     import Modal from "@/components/modals/Modal.vue";
     import { ref, onBeforeMount } from "vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
-    import LoadingSpinner from "@/components/loading/Spinner.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import { useStore } from "@/store/store";
 
     export default {

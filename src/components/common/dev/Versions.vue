@@ -27,7 +27,7 @@
     import CourseManagement from "@/api/CourseManagement";
     import UserManagement from "@/api/UserManagement";
     import { ref, onBeforeMount } from "vue";
-    import LoadingSpinner from "@/components/loading/Spinner.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
 
     export default {

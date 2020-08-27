@@ -100,7 +100,7 @@
     import BasicsSection from "@/components/course/edit/sections/BasicsSection.vue";
     import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
     import TimeSection from "@/components/course/edit/sections/TimeSection.vue";
-    import LoadingComponent from "@/components/loading/Spinner.vue";
+    import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/PermissionHelper";
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";

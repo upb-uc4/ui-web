@@ -130,7 +130,7 @@
     import Versions from "@/components/common/dev/Versions.vue";
     import { reactive, computed, ref, onBeforeMount } from "vue";
     import axios, { AxiosResponse } from "axios";
-    import LoadingSpinner from "@/components/loading/Spinner.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
         components: {

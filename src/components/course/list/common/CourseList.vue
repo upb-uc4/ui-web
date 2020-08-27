@@ -33,7 +33,7 @@
     import { computed, ref, onBeforeMount, watch } from "vue";
     import { CourseType } from "@/entities/CourseType";
     import UserManagement from "@/api/UserManagement";
-    import LoadingComponent from "@/components/loading/Spinner.vue";
+    import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {

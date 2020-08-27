@@ -31,7 +31,6 @@
 
 <script lang="ts">
     import CourseList from "@/components/course/list/common/CourseList.vue";
-    import LoadingComponent from "@/components/loading/Spinner.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
     import { ref } from "vue";
     import CourseTypeFilter from "@/components/course/list/common/CourseTypeFilter.vue";
@@ -43,7 +42,6 @@
         name: "LecturerCourseList",
         components: {
             CourseList,
-            //LoadingComponent,
             SeachBar,
             CourseTypeFilter,
         },
