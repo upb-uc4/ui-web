@@ -20,51 +20,61 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 
 const random = Math.floor(Math.random() * 9999);
+let admin: Admin;
+let adminAuthUser: Account;
+let student: Student;
+let studentAuthUser: Account;
+let lecturer: Lecturer;
+let lecturerAuthUser: Account;
+
+let adminAuth: Account;
+let studentAuth: Account;
+let lecturerAuth: Account;
 
 describe("Account creation, edition and deletion", function () {
-    beforeEach(function () {
-        cy.fixture("admin.json").then((admin) => {
-            (admin as Admin).username += random;
-            this.admin = admin as Admin;
+    before(function () {
+        cy.fixture("admin.json").then((a) => {
+            (a as Admin).username += random;
+            admin = a as Admin;
         });
-        cy.fixture("adminAuthUser.json").then((admin) => {
-            (admin as Account).username += random;
-            this.adminAuthUser = admin as Account;
-        });
-
-        cy.fixture("lecturer.json").then((lecturer) => {
-            (lecturer as Lecturer).username += random;
-            this.lecturer = lecturer as Lecturer;
-        });
-        cy.fixture("lecturerAuthUser.json").then((lecturer) => {
-            (lecturer as Account).username += random;
-            this.lecturerAuthUser = lecturer as Account;
+        cy.fixture("adminAuthUser.json").then((a) => {
+            (a as Account).username += random;
+            adminAuthUser = a as Account;
         });
 
-        cy.fixture("student.json").then((student) => {
-            (student as Student).username += random;
-            this.student = student as Student;
+        cy.fixture("lecturer.json").then((l) => {
+            (l as Lecturer).username += random;
+            lecturer = l as Lecturer;
         });
-        cy.fixture("studentAuthUser.json").then((student) => {
-            (student as Account).username += random;
-            this.studentAuthUser = student as Account;
+        cy.fixture("lecturerAuthUser.json").then((l) => {
+            (l as Account).username += random;
+            lecturerAuthUser = l as Account;
+        });
+
+        cy.fixture("student.json").then((s) => {
+            (s as Student).username += random;
+            student = s as Student;
+        });
+        cy.fixture("studentAuthUser.json").then((s) => {
+            (s as Account).username += random;
+            studentAuthUser = s as Account;
         });
 
         cy.fixture("logins/admin.json").then((admin) => {
-            this.adminAuth = admin;
+            adminAuth = admin;
         });
         cy.fixture("logins/student.json").then((student) => {
-            this.studentAuth = student;
+            studentAuth = student;
         });
         cy.fixture("logins/lecturer.json").then((lecturer) => {
-            this.lecturerAuth = lecturer;
+            lecturerAuth = lecturer;
         });
     });
 
     it("Login as admin", function () {
         cy.visit("/");
-        cy.get("input[id='email']").type(this.adminAuth.username);
-        cy.get("input[id='password']").type(this.adminAuth.username);
+        cy.get("input[id='email']").type(adminAuth.username);
+        cy.get("input[id='password']").type(adminAuth.username);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
     });
@@ -79,9 +89,9 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("List contains admin, student and lecturer", function () {
-        cy.get("div").contains(`@${this.studentAuth.username}`);
-        cy.get("div").contains(`@${this.lecturerAuth.username}`);
-        cy.get("div").contains(`@${this.adminAuth.username}`);
+        cy.get("div").contains(`@${studentAuth.username}`);
+        cy.get("div").contains(`@${lecturerAuth.username}`);
+        cy.get("div").contains(`@${adminAuth.username}`);
     });
 
     it("Role filter buttons exist", function () {
@@ -96,26 +106,26 @@ describe("Account creation, edition and deletion", function () {
     it("Check if role filtering works", function () {
         // test admin role
         cy.get("button[id='role-Admin']").click();
-        cy.get("div").contains(`@${this.adminAuth.username}`);
-        cy.get("div").contains(`@${this.lecturerAuth.username}`).should("not.exist");
-        cy.get("div").contains(`@${this.studentAuth.username}`).should("not.exist");
+        cy.get("div").contains(`@${adminAuth.username}`);
+        cy.get("div").contains(`@${lecturerAuth.username}`).should("not.exist");
+        cy.get("div").contains(`@${studentAuth.username}`).should("not.exist");
         // test lecturer role
         cy.get("button[id='role-Lecturer']").click();
-        cy.get("div").contains(`@${this.lecturerAuth.username}`);
-        cy.get("div").contains(`@${this.adminAuth.username}`).should("not.exist");
-        cy.get("div").contains(`@${this.studentAuth.username}`).should("not.exist");
+        cy.get("div").contains(`@${lecturerAuth.username}`);
+        cy.get("div").contains(`@${adminAuth.username}`).should("not.exist");
+        cy.get("div").contains(`@${studentAuth.username}`).should("not.exist");
 
         // test student role
         cy.get("button[id='role-Student']").click();
-        cy.get("div").contains(`@${this.studentAuth.username}`);
-        cy.get("div").contains(`@${this.adminAuth.username}`).should("not.exist");
-        cy.get("div").contains(`@${this.lecturerAuth.username}`).should("not.exist");
+        cy.get("div").contains(`@${studentAuth.username}`);
+        cy.get("div").contains(`@${adminAuth.username}`).should("not.exist");
+        cy.get("div").contains(`@${lecturerAuth.username}`).should("not.exist");
 
         //test all roles
         cy.get("button[id='role-All']").click();
-        cy.get("div").contains(`@${this.adminAuth.username}`).should("exist");
-        cy.get("div").contains(`@${this.lecturerAuth.username}`).should("exist");
-        cy.get("div").contains(`@${this.studentAuth.username}`).should("exist");
+        cy.get("div").contains(`@${adminAuth.username}`).should("exist");
+        cy.get("div").contains(`@${lecturerAuth.username}`).should("exist");
+        cy.get("div").contains(`@${studentAuth.username}`).should("exist");
     });
 
     it("Show new account page", function () {
@@ -214,30 +224,30 @@ describe("Account creation, edition and deletion", function () {
     });
     // create student account
     it("Can edit username", () => {
-        cy.get("input[id='userName']").type(this.student.username);
+        cy.get("input[id='userName']").type(student.username);
     });
 
     it("Can edit password", function () {
         cy.get("input[id='password']").should("exist");
-        cy.get("input[id='password']").type(this.studentAuthUser.password);
+        cy.get("input[id='password']").type(studentAuthUser.password);
     });
 
     it("Country enum is filled", function () {
         cy.get('select[id="country"]').select("Germany");
         cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(this.student.address.country);
+        cy.get('select[id="country"]').select(student.address.country);
     });
 
     it("Can edit name", function () {
-        cy.get("input[id='firstName']").type(this.student.firstName);
-        cy.get("input[id='lastName']").type(this.student.lastName);
+        cy.get("input[id='firstName']").type(student.firstName);
+        cy.get("input[id='lastName']").type(student.lastName);
     });
 
     it("Can edit address", function () {
-        cy.get("input[id='street']").type(this.student.address.street);
-        cy.get("input[id='houseNumber']").type(this.student.address.houseNumber);
-        cy.get("input[id='zipCode']").type(this.student.address.zipCode);
-        cy.get("input[id='city']").type(this.student.address.city);
+        cy.get("input[id='street']").type(student.address.street);
+        cy.get("input[id='houseNumber']").type(student.address.houseNumber);
+        cy.get("input[id='zipCode']").type(student.address.zipCode);
+        cy.get("input[id='city']").type(student.address.city);
     });
 
     it("Can select birthDate", function () {
@@ -247,15 +257,15 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(this.student.email);
+        cy.get("input[id='email']").clear().type(student.email);
     });
 
     it("Can enter matriculationId", function () {
-        cy.get("input[id='matriculationId']").type(this.student.matriculationId);
+        cy.get("input[id='matriculationId']").type(student.matriculationId);
     });
 
     it("Can enter phoneNumber", function () {
-        cy.get("input[id='phoneNumber']").type(this.student.phoneNumber);
+        cy.get("input[id='phoneNumber']").type(student.phoneNumber);
     });
 
     it("Create account works", function () {
@@ -264,12 +274,12 @@ describe("Account creation, edition and deletion", function () {
         cy.url().should("contain", "accounts");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get(`div[id='user_${this.student.username}']`).should("exist");
+        cy.get(`div[id='user_${student.username}']`).should("exist");
     });
 
     // edit account
     it("Show student account edit page", function () {
-        cy.get(`div[id='user_${this.student.username}']`).click();
+        cy.get(`div[id='user_${student.username}']`).click();
 
         //todo check if everything is there
     });
@@ -293,19 +303,19 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(this.student.email);
+        cy.get("input[id='email']").clear().type(student.email);
     });
 
     it("Country enum is filled", function () {
         cy.get('select[id="country"]').select("Germany");
         cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(this.student.address.country);
+        cy.get('select[id="country"]').select(student.address.country);
     });
 
     it("Can change name", function () {
         cy.get('input[id="firstName"]')
             .clear()
-            .type(this.student.firstName + "newName");
+            .type(student.firstName + "newName");
     });
 
     it("Update working correctly", function () {
@@ -323,34 +333,34 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[type='radio']").eq(1).click();
     });
     it("Can edit username", function () {
-        cy.get("input[id='userName']").type(this.lecturer.username);
+        cy.get("input[id='userName']").type(lecturer.username);
     });
 
     it("Can edit password", function () {
         cy.get("input[id='password']").should("exist");
-        cy.get("input[id='password']").type(this.lecturerAuthUser.password);
+        cy.get("input[id='password']").type(lecturerAuthUser.password);
     });
 
     it("Can enter phoneNumber", function () {
-        cy.get("input[id='phoneNumber']").type(this.lecturer.phoneNumber);
+        cy.get("input[id='phoneNumber']").type(lecturer.phoneNumber);
     });
 
     it("Country enum is filled", function () {
         cy.get('select[id="country"]').select("Germany");
         cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(this.lecturer.address.country);
+        cy.get('select[id="country"]').select(lecturer.address.country);
     });
 
     it("Can edit name", function () {
-        cy.get("input[id='firstName']").type(this.lecturer.firstName);
-        cy.get("input[id='lastName']").type(this.lecturer.lastName);
+        cy.get("input[id='firstName']").type(lecturer.firstName);
+        cy.get("input[id='lastName']").type(lecturer.lastName);
     });
 
     it("Can edit address", function () {
-        cy.get("input[id='street']").type(this.lecturer.address.street);
-        cy.get("input[id='houseNumber']").type(this.lecturer.address.houseNumber);
-        cy.get("input[id='zipCode']").type(this.lecturer.address.zipCode);
-        cy.get("input[id='city']").type(this.lecturer.address.city);
+        cy.get("input[id='street']").type(lecturer.address.street);
+        cy.get("input[id='houseNumber']").type(lecturer.address.houseNumber);
+        cy.get("input[id='zipCode']").type(lecturer.address.zipCode);
+        cy.get("input[id='city']").type(lecturer.address.city);
     });
 
     it("Can select birthDate", function () {
@@ -360,15 +370,15 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(this.lecturer.email);
+        cy.get("input[id='email']").clear().type(lecturer.email);
     });
 
     it("Can enter free text", function () {
-        cy.get("textarea[id='freeText']").type(this.lecturer.freeText);
+        cy.get("textarea[id='freeText']").type(lecturer.freeText);
     });
 
     it("Can enter fields of research", function () {
-        cy.get("textarea[id='researchArea']").type(this.lecturer.researchArea);
+        cy.get("textarea[id='researchArea']").type(lecturer.researchArea);
     });
 
     it("Create account works", function () {
@@ -377,12 +387,12 @@ describe("Account creation, edition and deletion", function () {
         cy.url().should("contain", "accounts");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get(`div[id='user_${this.lecturer.username}']`).should("exist");
+        cy.get(`div[id='user_${lecturer.username}']`).should("exist");
     });
 
     // edit account
     it("Show lecturer account edit page", function () {
-        cy.get(`div[id='user_${this.lecturer.username}']`).click();
+        cy.get(`div[id='user_${lecturer.username}']`).click();
     });
 
     it("Save Changes button is disabled", function () {
@@ -404,31 +414,31 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(this.lecturer.email);
+        cy.get("input[id='email']").clear().type(lecturer.email);
     });
 
     it("Country enum is filled", function () {
         cy.get('select[id="country"]').select("Germany");
         cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(this.lecturer.address.country);
+        cy.get('select[id="country"]').select(lecturer.address.country);
     });
 
     it("Can change description", function () {
         cy.get("textarea[id='freeText']")
             .clear()
-            .type(this.lecturer.freeText + "newDescription");
+            .type(lecturer.freeText + "newDescription");
     });
 
     it("Can change FoS", function () {
         cy.get("textarea[id='researchArea']")
             .clear()
-            .type(this.lecturer.researchArea + "newFoS");
+            .type(lecturer.researchArea + "newFoS");
     });
 
     it("Can change name", function () {
         cy.get('input[id="firstName"]')
             .clear()
-            .type(this.lecturer.firstName + "newName");
+            .type(lecturer.firstName + "newName");
     });
 
     it("Update working correctly", function () {
@@ -446,34 +456,34 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[type='radio']").eq(0).click();
     });
     it("Can edit username", function () {
-        cy.get("input[id='userName']").type(this.admin.username);
+        cy.get("input[id='userName']").type(admin.username);
     });
 
     it("Can edit password", function () {
         cy.get("input[id='password']").should("exist");
-        cy.get("input[id='password']").type(this.adminAuthUser.password);
+        cy.get("input[id='password']").type(adminAuthUser.password);
     });
 
     it("Can enter phoneNumber", function () {
-        cy.get("input[id='phoneNumber']").type(this.admin.phoneNumber);
+        cy.get("input[id='phoneNumber']").type(admin.phoneNumber);
     });
 
     it("Country enum is filled", function () {
         cy.get('select[id="country"]').select("Germany");
         cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(this.admin.address.country);
+        cy.get('select[id="country"]').select(admin.address.country);
     });
 
     it("Can edit name", function () {
-        cy.get("input[id='firstName']").type(this.admin.firstName);
-        cy.get("input[id='lastName']").type(this.admin.lastName);
+        cy.get("input[id='firstName']").type(admin.firstName);
+        cy.get("input[id='lastName']").type(admin.lastName);
     });
 
     it("Can edit address", function () {
-        cy.get("input[id='street']").type(this.admin.address.street);
-        cy.get("input[id='houseNumber']").type(this.admin.address.houseNumber);
-        cy.get("input[id='zipCode']").type(this.admin.address.zipCode);
-        cy.get("input[id='city']").type(this.admin.address.city);
+        cy.get("input[id='street']").type(admin.address.street);
+        cy.get("input[id='houseNumber']").type(admin.address.houseNumber);
+        cy.get("input[id='zipCode']").type(admin.address.zipCode);
+        cy.get("input[id='city']").type(admin.address.city);
     });
 
     it("Can select birthDate", function () {
@@ -483,7 +493,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(this.admin.email);
+        cy.get("input[id='email']").clear().type(admin.email);
     });
 
     it("Create account works", function () {
@@ -492,12 +502,12 @@ describe("Account creation, edition and deletion", function () {
         cy.url().should("contain", "accounts");
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get(`div[id='user_${this.admin.username}']`).should("exist");
+        cy.get(`div[id='user_${admin.username}']`).should("exist");
     });
 
     // edit account
     it("Show admin account edit page", function () {
-        cy.get(`div[id='user_${this.admin.username}']`).click();
+        cy.get(`div[id='user_${admin.username}']`).click();
     });
 
     it("Save Changes button is disabled", function () {
@@ -519,19 +529,19 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(this.admin.email);
+        cy.get("input[id='email']").clear().type(admin.email);
     });
 
     it("Country enum is filled", function () {
         cy.get('select[id="country"]').select("Germany");
         cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(this.admin.address.country);
+        cy.get('select[id="country"]').select(admin.address.country);
     });
 
     it("Can change name", function () {
         cy.get('input[id="firstName"]')
             .clear()
-            .type(this.admin.firstName + "newName");
+            .type(admin.firstName + "newName");
     });
 
     it("Update working correctly", function () {
@@ -541,7 +551,7 @@ describe("Account creation, edition and deletion", function () {
 
     //delete student account
     it("Show edit page", function () {
-        cy.get(`div[id='user_${this.student.username}']`).click();
+        cy.get(`div[id='user_${student.username}']`).click();
     });
 
     it("Delete account", function () {
@@ -560,7 +570,7 @@ describe("Account creation, edition and deletion", function () {
 
     //delete lecturer account
     it("Show edit page", function () {
-        cy.get(`div[id='user_${this.lecturer.username}']`).click();
+        cy.get(`div[id='user_${lecturer.username}']`).click();
     });
 
     it("Delete account", function () {
@@ -579,7 +589,7 @@ describe("Account creation, edition and deletion", function () {
 
     //delete admin account
     it("Show edit page", function () {
-        cy.get(`div[id='user_${this.admin.username}']`).click();
+        cy.get(`div[id='user_${admin.username}']`).click();
     });
 
     it("Delete account", function () {
@@ -598,9 +608,9 @@ describe("Account creation, edition and deletion", function () {
 
     it("Assert account deletion", function () {
         cy.url().should("contain", "/accounts");
-        cy.get(`div[id='user_${this.student.username}']`).should("not.exist");
-        cy.get(`div[id='user_${this.lecturer.username}']`).should("not.exist");
-        cy.get(`div[id='user_${this.admin.username}']`).should("not.exist");
+        cy.get(`div[id='user_${student.username}']`).should("not.exist");
+        cy.get(`div[id='user_${lecturer.username}']`).should("not.exist");
+        cy.get(`div[id='user_${admin.username}']`).should("not.exist");
         cy.get("div[id='user_student']").should("exist");
         cy.get("div[id='user_lecturer']").should("exist");
         cy.get("div[id='user_admin']").should("exist");

@@ -9,15 +9,30 @@
  * test account deletion modal
  */
 
+import Course from "@/api/api_models/course_management/Course";
+import { Account } from "@/entities/Account";
+
 describe("Course creation, edition and deletion", () => {
-    const random = Math.floor(Math.random() * 500);
-    const courseName = "test-course-cypress" + random;
-    const updatedCourseName = courseName + "-update";
+    const random = Math.floor(Math.random() * 9999);
+
+    let course: Course;
+    let lecturerAuth: Account;
+
+    before(function () {
+        cy.fixture("course.json").then((c) => {
+            course = { ...(c as Course) };
+            course.courseName += random;
+        });
+
+        cy.fixture("logins/lecturer.json").then((lecturer) => {
+            lecturerAuth = lecturer;
+        });
+    });
 
     it("Login as lecturer", () => {
         cy.visit("/");
-        cy.get("input[id='email']").type("lecturer");
-        cy.get("input[id='password']").type("lecturer");
+        cy.get("input[id='email']").type(lecturerAuth.username);
+        cy.get("input[id='password']").type(lecturerAuth.password);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
     });
@@ -88,19 +103,19 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit courseName", () => {
-        cy.get('input[id="courseName"]').type(courseName);
+        cy.get('input[id="courseName"]').type(course.courseName);
     });
 
     it("Can edit courseLanguage", () => {
-        cy.get("select").select("German");
+        cy.get("select").select(course.courseLanguage);
     });
 
     it("Can edit description", () => {
-        cy.get('textarea[id="courseDescription"]').type("test-courseDescription-cypress");
+        cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     });
 
     it("Can edit maxParticipants", () => {
-        cy.get('input[id="maxParticipants"]').clear().type("1");
+        cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     });
 
     it("Can not edit dates", () => {
@@ -116,14 +131,14 @@ describe("Course creation, edition and deletion", () => {
     it("Course was created", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains(courseName);
+        cy.get("div").contains(course.courseName);
     });
 
     // edit course
     it("Show course edit page", () => {
-        cy.get("div").contains(courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
 
-        cy.get('input[id="courseName"]').should("have.value", courseName);
+        cy.get('input[id="courseName"]').should("have.value", course.courseName);
     });
 
     it("Can not save unchanged course", () => {
@@ -131,7 +146,8 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit courseName", () => {
-        cy.get('input[id="courseName"]').clear().type(updatedCourseName);
+        course.courseName += "-updated";
+        cy.get('input[id="courseName"]').clear().type(course.courseName);
     });
 
     it("Can save course", () => {
@@ -142,12 +158,12 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains(updatedCourseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
     });
 
     //delete course
     it("Show edit page", () => {
-        cy.get("div").contains(updatedCourseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
     });
 
     it("Delete course", () => {
@@ -166,6 +182,6 @@ describe("Course creation, edition and deletion", () => {
 
     it("Assert course deletion", () => {
         cy.url().should("contain", "/course-management");
-        cy.get("div").contains(updatedCourseName).should("not.exist");
+        cy.get("div").contains(course.courseName).should("not.exist");
     });
 });

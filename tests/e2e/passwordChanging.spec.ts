@@ -1,11 +1,32 @@
+import Student from "@/api/api_models/user_management/Student";
+import { Account } from "@/entities/Account";
+
 describe("Change password", () => {
-    const random = Math.floor(Math.random() * 500);
-    const studentUsername = "cy-student" + random;
+    const random = Math.floor(Math.random() * 9999);
+    let student: Student;
+    let studentAuthUser: Account;
+    let adminAuth: Account;
+
+    before(() => {
+        cy.fixture("student.json").then((s) => {
+            (s as Student).username += random;
+            student = s as Student;
+        });
+
+        cy.fixture("studentAuthUser.json").then((s) => {
+            (s as Account).username += random;
+            studentAuthUser = s as Account;
+        });
+
+        cy.fixture("logins/admin.json").then((admin) => {
+            adminAuth = admin;
+        });
+    });
 
     it("Login as admin", () => {
         cy.visit("/");
-        cy.get("input[id='email']").type("admin");
-        cy.get("input[id='password']").type("admin");
+        cy.get("input[id='email']").type(adminAuth.username);
+        cy.get("input[id='password']").type(adminAuth.password);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
     });
@@ -19,21 +40,21 @@ describe("Change password", () => {
 
     it("Create account works", () => {
         cy.get("input[type='radio']").eq(2).click();
-        cy.get("input[id='userName']").type(studentUsername);
-        cy.get("input[id='password']").type("test-password-cypress");
-        cy.get('select[id="country"]').select("Germany");
-        cy.get("input[id='firstName']").type("firstName");
-        cy.get("input[id='lastName']").type("lastName");
-        cy.get("input[id='street']").type("test-street-cypress");
-        cy.get("input[id='houseNumber']").type("1a");
-        cy.get("input[id='zipCode']").type("12345");
-        cy.get("input[id='city']").type("test-city-cypress");
+        cy.get("input[id='userName']").type(student.username);
+        cy.get("input[id='password']").type(studentAuthUser.password);
+        cy.get('select[id="country"]').select(student.address.country);
+        cy.get("input[id='firstName']").type(student.firstName);
+        cy.get("input[id='lastName']").type(student.lastName);
+        cy.get("input[id='street']").type(student.address.street);
+        cy.get("input[id='houseNumber']").type(student.address.houseNumber);
+        cy.get("input[id='zipCode']").type(student.address.zipCode);
+        cy.get("input[id='city']").type(student.address.city);
         cy.get("select[id='day']").select("15");
         cy.get("select[id='month']").select("November");
         cy.get("select[id='year']").select("1996");
-        cy.get("input[id='email']").clear().type("valid@valid.de");
-        cy.get("input[id='matriculationId']").type("1234567");
-        cy.get("input[id='phoneNumber']").type("+49 123456789");
+        cy.get("input[id='email']").clear().type(student.email);
+        cy.get("input[id='matriculationId']").type(student.matriculationId);
+        cy.get("input[id='phoneNumber']").type(student.phoneNumber);
 
         cy.get("button").contains("Create Account").click();
         cy.wait(300);
@@ -41,8 +62,8 @@ describe("Change password", () => {
 
     it("Login with new student account", () => {
         cy.visit("/");
-        cy.get("input[id='email']").type(studentUsername);
-        cy.get("input[id='password']").type("test-password-cypress");
+        cy.get("input[id='email']").type(student.username);
+        cy.get("input[id='password']").type(studentAuthUser.password);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
     });
@@ -74,14 +95,14 @@ describe("Change password", () => {
     });
 
     it("Enter wrong password should show error", () => {
-        cy.get("input[id='enterPasswordModalPassword']").type("test-password-cypress-wrong");
+        cy.get("input[id='enterPasswordModalPassword']").type(studentAuthUser.password + "wrong!");
         cy.get("button[id='enterPasswordModalConfirm']").click();
 
         cy.get("p").should("have.class", "error-message").should("exist");
     });
 
     it("Enter correct password", () => {
-        cy.get("input[id='enterPasswordModalPassword']").clear().type("test-password-cypress");
+        cy.get("input[id='enterPasswordModalPassword']").clear().type(studentAuthUser.password);
         cy.get("button[id='enterPasswordModalConfirm']").click();
 
         cy.get("p").invoke("hasClass", "error-message").should("not.be.visible");
@@ -114,8 +135,9 @@ describe("Change password", () => {
 
     it("Entering the same password should be valid", () => {
         cy.get("button[id='changePassword']").should("be.disabled");
-        cy.get("input[id='newPassword']").clear().type("test-password-cypress-new");
-        cy.get("input[id='confirmationPassword']").clear().type("test-password-cypress-new");
+        studentAuthUser.password += "-new";
+        cy.get("input[id='newPassword']").clear().type(studentAuthUser.password);
+        cy.get("input[id='confirmationPassword']").clear().type(studentAuthUser.password);
         cy.get("button[id='changePassword']").should("not.be.disabled");
         cy.get("button[id='changePassword']").click();
     });
@@ -129,16 +151,16 @@ describe("Change password", () => {
 
     it("Login with new password", () => {
         cy.visit("/");
-        cy.get("input[id='email']").type(studentUsername);
-        cy.get("input[id='password']").type("test-password-cypress-new");
+        cy.get("input[id='email']").type(studentAuthUser.username);
+        cy.get("input[id='password']").type(studentAuthUser.password);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
     });
 
     it("Login as admin", () => {
         cy.visit("/");
-        cy.get("input[id='email']").type("admin");
-        cy.get("input[id='password']").type("admin");
+        cy.get("input[id='email']").type(adminAuth.username);
+        cy.get("input[id='password']").type(adminAuth.password);
         cy.get('button[id="login"]').click();
         cy.url().should("contain", "welcome");
     });
@@ -148,7 +170,7 @@ describe("Change password", () => {
         cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
         cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
 
-        cy.get(`div[id='user_${studentUsername}']`).click();
+        cy.get(`div[id='user_${studentAuthUser.username}']`).click();
         cy.wait(100);
         cy.get("button[id='deleteAccount']").click();
         cy.wait(100);
