@@ -20,13 +20,13 @@
 <script lang="ts">
     import BaseMenu from "@/components/navigation/navbar/common/BaseMenu.vue";
     import MenuBody from "@/components/navigation/navbar/common/profile/ProfileMenuBody.vue";
-    import { useStore } from "../../../../../store/store";
+    import { useStore } from "@/use/store/store";
     import { ref } from "vue";
-    import User from "../../../../../api/api_models/user_management/User";
-    import Lecturer from "../../../../../api/api_models/user_management/Lecturer";
-    import Admin from "../../../../../api/api_models/user_management/Admin";
-    import Student from "../../../../../api/api_models/user_management/Student";
-    import { MutationTypes } from "../../../../../store/mutation-types";
+    import User from "@/api/api_models/user_management/User";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import Admin from "@/api/api_models/user_management/Admin";
+    import Student from "@/api/api_models/user_management/Student";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         components: {

@@ -11,9 +11,9 @@
     import StudentNavbar from "@/components/navigation/navbar/student/Navbar.vue";
     import AdminNavbar from "@/components/navigation/navbar/admin/Navbar.vue";
     import { Role } from "@/entities/Role";
-    import { useStore } from "../../../store/store";
+    import { useStore } from "@/use/store/store";
     import { ref } from "vue";
-    import { MutationTypes } from "../../../store/mutation-types";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "Navbar",

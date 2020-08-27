@@ -45,9 +45,7 @@
         </div>
         <template #footer>
             <button id="enterPasswordModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="enterPasswordModalConfirm" class="w-24 py-2 px-2 btn btn-blue-primary" @click="login">
-                Login
-            </button>
+            <button id="enterPasswordModalConfirm" class="w-24 py-2 px-2 btn btn-blue-primary" @click="login">Login</button>
         </template>
     </modal-no-teleport>
 </template>
@@ -57,7 +55,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
     import LoginResponseHandler from "@/use/LoginResponseHandler";
-    import { useStore } from "../../store/store";
+    import { useStore } from "@/use/store/store";
 
     export default {
         components: {

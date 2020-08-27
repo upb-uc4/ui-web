@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-    import { useStore } from "@/store/store";
+    import { useStore } from "@/use/store/store";
     import { Role } from "@/entities/Role";
     import LecturerCourse from "../lecturer/LecturerCourse.vue";
     import StudentCourse from "../student/StudentCourse.vue";

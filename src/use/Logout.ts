@@ -1,5 +1,5 @@
-import { useStore } from "@/store/store";
-import { MutationTypes } from "@/store/mutation-types";
+import { useStore } from "@/use/store/store";
+import { MutationTypes } from "@/use/store/mutation-types";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";

@@ -13,7 +13,7 @@
 <script lang="ts">
     import PrivateProfile from "@/views/common/PrivateProfile.vue";
     import PublicProfile from "@/views/common/PublicProfile.vue";
-    import { store } from "@/store/store";
+    import { store } from "@/use/store/store";
     import { Role } from "@/entities/Role";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/PermissionHelper";

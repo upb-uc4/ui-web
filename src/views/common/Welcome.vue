@@ -24,7 +24,7 @@
     </div>
 </template>
 <script lang="ts">
-    import { useStore } from "@/store/store";
+    import { useStore } from "@/use/store/store";
     import { ref, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/PermissionHelper";

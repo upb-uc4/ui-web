@@ -87,7 +87,7 @@
 
 <script lang="ts">
     import Router from "@/router/";
-    import { useStore } from "@/store/store";
+    import { useStore } from "@/use/store/store";
     import { CourseEntity } from "@/entities/CourseEntity";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";

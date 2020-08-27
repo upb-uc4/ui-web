@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-    import { useStore } from "@/store/store";
+    import { useStore } from "@/use/store/store";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
     import CourseManagement from "@/api/CourseManagement";
     import UserManagement from "@/api/UserManagement";

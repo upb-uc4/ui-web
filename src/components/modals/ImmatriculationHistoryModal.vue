@@ -23,7 +23,7 @@
     import { ref, onBeforeMount } from "vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
-    import { useStore } from "@/store/store";
+    import { useStore } from "@/use/store/store";
 
     export default {
         components: {
