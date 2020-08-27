@@ -14,16 +14,11 @@
         </div>
 
         <div>
-            <personal-section
-                v-model:first-name="admin.firstName"
-                v-model:last-name="admin.lastName"
-                :birth-date="admin.birthDate"
-                @save="save"
-            />
+            <personal-section :first-name="admin.firstName" :last-name="admin.lastName" :birth-date="admin.birthDate" />
 
-            <contact-section v-model:email="admin.email" @save="save" />
+            <contact-section v-model:user="admin" />
 
-            <address-section v-model:address="admin.address" @save="save" />
+            <address-section v-model:user="admin" />
 
             <section class="py-8 border-t-2 border-gray-400">
                 <div class="lg:flex">
@@ -56,6 +51,7 @@
     import Router from "@/router";
     import UserManagement from "@/api/UserManagement";
     import Admin from "../../api/api_models/user_management/Admin";
+    import { useModelWrapper } from "@/use/ModelWrapper";
 
     export default {
         components: {
@@ -69,21 +65,15 @@
                 type: Object as () => Admin,
             },
         },
-        setup(props: any) {
-            const auth: UserManagement = new UserManagement();
+        emits: ["update:user"],
+        setup(props: any, { emit }: any) {
             const admin = ref(props.user);
-
-            async function save() {
-                const response = await auth.updateUser(admin.value);
-                //todo show toast
-                //todo error handling
-            }
 
             function back() {
                 Router.back();
             }
 
-            return { admin, save, back };
+            return { admin: useModelWrapper(props, emit, "user"), back };
         },
     };
 </script>
