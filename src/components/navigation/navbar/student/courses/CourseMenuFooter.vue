@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-    import MenuItem from "../../common/MenuItem.vue";
+    import MenuItem from "@/components/navigation/navbar/common/MenuItem.vue";
 
     export default {
         name: "CourseMenuFooter",

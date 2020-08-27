@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-    import BaseNavbar from "../common/BaseNavbar.vue";
+    import BaseNavbar from "@/components/navigation/navbar/common/BaseNavbar.vue";
 
     export default {
         name: "LecturerNavbar",
