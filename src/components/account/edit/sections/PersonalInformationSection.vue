@@ -3,15 +3,11 @@
         <div class="lg:flex">
             <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                 <label class="block mb-2 text-lg font-medium text-gray-700">Personal Information</label>
-                <label class="block text-gray-600">
-                    Personal Information and Contact Data for the User
-                </label>
+                <label class="block text-gray-600"> Personal Information and Contact Data for the User </label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="flex flex-col mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md">
-                        Name
-                    </label>
+                    <label class="mb-3 font-medium text-gray-700 text-md"> Name </label>
                     <div class="flex flex-row">
                         <div class="flex-col w-full pr-2">
                             <label class="text-sm text-gray-700">Firstname</label>
@@ -44,16 +40,12 @@
                     </div>
                 </div>
                 <div class="flex flex-col mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md">
-                        Birthdate
-                    </label>
+                    <label class="mb-3 font-medium text-gray-700 text-md"> Birthdate </label>
                     <birth-date-picker v-model:birth-date="accountBirthdate" />
                     <p v-if="errorBag.hasNested('birthDate')" class="error-message">{{ errorBag.getNested("birthDate") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md">
-                        Adress
-                    </label>
+                    <label class="mb-3 font-medium text-gray-700 text-md"> Adress </label>
                     <p v-if="errorBag.hasNested('address')" class="error-message">{{ errorBag.getNested("address") }}</p>
                     <div class="flex flex-col w-full">
                         <label class="text-sm text-gray-700">Country</label>
@@ -136,7 +128,7 @@
     import { useModelWrapper } from "@/use/ModelWrapper";
     import { Country } from "@/entities/Country";
     import ErrorBag from "@/use/ErrorBag";
-    import BirthDatePicker from "../../BirthDatePicker.vue";
+    import BirthDatePicker from "../BirthDatePicker.vue";
     import { ref, watch } from "vue";
 
     export default {

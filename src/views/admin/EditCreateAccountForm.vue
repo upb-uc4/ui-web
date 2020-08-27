@@ -50,9 +50,7 @@
                 <div class="lg:flex">
                     <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                         <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
-                        <label class="block text-gray-600">
-                            Change the Profile Picture
-                        </label>
+                        <label class="block text-gray-600"> Change the Profile Picture </label>
                     </div>
                     <div class="flex flex-col items-center justify-center">
                         <img class="object-contain h-48" :src="account.user.picture" />
@@ -81,9 +79,7 @@
                     </div>
 
                     <div class="flex items-center justify-end">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
-                            Cancel
-                        </button>
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
                         <button
                             v-if="editMode"
                             id="saveChanges"
@@ -101,9 +97,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="w-full mb-4 btn btn-blue-secondary" @click="back">
-                        Cancel
-                    </button>
+                    <button id="mobileCancel" type="button" class="w-full mb-4 btn btn-blue-secondary" @click="back">Cancel</button>
                     <button
                         v-if="editMode"
                         id="mobileSaveChanges"
@@ -123,9 +117,7 @@
                     >
                         Create Account
                     </button>
-                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
-                        Delete
-                    </button>
+                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">Delete</button>
                 </div>
             </section>
             <delete-account-modal ref="deleteModal" />
@@ -154,11 +146,11 @@
     import ValidationResponseHandler from "../../use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
-    import RoleSection from "@/components/account/edit/RoleSection.vue";
-    import UserSecuritySection from "@/components/account/edit/UserSecuritySection.vue";
-    import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
-    import LecturerInformationSection from "@/components/account/edit/LecturerInformationSection.vue";
-    import StudentInformationSection from "@/components/account/edit/StudentInformationSection.vue";
+    import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
+    import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
+    import PersonalInformationSection from "@/components/account/edit/sections/PersonalInformationSection.vue";
+    import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
+    import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
     import LoadingComponent from "../../components/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
