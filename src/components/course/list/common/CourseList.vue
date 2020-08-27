@@ -24,12 +24,12 @@
 <script lang="ts">
     import { useStore } from "@/store/store";
     import { Role } from "@/entities/Role";
-    import LecturerCourse from "./LecturerCourse.vue";
-    import StudentCourse from "./StudentCourse.vue";
+    import LecturerCourse from "../lecturer/LecturerCourse.vue";
+    import StudentCourse from "../student/StudentCourse.vue";
     import CourseManagement from "@/api/CourseManagement";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
-    import Course from "../api/api_models/course_management/Course";
-    import APIResponse from "../api/helpers/models/APIResponse";
+    import Course from "@/api/api_models/course_management/Course";
+    import APIResponse from "@/api/helpers/models/APIResponse";
     import { computed, ref, onBeforeMount, watch } from "vue";
     import { CourseType } from "@/entities/CourseType";
     import UserManagement from "@/api/UserManagement";

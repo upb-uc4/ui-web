@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts">
-    import ReadMore from "./ReadMore.vue";
-    import router from "../router";
+    import ReadMore from "@/components/ReadMore.vue";
+    import router from "@/router";
     import Course from "@/api/api_models/course_management/Course";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/ProfileResponseHandler";
