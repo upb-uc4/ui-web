@@ -3,9 +3,7 @@
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-lg font-medium mb-2">Basics</label>
-                <label class="block text-gray-600">
-                    General Information about the Course
-                </label>
+                <label class="block text-gray-600"> General Information about the Course </label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-4 flex flex-col">
@@ -46,9 +44,9 @@
                         :class="{ error: errorBag.has('courseLanguage') }"
                     >
                         <option disabled :value="''">Select a Language</option>
-                        <option v-for="availableLanguage in availableCourseLanguages" :key="availableLanguage">{{
-                            availableLanguage
-                        }}</option>
+                        <option v-for="availableLanguage in availableCourseLanguages" :key="availableLanguage">
+                            {{ availableLanguage }}
+                        </option>
                     </select>
                     <p v-if="errorBag.has('courseLanguage')" class="error-message">
                         {{ errorBag.get("courseLanguage") }}
@@ -57,9 +55,7 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">
                         Description
-                        <span class="text-gray-600 font-normal">
-                            (Optional)
-                        </span>
+                        <span class="text-gray-600 font-normal"> (Optional) </span>
                     </label>
                     <textarea
                         id="courseDescription"

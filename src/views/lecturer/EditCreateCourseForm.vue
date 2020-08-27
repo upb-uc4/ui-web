@@ -38,9 +38,7 @@
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
-                            Cancel
-                        </button>
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
                         <button
                             v-if="editMode"
                             id="saveChanges"
@@ -58,9 +56,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
-                        Cancel
-                    </button>
+                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
                     <button
                         v-if="editMode"
                         id="mobileSaveChanges"
@@ -80,9 +76,7 @@
                     >
                         Create Course
                     </button>
-                    <button id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
-                        Delete
-                    </button>
+                    <button id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">Delete</button>
                 </div>
             </section>
             <delete-course-modal ref="deleteModal" />
@@ -103,10 +97,10 @@
     import ErrorBag from "@/use/ErrorBag";
     import ValidationResponseHandler from "@/use/ValidationResponseHandler";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
-    import BasicsSection from "@/components/course/edit/BasicsSection.vue";
-    import RestrictionsSection from "@/components/course/edit/RestrictionsSection.vue";
-    import TimeSection from "@/components/course/edit/TimeSection.vue";
-    import LoadingComponent from "../../components/loading/Spinner.vue";
+    import BasicsSection from "@/components/course/edit/sections/BasicsSection.vue";
+    import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
+    import TimeSection from "@/components/course/edit/sections/TimeSection.vue";
+    import LoadingComponent from "@/components/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/PermissionHelper";
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";

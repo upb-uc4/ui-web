@@ -3,9 +3,7 @@
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-md font-medium mb-2">Restrictions</label>
-                <label class="block text-gray-600">
-                    Information of Participation Restrictions for the Course
-                </label>
+                <label class="block text-gray-600"> Information of Participation Restrictions for the Course </label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-4 flex flex-col">
