@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-    import UserManagement from "../api/UserManagement";
-    import router from "../router";
+    import UserManagement from "@/api/UserManagement";
+    import router from "@/router/index";
     import GenericResponseHandler from "@/use/GenericResponseHandler";
-    import UserRow from "@/components/account/UserRow.vue";
+    import UserRow from "./UserRow.vue";
     import { Role } from "@/entities/Role";
     import { computed, ref, onBeforeMount, watch } from "vue";
     import LoadingSpinner from "@/components/loading/Spinner.vue";

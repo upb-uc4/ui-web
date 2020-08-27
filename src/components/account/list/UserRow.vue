@@ -38,7 +38,7 @@
                 <div class="flex-col items-baseline" :class="[isStudent ? 'flex' : 'hidden']">
                     <div class="leading-5 text-blue-900 ml-1 mb-1">{{ student.matriculationId }}</div>
                     <div class="hidden sm:flex items-center leading-5 text-gray-500">
-                        <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em;">
+                        <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em">
                             <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
                             <i class="fas fa-check fa-stack-1x fa-inverse"></i>
                         </span>
@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-    import User from "../../api/api_models/user_management/User";
+    import User from "@/api/api_models/user_management/User";
     import router from "@/router";
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
