@@ -27,9 +27,9 @@
     import LecturerNavbarDesktop from "@/components/navigation/navbar/desktop/lecturer/Navbar.vue";
     import LecturerNavbarMobile from "@/components/navigation/navbar/mobile/lecturer/Navbar.vue";
     import { Role } from "@/entities/Role";
-    import { useStore } from "@/store/store";
+    import { useStore } from "@/use/store/store";
     import { ref } from "vue";
-    import { MutationTypes } from "@/store/mutation-types";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "Navbar",

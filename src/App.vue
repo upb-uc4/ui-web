@@ -12,9 +12,9 @@
 <script lang="ts">
     import LoginModal from "@/components/modals/LoginModal.vue";
     import Navbar from "@/components/navigation/navbar/Navbar.vue";
-    import { store, useStore } from "@/store/store";
+    import { store, useStore } from "./use/store/store";
     import { ref, onMounted } from "vue";
-    import { MutationTypes } from "./store/mutation-types";
+    import { MutationTypes } from "./use/store/mutation-types";
 
     export default {
         name: "App",

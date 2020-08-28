@@ -15,15 +15,11 @@
                 placeholder="Password"
                 @keypress.enter="checkPassword"
             />
-            <p v-if="hasError" class="error-message">
-                Wrong Password!
-            </p>
+            <p v-if="hasError" class="error-message">Wrong Password!</p>
         </div>
         <template #footer>
             <button id="enterPasswordModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="enterPasswordModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">
-                Confirm
-            </button>
+            <button id="enterPasswordModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">Confirm</button>
         </template>
     </modal>
 </template>
@@ -32,8 +28,8 @@
     import Modal from "@/components/modals/Modal.vue";
     import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
-    import LoginResponseHandler from "@/use/LoginResponseHandler";
-    import { useStore } from "../../store/store";
+    import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
+    import { useStore } from "@/use/store/store";
 
     export default {
         components: {

@@ -2,9 +2,7 @@
     <header class="flex flex-col w-full px-4 bg-gray-800 min-h-16">
         <div class="flex justify-between p-2">
             <div class="flex pr-8 mr-8 border-gray-100">
-                <button class="text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">
-                    UC4
-                </button>
+                <button class="text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">UC4</button>
             </div>
 
             <button
@@ -45,8 +43,8 @@
 
 <script lang="ts">
     import { ref } from "vue";
-    import { useStore } from "@/store/store";
-    import Router from "@/router";
+    import { useStore } from "@/use/store/store";
+    import Router from "@/use/router";
 
     export default {
         name: "MobileBaseNavbar",

@@ -24,9 +24,7 @@
                 <div class="lg:flex">
                     <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                         <label class="block mb-2 text-lg font-medium text-gray-700">Notifications</label>
-                        <label class="block text-gray-600">
-                            Control when and how to stay updated about recent activities.
-                        </label>
+                        <label class="block text-gray-600"> Control when and how to stay updated about recent activities. </label>
                     </div>
                     <div class="w-full lg:w-2/3">
                         <div class="flex items-start mb-6">
@@ -48,10 +46,10 @@
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
     import { ref } from "vue";
-    import Router from "@/router";
+    import Router from "@/use/router";
     import UserManagement from "@/api/UserManagement";
     import Admin from "../../api/api_models/user_management/Admin";
-    import { useModelWrapper } from "@/use/ModelWrapper";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         components: {

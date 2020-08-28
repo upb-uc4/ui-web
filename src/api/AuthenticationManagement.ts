@@ -1,14 +1,12 @@
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import { useStore } from "@/store/store";
+import { useStore } from "@/use/store/store";
 import { Role } from "@/entities/Role";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
 import ValidationError from "./api_models/errors/ValidationError";
 import { Account } from "@/entities/Account";
-import { MutationTypes } from "@/store/mutation-types";
-import UserManagement from "./UserManagement";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
+import { MutationTypes } from "@/use/store/mutation-types";
 
 export default class AuthenticationManagement extends Common {
     constructor() {

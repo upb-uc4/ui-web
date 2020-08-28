@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-    import Router from "@/router";
+    import Router from "@/use/router";
     import Student from "@/api/api_models/user_management/Student";
 
     export default {

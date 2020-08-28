@@ -1,7 +1,7 @@
 import UserManagement from "@/api/UserManagement";
 import { Role } from "@/entities/Role";
-import { store } from "@/store/store";
-import { MutationTypes } from "@/store/mutation-types";
+import { store } from "@/use/store/store";
+import { MutationTypes } from "@/use/store/mutation-types";
 import { authUser, address, user, student } from "./testData";
 
 var userManagement: UserManagement;
