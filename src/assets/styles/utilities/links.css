@@ -13,3 +13,7 @@
 .navbar-menu {
     @apply py-1 px-3 block;
 }
+
+.mobile-navbar-menu {
+    @apply py-1 px-3 block;
+}
