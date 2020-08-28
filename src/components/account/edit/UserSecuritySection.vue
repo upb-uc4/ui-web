@@ -3,9 +3,7 @@
         <div class="lg:flex">
             <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                 <label class="block mb-2 text-lg font-medium text-gray-700">User Security</label>
-                <label class="block text-gray-600">
-                    Basic Information of the User for Authentication
-                </label>
+                <label class="block text-gray-600"> Basic Information of the User for Authentication </label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="flex flex-col mb-4">
@@ -34,7 +32,7 @@
                     <p v-if="errorBag.hasNested('email')" class="error-message">{{ errorBag.getNested("email") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md">Phone Number (optional)</label>
+                    <label class="mb-3 font-medium text-gray-700 text-md">Phone Number</label>
                     <input
                         id="phoneNumber"
                         v-model="accountPhoneNumber"
@@ -46,9 +44,7 @@
                     <p v-if="errorBag.hasNested('phoneNumber')" class="error-message">{{ errorBag.getNested("phoneNumber") }}</p>
                 </div>
                 <div v-if="!editMode" class="flex flex-col mb-4">
-                    <label for="password" class="mb-3 font-medium text-gray-700 text-md">
-                        Password
-                    </label>
+                    <label for="password" class="mb-3 font-medium text-gray-700 text-md"> Password </label>
                     <input
                         id="password"
                         v-model="accountPassword"
