@@ -20,7 +20,7 @@
 <script lang="ts">
     import BaseMenu from "../BaseMenu.vue";
     import MenuBody from "./ProfileMenuBody.vue";
-    import { useStore } from "@/store/store";
+    import { useStore } from "@/use/store/store";
 
     export default {
         components: {
