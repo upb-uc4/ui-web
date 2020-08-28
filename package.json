@@ -55,7 +55,7 @@
         "@cypress/code-coverage": "^3.8.1",
         "@tailwindcss/custom-forms": "^0.2.1",
         "@types/jest": "^26.0.10",
-        "@types/lodash": "^4.14.159",
+        "@types/lodash": "^4.14.160",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "@vue/cli-plugin-babel": "^4.5.4",
