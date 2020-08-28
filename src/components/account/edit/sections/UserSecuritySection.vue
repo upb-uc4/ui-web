@@ -32,7 +32,7 @@
                     <p v-if="errorBag.hasNested('email')" class="error-message">{{ errorBag.getNested("email") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md">Phone Number (optional)</label>
+                    <label class="mb-3 font-medium text-gray-700 text-md">Phone Number</label>
                     <input
                         id="phoneNumber"
                         v-model="accountPhoneNumber"
