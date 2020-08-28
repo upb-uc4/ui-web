@@ -21,10 +21,10 @@ export function navigateToCourseListLecturer() {
     const navbar_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
     cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
     cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
-    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
-    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("All Courses").should("be.visible");
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("All Courses").click();
     cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
-    cy.url().should("contain", "course-management");
+    cy.url().should("contain", "all-courses");
 }
 
 export function navigateToMyCoursesLecturer() {
@@ -34,6 +34,7 @@ export function navigateToMyCoursesLecturer() {
     cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
     cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
     cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
+    cy.url().should("contain", "course-management");
 }
 
 export function navigateToCourseListStudent() {
