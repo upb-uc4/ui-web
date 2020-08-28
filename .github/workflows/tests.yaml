@@ -46,11 +46,7 @@ jobs:
   e2e:
     name: Run e2e tests
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2, 3]
-
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -62,7 +58,6 @@ jobs:
           config-file: cypress.json
           start: npm run serve
           wait-on: 'http://localhost:8080'
-          parallel: true
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
