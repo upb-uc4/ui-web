@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts">
-    import MenuItem from "../../common/MenuItem.vue";
-    import { logout } from "@/use/helpers/Logout";
+    import MenuItem from "../MenuItem.vue";
+    import { logout } from "@/use/Logout";
 
     export default {
         name: "ProfileMenuBody",
