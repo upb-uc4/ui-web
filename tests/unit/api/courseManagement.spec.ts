@@ -13,7 +13,7 @@ import { getRandomizedCourse } from "@/../tests/helper/Courses";
 import { readFileSync } from "fs";
 
 var courseManagement: CourseManagement;
-const lecturerAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/lecturer.json", "utf-8")) as {
+const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.json", "utf-8")) as {
     username: string;
     password: string;
 };

@@ -3,6 +3,7 @@ import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
 import { loginAndCreateCourse, loginAndDeleteCourse, deleteCourse } from "./helpers/CourseHelper";
 import { loginAndCreateLecturer, loginAndDeleteUser } from "./helpers/UserHelper";
+import { navigateToCourseListLecturer, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
 
 let lecturer: Lecturer;
 let lecturerAuthUser: Account;
@@ -52,11 +53,7 @@ describe("Course List Behavior", function () {
     });
 
     it("Tab All Courses should contain both courses", function () {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        navigateToCourseListLecturer();
         cy.url().should("contain", "all-courses");
         cy.get("div").contains(course1.courseName).should("exist");
         cy.get("div").contains(course1.courseName).parent().parent().find("button[id='editCourse']").should("exist");
@@ -65,11 +62,7 @@ describe("Course List Behavior", function () {
     });
 
     it("Tab my course should just contain my courses", function () {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        navigateToMyCoursesLecturer();
         cy.url().should("contain", "course-management");
         cy.get("div").contains(course1.courseName).should("exist");
         cy.get("div").contains(course1.courseName).parent().parent().find("button[id='editCourse']").should("exist");

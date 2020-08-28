@@ -4,10 +4,7 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import { MutationTypes } from "@/store/mutation-types";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { Role } from "@/entities/Role";
-import User from "@/api/api_models/user_management/User";
-import Address from "@/api/api_models/user_management/Address";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import { readFileSync } from "fs";
 
@@ -15,7 +12,7 @@ var authenticationManagement: AuthenticationManagement;
 var userManagement: UserManagement;
 jest.setTimeout(30000);
 
-const adminAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
+const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;

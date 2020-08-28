@@ -12,9 +12,9 @@ const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; a
 const student = pair.student;
 const authUser = pair.authUser;
 
-const adminAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
-const studentAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/student.json", "utf-8")) as { username: string; password: string };
-const lecturerAuth = JSON.parse(readFileSync("@/../tests/fixtures/logins/lecturer.json", "utf-8")) as {
+const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
+const studentAuth = JSON.parse(readFileSync("tests/fixtures/logins/student.json", "utf-8")) as { username: string; password: string };
+const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.json", "utf-8")) as {
     username: string;
     password: string;
 };

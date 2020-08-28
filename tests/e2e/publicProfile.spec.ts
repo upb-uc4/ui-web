@@ -2,6 +2,7 @@ import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
 import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
 import { loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { navigateToCourseListLecturer, navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Show public profile correctly", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -39,11 +40,7 @@ describe("Show public profile correctly", () => {
     });
 
     it("Navigate to 'lecturer's public profile via created course", () => {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
+        navigateToCourseListStudent();
         cy.url().should("contain", "/courses");
         cy.wait(2000);
         cy.get("div").contains(course.courseName).parent().parent().find("a[id='showLecturer']").click();
