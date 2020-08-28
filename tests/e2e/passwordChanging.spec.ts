@@ -1,5 +1,8 @@
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
+import { loginAndCreateStudent, loginAndDeleteUser } from "./helpers/UserHelper";
+import { loginAsUser } from "./helpers/AuthHelper";
+import { navigateToSettingsPage } from "./helpers/NavigationHelper";
 
 describe("Change password", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -23,58 +26,16 @@ describe("Change password", () => {
         });
     });
 
-    it("Login as admin", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type(adminAuth.username);
-        cy.get("input[id='password']").type(adminAuth.password);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
-    });
-
-    it("Show new account page", () => {
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("New Account").click();
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
-        cy.url().should("contain", "/createAccount");
-    });
-
-    it("Create account works", () => {
-        cy.get("input[type='radio']").eq(2).click();
-        cy.get("input[id='userName']").type(student.username);
-        cy.get("input[id='password']").type(studentAuthUser.password);
-        cy.get('select[id="country"]').select(student.address.country);
-        cy.get("input[id='firstName']").type(student.firstName);
-        cy.get("input[id='lastName']").type(student.lastName);
-        cy.get("input[id='street']").type(student.address.street);
-        cy.get("input[id='houseNumber']").type(student.address.houseNumber);
-        cy.get("input[id='zipCode']").type(student.address.zipCode);
-        cy.get("input[id='city']").type(student.address.city);
-        cy.get("select[id='day']").select("15");
-        cy.get("select[id='month']").select("November");
-        cy.get("select[id='year']").select("1996");
-        cy.get("input[id='email']").clear().type(student.email);
-        cy.get("input[id='matriculationId']").type(student.matriculationId);
-        cy.get("input[id='phoneNumber']").type(student.phoneNumber);
-
-        cy.get("button").contains("Create Account").click();
-        cy.wait(300);
+    it("Create new student", () => {
+        loginAndCreateStudent(student, studentAuthUser, adminAuth);
     });
 
     it("Login with new student account", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type(student.username);
-        cy.get("input[id='password']").type(studentAuthUser.password);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsUser(studentAuthUser);
     });
 
     it("Navigate to settings page", () => {
-        cy.get("div[id='menu_profile']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_profile']").trigger("mouseover");
-        cy.get("div[id='menu_profile']").children().eq(1).get("span").contains("Settings").should("be.visible");
-        cy.get("div[id='menu_profile']").children().eq(1).get("a").contains("Settings").click();
-        cy.get("div[id='menu_profile']").trigger("mouseleave");
-        cy.url().should("contain", "/settings");
+        navigateToSettingsPage();
     });
 
     it("Open password change modal", () => {
@@ -150,35 +111,10 @@ describe("Change password", () => {
     });
 
     it("Login with new password", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type(studentAuthUser.username);
-        cy.get("input[id='password']").type(studentAuthUser.password);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsUser(studentAuthUser);
     });
 
-    it("Login as admin", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type(adminAuth.username);
-        cy.get("input[id='password']").type(adminAuth.password);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
-    });
-
-    it("Delete account", () => {
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
-
-        cy.get(`div[id='user_${studentAuthUser.username}']`).click();
-        cy.wait(100);
-        cy.get("button[id='deleteAccount']").click();
-        cy.wait(100);
-        // show modal
-        cy.get("#modal-wrapper").should("exist");
-        cy.get("div").contains("Are you sure you want to delete this account").should("exist");
-        // cancel
-        cy.wait(100);
-        cy.get('button[id="deleteAccountModalDelete"]').click();
+    it("Delete user", () => {
+        loginAndDeleteUser(student, adminAuth);
     });
 });

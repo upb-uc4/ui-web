@@ -1,5 +1,7 @@
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
+import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
+import { loginAsDefaultStudent } from "./helpers/AuthHelper";
 
 describe("Show public profile correctly", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -29,34 +31,11 @@ describe("Show public profile correctly", () => {
     });
 
     it("Login as Lecturer to create a course", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type(lecturerAuth.username);
-        cy.get("input[id='password']").type(lecturerAuth.password);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
-    });
-
-    it("Create a course", () => {
-        cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "course-management");
-        cy.get('button[id="addCourse"]').click({ force: true });
-        cy.get("input[type='radio']").eq(0).click();
-        cy.get('input[id="courseName"]').type(course.courseName);
-        cy.get("select").select(course.courseLanguage);
-        cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
-        cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
-        cy.get('button[id="createCourse"]').click();
-        cy.url().should("contain", "course-management");
+        loginAndCreateCourse(course, lecturerAuth);
     });
 
     it("Login as Student", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type(studentAuth.username);
-        cy.get("input[id='password']").type(studentAuth.password);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsDefaultStudent();
     });
 
     it("Navigate to 'lecturer's public profile via created course", () => {
@@ -85,20 +64,6 @@ describe("Show public profile correctly", () => {
     });
 
     it("Login as Lecturer to delete the course", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type("lecturer");
-        cy.get("input[id='password']").type("lecturer");
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
-    });
-
-    it("Delete course", () => {
-        cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "course-management");
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
-        cy.get("button[id='deleteCourse']").click();
-        cy.get('button[id="deleteCourseModalDelete"]').click();
+        loginAndDeleteCourse(course, lecturerAuth);
     });
 });

@@ -11,6 +11,9 @@
 
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
+import { loginAsDefaultLecturer } from "./helpers/AuthHelper";
+import { navigateToCourseList } from "./helpers/NavigationHelper";
+import { createCourse, deleteCourse } from "./helpers/CourseHelper";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -30,20 +33,11 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Login as lecturer", () => {
-        cy.visit("/");
-        cy.get("input[id='email']").type(lecturerAuth.username);
-        cy.get("input[id='password']").type(lecturerAuth.password);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsDefaultLecturer();
     });
 
     it("Navigate to course list", () => {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "course-management");
+        navigateToCourseList();
     });
 
     it("Show new course page", () => {
@@ -98,40 +92,8 @@ describe("Course creation, edition and deletion", () => {
         cy.url().should("contain", "/createCourse");
     });
 
-    it("Can change courseType", () => {
-        cy.get("input[type='radio']").eq(0).click();
-    });
-
-    it("Can edit courseName", () => {
-        cy.get('input[id="courseName"]').type(course.courseName);
-    });
-
-    it("Can edit courseLanguage", () => {
-        cy.get("select").select(course.courseLanguage);
-    });
-
-    it("Can edit description", () => {
-        cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
-    });
-
-    it("Can edit maxParticipants", () => {
-        cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
-    });
-
-    it("Can not edit dates", () => {
-        cy.get('input[id="endDate"]').invoke("attr", "readonly").should("exist");
-        cy.get('input[id="startDate"]').invoke("attr", "readonly").should("exist");
-    });
-
-    it("Create Course works", () => {
-        cy.get('button[id="createCourse"]').click();
-        cy.url().should("contain", "course-management");
-    });
-
-    it("Course was created", () => {
-        cy.wait(3000);
-        cy.get("button[title='Refresh']").click();
-        cy.get("div").contains(course.courseName);
+    it("Create course", () => {
+        createCourse(course);
     });
 
     // edit course
@@ -161,27 +123,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
     });
 
-    //delete course
-    it("Show edit page", () => {
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
-    });
-
     it("Delete course", () => {
-        cy.wait(100);
-        cy.get("button[id='deleteCourse']").click();
-        cy.wait(100);
-        // show modal
-        cy.get("#modal-wrapper").should("exist");
-        cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
-        // cancel
-        cy.get('button[id="deleteCourseModalCancel"]').click();
-        cy.get("button[id='deleteCourse']").click();
-        cy.wait(100);
-        cy.get('button[id="deleteCourseModalDelete"]').click();
-    });
-
-    it("Assert course deletion", () => {
-        cy.url().should("contain", "/course-management");
-        cy.get("div").contains(course.courseName).should("not.exist");
+        deleteCourse(course);
     });
 });

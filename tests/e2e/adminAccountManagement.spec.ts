@@ -11,13 +11,13 @@
  * test account deletion modal
  */
 
-import { getRandomizedUserAndAuthUser } from "../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { readFileSync } from "fs";
 import { Role } from "@/entities/Role";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
+import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
+import { navigateToCourseList } from "./helpers/NavigationHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
@@ -72,20 +72,11 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Login as admin", function () {
-        cy.visit("/");
-        cy.get("input[id='email']").type(adminAuth.username);
-        cy.get("input[id='password']").type(adminAuth.username);
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsDefaultAdmin();
     });
 
     it("Navigate to accountlist", function () {
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
-        cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
-        cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
-        cy.url().should("contain", "accounts");
+        navigateToCourseList();
     });
 
     it("List contains admin, student and lecturer", function () {
