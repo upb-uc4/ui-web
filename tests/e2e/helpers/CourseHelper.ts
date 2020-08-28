@@ -1,14 +1,10 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAsUser } from "./AuthHelper";
+import { navigateToCourseForm, navigateToMyCoursesLecturer } from "./NavigationHelper";
 
 export function createCourse(course: Course) {
-    cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-    cy.get("div[id='menu_courses']").parents().eq(0).trigger("mouseover");
-    cy.get("div[id='menu_courses']").children().eq(0).get("a").contains("My Courses").click();
-    cy.get("div[id='menu_courses']").trigger("mouseleave");
-    cy.url().should("contain", "course-management");
-    // create course1
+    navigateToCourseForm();
     cy.get('button[id="addCourse"]').click({ force: true });
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
@@ -36,11 +32,7 @@ export function loginAndDeleteCourse(course: Course, lecturerAuthUser: Account) 
 }
 
 export function deleteCourse(course: Course) {
-    cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-    cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-    cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-    cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-    cy.get("div[id='menu_courses']").trigger("mouseleave");
+    navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
     cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
     cy.wait(100);

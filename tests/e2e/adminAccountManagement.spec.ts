@@ -17,7 +17,7 @@ import { Role } from "@/entities/Role";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
-import { navigateToCourseList } from "./helpers/NavigationHelper";
+import { navigateToCourseListLecturer, navigateToAccountList } from "./helpers/NavigationHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
@@ -76,7 +76,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Navigate to accountlist", function () {
-        navigateToCourseList();
+        navigateToAccountList();
     });
 
     it("List contains admin, student and lecturer", function () {

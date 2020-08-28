@@ -2,6 +2,7 @@ import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
 import { loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Student course view", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -34,12 +35,7 @@ describe("Student course view", () => {
     });
 
     it("Navigate to course list", () => {
-        cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-        cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("All Courses").should("be.visible");
-        cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("All Courses").click();
-        cy.get("div[id='menu_courses']").trigger("mouseleave");
-        cy.url().should("contain", "courses");
+        navigateToCourseListStudent();
     });
 
     it("Course exists", () => {

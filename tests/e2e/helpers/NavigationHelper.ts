@@ -1,26 +1,57 @@
 export function navigateToAccountList() {
-    cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
-    cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-    cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("All Users").should("be.visible");
-    cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("All Users").click();
-    cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
+    const navbar_admin_menu_manage_accounts = "div[id='nav_desktop_admin_menu_manage_accounts']";
+    cy.get(navbar_admin_menu_manage_accounts).children().eq(1).should("not.be.visible");
+    cy.get(navbar_admin_menu_manage_accounts).trigger("mouseover");
+    cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("span").contains("All Users").should("be.visible");
+    cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("a").contains("All Users").click();
+    cy.get(navbar_admin_menu_manage_accounts).trigger("mouseleave");
 }
 
 export function navigateToAccountForm() {
-    cy.get("div[id='menu_manageAccounts']").children().eq(1).should("not.be.visible");
-    cy.get("div[id='menu_manageAccounts']").trigger("mouseover");
-    cy.get("div[id='menu_manageAccounts']").children().eq(1).get("span").contains("New Account").should("be.visible");
-    cy.get("div[id='menu_manageAccounts']").children().eq(1).get("a").contains("New Account").click();
-    cy.get("div[id='menu_manageAccounts']").trigger("mouseleave");
+    const navbar_admin_menu_manage_accounts = "div[id='nav_desktop_admin_menu_manage_accounts']";
+    cy.get(navbar_admin_menu_manage_accounts).children().eq(1).should("not.be.visible");
+    cy.get(navbar_admin_menu_manage_accounts).trigger("mouseover");
+    cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("span").contains("New Account").should("be.visible");
+    cy.get(navbar_admin_menu_manage_accounts).children().eq(1).get("a").contains("New Account").click();
+    cy.get(navbar_admin_menu_manage_accounts).trigger("mouseleave");
     cy.url().should("contain", "/createAccount");
 }
 
-export function navigateToCourseList() {
-    cy.get("div[id='menu_courses']").children().eq(1).should("not.be.visible");
-    cy.get("div[id='menu_courses']").parents().eq(1).trigger("mouseover");
-    cy.get("div[id='menu_courses']").children().eq(1).get("span").contains("My Courses").should("be.visible");
-    cy.get("div[id='menu_courses']").children().eq(1).get("a").contains("My Courses").click();
-    cy.get("div[id='menu_courses']").trigger("mouseleave");
+export function navigateToCourseListLecturer() {
+    const navbar_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+    cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+    cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
+    cy.url().should("contain", "course-management");
+}
+
+export function navigateToMyCoursesLecturer() {
+    const navbar_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+    cy.get(navbar_lecturer_menu_courses).parents().eq(1).trigger("mouseover");
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("span").contains("My Courses").should("be.visible");
+    cy.get(navbar_lecturer_menu_courses).children().eq(1).get("a").contains("My Courses").click();
+    cy.get(navbar_lecturer_menu_courses).trigger("mouseleave");
+}
+
+export function navigateToCourseListStudent() {
+    const navbar_student_menu_courses = "div[id='nav_desktop_student_menu_courses']";
+    cy.get(navbar_student_menu_courses).children().eq(1).should("not.be.visible");
+    cy.get(navbar_student_menu_courses).parents().eq(1).trigger("mouseover");
+    cy.get(navbar_student_menu_courses).children().eq(1).get("span").contains("All Courses").should("be.visible");
+    cy.get(navbar_student_menu_courses).children().eq(1).get("a").contains("All Courses").click();
+    cy.get(navbar_student_menu_courses).trigger("mouseleave");
+    cy.url().should("contain", "courses");
+}
+
+export function navigateToCourseForm() {
+    const nav_desktop_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
+    cy.get(nav_desktop_lecturer_menu_courses).children().eq(1).should("not.be.visible");
+    cy.get(nav_desktop_lecturer_menu_courses).parents().eq(0).trigger("mouseover");
+    cy.get(nav_desktop_lecturer_menu_courses).children().eq(0).get("a").contains("My Courses").click();
+    cy.get(nav_desktop_lecturer_menu_courses).trigger("mouseleave");
     cy.url().should("contain", "course-management");
 }
 

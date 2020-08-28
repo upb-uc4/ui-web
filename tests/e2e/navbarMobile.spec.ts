@@ -1,12 +1,13 @@
+import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent } from "./helpers/AuthHelper";
+
 const navbar_burger_menu = 'button[id="nav_mobile_toggle_menu"]';
 const navbar_about = "#nav_mobile_common_about";
 const navbar_guest_login = "#nav_mobile_guest_login";
 
-
 describe("guest", () => {
     beforeEach(() => {
-        cy.viewport('iphone-x');
-    })
+        cy.viewport("iphone-x");
+    });
 
     it("login", () => {
         cy.visit("/");
@@ -25,17 +26,14 @@ describe("guest", () => {
 
 describe("admin", () => {
     beforeEach(() => {
-        cy.viewport('iphone-x');
-    })
+        cy.viewport("iphone-x");
+    });
 
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
-        cy.get("input[id='email']").type("admin");
-        cy.get("input[id='password']").type("admin");
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsDefaultAdmin();
     });
 
     it("accounts", () => {
@@ -57,17 +55,14 @@ describe("admin", () => {
 
 describe("lecturer", () => {
     beforeEach(() => {
-        cy.viewport('iphone-x');
-    })
+        cy.viewport("iphone-x");
+    });
 
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
-        cy.get("input[id='email']").type("lecturer");
-        cy.get("input[id='password']").type("lecturer");
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsDefaultLecturer();
     });
 
     it("courses", () => {
@@ -87,24 +82,20 @@ describe("lecturer", () => {
         // my courses
         cy.get("#nav_mobile_lecturer_menu_courses_my_courses").click();
         cy.url().should("contain", "all-courses");
-
     });
     checkProfile();
 });
 
 describe("student", () => {
     beforeEach(() => {
-        cy.viewport('iphone-x');
-    })
+        cy.viewport("iphone-x");
+    });
 
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
-        cy.get("input[id='email']").type("student");
-        cy.get("input[id='password']").type("student");
-        cy.get('button[id="login"]').click();
-        cy.url().should("contain", "welcome");
+        loginAsDefaultStudent();
     });
 
     it("courses", () => {

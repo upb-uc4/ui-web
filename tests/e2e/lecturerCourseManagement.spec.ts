@@ -12,7 +12,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAsDefaultLecturer } from "./helpers/AuthHelper";
-import { navigateToCourseList } from "./helpers/NavigationHelper";
+import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
 import { createCourse, deleteCourse } from "./helpers/CourseHelper";
 
 describe("Course creation, edition and deletion", () => {
@@ -37,7 +37,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Navigate to course list", () => {
-        navigateToCourseList();
+        navigateToCourseListLecturer();
     });
 
     it("Show new course page", () => {
