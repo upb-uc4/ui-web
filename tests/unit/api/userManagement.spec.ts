@@ -38,21 +38,21 @@ test("Get specific user", async () => {
 
 test("Get lecturer user", async () => {
     var result = false;
-    const user = await userManagement.getLecturer("lecturer");
+    const user = await userManagement.getSpecificUser("lecturer");
     result = user.returnValue.username == "lecturer";
     expect(result).toBe(true);
 });
 
 test("Get admin user", async () => {
     var result = false;
-    const user = await userManagement.getAdmin("admin");
+    const user = await userManagement.getSpecificUser("admin");
     result = user.returnValue.username == "admin";
     expect(result).toBe(true);
 });
 
 test("Get student user", async () => {
     var result = false;
-    const user = await userManagement.getStudent("student");
+    const user = await userManagement.getSpecificUser("student");
     result = user.returnValue.username == "student";
     expect(result).toBe(true);
 });
