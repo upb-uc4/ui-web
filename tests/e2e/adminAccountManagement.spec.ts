@@ -175,7 +175,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[id='matriculationId']").siblings().get("p").should("have.class", "error-message");
     });
     // create student account
-    it("Can edit username", () => {
+    it("Create student account", () => {
         createNewStudent(student, studentAuthUser);
     });
 
@@ -226,7 +226,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     // create lecturer account
-    it("Show new account page", function () {
+    it("Create lecturer account", function () {
         createNewLecturer(lecturer, lecturerAuthUser);
     });
 
@@ -287,7 +287,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     // create admin account
-    it("Show new account page", function () {
+    it("Create admin account", function () {
         createNewAdmin(admin, adminAuthUser);
     });
 
