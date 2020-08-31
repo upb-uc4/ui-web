@@ -144,6 +144,7 @@
     import { Country } from "@/entities/Country";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
@@ -358,7 +359,7 @@
                 var newUser: Student | Lecturer | Admin = assembleAccount();
 
                 const response = await userManagement.createUser(account.authUser, newUser);
-                const handler = new ValidationResponseHandler();
+                const handler = new AccountValidationResponseHandler();
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
                 if (success.value) {
