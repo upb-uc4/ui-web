@@ -30,20 +30,18 @@
 </template>
 
 <script lang="ts">
-    import CourseList from "@/components/CourseList.vue";
-    import LoadingComponent from "@/components/loading/Spinner.vue";
-    import SeachBar from "@/components/SearchBar.vue";
+    import CourseList from "@/components/course/list/common/CourseList.vue";
+    import SeachBar from "@/components/common/SearchBar.vue";
     import { ref } from "vue";
-    import CourseTypeFilter from "@/components/CourseTypeFilter.vue";
+    import CourseTypeFilter from "@/components/course/list/common/CourseTypeFilter.vue";
     import { CourseType } from "@/entities/CourseType";
-    import { checkPrivilege } from "@/use/PermissionHelper";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
 
     export default {
         name: "LecturerCourseList",
         components: {
             CourseList,
-            //LoadingComponent,
             SeachBar,
             CourseTypeFilter,
         },

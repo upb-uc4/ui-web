@@ -1,9 +1,7 @@
 <template>
     <div>
         <div class="flex-1 items-center text-center">
-            <h2 class="text-4xl text-center mt-4 font-semibold">
-                403 Forbidden
-            </h2>
+            <h2 class="text-4xl text-center mt-4 font-semibold">403 Forbidden</h2>
             <p class="text-2xl text-center mt-8">
                 You have no access to this page.<br />
                 You will be redirected in
@@ -21,7 +19,7 @@
 </template>
 
 <script lang="ts">
-    import Router from "@/router/";
+    import Router from "@/use/router/";
     import { ref } from "vue";
     import { onBeforeRouteLeave } from "vue-router";
 

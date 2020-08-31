@@ -10,9 +10,7 @@
                         Cancel
                     </button>
                 </div>
-                <label class="block text-gray-600">
-                    How can we reach you?
-                </label>
+                <label class="block text-gray-600"> How can we reach you? </label>
             </div>
 
             <div class="w-full lg:w-2/3">
@@ -53,9 +51,9 @@
 <script lang="ts">
     import { ref, watch } from "vue";
     import UserManagement from "@/api/UserManagement";
-    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import { cloneDeep } from "lodash";
-    import ErrorBag from "@/use/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         props: {

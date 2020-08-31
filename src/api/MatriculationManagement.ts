@@ -4,7 +4,7 @@ import APIResponse from "./helpers/models/APIResponse";
 import MatriculationData from "./api_models/matriculation_management/MatriculationData";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
-import { useStore } from "@/store/store";
+import { useStore } from "@/use/store/store";
 
 export default class MatriculationManagement extends Common {
     constructor() {

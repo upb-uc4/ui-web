@@ -91,10 +91,10 @@
 
 <script lang="ts">
     import { ref, computed } from "vue";
-    import { store } from "@/store/store";
+    import { store } from "@/use/store/store";
     import EnterPasswordModal from "@/components/modals/EnterPasswordModal.vue";
     import UserManagement from "@/api/UserManagement";
-    import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import AuthenticationManagement from "../../api/AuthenticationManagement";
 
     export default {

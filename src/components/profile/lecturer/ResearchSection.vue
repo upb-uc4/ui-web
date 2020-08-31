@@ -51,9 +51,9 @@
 <script lang="ts">
     import { ref, watch } from "vue";
     import UserManagement from "@/api/UserManagement";
-    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import { cloneDeep } from "lodash";
-    import ErrorBag from "@/use/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {

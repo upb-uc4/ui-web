@@ -10,9 +10,7 @@
                         Cancel
                     </button>
                 </div>
-                <label class="block text-gray-600">
-                    Please keep your address information as up to date as possible.
-                </label>
+                <label class="block text-gray-600"> Please keep your address information as up to date as possible. </label>
             </div>
 
             <div class="w-full lg:w-2/3">
@@ -24,9 +22,9 @@
                         :disabled="!isEditing"
                         class="w-full form-select input-select"
                     >
-                        <option v-for="country in countries" :key="country" :selected="country === editedUser.address.country">{{
-                            country
-                        }}</option>
+                        <option v-for="country in countries" :key="country" :selected="country === editedUser.address.country">
+                            {{ country }}
+                        </option>
                     </select>
                 </div>
 
@@ -99,9 +97,9 @@
     import { ref, watch } from "vue";
     import { Country } from "@/entities/Country";
     import UserManagement from "@/api/UserManagement";
-    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import { cloneDeep } from "lodash";
-    import ErrorBag from "@/use/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import Admin from "@/api/api_models/user_management/Admin";
 
     export default {

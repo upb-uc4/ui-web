@@ -21,9 +21,9 @@
 <script lang="ts">
     import Modal from "@/components/modals/Modal.vue";
     import { ref, onBeforeMount } from "vue";
-    import ImmatriculationHistory from "@/components/ImmatriculationHistory.vue";
-    import LoadingSpinner from "@/components/loading/Spinner.vue";
-    import { useStore } from "@/store/store";
+    import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import { useStore } from "@/use/store/store";
 
     export default {
         components: {

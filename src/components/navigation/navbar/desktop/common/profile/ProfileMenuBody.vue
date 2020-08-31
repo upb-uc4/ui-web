@@ -22,7 +22,7 @@
 
 <script lang="ts">
     import MenuItem from "../MenuItem.vue";
-    import { logout } from "@/use/Logout";
+    import { logout } from "@/use/helpers/Logout";
 
     export default {
         name: "ProfileMenuBody",

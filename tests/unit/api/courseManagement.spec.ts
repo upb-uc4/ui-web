@@ -6,9 +6,9 @@ import { Language } from "@/entities/Language";
 import { CourseType } from "@/entities/CourseType";
 import UserManagement from "@/api/UserManagement";
 import CourseManagement from "@/api/CourseManagement";
-import { store } from "@/store/store";
-import { MutationTypes } from "@/store/mutation-types";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
+import { store } from "@/use/store/store";
+import { MutationTypes } from "@/use/store/mutation-types";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { getRandomizedCourse } from "@/../tests/helper/Courses";
 import { readFileSync } from "fs";
 

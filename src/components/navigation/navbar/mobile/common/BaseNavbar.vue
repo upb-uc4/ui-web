@@ -43,8 +43,8 @@
 
 <script lang="ts">
     import { ref } from "vue";
-    import { useStore } from "@/store/store";
-    import Router from "@/router";
+    import { useStore } from "@/use/store/store";
+    import Router from "@/use/router";
 
     export default {
         name: "MobileBaseNavbar",
