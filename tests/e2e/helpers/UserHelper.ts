@@ -4,6 +4,7 @@ import { navigateToAccountForm, navigateToAccountList } from "./NavigationHelper
 import Student from "@/api/api_models/user_management/Student";
 import { loginAsUser } from "./AuthHelper";
 import User from "@/api/api_models/user_management/User";
+import Admin from "@/api/api_models/user_management/Admin";
 
 export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account) {
     navigateToAccountForm();
@@ -58,6 +59,31 @@ export function createNewStudent(student: Student, studentAuthUser: Account) {
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();
     cy.get(`div[id='user_${student.username}']`).should("exist");
+}
+
+export function createNewAdmin(admin: Admin, adminAuthUser: Account) {
+    navigateToAccountForm();
+    cy.get("input[type='radio']").eq(0).click();
+    cy.get("input[id='userName']").type(admin.username);
+    cy.get("input[id='password']").type(adminAuthUser.password);
+    cy.get('select[id="country"]').select(admin.address.country);
+    cy.get("input[id='firstName']").type(admin.firstName);
+    cy.get("input[id='lastName']").type(admin.lastName);
+    cy.get("input[id='street']").type(admin.address.street);
+    cy.get("input[id='houseNumber']").type(admin.address.houseNumber);
+    cy.get("input[id='zipCode']").type(admin.address.zipCode);
+    cy.get("input[id='city']").type(admin.address.city);
+    cy.get("select[id='day']").select("15");
+    cy.get("select[id='month']").select("November");
+    cy.get("select[id='year']").select("1996");
+    cy.get("input[id='email']").clear().type(admin.email);
+    cy.get("input[id='phoneNumber']").type(admin.phoneNumber);
+
+    cy.get("button").contains("Create Account").click();
+    navigateToAccountList();
+    cy.wait(3000);
+    cy.get("button[title='Refresh']").click();
+    cy.get(`div[id='user_${admin.username}']`).should("exist");
 }
 
 export function loginAndCreateLecturer(lecturer: Lecturer, lecturerAuthUser: Account, adminAuth: Account) {

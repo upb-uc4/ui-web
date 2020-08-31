@@ -18,6 +18,7 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
 import { navigateToCourseListLecturer, navigateToAccountList } from "./helpers/NavigationHelper";
+import { createNewStudent, createNewLecturer, createNewAdmin, deleteUser } from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
@@ -215,57 +216,7 @@ describe("Account creation, edition and deletion", function () {
     });
     // create student account
     it("Can edit username", () => {
-        cy.get("input[id='userName']").type(student.username);
-    });
-
-    it("Can edit password", function () {
-        cy.get("input[id='password']").should("exist");
-        cy.get("input[id='password']").type(studentAuthUser.password);
-    });
-
-    it("Country enum is filled", function () {
-        cy.get('select[id="country"]').select("Germany");
-        cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(student.address.country);
-    });
-
-    it("Can edit name", function () {
-        cy.get("input[id='firstName']").type(student.firstName);
-        cy.get("input[id='lastName']").type(student.lastName);
-    });
-
-    it("Can edit address", function () {
-        cy.get("input[id='street']").type(student.address.street);
-        cy.get("input[id='houseNumber']").type(student.address.houseNumber);
-        cy.get("input[id='zipCode']").type(student.address.zipCode);
-        cy.get("input[id='city']").type(student.address.city);
-    });
-
-    it("Can select birthDate", function () {
-        cy.get("select").eq(0).select("15");
-        cy.get("select").eq(1).select("November");
-        cy.get("select").eq(2).select("1996");
-    });
-
-    it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(student.email);
-    });
-
-    it("Can enter matriculationId", function () {
-        cy.get("input[id='matriculationId']").type(student.matriculationId);
-    });
-
-    it("Can enter phoneNumber", function () {
-        cy.get("input[id='phoneNumber']").type(student.phoneNumber);
-    });
-
-    it("Create account works", function () {
-        cy.get("button").contains("Create Account").should("be.enabled");
-        cy.get("button").contains("Create Account").click();
-        cy.url().should("contain", "accounts");
-        cy.wait(3000);
-        cy.get("button[title='Refresh']").click();
-        cy.get(`div[id='user_${student.username}']`).should("exist");
+        createNewStudent(student, studentAuthUser);
     });
 
     // edit account
@@ -316,69 +267,7 @@ describe("Account creation, edition and deletion", function () {
 
     // create lecturer account
     it("Show new account page", function () {
-        cy.get('button[id="addAccount"]').click({ force: true });
-        cy.url().should("contain", "/createAccount");
-    });
-
-    it("Can edit role", function () {
-        cy.get("input[type='radio']").eq(1).click();
-    });
-    it("Can edit username", function () {
-        cy.get("input[id='userName']").type(lecturer.username);
-    });
-
-    it("Can edit password", function () {
-        cy.get("input[id='password']").should("exist");
-        cy.get("input[id='password']").type(lecturerAuthUser.password);
-    });
-
-    it("Can enter phoneNumber", function () {
-        cy.get("input[id='phoneNumber']").type(lecturer.phoneNumber);
-    });
-
-    it("Country enum is filled", function () {
-        cy.get('select[id="country"]').select("Germany");
-        cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(lecturer.address.country);
-    });
-
-    it("Can edit name", function () {
-        cy.get("input[id='firstName']").type(lecturer.firstName);
-        cy.get("input[id='lastName']").type(lecturer.lastName);
-    });
-
-    it("Can edit address", function () {
-        cy.get("input[id='street']").type(lecturer.address.street);
-        cy.get("input[id='houseNumber']").type(lecturer.address.houseNumber);
-        cy.get("input[id='zipCode']").type(lecturer.address.zipCode);
-        cy.get("input[id='city']").type(lecturer.address.city);
-    });
-
-    it("Can select birthDate", function () {
-        cy.get("select").eq(0).select("15");
-        cy.get("select").eq(1).select("November");
-        cy.get("select").eq(2).select("1996");
-    });
-
-    it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(lecturer.email);
-    });
-
-    it("Can enter free text", function () {
-        cy.get("textarea[id='freeText']").type(lecturer.freeText);
-    });
-
-    it("Can enter fields of research", function () {
-        cy.get("textarea[id='researchArea']").type(lecturer.researchArea);
-    });
-
-    it("Create account works", function () {
-        cy.get("button").contains("Create Account").should("be.enabled");
-        cy.get("button").contains("Create Account").click();
-        cy.url().should("contain", "accounts");
-        cy.wait(3000);
-        cy.get("button[title='Refresh']").click();
-        cy.get(`div[id='user_${lecturer.username}']`).should("exist");
+        createNewLecturer(lecturer, lecturerAuthUser);
     });
 
     // edit account
@@ -439,61 +328,7 @@ describe("Account creation, edition and deletion", function () {
 
     // create admin account
     it("Show new account page", function () {
-        cy.get('button[id="addAccount"]').click({ force: true });
-        cy.url().should("contain", "/createAccount");
-    });
-
-    it("Can edit role", function () {
-        cy.get("input[type='radio']").eq(0).click();
-    });
-    it("Can edit username", function () {
-        cy.get("input[id='userName']").type(admin.username);
-    });
-
-    it("Can edit password", function () {
-        cy.get("input[id='password']").should("exist");
-        cy.get("input[id='password']").type(adminAuthUser.password);
-    });
-
-    it("Can enter phoneNumber", function () {
-        cy.get("input[id='phoneNumber']").type(admin.phoneNumber);
-    });
-
-    it("Country enum is filled", function () {
-        cy.get('select[id="country"]').select("Germany");
-        cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(admin.address.country);
-    });
-
-    it("Can edit name", function () {
-        cy.get("input[id='firstName']").type(admin.firstName);
-        cy.get("input[id='lastName']").type(admin.lastName);
-    });
-
-    it("Can edit address", function () {
-        cy.get("input[id='street']").type(admin.address.street);
-        cy.get("input[id='houseNumber']").type(admin.address.houseNumber);
-        cy.get("input[id='zipCode']").type(admin.address.zipCode);
-        cy.get("input[id='city']").type(admin.address.city);
-    });
-
-    it("Can select birthDate", function () {
-        cy.get("select").eq(0).select("15");
-        cy.get("select").eq(1).select("November");
-        cy.get("select").eq(2).select("1996");
-    });
-
-    it("Can change email address", () => {
-        cy.get("input[id='email']").clear().type(admin.email);
-    });
-
-    it("Create account works", function () {
-        cy.get("button").contains("Create Account").should("be.enabled");
-        cy.get("button").contains("Create Account").click();
-        cy.url().should("contain", "accounts");
-        cy.wait(3000);
-        cy.get("button[title='Refresh']").click();
-        cy.get(`div[id='user_${admin.username}']`).should("exist");
+        createNewAdmin(admin, adminAuthUser);
     });
 
     // edit account
@@ -541,69 +376,17 @@ describe("Account creation, edition and deletion", function () {
     });
 
     //delete student account
-    it("Show edit page", function () {
-        cy.get(`div[id='user_${student.username}']`).click();
-    });
-
-    it("Delete account", function () {
-        cy.wait(100);
-        cy.get("button[id='deleteAccount']").click();
-        cy.wait(100);
-        // show modal
-        cy.get("#modal-wrapper").should("exist");
-        cy.get("div").contains("Are you sure you want to delete this account").should("exist");
-        // cancel
-        cy.get('button[id="deleteAccountModalCancel"]').click();
-        cy.get("button[id='deleteAccount']").click();
-        cy.wait(100);
-        cy.get('button[id="deleteAccountModalDelete"]').click();
+    it("Delete student", function () {
+        deleteUser(student);
     });
 
     //delete lecturer account
-    it("Show edit page", function () {
-        cy.get(`div[id='user_${lecturer.username}']`).click();
-    });
-
-    it("Delete account", function () {
-        cy.wait(100);
-        cy.get("button[id='deleteAccount']").click();
-        cy.wait(100);
-        // show modal
-        cy.get("#modal-wrapper").should("exist");
-        cy.get("div").contains("Are you sure you want to delete this account").should("exist");
-        // cancel
-        cy.get('button[id="deleteAccountModalCancel"]').click();
-        cy.get("button[id='deleteAccount']").click();
-        cy.wait(100);
-        cy.get('button[id="deleteAccountModalDelete"]').click();
+    it("Delete lecturer", function () {
+        deleteUser(lecturer);
     });
 
     //delete admin account
-    it("Show edit page", function () {
-        cy.get(`div[id='user_${admin.username}']`).click();
-    });
-
-    it("Delete account", function () {
-        cy.wait(100);
-        cy.get("button[id='deleteAccount']").click();
-        cy.wait(100);
-        // show modal
-        cy.get("#modal-wrapper").should("exist");
-        cy.get("div").contains("Are you sure you want to delete this account").should("exist");
-        // cancel
-        cy.get('button[id="deleteAccountModalCancel"]').click();
-        cy.get("button[id='deleteAccount']").click();
-        cy.wait(100);
-        cy.get('button[id="deleteAccountModalDelete"]').click();
-    });
-
-    it("Assert account deletion", function () {
-        cy.url().should("contain", "/accounts");
-        cy.get(`div[id='user_${student.username}']`).should("not.exist");
-        cy.get(`div[id='user_${lecturer.username}']`).should("not.exist");
-        cy.get(`div[id='user_${admin.username}']`).should("not.exist");
-        cy.get("div[id='user_student']").should("exist");
-        cy.get("div[id='user_lecturer']").should("exist");
-        cy.get("div[id='user_admin']").should("exist");
+    it("Delete admin", function () {
+        deleteUser(admin);
     });
 });
