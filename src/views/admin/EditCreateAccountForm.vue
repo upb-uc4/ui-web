@@ -129,7 +129,7 @@
 <script lang="ts">
     import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
-    import { ref, reactive, computed, onBeforeMount } from "vue";
+    import { ref, reactive, computed, onBeforeMount, nextTick } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import UserManagement from "@/api/UserManagement";
     import StudentEntity from "@/entities/StudentEntity";
@@ -156,6 +156,7 @@
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+    import scrollToTopError from "@/use/helpers/TopError";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -176,7 +177,7 @@
             },
         },
         emits: ["update:has-input", "update:success"],
-        setup(props: any, { emit }: any) {
+        setup(props: any, { emit, root }: any) {
             let busy = ref(false);
             let account = reactive({
                 authUser: new Account(),
@@ -366,6 +367,7 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 
@@ -382,6 +384,7 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 
