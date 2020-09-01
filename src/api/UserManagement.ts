@@ -1,5 +1,5 @@
 import Common from "./Common";
-import { useStore } from "@/store/store";
+import { useStore } from "@/use/store/store";
 import User_List from "./api_models/user_management/User_List";
 import { AxiosResponse, AxiosError } from "axios";
 import Student from "./api_models/user_management/Student";
@@ -10,9 +10,9 @@ import { Account } from "@/entities/Account";
 import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import ValidationError from "./api_models/errors/ValidationError";
-import { MutationTypes } from "@/store/mutation-types";
+import { MutationTypes } from "@/use/store/mutation-types";
 import axios from "axios";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 
 export default class UserManagement extends Common {
     constructor() {
@@ -77,7 +77,7 @@ export default class UserManagement extends Common {
         };
 
         const requestParameter = { ...(await this._authHeader), params: {} as any };
-        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b);
+        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
 
         await this._axios
             .get(endpoint, requestParameter)
@@ -394,6 +394,7 @@ export default class UserManagement extends Common {
                 result.statusCode = response.status;
             })
             .catch((error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as ValidationError;

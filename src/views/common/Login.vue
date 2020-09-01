@@ -67,12 +67,12 @@
     </div>
 </template>
 <script lang="ts">
-    import Router from "@/router/";
-    import { useStore, store } from "../../store/store";
-    import { Role } from "../../entities/Role";
+    import Router from "@/use/router/";
+    import { useStore, store } from "@/use/store/store";
+    import { Role } from "@/entities/Role";
     import UserManagement from "@/api/UserManagement";
     import { ref, onMounted } from "vue";
-    import LoginResponseHandler from "@/use/LoginResponseHandler";
+    import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
 
     export default {
         components: {},

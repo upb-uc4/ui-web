@@ -39,3 +39,4 @@ coverage/
 # cypress output
 cypress/screenshots/
 cypress/videos/
+cypress/fixtures/

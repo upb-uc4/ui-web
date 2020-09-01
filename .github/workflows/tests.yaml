@@ -1,8 +1,14 @@
 name: Test Workflow
 
 on:
+  push:
+    branches:
+      - develop
   pull_request:
-    branches: [ develop ]
+    branches: 
+      - develop
+      - release
+      - main
 
 jobs:
   work:
