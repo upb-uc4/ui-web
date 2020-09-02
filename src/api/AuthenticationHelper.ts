@@ -1,5 +1,5 @@
 import APIResponse from "@/api/helpers/models/APIResponse";
-import { useStore } from "@/store/store";
+import { useStore } from "@/use/store/store";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import LoginModal from "@/components/modals/LoginModal.vue";
 

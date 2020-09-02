@@ -1,5 +1,5 @@
 import Common from "./Common";
-import { useStore } from "@/store/store";
+import { useStore } from "@/use/store/store";
 import User_List from "./api_models/user_management/User_List";
 import { AxiosResponse, AxiosError } from "axios";
 import Student from "./api_models/user_management/Student";
@@ -10,8 +10,9 @@ import { Account } from "@/entities/Account";
 import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import ValidationError from "./api_models/errors/ValidationError";
-import { MutationTypes } from "@/store/mutation-types";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
+import { MutationTypes } from "@/use/store/mutation-types";
+import axios from "axios";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class UserManagement extends Common {

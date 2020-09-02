@@ -1,28 +1,48 @@
 <template>
-    <admin-navbar v-if="role === Role.ADMIN" />
-    <lecturer-navbar v-else-if="role === Role.LECTURER" />
-    <student-navbar v-else-if="role === Role.STUDENT" />
-    <guest-navbar v-else />
+    <div v-if="role === Role.ADMIN">
+        <admin-navbar-desktop class="hidden md:flex" />
+        <admin-navbar-mobile class="flex md:hidden" />
+    </div>
+    <div v-else-if="role === Role.LECTURER">
+        <lecturer-navbar-desktop class="hidden md:flex" />
+        <lecturer-navbar-mobile class="flex md:hidden" />
+    </div>
+    <div v-else-if="role === Role.STUDENT">
+        <student-navbar-desktop class="hidden md:flex" />
+        <student-navbar-mobile class="flex md:hidden" />
+    </div>
+    <div v-else>
+        <guest-navbar-desktop class="hidden md:flex" />
+        <guest-navbar-mobile class="flex md:hidden" />
+    </div>
 </template>
 
 <script lang="ts">
-    import GuestNavbar from "@/components/navigation/navbar/guest/Navbar.vue";
-    import LecturerNavbar from "@/components/navigation/navbar/lecturer/Navbar.vue";
-    import StudentNavbar from "@/components/navigation/navbar/student/Navbar.vue";
-    import AdminNavbar from "@/components/navigation/navbar/admin/Navbar.vue";
+    import GuestNavbarDesktop from "@/components/navigation/navbar/desktop/guest/Navbar.vue";
+    import GuestNavbarMobile from "@/components/navigation/navbar/mobile/guest/Navbar.vue";
+    import AdminNavbarDesktop from "@/components/navigation/navbar/desktop/admin/Navbar.vue";
+    import AdminNavbarMobile from "@/components/navigation/navbar/mobile/admin/Navbar.vue";
+    import StudentNavbarDesktop from "@/components/navigation/navbar/desktop/student/Navbar.vue";
+    import StudentNavbarMobile from "@/components/navigation/navbar/mobile/student/Navbar.vue";
+    import LecturerNavbarDesktop from "@/components/navigation/navbar/desktop/lecturer/Navbar.vue";
+    import LecturerNavbarMobile from "@/components/navigation/navbar/mobile/lecturer/Navbar.vue";
     import { Role } from "@/entities/Role";
-    import { useStore } from "../../../store/store";
+    import { useStore } from "@/use/store/store";
     import { ref } from "vue";
-    import { MutationTypes } from "../../../store/mutation-types";
+    import { MutationTypes } from "@/use/store/mutation-types";
     import User from "@/api/api_models/user_management/User";
 
     export default {
         name: "Navbar",
         components: {
-            GuestNavbar,
-            LecturerNavbar,
-            StudentNavbar,
-            AdminNavbar,
+            GuestNavbarDesktop,
+            GuestNavbarMobile,
+            AdminNavbarDesktop,
+            AdminNavbarMobile,
+            StudentNavbarDesktop,
+            StudentNavbarMobile,
+            LecturerNavbarDesktop,
+            LecturerNavbarMobile,
         },
         setup() {
             const store = useStore();

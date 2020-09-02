@@ -1,6 +1,8 @@
 <template>
-    <div v-if="busy">
-        <loading-component />
+    <div v-if="busy" class="flex h-screen">
+        <div class="m-auto">
+            <loading-component />
+        </div>
     </div>
     <div v-else class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
         <button class="flex items-center mb-4 navigation-link" @click="back">
@@ -36,9 +38,7 @@
                     </div>
 
                     <div class="flex justify-end items-center">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
-                            Cancel
-                        </button>
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
                         <button
                             v-if="editMode"
                             id="saveChanges"
@@ -56,9 +56,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">
-                        Cancel
-                    </button>
+                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
                     <button
                         v-if="editMode"
                         id="mobileSaveChanges"
@@ -78,9 +76,7 @@
                     >
                         Create Course
                     </button>
-                    <button id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
-                        Delete
-                    </button>
+                    <button id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">Delete</button>
                 </div>
             </section>
             <delete-course-modal ref="deleteModal" />
@@ -90,22 +86,22 @@
 </template>
 
 <script lang="ts">
-    import Router from "@/router/";
-    import { useStore } from "@/store/store";
+    import Router from "@/use/router/";
+    import { useStore } from "@/use/store/store";
     import { CourseEntity } from "@/entities/CourseEntity";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
     import { ref, computed, reactive, onBeforeMount } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
-    import ErrorBag from "@/use/ErrorBag";
-    import ValidationResponseHandler from "@/use/ValidationResponseHandler";
-    import GenericResponseHandler from "@/use/GenericResponseHandler";
-    import BasicsSection from "@/components/course/edit/BasicsSection.vue";
-    import RestrictionsSection from "@/components/course/edit/RestrictionsSection.vue";
-    import TimeSection from "@/components/course/edit/TimeSection.vue";
-    import LoadingComponent from "../../components/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/PermissionHelper";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import BasicsSection from "@/components/course/edit/sections/BasicsSection.vue";
+    import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
+    import TimeSection from "@/components/course/edit/sections/TimeSection.vue";
+    import LoadingComponent from "@/components/common/loading/Spinner.vue";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";

@@ -42,7 +42,7 @@
 
 <script lang="ts">
     import Lecturer from "@/api/api_models/user_management/Lecturer";
-    import Router from "@/router";
+    import Router from "@/use/router";
 
     export default {
         props: {

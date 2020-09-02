@@ -1,7 +1,7 @@
 import UserManagement from "@/api/UserManagement";
-import { store } from "@/store/store";
+import { store } from "@/use/store/store";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
-import { MutationTypes } from "@/store/mutation-types";
+import { MutationTypes } from "@/use/store/mutation-types";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
@@ -36,14 +36,13 @@ var user: User = {
     picture: "string",
     email: "luke@skywalker.com",
     birthDate: "1950-12-24",
+    phoneNumber: "+49123456789",
 };
 
 var student: Student = {
     ...user,
-    immatriculationStatus: "Is still a Jedi Knight",
     matriculationId: "1234567",
-    semesterCount: 69,
-    fieldsOfStudy: [FieldOfStudy.COMPUTER_SCIENCE],
+    latestImmatriculation: "",
 };
 
 jest.setTimeout(30000);

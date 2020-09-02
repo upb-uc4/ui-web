@@ -1,6 +1,8 @@
 <template>
-    <div v-if="busy">
-        <loading-component />
+    <div v-if="busy" class="flex h-screen">
+        <div class="m-auto">
+            <loading-component />
+        </div>
     </div>
     <div v-else class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
         <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
@@ -15,6 +17,7 @@
             <user-security-section
                 v-model:username="account.user.username"
                 v-model:email="account.user.email"
+                v-model:phonenumber="account.user.phoneNumber"
                 v-model:password="account.authUser.password"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -36,20 +39,18 @@
             />
             <student-information-section
                 v-if="isStudent"
-                v-model:immatriculation-status="account.student.immatriculationStatus"
                 v-model:matriculation-id="account.student.matriculationId"
-                v-model:selected-fields-of-study="account.student.fieldsOfStudy"
-                v-model:semester-count="account.student.semesterCount"
+                v-model:immatriculation-has-change="immatriculationHasChange"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
+                :username="account.user.username"
+                :latest="account.student.latestImmatriculation"
             />
             <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
                 <div class="lg:flex">
                     <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                         <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
-                        <label class="block text-gray-600">
-                            Change the Profile Picture
-                        </label>
+                        <label class="block text-gray-600"> Change the Profile Picture </label>
                     </div>
                     <div class="flex flex-col items-center justify-center">
                         <img class="object-contain h-48" :src="account.user.picture" />
@@ -78,9 +79,7 @@
                     </div>
 
                     <div class="flex items-center justify-end">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">
-                            Cancel
-                        </button>
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
                         <button
                             v-if="editMode"
                             id="saveChanges"
@@ -98,9 +97,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="w-full mb-4 btn btn-blue-secondary" @click="back">
-                        Cancel
-                    </button>
+                    <button id="mobileCancel" type="button" class="w-full mb-4 btn btn-blue-secondary" @click="back">Cancel</button>
                     <button
                         v-if="editMode"
                         id="mobileSaveChanges"
@@ -120,9 +117,7 @@
                     >
                         Create Account
                     </button>
-                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
-                        Delete
-                    </button>
+                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">Delete</button>
                 </div>
             </section>
             <delete-account-modal ref="deleteModal" />
@@ -132,7 +127,7 @@
 </template>
 
 <script lang="ts">
-    import Router from "@/router/";
+    import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
     import { ref, reactive, computed, onBeforeMount } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
@@ -142,22 +137,22 @@
     import LecturerEntity from "@/entities/LecturerEntity";
     import AdminEntity from "@/entities/AdminEntity";
     import { Account } from "@/entities/Account";
-    import Admin from "../../api/api_models/user_management/Admin";
-    import Student from "../../api/api_models/user_management/Student";
-    import Lecturer from "../../api/api_models/user_management/Lecturer";
+    import Admin from "@/api/api_models/user_management/Admin";
+    import Student from "@/api/api_models/user_management/Student";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
     import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
     import { Country } from "@/entities/Country";
-    import ErrorBag from "@/use/ErrorBag";
-    import ValidationResponseHandler from "../../use/ValidationResponseHandler";
-    import GenericResponseHandler from "@/use/GenericResponseHandler";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
-    import RoleSection from "@/components/account/edit/RoleSection.vue";
-    import UserSecuritySection from "@/components/account/edit/UserSecuritySection.vue";
-    import PersonalInformationSection from "@/components/account/edit/PersonalInformationSection.vue";
-    import LecturerInformationSection from "@/components/account/edit/LecturerInformationSection.vue";
-    import StudentInformationSection from "@/components/account/edit/StudentInformationSection.vue";
-    import LoadingComponent from "../../components/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/PermissionHelper";
+    import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
+    import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
+    import PersonalInformationSection from "@/components/account/edit/sections/PersonalInformationSection.vue";
+    import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
+    import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
+    import LoadingComponent from "@/components/common/loading/Spinner.vue";
+    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
 
@@ -185,22 +180,23 @@
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
-                admin: new AdminEntity(false),
-                student: new StudentEntity(false),
-                lecturer: new LecturerEntity(false),
+                admin: new AdminEntity(),
+                student: new StudentEntity(),
+                lecturer: new LecturerEntity(),
             });
             let initialAccount = {
                 authUser: new Account(),
                 user: new UserEntity(),
-                admin: new AdminEntity(false),
-                student: new StudentEntity(false),
-                lecturer: new LecturerEntity(false),
+                admin: new AdminEntity(),
+                student: new StudentEntity(),
+                lecturer: new LecturerEntity(),
             };
 
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
             let deleteModal = ref();
             let unsavedChangesModal = ref();
+            let immatriculationHasChange = ref(false);
 
             const errorBag = ref(new ErrorBag());
 
@@ -284,6 +280,7 @@
                     account.user.firstName != initialAccount.user.firstName ||
                     account.user.lastName != initialAccount.user.lastName ||
                     account.user.email != initialAccount.user.email ||
+                    account.user.phoneNumber != initialAccount.user.phoneNumber ||
                     //default user birthdate from the form
                     account.user.birthDate != initialAccount.user.birthDate ||
                     //default user address
@@ -297,27 +294,11 @@
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
                     //student properties
-                    account.student.immatriculationStatus != initialAccount.student.immatriculationStatus ||
                     account.student.matriculationId != initialAccount.student.matriculationId ||
-                    account.student.semesterCount != initialAccount.student.semesterCount
+                    immatriculationHasChange.value
                 ) {
                     emit("update:has-input", true);
                     return true;
-                }
-
-                //check whether a field of study has been added or removed
-                for (let field of account.student.fieldsOfStudy) {
-                    if (!initialAccount.student.fieldsOfStudy.includes(field)) {
-                        emit("update:has-input", true);
-                        return true;
-                    }
-                }
-
-                for (let field of initialAccount.student.fieldsOfStudy) {
-                    if (!account.student.fieldsOfStudy.includes(field)) {
-                        emit("update:has-input", true);
-                        return true;
-                    }
                 }
                 emit("update:has-input", false);
                 return false;
@@ -355,9 +336,6 @@
                             ...account.student,
                             ...account.user,
                         } as Student;
-                        if ("fieldsOfStudy" in newUser) {
-                            newUser.fieldsOfStudy = newUser.fieldsOfStudy.filter((field) => field != FieldOfStudy.NONE);
-                        }
                         break;
                     }
                     case Role.LECTURER: {
@@ -368,6 +346,7 @@
                         break;
                     }
                 }
+
                 return newUser;
             }
 
@@ -440,6 +419,7 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag: errorBag,
+                immatriculationHasChange,
             };
         },
     };

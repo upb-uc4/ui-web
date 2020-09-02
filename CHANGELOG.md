@@ -1,16 +1,25 @@
-# [v.0.6.1](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-XX-XX)
-
+# [v.0.7.0](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-08-31)
 ## Feature
-- add a course list for the lecturer containing all lectures [376](https://github.com/upb-uc4/ui-web/pull/376)
+- add support for mobile navigation [#390](https://github.com/upb-uc4/ui-web/pull/390)
+- add error feedback for updating profile information via the private profile page [#402](https://github.com/upb-uc4/ui-web/pull/402)
+- add a course list for the lecturer containing all lectures [#376](https://github.com/upb-uc4/ui-web/pull/376)
+- add immatriculation components [##368](https://github.com/upb-uc4/ui-web/pull/368)
+    - add component containing the immatriculation history
+    - add latest immatriculation fields to account form and student's private profile
+    - add modal for showing the immatriculation history to the student in private profile
+- change in immatriculation component within the account form will trigger unsaved changes modal on leave [#391](https://github.com/upb-uc4/ui-web/pull/391)
+- add phone number to user object and account form
 
 ## Refactor
 - randomize test data to allow for concurrent testing [#353](https://github.com/upb-uc4/ui-web/pull/353)
+- reorganize src folder structure [#418](https://github.com/upb-uc4/ui-web/pull/418)
 
 ## Bugfix
 - add a timeout of 100ms to prevent refreshing the page too fast (caused application to crash) [#358](https://github.com/upb-uc4/ui-web/pull/358)
 - make a deep copy of address prop in profile address section to avoid directly changing the prop [#381](https://github.com/upb-uc4/ui-web/pull/381)
 - fixes a bug that caused the application to crash if you want to view your own courses without having one
 - add house number to private profile [#398](https://github.com/upb-uc4/ui-web/pull/398)
+- prevent user from reaching the login page if already logged in [#406](https://github.com/upb-uc4/ui-web/pull/406)
 
 # [v.0.6.0](https://github.com/upb-uc4/ui-web/compare/v0.5.1...v0.6.0) (2020-08-17)
 ## Feature
@@ -31,6 +40,7 @@
 - move course filtering for lecturer from frontend to backend [#317](https://github.com/upb-uc4/ui-web/pull/317)
 - remove unused wrapper components for asynchronous data loading [#341](https://github.com/upb-uc4/ui-web/pull/341)
 - replace placeholder descriptions in edit/create course form
+- center loading spinner in course/account forms [#408](https://github.com/upb-uc4/ui-web/pull/408)
 
 ## Bugfix
 - Fix a possible XSS vulnerability [#141](https://github.com/upb-uc4/ui-web/issues/141)
