@@ -39,3 +39,6 @@ coverage/
 # cypress output
 cypress/screenshots/
 cypress/videos/
+
+# localhost tls certificate + key
+certs/

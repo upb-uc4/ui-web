@@ -150,7 +150,7 @@
                 const genericResponseHandler = new GenericResponseHandler();
                 const authenticationManagement: AuthenticationManagement = new AuthenticationManagement();
                 const response = await authenticationManagement.changeOwnPassword(newPassword.value);
-                const result = genericResponseHandler.handleReponse(response);
+                const result = genericResponseHandler.handleResponse(response);
 
                 if (result) {
                     //Remove local inputs (if the user wants to change twice in a row)

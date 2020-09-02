@@ -11,7 +11,7 @@ export default async function handleAuthenticationError<T>(response: APIResponse
         if (error.type == "token missing" || error.type == "refresh token expired") {
             const store = useStore();
             const modal = store.state.modal;
-            const success = ((await modal) as typeof LoginModal).show();
+            const success = (await modal).show();
             return success;
         }
 
@@ -21,5 +21,5 @@ export default async function handleAuthenticationError<T>(response: APIResponse
         }
     }
 
-    return true;
+    return false;
 }

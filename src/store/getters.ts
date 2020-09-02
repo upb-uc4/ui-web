@@ -10,6 +10,7 @@ import router from "@/router";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
+import AuthenticationManagement from "@/api/AuthenticationManagement";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -24,7 +25,7 @@ export const getters: GetterTree<State, State> & Getters = {
     user: async (state) => {
         if (state.user.username == undefined || state.user.username == "") {
             // get own user
-            //const user =
+            await AuthenticationManagement._getLoginToken();
         }
         return state.user;
     },
