@@ -11,6 +11,7 @@ import UserManagement from "./UserManagement";
 import GenericResponseHandler from "@/use/GenericResponseHandler";
 import axios from "axios";
 import handleAuthenticationError from "./AuthenticationHelper";
+import User from "./api_models/user_management/User";
 
 export default class AuthenticationManagement extends Common {
     constructor() {
@@ -127,6 +128,37 @@ export default class AuthenticationManagement extends Common {
             store.commit(MutationTypes.SET_USER, user);
             // // set role after user, because the navbar is loaded as soon as the role is set.
             // store.commit(MutationTypes.SET_ROLE, intermediateResult.returnValue);
+        }
+
+        return result;
+    }
+
+    async logout(): Promise<APIResponse<boolean>> {
+        let result: APIResponse<boolean> = {
+            error: {} as APIError,
+            networkError: false,
+            returnValue: false,
+            statusCode: 0,
+        };
+
+        await this._axios
+            .get(`/logout`)
+            .then((response: AxiosResponse) => {
+                result.statusCode = response.status;
+                result.returnValue = true;
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    result.statusCode = error.response.status;
+                } else {
+                    result.networkError = true;
+                }
+            });
+
+        if (result.returnValue) {
+            const store = useStore();
+            store.commit(MutationTypes.SET_LOGGEDIN, false);
+            store.commit(MutationTypes.SET_USER, {} as User);
         }
 
         return result;
