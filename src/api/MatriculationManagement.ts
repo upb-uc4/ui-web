@@ -5,6 +5,7 @@ import MatriculationData from "./api_models/matriculation_management/Matriculati
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
 import { useStore } from "@/use/store/store";
+import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class MatriculationManagement extends Common {
     constructor() {
@@ -24,9 +25,10 @@ export default class MatriculationManagement extends Common {
         };
 
         let payload = { fieldOfStudy: fos, semester: semester };
+        let reloginSuccess = false;
 
         await this._axios
-            .put(`/${username}`, payload, await this._authHeader)
+            .put(`/${username}`, payload)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 if (response.status == 201) {
@@ -35,14 +37,20 @@ export default class MatriculationManagement extends Common {
                     result.returnValue = true;
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
                     result.error = error.response.data as APIError;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.updateMatriculationData(username, fos, semester);
+        }
+
         return result;
     }
 
@@ -54,26 +62,33 @@ export default class MatriculationManagement extends Common {
             statusCode: 0,
         };
 
+        let reloginSuccess = false;
+
         await this._axios
-            .get(`/history/${username}`, await this._authHeader)
+            .get(`/history/${username}`)
             .then((response: AxiosResponse) => {
                 result.returnValue = response.data as MatriculationData;
                 result.statusCode = response.status;
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
                     result.statusCode = error.response.status;
+                    reloginSuccess = await handleAuthenticationError(result);
                 } else {
                     result.networkError = true;
                 }
             });
+
+        if (result.statusCode == 401 && reloginSuccess) {
+            return await this.getMatriculationHistory(username);
+        }
 
         return result;
     }
 
     async getOwnMatriculationHistory(): Promise<APIResponse<MatriculationData>> {
         const store = useStore();
-        const username = (await store.getters.loginData).username;
+        const username = (await store.getters.user).username;
         return this.getMatriculationHistory(username);
     }
 

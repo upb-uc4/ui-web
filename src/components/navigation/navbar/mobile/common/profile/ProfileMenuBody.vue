@@ -31,10 +31,11 @@
         setup() {
             function logOut() {
                 const store = useStore();
-                store.commit(MutationTypes.SET_LOGINDATA, { username: "", password: "" });
-                store.commit(MutationTypes.SET_USER, {} as Student | Lecturer | Admin);
-                store.commit(MutationTypes.SET_ROLE, Role.NONE);
-                store.commit(MutationTypes.SET_LOGGEDIN, false);
+                // TODO LOGOUT
+                // store.commit(MutationTypes.SET_LOGINDATA, { username: "", password: "" });
+                // store.commit(MutationTypes.SET_USER, {} as Student | Lecturer | Admin);
+                // store.commit(MutationTypes.SET_ROLE, Role.NONE);
+                // store.commit(MutationTypes.SET_LOGGEDIN, false);
             }
 
             return {

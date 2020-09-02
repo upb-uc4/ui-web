@@ -8,7 +8,7 @@ import ValidationError from "./api_models/errors/ValidationError";
 import { Account } from "@/entities/Account";
 import { MutationTypes } from "@/use/store/mutation-types";
 import UserManagement from "./UserManagement";
-import GenericResponseHandler from "@/use/GenericResponseHandler";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import axios from "axios";
 import handleAuthenticationError from "./AuthenticationHelper";
 import User from "./api_models/user_management/User";
