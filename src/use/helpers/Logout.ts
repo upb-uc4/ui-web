@@ -1,6 +1,7 @@
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import GenericResponseHandler from "./GenericResponseHandler";
 import router from "../router";
+import { nextTick } from "vue";
 
 export async function logout() {
     const auth = new AuthenticationManagement();
@@ -9,6 +10,8 @@ export async function logout() {
     const result = new GenericResponseHandler().handleResponse(response);
 
     if (result) {
-        router.push("/");
+        nextTick(() => {
+            router.push("/");
+        });
     }
 }
