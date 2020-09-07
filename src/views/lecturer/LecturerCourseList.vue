@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-32 text-4xl text-center font-semibold text-gray-900">My Courses</div>
+    <div class="mt-32 text-4xl text-center font-semibold text-gray-900">{{ title }}</div>
     <div class="mt-8 flex justify-center">
         <div class="w-full max-w-4xl">
             <div class="flex flex-col">
@@ -32,7 +32,7 @@
 <script lang="ts">
     import CourseList from "@/components/course/list/common/CourseList.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
-    import { ref } from "vue";
+    import { ref, watch } from "vue";
     import CourseTypeFilter from "@/components/course/list/common/CourseTypeFilter.vue";
     import { CourseType } from "@/entities/CourseType";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
@@ -64,9 +64,16 @@
                 required: true,
             },
         },
-        setup() {
+        setup(props: any) {
             let message = ref("");
             let refreshKey = ref(false);
+            let title = ref(props.showAllCourses ? "All Courses" : "My Courses");
+            watch(
+                () => props.showAllCourses,
+                () => {
+                    title.value = props.showAllCourses ? "All Courses" : "My Courses";
+                }
+            );
 
             let selectedType = ref("All" as CourseType);
 
@@ -79,6 +86,7 @@
                 refresh,
                 message,
                 selectedType,
+                title,
             };
         },
     };
