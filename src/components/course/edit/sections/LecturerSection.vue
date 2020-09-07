@@ -19,13 +19,21 @@
                             {{ lecturer.firstName }} {{ lecturer.lastName }} (@{{ lecturer.username }})
                         </option>
                     </datalist>
-                    <label
-                        :hidden="newLecturerId == ''"
-                        class="text-md font-medium mb-3"
-                        :class="{ 'text-green-600': lecturerFound, 'text-red-600': !lecturerFound }"
-                    >
-                        {{ lecturerDisplay }}
-                    </label>
+                    <div :hidden="newLecturerId == ''">
+                        <label v-if="lecturerFound" class="text-gray-700 text-md font-medium mb-3">
+                            <i class="text-green-400 fas fa-check mr-2"></i>
+                            <router-link
+                                class="navigation-link cursor-pointer hover:underline"
+                                target="_blank"
+                                :to="{ name: 'profile.public', params: { username: currentLecturer.username } }"
+                            >
+                                {{ currentLecturer.firstName }} {{ currentLecturer.lastName }}</router-link>
+                        </label>
+                        <label v-else class="text-gray-700 text-md font-medium mb-3">
+                            <i class="text-red-400 fas fa-times mr-2"></i>
+                            Lecturer-ID not found!
+                        </label>
+                    </div>
                     <p v-if="errorBag.has('lecturerId')" class="error-message">
                         {{ errorBag.get("lecturerId") }}
                     </p>
@@ -43,6 +51,7 @@
     import { Role } from "@/entities/Role";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
+    import Router from "@/use/router";
 
     export default {
         name: "LecturerSection",
@@ -60,7 +69,8 @@
         setup(props: any, { emit }: any) {
             const lecturers = ref([] as Lecturer[]);
             const newLecturerId = ref(props.lecturerId);
-            const lecturerFound = ref(false);
+            const currentLecturer = ref({} as Lecturer);
+            const lecturerFound = ref(true);
 
             onBeforeMount(() => {
                 getLecturers();
@@ -78,23 +88,20 @@
 
             watch(newLecturerId, () => {
                 emit("update:lecturerId", newLecturerId.value);
-            });
-
-            const lecturerDisplay = computed(() => {
                 let lecturer = lecturers.value.filter((e) => e.username == newLecturerId.value)[0];
                 if (lecturer) {
                     lecturerFound.value = true;
-                    return "Lecturer found: " + lecturer.firstName + " " + lecturer.lastName;
+                    currentLecturer.value = lecturer;
                 } else {
                     lecturerFound.value = false;
-                    return "Lecturer not found!";
+                    currentLecturer.value = {} as Lecturer;
                 }
             });
 
             return {
                 lecturers,
                 newLecturerId,
-                lecturerDisplay,
+                currentLecturer,
                 lecturerFound,
             };
         },
