@@ -39,6 +39,7 @@
             "backgroundBlend": "difference"
         },
         "NODE_TLS_REJECT_UNAUTHORIZED": "0",
-        "NODE_EXTRA_CA_CERTS": "certs/server-cert.pem"
+        "NODE_EXTRA_CA_CERTS": "certs/server-cert.pem",
+        "chromeWebSecurity": false
     }
 }
