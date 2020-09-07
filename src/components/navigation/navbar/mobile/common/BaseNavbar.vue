@@ -34,7 +34,9 @@
                         id="nav_mobile_common_about"
                         :to="{ name: 'about' }"
                         class="hover:bg-blue-800 rounded-lg mobile-navbar-menu"
-                    >About</router-link>
+                    >
+                        About
+                    </router-link>
                 </li>
             </ul>
         </nav>

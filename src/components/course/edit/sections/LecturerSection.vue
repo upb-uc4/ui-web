@@ -23,7 +23,9 @@
                         :hidden="newLecturerId == ''"
                         class="text-md font-medium mb-3"
                         :class="{ 'text-green-600': lecturerFound, 'text-red-600': !lecturerFound }"
-                    >{{ lecturerDisplay }}</label>
+                    >
+                        {{ lecturerDisplay }}
+                    </label>
                     <p v-if="errorBag.has('lecturerId')" class="error-message">
                         {{ errorBag.get("lecturerId") }}
                     </p>
