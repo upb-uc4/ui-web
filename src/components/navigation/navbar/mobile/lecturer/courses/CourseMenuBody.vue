@@ -6,7 +6,7 @@
                     id="nav_mobile_lecturer_menu_courses_all"
                     title="All Courses"
                     icon-class="fa-globe-americas"
-                    target-route-name="lecturer.courses"
+                    target-route-name="shared.courses"
                 />
             </li>
             <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
@@ -22,7 +22,7 @@
                     id="nav_mobile_lecturer_menu_courses_my_courses"
                     title="My Courses"
                     icon-class="fa-meteor"
-                    target-route-name="lecturer.courses"
+                    target-route-name="lecturer.myCourses"
                 />
             </li>
         </ul>

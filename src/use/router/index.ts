@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/common/Login.vue";
 import StudentCourseView from "@/views/student/StudentCourseList.vue";
-import LecturerCourseView from "@/views/shared/CourseList.vue";
+import AllCourseView from "@/views/shared/CourseList.vue";
 import AdminAccountListView from "@/views/admin/AdminAccountList.vue";
 import CourseFormSuspenseWrapper from "@/views/shared/EditCreateCourseForm.vue";
 import AccountFormSuspenseWrapper from "@/views/admin/EditCreateAccountForm.vue";
@@ -59,7 +59,7 @@ const router = createRouter({
             path: "/course-management",
             name: "lecturer.myCourses",
             props: { showAllCourses: false },
-            component: LecturerCourseView,
+            component: AllCourseView,
             meta: {
                 title: "My Courses" + suffix,
             },
@@ -67,9 +67,9 @@ const router = createRouter({
 
         {
             path: "/all-courses",
-            name: "lecturer.courses",
+            name: "shared.courses",
             props: { showAllCourses: true },
-            component: LecturerCourseView,
+            component: AllCourseView,
             meta: {
                 title: "All Courses" + suffix,
                 roles: ["Lecturer"],

@@ -6,6 +6,9 @@
         <li>
             <manage-accounts-menu id="nav_desktop_admin_menu_manage_accounts" class="navbar-menu" />
         </li>
+        <li>
+            <course-menu id="nav_desktop_admin_menu_course" class="navbar-menu" />
+        </li>
         <template #right>
             <profile-menu class="pt-4" />
         </template>
@@ -15,6 +18,7 @@
 <script lang="ts">
     import BaseNavbar from "../common/BaseNavbar.vue";
     import ManageAccountsMenu from "./administration/ManageAccountsMenu.vue";
+    import CourseMenu from "./courses/CourseMenu.vue";
     import ProfileMenu from "../common/profile/ProfileMenu.vue";
 
     export default {
@@ -22,6 +26,7 @@
         components: {
             BaseNavbar,
             ManageAccountsMenu,
+            CourseMenu,
             ProfileMenu,
         },
     };
