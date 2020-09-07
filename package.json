@@ -92,6 +92,9 @@
         "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
         "setupFiles": [
             "<rootDir>/.jest/env.ts"
+        ],
+        "testMatch": [
+            "<rootDir>/tests/unit/**/*.spec.ts"
         ]
     },
     "eslintConfig": {
