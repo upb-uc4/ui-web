@@ -95,6 +95,9 @@
         ],
         "testMatch": [
             "<rootDir>/tests/unit/**/*.spec.ts"
+        ],
+        "testPathIgnorePatterns": [
+            "<rootDir>/tests/e2e/"
         ]
     },
     "eslintConfig": {
