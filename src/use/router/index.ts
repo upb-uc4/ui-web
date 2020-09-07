@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/common/Login.vue";
 import StudentCourseView from "@/views/student/StudentCourseList.vue";
-import LecturerCourseView from "@/views/lecturer/LecturerCourseList.vue";
+import LecturerCourseView from "@/views/shared/CourseList.vue";
 import AdminAccountListView from "@/views/admin/AdminAccountList.vue";
-import CourseFormSuspenseWrapper from "@/views/lecturer/EditCreateCourseForm.vue";
+import CourseFormSuspenseWrapper from "@/views/shared/EditCreateCourseForm.vue";
 import AccountFormSuspenseWrapper from "@/views/admin/EditCreateAccountForm.vue";
 import Redirect from "@/views/errors/403.vue";
 import ProfileWrapper from "@/components/profile/Wrapper.vue";
