@@ -39,7 +39,7 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        
+
       - name: Run unit tests
         run: npm run test:unit
 
@@ -69,7 +69,8 @@ jobs:
             ${{ runner.os }}-    
       - name: Install dependencies
         run: npm install
-
+      - name: Create localhost certificate
+        run: openssl req -x509 -nodes -days 1024 -newkey rsa:2048 -keyout certs/localhost.key -out certs/localhost.crt -extensions 'v3_req' -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
       - name: Start server
         run: npm run serve &
 
