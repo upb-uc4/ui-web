@@ -26,10 +26,10 @@
 
 <script lang="ts">
     import Modal from "@/components/modals/Modal.vue";
-    import UserManagement from "@/api/UserManagement";
     import { ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import { useStore } from "@/use/store/store";
+    import AuthenticationManagement from "@/api/AuthenticationManagement";
 
     export default {
         components: {
@@ -54,13 +54,15 @@
             async function checkPassword() {
                 checking.value = true;
                 const store = useStore();
-                // todo
-                //const response = await UserManagement.login({ username: store.getters.user.username, password: password.value });
-                // if (loginResponseHandler.handleResponse(response)) {
-                //     close(action.CONFIRM);
-                // } else {
-                //     hasError.value = true;
-                // }
+                const response = await AuthenticationManagement.login({
+                    username: (await store.getters.user).username,
+                    password: password.value,
+                });
+                if (loginResponseHandler.handleResponse(response)) {
+                    close(action.CONFIRM);
+                } else {
+                    hasError.value = true;
+                }
                 checking.value = false;
             }
 
