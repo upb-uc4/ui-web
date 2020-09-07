@@ -52,6 +52,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Export node conf
+        run: export NODE_TLS_REJECT_UNAUTHORIZED=0
       - name: mkdir
         run: mkdir certs/
       - name: Create CA certificate
