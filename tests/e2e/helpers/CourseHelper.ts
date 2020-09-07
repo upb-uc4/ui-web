@@ -12,6 +12,7 @@ export function createCourse(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
+    navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();

@@ -42,7 +42,6 @@ describe("Student course view", () => {
         cy.wait(2000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName);
-        cy.reload();
     });
 
     it("Delete course as lecturer", () => {
