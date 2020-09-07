@@ -37,6 +37,7 @@
             "serverPort": 2121,
             "updateSnapshots": false,
             "backgroundBlend": "difference"
-        }
+        },
+        "NODE_TLS_REJECT_UNAUTHORIZED": 0
     }
 }
