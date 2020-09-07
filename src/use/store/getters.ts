@@ -24,6 +24,12 @@ export const getters: GetterTree<State, State> & Getters = {
         if (state.user.username == undefined || state.user.username == "") {
             // get own user
             await AuthenticationManagement._getLoginToken();
+
+            if (state.user.username == undefined || state.user.username == "") {
+                // there was no refresh token
+                let modal = state.modal;
+                await modal();
+            }
         }
         return state.user;
     },
