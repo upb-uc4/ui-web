@@ -52,6 +52,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: mkdir
+        run: mkdir certs/
       - name: Create CA certificate
         run: openssl req -x509 -newkey rsa:4096 -days 365 -nodes -keyout certs/ca-key.pem -out certs/ca-cert.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=ca-localhost'
       - name: Create certificate request
