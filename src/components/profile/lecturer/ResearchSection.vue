@@ -16,12 +16,12 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Research Area</label>
-                    <input
+                    <textarea
                         id="researchArea"
                         v-model="editedUser.researchArea"
                         :readonly="!isEditing"
-                        type="text"
-                        class="w-full input-text form-input"
+                        rows="3"
+                        class="w-full input-text form-textarea"
                         :class="{ error: errorBag.hasNested('description') }"
                     />
                     <p v-if="errorBag.hasNested('description')" class="error-message">

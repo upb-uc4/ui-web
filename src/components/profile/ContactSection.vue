@@ -34,6 +34,7 @@
                     <input
                         id="phoneNumber"
                         v-model="editedUser.phoneNumber"
+                        placeholder="+123 456 789"
                         :readonly="!isEditing"
                         class="w-full input-text form-input"
                         :class="{ error: errorBag.hasNested('phoneNumber') }"

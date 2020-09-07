@@ -7,7 +7,7 @@
             <li class="mb-4">
                 <menu-item title="Settings" icon-class="fa-cog" target-route-name="settings" :is-horizontally-aligned="true" />
             </li>
-            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="mb-4">
                 <menu-item
                     title="Sign out"
                     icon-class="fa-sign-out-alt"
