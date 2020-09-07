@@ -5,7 +5,6 @@ import { navigateToCourseForm, navigateToMyCoursesLecturer } from "./NavigationH
 
 export function createCourse(course: Course) {
     navigateToCourseForm();
-    cy.get('button[id="addCourse"]').click({ force: true });
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
     cy.get("select").select(course.courseLanguage);

@@ -51,9 +51,9 @@ export function navigateToCourseForm() {
     const nav_desktop_lecturer_menu_courses = "div[id='nav_desktop_lecturer_menu_courses']";
     cy.get(nav_desktop_lecturer_menu_courses).children().eq(1).should("not.be.visible");
     cy.get(nav_desktop_lecturer_menu_courses).parents().eq(0).trigger("mouseover");
-    cy.get(nav_desktop_lecturer_menu_courses).children().eq(0).get("a").contains("My Courses").click();
+    cy.get(nav_desktop_lecturer_menu_courses).children().eq(0).get("a").contains("Create Course").click();
     cy.get(nav_desktop_lecturer_menu_courses).trigger("mouseleave");
-    cy.url().should("contain", "course-management");
+    cy.url().should("contain", "createCourse");
 }
 
 export function navigateToSettingsPage() {
@@ -72,4 +72,9 @@ export function navigateToPrivateProfile() {
     cy.get("div[id='menu_profile']").children().eq(1).get("a").contains("Profile").click();
     cy.get("div[id='menu_profile']").trigger("mouseleave");
     cy.url().should("contain", "/profile");
+}
+
+export function navigateToAboutPage() {
+    cy.get("#routeAbout").click();
+    cy.url().should("contain", "/about");
 }

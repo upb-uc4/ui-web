@@ -40,5 +40,3 @@ coverage/
 cypress/screenshots/
 cypress/videos/
 cypress/fixtures/
-tests/e2e/snapshot_tests/__image_snapshots__/
-tests/e2e/snapshot_tests/__snapshots__/

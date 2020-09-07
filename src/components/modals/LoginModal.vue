@@ -1,5 +1,5 @@
 <template>
-    <modal-no-teleport ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
+    <modal-no-teleport id="loginModal" ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
             <p class="text-2xl text-gray-900">Login</p>
         </template>
