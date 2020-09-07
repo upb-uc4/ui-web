@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-    import { computed, onBeforeMount, ref } from "vue";
+    import { computed, onBeforeMount, ref, watch } from "vue";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
@@ -56,7 +56,7 @@
                 required: true,
             },
         },
-        emits: ["update:lecturerid"],
+        emits: ["update:lecturerId"],
         setup(props: any, { emit }: any) {
             const lecturers = ref([] as Lecturer[]);
             const newLecturerId = ref(props.lecturerId);
@@ -75,6 +75,10 @@
                     lecturers.value = result as Lecturer[];
                 }
             }
+
+            watch(newLecturerId, () => {
+                emit("update:lecturerId", newLecturerId.value);
+            });
 
             const lecturerDisplay = computed(() => {
                 let lecturer = lecturers.value.filter((e) => e.username == newLecturerId.value)[0];
