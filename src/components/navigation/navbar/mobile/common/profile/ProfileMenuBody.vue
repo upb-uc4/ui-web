@@ -8,7 +8,7 @@
                 <menu-item id="nav_mobile_settings" title="Settings" icon-class="fa-cog" target-route-name="settings" />
             </li>
             <li class="cursor-pointer rounded-lg p-2 hover:bg-blue-800">
-                <menu-item id="nav_mobile_logout" title="Sign out" icon-class="fa-sign-out-alt" target-route-name="home" @click="logOut" />
+                <menu-item id="nav_mobile_logout" title="Sign out" icon-class="fa-sign-out-alt" @click="logout" />
             </li>
         </ul>
     </section>
