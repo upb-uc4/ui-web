@@ -72,7 +72,7 @@ const router = createRouter({
             component: AllCourseView,
             meta: {
                 title: "All Courses" + suffix,
-                roles: ["Lecturer"],
+                roles: ["Lecturer", "Admin"],
             },
         },
 
@@ -95,7 +95,7 @@ const router = createRouter({
             component: CourseFormSuspenseWrapper,
             meta: {
                 title: "Course Creation" + suffix,
-                roles: ["Lecturer"],
+                roles: ["Lecturer", "Admin"],
             },
         },
         {

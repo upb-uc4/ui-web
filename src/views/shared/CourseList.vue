@@ -45,19 +45,6 @@
             SeachBar,
             CourseTypeFilter,
         },
-
-        async beforeRouteEnter(_to: any, _from: any, next: any) {
-            const response = await checkPrivilege(Role.LECTURER);
-
-            if (response.allowed) {
-                return next();
-            }
-            if (!response.authenticated) {
-                return next("/login");
-            }
-
-            return next("/redirect");
-        },
         props: {
             showAllCourses: {
                 type: Boolean,
