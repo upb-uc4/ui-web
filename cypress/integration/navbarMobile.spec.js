@@ -86,7 +86,7 @@ describe("lecturer", () => {
 
         // my courses
         cy.get("#nav_mobile_lecturer_menu_courses_my_courses").click();
-        cy.url().should("contain", "all-courses");
+        cy.url().should("contain", "course-management");
 
     });
     checkProfile();
