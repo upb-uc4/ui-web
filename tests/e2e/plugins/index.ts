@@ -10,5 +10,6 @@ module.exports = (on: any, config: any) => {
     // }))
     require("@cypress/code-coverage/task")(on, config);
     initPlugin(on, config);
+    config.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
     return config;
 };
