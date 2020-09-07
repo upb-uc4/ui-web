@@ -11,8 +11,8 @@
         </button>
 
         <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
-
         <div>
+            <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
             <basics-section
                 v-model:name="course.courseName"
                 v-model:type="course.courseType"
@@ -87,7 +87,7 @@
 
 <script lang="ts">
     import Router from "@/use/router/";
-    import { useStore } from "@/use/store/store";
+    import { store, useStore } from "@/use/store/store";
     import { CourseEntity } from "@/entities/CourseEntity";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
@@ -105,10 +105,12 @@
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
+    import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
+            LecturerSection,
             BasicsSection,
             RestrictionsSection,
             TimeSection,
@@ -126,6 +128,7 @@
 
         setup(props: any, { emit }: any) {
             let busy = ref(false);
+            let isAdmin = ref(false);
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
             let heading = props.editMode ? "Edit Course" : "Create Course";
@@ -165,11 +168,16 @@
             });
 
             onBeforeMount(() => {
-                getLecturerUsername();
+                askAdminRole();
                 if (props.editMode) {
                     getCourse();
                 }
             });
+
+            async function askAdminRole() {
+                const store = useStore();
+                isAdmin.value = (await store.getters.role) == Role.ADMIN;
+            }
 
             async function getLecturerUsername() {
                 const store = useStore();
@@ -212,6 +220,9 @@
             });
 
             async function createCourse() {
+                if (!isAdmin.value) {
+                    getLecturerUsername();
+                }
                 const response = await courseManagement.createCourse(course.value);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
@@ -272,6 +283,7 @@
 
             return {
                 busy,
+                isAdmin,
                 course,
                 initialCourseState,
                 heading,

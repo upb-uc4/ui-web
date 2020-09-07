@@ -80,6 +80,8 @@ export class CourseEntity implements Course {
         //equal = equal && (this.endDate === course.endDate);
         //lecturer ID and dates are set during the setup of the course in the createCourse process -> always false
 
+        equal = equal && this.lecturerId === course.lecturerId;
+
         return equal;
     }
 }
