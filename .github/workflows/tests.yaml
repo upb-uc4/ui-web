@@ -69,6 +69,7 @@ jobs:
           config-file: cypress.json
           start: npm run serve
           wait-on: 'https://localhost:8080'
+          env: NODE_TLS_REJECT_UNAUTHORIZED='0',
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()
