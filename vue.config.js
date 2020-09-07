@@ -16,8 +16,8 @@ module.exports = {
     publicPath: process.env.NODE_ENV === "production" ? "/deploy/" : "",
     devServer: {
         https: {
-            key: fs.readFileSync("./certs/localhost.key"),
-            cert: fs.readFileSync("./certs/localhost.crt"),
+            key: fs.readFileSync("./certs/server-key.pem"),
+            cert: fs.readFileSync("./certs/server-cert.pem"),
         },
         proxy: {
             "/api/": {

@@ -52,10 +52,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Create localhost certificate
-        run: mkdir certs/ && openssl req -x509 -nodes -days 1024 -newkey rsa:2048 -keyout certs/localhost.key -out certs/localhost.crt -extensions 'v3_req' -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
-      - name: Trust certificate
-        run: sudo cp certs/localhost.crt /usr/local/share/ca-certificates/ && sudo update-ca-certificates
+      - name: Create CA certificate
+        run: openssl req -x509 -newkey rsa:4096 -days 365 -nodes -keyout certs/ca-key.pem -out certs/ca-cert.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=ca-localhost'
+      - name: Create certificate request
+        run: openssl req -newkey rsa:4096 -nodes -keyout certs/server-key.pem -out certs/server-req.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
+      - name: Sign certificate request
+        run: openssl x509 -req -in certs/server-req.pem -days 60 -CA certs/ca-cert.pem -CAkey certs/ca-key.pem -CAcreateserial -out certs/server-cert.pem
+      - name: Trust CA certificate
+        run: sudo cp certs/ca-cert.pem /usr/local/share/ca-certificates/ && sudo update-ca-certificates
       - name: run e2e tests
         uses: cypress-io/github-action@v1.16.1
     
