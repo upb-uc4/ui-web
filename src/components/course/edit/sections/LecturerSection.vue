@@ -7,13 +7,23 @@
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-4 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Lecturer</label>
-                    <input v-model="lecturer" list="lecturerList" class="form-input input-select" placeholder="Select a Lecturer" />
+                    <label class="text-gray-700 text-md font-medium mb-3">Lecturer-ID</label>
+                    <input
+                        v-model="newLecturerId"
+                        list="lecturerList"
+                        class="form-input input-select mb-3"
+                        placeholder="Select a Lecturer"
+                    />
                     <datalist id="lecturerList">
-                        <option v-for="lecturer in lecturers" :key="lecturer.username" :value="lecturer">
+                        <option v-for="lecturer in lecturers" :key="lecturer.username" :value="lecturer.username">
                             {{ lecturer.firstName }} {{ lecturer.lastName }} (@{{ lecturer.username }})
                         </option>
                     </datalist>
+                    <label
+                        :hidden="newLecturerId == ''"
+                        class="text-md font-medium mb-3"
+                        :class="{ 'text-green-600': lecturerFound, 'text-red-600': !lecturerFound }"
+                    >{{ lecturerDisplay }}</label>
                     <p v-if="errorBag.has('lecturerId')" class="error-message">
                         {{ errorBag.get("lecturerId") }}
                     </p>
@@ -24,7 +34,7 @@
 </template>
 
 <script lang="ts">
-    import { onBeforeMount, ref } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
@@ -47,7 +57,9 @@
         emits: ["update:lecturerid"],
         setup(props: any, { emit }: any) {
             const lecturers = ref([] as Lecturer[]);
-            const lecturer = ref(props.lecturerId);
+            const newLecturerId = ref(props.lecturerId);
+            const lecturerFound = ref(false);
+
             onBeforeMount(() => {
                 getLecturers();
             });
@@ -62,9 +74,22 @@
                 }
             }
 
+            const lecturerDisplay = computed(() => {
+                let lecturer = lecturers.value.filter((e) => e.username == newLecturerId.value)[0];
+                if (lecturer) {
+                    lecturerFound.value = true;
+                    return "Lecturer found: " + lecturer.firstName + " " + lecturer.lastName;
+                } else {
+                    lecturerFound.value = false;
+                    return "Lecturer not found!";
+                }
+            });
+
             return {
                 lecturers,
-                lecturer,
+                newLecturerId,
+                lecturerDisplay,
+                lecturerFound,
             };
         },
     };
