@@ -1,7 +1,7 @@
 <template>
     <section class="flex flex-col lg:flex-row px-8 py-6 border-b -mx-4">
         <ul class="w-full lg:w-1/2 px-2">
-            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="mb-4">
                 <menu-item
                     title="All Courses"
                     description="Overview of all courses"
@@ -9,7 +9,7 @@
                     target-route-name="shared.courses"
                 />
             </li>
-            <li class="cursor-pointer mb-4 hover:bg-gray-200 rounded-lg p-2">
+            <li class="mb-4">
                 <menu-item
                     title="Create Course"
                     description="Create a new course"
@@ -19,7 +19,7 @@
             </li>
         </ul>
         <ul class="w-full lg:w-1/2 px-4">
-            <li class="cursor-pointer hover:bg-gray-200 rounded-lg p-2">
+            <li>
                 <menu-item
                     title="My Courses"
                     description="Courses you created"
