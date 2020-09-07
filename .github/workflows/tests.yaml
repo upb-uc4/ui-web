@@ -52,6 +52,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Create localhost certificate
+        run: mkdir certs/ && openssl req -x509 -nodes -days 1024 -newkey rsa:2048 -keyout certs/localhost.key -out certs/localhost.crt -extensions 'v3_req' -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
 
       - name: run e2e tests
         uses: cypress-io/github-action@v1.16.1
