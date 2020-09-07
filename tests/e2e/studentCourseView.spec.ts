@@ -12,6 +12,10 @@ describe("Student course view", () => {
     let course: Course;
 
     before(() => {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("logins/student.json").then((student) => {
             studentAuth = student;
         });

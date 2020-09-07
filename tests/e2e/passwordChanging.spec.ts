@@ -11,6 +11,10 @@ describe("Change password", () => {
     let adminAuth: Account;
 
     before(() => {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("student.json").then((s) => {
             (s as Student).username += random;
             student = s as Student;

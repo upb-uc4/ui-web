@@ -22,6 +22,10 @@ describe("Course creation, edition and deletion", () => {
     let lecturerAuth: Account;
 
     before(function () {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("course.json").then((c) => {
             course = { ...(c as Course) };
             course.courseName += random;

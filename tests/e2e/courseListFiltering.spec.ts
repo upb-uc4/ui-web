@@ -15,6 +15,10 @@ describe("Course Filtering", function () {
     let lecturerAuth: Account;
 
     before(function () {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("course.json").then((course) => {
             course1 = { ...(course as Course) };
             course1.courseName += random1;

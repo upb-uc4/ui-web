@@ -16,6 +16,10 @@ describe("Course List Behavior", function () {
     const random = Math.floor(Math.random() * 9999);
 
     before(function () {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("lecturer.json").then((l) => {
             (l as Lecturer).username += random;
             lecturer = l as Lecturer;

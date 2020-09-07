@@ -9,6 +9,10 @@ let lecturerAuth: Account;
 
 describe("Account creation, edition and deletion", function () {
     before(function () {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("logins/admin.json").then((admin) => {
             adminAuth = admin;
         });

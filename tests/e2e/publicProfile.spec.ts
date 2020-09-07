@@ -13,6 +13,10 @@ describe("Show public profile correctly", () => {
     let course: Course;
 
     before(() => {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("logins/admin.json").then((admin) => {
             adminAuth = admin;
         });

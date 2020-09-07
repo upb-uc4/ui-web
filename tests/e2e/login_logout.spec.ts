@@ -1,6 +1,12 @@
 import { loginAsDefaultLecturer, loginAsDefaultAdmin, loginAsDefaultStudent } from "./helpers/AuthHelper";
 
 describe("Login behaviour", () => {
+    before(() => {
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+    });
+
     it("Login as Lecturer", () => {
         loginAsDefaultLecturer();
     });
