@@ -52,6 +52,19 @@ describe("admin", () => {
         cy.get("#nav_mobile_admin_menu_manage_accounts_create").click();
         cy.url().should("contain", "createAccount");
     });
+    it("Courses", () => {
+        cy.get("#nav_mobile_admin_menu_courses").click();
+
+         //all courses
+         cy.get("#nav_mobile_admin_menu_courses_all").click();
+         cy.url().should("contain", "all-courses");
+ 
+         // create course
+         cy.get("#nav_mobile_admin_menu_courses_create").click();
+         cy.url().should("contain", "createCourse");
+ 
+    });
+
     checkProfile();
 });
 
