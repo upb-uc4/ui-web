@@ -19,6 +19,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
           
+      - name: Create localhost certificate
+        run: mkdir certs/ && openssl req -x509 -nodes -days 1024 -newkey rsa:2048 -keyout certs/localhost.key -out certs/localhost.crt -extensions 'v3_req' -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
