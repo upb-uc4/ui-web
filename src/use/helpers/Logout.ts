@@ -11,7 +11,7 @@ export async function logout() {
 
     if (result) {
         nextTick(() => {
-            router.push("home");
+            router.push({ name: "home" });
         });
     }
 }
