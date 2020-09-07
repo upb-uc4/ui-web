@@ -6,7 +6,6 @@ export default class Common {
     _axios: AxiosInstance;
 
     constructor(endpoint: string) {
-        axios.defaults.withCredentials = true;
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
             headers: {
