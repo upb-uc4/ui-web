@@ -64,14 +64,34 @@ jobs:
         run: openssl x509 -req -in certs/server-req.pem -days 60 -CA certs/ca-cert.pem -CAkey certs/ca-key.pem -CAcreateserial -out certs/server-cert.pem
       - name: Trust CA certificate
         run: sudo cp certs/ca-cert.pem /usr/local/share/ca-certificates/ && sudo update-ca-certificates
-      - name: run e2e tests
-        uses: bastihav/github-action@v2.2.6
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
         with:
-          config-file: cypress.json
-          start: npm run serve
-          wait-on: 'https://localhost:8080'
-          env: NODE_TLS_REJECT_UNAUTHORIZED='0'
-          browser: chrome
+          node-version: '12.x'
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-    
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start server
+        run: npm run serve &
+
+      - name: Wait for server to start
+        run: sleep 60
+
+      - name: run e2e tests
+        run: npm run test:e2e
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()
