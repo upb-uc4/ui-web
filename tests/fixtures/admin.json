@@ -1,0 +1,17 @@
+{
+    "username": "test-admin",
+    "role": "Admin",
+    "address": {
+        "street": "Sandy Street",
+        "houseNumber": "5c",
+        "zipCode": "42069",
+        "city": "Mos Eisley",
+        "country": "Germany"
+    },
+    "firstName": "Luke",
+    "lastName": "Skywalker",
+    "picture": "string",
+    "email": "luke@skywalker.com",
+    "birthDate": "1950-12-24",
+    "phoneNumber": "+49123456789"
+}

@@ -6,7 +6,7 @@
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="flex flex-col mb-4">
-                    <div class="flex w-full">
+                    <div id="roleSelection" class="flex w-full">
                         <div v-for="vrole in roles" :key="vrole" class="mb-3 mr-4">
                             <label class="flex items-center">
                                 <input

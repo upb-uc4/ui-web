@@ -2,10 +2,23 @@ import UserManagement from "@/api/UserManagement";
 import { Role } from "@/entities/Role";
 import { store } from "@/use/store/store";
 import { MutationTypes } from "@/use/store/mutation-types";
-import { authUser, address, user, student } from "./testData";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
+import Student from "@/api/api_models/user_management/Student";
+import { Account } from "@/entities/Account";
+import { readFileSync } from "fs";
 
 var userManagement: UserManagement;
-const adminAuth = { username: "admin", password: "admin" };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const student = pair.student;
+const authUser = pair.authUser;
+
+const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
+const studentAuth = JSON.parse(readFileSync("tests/fixtures/logins/student.json", "utf-8")) as { username: string; password: string };
+const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.json", "utf-8")) as {
+    username: string;
+    password: string;
+};
+
 jest.setTimeout(30000);
 
 beforeAll(async () => {
@@ -15,12 +28,6 @@ beforeAll(async () => {
     store.commit(MutationTypes.SET_ROLE, "Admin");
     userManagement = new UserManagement();
     expect(success.returnValue).toBe(true);
-
-    // randomize user primary key to support concurrent testing
-    const random = Math.floor(Math.random() * 500);
-    authUser.username = authUser.username += random;
-    user.username = authUser.username;
-    student.username = authUser.username;
 });
 
 test("Create user", async () => {
@@ -38,22 +45,22 @@ test("Get specific user", async () => {
 
 test("Get lecturer user", async () => {
     var result = false;
-    const user = await userManagement.getSpecificUser("lecturer");
-    result = user.returnValue.username == "lecturer";
+    const user = await userManagement.getSpecificUser(lecturerAuth.username);
+    result = user.returnValue.username == lecturerAuth.username;
     expect(result).toBe(true);
 });
 
 test("Get admin user", async () => {
     var result = false;
-    const user = await userManagement.getSpecificUser("admin");
-    result = user.returnValue.username == "admin";
+    const user = await userManagement.getSpecificUser(adminAuth.username);
+    result = user.returnValue.username == adminAuth.username;
     expect(result).toBe(true);
 });
 
 test("Get student user", async () => {
     var result = false;
-    const user = await userManagement.getSpecificUser("student");
-    result = user.returnValue.username == "student";
+    const user = await userManagement.getSpecificUser(studentAuth.username);
+    result = user.returnValue.username == studentAuth.username;
     expect(result).toBe(true);
 });
 
@@ -78,13 +85,13 @@ test("Get all students", async () => {
 });
 
 test("Get users by usernames", async () => {
-    const users = await userManagement.getUsers("student", "lecturer");
+    const users = await userManagement.getUsers(studentAuth.username, lecturerAuth.username);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(2);
 });
 
 test("Get lecturers by usernames", async () => {
-    const users = await userManagement.getLecturers("student", "lecturer");
+    const users = await userManagement.getLecturers(studentAuth.username, lecturerAuth.username);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(1);
 });
@@ -96,13 +103,13 @@ test("Get empty list of lecturers by usernames", async () => {
 });
 
 test("Get students by usernames", async () => {
-    const users = await userManagement.getStudents("student", "lecturer");
+    const users = await userManagement.getStudents(studentAuth.username, lecturerAuth.username);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(1);
 });
 
 test("Get admins by usernames", async () => {
-    const users = await userManagement.getAdmins("student", "lecturer", "admin");
+    const users = await userManagement.getAdmins(studentAuth.username, lecturerAuth.username, adminAuth.username);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(1);
 });

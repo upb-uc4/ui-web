@@ -7,7 +7,7 @@
             <course-menu id="nav_desktop_student_menu_courses" class="navbar-menu" />
         </li>
         <template #right>
-            <profile-menu class="pt-4" />
+            <profile-menu id="menu_profile" class="pt-4" />
         </template>
     </base-navbar>
 </template>
