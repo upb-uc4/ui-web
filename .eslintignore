@@ -2,3 +2,4 @@ CHANGELOG.md
 cypress/*
 LICENSE
 src/assets/*
+tests/testOverview.md

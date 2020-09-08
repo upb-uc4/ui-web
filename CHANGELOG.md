@@ -2,6 +2,7 @@
 
 ## Feature
 - add course management functionality for administrators [#441](https://github.com/upb-uc4/ui-web/pull/441)
+- add e2e tests for many features
 
 ## Bugfix
 - rework clickable areas in all desktop menus [#429](https://github.com/upb-uc4/ui-web/pull/429)

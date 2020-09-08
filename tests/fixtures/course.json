@@ -1,0 +1,13 @@
+{
+    "courseDescription" : "This is a course description.",
+    "courseId" : "-1",
+    "courseLanguage" : "English",
+    "courseName" : "Best test course ever!",
+    "courseType" : "Lecture",
+    "currentParticipants" : 5,
+    "ects" : 60,
+    "startDate" : "1999-01-01",
+    "endDate" : "2000-01-01",
+    "lecturerId" : "lecturer",
+    "maxParticipants" : 10
+}
