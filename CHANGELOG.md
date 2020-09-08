@@ -1,3 +1,11 @@
+# [WIP v.0.7.1](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.7.1) (xxxx-xx-xx)
+
+## Refactor
+- add e2e tests for many features
+
+## Bugfix
+- rework clickable areas in all desktop menus [#429](https://github.com/upb-uc4/ui-web/pull/429)
+
 # [v.0.7.0](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-08-31)
 ## Feature
 - add support for mobile navigation [#390](https://github.com/upb-uc4/ui-web/pull/390)

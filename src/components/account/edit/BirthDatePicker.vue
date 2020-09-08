@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row">
+    <div id="birthdate" class="flex flex-row">
         <div class="flex flex-col w-full mr-2">
             <label class="text-sm text-gray-700">Day</label>
             <select id="day" v-model="shownDay" class="form-select input-select">
