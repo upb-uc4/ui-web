@@ -1,7 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
-import { navigateToCourseListAdmin } from "./helpers/NavigationHelper";
+import { loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
+import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
 import { createCourseAdmin, deleteCourseAdmin } from "./helpers/CourseHelper";
 
 describe("Course creation, edition and deletion", () => {
@@ -9,6 +9,7 @@ describe("Course creation, edition and deletion", () => {
 
     let course: Course;
     let adminAuth: Account;
+    let lecturerAuth: Account;
 
     before(function () {
         cy.fixture("course.json").then((c) => {
@@ -18,6 +19,10 @@ describe("Course creation, edition and deletion", () => {
 
         cy.fixture("logins/admin.json").then((admin) => {
             adminAuth = admin;
+        });
+
+        cy.fixture("logins/admin.json").then((lecturer) => {
+            lecturerAuth = lecturer;
         });
     });
 
@@ -88,8 +93,24 @@ describe("Course creation, edition and deletion", () => {
         createCourseAdmin(course);
     });
 
+    it("Logout as Admin", () => {
+        logout();
+    });
+
+    it("Lecturer sees his new course", () => {
+        loginAsDefaultLecturer();
+        navigateToMyCoursesLecturer();
+        cy.get("div").contains(course.courseName).should("exist");
+        logout();
+    });
+
+    it("Login as Admin", () => {
+        loginAsDefaultAdmin();
+    });
+
     // edit course
     it("Show course edit page", () => {
+        navigateToCourseListAdmin();
         cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
 
         cy.get('input[id="courseName"]').should("have.value", course.courseName);
