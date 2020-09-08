@@ -1,4 +1,4 @@
-import { loginAsDefaultLecturer, loginAsDefaultAdmin, loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { loginAsDefaultLecturer, loginAsDefaultAdmin, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 
 describe("Login behaviour", () => {
     it("Login as Lecturer", () => {
@@ -14,11 +14,7 @@ describe("Login behaviour", () => {
     });
 
     it("Logout works", () => {
-        cy.get("div[id='menu_profile']").children().eq(1).should("not.be.visible");
-        cy.get("div[id='menu_profile']").trigger("mouseover");
-        cy.get("div[id='menu_profile']").children().eq(1).get("span").contains("Sign out").should("be.visible");
-        cy.get("div[id='menu_profile']").children().eq(1).get("a").contains("Sign out").click();
-        cy.url().should("contain", "/");
+        logout();
         cy.go(-1);
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains("Please enter your authentication credentials.");
