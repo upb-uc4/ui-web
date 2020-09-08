@@ -1,5 +1,5 @@
 <template>
-    <modal id="unsavedChangesModal" ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
+    <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
             <p class="text-2xl text-gray-900">Unsaved Changes</p>
         </template>

@@ -1,5 +1,5 @@
 <template>
-    <modal id="deleteCourseModal" ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
+    <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
             <p class="text-2xl text-gray-900">Delete course</p>
         </template>
