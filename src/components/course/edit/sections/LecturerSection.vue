@@ -9,6 +9,7 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Lecturer-ID</label>
                     <input
+                        id="lecturerId"
                         v-model="newLecturerId"
                         list="lecturerList"
                         class="form-input input-select mb-3"
