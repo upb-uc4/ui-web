@@ -1,7 +1,7 @@
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { loginAndCreateStudent, loginAndDeleteUser } from "./helpers/UserHelper";
-import { loginAsUser } from "./helpers/AuthHelper";
+import { loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
 
 describe("Change password", () => {
@@ -35,6 +35,7 @@ describe("Change password", () => {
     });
 
     it("Login with new student account", () => {
+        logout();
         loginAsUser(studentAuthUser);
     });
 
@@ -115,10 +116,12 @@ describe("Change password", () => {
     });
 
     it("Login with new password", () => {
+        logout();
         loginAsUser(studentAuthUser);
     });
 
     it("Delete user", () => {
+        logout();
         loginAndDeleteUser(student, adminAuth);
     });
 });

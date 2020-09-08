@@ -1,4 +1,4 @@
-import { loginAsDefaultLecturer, loginAsDefaultAdmin, loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { loginAsDefaultLecturer, loginAsDefaultAdmin, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 
 describe("Login behaviour", () => {
     before(() => {
@@ -12,10 +12,12 @@ describe("Login behaviour", () => {
     });
 
     it("Login as Admin", () => {
+        logout();
         loginAsDefaultAdmin();
     });
 
     it("Login as Student", () => {
+        logout();
         loginAsDefaultStudent();
     });
 

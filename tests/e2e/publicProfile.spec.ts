@@ -1,7 +1,7 @@
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
 import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
-import { loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListLecturer, navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Show public profile correctly", () => {
@@ -40,6 +40,7 @@ describe("Show public profile correctly", () => {
     });
 
     it("Login as Student", () => {
+        logout();
         loginAsDefaultStudent();
     });
 
@@ -65,6 +66,7 @@ describe("Show public profile correctly", () => {
     });
 
     it("Login as Lecturer to delete the course", () => {
+        logout();
         loginAndDeleteCourse(course, lecturerAuth);
     });
 });

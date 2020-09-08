@@ -1,7 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
-import { loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Student course view", () => {
@@ -35,10 +35,12 @@ describe("Student course view", () => {
     });
 
     it("Login as student", () => {
+        logout();
         loginAsDefaultStudent();
     });
 
     it("Navigate to course list", () => {
+        logout();
         navigateToCourseListStudent();
     });
 
@@ -49,6 +51,7 @@ describe("Student course view", () => {
     });
 
     it("Delete course as lecturer", () => {
+        logout();
         loginAndDeleteCourse(course, lecturerAuth);
     });
 });

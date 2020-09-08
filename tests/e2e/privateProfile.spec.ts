@@ -3,7 +3,7 @@ import { Account } from "@/entities/Account";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Country } from "@/entities/Country";
 import { loginAndCreateStudent, createNewLecturer, deleteUser } from "./helpers/UserHelper";
-import { loginAsUser, loginAsDefaultAdmin } from "./helpers/AuthHelper";
+import { loginAsUser, loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
 
 describe("Change Profile Information", () => {
@@ -54,6 +54,7 @@ describe("Change Profile Information", () => {
     });
 
     it("Login with new student account", () => {
+        logout();
         loginAsUser(studentAuthUser);
     });
 
@@ -178,9 +179,6 @@ describe("Change Profile Information", () => {
 
     it("Refresh", () => {
         cy.reload();
-        cy.get("input[id='loginModalEmail']").type(studentAuthUser.username);
-        cy.get("input[id='loginModalPassword']").type(studentAuthUser.password);
-        cy.get("button[id='loginModalConfirm']").click();
         cy.url().should("contain", "/profile");
     });
 
@@ -195,11 +193,9 @@ describe("Change Profile Information", () => {
     });
 
     it("Login with new lecturer account", () => {
-        cy.reload();
-        cy.get("input[id='loginModalEmail']").type(lecturerAuthUser.username);
-        cy.get("input[id='loginModalPassword']").type(lecturerAuthUser.password);
-        cy.get("button[id='loginModalConfirm']").click();
-        cy.url().should("contain", "/profile");
+        logout();
+        loginAsUser(lecturerAuthUser);
+        navigateToPrivateProfile();
     });
 
     it("Check research area information section", () => {
@@ -237,9 +233,6 @@ describe("Change Profile Information", () => {
 
     it("Refresh", () => {
         cy.reload();
-        cy.get("input[id='loginModalEmail']").type(lecturerAuthUser.username);
-        cy.get("input[id='loginModalPassword']").type(lecturerAuthUser.password);
-        cy.get("button[id='loginModalConfirm']").click();
         cy.url().should("contain", "/profile");
     });
 
@@ -249,6 +242,7 @@ describe("Change Profile Information", () => {
     });
 
     it("Login as admin and delete users", () => {
+        logout();
         loginAsDefaultAdmin();
         deleteUser(student);
         deleteUser(lecturer);

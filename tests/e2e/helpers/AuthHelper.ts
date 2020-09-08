@@ -28,3 +28,11 @@ export function loginAsUser(user: Account) {
     cy.get('button[id="login"]').click();
     cy.url().should("contain", "welcome");
 }
+
+export function logout() {
+    cy.get("div[id='menu_profile']").children().eq(1).should("not.be.visible");
+    cy.get("div[id='menu_profile']").trigger("mouseover");
+    cy.get("div[id='menu_profile']").children().eq(1).get("span").contains("Sign out").should("be.visible");
+    cy.get("div[id='menu_profile']").children().eq(1).get("button").contains("Sign out").click();
+    cy.url().should("contain", "/");
+}
