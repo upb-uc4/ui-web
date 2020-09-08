@@ -124,8 +124,10 @@ export default class AuthenticationManagement extends Common {
             const userManagement = new UserManagement();
             const handler = new GenericResponseHandler();
             const response = await userManagement.getSpecificUser(username);
-            const user = handler.handleResponse(response);
-            store.commit(MutationTypes.SET_USER, user);
+            if (response.statusCode == 200) {
+                const user = handler.handleResponse(response);
+                store.commit(MutationTypes.SET_USER, user);
+            }
         }
 
         return result;
@@ -200,8 +202,10 @@ export default class AuthenticationManagement extends Common {
             const userManagement = new UserManagement();
             const handler = new GenericResponseHandler();
             const response = await userManagement.getSpecificUser(loginData.username);
-            const user = handler.handleResponse(response);
-            store.commit(MutationTypes.SET_USER, user);
+            if (response.statusCode == 200) {
+                const user = handler.handleResponse(response);
+                store.commit(MutationTypes.SET_USER, user);
+            }
         }
 
         return result;
