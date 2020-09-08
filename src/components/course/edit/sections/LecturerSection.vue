@@ -83,6 +83,9 @@
                 const result = handler.handleReponse(response);
                 if (result) {
                     lecturers.value = result as Lecturer[];
+                    if (props.lecturerId != "") {
+                        currentLecturer.value = lecturers.value.filter((e) => e.username == props.lecturerId)[0];
+                    }
                 }
             }
 
