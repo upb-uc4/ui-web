@@ -1,5 +1,5 @@
 <template>
-    <modal id="immatriculationHistoryModal" ref="baseModal" :action="action" @cancel="close(action.CLOSE)">
+    <modal ref="baseModal" :action="action" @cancel="close(action.CLOSE)">
         <template #header>
             <h1 class="text-2xl text-gray-900">Immatriculation History</h1>
         </template>

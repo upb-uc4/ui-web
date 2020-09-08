@@ -186,7 +186,7 @@ export default class UserManagement extends Common {
         var reloginSuccess = false;
 
         await this._axios
-            .get(`/role/${username}`)
+            .get(`/users/${username}/role`)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data.role;
@@ -207,44 +207,6 @@ export default class UserManagement extends Common {
     }
 
     async getSpecificUser(username: string): Promise<APIResponse<Student | Lecturer | Admin>> {
-        let result: APIResponse<Student | Lecturer | Admin> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: {} as Admin,
-            statusCode: 0,
-        };
-
-        // get role
-        let role: APIResponse<Role> = await this.getRole(username);
-
-        if (role.networkError) {
-            result.networkError = true;
-            return result;
-        } else if (role.statusCode !== 200) {
-            result.statusCode = role.statusCode;
-            result.error = role.error;
-            return result;
-        }
-
-        //successfully received role
-
-        switch (role.returnValue) {
-            case Role.ADMIN:
-                return await this.getAdmin(username);
-                break;
-            case Role.STUDENT:
-                return await this.getStudent(username);
-                break;
-            case Role.LECTURER:
-                return await this.getLecturer(username);
-                break;
-            default:
-                break;
-        }
-        return result;
-    }
-
-    async getLecturer(username: string): Promise<APIResponse<Lecturer>> {
         let result: APIResponse<Lecturer> = {
             error: {} as APIError,
             networkError: false,
@@ -255,7 +217,7 @@ export default class UserManagement extends Common {
         let reloginSuccess = false;
 
         await this._axios
-            .get(`/lecturers/${username}`)
+            .get(`/users/${username}`)
             .then((response: AxiosResponse) => {
                 result.statusCode = response.status;
                 result.returnValue = response.data;
@@ -276,69 +238,6 @@ export default class UserManagement extends Common {
         return result;
     }
 
-    async getStudent(username: string): Promise<APIResponse<Student>> {
-        let result: APIResponse<Student> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: {} as Student,
-            statusCode: 0,
-        };
-
-        let reloginSuccess = false;
-
-        await this._axios
-            .get(`/students/${username}`)
-            .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                result.returnValue = response.data;
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    result.statusCode = error.response.status;
-                    reloginSuccess = await handleAuthenticationError(result);
-                } else {
-                    result.networkError = true;
-                }
-            });
-
-        if (result.statusCode == 401 && reloginSuccess) {
-            return await this.getStudent(username);
-        }
-        return result;
-    }
-
-    async getAdmin(username: string): Promise<APIResponse<Admin>> {
-        let result: APIResponse<Admin> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: {} as Admin,
-            statusCode: 0,
-        };
-
-        let reloginSuccess = false;
-
-        await this._axios
-            .get(`/admins/${username}`)
-            .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                result.returnValue = response.data;
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    result.statusCode = error.response.status;
-                    reloginSuccess = await handleAuthenticationError(result);
-                } else {
-                    result.networkError = true;
-                }
-            });
-
-        if (result.statusCode == 401 && reloginSuccess) {
-            return await this.getAdmin(username);
-        }
-
-        return result;
-    }
-
     async getOwnUser(): Promise<APIResponse<Student | Lecturer | Admin>> {
         const store = useStore();
         const username = (await store.getters.user).username;
@@ -346,7 +245,6 @@ export default class UserManagement extends Common {
     }
 
     async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
-        let endpoint = UserManagement._createEndpointByRole(user.role);
         let message = UserManagement._createMessage(user, authUser);
 
         let result: APIResponse<boolean> = {
@@ -359,7 +257,7 @@ export default class UserManagement extends Common {
         let reloginSuccess = false;
 
         await this._axios
-            .post(endpoint, message)
+            .post("/users", message)
             .then((reponse: AxiosResponse) => {
                 result.statusCode = reponse.status;
                 result.returnValue = true;
@@ -382,8 +280,6 @@ export default class UserManagement extends Common {
     }
 
     async updateUser(user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
-        let endpoint = UserManagement._createEndpointByRole(user.role);
-
         let result: APIResponse<boolean> = {
             error: {} as APIError,
             networkError: false,
@@ -394,7 +290,7 @@ export default class UserManagement extends Common {
         let reloginSuccess = false;
 
         await this._axios
-            .put(`${endpoint}/${user.username}`, user)
+            .put(`/users/${user.username}`, user)
             .then((response: AxiosResponse) => {
                 result.returnValue = true;
                 result.statusCode = response.status;

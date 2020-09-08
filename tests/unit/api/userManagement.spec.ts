@@ -45,21 +45,21 @@ test("Get specific user", async () => {
 
 test("Get lecturer user", async () => {
     var result = false;
-    const user = await userManagement.getLecturer(lecturerAuth.username);
+    const user = await userManagement.getSpecificUser(lecturerAuth.username);
     result = user.returnValue.username == lecturerAuth.username;
     expect(result).toBe(true);
 });
 
 test("Get admin user", async () => {
     var result = false;
-    const user = await userManagement.getAdmin(adminAuth.username);
+    const user = await userManagement.getSpecificUser(adminAuth.username);
     result = user.returnValue.username == adminAuth.username;
     expect(result).toBe(true);
 });
 
 test("Get student user", async () => {
     var result = false;
-    const user = await userManagement.getStudent(studentAuth.username);
+    const user = await userManagement.getSpecificUser(studentAuth.username);
     result = user.returnValue.username == studentAuth.username;
     expect(result).toBe(true);
 });
