@@ -126,8 +126,6 @@ export default class AuthenticationManagement extends Common {
             const response = await userManagement.getSpecificUser(username);
             const user = handler.handleResponse(response);
             store.commit(MutationTypes.SET_USER, user);
-            // // set role after user, because the navbar is loaded as soon as the role is set.
-            // store.commit(MutationTypes.SET_ROLE, intermediateResult.returnValue);
         }
 
         return result;
