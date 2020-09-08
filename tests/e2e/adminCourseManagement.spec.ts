@@ -95,6 +95,21 @@ describe("Course creation, edition and deletion", () => {
         cy.get('input[id="courseName"]').should("have.value", course.courseName);
     });
 
+    it("Display of lecturer found works", () => {
+        // initially the default lecturer is loaded
+        cy.get("label").should("contain", "firstName LastName");
+        cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
+        cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
+
+        cy.get("input[id='lecturerId']").type("some nonsense");
+        cy.get("label").should("contain", "Lecturer-ID not found!");
+
+        cy.get("input[id='lecturerId']").clear().type(course.lecturerId);
+        cy.get("label").should("contain", "firstName LastName");
+        cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
+        cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
+    });
+
     it("Can not save unchanged course", () => {
         cy.get('button[id="saveChanges"]').should("be.disabled");
     });

@@ -23,12 +23,14 @@
                     <div :hidden="newLecturerId == ''">
                         <label v-if="lecturerFound" class="text-gray-700 text-md font-medium mb-3">
                             <i class="text-green-400 fas fa-check mr-2"></i>
+                            {{ currentLecturer.firstName }} {{ currentLecturer.lastName }} (
                             <router-link
                                 class="navigation-link cursor-pointer hover:underline"
                                 target="_blank"
                                 :to="{ name: 'profile.public', params: { username: currentLecturer.username } }"
                             >
-                                {{ currentLecturer.firstName }} {{ currentLecturer.lastName }}</router-link>
+                                @{{ currentLecturer.username }}</router-link>
+                            )
                         </label>
                         <label v-else class="text-gray-700 text-md font-medium mb-3">
                             <i class="text-red-400 fas fa-times mr-2"></i>
