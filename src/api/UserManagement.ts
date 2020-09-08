@@ -232,7 +232,7 @@ export default class UserManagement extends Common {
             });
 
         if (result.statusCode == 401 && reloginSuccess) {
-            return await this.getLecturer(username);
+            return await this.getSpecificUser(username);
         }
 
         return result;

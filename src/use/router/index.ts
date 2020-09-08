@@ -14,6 +14,7 @@ import AboutPage from "@/views/common/About.vue";
 import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 import { Role } from "@/entities/Role";
 import { useStore } from "@/use/store/store";
+import AuthenticationManagement from "@/api/AuthenticationManagement";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -199,6 +200,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     window.document.title = to.meta && to.meta.title ? to.meta.title : "UC4";
+
+    await AuthenticationManagement.login();
 
     if (to.name == "login" || to.name == "home") {
         const store = useStore();
