@@ -13,7 +13,7 @@ describe("Course creation, edition and deletion", () => {
 
     before(function () {
         cy.fixture("course.json").then((c) => {
-            course = { ...(c as Course) };
+            course = c as Course;
             course.courseName += random;
         });
 
