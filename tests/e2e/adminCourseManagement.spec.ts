@@ -1,13 +1,17 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
+import { navigateToAccountForm, navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
 import { createCourseAdmin, deleteCourseAdmin } from "./helpers/CourseHelper";
+import { createNewLecturer, deleteUser } from "./helpers/UserHelper";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);
 
     let course: Course;
+    let secondLecturer: Lecturer;
+    let secondLecturerAuth: Account;
     let adminAuth: Account;
     let lecturerAuth: Account;
 
@@ -24,10 +28,22 @@ describe("Course creation, edition and deletion", () => {
         cy.fixture("logins/admin.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+        cy.fixture("lecturer.json").then((l) => {
+            (l as Lecturer).username += random;
+            secondLecturer = l as Lecturer;
+        });
+        cy.fixture("lecturerAuthUser.json").then((l) => {
+            (l as Account).username += random;
+            secondLecturerAuth = l as Account;
+        });
     });
 
     it("Login as admin", () => {
         loginAsDefaultAdmin();
+    });
+
+    it("Create second lecturer", () => {
+        createNewLecturer(secondLecturer, secondLecturerAuth);
     });
 
     it("Navigate to course list", () => {
@@ -89,10 +105,17 @@ describe("Course creation, edition and deletion", () => {
         cy.url().should("contain", "/createCourse");
     });
 
+    it("Filtering lecturer list in selection works", () => {
+        cy.get("input[id='lecturerId']").clear().type("lecturer");
+        cy.get("div").contains("(@lecturer)").should("exist");
+        cy.get("div")
+            .contains("(@" + secondLecturer.username + ")")
+            .should("not.exist");
+    });
+
     it("Can select default lecturer", () => {
         cy.get("input[id='lecturerId']").clear();
         cy.get("input[id='lecturerId']").click();
-        cy.get("div").contains("(@lecturer)").should("exist");
         cy.get("div").contains("(@lecturer)").click();
         cy.get("input[id='lecturerId']").should("have.value", "lecturer");
     });
@@ -161,5 +184,9 @@ describe("Course creation, edition and deletion", () => {
 
     it("Delete course", () => {
         deleteCourseAdmin(course);
+    });
+
+    it("Delete second lecturer", () => {
+        deleteUser(secondLecturer);
     });
 });
