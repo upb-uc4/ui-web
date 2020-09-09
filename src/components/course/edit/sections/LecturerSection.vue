@@ -104,7 +104,6 @@
             }
 
             function showOptions() {
-                input.value = "";
                 optionsShown.value = true;
             }
 
