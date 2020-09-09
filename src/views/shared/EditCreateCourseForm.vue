@@ -92,10 +92,11 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
-    import { ref, computed, reactive, onBeforeMount } from "vue";
+    import { ref, reactive, computed, onBeforeMount, nextTick } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BasicsSection from "@/components/course/edit/sections/BasicsSection.vue";
     import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
@@ -106,6 +107,7 @@
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
+    import scrollToTopError from "@/use/helpers/TopError";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -126,7 +128,7 @@
         },
         emits: ["update:has-input", "update:success"],
 
-        setup(props: any, { emit }: any) {
+        setup(props: any, { emit, root }: any) {
             let busy = ref(false);
             let isAdmin = ref(false);
             let course = ref(new CourseEntity());
@@ -224,7 +226,7 @@
                     getLecturerUsername();
                 }
                 const response = await courseManagement.createCourse(course.value);
-                const handler = new ValidationResponseHandler();
+                const handler = new AccountValidationResponseHandler();
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
 
@@ -232,6 +234,7 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 
@@ -245,6 +248,7 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 
