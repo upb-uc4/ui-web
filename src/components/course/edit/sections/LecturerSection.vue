@@ -6,22 +6,29 @@
                 <label class="block text-gray-600"> Select a lecturer that will hold the course</label>
             </div>
             <div class="w-full lg:w-2/3">
-                <div class="mb-4 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Lecturer-ID</label>
+                <div class="mb-4 w-full relative">
+                    <label class="text-gray-700 text-md font-medium block mb-4">Lecturer-ID</label>
                     <input
                         id="lecturerId"
-                        v-model="newLecturerId"
-                        list="lecturerList"
-                        class="form-input input-select mb-3"
+                        v-model="input"
+                        class="form-select input-select block w-full"
                         placeholder="Select a Lecturer"
+                        @focus="showOptions()"
+                        @blur="hideOptions()"
+                        @keyup="keyMonitor"
                     />
-                    <datalist id="lecturerList">
-                        <option v-for="lecturer in lecturers" :key="lecturer.username" :value="lecturer.username">
+                    <div v-show="optionsShown" class="bg-white overflow-auto border absolute border-gray-500 w-full">
+                        <div
+                            v-for="lecturer in filteredLecturers"
+                            :key="lecturer.username"
+                            class="text-gray-600 p-2 text-md cursor-pointer hover:bg-blue-500 hover:text-gray-100 block"
+                            @mousedown="selectOption(lecturer)"
+                        >
                             {{ lecturer.firstName }} {{ lecturer.lastName }} (@{{ lecturer.username }})
-                        </option>
-                    </datalist>
-                    <div :hidden="newLecturerId == ''">
-                        <label v-if="lecturerFound" class="text-gray-700 text-md font-medium mb-3">
+                        </div>
+                    </div>
+                    <div :hidden="newLecturerId == ''" class="text-gray-700 text-md font-medium my-3">
+                        <label v-if="lecturerFound">
                             <i class="text-green-400 fas fa-check mr-2"></i>
                             {{ currentLecturer.firstName }} {{ currentLecturer.lastName }} (
                             <router-link
@@ -32,7 +39,7 @@
                                 @{{ currentLecturer.username }}</router-link>
                             )
                         </label>
-                        <label v-else class="text-gray-700 text-md font-medium mb-3">
+                        <label v-else>
                             <i class="text-red-400 fas fa-times mr-2"></i>
                             Lecturer-ID not found!
                         </label>
@@ -73,11 +80,42 @@
             const lecturers = ref([] as Lecturer[]);
             const newLecturerId = ref(props.lecturerId);
             const currentLecturer = ref({} as Lecturer);
-            const lecturerFound = ref(true);
+            const lecturerFound = ref(false);
+            const input = ref(props.lecturerId);
+            const optionsShown = ref(false);
 
             onBeforeMount(() => {
                 getLecturers();
             });
+
+            const filteredLecturers = computed(() => {
+                return lecturers.value.filter(
+                    (e) =>
+                        e.username.toLowerCase().includes(input.value.toLowerCase()) ||
+                        (e.firstName + " " + e.lastName).toLowerCase().includes(input.value.toLowerCase())
+                );
+            });
+
+            function selectOption(lecturer: Lecturer) {
+                currentLecturer.value = lecturer;
+                optionsShown.value = false;
+                input.value = currentLecturer.value.username;
+            }
+
+            function showOptions() {
+                input.value = "";
+                optionsShown.value = true;
+            }
+
+            function keyMonitor(event: KeyboardEvent) {
+                if (event.key === "Enter" && filteredLecturers.value[0]) {
+                    selectOption(filteredLecturers.value[0]);
+                }
+            }
+
+            function hideOptions() {
+                optionsShown.value = false;
+            }
 
             async function getLecturers() {
                 const userManagement: UserManagement = new UserManagement();
@@ -92,7 +130,8 @@
                 }
             }
 
-            watch(newLecturerId, () => {
+            watch(input, () => {
+                newLecturerId.value = input.value;
                 emit("update:lecturerId", newLecturerId.value);
                 let lecturer = lecturers.value.filter((e) => e.username == newLecturerId.value)[0];
                 if (lecturer) {
@@ -109,6 +148,13 @@
                 newLecturerId,
                 currentLecturer,
                 lecturerFound,
+                filteredLecturers,
+                input,
+                selectOption,
+                showOptions,
+                keyMonitor,
+                optionsShown,
+                hideOptions,
             };
         },
     };
