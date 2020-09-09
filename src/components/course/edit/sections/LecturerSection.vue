@@ -36,7 +36,8 @@
                                 target="_blank"
                                 :to="{ name: 'profile.public', params: { username: currentLecturer.username } }"
                             >
-                                @{{ currentLecturer.username }}</router-link>
+                                @{{ currentLecturer.username }}
+                            </router-link>
                             )
                         </label>
                         <label v-else>
