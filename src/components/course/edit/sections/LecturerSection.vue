@@ -126,6 +126,7 @@
                     lecturers.value = result as Lecturer[];
                     if (props.lecturerId != "") {
                         currentLecturer.value = lecturers.value.filter((e) => e.username == props.lecturerId)[0];
+                        lecturerFound.value = true;
                     }
                 }
             }
