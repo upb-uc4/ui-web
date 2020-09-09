@@ -89,6 +89,14 @@ describe("Course creation, edition and deletion", () => {
         cy.url().should("contain", "/createCourse");
     });
 
+    it("Can select default lecturer", () => {
+        cy.get("input[id='lecturerId']").clear();
+        cy.get("input[id='lecturerId']").click();
+        cy.get("div").contains("(@lecturer)").should("exist");
+        cy.get("div").contains("(@lecturer)").click();
+        cy.get("input[id='lecturerId']").should("have.value", "lecturer");
+    });
+
     it("Create course", () => {
         createCourseAdmin(course);
     });

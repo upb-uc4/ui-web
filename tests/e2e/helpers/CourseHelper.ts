@@ -1,5 +1,6 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
+import { clear } from "console";
 import { loginAsUser } from "./AuthHelper";
 import {
     navigateToCourseFormAdmin,
@@ -26,7 +27,7 @@ export function createCourse(course: Course) {
 
 export function createCourseAdmin(course: Course) {
     navigateToCourseFormAdmin();
-    cy.get('input[id="lecturerId"]').type(course.lecturerId);
+    cy.get('input[id="lecturerId"]').clear().type(course.lecturerId);
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
     cy.get("select").select(course.courseLanguage);
