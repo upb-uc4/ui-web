@@ -9,7 +9,6 @@ export default async function scrollToTopError(errors: Error[]) {
     errors.forEach((err) => {
         for (let item of elements) {
             if (item.textContent == err.reason) {
-                console.log(err.name + " : " + item.getBoundingClientRect().top);
                 errMessages.push(item);
             }
         }
