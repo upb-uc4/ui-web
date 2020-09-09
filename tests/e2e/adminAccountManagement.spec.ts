@@ -174,6 +174,17 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='createAccount']").click();
         cy.get("input[id='matriculationId']").siblings().get("p").should("have.class", "error-message");
     });
+
+    it("Duplicate username detected", () => {
+        cy.get("input[id='userName']").type("student");
+        cy.get("button[id='createAccount']").click();
+        cy.get("input[id='userName']")
+            .siblings()
+            .get("p")
+            .should("have.class", "error-message")
+            .and("contain", "Username is already taken");
+        cy.get("input[id='userName']").clear();
+    });
     // create student account
     it("Create student account", () => {
         createNewStudent(student, studentAuthUser);

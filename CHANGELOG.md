@@ -2,9 +2,11 @@
 
 ## Refactor
 - add e2e tests for many features
+- scrolling up to the top most error in a form [#445](https://github.com/upb-uc4/ui-web/pull/445)
 
 ## Bugfix
 - rework clickable areas in all desktop menus [#429](https://github.com/upb-uc4/ui-web/pull/429)
+- no error shown for conflicting usernames [#445](https://github.com/upb-uc4/ui-web/pull/445
 
 # [v.0.7.0](https://github.com/upb-uc4/ui-web/compare/v0.6.0...v0.6.1) (2020-08-31)
 ## Feature

@@ -105,6 +105,7 @@
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
+    import scrollToTopError from "@/use/helpers/TopError";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -233,6 +234,7 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 
@@ -246,6 +248,7 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 
