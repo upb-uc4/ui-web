@@ -107,7 +107,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Filtering lecturer list in selection works", () => {
         cy.get("input[id='lecturerId']").clear().type(lecturerAuth.username);
-        cy.get("div").contains("(@lecturer)").should("exist");
+        cy.get("div").contains(`(@${lecturerAuth.username})`).should("exist");
         cy.get("div")
             .contains("(@" + secondLecturer.username + ")")
             .should("not.exist");
