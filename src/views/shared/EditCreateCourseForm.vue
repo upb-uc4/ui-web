@@ -128,7 +128,7 @@
         },
         emits: ["update:has-input", "update:success"],
 
-        setup(props: any, { emit, root }: any) {
+        setup(props: any, { emit }: any) {
             let busy = ref(false);
             let isAdmin = ref(false);
             let course = ref(new CourseEntity());
