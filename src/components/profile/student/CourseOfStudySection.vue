@@ -5,9 +5,7 @@
                 <div class="flex mb-2 align-baseline">
                     <label class="block text-gray-700 text-lg font-medium">Course of Study</label>
                 </div>
-                <label class="block text-gray-600">
-                    Information related to your individual academic career.
-                </label>
+                <label class="block text-gray-600"> Information related to your individual academic career. </label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 flex flex-col w-2/3">

@@ -1,13 +1,12 @@
-import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent } from "./helpers/AuthHelper";
-
 const navbar_burger_menu = 'button[id="nav_mobile_toggle_menu"]';
 const navbar_about = "#nav_mobile_common_about";
 const navbar_guest_login = "#nav_mobile_guest_login";
 
+
 describe("guest", () => {
     beforeEach(() => {
-        cy.viewport("iphone-x");
-    });
+        cy.viewport('iphone-x');
+    })
 
     it("login", () => {
         cy.visit("/");
@@ -26,14 +25,17 @@ describe("guest", () => {
 
 describe("admin", () => {
     beforeEach(() => {
-        cy.viewport("iphone-x");
-    });
+        cy.viewport('iphone-x');
+    })
 
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
-        loginAsDefaultAdmin();
+        cy.get("input[id='email']").type("admin");
+        cy.get("input[id='password']").type("admin");
+        cy.get('button[id="login"]').click();
+        cy.url().should("contain", "welcome");
     });
 
     it("accounts", () => {
@@ -50,31 +52,35 @@ describe("admin", () => {
         cy.get("#nav_mobile_admin_menu_manage_accounts_create").click();
         cy.url().should("contain", "createAccount");
     });
-
     it("Courses", () => {
         cy.get("#nav_mobile_admin_menu_courses").click();
 
-        //all courses
-        cy.get("#nav_mobile_admin_menu_courses_all").click();
-        cy.url().should("contain", "all-courses");
-
-        // create course
-        cy.get("#nav_mobile_admin_menu_courses_create").click();
-        cy.url().should("contain", "createCourse");
+         //all courses
+         cy.get("#nav_mobile_admin_menu_courses_all").click();
+         cy.url().should("contain", "all-courses");
+ 
+         // create course
+         cy.get("#nav_mobile_admin_menu_courses_create").click();
+         cy.url().should("contain", "createCourse");
+ 
     });
+
     checkProfile();
 });
 
 describe("lecturer", () => {
     beforeEach(() => {
-        cy.viewport("iphone-x");
-    });
+        cy.viewport('iphone-x');
+    })
 
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
-        loginAsDefaultLecturer();
+        cy.get("input[id='email']").type("lecturer");
+        cy.get("input[id='password']").type("lecturer");
+        cy.get('button[id="login"]').click();
+        cy.url().should("contain", "welcome");
     });
 
     it("courses", () => {
@@ -94,20 +100,24 @@ describe("lecturer", () => {
         // my courses
         cy.get("#nav_mobile_lecturer_menu_courses_my_courses").click();
         cy.url().should("contain", "course-management");
+
     });
     checkProfile();
 });
 
 describe("student", () => {
     beforeEach(() => {
-        cy.viewport("iphone-x");
-    });
+        cy.viewport('iphone-x');
+    })
 
     it("login", () => {
         cy.visit("/");
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
-        loginAsDefaultStudent();
+        cy.get("input[id='email']").type("student");
+        cy.get("input[id='password']").type("student");
+        cy.get('button[id="login"]').click();
+        cy.url().should("contain", "welcome");
     });
 
     it("courses", () => {

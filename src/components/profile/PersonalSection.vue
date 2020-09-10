@@ -5,9 +5,7 @@
                 <div class="flex mb-2 align-baseline">
                     <label class="block text-lg font-medium text-gray-700">Personal Information</label>
                 </div>
-                <label class="block text-gray-600">
-                    This is some long detailed description which is part towards a better form.
-                </label>
+                <label class="block text-gray-600"> This is some long detailed description which is part towards a better form. </label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 lg:flex">

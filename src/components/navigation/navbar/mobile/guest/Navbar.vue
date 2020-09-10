@@ -1,7 +1,9 @@
 <template>
     <base-navbar>
         <li>
-            <router-link id="nav_mobile_guest_login" :to="{ name: 'login' }" class="rounded-lg hover:bg-blue-800 mobile-navbar-menu">Login</router-link>
+            <router-link id="nav_mobile_guest_login" :to="{ name: 'login' }" class="rounded-lg hover:bg-blue-800 mobile-navbar-menu">
+                Login
+            </router-link>
         </li>
     </base-navbar>
 </template>

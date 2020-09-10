@@ -19,13 +19,13 @@ module.exports = {
         }),
         extend: {
             spacing: {
-                "80": "20rem",
-                "108": "27rem",
-                "160": "40rem",
-                "180": "45rem",
+                80: "20rem",
+                108: "27rem",
+                160: "40rem",
+                180: "45rem",
             },
             minHeight: {
-                "20": "5rem",
+                20: "5rem",
             },
         },
     },

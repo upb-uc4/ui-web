@@ -1,6 +1,7 @@
 # [WIP v.0.7.1](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.7.1) (xxxx-xx-xx)
 
-## Refactor
+## Feature
+- add course management functionality for administrators [#441](https://github.com/upb-uc4/ui-web/pull/441)
 - add e2e tests for many features
 - scrolling up to the top most error in a form [#445](https://github.com/upb-uc4/ui-web/pull/445)
 
