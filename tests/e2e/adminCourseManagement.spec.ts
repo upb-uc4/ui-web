@@ -25,7 +25,7 @@ describe("Course creation, edition and deletion", () => {
             adminAuth = admin;
         });
 
-        cy.fixture("logins/admin.json").then((lecturer) => {
+        cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
         cy.fixture("lecturer.json").then((l) => {
