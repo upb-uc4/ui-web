@@ -1,7 +1,8 @@
 FROM node:latest as build-stage
+ENV CYPRESS_INSTALL_BINARY=0
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY ./ .
 RUN npm run build
 
