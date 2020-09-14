@@ -1,3 +1,8 @@
+# [WIP v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-XX)
+
+## Feature
+- improve the performance of our website (by a lot!) [#452](https://github.com/upb-uc4/ui-web/pull/452)
+
 # [v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.8.0) (2020-09-14)
 
 ## Feature
