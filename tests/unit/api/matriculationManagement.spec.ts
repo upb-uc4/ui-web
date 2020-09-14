@@ -51,7 +51,9 @@ describe.skip("Matriculation management", () => {
     });
 
     test("'Create' matriculation history", async () => {
-        const response = await matriculationManagement.updateMatriculationData(student.username, FieldOfStudy.COMPUTER_SCIENCE, "SS2020");
+        const response = await matriculationManagement.updateMatriculationData(student.username, [
+            { fieldOfStudy: FieldOfStudy.COMPUTER_SCIENCE, semesters: ["SS2020"] },
+        ] as SubjectMatriculation[]);
         const data: boolean | MatriculationData = response.returnValue;
 
         expect(response.statusCode).toBe(201);
