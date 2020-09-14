@@ -1,4 +1,4 @@
-# [WIP v.0.7.1](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.7.1) (xxxx-xx-xx)
+# [v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.8.0) (2020-09-14)
 
 ## Feature
 - add course management functionality for administrators [#441](https://github.com/upb-uc4/ui-web/pull/441)
