@@ -15,6 +15,7 @@ import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { readFileSync } from "fs";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
+import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 
 var matriculationManagement: MatriculationManagement;
 var userManagement: UserManagement;
@@ -61,7 +62,7 @@ describe.skip("Matriculation management", () => {
     });
 
     test("Update matriculation", async () => {
-        const response = await matriculationManagement.updateMatriculationData(student.username, FieldOfStudy.COMPUTER_SCIENCE, "SS2021");
+        const response = await matriculationManagement.updateMatriculationData(student.username, []);
         const data: boolean | MatriculationData = response.returnValue;
 
         expect(response.statusCode).toBe(200);
@@ -69,7 +70,10 @@ describe.skip("Matriculation management", () => {
     });
 
     test("Update matriculation even more", async () => {
-        const response = await matriculationManagement.updateMatriculationData(student.username, FieldOfStudy.CHEMISTRY, "SS2022");
+        const response = await matriculationManagement.updateMatriculationData(student.username, [
+            { fieldOfStudy: FieldOfStudy.COMPUTER_SCIENCE, semesters: ["SS2021"] },
+            { fieldOfStudy: FieldOfStudy.BUSINESS_INFORMATICS, semesters: ["SS2021"] },
+        ] as SubjectMatriculation[]);
         const data: boolean | MatriculationData = response.returnValue;
         expect(response.statusCode).toBe(200);
         expect(response.returnValue).toBe(true);
