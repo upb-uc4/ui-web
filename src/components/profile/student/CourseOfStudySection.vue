@@ -13,7 +13,7 @@
                     <input
                         id="matriculationId"
                         :value="matriculationId"
-                        disabled
+                        readonly
                         type="text"
                         class="w-full form-input input-text"
                         placeholder="Matriculation-ID"
