@@ -7,7 +7,7 @@ import MatriculationData from "@/api/api_models/matriculation_management/Matricu
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
  */
-export default class ValidationResponseHandler implements ResponseHandler<boolean> {
+export default class MatriculationValidationResponseHandler implements ResponseHandler<boolean> {
     errorList: Error[] = [] as Error[];
 
     isValidationError(object: any): object is ValidationError {
