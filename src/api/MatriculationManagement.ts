@@ -22,7 +22,7 @@ export default class MatriculationManagement extends Common {
             statusCode: 0,
         };
 
-        let payload = { matriculation };
+        let payload = { matriculation: matriculation };
 
         await this._axios
             .put(`/${username}`, payload, await this._authHeader)
