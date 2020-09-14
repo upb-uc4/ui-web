@@ -1,6 +1,6 @@
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
-import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
+import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToAccountList } from "./helpers/NavigationHelper";
 
 let adminAuth: Account;
@@ -9,6 +9,7 @@ let lecturerAuth: Account;
 
 describe("Account creation, edition and deletion", function () {
     before(function () {
+        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
@@ -22,6 +23,10 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as admin and navigate to account list", () => {

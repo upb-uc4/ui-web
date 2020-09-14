@@ -1,10 +1,11 @@
-import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent, logoutMobile } from "./helpers/AuthHelper";
 
 const navbar_burger_menu = 'button[id="nav_mobile_toggle_menu"]';
 const navbar_about = "#nav_mobile_common_about";
 const navbar_guest_login = "#nav_mobile_guest_login";
 
 before(() => {
+    cy.clearCookies();
     Cypress.Cookies.defaults({
         preserve: ["refresh", "login"],
     });

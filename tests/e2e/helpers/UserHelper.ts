@@ -29,6 +29,7 @@ export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account)
     cy.get("textarea[id='freeText']").type(lecturer.freeText);
     cy.get("button").contains("Create Account").should("be.enabled");
     cy.get("button").contains("Create Account").click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();
@@ -55,6 +56,7 @@ export function createNewStudent(student: Student, studentAuthUser: Account) {
     cy.get("input[id='phoneNumber']").type(student.phoneNumber);
 
     cy.get("button").contains("Create Account").click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();
@@ -80,6 +82,7 @@ export function createNewAdmin(admin: Admin, adminAuthUser: Account) {
     cy.get("input[id='phoneNumber']").type(admin.phoneNumber);
 
     cy.get("button").contains("Create Account").click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();
@@ -110,6 +113,7 @@ export function deleteUser(user: User) {
     // cancel
     cy.wait(100);
     cy.get('button[id="deleteAccountModalDelete"]').click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
     cy.url().should("contain", "/accounts");
     cy.get(`div[id='user_${user.username}']`).should("not.exist");

@@ -13,6 +13,7 @@ describe("Show public profile correctly", () => {
     let course: Course;
 
     before(() => {
+        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
@@ -33,6 +34,10 @@ describe("Show public profile correctly", () => {
             course = c;
             course.courseName += "-" + random;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as Lecturer to create a course", () => {

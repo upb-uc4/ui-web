@@ -11,7 +11,7 @@
 
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAsDefaultLecturer } from "./helpers/AuthHelper";
+import { loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
 import { createCourse, deleteCourse } from "./helpers/CourseHelper";
 
@@ -22,6 +22,7 @@ describe("Course creation, edition and deletion", () => {
     let lecturerAuth: Account;
 
     before(function () {
+        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
@@ -34,6 +35,10 @@ describe("Course creation, edition and deletion", () => {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as lecturer", () => {

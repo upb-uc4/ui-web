@@ -17,6 +17,7 @@ describe("Course List Behavior", function () {
     const random = Math.floor(Math.random() * 9999);
 
     before(function () {
+        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
@@ -43,6 +44,10 @@ describe("Course List Behavior", function () {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as Admin and create new lecturer", function () {

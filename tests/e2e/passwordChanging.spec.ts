@@ -11,6 +11,7 @@ describe("Change password", () => {
     let adminAuth: Account;
 
     before(() => {
+        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
@@ -28,6 +29,10 @@ describe("Change password", () => {
         cy.fixture("logins/admin.json").then((admin) => {
             adminAuth = admin;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Create new student", () => {

@@ -12,6 +12,7 @@ describe("Student course view", () => {
     let course: Course;
 
     before(() => {
+        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
@@ -30,6 +31,10 @@ describe("Student course view", () => {
         });
     });
 
+    after(() => {
+        logout();
+    });
+
     it("Create Course as lecturer", () => {
         loginAndCreateCourse(course, lecturerAuth);
     });
@@ -40,7 +45,6 @@ describe("Student course view", () => {
     });
 
     it("Navigate to course list", () => {
-        logout();
         navigateToCourseListStudent();
     });
 

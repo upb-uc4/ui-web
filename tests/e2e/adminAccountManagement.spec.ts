@@ -16,7 +16,7 @@ import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
-import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
+import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListLecturer, navigateToAccountList } from "./helpers/NavigationHelper";
 import { createNewStudent, createNewLecturer, createNewAdmin, deleteUser } from "./helpers/UserHelper";
 
@@ -34,6 +34,7 @@ let lecturerAuth: Account;
 
 describe("Account creation, edition and deletion", function () {
     before(function () {
+        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
@@ -74,6 +75,10 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as admin", function () {
