@@ -44,7 +44,7 @@ export function createCourseAdmin(course: Course) {
 
 export function loginAndCreateCourse(course: Course, lecturer: Account) {
     loginAsUser(lecturer);
-    cy.wait(100);
+    cy.wait(1000);
     createCourse(course);
 }
 
