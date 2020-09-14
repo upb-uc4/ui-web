@@ -3,7 +3,7 @@
         <ul class="w-full px-2">
             <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
                 <menu-item
-                    id="nav_mobile_lecturer_menu_courses_all"
+                    id="nav_mobile_admin_menu_courses_all"
                     title="All Courses"
                     icon-class="fa-globe-americas"
                     target-route-name="shared.courses"
@@ -11,18 +11,10 @@
             </li>
             <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
                 <menu-item
-                    id="nav_mobile_lecturer_menu_courses_create"
+                    id="nav_mobile_admin_menu_courses_create"
                     title="Create Course"
                     icon-class="fa-star"
                     target-route-name="courseForm.create"
-                />
-            </li>
-            <li class="cursor-pointer rounded-lg p-2 hover:bg-blue-800">
-                <menu-item
-                    id="nav_mobile_lecturer_menu_courses_my_courses"
-                    title="My Courses"
-                    icon-class="fa-meteor"
-                    target-route-name="lecturer.myCourses"
                 />
             </li>
         </ul>

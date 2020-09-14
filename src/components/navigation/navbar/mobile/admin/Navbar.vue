@@ -7,6 +7,9 @@
             <manage-accounts-menu id="nav_mobile_admin_menu_manage_accounts" class="mobile-navbar-menu" />
         </li>
         <li>
+            <course-menu id="nav_mobile_admin_menu_courses" class="mobile-navbar-menu" />
+        </li>
+        <li>
             <profile-menu class="nav_mobile_menu_profile mobile-navbar-menu" />
         </li>
     </base-navbar>
@@ -15,6 +18,7 @@
 <script lang="ts">
     import BaseNavbar from "@/components/navigation/navbar/mobile/common/BaseNavbar.vue";
     import ManageAccountsMenu from "./administration/ManageAccountsMenu.vue";
+    import CourseMenu from "./courses/CourseMenu.vue";
     import ProfileMenu from "@/components/navigation/navbar/mobile/common/profile/ProfileMenu.vue";
 
     export default {
@@ -22,6 +26,7 @@
         components: {
             BaseNavbar,
             ManageAccountsMenu,
+            CourseMenu,
             ProfileMenu,
         },
     };

@@ -129,7 +129,7 @@
 <script lang="ts">
     import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
-    import { ref, reactive, computed, onBeforeMount } from "vue";
+    import { ref, reactive, computed, onBeforeMount, nextTick } from "vue";
     import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import UserManagement from "@/api/UserManagement";
     import StudentEntity from "@/entities/StudentEntity";
@@ -144,6 +144,7 @@
     import { Country } from "@/entities/Country";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
@@ -155,6 +156,7 @@
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+    import scrollToTopError from "@/use/helpers/TopError";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -175,7 +177,7 @@
             },
         },
         emits: ["update:has-input", "update:success"],
-        setup(props: any, { emit }: any) {
+        setup(props: any, { emit, root }: any) {
             let busy = ref(false);
             let account = reactive({
                 authUser: new Account(),
@@ -358,13 +360,14 @@
                 var newUser: Student | Lecturer | Admin = assembleAccount();
 
                 const response = await userManagement.createUser(account.authUser, newUser);
-                const handler = new ValidationResponseHandler();
+                const handler = new AccountValidationResponseHandler();
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
                 if (success.value) {
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 
@@ -381,6 +384,7 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    await scrollToTopError(errorBag.value.errors);
                 }
             }
 

@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.7.1",
+    "version": "0.8.0",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -45,8 +45,8 @@
         "jest": "^26.4.2",
         "lodash": "^4.17.20",
         "random-bigint": "0.0.1",
-        "tailwindcss": "^1.8.5",
-        "vue": "^3.0.0-rc.10",
+        "tailwindcss": "^1.8.9",
+        "vue": "^3.0.0-rc.9",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-beta.9",
         "vuex": "^4.0.0-beta.4"

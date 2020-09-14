@@ -7,9 +7,9 @@
             <template #default>
                 <div v-for="course in shownCourses" :key="course.courseId">
                     <lecturer-course
-                        v-if="isLecturer"
+                        v-if="isLecturer || isAdmin"
                         :course="course"
-                        :username="username"
+                        :allow-edit="isAdmin || course.lecturerId == username"
                         :lecturer="findLecturer(course)"
                         class="mb-8"
                     />
@@ -64,6 +64,7 @@
             let lecturers = ref([] as Lecturer[]);
             let role = ref("");
             let isLecturer = ref(false);
+            let isAdmin = ref(false);
             let isStudent = ref(false);
             let courses = ref([] as Course[]);
             let username = ref("");
@@ -76,12 +77,13 @@
                 const store = useStore();
                 role.value = (await store.getters.user).role;
                 isLecturer.value = role.value == Role.LECTURER;
+                isAdmin.value = role.value == Role.ADMIN;
                 isStudent.value = role.value == Role.STUDENT;
                 const genericResponseHandler = new GenericResponseHandler();
                 let response: APIResponse<Course[]>;
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
-                if (isLecturer.value) {
+                if (isLecturer.value || isAdmin.value) {
                     username.value = (await store.getters.user).username;
                     if (props.showAllCourses) {
                         response = await courseManagement.getCourses();
@@ -134,6 +136,7 @@
                 roles,
                 shownCourses,
                 isLecturer,
+                isAdmin,
                 isStudent,
                 findLecturer,
                 username,
