@@ -1,11 +1,10 @@
 import Common from "./Common";
-import { FieldOfStudy } from "./api_models/user_management/FieldOfStudy";
 import APIResponse from "./helpers/models/APIResponse";
 import MatriculationData from "./api_models/matriculation_management/MatriculationData";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
 import { useStore } from "@/use/store/store";
-import handleAuthenticationError from "./AuthenticationHelper";
+import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
 
 export default class MatriculationManagement extends Common {
     constructor() {
@@ -14,8 +13,7 @@ export default class MatriculationManagement extends Common {
 
     async updateMatriculationData(
         username: string,
-        fos: FieldOfStudy,
-        semester: string
+        matriculation: SubjectMatriculation[]
     ): Promise<APIResponse<boolean | MatriculationData>> {
         let result: APIResponse<boolean | MatriculationData> = {
             error: {} as APIError,
@@ -24,7 +22,7 @@ export default class MatriculationManagement extends Common {
             statusCode: 0,
         };
 
-        let payload = { fieldOfStudy: fos, semester: semester };
+        let payload = { matriculation: matriculation };
         let reloginSuccess = false;
 
         await this._axios

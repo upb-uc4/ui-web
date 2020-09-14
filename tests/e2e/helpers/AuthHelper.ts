@@ -27,6 +27,7 @@ export function loginAsUser(user: Account) {
     cy.get("input[id='password']").type(user.password);
     cy.get('button[id="login"]').click();
     cy.url().should("eq", Cypress.config().baseUrl + "welcome");
+    cy.wait(1000);
 }
 
 export function logout() {

@@ -12,6 +12,7 @@ module.exports = {
         config.module.rule("eslint").use("eslint-loader").options({
             fix: false,
         });
+        config.plugins.delete("prefetch");
     },
     publicPath: process.env.NODE_ENV === "production" ? "/deploy/" : "",
     devServer: {

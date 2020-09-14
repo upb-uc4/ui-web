@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="lg:flex mb-6 justify-between">
-                    <div class="lg:mb-0 flex flex-col w-5/6 mr-3">
+                    <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
                         <label class="text-gray-700 text-md font-medium mb-3">City</label>
                         <input
                             id="city"
@@ -43,7 +43,7 @@
                             {{ errorBag.getNested("city") }}
                         </p>
                     </div>
-                    <div class="lg:mb-0 flex flex-col w-1/6">
+                    <div class="flex flex-col w-full lg:w-1/6">
                         <label class="text-gray-700 text-md font-medium mb-3">Postal Code</label>
                         <input
                             id="zipCode"
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="lg:flex flex-row justify-between mb-6">
-                    <div class="flex flex-col w-5/6 mr-3">
+                    <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
                         <label class="text-gray-700 text-md font-medium mb-3">Street</label>
                         <input
                             id="street"
@@ -73,7 +73,7 @@
                             {{ errorBag.getNested("street") }}
                         </p>
                     </div>
-                    <div class="flex flex-col w-1/6">
+                    <div class="flex flex-col w-full lg:w-1/6">
                         <label class="text-gray-700 text-md font-medium mb-3">Nr.</label>
                         <input
                             id="houseNumber"
