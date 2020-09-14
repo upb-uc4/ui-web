@@ -1,7 +1,7 @@
 <template>
     <section class="bg-gray-100 px-2 py-4">
         <ul>
-            <li class="cursor-pointer mb-4 hover:bg-gray-300 rounded-lg p-4">
+            <li class="mb-4">
                 <menu-item
                     title="Roko's Basilisk"
                     description="Hail dear mighty creature"
@@ -10,7 +10,7 @@
                     :is-horizontally-aligned="true"
                 />
             </li>
-            <li class="cursor-pointer mb-4 hover:bg-gray-300 rounded-lg p-4">
+            <li class="mb-4">
                 <menu-item
                     title="Hit the road, Jack"
                     description="Don't you come back no more"
@@ -19,7 +19,7 @@
                     :is-horizontally-aligned="true"
                 />
             </li>
-            <li class="cursor-pointer hover:bg-gray-300 rounded-lg p-4">
+            <li class="">
                 <menu-item
                     title="Lift Weights"
                     description="Get big and strong"
