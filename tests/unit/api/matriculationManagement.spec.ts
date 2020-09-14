@@ -15,6 +15,7 @@ import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { readFileSync } from "fs";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
+import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
 
 var matriculationManagement: MatriculationManagement;
 var userManagement: UserManagement;
@@ -28,13 +29,11 @@ jest.useFakeTimers();
 
 describe.skip("Matriculation management", () => {
     beforeAll(async () => {
-        const success = await UserManagement.login(adminAuth);
+        const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         userManagement = new UserManagement();
-        store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
-        store.commit(MutationTypes.SET_LOGGEDIN, true);
-        store.commit(MutationTypes.SET_ROLE, "Admin");
+
         matriculationManagement = new MatriculationManagement();
-        expect(success.returnValue).toBe(true);
+        expect(success.returnValue.login).not.toEqual("");
     });
 
     test("Create student user", async () => {

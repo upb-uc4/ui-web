@@ -11,6 +11,7 @@ import { MutationTypes } from "@/use/store/mutation-types";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { getRandomizedCourse } from "@/../tests/helper/Courses";
 import { readFileSync } from "fs";
+import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
 
 var courseManagement: CourseManagement;
 const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.json", "utf-8")) as {
@@ -23,12 +24,10 @@ var createdCourse: Course = {} as Course;
 jest.setTimeout(30000);
 
 beforeAll(async () => {
-    const success = await UserManagement.login(lecturerAuth);
-    store.commit(MutationTypes.SET_LOGINDATA, lecturerAuth);
-    store.commit(MutationTypes.SET_LOGGEDIN, true);
-    store.commit(MutationTypes.SET_ROLE, "Lecturer");
+    const success = await MachineUserAuthenticationManagement._getRefreshToken(lecturerAuth);
+
     courseManagement = new CourseManagement();
-    expect(success.returnValue).toBe(true);
+    expect(success.returnValue.login).not.toEqual("");
 });
 
 test("Create course", async () => {

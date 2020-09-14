@@ -6,6 +6,7 @@ import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { readFileSync } from "fs";
+import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
 
 var userManagement: UserManagement;
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
@@ -22,12 +23,10 @@ const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.jso
 jest.setTimeout(30000);
 
 beforeAll(async () => {
-    const success = await UserManagement.login(adminAuth);
-    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
-    store.commit(MutationTypes.SET_LOGGEDIN, true);
-    store.commit(MutationTypes.SET_ROLE, "Admin");
+    const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
+
     userManagement = new UserManagement();
-    expect(success.returnValue).toBe(true);
+    expect(success.returnValue.login).not.toEqual("");
 });
 
 test("Create user", async () => {

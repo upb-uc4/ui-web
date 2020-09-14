@@ -1,6 +1,7 @@
 import UserManagement from "@/api/UserManagement";
 import { store } from "@/use/store/store";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { MutationTypes } from "@/use/store/mutation-types";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
@@ -18,13 +19,9 @@ const student = pair.student;
 const authUser = pair.authUser;
 
 beforeAll(async () => {
-    const success = await UserManagement.login(adminAuth);
-    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
-    store.commit(MutationTypes.SET_LOGGEDIN, true);
-    store.commit(MutationTypes.SET_ROLE, "Admin");
-    authenticationManagement = new AuthenticationManagement();
+    const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
     userManagement = new UserManagement();
-    expect(success.returnValue).toBe(true);
+    expect(success.returnValue.login).not.toEqual("");
 });
 
 test("Create user", async () => {
@@ -35,13 +32,9 @@ test("Create user", async () => {
 
 test("Login with new user", async () => {
     const auth = { username: authUser.username, password: authUser.password };
-    const success = await UserManagement.login(auth);
-    store.commit(MutationTypes.SET_LOGINDATA, auth);
-    store.commit(MutationTypes.SET_LOGGEDIN, true);
-    store.commit(MutationTypes.SET_ROLE, "Student");
-    authenticationManagement = new AuthenticationManagement();
+    const success = await MachineUserAuthenticationManagement._getRefreshToken(auth);
     userManagement = new UserManagement();
-    expect(success.returnValue).toBe(true);
+    expect(success.returnValue.login).not.toEqual("");
 });
 
 test("Change password", async () => {
@@ -53,19 +46,18 @@ test("Change password", async () => {
 
     auth.password = "testPassword";
 
-    authenticationManagement = new AuthenticationManagement();
+    let success2 = await MachineUserAuthenticationManagement._getRefreshToken(auth);
+    expect(success2.returnValue.login).not.toEqual("");
+
     success = await authenticationManagement.changeOwnPassword("student");
     expect(success.returnValue).toBe(true);
 });
 
 test("Login as admin", async () => {
-    const success = await UserManagement.login(adminAuth);
-    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
-    store.commit(MutationTypes.SET_LOGGEDIN, true);
-    store.commit(MutationTypes.SET_ROLE, "Admin");
-    authenticationManagement = new AuthenticationManagement();
+    const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
+
     userManagement = new UserManagement();
-    expect(success.returnValue).toBe(true);
+    expect(success.returnValue.login).not.toEqual("");
 });
 
 test("Delete user", async () => {
