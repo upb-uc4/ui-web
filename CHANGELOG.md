@@ -1,10 +1,14 @@
+# [WIP v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-XX)
+
+## Feature
+- improve the performance of our website (by a lot!) [#452](https://github.com/upb-uc4/ui-web/pull/452)
+
 # [v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.8.0) (2020-09-14)
 
 ## Feature
 - add course management functionality for administrators [#441](https://github.com/upb-uc4/ui-web/pull/441)
 - add e2e tests for many features
 - scrolling up to the top most error in a form [#445](https://github.com/upb-uc4/ui-web/pull/445)
-- improve the performance of our website (by a lot!) [#452](https://github.com/upb-uc4/ui-web/pull/452)
 
 ## Bugfix
 - rework clickable areas in all desktop menus [#429](https://github.com/upb-uc4/ui-web/pull/429)
