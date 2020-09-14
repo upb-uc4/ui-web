@@ -19,6 +19,7 @@ module.exports = {
             key: fs.readFileSync("./certs/server-key.pem"),
             cert: fs.readFileSync("./certs/server-cert.pem"),
         },
+        compress: true,
         proxy: {
             "/api/": {
                 target: endpoint,
