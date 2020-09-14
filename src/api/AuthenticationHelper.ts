@@ -9,10 +9,7 @@ export default async function handleAuthenticationError<T>(response: APIResponse
         const error = response.error;
 
         if (error.type == "token missing" || error.type == "refresh token expired") {
-            const store = useStore();
-            const modal = store.state.modal;
-            const success = (await modal).show();
-            return success;
+            return (await useStore().state.modal).show();
         }
 
         if (error.type == "login token expired") {
