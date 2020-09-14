@@ -399,7 +399,7 @@
             }
 
             function back() {
-                Router.back();
+                Router.push("/accounts");
             }
 
             return {
