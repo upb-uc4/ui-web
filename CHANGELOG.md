@@ -1,3 +1,9 @@
+# [WIP v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (XXXX-XX-XX)
+
+## Feature
+- allow adding multiple FoSs at once when updating matriculation data [#466](https://github.com/upb-uc4/ui-web/pull/466)
+
+
 # [v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.8.0) (2020-09-14)
 
 ## Feature
