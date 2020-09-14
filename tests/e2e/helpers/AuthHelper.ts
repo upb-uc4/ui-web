@@ -27,6 +27,7 @@ export function loginAsUser(user: Account) {
     cy.get("input[id='password']").type(user.password);
     cy.get('button[id="login"]').click();
     cy.url().should("contain", "welcome");
+    cy.wait(500);
 }
 
 export function logout() {

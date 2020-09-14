@@ -112,6 +112,22 @@
                         <label class="text-gray-700 text-lg">
                             This application is still work in progress. If you encounter any problems, please do not hesitate to contact us.
                         </label>
+                        <div class="flex">
+                            <label class="text-gray-700 text-lg mr-12">
+                                For testing purposes you can use the following 'username:password' combinations:
+                            </label>
+                            <div class="flex flex-col">
+                                <label class="text-green-700 text-lg">admin:admin</label>
+                                <label class="text-green-700 text-lg">lecturer:lecturer</label>
+                                <label class="text-green-700 text-lg">student:student</label>
+                            </div>
+                        </div>
+                        <label class="text-gray-700 text-xl flex">
+                            <p class="text-red-700 mr-1 font-semibold">Caution:</p>
+                            Please do
+                            <p class="font-semibold mx-1">NOT</p>
+                            delete any of these accounts!
+                        </label>
                         <div class="flex justify-center w-full">
                             <button class="w-56 mt-12 mb-8 btn btn-blue-primary" @click="reportProblem">
                                 <i class="mr-2 fas fa-exclamation-triangle" />
