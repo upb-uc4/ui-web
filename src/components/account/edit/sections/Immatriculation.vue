@@ -35,6 +35,7 @@
                     Add
                 </button>
             </div>
+            <div v-if="errorBag.hasNested('matriculation')" class="error">Show some errors here</div>
         </div>
     </div>
 </template>
@@ -51,6 +52,8 @@
     import ImmatriculationHistoryEntry from "@/components/common/immatriculation/ImmatriculationHistoryEntry.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import MatriculationValidationResponseHandler from "@/use/helpers/MatriculationValidationResponseHandler";
 
     export default {
         components: {
@@ -92,6 +95,8 @@
                 return array;
             });
 
+            let errorBag = ref(new ErrorBag());
+
             let selectedSemester = computed(() => {
                 return semesterType.value + year.value;
             });
@@ -128,37 +133,24 @@
             async function updateImmatriculation() {
                 busy.value = true;
                 let error = false;
-                let successfullUpdates: number[] = [];
+                let matriculationEntries: SubjectMatriculation[] = [];
+                selectedFieldsOfStudy.value.forEach((entry) => {
+                    matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
+                });
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
-
-                //TODO Replace the for-loop with a single call containing a list of FoSs  as soon as provided by backend
-                for (let i = 0; i < selectedFieldsOfStudy.value.length; i++) {
-                    const response = await matriculationManagement.updateMatriculationData(
-                        props.username,
-                        selectedFieldsOfStudy.value[i],
-                        selectedSemester.value
-                    );
-                    const responseHandler = new GenericResponseHandler();
-                    const result = responseHandler.handleReponse(response);
-                    if (response.statusCode != 200) {
-                        error = true;
-                        console.log(
-                            "Error: Updating Entry '" + selectedSemester.value + " : " + selectedFieldsOfStudy.value[i] + "' Failed!"
-                        );
-                    } else {
-                        console.log("Update: new Matriculationdata --->" + selectedSemester.value + " : " + selectedFieldsOfStudy.value[i]);
-                        successfullUpdates.push(i);
-                    }
-                }
-                if (error) {
-                    successfullUpdates.forEach((i) => {
-                        selectedFieldsOfStudy.value = selectedFieldsOfStudy.value.filter((e) => e != selectedFieldsOfStudy.value[i]);
-                    });
-                } else {
+                const response = await matriculationManagement.updateMatriculationData(props.username, matriculationEntries);
+                const responseHandler = new MatriculationValidationResponseHandler();
+                const result = responseHandler.handleReponse(response);
+                if (result) {
+                    error = false;
                     semesterType.value = "";
                     year.value = "";
                     selectedFieldsOfStudy.value = [];
+                    errorBag.value = new ErrorBag();
+                } else {
+                    errorBag.value = new ErrorBag(responseHandler.errorList);
                 }
+                busy.value = false;
                 refreshKey.value = !refreshKey.value;
             }
 
@@ -174,6 +166,7 @@
                 updateImmatriculation,
                 validSelection,
                 refreshKey,
+                errorBag,
             };
         },
     };
