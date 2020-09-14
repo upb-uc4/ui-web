@@ -203,7 +203,6 @@
             }
 
             let hasInput = computed(() => {
-                // TODO not tested yet (too lazy to start intellij)
                 let returnValue: boolean = !course.value.editableInfoEquals(initialCourseState);
                 emit("update:has-input", returnValue);
                 return returnValue;
