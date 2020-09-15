@@ -2,7 +2,20 @@ process.env.VUE_APP_VERSION = require("./package.json").version;
 const fs = require("fs");
 
 // do not add trailing forward slash
-process.env.VUE_APP_API_BASE_URL = process.env.NODE_ENV === "production" ? "https://uc4.cs.uni-paderborn.de/api/production" : "/api";
+switch (process.env.NODE_ENV) {
+    case "production":
+        process.env.VUE_APP_API_BASE_URL = "https://uc4.cs.uni-paderborn.de/api/production";
+        break;
+    case "development":
+        process.env.VUE_APP_API_BASE_URL = "/api1";
+        break;
+    case "experimental":
+        process.env.VUE_APP_API_BASE_URL = "/api2";
+        break;
+    default:
+        process.env.VUE_APP_API_BASE_URL = "/api3";
+        break;
+}
 
 const endpoint = "https://uc4.cs.uni-paderborn.de/api/experimental/";
 // const endpoint = "https://uc4.cs.uni-paderborn.de/api/development/"
@@ -22,7 +35,7 @@ module.exports = {
         },
         compress: true,
         proxy: {
-            "/api/": {
+            "/api1/": {
                 target: endpoint,
                 pathRewrite: { "^/api": "" },
                 changeOrigin: true,

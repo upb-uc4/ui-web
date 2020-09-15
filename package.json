@@ -15,6 +15,7 @@
         "//": "Docker scripts from: https://github.com/expertly-simple/mrm-task-npm-docker",
         "predocker:build": "",
         "docker:build": "cross-conf-env docker image build . -t $npm_package_config_imageRepo:v$npm_package_version",
+        "docker:build:workflow": "cross-conf-env docker image build . -t $npm_package_config_imageRepo:v$npm_package_version -build-arg NODE_ENV=experimental",
         "postdocker:build": "npm run docker:tag",
         "docker:tag": " cross-conf-env docker image tag $npm_package_config_imageRepo:v$npm_package_version $npm_package_config_imageRepo:latest",
         "docker:run": "run-s -c docker:clean docker:runHelper",
