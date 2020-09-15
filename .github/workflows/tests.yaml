@@ -88,7 +88,7 @@ jobs:
       - name: Build server
         run: npm run build
       - name: Run nginx to reverse proxy for e2e tests
-        uses: docker run --name reverse-proxy -v .github/nginx.conf:/etc/nginx/nginx.conf:ro -v certs/:/etc/nginx/certs -v dist/:/app -d nginx
+        run: docker run --name reverse-proxy -v .github/nginx.conf:/etc/nginx/nginx.conf:ro -v certs/:/etc/nginx/certs -v dist/:/app -d nginx
       - name: run e2e tests
         run: npm run test:e2e:headless
       - name: Upload Screenshots
