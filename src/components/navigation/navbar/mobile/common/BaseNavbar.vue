@@ -1,8 +1,10 @@
 <template>
     <header class="flex flex-col w-full px-4 bg-gray-800 min-h-16">
-        <div class="flex justify-between p-2">
+        <div class="flex justify-between pr-2">
             <div class="flex pr-8 mr-8 border-gray-100">
-                <button class="text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">UC4</button>
+                <div class="items-center h-20 rounded-lg cursor-pointer outline-none" title="Home" @click="routeLogo">
+                    <img src="../../../../../assets/logo/logo_short_title_right.svg" class="h-full py-5" />
+                </div>
             </div>
 
             <button
