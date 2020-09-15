@@ -83,10 +83,8 @@ jobs:
             ${{ runner.os }}-    
       - name: Install dependencies
         run: npm ci
-      - name: Export node conf
-        run: export NODE_ENV=experimental
       - name: Build server
-        run: npm run build
+        run: export NODE_ENV=experimental && npm run build
       - name: Copy nginx conf
         run: mkdir -p temp && cp .github/nginx.conf temp/nginx.conf
       - name: Run nginx to reverse proxy for e2e tests
