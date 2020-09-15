@@ -281,7 +281,7 @@
             }
 
             function back() {
-                Router.push("/courses");
+                Router.push("/all-courses");
             }
 
             return {
