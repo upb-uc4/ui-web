@@ -24,7 +24,7 @@ export default class MatriculationValidationResponseHandler implements ResponseH
         );
     }
 
-    handleReponse(response: APIResponse<boolean | MatriculationData>): boolean {
+    handleResponse(response: APIResponse<boolean | MatriculationData>): boolean {
         if (this.isMatriculationData(response.returnValue)) {
             return true;
         } else if (response.returnValue === true || response.returnValue === false) {

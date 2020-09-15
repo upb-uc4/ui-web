@@ -5,6 +5,7 @@ import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
 import { useStore } from "@/use/store/store";
 import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
+import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class MatriculationManagement extends Common {
     constructor() {
@@ -46,7 +47,7 @@ export default class MatriculationManagement extends Common {
             });
 
         if (result.statusCode == 401 && reloginSuccess) {
-            return await this.updateMatriculationData(username, fos, semester);
+            return await this.updateMatriculationData(username, matriculation);
         }
 
         return result;
