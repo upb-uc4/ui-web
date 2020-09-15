@@ -1,8 +1,11 @@
 <template>
-    <header class="flex items-center justify-between px-4 bg-gray-800 lg:px-8 md:h-20 min-h-20">
+    <header class="flex items-center justify-between pr-4 bg-gray-800 lg:pr-8 md:h-20 min-h-20">
         <div class="flex items-center w-full">
-            <div class="flex items-center pr-8 mr-8 border-r-4 border-gray-100">
-                <button class="flex text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">UC4</button>
+            <div
+                class="items-center h-20 px-5 mr-8 border-8 rounded-full border-gray-800 bg-gray-100 cursor-pointer outline-none hover:bg-gray-200"
+                @click="routeLogo"
+            >
+                <img src="../../../../../assets/logo/logo.svg" class="h-full" />
             </div>
 
             <div class="flex w-full">
