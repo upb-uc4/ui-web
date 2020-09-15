@@ -90,7 +90,7 @@ jobs:
       - name: Copy nginx conf
         run: mkdir temp && cp .github/nginx.conf temp/nginx.conf
       - name: Run nginx to reverse proxy for e2e tests
-        run: docker run --name reverse-proxy --mount source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount source=$(pwd)/certs/,target=/etc/nginx/certs --mount source=$(pwd)/dist/,target=/app -d nginx
+        run: docker run --name reverse-proxy --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs --mount type=bind,source=$(pwd)/dist/,target=/app -d nginx
       - name: run e2e tests
         run: npm run test:e2e:headless
       - name: Upload Screenshots
