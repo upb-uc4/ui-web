@@ -66,7 +66,7 @@ export function deleteCourse(course: Course) {
     cy.get("#modal-wrapper").should("exist");
     cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
     cy.get('button[id="deleteCourseModalDelete"]').click();
-    cy.url().should("contain", "/course-management");
+    cy.url().should("contain", "/all-courses");
     cy.get("div").contains(course.courseName).should("not.exist");
 }
 
