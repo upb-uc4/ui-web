@@ -60,6 +60,10 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("student.json").then((s) => {
             (s as Student).username += random;
             student = s as Student;
+            var today = new Date();
+            var matr = today.getMonth() + 1 + "" + today.getDate();
+            var random2 = Math.floor(Math.random() * 999).toString();
+            student.matriculationId = matr += random2;
         });
         cy.fixture("studentAuthUser.json").then((s) => {
             (s as Account).username += random;
