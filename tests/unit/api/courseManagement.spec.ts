@@ -11,7 +11,7 @@ import { MutationTypes } from "@/use/store/mutation-types";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { getRandomizedCourse } from "@/../tests/helper/Courses";
 import { readFileSync } from "fs";
-import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 var courseManagement: CourseManagement;
 const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.json", "utf-8")) as {

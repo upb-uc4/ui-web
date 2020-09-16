@@ -6,7 +6,7 @@ import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { readFileSync } from "fs";
-import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 var userManagement: UserManagement;
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };

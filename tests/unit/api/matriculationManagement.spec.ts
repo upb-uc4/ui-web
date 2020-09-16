@@ -16,7 +16,7 @@ import { readFileSync } from "fs";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
-import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 var matriculationManagement: MatriculationManagement;
 var userManagement: UserManagement;

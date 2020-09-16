@@ -21,6 +21,7 @@ const authUser = pair.authUser;
 beforeAll(async () => {
     const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
     userManagement = new UserManagement();
+    authenticationManagement = new AuthenticationManagement();
     expect(success.returnValue.login).not.toEqual("");
 });
 
@@ -39,7 +40,7 @@ test("Login with new user", async () => {
 
 test("Change password", async () => {
     var auth = { username: authUser.username, password: authUser.password };
-
+    authenticationManagement = new AuthenticationManagement();
     let success = await authenticationManagement.changeOwnPassword("testPassword");
     expect(success.returnValue).toBe(true);
     await new Promise((r) => setTimeout(r, 10000));
@@ -55,7 +56,7 @@ test("Change password", async () => {
 
 test("Login as admin", async () => {
     const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
-
+    authenticationManagement = new AuthenticationManagement();
     userManagement = new UserManagement();
     expect(success.returnValue.login).not.toEqual("");
 });
