@@ -39,11 +39,13 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.14.0",
+        "@types/pkijs": "0.0.5",
         "@vue/cli": "^4.5.4",
         "axios": "^0.20.0",
         "core-js": "^3.6.5",
         "jest": "^26.4.2",
         "lodash": "^4.17.20",
+        "pkijs": "^2.1.90",
         "random-bigint": "0.0.1",
         "tailwindcss": "^1.8.9",
         "vue": "^3.0.0-rc.10",
