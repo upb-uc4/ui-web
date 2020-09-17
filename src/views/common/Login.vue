@@ -64,6 +64,7 @@
                 </div>
             </form>
         </div>
+        <EncryptCertificateModal ref="encryptCertificateModal" />
     </div>
 </template>
 <script lang="ts">
@@ -71,13 +72,16 @@
     import { useStore, store } from "@/use/store/store";
     import { Role } from "@/entities/Role";
     import UserManagement from "@/api/UserManagement";
-    import { ref, onMounted } from "vue";
+    import { ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
+    import EncryptCertificateModal from "@/components/modals/EncryptCertificateModal.vue";
 
     export default {
-        components: {},
+        components: { EncryptCertificateModal },
         props: [],
         setup() {
+            const encryptCertificateModal = ref();
+
             let email = ref("");
             let password = ref("");
             let passwordFieldType = ref("password");
@@ -101,6 +105,9 @@
             }
 
             async function login() {
+                let modal = encryptCertificateModal.value;
+                const res = await modal.show();
+
                 const username = email.value;
                 const response = await UserManagement.login({ username: username, password: password.value });
 
@@ -114,6 +121,7 @@
             }
 
             return {
+                encryptCertificateModal,
                 email,
                 password,
                 passwordFieldType,
