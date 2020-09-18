@@ -29,12 +29,11 @@ export default class Common {
             },
         });
 
-        await instance
+        return await instance
             .get(`/version`)
             .then((response: AxiosResponse) => {
-                version = response.data.versionNumber;
+                return response.data.versionNumber;
             })
             .catch((error: AxiosError) => {});
-        return version;
     }
 }

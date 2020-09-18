@@ -33,40 +33,44 @@ export default class AuthenticationManagement extends Common {
             role: role as Role,
         };
 
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-        var reloginSuccess = false;
-
-        await this._axios
+        return await this._axios
             .put(`/users/${username}`, acc)
             .then((response: AxiosResponse) => {
-                result.returnValue = true;
-                result.statusCode = response.status;
-                console.log(response);
+                store.commit(MutationTypes.SET_LOGGEDIN, true);
+                return {
+                    returnValue: true,
+                    statusCode: response.status,
+                    error: {} as APIError,
+                    networkError: false,
+                };
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
-                    result.error = error.response.data as ValidationError;
-                    reloginSuccess = await handleAuthenticationError(result);
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.changeOwnPassword(password);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: false,
+                        networkError: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: false,
+                        networkError: true,
+                    };
                 }
             });
-
-        if (result.statusCode == 401 && reloginSuccess) {
-            return await this.changeOwnPassword(password);
-        }
-
-        if (result.returnValue) {
-            store.commit(MutationTypes.SET_LOGGEDIN, true);
-        }
-
-        return result;
     }
 
     /**
@@ -91,45 +95,43 @@ export default class AuthenticationManagement extends Common {
             withCredentials: true,
         });
 
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
-        let username: string = "";
-
-        await instance
+        return await instance
             .get(`/refresh`)
-            .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                result.returnValue = true;
-                username = response.data.username;
+            .then(async (response: AxiosResponse) => {
+                const store = useStore();
+
+                store.commit(MutationTypes.SET_LOGGEDIN, true);
+                const userManagement = new UserManagement();
+                const handler = new GenericResponseHandler();
+                const userResponse = await userManagement.getSpecificUser(response.data.username);
+                if (response.status == 200) {
+                    const user = handler.handleResponse(userResponse);
+                    store.commit(MutationTypes.SET_USER, user);
+                }
+                return {
+                    error: {} as APIError,
+                    statusCode: response.status,
+                    returnValue: true,
+                    networkError: false,
+                };
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
+                    return {
+                        error: error.response.data as APIError,
+                        statusCode: error.response.status,
+                        returnValue: true,
+                        networkError: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        error: {} as APIError,
+                        statusCode: 0,
+                        returnValue: true,
+                        networkError: true,
+                    };
                 }
             });
-
-        if (result.returnValue) {
-            const store = useStore();
-
-            store.commit(MutationTypes.SET_LOGGEDIN, true);
-
-            const userManagement = new UserManagement();
-            const handler = new GenericResponseHandler();
-            const response = await userManagement.getSpecificUser(username);
-            if (response.statusCode == 200) {
-                const user = handler.handleResponse(response);
-                store.commit(MutationTypes.SET_USER, user);
-            }
-        }
-
-        return result;
     }
 
     async logout(): Promise<APIResponse<boolean>> {
@@ -140,27 +142,36 @@ export default class AuthenticationManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios
+        return await this._axios
             .get(`/logout`)
             .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                result.returnValue = true;
+                const store = useStore();
+                store.commit(MutationTypes.SET_LOGGEDIN, false);
+                store.commit(MutationTypes.SET_USER, {} as User);
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: true,
+                };
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
+                    return {
+                        error: error.response.data as APIError,
+                        networkError: false,
+                        statusCode: error.response.status,
+                        returnValue: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        error: {} as APIError,
+                        networkError: true,
+                        statusCode: 0,
+                        returnValue: false,
+                    };
                 }
             });
-
-        if (result.returnValue) {
-            const store = useStore();
-            store.commit(MutationTypes.SET_LOGGEDIN, false);
-            store.commit(MutationTypes.SET_USER, {} as User);
-        }
-
-        return result;
     }
 
     static async _getRefreshToken(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
@@ -173,40 +184,42 @@ export default class AuthenticationManagement extends Common {
             },
         });
 
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
-        await instance
+        return await instance
             .get(`/login`, authHeader)
-            .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                result.returnValue = true;
+            .then(async (response: AxiosResponse) => {
+                const store = useStore();
+                store.commit(MutationTypes.SET_LOGGEDIN, true);
+
+                const userManagement = new UserManagement();
+                const handler = new GenericResponseHandler();
+                const userResponse = await userManagement.getSpecificUser(loginData.username);
+                if (response.status == 200) {
+                    const user = handler.handleResponse(userResponse);
+                    store.commit(MutationTypes.SET_USER, user);
+                }
+                return {
+                    statusCode: response.status,
+                    returnValue: true,
+                    networkError: false,
+                    error: {} as APIError,
+                };
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
+                    return {
+                        statusCode: error.response.status,
+                        returnValue: false,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        statusCode: 0,
+                        returnValue: false,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
                 }
             });
-
-        if (result.returnValue) {
-            const store = useStore();
-            store.commit(MutationTypes.SET_LOGGEDIN, true);
-
-            const userManagement = new UserManagement();
-            const handler = new GenericResponseHandler();
-            const response = await userManagement.getSpecificUser(loginData.username);
-            if (response.statusCode == 200) {
-                const user = handler.handleResponse(response);
-                store.commit(MutationTypes.SET_USER, user);
-            }
-        }
-
-        return result;
     }
 }

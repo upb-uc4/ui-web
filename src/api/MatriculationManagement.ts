@@ -16,73 +16,85 @@ export default class MatriculationManagement extends Common {
         username: string,
         matriculation: SubjectMatriculation[]
     ): Promise<APIResponse<boolean | MatriculationData>> {
-        let result: APIResponse<boolean | MatriculationData> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
         let payload = { matriculation: matriculation };
-        let reloginSuccess = false;
 
-        await this._axios
+        return await this._axios
             .put(`/${username}`, payload)
             .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                if (response.status == 201) {
-                    result.returnValue = response.data as MatriculationData;
-                } else {
-                    result.returnValue = true;
-                }
+                return {
+                    statusCode: response.status,
+                    returnValue: response.status == 201 ? (response.data as MatriculationData) : true,
+                    networkError: false,
+                    error: {} as APIError,
+                };
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
-                    result.error = error.response.data as APIError;
-                    reloginSuccess = await handleAuthenticationError(result);
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.updateMatriculationData(username, matriculation);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: false,
+                        networkError: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: false,
+                        networkError: true,
+                    };
                 }
             });
-
-        if (result.statusCode == 401 && reloginSuccess) {
-            return await this.updateMatriculationData(username, matriculation);
-        }
-
-        return result;
     }
 
     async getMatriculationHistory(username: string): Promise<APIResponse<MatriculationData>> {
-        let result: APIResponse<MatriculationData> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: {} as MatriculationData,
-            statusCode: 0,
-        };
-
-        let reloginSuccess = false;
-
-        await this._axios
+        return await this._axios
             .get(`/history/${username}`)
             .then((response: AxiosResponse) => {
-                result.returnValue = response.data as MatriculationData;
-                result.statusCode = response.status;
+                return {
+                    returnValue: response.data as MatriculationData,
+                    statusCode: response.status,
+                    error: {} as APIError,
+                    networkError: false,
+                };
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
-                    reloginSuccess = await handleAuthenticationError(result);
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getMatriculationHistory(username);
+                    }
+                    return {
+                        returnValue: {} as MatriculationData,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        returnValue: {} as MatriculationData,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
                 }
             });
-
-        if (result.statusCode == 401 && reloginSuccess) {
-            return await this.getMatriculationHistory(username);
-        }
-
-        return result;
     }
 
     async getOwnMatriculationHistory(): Promise<APIResponse<MatriculationData>> {
