@@ -13,8 +13,7 @@ export default async function handleAuthenticationError<T>(response: APIResponse
         }
 
         if (error.type == "login token expired") {
-            const response = await AuthenticationManagement.login();
-            return response.returnValue;
+            return (await AuthenticationManagement.login()).returnValue;
         }
     }
 
