@@ -54,7 +54,7 @@
             async function checkPassword() {
                 checking.value = true;
                 const store = useStore();
-                const response = await AuthenticationManagement.login({
+                const response = await AuthenticationManagement._getRefreshToken({
                     username: (await store.getters.user).username,
                     password: password.value,
                 });

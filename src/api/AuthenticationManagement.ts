@@ -72,18 +72,6 @@ export default class AuthenticationManagement extends Common {
             });
     }
 
-    /**
-     * Authenticate against Lagom endpoint, return true if successful
-     * @param loginData
-     */
-    static async login(loginData?: { username: string; password: string }): Promise<APIResponse<boolean>> {
-        if (loginData !== undefined) {
-            return await this._getRefreshToken(loginData);
-        } else {
-            return await this._getLoginToken();
-        }
-    }
-
     static async _getLoginToken(): Promise<APIResponse<boolean>> {
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + "/authentication-management",

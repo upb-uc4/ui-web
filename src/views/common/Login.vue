@@ -103,7 +103,7 @@
 
             async function login() {
                 const username = email.value;
-                const response = await AuthenticationManagement.login({ username: username, password: password.value });
+                const response = await AuthenticationManagement._getRefreshToken({ username: username, password: password.value });
 
                 const loginSuccess = loginResponseHandler.handleResponse(response);
 

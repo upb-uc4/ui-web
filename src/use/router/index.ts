@@ -206,7 +206,7 @@ router.beforeEach(async (to, from, next) => {
     const store = useStore();
 
     if (!(await store.getters.loggedIn)) {
-        await AuthenticationManagement.login();
+        await AuthenticationManagement._getLoginToken();
     }
 
     if (to.name == "login" || to.name == "home") {
