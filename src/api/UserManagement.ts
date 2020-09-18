@@ -9,10 +9,6 @@ import { Role } from "@/entities/Role";
 import { Account } from "@/entities/Account";
 import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
-import ValidationError from "./api_models/errors/ValidationError";
-import { MutationTypes } from "@/use/store/mutation-types";
-import axios from "axios";
-import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class UserManagement extends Common {

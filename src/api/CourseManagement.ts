@@ -3,7 +3,6 @@ import Course from "./api_models/course_management/Course";
 import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
-import ValidationError from "./api_models/errors/ValidationError";
 import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class CourseManagement extends Common {

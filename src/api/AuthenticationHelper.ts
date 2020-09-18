@@ -1,9 +1,8 @@
 import APIResponse from "@/api/helpers/models/APIResponse";
 import { useStore } from "@/use/store/store";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
-import LoginModal from "@/components/modals/LoginModal.vue";
 
-export default async function handleAuthenticationError<T>(response: APIResponse<T>) {
+export default async function handleAuthenticationError<T>(response: APIResponse<T>): Promise<boolean> {
     if (response.statusCode == 401) {
         // read error message and do one of the following
         const error = response.error;
