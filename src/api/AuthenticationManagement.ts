@@ -63,7 +63,6 @@ export default class AuthenticationManagement extends Common {
         }
 
         if (result.returnValue) {
-            const store = useStore();
             store.commit(MutationTypes.SET_LOGGEDIN, true);
         }
 
