@@ -32,6 +32,7 @@ module.exports = {
     //publicPath: process.env.NODE_ENV === "production" ? "/deploy/" : "",
     publicPath: "/deploy/",
     devServer: {
+        port: 443,
         https: {
             key: fs.readFileSync("./certs/server-key.pem"),
             cert: fs.readFileSync("./certs/server-cert.pem"),
