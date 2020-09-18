@@ -20,7 +20,7 @@ export default class UserManagement extends Common {
         super("/user-management");
     }
 
-    static async getVersion(): Promise<String> {
+    static async getVersion(): Promise<string> {
         return super.getVersion("/user-management");
     }
 

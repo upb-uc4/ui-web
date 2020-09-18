@@ -11,7 +11,7 @@ export default class CourseManagement extends Common {
         super("/course-management");
     }
 
-    static async getVersion(): Promise<String> {
+    static async getVersion(): Promise<string> {
         return super.getVersion("/course-management");
     }
 

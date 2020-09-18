@@ -18,7 +18,7 @@ export default class Common {
         this._axios = instance;
     }
 
-    static async getVersion(endpoint: string): Promise<String> {
+    static async getVersion(endpoint: string): Promise<string> {
         let version = "unavailable";
 
         const instance = axios.create({
