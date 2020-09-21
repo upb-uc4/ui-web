@@ -7,11 +7,11 @@ export default async function handleAuthenticationError<T>(response: APIResponse
         // read error message and do one of the following
         const error = response.error;
 
-        if (error.type == "token missing" || error.type == "refresh token expired") {
+        if (error.type == "RefreshTokenMissing" || error.type == "RefreshTokenExpired") {
             return (await useStore().state.modal).show();
         }
 
-        if (error.type == "login token expired") {
+        if (error.type == "LoginTokenExpired" || error.type == "JwtAuthorization") {
             return (await AuthenticationManagement._getLoginToken()).returnValue;
         }
     }
