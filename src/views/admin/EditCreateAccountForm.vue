@@ -273,7 +273,6 @@
                     account.user.address.houseNumber != initialAccount.user.address.houseNumber ||
                     account.user.address.zipCode != initialAccount.user.address.zipCode ||
                     account.user.address.city != initialAccount.user.address.city ||
-                    account.user.picture != initialAccount.user.picture ||
                     //lecturer properties
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
