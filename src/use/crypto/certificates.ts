@@ -8,19 +8,25 @@ import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
 import { arrayBufferToString, toBase64 } from "pvutils";
 import { formatPEM } from "./formatPem";
 
-const signAlg = "RSASSA-PKCS1-V1_5";
-const hashAlg = "SHA-1";
+const signAlg = "RSASSA-PKCS1-v1_5";
+const hashAlg = "SHA-256";
 
 export async function createKeyPair() {
     const crypto = await getCrypto();
     if (typeof crypto === "undefined") {
         return Promise.reject("No WebCrypto extension found");
     }
-    const algorithm = getAlgorithmParameters(signAlg, "generatekey");
-    if ("hash" in algorithm.algorithm) {
-        (algorithm.algorithm as any).hash.name = hashAlg;
-    }
-    return (await crypto.generateKey(algorithm.algorithm, true, algorithm.usages)) as CryptoKeyPair;
+    const algorithm = {
+        hash: {
+            name: hashAlg,
+        },
+        modulusLength: 4096,
+        name: "RSASSA-PKCS1-v1_5",
+        publicExponent: new Uint8Array([1, 0, 1]),
+    };
+    const usages: KeyUsage[] = ["sign", "verify"];
+
+    return (await crypto.generateKey(algorithm, true, usages)) as CryptoKeyPair;
 }
 
 export async function buildCSR(keyPair: CryptoKeyPair, enrollmenId: string) {
@@ -56,7 +62,7 @@ export async function buildCSR(keyPair: CryptoKeyPair, enrollmenId: string) {
         })
     );
 
-    await pkcs10.sign(keyPair.privateKey);
+    await pkcs10.sign(keyPair.privateKey, hashAlg);
     let result: string = "-----BEGIN CERTIFICATE REQUEST-----\r\n";
     result = `${result}${formatPEM(toBase64(arrayBufferToString(pkcs10.toSchema().toBER(false))))}`;
     result = `${result}\r\n-----END CERTIFICATE REQUEST-----\r\n`;
