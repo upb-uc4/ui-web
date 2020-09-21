@@ -7,7 +7,6 @@ export default interface User {
     address: Address;
     firstName: string;
     lastName: string;
-    picture: string;
     email: string;
     birthDate: string;
     phoneNumber: string;
