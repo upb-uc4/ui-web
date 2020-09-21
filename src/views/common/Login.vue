@@ -86,8 +86,9 @@
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
             async function togglePassword() {
-                let keypair = await createKeyPair();
-                console.log(keypair);
+                let pair = await createKeyPair();
+                console.log(pair);
+                console.log(await buildCSR(pair, "testid"));
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 
