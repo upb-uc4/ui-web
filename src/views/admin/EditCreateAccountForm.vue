@@ -53,14 +53,9 @@
                         <label class="block text-gray-600"> Change the Profile Picture </label>
                     </div>
                     <div class="flex flex-col items-center justify-center">
-                        <img class="object-contain h-48" :src="account.user.picture" />
-                        <button
-                            id="updatePicture"
-                            class="px-4 py-2 font-semibold text-blue-700 bg-transparent border border-2 border-blue-700 rounded-lg hover:bg-blue-800 hover:text-white hover:border-transparent"
-                            @click="updatePicture"
-                        >
-                            Update Profile Picture
-                        </button>
+                        <img class="object-contain h-48 mb-5" :src="selectedPicture" />
+                        <input id="uploadFile" hidden type="file" accept="*.jpeg" @change="uploadPicture" />
+                        <button id="uploadPicture" class="btn btn-blue-primary w-48" @click="triggerFileUpload">Select Image</button>
                     </div>
                 </div>
             </section>
@@ -202,6 +197,8 @@
 
             const errorBag = ref(new ErrorBag());
 
+            const selectedPicture = ref(account.user.picture);
+
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
             });
@@ -270,7 +267,18 @@
                 busy.value = false;
             }
 
-            function updatePicture() {}
+            function triggerFileUpload() {
+                (document.getElementById("uploadFile") as any).click();
+            }
+
+            function uploadPicture(e: any) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e: any) => {
+                    selectedPicture.value = e.target.result;
+                };
+            }
 
             let hasInput = computed(() => {
                 if (
@@ -411,7 +419,7 @@
                 title,
                 account,
                 success,
-                updatePicture,
+                uploadPicture,
                 isLecturer,
                 isStudent,
                 hasInput,
@@ -424,6 +432,8 @@
                 unsavedChangesModal,
                 errorBag: errorBag,
                 immatriculationHasChange,
+                selectedPicture,
+                triggerFileUpload,
             };
         },
     };
