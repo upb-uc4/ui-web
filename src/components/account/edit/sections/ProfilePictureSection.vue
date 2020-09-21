@@ -61,12 +61,15 @@
                 (document.getElementById("uploadFile") as any).click();
             }
 
-            function uploadPicture(e: any) {
-                const file = e.target.files[0];
+            function uploadPicture(e: Event) {
+                const files: FileList | null = (e.target as HTMLInputElement)?.files;
+                if (files == null) return;
+
+                const file = files[0];
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = (e: any) => {
-                    selectedPicture.value = e.target.result;
+                reader.onload = (e) => {
+                    selectedPicture.value = e.target?.result;
                     emit("update:picture", selectedPicture.value);
                 };
             }
