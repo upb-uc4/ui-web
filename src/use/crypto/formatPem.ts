@@ -1,4 +1,4 @@
-export function formatPEM(pemString: string) {
+export default function formatPEM(pemString: string) {
     const PEM_STRING_LENGTH = pemString.length,
         LINE_LENGTH = 64;
     const wrapNeeded = PEM_STRING_LENGTH > LINE_LENGTH;

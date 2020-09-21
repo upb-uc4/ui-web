@@ -6,7 +6,7 @@ import Extension from "pkijs/src/Extension";
 import Extensions from "pkijs/src/Extensions";
 import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
 import { arrayBufferToString, toBase64 } from "pvutils";
-import { formatPEM } from "./formatPem";
+import formatPEM from "./formatPem";
 
 const signAlg = "RSASSA-PKCS1-v1_5";
 const hashAlg = "SHA-256";
