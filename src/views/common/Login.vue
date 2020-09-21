@@ -73,7 +73,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
-    import { createKeyPair, buildCSR } from "@/use/crypto/certificates";
+    import { createKeyPair, createCSR } from "@/use/crypto/certificates";
 
     export default {
         components: {},
@@ -88,7 +88,7 @@
             async function togglePassword() {
                 let pair = await createKeyPair();
                 console.log(pair);
-                console.log(await buildCSR(pair, "testid"));
+                console.log(await createCSR(pair, "testid"));
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 

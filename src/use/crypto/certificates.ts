@@ -29,22 +29,24 @@ export async function createKeyPair() {
     return (await crypto.generateKey(algorithm, true, usages)) as CryptoKeyPair;
 }
 
-export async function buildCSR(keyPair: CryptoKeyPair, enrollmenId: string) {
+export async function createCSRObject(keyPair: CryptoKeyPair, enrollmenId: string) {
     const crypto = await getCrypto();
     if (typeof crypto === "undefined") {
         return Promise.reject("No WebCrypto extension found");
     }
     const pkcs10 = new CertificationRequest();
     pkcs10.version = 0;
+    //add common name to certificate
     pkcs10.subject.typesAndValues.push(
         new AttributeTypeAndValue({
             type: "2.5.4.3", //common name
             value: new asn1js.PrintableString({ value: enrollmenId }),
         })
     );
-    pkcs10.attributes = [];
     await pkcs10.subjectPublicKeyInfo.importKey(keyPair.publicKey);
-    const hashedPK = await crypto.digest({ name: "SHA-1" }, pkcs10.subjectPublicKeyInfo.subjectPublicKey.valueBlock.valueHex);
+    pkcs10.attributes = [];
+    const hashedPK = await crypto.digest({ name: "SHA-256" }, pkcs10.subjectPublicKeyInfo.subjectPublicKey.valueBlock.valueHex);
+    //add hashed public key to certificate's attributes
     pkcs10.attributes.push(
         new Attribute({
             type: "1.2.840.113549.1.9.14", // pkcs-9-at-extensionRequest (from example)
@@ -63,8 +65,13 @@ export async function buildCSR(keyPair: CryptoKeyPair, enrollmenId: string) {
     );
 
     await pkcs10.sign(keyPair.privateKey, hashAlg);
+    return pkcs10;
+}
+
+export async function createCSR(keyPair: CryptoKeyPair, enrollmenId: string) {
+    let csr = await createCSRObject(keyPair, enrollmenId);
     let result: string = "-----BEGIN CERTIFICATE REQUEST-----\r\n";
-    result = `${result}${formatPEM(toBase64(arrayBufferToString(pkcs10.toSchema().toBER(false))))}`;
+    result = `${result}${formatPEM(toBase64(arrayBufferToString(csr.toSchema().toBER(false))))}`;
     result = `${result}\r\n-----END CERTIFICATE REQUEST-----\r\n`;
     return result;
 }
