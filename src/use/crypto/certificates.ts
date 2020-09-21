@@ -1,7 +1,7 @@
 import * as asn1js from "asn1js";
 import Attribute from "pkijs/src/Attribute";
 import CertificationRequest from "pkijs/src/CertificationRequest";
-import { getAlgorithmParameters, getCrypto } from "pkijs/src/common";
+import { getCrypto } from "pkijs/src/common";
 import Extension from "pkijs/src/Extension";
 import Extensions from "pkijs/src/Extensions";
 import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
@@ -21,7 +21,7 @@ export async function createKeyPair() {
             name: hashAlg,
         },
         modulusLength: 4096,
-        name: "RSASSA-PKCS1-v1_5",
+        name: signAlg,
         publicExponent: new Uint8Array([1, 0, 1]),
     };
     const usages: KeyUsage[] = ["sign", "verify"];
@@ -45,7 +45,7 @@ export async function createCSRObject(keyPair: CryptoKeyPair, enrollmenId: strin
     );
     await pkcs10.subjectPublicKeyInfo.importKey(keyPair.publicKey);
     pkcs10.attributes = [];
-    const hashedPK = await crypto.digest({ name: "SHA-256" }, pkcs10.subjectPublicKeyInfo.subjectPublicKey.valueBlock.valueHex);
+    const hashedPK = await crypto.digest({ name: hashAlg }, pkcs10.subjectPublicKeyInfo.subjectPublicKey.valueBlock.valueHex);
     //add hashed public key to certificate's attributes
     pkcs10.attributes.push(
         new Attribute({
