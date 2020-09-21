@@ -6,6 +6,7 @@ import Extension from "pkijs/src/Extension";
 import Extensions from "pkijs/src/Extensions";
 import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
 import { arrayBufferToString, toBase64 } from "pvutils";
+import { formatPEM } from "./formatPem";
 
 const signAlg = "RSASSA-PKCS1-V1_5";
 const hashAlg = "SHA-1";
@@ -60,25 +61,4 @@ export async function buildCSR(keyPair: CryptoKeyPair, enrollmenId: string) {
     result = `${result}${formatPEM(toBase64(arrayBufferToString(pkcs10.toSchema().toBER(false))))}`;
     result = `${result}\r\n-----END CERTIFICATE REQUEST-----\r\n`;
     return result;
-}
-
-export function formatPEM(pemString: string) {
-    const PEM_STRING_LENGTH = pemString.length,
-        LINE_LENGTH = 64;
-    const wrapNeeded = PEM_STRING_LENGTH > LINE_LENGTH;
-
-    if (wrapNeeded) {
-        let formattedString = "",
-            wrapIndex = 0;
-
-        for (let i = LINE_LENGTH; i < PEM_STRING_LENGTH; i += LINE_LENGTH) {
-            formattedString += pemString.substring(wrapIndex, i) + "\r\n";
-            wrapIndex = i;
-        }
-
-        formattedString += pemString.substring(wrapIndex, PEM_STRING_LENGTH);
-        return formattedString;
-    } else {
-        return pemString;
-    }
 }
