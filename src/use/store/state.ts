@@ -14,6 +14,7 @@ export const state = {
         password: "",
     },
     modal: {} as any,
+    privateKey: {} as CryptoKey,
 };
 
 export type State = typeof state;

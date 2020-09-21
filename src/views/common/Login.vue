@@ -73,7 +73,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
-    import { createKeyPair, createCSR } from "@/use/crypto/certificates";
+    import { createKeyPair, createCSR, encryptMessage, deriveKeyFromPassword } from "@/use/crypto/certificates";
 
     export default {
         components: {},
@@ -88,7 +88,11 @@
             async function togglePassword() {
                 let pair = await createKeyPair();
                 console.log(pair);
+                console.log(pair.privateKey);
                 console.log(await createCSR(pair, "testid"));
+                const symmKey = await deriveKeyFromPassword("SuperPasswort");
+                console.log(symmKey);
+                encryptMessage(symmKey, "bla");
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 

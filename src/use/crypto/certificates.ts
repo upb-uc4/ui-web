@@ -5,7 +5,7 @@ import { getCrypto } from "pkijs/src/common";
 import Extension from "pkijs/src/Extension";
 import Extensions from "pkijs/src/Extensions";
 import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
-import { arrayBufferToString, toBase64 } from "pvutils";
+import { stringToArrayBuffer, arrayBufferToString, toBase64 } from "pvutils";
 import formatPEM from "./formatPem";
 
 const signAlg = "RSASSA-PKCS1-v1_5";
@@ -88,4 +88,53 @@ export async function privateKeyToPemString(privateKey: CryptoKey) {
     result = `${result}\r\n-----END PRIVATE KEY-----\r\n`;
 
     return result;
+}
+
+export async function encryptMessage(privateKey: CryptoKey, message: string) {
+    const crypto = getCrypto();
+    if (crypto == null) {
+        return Promise.reject("No WebCrypto extension found");
+    }
+
+    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+    const algorithm = {
+        name: "AES-GCM",
+        iv: iv,
+    };
+
+    const ciphertext = await crypto.encrypt(algorithm, privateKey, stringToArrayBuffer(message));
+
+    console.log(ciphertext);
+
+    const plaintext = await crypto.decrypt(algorithm, privateKey, ciphertext);
+
+    console.log(arrayBufferToString(plaintext));
+}
+
+export async function deriveKeyFromPassword(password: string): Promise<CryptoKey> {
+    const crypto = getCrypto();
+    if (crypto == null) {
+        return Promise.reject("No WebCrypto extension found");
+    }
+
+    // password used to derive key from key material
+    const deriveAlgorithm = {
+        name: "PBKDF2",
+        salt: stringToArrayBuffer("random-salt"),
+        iterations: 100000,
+        hash: "SHA-256",
+    };
+
+    // algorithm the derived key will be used with
+    const useAlgorithm = {
+        name: "AES-GCM",
+        length: 256,
+    };
+
+    const usages: KeyUsage[] = ["encrypt", "decrypt"];
+
+    const keyMaterial = <CryptoKey>await crypto.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+
+    return <CryptoKey>(<unknown>crypto.deriveKey(deriveAlgorithm, keyMaterial, useAlgorithm, false, usages));
 }

@@ -1,5 +1,5 @@
 import { GetterTree } from "vuex";
-import { State } from "./state";
+import { State, state } from "./state";
 import { Role } from "@/entities/Role";
 import UserManagement from "@/api/UserManagement";
 import { useStore } from "./store";
@@ -8,6 +8,8 @@ import { MutationTypes } from "./mutation-types";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
+import { getCrypto } from "pkijs/src/common";
+//import CertificateManagement from '@/api/CertificateManagement.ts';
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -16,6 +18,7 @@ export type Getters = {
     role(state: State): Promise<Role>;
     user(state: State): Student | Lecturer | Admin;
     loggedIn(state: State): boolean;
+    privateKey(state: State): Promise<CryptoKey>;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -48,5 +51,22 @@ export const getters: GetterTree<State, State> & Getters = {
             store.commit(MutationTypes.SET_ROLE, role);
         }
         return state.myRole;
+    },
+    privateKey: async (state) => {
+        if (!("type" in state.privateKey)) {
+            const store = useStore();
+            const crypto = getCrypto();
+
+            if (crypto == null) {
+                return Promise.reject("No WebCrypto extension found");
+            }
+
+            //const certManagement = new CertificateManagement();
+
+            //const encryptedKey = certManagement.getEncryptedPrivateKey((await store.getters.user).username);
+
+            //crypto.importKey()
+        }
+        return state.privateKey;
     },
 };
