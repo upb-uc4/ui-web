@@ -75,3 +75,17 @@ export async function createCSR(keyPair: CryptoKeyPair, enrollmenId: string) {
     result = `${result}\r\n-----END CERTIFICATE REQUEST-----\r\n`;
     return result;
 }
+
+export async function privateKeyToPemString(privateKey: CryptoKey) {
+    const crypto = getCrypto();
+    if (crypto == null) {
+        return Promise.reject("No WebCrypto extension found");
+    }
+    const key = await crypto.exportKey("pkcs8", privateKey);
+
+    let result: string = "-----BEGIN PRIVATE KEY-----\r\n";
+    result = `${result}${formatPEM(toBase64(arrayBufferToString(key)))}`;
+    result = `${result}\r\n-----END PRIVATE KEY-----\r\n`;
+
+    return result;
+}
