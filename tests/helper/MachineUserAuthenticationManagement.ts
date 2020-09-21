@@ -19,7 +19,7 @@ export default class MachineUserAuthenticationManagement extends Common {
         super("/authentication-management");
     }
 
-    static async getVersion(): Promise<String> {
+    static async getVersion(): Promise<string> {
         return super.getVersion("/authentication-management");
     }
 
