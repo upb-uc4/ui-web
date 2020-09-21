@@ -46,19 +46,7 @@
                 :username="account.user.username"
                 :latest="account.student.latestImmatriculation"
             />
-            <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                        <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
-                        <label class="block text-gray-600"> Change the Profile Picture </label>
-                    </div>
-                    <div class="flex flex-col items-center justify-center">
-                        <img class="h-48 w-48 object-cover mb-5 rounded-full" :src="selectedPicture" />
-                        <input id="uploadFile" hidden type="file" accept="*.jpeg, *.png, *.jpg" @change="uploadPicture" />
-                        <button id="uploadPicture" class="btn btn-blue-primary w-48" @click="triggerFileUpload">Select Image</button>
-                    </div>
-                </div>
-            </section>
+            <profile-picture-section v-model:picture="account.user.picture" :edit-mode="editMode" :error-bag="errorBag" />
             <section class="py-8 border-t-2 border-gray-400 lg:mt-8">
                 <div class="justify-between hidden sm:flex">
                     <div class="flex items-center justify-start">
@@ -152,6 +140,7 @@
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
+    import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -162,6 +151,7 @@
             PersonalInformationSection,
             LecturerInformationSection,
             StudentInformationSection,
+            ProfilePictureSection,
             UnsavedChangesModal,
             LoadingComponent,
         },
@@ -188,7 +178,6 @@
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
             };
-
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
             let deleteModal = ref();
@@ -196,8 +185,6 @@
             let immatriculationHasChange = ref(false);
 
             const errorBag = ref(new ErrorBag());
-
-            const selectedPicture = ref(account.user.picture);
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -265,19 +252,6 @@
                     }
                 }
                 busy.value = false;
-            }
-
-            function triggerFileUpload() {
-                (document.getElementById("uploadFile") as any).click();
-            }
-
-            function uploadPicture(e: any) {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (e: any) => {
-                    selectedPicture.value = e.target.result;
-                };
             }
 
             let hasInput = computed(() => {
@@ -419,7 +393,6 @@
                 title,
                 account,
                 success,
-                uploadPicture,
                 isLecturer,
                 isStudent,
                 hasInput,
@@ -432,8 +405,6 @@
                 unsavedChangesModal,
                 errorBag: errorBag,
                 immatriculationHasChange,
-                selectedPicture,
-                triggerFileUpload,
             };
         },
     };
