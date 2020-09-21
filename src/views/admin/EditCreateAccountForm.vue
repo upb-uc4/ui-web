@@ -53,8 +53,8 @@
                         <label class="block text-gray-600"> Change the Profile Picture </label>
                     </div>
                     <div class="flex flex-col items-center justify-center">
-                        <img class="object-contain h-48 mb-5" :src="selectedPicture" />
-                        <input id="uploadFile" hidden type="file" accept="*.jpeg" @change="uploadPicture" />
+                        <img class="h-48 w-48 object-cover mb-5 rounded-full" :src="selectedPicture" />
+                        <input id="uploadFile" hidden type="file" accept="*.jpeg, *.png, *.jpg" @change="uploadPicture" />
                         <button id="uploadPicture" class="btn btn-blue-primary w-48" @click="triggerFileUpload">Select Image</button>
                     </div>
                 </div>
