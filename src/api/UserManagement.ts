@@ -458,4 +458,84 @@ export default class UserManagement extends Common {
         }
         return endpoint;
     }
+
+    async getProfilePicture(username: string): Promise<APIResponse<File>> {
+        return await this._axios
+            .get(`/users/${username}/image`)
+            .then((response: AxiosResponse) => {
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: response.data,
+                };
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    // if (
+                    //     await handleAuthenticationError({
+                    //         statusCode: error.response.status,
+                    //         error: error.response.data as APIError,
+                    //         returnValue: {} as File,
+                    //         networkError: false,
+                    //     })
+                    // ) {
+                    //     return await this.getProfilePicture(username);
+                    // }
+                    return {
+                        returnValue: {} as File,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as File,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async updateProfilePicture(username: string, picture: File): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .put(`/users/${username}/image`, picture)
+            .then((response: AxiosResponse) => {
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: true,
+                };
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    // if (
+                    //     await handleAuthenticationError({
+                    //         statusCode: error.response.status,
+                    //         error: error.response.data as APIError,
+                    //         returnValue: false,
+                    //         networkError: false,
+                    //     })
+                    // ) {
+                    //     return await this.updateProfilePicture(username, picture);
+                    // }
+                    return {
+                        returnValue: false,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: false,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
 }
