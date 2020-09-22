@@ -90,7 +90,7 @@ export async function privateKeyToPemString(privateKey: CryptoKey) {
     return result;
 }
 
-export async function encryptMessage(privateKey: CryptoKey, message: string) {
+export async function encryptMessage(privateKey: CryptoKey, plaintext: string): Promise<{ ciphertext: string; iv: string }> {
     const crypto = getCrypto();
     if (crypto == null) {
         return Promise.reject("No WebCrypto extension found");
@@ -103,25 +103,51 @@ export async function encryptMessage(privateKey: CryptoKey, message: string) {
         iv: iv,
     };
 
-    const ciphertext = await crypto.encrypt(algorithm, privateKey, stringToArrayBuffer(message));
+    const ciphertext = await crypto.encrypt(algorithm, privateKey, stringToArrayBuffer(plaintext));
 
     console.log(ciphertext);
 
-    const plaintext = await crypto.decrypt(algorithm, privateKey, ciphertext);
+    //const plaintext = await crypto.decrypt(algorithm, privateKey, ciphertext);
 
-    console.log(arrayBufferToString(plaintext));
+    //console.log(arrayBufferToString(plaintext));
+
+    return { ciphertext: arrayBufferToString(ciphertext), iv: arrayBufferToString(iv) };
 }
 
-export async function deriveKeyFromPassword(password: string): Promise<CryptoKey> {
+export async function decryptMessage(privateKey: CryptoKey, ciphertext: string, iv: string) {
     const crypto = getCrypto();
     if (crypto == null) {
         return Promise.reject("No WebCrypto extension found");
     }
 
+    const algorithm = {
+        name: "AES-GCM",
+        iv: stringToArrayBuffer(iv),
+    };
+
+    const plaintext = await crypto.decrypt(algorithm, privateKey, stringToArrayBuffer(ciphertext));
+
+    console.log(plaintext);
+
+    return arrayBufferToString(plaintext);
+}
+
+export async function deriveKeyFromPassword(password: string, salt?: string): Promise<{ key: CryptoKey; salt: string }> {
+    const crypto = getCrypto();
+    if (crypto == null) {
+        return Promise.reject("No WebCrypto extension found");
+    }
+
+    if (salt == undefined) {
+        const rand = window.crypto.getRandomValues(new Uint8Array(32)); // 256 bit salt
+        salt = arrayBufferToString(rand);
+        console.log(salt);
+    }
+
     // password used to derive key from key material
     const deriveAlgorithm = {
         name: "PBKDF2",
-        salt: stringToArrayBuffer("random-salt"),
+        salt: stringToArrayBuffer(salt),
         iterations: 100000,
         hash: "SHA-256",
     };
@@ -136,5 +162,5 @@ export async function deriveKeyFromPassword(password: string): Promise<CryptoKey
 
     const keyMaterial = <CryptoKey>await crypto.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
 
-    return <CryptoKey>(<unknown>crypto.deriveKey(deriveAlgorithm, keyMaterial, useAlgorithm, false, usages));
+    return { key: <CryptoKey>(<unknown>await crypto.deriveKey(deriveAlgorithm, keyMaterial, useAlgorithm, false, usages)), salt: salt };
 }

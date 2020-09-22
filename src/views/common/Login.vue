@@ -73,7 +73,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
-    import { createKeyPair, createCSR, encryptMessage, deriveKeyFromPassword } from "@/use/crypto/certificates";
+    import { createKeyPair, createCSR, encryptMessage, deriveKeyFromPassword, decryptMessage } from "@/use/crypto/certificates";
 
     export default {
         components: {},
@@ -92,7 +92,11 @@
                 console.log(await createCSR(pair, "testid"));
                 const symmKey = await deriveKeyFromPassword("SuperPasswort");
                 console.log(symmKey);
-                encryptMessage(symmKey, "bla");
+                const ciphertext = await encryptMessage(symmKey.key, "bla");
+
+                const plaintext = await decryptMessage(symmKey.key, ciphertext.ciphertext, ciphertext.iv);
+
+                console.log(plaintext);
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 
