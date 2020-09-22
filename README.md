@@ -31,11 +31,19 @@ Here, `/deploy` is the endpoint used for production builds and `/` is used for d
 You can configure the API url inside the vue config to change the endpoint at which this application will expect the backend server.
 
 By default, we support three endpoints, depending on the NODE_ENV variable of your shell. 
+On windows cmd:
 ```
 SET NODE_ENV=production  //to test against production cluster
 SET NODE_ENV=development  //to test against develop cluster
 SET NODE_ENV=experimental  //to test against experimental cluster
 ```
+On windows PS:
+```
+$env:NODE_ENV="production"
+$env:NODE_ENV="development"
+$env:NODE_ENV="experimental"
+```
+
 ## Build docker image
 Pre-built images for every version can be found on https://hub.docker.com/r/uc4official/ui-web
 
