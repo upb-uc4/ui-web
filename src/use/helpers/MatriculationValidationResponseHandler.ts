@@ -25,6 +25,11 @@ export default class MatriculationValidationResponseHandler implements ResponseH
     }
 
     handleResponse(response: APIResponse<boolean | MatriculationData>): boolean {
+        //TODO Remove following lines as they just avoid a temorary bug
+        if (200 <= response.statusCode && response.statusCode <= 300) {
+            return true;
+        }
+
         if (this.isMatriculationData(response.returnValue)) {
             return true;
         } else if (response.returnValue === true || response.returnValue === false) {
