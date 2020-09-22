@@ -3,7 +3,7 @@
         "strict": true,
         "target": "esnext",
         "lib": ["esnext", "dom"],
-        "types": ["jest", "node"],
+        "types": ["jest", "node", "@types/pkijs"],
         "baseUrl": "../../",
         "paths": {
             "@/*": ["src/*"]

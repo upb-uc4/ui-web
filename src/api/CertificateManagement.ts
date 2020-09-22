@@ -11,9 +11,9 @@ export default class CertificateManagement extends Common {
         super("/certificate-management");
     }
 
-    static async getVersion(): Promise<string> {
-        return super.getVersion("/certificate-management");
-    }
+    // static async getVersion(): Promise<string> {
+    //     return super.getVersion("/certificate-management");
+    // }
 
     async getCertificate(username: string): Promise<APIResponse<Certificate>> {
         return await this._axios
@@ -28,16 +28,16 @@ export default class CertificateManagement extends Common {
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as Certificate,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getCertificate(username);
-                    }
+                    // if (
+                    //     await handleAuthenticationError({
+                    //         statusCode: error.response.status,
+                    //         error: error.response.data as APIError,
+                    //         returnValue: {} as Certificate,
+                    //         networkError: false,
+                    //     })
+                    // ) {
+                    //     return await this.getCertificate(username);
+                    // }
                     return {
                         returnValue: {} as Certificate,
                         statusCode: error.response.status,
@@ -68,16 +68,16 @@ export default class CertificateManagement extends Common {
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as EnrollmentId,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getEnrollmentId(username);
-                    }
+                    //     if (
+                    //         await handleAuthenticationError({
+                    //             statusCode: error.response.status,
+                    //             error: error.response.data as APIError,
+                    //             returnValue: {} as EnrollmentId,
+                    //             networkError: false,
+                    //         })
+                    //     ) {
+                    //         return await this.getEnrollmentId(username);
+                    //    }
                     return {
                         returnValue: {} as EnrollmentId,
                         statusCode: error.response.status,
@@ -108,16 +108,16 @@ export default class CertificateManagement extends Common {
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as EncryptedPrivateKey,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getEncryptedPrivateKey(username);
-                    }
+                    // if (
+                    //     await handleAuthenticationError({
+                    //         statusCode: error.response.status,
+                    //         error: error.response.data as APIError,
+                    //         returnValue: {} as EncryptedPrivateKey,
+                    //         networkError: false,
+                    //     })
+                    // ) {
+                    //     return await this.getEncryptedPrivateKey(username);
+                    // }
                     return {
                         returnValue: {} as EncryptedPrivateKey,
                         statusCode: error.response.status,
@@ -150,16 +150,16 @@ export default class CertificateManagement extends Common {
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as Certificate,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.sendCertificateSigningRequest(username, encPrivKey);
-                    }
+                    // if (
+                    //     await handleAuthenticationError({
+                    //         statusCode: error.response.status,
+                    //         error: error.response.data as APIError,
+                    //         returnValue: {} as Certificate,
+                    //         networkError: false,
+                    //     })
+                    // ) {
+                    //     return await this.sendCertificateSigningRequest(username, encPrivKey);
+                    // }
                     return {
                         returnValue: {} as Certificate,
                         statusCode: error.response.status,
