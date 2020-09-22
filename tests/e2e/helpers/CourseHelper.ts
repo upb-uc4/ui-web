@@ -18,6 +18,7 @@ export function createCourse(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
     navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
     cy.wait(3000);
@@ -35,6 +36,7 @@ export function createCourseAdmin(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
     navigateToCourseListAdmin();
     cy.url().should("contain", "all-courses");
     cy.wait(3000);
@@ -65,7 +67,7 @@ export function deleteCourse(course: Course) {
     cy.get("#modal-wrapper").should("exist");
     cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
     cy.get('button[id="deleteCourseModalDelete"]').click();
-    cy.url().should("contain", "/course-management");
+    cy.url().should("contain", "/all-courses");
     cy.get("div").contains(course.courseName).should("not.exist");
 }
 

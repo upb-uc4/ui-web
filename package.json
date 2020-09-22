@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -9,12 +9,13 @@
         "lint-staged": "lint-staged",
         "test:unit": "jest",
         "test:e2e": "cypress run --browser chrome",
-        "test:e2e:headless": "cypress run --headless",
+        "test:e2e:headless": "cypress run --headless --browser chrome",
         "test": "npm run test:e2e:headless && jest",
         "cypress": "cypress open",
         "//": "Docker scripts from: https://github.com/expertly-simple/mrm-task-npm-docker",
         "predocker:build": "",
         "docker:build": "cross-conf-env docker image build . -t $npm_package_config_imageRepo:v$npm_package_version",
+        "docker:build:workflow": "cross-conf-env docker image build . -t $npm_package_config_imageRepo:v$npm_package_version -build-arg NODE_ENV=experimental",
         "postdocker:build": "npm run docker:tag",
         "docker:tag": " cross-conf-env docker image tag $npm_package_config_imageRepo:v$npm_package_version $npm_package_config_imageRepo:latest",
         "docker:run": "run-s -c docker:clean docker:runHelper",

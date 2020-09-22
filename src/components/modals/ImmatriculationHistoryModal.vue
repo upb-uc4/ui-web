@@ -39,7 +39,7 @@
 
             async function getOwnUserName() {
                 const store = useStore();
-                username.value = (await store.getters.loginData).username;
+                username.value = (await store.getters.user).username;
             }
 
             enum action {

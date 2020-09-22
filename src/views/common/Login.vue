@@ -74,6 +74,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
+    import AuthenticationManagement from "@/api/AuthenticationManagement";
 
     export default {
         components: {},
@@ -103,9 +104,9 @@
 
             async function login() {
                 const username = email.value;
-                const response = await UserManagement.login({ username: username, password: password.value });
+                const response = await AuthenticationManagement._getRefreshToken({ username: username, password: password.value });
 
-                const loginSuccess = loginResponseHandler.handleReponse(response);
+                const loginSuccess = loginResponseHandler.handleResponse(response);
 
                 if (loginSuccess) {
                     Router.push("/welcome");

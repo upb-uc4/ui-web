@@ -16,6 +16,10 @@ describe("Course creation, edition and deletion", () => {
     let lecturerAuth: Account;
 
     before(function () {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
         cy.fixture("course.json").then((c) => {
             course = c as Course;
             course.courseName += random;
@@ -36,6 +40,10 @@ describe("Course creation, edition and deletion", () => {
             (l as Account).username += random;
             secondLecturerAuth = l as Account;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as admin", () => {

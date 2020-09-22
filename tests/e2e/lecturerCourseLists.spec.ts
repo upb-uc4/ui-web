@@ -4,6 +4,7 @@ import Course from "@/api/api_models/course_management/Course";
 import { loginAndCreateCourse, loginAndDeleteCourse, deleteCourse } from "./helpers/CourseHelper";
 import { loginAndCreateLecturer, loginAndDeleteUser } from "./helpers/UserHelper";
 import { navigateToCourseListLecturer, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
+import { logout } from "./helpers/AuthHelper";
 
 let lecturer: Lecturer;
 let lecturerAuthUser: Account;
@@ -16,6 +17,11 @@ describe("Course List Behavior", function () {
     const random = Math.floor(Math.random() * 9999);
 
     before(function () {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("lecturer.json").then((l) => {
             (l as Lecturer).username += random;
             lecturer = l as Lecturer;
@@ -40,12 +46,18 @@ describe("Course List Behavior", function () {
         });
     });
 
+    after(() => {
+        logout();
+    });
+
     it("Login as Admin and create new lecturer", function () {
         loginAndCreateLecturer(lecturer, lecturerAuthUser, adminAuth);
+        logout();
     });
 
     it("Login as other lecturer and create course", function () {
         loginAndCreateCourse(course2, lecturerAuthUser);
+        logout();
     });
 
     it("Create an own course", function () {
@@ -74,10 +86,12 @@ describe("Course List Behavior", function () {
     });
 
     it("Delete the course of other lecturer", function () {
+        logout();
         loginAndDeleteCourse(course2, lecturerAuthUser);
     });
 
     it("Delete other lecturer account", function () {
+        logout();
         loginAndDeleteUser(lecturer, adminAuth);
     });
 });

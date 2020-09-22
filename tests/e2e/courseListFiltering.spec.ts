@@ -1,6 +1,6 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAsDefaultLecturer } from "./helpers/AuthHelper";
+import { loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { createCourse, deleteCourse } from "./helpers/CourseHelper";
 import { CourseType } from "@/entities/CourseType";
 
@@ -15,6 +15,11 @@ describe("Course Filtering", function () {
     let lecturerAuth: Account;
 
     before(function () {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("course.json").then((course) => {
             course1 = { ...(course as Course) };
             course1.courseName += random1;
@@ -32,6 +37,10 @@ describe("Course Filtering", function () {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as Lecturer", function () {

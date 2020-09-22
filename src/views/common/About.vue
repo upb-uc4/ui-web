@@ -16,6 +16,7 @@
                             <a
                                 class="text-blue-700 hover:text-blue-800 hover:underline"
                                 target="_blank"
+                                rel="noreferrer"
                                 href="https://cs.uni-paderborn.de/en/studies/degree-programs/computer-science/"
                             >
                                 Paderborn University.
@@ -26,6 +27,7 @@
                             <a
                                 class="text-blue-700 hover:text-blue-800 hover:underline"
                                 target="_blank"
+                                rel="noreferrer"
                                 href="https://uc4.cs.uni-paderborn.de/"
                             >
                                 uc4.cs.uni-paderborn.de.
@@ -63,6 +65,7 @@
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
+                                    rel="noreferrer"
                                     href="https://uc4.cs.uni-paderborn.de/"
                                 >
                                     <i class="mr-1 fas fa-globe" />
@@ -73,6 +76,7 @@
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
+                                    rel="noreferrer"
                                     href="https://github.com/upb-uc4"
                                 >
                                     <i class="mr-1 fab fa-github" />
@@ -83,6 +87,7 @@
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
+                                    rel="noreferrer"
                                     href="https://twitter.com/Uc4_Official"
                                 >
                                     <i class="mr-1 fab fa-twitter" />
@@ -93,6 +98,7 @@
                                 <a
                                     class="text-blue-700 hover:text-blue-800 hover:underline"
                                     target="_blank"
+                                    rel="noreferrer"
                                     href="mailto:uc4_official@web.de"
                                 >
                                     <i class="mr-1 fas fa-envelope"></i>
@@ -196,7 +202,7 @@
             }
 
             function reportProblem() {
-                window.open(bugReportURL.value, "_blank");
+                window.open(bugReportURL.value, "_blank", "noreferrer");
             }
             return {
                 busy,
