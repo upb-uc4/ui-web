@@ -45,9 +45,6 @@ describe("Matriculation management", () => {
     test("Get empty matriculation history", async () => {
         const response = await matriculationManagement.getMatriculationHistory(student.username);
         expect(response.statusCode).toEqual(404);
-        // const data: MatriculationData = response.returnValue;
-        // expect(data.matriculationId).toBe(student.matriculationId);
-        // expect(data.matriculationStatus).toHaveLength(0);
     });
 
     test("'Create' matriculation history", async () => {
