@@ -36,6 +36,7 @@ export function createCourseAdmin(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
     navigateToCourseListAdmin();
     cy.url().should("contain", "all-courses");
     cy.wait(3000);
