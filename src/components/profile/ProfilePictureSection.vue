@@ -106,7 +106,6 @@
 
             async function confirmPicture() {
                 busy.value = true;
-                console.log("fired");
                 const userManagement = new UserManagement();
                 const response = await userManagement.updateProfilePicture(props.username, selectedPicture.value);
                 const handler = new ProfilePictureUpdateResponseHandler();
