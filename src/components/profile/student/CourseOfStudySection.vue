@@ -19,10 +19,12 @@
                         placeholder="Matriculation-ID"
                     />
                 </div>
-                <div v-if="latest != ''" class="ml-4 flex flex-col w-1/2">
+                <div v-if="latest != ''" class="flex flex-col w-1/2 mt-3">
                     <label class="mb-3 text-sm font-medium text-gray-700 flex">
                         Latest Immatriculation (
-                        <button class="cursor-pointer text-sm font-medium navigation-link" @click="showHistory">View History</button>
+                        <button id="showHistoryButton" class="cursor-pointer text-sm font-medium navigation-link" @click="showHistory">
+                            View History
+                        </button>
                         )
                     </label>
                     <input id="latestImmatriculation" disabled class="form-input input-text" :value="latest" />
