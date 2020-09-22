@@ -1,8 +1,9 @@
-# [WIP v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (XXXX-XX-XX)
+# [v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-22)
 
 ## Feature
 - allow adding multiple FoSs at once when updating matriculation data [#466](https://github.com/upb-uc4/ui-web/pull/466)
 - improve the performance of our website (by a lot!) [#452](https://github.com/upb-uc4/ui-web/pull/452)
+- JWT authentication
 
 # [v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.8.0) (2020-09-14)
 

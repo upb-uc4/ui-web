@@ -2,9 +2,15 @@ name: Test Workflow
 
 on:
   push:
+    paths-ignore:
+      - README.md
+      - CHANGELOG.md
     branches:
       - develop
   pull_request:
+    paths-ignore:
+      - README.md
+      - CHANGELOG.md
     branches: 
       - develop
       - release
@@ -84,7 +90,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build server
-        run: export NODE_ENV=experimental && npm run build
+        run: export NODE_ENV=development && npm run build
       - name: Copy nginx conf
         run: mkdir -p temp && cp .github/nginx.conf temp/nginx.conf
       - name: Run nginx to reverse proxy for e2e tests
