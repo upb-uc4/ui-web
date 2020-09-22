@@ -1,15 +1,17 @@
 <template>
-    <router-link :to="{ name: targetRouteName }">
+    <button @click="onClick">
         <div class="flex items-center">
             <i class="fas text-lg text-gray-100 w-4" :class="iconClass" />
             <span class="ml-4">
                 <span class="block text-sm text-gray-100 flex items-center">{{ title }}</span>
             </span>
         </div>
-    </router-link>
+    </button>
 </template>
 
 <script lang="ts">
+    import Router from "@/use/router";
+
     export default {
         name: "GenericMobileMenuItem",
         props: {
@@ -22,9 +24,26 @@
                 type: String,
             },
             targetRouteName: {
-                required: true,
+                required: false,
                 type: String,
+                default: undefined,
             },
+            action: {
+                required: false,
+                type: Function,
+                default: () => {},
+            },
+        },
+
+        setup(props: any) {
+            function onClick() {
+                props.action();
+                if (props.targetRouteName != undefined) {
+                    Router.push({ name: props.targetRouteName });
+                }
+            }
+
+            return { onClick };
         },
     };
 </script>

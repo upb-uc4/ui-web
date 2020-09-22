@@ -140,7 +140,7 @@
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
                 const response = await matriculationManagement.updateMatriculationData(props.username, matriculationEntries);
                 const responseHandler = new MatriculationValidationResponseHandler();
-                const result = responseHandler.handleReponse(response);
+                const result = responseHandler.handleResponse(response);
                 if (result) {
                     error = false;
                     semesterType.value = "";

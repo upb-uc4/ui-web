@@ -7,12 +7,7 @@ import Admin from "@/api/api_models/user_management/Admin";
 export const state = {
     apiUrl: "",
     user: {} as Student | Lecturer | Admin,
-    myRole: Role.NONE,
     loggedIn: false,
-    loginData: {
-        username: "",
-        password: "",
-    },
     modal: {} as any,
     privateKey: {} as CryptoKey,
 };

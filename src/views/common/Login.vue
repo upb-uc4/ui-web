@@ -2,6 +2,7 @@
     <div>
         <div class="container flex flex-col h-auto max-w-full md:mt-32 lg:flex-row lg:items-center">
             <form method="POST" action="" class="flex flex-col items-center w-full mx-auto xl:w-3/4" @submit.prevent="login">
+                <img src="../../assets/logo/logo_long_title_right.svg" class="md:w-1/3 w-1/2 mt-3" />
                 <h1 class="mt-2 mb-10 text-4xl font-bold text-center text-gray-900 lg:text-5xl">Login to Your Account</h1>
 
                 <div class="items-center justify-center flex-auto w-full mx-4 lg:w-3/5">
@@ -73,6 +74,7 @@
     import UserManagement from "@/api/UserManagement";
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
+    import AuthenticationManagement from "@/api/AuthenticationManagement";
     import { createKeyPair, createCSR, encryptMessage, deriveKeyFromPassword, decryptMessage } from "@/use/crypto/certificates";
 
     export default {
@@ -114,9 +116,9 @@
 
             async function login() {
                 const username = email.value;
-                const response = await UserManagement.login({ username: username, password: password.value });
+                const response = await AuthenticationManagement._getRefreshToken({ username: username, password: password.value });
 
-                const loginSuccess = loginResponseHandler.handleReponse(response);
+                const loginSuccess = loginResponseHandler.handleResponse(response);
 
                 if (loginSuccess) {
                     Router.push("/welcome");

@@ -2,7 +2,7 @@
     <base-menu>
         <template #hook>
             <div class="flex items-center">
-                <div class="mr-2 text-gray-100 font-semibold tracking-wide">
+                <div v-if="!busy" class="mr-2 text-gray-100 font-semibold tracking-wide">
                     {{ user.firstName }}
                 </div>
                 <img class="rounded-full w-10 h-10 ml-2" src="@/assets/blank_profile_picture.png" alt="profile_image" />
@@ -21,6 +21,8 @@
     import BaseMenu from "../BaseMenu.vue";
     import MenuBody from "./ProfileMenuBody.vue";
     import { useStore } from "@/use/store/store";
+    import { onBeforeMount, ref } from "vue";
+    import User from "@/api/api_models/user_management/User";
 
     export default {
         components: {
@@ -29,9 +31,16 @@
         },
 
         setup() {
-            const store = useStore();
-            let user = store.getters.user;
-            return { user };
+            let user = ref({} as User);
+            let busy = ref(true);
+
+            onBeforeMount(async () => {
+                const store = useStore();
+                user.value = await store.getters.user;
+                busy.value = false;
+            });
+
+            return { user, busy };
         },
     };
 </script>

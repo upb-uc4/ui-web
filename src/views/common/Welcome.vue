@@ -21,6 +21,7 @@
                 .
             </h2>
         </div>
+        <img src="../../assets/logo/logo_long_title_bottom.svg" class="mt-24 lg:w-1/3" />
     </div>
 </template>
 <script lang="ts">
@@ -60,7 +61,7 @@
             async function getName() {
                 busy.value = true;
                 let store = useStore();
-                name.value = await store.getters.user.firstName;
+                name.value = (await store.getters.user).firstName;
                 busy.value = false;
             }
 

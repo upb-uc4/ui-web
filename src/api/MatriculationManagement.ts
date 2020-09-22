@@ -5,6 +5,7 @@ import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
 import { useStore } from "@/use/store/store";
 import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
+import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class MatriculationManagement extends Common {
     constructor() {
@@ -15,68 +16,94 @@ export default class MatriculationManagement extends Common {
         username: string,
         matriculation: SubjectMatriculation[]
     ): Promise<APIResponse<boolean | MatriculationData>> {
-        let result: APIResponse<boolean | MatriculationData> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
         let payload = { matriculation: matriculation };
 
-        await this._axios
-            .put(`/${username}`, payload, await this._authHeader)
+        return await this._axios
+            .put(`/${username}`, payload)
             .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                if (response.status == 201) {
-                    result.returnValue = response.data as MatriculationData;
-                } else {
-                    result.returnValue = true;
-                }
+                return {
+                    statusCode: response.status,
+                    returnValue: response.status == 201 ? (response.data as MatriculationData) : true,
+                    networkError: false,
+                    error: {} as APIError,
+                };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
-                    result.error = error.response.data as APIError;
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.updateMatriculationData(username, matriculation);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: false,
+                        networkError: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: false,
+                        networkError: true,
+                    };
                 }
             });
-        return result;
     }
 
     async getMatriculationHistory(username: string): Promise<APIResponse<MatriculationData>> {
-        let result: APIResponse<MatriculationData> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: {} as MatriculationData,
-            statusCode: 0,
-        };
-
-        await this._axios
-            .get(`/history/${username}`, await this._authHeader)
+        return await this._axios
+            .get(`/history/${username}`)
             .then((response: AxiosResponse) => {
-                result.returnValue = response.data as MatriculationData;
-                result.statusCode = response.status;
+                return {
+                    returnValue: response.data as MatriculationData,
+                    statusCode: response.status,
+                    error: {} as APIError,
+                    networkError: false,
+                };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getMatriculationHistory(username);
+                    }
+                    return {
+                        returnValue: {} as MatriculationData,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        returnValue: {} as MatriculationData,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
                 }
             });
-
-        return result;
     }
 
     async getOwnMatriculationHistory(): Promise<APIResponse<MatriculationData>> {
         const store = useStore();
-        const username = (await store.getters.loginData).username;
+        const username = (await store.getters.user).username;
         return this.getMatriculationHistory(username);
     }
 
-    static async getVersion(): Promise<String> {
+    static async getVersion(): Promise<string> {
         return super.getVersion("/matriculation-management");
     }
 }

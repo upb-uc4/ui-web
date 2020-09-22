@@ -8,15 +8,13 @@ import { MutationTypes } from "./mutation-types";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
+import AuthenticationManagement from "@/api/AuthenticationManagement";
 import { getCrypto } from "pkijs/src/common";
 //import CertificateManagement from '@/api/CertificateManagement.ts';
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
-    loginData(state: State): Promise<{ username: string; password: string }>;
-    syncLoginData(state: State): { username: string; password: string };
-    role(state: State): Promise<Role>;
-    user(state: State): Student | Lecturer | Admin;
+    user(state: State): Promise<Student | Lecturer | Admin>;
     loggedIn(state: State): boolean;
     privateKey(state: State): Promise<CryptoKey>;
 };
@@ -25,32 +23,22 @@ export const getters: GetterTree<State, State> & Getters = {
     loggedIn: (state) => {
         return state.loggedIn;
     },
-    loginData: async (state) => {
-        if (state.loginData.username == "" && state.loginData.password == "") {
-            let modal = state.modal;
-            const success = await modal();
+    user: async (state) => {
+        if (state.user.username == undefined || state.user.username == "") {
+            // get own user
+            await AuthenticationManagement._getLoginToken();
+
+            if (state.user.username == undefined || state.user.username == "") {
+                // there was no refresh token
+                let modal = state.modal;
+                await modal();
+            }
         }
-        return state.loginData;
-    },
-    syncLoginData: (state) => {
-        return state.loginData;
-    },
-    user: (state) => {
         return state.user;
     },
     role: async (state) => {
-        if (state.myRole == Role.NONE) {
-            const store = useStore();
-            const username = (await store.getters.loginData).username;
-            if (username == "") {
-                return Role.NONE;
-            }
-            const usermanagement = new UserManagement();
-            const response = await usermanagement.getRole(username);
-            const role: Role = new GenericResponseHandler().handleReponse(response);
-            store.commit(MutationTypes.SET_ROLE, role);
-        }
-        return state.myRole;
+        const store = useStore();
+        return (await store.getters.user).role;
     },
     privateKey: async (state) => {
         if (!("type" in state.privateKey)) {

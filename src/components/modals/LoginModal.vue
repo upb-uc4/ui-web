@@ -56,6 +56,7 @@
     import { ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import { useStore } from "@/use/store/store";
+    import AuthenticationManagement from "@/api/AuthenticationManagement";
 
     export default {
         components: {
@@ -91,8 +92,8 @@
             }
 
             async function login() {
-                const response = await UserManagement.login({ username: email.value, password: password.value });
-                if (loginResponseHandler.handleReponse(response)) {
+                const response = await AuthenticationManagement._getRefreshToken({ username: email.value, password: password.value });
+                if (loginResponseHandler.handleResponse(response)) {
                     close(action.LOGIN);
                 } else {
                     error.value = true;

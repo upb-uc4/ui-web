@@ -1,8 +1,9 @@
 import ResponseHandler from "./ResponseHandler";
+import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
 
 export default class GenericResponseHandler implements ResponseHandler<boolean> {
-    handleReponse<T>(response: APIResponse<T>): T {
+    handleResponse<T>(response: APIResponse<T>): T {
         if (response.networkError) {
             //TODO show toast
             console.log("Network Error");
@@ -14,7 +15,7 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
                 return response.returnValue;
             }
             case 401: {
-                alert("Authentication failed. Please login again!");
+                handleAuthenticationError(response);
                 return response.returnValue;
             }
             case 403: {
