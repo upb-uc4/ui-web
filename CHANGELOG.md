@@ -3,7 +3,8 @@
 ## Feature
 - allow adding multiple FoSs at once when updating matriculation data [#466](https://github.com/upb-uc4/ui-web/pull/466)
 - improve the performance of our website (by a lot!) [#452](https://github.com/upb-uc4/ui-web/pull/452)
-- JWT authentication
+- JWT authentication [#437](https://github.com/upb-uc4/ui-web/pull/437)
+- create logo and add it to website and application [#479](https://github.com/upb-uc4/ui-web/pull/479) (Website: [#15](https://github.com/upb-uc4/website/pull/15))
 
 # [v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.8.0) (2020-09-14)
 

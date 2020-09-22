@@ -3,7 +3,7 @@
         <loading-spinner />
     </div>
     <div v-else class="flex flex-col items-center justify-center w-full mt-20">
-        <h1 class="text-4xl font-semibold text-blue-800">University Credits 4.0</h1>
+        <img src="../../assets/logo/logo_long_title_right.svg" alt="" />
         <div class="flex flex-col items-center w-full mt-5">
             <section class="w-full py-4">
                 <div class="">
