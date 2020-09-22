@@ -27,7 +27,7 @@
             </div>
             <div class="flex-none">
                 <button
-                    id="addImmatirculationData"
+                    id="addImmatriculationData"
                     :disabled="!validSelection"
                     class="btn btn-green-primary-500 px-3 py-3"
                     @click="updateImmatriculation"
