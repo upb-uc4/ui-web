@@ -47,7 +47,7 @@
                 :latest="account.student.latestImmatriculation"
             />
             <profile-picture-section
-                v-model:picture="account.user.picture"
+                v-model:picture="picture"
                 v-model:changed="pictureChanged"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -146,6 +146,7 @@
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
     import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
+    import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -190,7 +191,7 @@
             let immatriculationHasChange = ref(false);
 
             const errorBag = ref(new ErrorBag());
-
+            const picture = ref();
             const pictureChanged = ref(false);
 
             let isLecturer = computed(() => {
@@ -230,6 +231,7 @@
             onBeforeMount(() => {
                 if (props.editMode) {
                     getUser();
+                    getPicture();
                 }
             });
 
@@ -257,6 +259,22 @@
                         account.admin = result as Admin;
                         initialAccount.admin = JSON.parse(JSON.stringify(account.admin));
                     }
+                }
+                busy.value = false;
+            }
+
+            async function getPicture() {
+                busy.value = true;
+                const userManagement = new UserManagement();
+                const response = await userManagement.getProfilePicture(props.username);
+                const handler = new GenericResponseHandler();
+                const result = handler.handleReponse(response);
+                if (result.arrayBuffer != undefined) {
+                    picture.value = result;
+                } else {
+                    //TODO Show Toast
+                    console.log("Error: Loading Profile Picture Failed");
+                    picture.value = "";
                 }
                 busy.value = false;
             }
@@ -368,6 +386,9 @@
                 const response = await userManagement.updateUser(adaptedUser);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleReponse(response);
+                if (pictureChanged.value && !(picture.value == "")) {
+                    success.value = success.value && (await updateProfilePicture());
+                }
                 emit("update:success", success.value);
 
                 if (success.value) {
@@ -375,6 +396,19 @@
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
                     await scrollToTopError(errorBag.value.errors);
+                }
+            }
+
+            async function updateProfilePicture(): Promise<boolean> {
+                const userManagement = new UserManagement();
+                const response = await userManagement.updateProfilePicture(props.username, picture.value);
+                const handler = new ProfilePictureUpdateResponseHandler();
+                const result = await handler.handleReponse(response);
+                if (result) {
+                    return true;
+                } else {
+                    console.log("Error: Uploading profile picture failed!");
+                    return false;
                 }
             }
 
@@ -413,6 +447,7 @@
                 unsavedChangesModal,
                 errorBag: errorBag,
                 immatriculationHasChange,
+                picture,
                 pictureChanged,
             };
         },
