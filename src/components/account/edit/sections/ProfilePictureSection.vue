@@ -47,14 +47,20 @@
                 type: String,
                 required: true,
             },
+            changed: {
+                type: Boolean,
+                required: true,
+            },
         },
-        emits: ["update:picture"],
+        emits: ["update:picture", "update:changed"],
         setup(props: any, { emit }: any) {
             const selectedPicture = ref(props.picture);
             const fallbackPicture = cloneDeep(props.picture);
 
             const pictureChanged = computed(() => {
-                return selectedPicture.value !== fallbackPicture;
+                const value = selectedPicture.value !== fallbackPicture;
+                emit("update:changed", value);
+                return value;
             });
 
             function triggerFileUpload() {

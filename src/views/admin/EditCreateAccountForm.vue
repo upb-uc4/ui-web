@@ -46,7 +46,12 @@
                 :username="account.user.username"
                 :latest="account.student.latestImmatriculation"
             />
-            <profile-picture-section v-model:picture="account.user.picture" :edit-mode="editMode" :error-bag="errorBag" />
+            <profile-picture-section
+                v-model:picture="account.user.picture"
+                v-model:changed="pictureChanged"
+                :edit-mode="editMode"
+                :error-bag="errorBag"
+            />
             <section class="py-8 border-t-2 border-gray-400 lg:mt-8">
                 <div class="justify-between hidden sm:flex">
                     <div class="flex items-center justify-start">
@@ -186,6 +191,8 @@
 
             const errorBag = ref(new ErrorBag());
 
+            const pictureChanged = ref(false);
+
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
             });
@@ -265,6 +272,8 @@
                     account.user.lastName != initialAccount.user.lastName ||
                     account.user.email != initialAccount.user.email ||
                     account.user.phoneNumber != initialAccount.user.phoneNumber ||
+                    //profile picture
+                    pictureChanged.value ||
                     //default user birthdate from the form
                     account.user.birthDate != initialAccount.user.birthDate ||
                     //default user address
@@ -404,6 +413,7 @@
                 unsavedChangesModal,
                 errorBag: errorBag,
                 immatriculationHasChange,
+                pictureChanged,
             };
         },
     };
