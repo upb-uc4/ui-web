@@ -70,7 +70,7 @@
                 const userManagement = new UserManagement();
                 const response = await userManagement.getProfilePicture(props.username);
                 const handler = new GenericResponseHandler();
-                const result = handler.handleReponse(response);
+                const result = handler.handleResponse(response);
                 if (result.arrayBuffer != undefined) {
                     selectedPicture.value = result;
                     fallbackPicture = selectedPicture.value;
@@ -109,7 +109,7 @@
                 const userManagement = new UserManagement();
                 const response = await userManagement.updateProfilePicture(props.username, selectedPicture.value);
                 const handler = new ProfilePictureUpdateResponseHandler();
-                const result = await handler.handleReponse(response);
+                const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture = selectedPicture.value;
                 } else {

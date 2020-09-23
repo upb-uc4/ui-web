@@ -268,7 +268,7 @@
                 const userManagement = new UserManagement();
                 const response = await userManagement.getProfilePicture(props.username);
                 const handler = new GenericResponseHandler();
-                const result = handler.handleReponse(response);
+                const result = handler.handleResponse(response);
                 if (result.arrayBuffer != undefined) {
                     picture.value = result;
                 } else {
@@ -385,7 +385,7 @@
 
                 const response = await userManagement.updateUser(adaptedUser);
                 const handler = new ValidationResponseHandler();
-                success.value = handler.handleReponse(response);
+                success.value = handler.handleResponse(response);
                 if (pictureChanged.value && !(picture.value == "")) {
                     success.value = success.value && (await updateProfilePicture());
                 }
@@ -403,7 +403,7 @@
                 const userManagement = new UserManagement();
                 const response = await userManagement.updateProfilePicture(props.username, picture.value);
                 const handler = new ProfilePictureUpdateResponseHandler();
-                const result = await handler.handleReponse(response);
+                const result = await handler.handleResponse(response);
                 if (result) {
                     return true;
                 } else {

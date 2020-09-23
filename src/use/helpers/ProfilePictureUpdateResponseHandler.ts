@@ -2,7 +2,7 @@ import ResponseHandler from "./ResponseHandler";
 import APIResponse from "@/api/helpers/models/APIResponse";
 
 export default class ProfilePictureUpdateResponseHandler implements ResponseHandler<boolean> {
-    handleReponse<T>(response: APIResponse<T>): T {
+    handleResponse<T>(response: APIResponse<T>): T {
         if (response.networkError) {
             //TODO show toast
             console.log("Network Error");
