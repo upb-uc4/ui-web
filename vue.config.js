@@ -31,24 +31,28 @@ module.exports = {
     },
     //publicPath: process.env.NODE_ENV === "production" ? "/deploy/" : "",
     publicPath: "/deploy/",
-    devServer: {
-        port: 443,
-        https: {
-            key: fs.readFileSync("./certs/server-key.pem"),
-            cert: fs.readFileSync("./certs/server-cert.pem"),
-        },
-        compress: true,
-        proxy: {
-            "/api1/": {
-                target: endpoint,
-                pathRewrite: { "^/api1": "" },
-                changeOrigin: true,
-            },
-            "/api2/": {
-                target: endpoint,
-                pathRewrite: { "^/api2": "" },
-                changeOrigin: true,
-            },
-        },
-    },
+
+    devServer:
+        process.env.NODE_ENV != "production"
+            ? {
+                  port: 443,
+                  https: {
+                      key: fs.readFileSync("./certs/server-key.pem"),
+                      cert: fs.readFileSync("./certs/server-cert.pem"),
+                  },
+                  compress: true,
+                  proxy: {
+                      "/api1/": {
+                          target: endpoint,
+                          pathRewrite: { "^/api1": "" },
+                          changeOrigin: true,
+                      },
+                      "/api2/": {
+                          target: endpoint,
+                          pathRewrite: { "^/api2": "" },
+                          changeOrigin: true,
+                      },
+                  },
+              }
+            : {},
 };
