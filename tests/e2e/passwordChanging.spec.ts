@@ -1,7 +1,7 @@
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { loginAndCreateStudent, loginAndDeleteUser } from "./helpers/UserHelper";
-import { loginAsUser } from "./helpers/AuthHelper";
+import { loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
 
 describe("Change password", () => {
@@ -11,9 +11,20 @@ describe("Change password", () => {
     let adminAuth: Account;
 
     before(() => {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("student.json").then((s) => {
             (s as Student).username += random;
             student = s as Student;
+            var today = new Date();
+            var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
+            var dayPadded = ("00" + today.getDate()).substr(-2);
+            var random2 = Math.floor(Math.random() * 999).toString();
+            var randomPadded = ("000" + random2).substr(-3);
+            student.matriculationId = monthPadded + dayPadded + randomPadded;
         });
 
         cy.fixture("studentAuthUser.json").then((s) => {
@@ -26,11 +37,16 @@ describe("Change password", () => {
         });
     });
 
+    after(() => {
+        logout();
+    });
+
     it("Create new student", () => {
         loginAndCreateStudent(student, studentAuthUser, adminAuth);
     });
 
     it("Login with new student account", () => {
+        logout();
         loginAsUser(studentAuthUser);
     });
 
@@ -111,10 +127,12 @@ describe("Change password", () => {
     });
 
     it("Login with new password", () => {
+        logout();
         loginAsUser(studentAuthUser);
     });
 
     it("Delete user", () => {
+        logout();
         loginAndDeleteUser(student, adminAuth);
     });
 });

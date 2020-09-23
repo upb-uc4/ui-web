@@ -16,7 +16,7 @@ import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
-import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
+import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListLecturer, navigateToAccountList } from "./helpers/NavigationHelper";
 import { createNewStudent, createNewLecturer, createNewAdmin, deleteUser } from "./helpers/UserHelper";
 
@@ -34,6 +34,11 @@ let lecturerAuth: Account;
 
 describe("Account creation, edition and deletion", function () {
     before(function () {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("admin.json").then((a) => {
             (a as Admin).username += random;
             admin = a as Admin;
@@ -55,6 +60,12 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("student.json").then((s) => {
             (s as Student).username += random;
             student = s as Student;
+            var today = new Date();
+            var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
+            var dayPadded = ("00" + today.getDate()).substr(-2);
+            var random2 = Math.floor(Math.random() * 999).toString();
+            var randomPadded = ("000" + random2).substr(-3);
+            student.matriculationId = monthPadded + dayPadded + randomPadded;
         });
         cy.fixture("studentAuthUser.json").then((s) => {
             (s as Account).username += random;
@@ -70,6 +81,10 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        logout();
     });
 
     it("Login as admin", function () {
@@ -178,11 +193,7 @@ describe("Account creation, edition and deletion", function () {
     it("Duplicate username detected", () => {
         cy.get("input[id='userName']").type("student");
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='userName']")
-            .siblings()
-            .get("p")
-            .should("have.class", "error-message")
-            .and("contain", "Username is already taken");
+        cy.get("input[id='userName']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='userName']").clear();
     });
     // create student account

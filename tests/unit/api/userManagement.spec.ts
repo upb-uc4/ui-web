@@ -6,6 +6,7 @@ import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { readFileSync } from "fs";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 var userManagement: UserManagement;
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
@@ -22,12 +23,10 @@ const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.jso
 jest.setTimeout(30000);
 
 beforeAll(async () => {
-    const success = await UserManagement.login(adminAuth);
-    store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
-    store.commit(MutationTypes.SET_LOGGEDIN, true);
-    store.commit(MutationTypes.SET_ROLE, "Admin");
+    const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
+
     userManagement = new UserManagement();
-    expect(success.returnValue).toBe(true);
+    expect(success.returnValue.login).not.toEqual("");
 });
 
 test("Create user", async () => {
@@ -45,21 +44,21 @@ test("Get specific user", async () => {
 
 test("Get lecturer user", async () => {
     var result = false;
-    const user = await userManagement.getLecturer(lecturerAuth.username);
+    const user = await userManagement.getSpecificUser(lecturerAuth.username);
     result = user.returnValue.username == lecturerAuth.username;
     expect(result).toBe(true);
 });
 
 test("Get admin user", async () => {
     var result = false;
-    const user = await userManagement.getAdmin(adminAuth.username);
+    const user = await userManagement.getSpecificUser(adminAuth.username);
     result = user.returnValue.username == adminAuth.username;
     expect(result).toBe(true);
 });
 
 test("Get student user", async () => {
     var result = false;
-    const user = await userManagement.getStudent(studentAuth.username);
+    const user = await userManagement.getSpecificUser(studentAuth.username);
     result = user.returnValue.username == studentAuth.username;
     expect(result).toBe(true);
 });

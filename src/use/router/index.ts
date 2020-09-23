@@ -15,6 +15,7 @@ import AboutPage from "@/views/common/About.vue";
 import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 import { Role } from "@/entities/Role";
 import { useStore } from "@/use/store/store";
+import AuthenticationManagement from "@/api/AuthenticationManagement";
 import { defineAsyncComponent } from "vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -202,8 +203,13 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     window.document.title = to.meta && to.meta.title ? to.meta.title : "UC4";
 
+    const store = useStore();
+
+    if (!(await store.getters.loggedIn)) {
+        await AuthenticationManagement._getLoginToken();
+    }
+
     if (to.name == "login" || to.name == "home") {
-        const store = useStore();
         if (await store.getters.loggedIn) {
             // We need to explicitly set the title here, because the component is not rendered again if going back from "/welcome" to "/login"
             window.document.title = "Welcome" + suffix;

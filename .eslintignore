@@ -3,3 +3,4 @@ cypress/*
 LICENSE
 src/assets/*
 tests/testOverview.md
+certs/*
