@@ -1,13 +1,13 @@
 <template>
-    <header class="flex items-center justify-between px-4 bg-gray-800 lg:px-8 md:h-20 min-h-20">
+    <header class="flex items-center justify-between bg-gray-800 border-gray-800 md:h-20 min-h-20">
         <div class="flex items-center w-full">
-            <div class="flex items-center pr-8 mr-8 border-r-4 border-gray-100">
-                <button class="flex text-3xl font-semibold tracking-wider text-gray-100 outline-none" @click="routeLogo">UC4</button>
+            <div class="items-center h-20 px-5 rounded-lg cursor-pointer outline-none" title="Home" @click="routeLogo">
+                <img src="../../../../../assets/logo/logo.svg" class="h-full py-3" />
             </div>
 
-            <div class="flex w-full">
+            <div class="flex w-full rounded-lg pl-8 lg:pr-8 pr-4">
                 <nav class="items-center justify-between w-full md:flex" :class="{ hidden: !isBurgerMenuOpen }">
-                    <ul class="justify-between pt-2 font-semibold tracking-wider text-gray-100 md:flex">
+                    <ul class="justify-between pt-2 font-semibold tracking-wider text-gray-200 md:flex">
                         <slot></slot>
                         <li>
                             <router-link id="routeAbout" :to="{ name: 'about' }" class="navbar-menu">About</router-link>
@@ -20,7 +20,7 @@
                 </nav>
             </div>
 
-            <button type="button" class="block text-gray-100 md:hidden hover:text-gray-500 focus:outline-none" @click="toggleBurgerMenu">
+            <button type="button" class="block text-gray-200 md:hidden hover:text-gray-300 focus:outline-none" @click="toggleBurgerMenu">
                 <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
                     <path
                         v-if="isBurgerMenuOpen"

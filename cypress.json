@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://localhost:8080/",
+    "baseUrl": "https://localhost/deploy/",
     "defaultCommandTimeout": 8000,
     "integrationFolder": "tests/e2e/",
     "supportFile": "tests/e2e/support/index.ts",
@@ -37,6 +37,9 @@
             "serverPort": 2121,
             "updateSnapshots": false,
             "backgroundBlend": "difference"
-        }
+        },
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+        "NODE_EXTRA_CA_CERTS": "certs/server-cert.pem",
+        "chromeWebSecurity": false
     }
 }

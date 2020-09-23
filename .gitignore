@@ -28,7 +28,6 @@ Thumbs.db
 db.json
 *.log
 node_modules/
-public/
 .deploy*/
 src/_drafts
 
@@ -40,3 +39,6 @@ coverage/
 cypress/screenshots/
 cypress/videos/
 cypress/fixtures/
+
+# localhost tls certificate + key
+certs/

@@ -121,7 +121,7 @@
                 const userManagement: UserManagement = new UserManagement();
                 const handler = new GenericResponseHandler();
                 const response = await userManagement.getAllUsersByRole(Role.LECTURER);
-                const result = handler.handleReponse(response);
+                const result = handler.handleResponse(response);
                 if (result) {
                     lecturers.value = result as Lecturer[];
                     if (props.lecturerId != "") {

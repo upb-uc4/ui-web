@@ -1,19 +1,22 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "@/views/common/Login.vue";
-import StudentCourseView from "@/views/student/StudentCourseList.vue";
-import AllCourseView from "@/views/shared/CourseList.vue";
-import AdminAccountListView from "@/views/admin/AdminAccountList.vue";
-import CourseFormSuspenseWrapper from "@/views/shared/EditCreateCourseForm.vue";
-import AccountFormSuspenseWrapper from "@/views/admin/EditCreateAccountForm.vue";
+import LoadingComponent from "@/components/common/loading/Spinner.vue";
+const LoginView = () => import("@/views/common/Login.vue");
+const StudentCourseView = () => import("@/views/student/StudentCourseList.vue");
+const AllCourseView = () => import("@/views/shared/CourseList.vue");
+const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
+const CourseFormSuspenseWrapper = () => import("@/views/shared/EditCreateCourseForm.vue");
+const AccountFormSuspenseWrapper = () => import("@/views/admin/EditCreateAccountForm.vue");
 import Redirect from "@/views/errors/403.vue";
-import ProfileWrapper from "@/components/profile/Wrapper.vue";
-import Settings from "@/views/common/Settings.vue";
+const ProfileWrapper = () => import("@/components/profile/Wrapper.vue");
+const Settings = () => import("@/views/common/Settings.vue");
 import PageNotFound from "@/views/errors/404.vue";
 import WelcomePage from "@/views/common/Welcome.vue";
 import AboutPage from "@/views/common/About.vue";
 import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 import { Role } from "@/entities/Role";
 import { useStore } from "@/use/store/store";
+import AuthenticationManagement from "@/api/AuthenticationManagement";
+import { defineAsyncComponent } from "vue";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -200,8 +203,13 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     window.document.title = to.meta && to.meta.title ? to.meta.title : "UC4";
 
+    const store = useStore();
+
+    if (!(await store.getters.loggedIn)) {
+        await AuthenticationManagement._getLoginToken();
+    }
+
     if (to.name == "login" || to.name == "home") {
-        const store = useStore();
         if (await store.getters.loggedIn) {
             // We need to explicitly set the title here, because the component is not rendered again if going back from "/welcome" to "/login"
             window.document.title = "Welcome" + suffix;

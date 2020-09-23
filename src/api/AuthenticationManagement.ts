@@ -4,29 +4,124 @@ import { useStore } from "@/use/store/store";
 import { Role } from "@/entities/Role";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
-import ValidationError from "./api_models/errors/ValidationError";
 import { Account } from "@/entities/Account";
 import { MutationTypes } from "@/use/store/mutation-types";
+import UserManagement from "./UserManagement";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import axios from "axios";
+import handleAuthenticationError from "./AuthenticationHelper";
+import User from "./api_models/user_management/User";
 
 export default class AuthenticationManagement extends Common {
     constructor() {
         super("/authentication-management");
     }
 
-    static async getVersion(): Promise<String> {
+    static async getVersion(): Promise<string> {
         return super.getVersion("/authentication-management");
     }
 
     async changeOwnPassword(password: string): Promise<APIResponse<boolean>> {
         const store = useStore();
-        const username = (await store.getters.loginData).username;
-        const role = await store.getters.role;
+        const user = await store.getters.user;
+        const username = user.username;
+        const role = user.role;
         const acc: Account = {
             username: username,
             password: password,
             role: role as Role,
         };
 
+        return await this._axios
+            .put(`/users/${username}`, acc)
+            .then((response: AxiosResponse) => {
+                store.commit(MutationTypes.SET_LOGGEDIN, true);
+                return {
+                    returnValue: true,
+                    statusCode: response.status,
+                    error: {} as APIError,
+                    networkError: false,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.changeOwnPassword(password);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: false,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: false,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    static async _getLoginToken(): Promise<APIResponse<boolean>> {
+        const instance = axios.create({
+            baseURL: process.env.VUE_APP_API_BASE_URL + "/authentication-management",
+            headers: {
+                "Accept": "*/*",
+                "Content-Type": "application/json;charset=UTF-8",
+            },
+            withCredentials: true,
+        });
+
+        return await instance
+            .get(`/refresh`)
+            .then(async (response: AxiosResponse) => {
+                const store = useStore();
+
+                store.commit(MutationTypes.SET_LOGGEDIN, true);
+                const userManagement = new UserManagement();
+                const handler = new GenericResponseHandler();
+                const userResponse = await userManagement.getSpecificUser(response.data.username);
+                if (response.status == 200) {
+                    const user = handler.handleResponse(userResponse);
+                    store.commit(MutationTypes.SET_USER, user);
+                }
+                return {
+                    error: {} as APIError,
+                    statusCode: response.status,
+                    returnValue: true,
+                    networkError: false,
+                };
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    return {
+                        error: error.response.data as APIError,
+                        statusCode: error.response.status,
+                        returnValue: true,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        error: {} as APIError,
+                        statusCode: 0,
+                        returnValue: true,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async logout(): Promise<APIResponse<boolean>> {
         let result: APIResponse<boolean> = {
             error: {} as APIError,
             networkError: false,
@@ -34,28 +129,84 @@ export default class AuthenticationManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios
-            .put(`/users/${username}`, acc, await this._authHeader)
+        return await this._axios
+            .get(`/logout`)
             .then((response: AxiosResponse) => {
-                result.returnValue = true;
-                result.statusCode = response.status;
-                console.log(response);
+                const store = useStore();
+                store.commit(MutationTypes.SET_LOGGEDIN, false);
+                store.commit(MutationTypes.SET_USER, {} as User);
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: true,
+                };
             })
             .catch((error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
-                    result.error = error.response.data as ValidationError;
+                    return {
+                        error: error.response.data as APIError,
+                        networkError: false,
+                        statusCode: error.response.status,
+                        returnValue: false,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        error: {} as APIError,
+                        networkError: true,
+                        statusCode: 0,
+                        returnValue: false,
+                    };
                 }
             });
+    }
 
-        if (result.returnValue) {
-            const store = useStore();
-            store.commit(MutationTypes.SET_LOGINDATA, { username: username, password: password });
-            store.commit(MutationTypes.SET_LOGGEDIN, true);
-        }
+    static async _getRefreshToken(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
+        const authHeader = { auth: loginData };
+        const instance = axios.create({
+            baseURL: process.env.VUE_APP_API_BASE_URL + "/authentication-management",
+            headers: {
+                "Accept": "*/*",
+                "Content-Type": "application/json;charset=UTF-8",
+            },
+        });
 
-        return result;
+        return await instance
+            .get(`/login`, authHeader)
+            .then(async (response: AxiosResponse) => {
+                const store = useStore();
+                store.commit(MutationTypes.SET_LOGGEDIN, true);
+
+                const userManagement = new UserManagement();
+                const handler = new GenericResponseHandler();
+                const userResponse = await userManagement.getSpecificUser(loginData.username);
+                if (response.status == 200) {
+                    const user = handler.handleResponse(userResponse);
+                    store.commit(MutationTypes.SET_USER, user);
+                }
+                return {
+                    statusCode: response.status,
+                    returnValue: true,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch((error: AxiosError) => {
+                if (error.response) {
+                    return {
+                        statusCode: error.response.status,
+                        returnValue: false,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        returnValue: false,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
+                }
+            });
     }
 }

@@ -178,19 +178,19 @@
 
             async function askAdminRole() {
                 const store = useStore();
-                isAdmin.value = (await store.getters.role) == Role.ADMIN;
+                isAdmin.value = (await store.getters.user).role == Role.ADMIN;
             }
 
             async function getLecturerUsername() {
                 const store = useStore();
-                course.value.lecturerId = (await store.getters.loginData).username;
+                course.value.lecturerId = (await store.getters.user).username;
             }
 
             async function getCourse() {
                 busy.value = true;
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
                 const genericResponseHandler = new GenericResponseHandler();
-                const result = genericResponseHandler.handleReponse(response);
+                const result = genericResponseHandler.handleResponse(response);
 
                 //TODO move this to a non-generic response handler
                 if (response.statusCode !== 200) {
@@ -203,7 +203,6 @@
             }
 
             let hasInput = computed(() => {
-                // TODO not tested yet (too lazy to start intellij)
                 let returnValue: boolean = !course.value.editableInfoEquals(initialCourseState);
                 emit("update:has-input", returnValue);
                 return returnValue;
@@ -241,7 +240,7 @@
             async function updateCourse() {
                 const response = await courseManagement.updateCourse(course.value);
                 const handler = new ValidationResponseHandler();
-                success.value = handler.handleReponse(response);
+                success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
 
                 if (success.value) {
@@ -257,10 +256,10 @@
 
                 const genericResponseHandler = new GenericResponseHandler();
                 const response = await courseManagement.deleteCourse(course.value.courseId);
-                const result = genericResponseHandler.handleReponse(response);
+                const result = genericResponseHandler.handleResponse(response);
 
                 if (result) {
-                    Router.back();
+                    back();
                 }
             }
 
@@ -282,7 +281,7 @@
             }
 
             function back() {
-                Router.back();
+                Router.push("/all-courses");
             }
 
             return {

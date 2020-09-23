@@ -30,6 +30,7 @@
     import { useStore } from "@/use/store/store";
     import { ref } from "vue";
     import { MutationTypes } from "@/use/store/mutation-types";
+    import User from "@/api/api_models/user_management/User";
 
     export default {
         name: "Navbar",
@@ -48,8 +49,8 @@
             let role = ref(Role.NONE);
 
             store.subscribe((mutation, state) => {
-                if (mutation.type === MutationTypes.SET_ROLE) {
-                    role.value = mutation.payload;
+                if (mutation.type === MutationTypes.SET_USER) {
+                    role.value = (mutation.payload as User).role;
                 }
             });
 

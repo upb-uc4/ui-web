@@ -17,6 +17,12 @@ export function getRandomizedUser(role: Role): Student | Admin | Lecturer {
             return admin;
         case Role.STUDENT:
             student.username = student.username + random;
+            var today = new Date();
+            var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
+            var dayPadded = ("00" + today.getDate()).substr(-2);
+            var random2 = Math.floor(Math.random() * 999).toString();
+            var randomPadded = ("000" + random2).substr(-3);
+            student.matriculationId = monthPadded + dayPadded + randomPadded;
             return student;
         case Role.LECTURER:
             lecturer.username = lecturer.username + random;

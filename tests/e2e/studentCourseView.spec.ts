@@ -1,7 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
-import { loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Student course view", () => {
@@ -12,6 +12,11 @@ describe("Student course view", () => {
     let course: Course;
 
     before(() => {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("logins/student.json").then((student) => {
             studentAuth = student;
         });
@@ -26,11 +31,16 @@ describe("Student course view", () => {
         });
     });
 
+    after(() => {
+        logout();
+    });
+
     it("Create Course as lecturer", () => {
         loginAndCreateCourse(course, lecturerAuth);
     });
 
     it("Login as student", () => {
+        logout();
         loginAsDefaultStudent();
     });
 
@@ -45,6 +55,7 @@ describe("Student course view", () => {
     });
 
     it("Delete course as lecturer", () => {
+        logout();
         loginAndDeleteCourse(course, lecturerAuth);
     });
 });
