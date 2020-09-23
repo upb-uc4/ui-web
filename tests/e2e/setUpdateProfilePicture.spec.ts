@@ -1,16 +1,3 @@
-/*
- * Login as admin
- * check if admin, lecturer and student exist
- * create new account
- * check all input fields
- * check unsaved changes modal
- * create student account
- * edit student account
- * change fields of study
- * delete account
- * test account deletion modal
- */
-
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import Admin from "@/api/api_models/user_management/Admin";
