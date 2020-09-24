@@ -1,4 +1,4 @@
-# [v.0.8.2](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (XXXX-XX-XX)
+# [WIP v.0.8.2](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (XXXX-XX-XX)
 
 ## Bugfix
 - rework clickable areas in all mobile menus [#513](https://github.com/upb-uc4/ui-web/pull/513)
