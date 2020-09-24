@@ -1,3 +1,9 @@
+# [WIP v.0.8.2](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.8.2) (2020-XX-XX)
+
+## Bugfix
+- fix mobile presentation of matriculation settings in account page [#507](https://github.com/upb-uc4/ui-web/issues/507)
+
+
 # [v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-22)
 
 ## Feature
