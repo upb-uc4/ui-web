@@ -1,6 +1,6 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
+import { loginAndCreateCourse, deleteCourses } from "./helpers/CourseHelper";
 import { loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
@@ -32,6 +32,7 @@ describe("Student course view", () => {
     });
 
     after(() => {
+        deleteCourses([course], lecturerAuth);
         logout();
     });
 
@@ -52,10 +53,5 @@ describe("Student course view", () => {
         cy.wait(2000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName);
-    });
-
-    it("Delete course as lecturer", () => {
-        logout();
-        loginAndDeleteCourse(course, lecturerAuth);
     });
 });

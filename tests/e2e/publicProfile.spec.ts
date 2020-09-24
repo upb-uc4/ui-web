@@ -1,8 +1,8 @@
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
-import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
+import { loginAndCreateCourse, deleteCourses } from "./helpers/CourseHelper";
 import { loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListLecturer, navigateToCourseListStudent } from "./helpers/NavigationHelper";
+import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Show public profile correctly", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -37,6 +37,7 @@ describe("Show public profile correctly", () => {
     });
 
     after(() => {
+        deleteCourses([course], adminAuth);
         logout();
     });
 
@@ -68,10 +69,5 @@ describe("Show public profile correctly", () => {
     it("Back button works", () => {
         cy.get("button[id='navigateBack']").click();
         cy.url().should("contain", "courses");
-    });
-
-    it("Login as Lecturer to delete the course", () => {
-        logout();
-        loginAndDeleteCourse(course, lecturerAuth);
     });
 });

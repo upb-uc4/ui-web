@@ -1,8 +1,8 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
-import { navigateToAccountForm, navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
-import { createCourseAdmin, deleteCourseAdmin } from "./helpers/CourseHelper";
+import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
+import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
 import { createNewLecturer, deleteUsers } from "./helpers/UserHelper";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 
@@ -44,6 +44,7 @@ describe("Course creation, edition and deletion", () => {
 
     after(() => {
         deleteUsers([secondLecturerAuth], adminAuth);
+        deleteCourses([course], adminAuth);
         logout();
     });
 

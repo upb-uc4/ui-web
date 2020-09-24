@@ -18,7 +18,7 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToAccountList } from "./helpers/NavigationHelper";
-import { createNewStudent, createNewAdmin, deleteUsers } from "./helpers/UserHelper";
+import { createNewStudent, createNewAdmin, createNewLecturer, deleteUsers, deleteUser } from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
@@ -356,5 +356,11 @@ describe("Account creation, edition and deletion", function () {
     it("Update working correctly", function () {
         cy.get("button[id='saveChanges']").click();
         cy.url().should("contain", "accounts");
+    });
+
+    it("Delete users as admin", function () {
+        deleteUser(student);
+        deleteUser(lecturer);
+        deleteUser(admin);
     });
 });
