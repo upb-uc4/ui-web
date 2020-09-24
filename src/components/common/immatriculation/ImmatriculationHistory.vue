@@ -48,16 +48,7 @@
                 firstName: "egal",
                 lastName: "egal",
                 birthDate: "egal",
-                matriculationStatus: [
-                    {
-                        fieldOfStudy: "Computer Science" as FieldOfStudy,
-                        semesters: ["WS2020/21", "WS2019/20", "SS2020"],
-                    } as SubjectMatriculation,
-                    {
-                        fieldOfStudy: "Mathematics" as FieldOfStudy,
-                        semesters: ["SS2020", "WS2019/20"],
-                    } as SubjectMatriculation,
-                ],
+                matriculationStatus: [],
             });
             let chronologicalList = ref({});
 
@@ -67,7 +58,7 @@
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
                 const responseHandler = new GenericResponseHandler();
                 const result = responseHandler.handleResponse(response);
-                //history = result;
+                history = result;
                 chronologicalList.value = historyToSortedList(history);
                 emit("update:busy", false);
             }
