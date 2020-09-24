@@ -137,6 +137,5 @@ describe("Account creation, edition and deletion", function () {
 
         cy.get("button[id='immatriculationHistoryClose']").click();
         cy.wait(100);
-        logout();
     });
 });
