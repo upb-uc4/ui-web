@@ -1,13 +1,13 @@
 <template>
     <section class="flex flex-col px-2 pt-3 pb-1">
         <ul class="w-full px-2">
-            <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
+            <li class="mb-2">
                 <menu-item id="nav_mobile_profile" title="Profile" icon-class="fa-user" target-route-name="profile.private" />
             </li>
-            <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
+            <li class="mb-2">
                 <menu-item id="nav_mobile_settings" title="Settings" icon-class="fa-cog" target-route-name="settings" />
             </li>
-            <li class="cursor-pointer rounded-lg p-2 hover:bg-blue-800">
+            <li>
                 <menu-item id="nav_mobile_logout" title="Sign out" icon-class="fa-sign-out-alt" @click="logout" />
             </li>
         </ul>
