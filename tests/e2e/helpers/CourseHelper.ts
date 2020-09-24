@@ -1,6 +1,8 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { clear } from "console";
+import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
+import CourseManagement from "@/api/CourseManagement";
 import { loginAsUser } from "./AuthHelper";
 import {
     navigateToCourseFormAdmin,
@@ -84,4 +86,20 @@ export function deleteCourseAdmin(course: Course) {
     cy.get('button[id="deleteCourseModalDelete"]').click();
     cy.url().should("contain", "/all-courses");
     cy.get("div").contains(course.courseName).should("not.exist");
+}
+
+export async function deleteCourses(courses: Course[], userAuth: Account) {
+    MachineUserAuthenticationManagement.setVueEnvVariable();
+    await MachineUserAuthenticationManagement._getRefreshToken(userAuth);
+
+    const course_management = new CourseManagement();
+    const existingCourses = Object.values((await course_management.getCourses()).returnValue).flat();
+
+    courses.forEach(async (course) => {
+        existingCourses.forEach(async (existingCourse) => {
+            if (existingCourse.courseName == course.courseName) {
+                await course_management.deleteCourse(existingCourse.courseId);
+            }
+        });
+    });
 }
