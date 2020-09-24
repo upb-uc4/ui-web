@@ -2,9 +2,12 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import { navigateToAccountForm, navigateToAccountList } from "./NavigationHelper";
 import Student from "@/api/api_models/user_management/Student";
-import { loginAsUser } from "./AuthHelper";
+import { loginAsDefaultAdmin, loginAsUser, logout } from "./AuthHelper";
 import User from "@/api/api_models/user_management/User";
 import Admin from "@/api/api_models/user_management/Admin";
+import UserManagement from "@/api/UserManagement";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
+import { readFileSync } from "fs";
 
 export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account) {
     navigateToAccountForm();
@@ -125,4 +128,19 @@ export function deleteUser(user: User) {
 export function loginAndDeleteUser(user: User, adminAuth: Account) {
     loginAsUser(adminAuth);
     deleteUser(user);
+}
+
+export async function deleteUsers(users: Account[], adminAuth: Account) {
+    let userNames: string[] = [];
+    users.forEach((user) => userNames.push(user.username));
+    process.env.VUE_APP_API_BASE_URL = "https://uc4.cs.uni-paderborn.de/api/develop/";
+    await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
+
+    const user_management = new UserManagement();
+    const existingUsers = await user_management.getUsers(...userNames);
+    Object.values(existingUsers.returnValue)
+        .flat()
+        .forEach(async (user) => {
+            await user_management.deleteUser(user.username);
+        });
 }
