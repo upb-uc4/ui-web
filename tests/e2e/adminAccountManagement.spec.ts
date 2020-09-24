@@ -248,66 +248,66 @@ describe("Account creation, edition and deletion", function () {
         cy.url().should("contain", "accounts");
     });
 
-    // // create lecturer account
-    // it("Create lecturer account", function () {
-    //     createNewLecturer(lecturer, lecturerAuthUser);
-    // });
+    // create lecturer account
+    it("Create lecturer account", function () {
+        createNewLecturer(lecturer, lecturerAuthUser);
+    });
 
-    // // edit account
-    // it("Show lecturer account edit page", function () {
-    //     cy.get(`div[id='user_${lecturer.username}']`).click();
-    // });
+    // edit account
+    it("Show lecturer account edit page", function () {
+        cy.get(`div[id='user_${lecturer.username}']`).click();
+    });
 
-    // it("Save Changes button is disabled", function () {
-    //     cy.get("button[id='saveChanges']").should("be.disabled");
-    // });
+    it("Save Changes button is disabled", function () {
+        cy.get("button[id='saveChanges']").should("be.disabled");
+    });
 
-    // it("Can not edit role", function () {
-    //     // check that I can not change role
-    //     cy.get("input[type='radio']").should("be.disabled");
-    // });
+    it("Can not edit role", function () {
+        // check that I can not change role
+        cy.get("input[type='radio']").should("be.disabled");
+    });
 
-    // it("Can not edit username", function () {
-    //     // check that I can not change my username
-    //     cy.get("input[id='userName']").invoke("attr", "readonly").should("exist");
-    // });
+    it("Can not edit username", function () {
+        // check that I can not change my username
+        cy.get("input[id='userName']").invoke("attr", "readonly").should("exist");
+    });
 
-    // it("Can not edit password", function () {
-    //     cy.get("input[id='password']").should("not.exist");
-    // });
+    it("Can not edit password", function () {
+        cy.get("input[id='password']").should("not.exist");
+    });
 
-    // it("Can change email address", () => {
-    //     cy.get("input[id='email']").clear().type(lecturer.email);
-    // });
+    it("Can change email address", () => {
+        cy.get("input[id='email']").clear().type(lecturer.email);
+    });
 
-    // it("Country enum is filled", function () {
-    //     cy.get('select[id="country"]').select("Germany");
-    //     cy.get('select[id="country"]').select("United States");
-    //     cy.get('select[id="country"]').select(lecturer.address.country);
-    // });
+    it("Country enum is filled", function () {
+        cy.get('select[id="country"]').select("Germany");
+        cy.get('select[id="country"]').select("United States");
+        cy.get('select[id="country"]').select(lecturer.address.country);
+    });
 
-    // it("Can change description", function () {
-    //     cy.get("textarea[id='freeText']")
-    //         .clear()
-    //         .type(lecturer.freeText + "newDescription");
-    // });
+    it("Can change description", function () {
+        cy.get("textarea[id='freeText']")
+            .clear()
+            .type(lecturer.freeText + "newDescription");
+    });
 
-    // it("Can change FoS", function () {
-    //     cy.get("textarea[id='researchArea']")
-    //         .clear()
-    //         .type(lecturer.researchArea + "newFoS");
-    // });
+    it("Can change FoS", function () {
+        cy.get("textarea[id='researchArea']")
+            .clear()
+            .type(lecturer.researchArea + "newFoS");
+    });
 
-    // it("Can change name", function () {
-    //     cy.get('input[id="firstName"]')
-    //         .clear()
-    //         .type(lecturer.firstName + "newName");
-    // });
+    it("Can change name", function () {
+        cy.get('input[id="firstName"]')
+            .clear()
+            .type(lecturer.firstName + "newName");
+    });
 
-    // it("Update working correctly", function () {
-    //     cy.get("button[id='saveChanges']").click();
-    //     cy.url().should("contain", "accounts");
-    // });
+    it("Update working correctly", function () {
+        cy.get("button[id='saveChanges']").click();
+        cy.url().should("contain", "accounts");
+    });
 
     // create admin account
     it("Create admin account", function () {
