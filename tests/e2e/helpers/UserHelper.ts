@@ -133,7 +133,7 @@ export function loginAndDeleteUser(user: User, adminAuth: Account) {
 export async function deleteUsers(users: Account[], adminAuth: Account) {
     let userNames: string[] = [];
     users.forEach((user) => userNames.push(user.username));
-    process.env.VUE_APP_API_BASE_URL = "https://uc4.cs.uni-paderborn.de/api/develop/";
+    MachineUserAuthenticationManagement.setVueEnvVariable();
     await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
 
     const user_management = new UserManagement();
