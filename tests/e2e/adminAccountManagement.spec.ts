@@ -84,7 +84,6 @@ describe("Account creation, edition and deletion", function () {
     });
 
     after(() => {
-        cy.log("AFTER HOOK");
         deleteUsers([studentAuthUser, lecturerAuthUser, adminAuthUser], adminAuth);
         logout();
     });
