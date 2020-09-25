@@ -1,10 +1,10 @@
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
-import { loginAndCreateCourse, deleteCourses } from "./helpers/CourseHelper";
+import { loginAndCreateCourse, deleteCourses, createCourses } from "./helpers/CourseHelper";
 import { loginAndCreateLecturer, createUsers, deleteUsers } from "./helpers/UserHelper";
 import { navigateToCourseListLecturer, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
-import { logout, getMachineUserAuth } from "./helpers/AuthHelper";
+import { logout, getMachineUserAuth, loginAsDefaultLecturer } from "./helpers/AuthHelper";
 import { Role } from "@/entities/Role";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
@@ -22,13 +22,6 @@ describe("Course List Behavior", function () {
     before(function () {
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
-        });
-        cy.fixture("course.json").then((course) => {
-            course1 = { ...(course as Course) };
-            course1.courseName += "1-" + random;
-
-            course2 = { ...(course as Course) };
-            course2.courseName += "2-" + random;
         });
 
         cy.fixture("logins/admin.json")
@@ -61,23 +54,32 @@ describe("Course List Behavior", function () {
                 await createUsers(usersWithAuth);
             })
             .then(() => {
+                cy.fixture("course.json").then((course) => {
+                    course1 = { ...(course as Course) };
+                    course1.courseName += "1-" + random;
+
+                    course2 = { ...(course as Course) };
+                    course2.courseName += "2-" + random;
+                });
+            })
+            .then(() => {
+                course1.lecturerId = lecturerAuth.username;
+                course2.lecturerId = lecturerAuthUser.username;
+                createCourses([course1, course2]);
+            })
+            .then(() => {
                 console.log("Setup finished");
             });
     });
 
     after(() => {
         deleteUsers([lecturerAuthUser], adminAuth);
-        deleteCourses([course1, course2], adminAuth);
-        logout();
-    });
-
-    it("Login as other lecturer and create course", function () {
-        loginAndCreateCourse(course2, lecturerAuthUser);
+        deleteCourses([course1, course2]);
         logout();
     });
 
     it("Create an own course", function () {
-        loginAndCreateCourse(course1, lecturerAuth);
+        loginAsDefaultLecturer();
     });
 
     it("Tab All Courses should contain both courses", function () {

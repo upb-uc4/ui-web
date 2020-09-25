@@ -38,7 +38,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     after(() => {
-        deleteCourses([course], lecturerAuth);
+        deleteCourses([course]);
         logout();
     });
 

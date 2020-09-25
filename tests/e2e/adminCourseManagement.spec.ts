@@ -51,6 +51,9 @@ describe("Course creation, edition and deletion", () => {
             })
             .then(async () => {
                 await createUsers(usersWithAuth);
+            })
+            .then(() => {
+                console.log("Setup finished");
             });
 
         cy.fixture("logins/lecturer.json").then((lecturer) => {
@@ -60,7 +63,7 @@ describe("Course creation, edition and deletion", () => {
 
     after(() => {
         deleteUsers([secondLecturerAuth], adminAuth);
-        deleteCourses([course], adminAuth);
+        deleteCourses([course]);
         logout();
     });
 
