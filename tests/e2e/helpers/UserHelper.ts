@@ -8,6 +8,7 @@ import Admin from "@/api/api_models/user_management/Admin";
 import UserManagement from "@/api/UserManagement";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { readFileSync } from "fs";
+import { UserWithAuth } from "./UserWithAuth";
 
 export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account) {
     navigateToAccountForm();
@@ -130,10 +131,10 @@ export function loginAndDeleteUser(user: User, adminAuth: Account) {
     deleteUser(user);
 }
 
-export async function createUsers(users: (Student | Lecturer | Admin)[], auth: Account) {
+export async function createUsers(users: UserWithAuth[]) {
     const user_management = new UserManagement();
-    users.forEach((user) => {
-        user_management.createUser(auth, user);
+    users.forEach(async (user) => {
+        await user_management.createUser(user.auth, user.userInfo);
     });
 }
 

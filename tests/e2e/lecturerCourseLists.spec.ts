@@ -2,9 +2,11 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
 import { loginAndCreateCourse, deleteCourses } from "./helpers/CourseHelper";
-import { loginAndCreateLecturer, deleteUsers } from "./helpers/UserHelper";
+import { loginAndCreateLecturer, createUsers, deleteUsers } from "./helpers/UserHelper";
 import { navigateToCourseListLecturer, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
-import { logout } from "./helpers/AuthHelper";
+import { logout, getMachineUserAuth } from "./helpers/AuthHelper";
+import { Role } from "@/entities/Role";
+import { UserWithAuth } from "./helpers/UserWithAuth";
 
 let lecturer: Lecturer;
 let lecturerAuthUser: Account;
@@ -12,23 +14,14 @@ let course1: Course;
 let course2: Course;
 let adminAuth: Account;
 let lecturerAuth: Account;
+let usersWithAuth: UserWithAuth[] = [];
 
 describe("Course List Behavior", function () {
     const random = Math.floor(Math.random() * 9999);
 
     before(function () {
-        cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
-        });
-
-        cy.fixture("lecturer.json").then((l) => {
-            (l as Lecturer).username += random;
-            lecturer = l as Lecturer;
-        });
-        cy.fixture("lecturerAuthUser.json").then((lecturer) => {
-            (lecturer as Account).username += random;
-            lecturerAuthUser = lecturer as Account;
         });
         cy.fixture("course.json").then((course) => {
             course1 = { ...(course as Course) };
@@ -38,22 +31,43 @@ describe("Course List Behavior", function () {
             course2.courseName += "2-" + random;
         });
 
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
-        cy.fixture("logins/lecturer.json").then((lecturer) => {
-            lecturerAuth = lecturer;
-        });
+        cy.fixture("logins/admin.json")
+            .then((admin) => {
+                adminAuth = admin;
+                adminAuth.role = Role.ADMIN;
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(() => {
+                cy.fixture("lecturer.json").then((l) => {
+                    (l as Lecturer).username += random;
+                    lecturer = l as Lecturer;
+                });
+            })
+            .then(() => {
+                cy.fixture("logins/lecturer.json").then((lecturer) => {
+                    lecturerAuth = lecturer;
+                });
+            })
+            .then(() => {
+                cy.fixture("lecturerAuthUser.json").then((lecturerAuth) => {
+                    (lecturerAuth as Account).username += random;
+                    lecturerAuthUser = lecturerAuth as Account;
+                    usersWithAuth.push({ userInfo: lecturer, auth: lecturerAuthUser });
+                });
+            })
+            .then(async () => {
+                await createUsers(usersWithAuth);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
     });
 
     after(() => {
         deleteUsers([lecturerAuthUser], adminAuth);
         deleteCourses([course1, course2], adminAuth);
-        logout();
-    });
-
-    it("Login as Admin and create new lecturer", function () {
-        loginAndCreateLecturer(lecturer, lecturerAuthUser, adminAuth);
         logout();
     });
 
