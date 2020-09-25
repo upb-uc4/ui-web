@@ -93,7 +93,7 @@ export async function deleteCourses(courses: Course[], userAuth: Account) {
     await MachineUserAuthenticationManagement._getRefreshToken(userAuth);
 
     const course_management = new CourseManagement();
-    const existingCourses = Object.values((await course_management.getCourses()).returnValue).flat();
+    const existingCourses = (await course_management.getCourses()).returnValue;
 
     courses.forEach(async (course) => {
         existingCourses.forEach(async (existingCourse) => {
