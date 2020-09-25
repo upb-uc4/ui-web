@@ -1,10 +1,12 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
+import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
 import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
-import { createNewLecturer, deleteUsers } from "./helpers/UserHelper";
+import { createNewLecturer, createUsers, deleteUsers } from "./helpers/UserHelper";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
+import { UserWithAuth } from "./helpers/UserWithAuth";
+import { Role } from "@/entities/Role";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -14,6 +16,7 @@ describe("Course creation, edition and deletion", () => {
     let secondLecturerAuth: Account;
     let adminAuth: Account;
     let lecturerAuth: Account;
+    let usersWithAuth: UserWithAuth[] = [];
 
     before(function () {
         cy.clearCookies();
@@ -25,20 +28,33 @@ describe("Course creation, edition and deletion", () => {
             course.courseName += random;
         });
 
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
+        cy.fixture("logins/admin.json")
+            .then((admin) => {
+                adminAuth = admin;
+                adminAuth.role = Role.ADMIN;
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(() => {
+                cy.fixture("lecturer.json").then((l) => {
+                    (l as Lecturer).username += random;
+                    secondLecturer = l as Lecturer;
+                });
+            })
+            .then(() => {
+                cy.fixture("lecturerAuthUser.json").then((lAuth) => {
+                    (lAuth as Account).username += random;
+                    secondLecturerAuth = lAuth as Account;
+                    usersWithAuth.push({ userInfo: secondLecturer, auth: secondLecturerAuth });
+                });
+            })
+            .then(async () => {
+                await createUsers(usersWithAuth);
+            });
 
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
-        });
-        cy.fixture("lecturer.json").then((l) => {
-            (l as Lecturer).username += random;
-            secondLecturer = l as Lecturer;
-        });
-        cy.fixture("lecturerAuthUser.json").then((l) => {
-            (l as Account).username += random;
-            secondLecturerAuth = l as Account;
         });
     });
 
@@ -50,10 +66,6 @@ describe("Course creation, edition and deletion", () => {
 
     it("Login as admin", () => {
         loginAsDefaultAdmin();
-    });
-
-    it("Create second lecturer", () => {
-        createNewLecturer(secondLecturer, secondLecturerAuth);
     });
 
     it("Navigate to course list", () => {
