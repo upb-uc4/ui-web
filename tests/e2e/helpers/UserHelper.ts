@@ -130,6 +130,13 @@ export function loginAndDeleteUser(user: User, adminAuth: Account) {
     deleteUser(user);
 }
 
+export async function createUsers(users: (Student | Lecturer | Admin)[], auth: Account) {
+    const user_management = new UserManagement();
+    users.forEach((user) => {
+        user_management.createUser(auth, user);
+    });
+}
+
 export async function deleteUsers(users: Account[], adminAuth: Account) {
     let userNames: string[] = [];
     users.forEach((user) => userNames.push(user.username));
