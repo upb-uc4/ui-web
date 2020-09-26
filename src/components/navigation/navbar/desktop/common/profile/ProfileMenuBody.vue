@@ -2,10 +2,22 @@
     <section class="flex flex-col lg:flex-row px-8 py-6 border-b -mx-4">
         <ul class="w-full px-2">
             <li class="mb-4">
-                <menu-item title="Profile" icon-class="fa-user" target-route-name="profile.private" :is-horizontally-aligned="true" />
+                <menu-item
+                    id="nav_desktop_profile"
+                    title="Profile"
+                    icon-class="fa-user"
+                    target-route-name="profile.private"
+                    :is-horizontally-aligned="true"
+                />
             </li>
             <li class="mb-4">
-                <menu-item title="Settings" icon-class="fa-cog" target-route-name="settings" :is-horizontally-aligned="true" />
+                <menu-item
+                    id="nav_desktop_settings"
+                    title="Settings"
+                    icon-class="fa-cog"
+                    target-route-name="settings"
+                    :is-horizontally-aligned="true"
+                />
             </li>
             <li class="mb-4">
                 <menu-item

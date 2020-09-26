@@ -3,6 +3,7 @@
         <ul class="w-full px-2">
             <li class="mb-4">
                 <menu-item
+                    id="nav_desktop_admin_menu_courses_all"
                     title="All Courses"
                     description="Overview of all courses"
                     icon-class="fa-globe-americas"
@@ -11,6 +12,7 @@
             </li>
             <li>
                 <menu-item
+                    id="nav_desktop_admin_menu_courses_create"
                     title="Create Course"
                     description="Create a new course"
                     icon-class="fa-star"
