@@ -8,7 +8,7 @@
                 <menu-item id="nav_mobile_settings" title="Settings" icon-class="fa-cog" target-route-name="settings" />
             </li>
             <li>
-                <menu-item id="nav_mobile_logout" title="Sign out" icon-class="fa-sign-out-alt" @click="logout" />
+                <menu-item id="nav_mobile_logout" title="Sign out" icon-class="fa-sign-out-alt" :action="logout" />
             </li>
         </ul>
     </section>
