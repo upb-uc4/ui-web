@@ -1,7 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
-import { createCourse, deleteCourse } from "./helpers/CourseHelper";
+import { createCourse, deleteCourses } from "./helpers/CourseHelper";
 import { CourseType } from "@/entities/CourseType";
 
 describe("Course Filtering", function () {
@@ -40,6 +40,7 @@ describe("Course Filtering", function () {
     });
 
     after(() => {
+        deleteCourses([course1, course2, course3], lecturerAuth);
         logout();
     });
 
@@ -90,11 +91,5 @@ describe("Course Filtering", function () {
         cy.get("div").contains(course1.courseName).should("exist");
         cy.get("div").contains(course2.courseName).should("exist");
         cy.get("div").contains(course3.courseName).should("exist");
-    });
-
-    it("Delete courses", function () {
-        deleteCourse(course1);
-        deleteCourse(course2);
-        deleteCourse(course3);
     });
 });

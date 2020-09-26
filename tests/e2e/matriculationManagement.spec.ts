@@ -3,7 +3,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
-import { createNewStudent, deleteUser } from "./helpers/UserHelper";
+import { createNewStudent, deleteUsers } from "./helpers/UserHelper";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 
 const random = Math.floor(Math.random() * 9999);
@@ -55,6 +55,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     after(() => {
+        deleteUsers([studentAuthUser], adminAuth);
         logout();
     });
 
@@ -136,11 +137,5 @@ describe("Account creation, edition and deletion", function () {
 
         cy.get("button[id='immatriculationHistoryClose']").click();
         cy.wait(100);
-        logout();
-    });
-
-    it("Delete student", function () {
-        loginAsDefaultAdmin();
-        deleteUser(student);
     });
 });

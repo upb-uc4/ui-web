@@ -1,8 +1,8 @@
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
-import { loginAndCreateCourse, loginAndDeleteCourse, deleteCourse } from "./helpers/CourseHelper";
-import { loginAndCreateLecturer, loginAndDeleteUser } from "./helpers/UserHelper";
+import { loginAndCreateCourse, deleteCourses } from "./helpers/CourseHelper";
+import { loginAndCreateLecturer, deleteUsers } from "./helpers/UserHelper";
 import { navigateToCourseListLecturer, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
 import { logout } from "./helpers/AuthHelper";
 
@@ -47,6 +47,8 @@ describe("Course List Behavior", function () {
     });
 
     after(() => {
+        deleteUsers([lecturerAuthUser], adminAuth);
+        deleteCourses([course1, course2], adminAuth);
         logout();
     });
 
@@ -79,19 +81,5 @@ describe("Course List Behavior", function () {
         cy.get("div").contains(course1.courseName).should("exist");
         cy.get("div").contains(course1.courseName).parent().parent().find("button[id='editCourse']").should("exist");
         cy.get("div").contains(course2.courseName).should("not.exist");
-    });
-
-    it("Delete own course", function () {
-        deleteCourse(course1);
-    });
-
-    it("Delete the course of other lecturer", function () {
-        logout();
-        loginAndDeleteCourse(course2, lecturerAuthUser);
-    });
-
-    it("Delete other lecturer account", function () {
-        logout();
-        loginAndDeleteUser(lecturer, adminAuth);
     });
 });

@@ -17,8 +17,8 @@ import { Role } from "@/entities/Role";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListLecturer, navigateToAccountList } from "./helpers/NavigationHelper";
-import { createNewStudent, createNewLecturer, createNewAdmin, deleteUser } from "./helpers/UserHelper";
+import { navigateToAccountList } from "./helpers/NavigationHelper";
+import { createNewStudent, createNewAdmin, createNewLecturer, deleteUsers, deleteUser } from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
@@ -84,6 +84,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     after(() => {
+        deleteUsers([studentAuthUser, lecturerAuthUser, adminAuthUser], adminAuth);
         logout();
     });
 
@@ -357,18 +358,9 @@ describe("Account creation, edition and deletion", function () {
         cy.url().should("contain", "accounts");
     });
 
-    //delete student account
-    it("Delete student", function () {
+    it("Delete users as admin", function () {
         deleteUser(student);
-    });
-
-    //delete lecturer account
-    it("Delete lecturer", function () {
         deleteUser(lecturer);
-    });
-
-    //delete admin account
-    it("Delete admin", function () {
         deleteUser(admin);
     });
 });

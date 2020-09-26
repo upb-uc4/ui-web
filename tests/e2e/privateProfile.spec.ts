@@ -2,8 +2,8 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Country } from "@/entities/Country";
-import { loginAndCreateStudent, createNewLecturer, deleteUser } from "./helpers/UserHelper";
-import { loginAsUser, loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
+import { loginAndCreateStudent, createNewLecturer, deleteUsers } from "./helpers/UserHelper";
+import { loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
 
 describe("Change Profile Information", () => {
@@ -53,6 +53,7 @@ describe("Change Profile Information", () => {
     });
 
     after(() => {
+        deleteUsers([studentAuthUser, lecturerAuthUser], adminAuth);
         logout();
     });
 
@@ -250,12 +251,5 @@ describe("Change Profile Information", () => {
     it("Check changed information", () => {
         cy.get("textarea[id='researchArea']").should("have.value", lecturer.researchArea);
         cy.get("textarea[id='description']").should("have.value", lecturer.freeText);
-    });
-
-    it("Login as admin and delete users", () => {
-        logout();
-        loginAsDefaultAdmin();
-        deleteUser(student);
-        deleteUser(lecturer);
     });
 });
