@@ -8,7 +8,13 @@
                 <menu-item title="Settings" icon-class="fa-cog" target-route-name="settings" :is-horizontally-aligned="true" />
             </li>
             <li class="mb-4">
-                <menu-item title="Sign out" icon-class="fa-sign-out-alt" :is-horizontally-aligned="true" :action="logout" />
+                <menu-item
+                    id="nav_desktop_logout"
+                    title="Sign out"
+                    icon-class="fa-sign-out-alt"
+                    :is-horizontally-aligned="true"
+                    :action="logout"
+                />
             </li>
         </ul>
     </section>
