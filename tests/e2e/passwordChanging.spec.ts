@@ -41,7 +41,6 @@ describe("Change password", () => {
             .then(() => {
                 cy.fixture("logins/admin.json").then((admin) => {
                     adminAuth = admin;
-                    adminAuth.role = Role.ADMIN;
                 });
             })
             .then(async () => {
