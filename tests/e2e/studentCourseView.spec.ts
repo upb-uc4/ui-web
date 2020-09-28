@@ -25,7 +25,6 @@ describe("Student course view", () => {
         cy.fixture("logins/lecturer.json")
             .then((lecturer) => {
                 lecturerAuth = lecturer;
-                lecturerAuth.role = Role.LECTURER;
             })
             .then(() => {
                 cy.fixture("course.json").then((c) => {
