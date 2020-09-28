@@ -1,4 +1,8 @@
-# [v.0.9.0](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.9.0) (2020-09-28)
+# [v.0.9.0.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.0.1) (2020-09-28)
+
+## Bugfix
+- enable error display for adding matriculation data [#543](https://github.com/upb-uc4/ui-web/pull/543)
+
 
 ## Feature
 - add test data cleanup on server after test fails cause them to not be deleted [#522](https://github.com/upb-uc4/ui-web/pull/522)
