@@ -59,7 +59,7 @@
             const isBurgerMenuOpen = ref(false);
 
             store.subscribe((mutation) => {
-                if (mutation.type === MutationTypes.SET_FORCE_CLOSE_BURGER_MENU) {
+                if (mutation.type === MutationTypes.FORCE_CLOSE_BURGER_MENU) {
                     isBurgerMenuOpen.value = false;
                 }
             });
