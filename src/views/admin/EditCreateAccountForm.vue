@@ -40,7 +40,6 @@
             <student-information-section
                 v-if="isStudent"
                 v-model:matriculation-id="account.student.matriculationId"
-                v-model:immatriculation-has-change="immatriculationHasChange"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
                 :username="account.user.username"
@@ -198,7 +197,6 @@
             let success = ref(false);
             let deleteModal = ref();
             let unsavedChangesModal = ref();
-            let immatriculationHasChange = ref(false);
 
             const errorBag = ref(new ErrorBag());
 
@@ -296,8 +294,7 @@
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
                     //student properties
-                    account.student.matriculationId != initialAccount.student.matriculationId ||
-                    immatriculationHasChange.value
+                    account.student.matriculationId != initialAccount.student.matriculationId
                 ) {
                     emit("update:has-input", true);
                     return true;
@@ -423,7 +420,6 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag: errorBag,
-                immatriculationHasChange,
             };
         },
     };
