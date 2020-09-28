@@ -1,4 +1,4 @@
-# [v.0.9.0.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.0.1) (2020-09-28)
+# [v.0.9.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.0-hotfix.1) (2020-09-28)
 
 ## Bugfix
 - enable error display for adding matriculation data [#543](https://github.com/upb-uc4/ui-web/pull/543)
