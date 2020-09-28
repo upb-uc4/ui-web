@@ -1,8 +1,9 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAndCreateCourse, deleteCourses } from "./helpers/CourseHelper";
-import { loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
+import { loginAndCreateCourse, deleteCourses, createCourses } from "./helpers/CourseHelper";
+import { getMachineUserAuth, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
+import { Role } from "@/entities/Role";
 
 describe("Student course view", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -21,27 +22,33 @@ describe("Student course view", () => {
             studentAuth = student;
         });
 
-        cy.fixture("logins/lecturer.json").then((lecturer) => {
-            lecturerAuth = lecturer;
-        });
-
-        cy.fixture("course.json").then((c) => {
-            course = c;
-            course.courseName += "-" + random;
-        });
+        cy.fixture("logins/lecturer.json")
+            .then((lecturer) => {
+                lecturerAuth = lecturer;
+            })
+            .then(() => {
+                cy.fixture("course.json").then((c) => {
+                    course = c;
+                    course.courseName += "-" + random;
+                });
+            })
+            .then(async () => {
+                await getMachineUserAuth(lecturerAuth);
+            })
+            .then(async () => {
+                await createCourses([course]);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
     });
 
     after(() => {
-        deleteCourses([course], lecturerAuth);
+        deleteCourses([course]);
         logout();
-    });
-
-    it("Create Course as lecturer", () => {
-        loginAndCreateCourse(course, lecturerAuth);
     });
 
     it("Login as student", () => {
-        logout();
         loginAsDefaultStudent();
     });
 

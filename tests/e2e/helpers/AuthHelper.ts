@@ -1,4 +1,10 @@
 import { Account } from "@/entities/Account";
+import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
+
+export async function getMachineUserAuth(userAuth: Account) {
+    MachineUserAuthenticationManagement.setVueEnvVariable();
+    await MachineUserAuthenticationManagement._getRefreshToken(userAuth);
+}
 
 export function loginAsDefaultAdmin() {
     cy.fixture("logins/admin.json").then((a) => {

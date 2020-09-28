@@ -1,19 +1,21 @@
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
+import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
-import { createNewStudent, deleteUsers } from "./helpers/UserHelper";
+import { getRandomMatriculationId, createUsers, deleteUsers } from "./helpers/UserHelper";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+import { UserWithAuth } from "./helpers/UserWithAuth";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
-let adminAuthUser: Account;
 let student: Student;
 let studentAuthUser: Account;
 
 let adminAuth: Account;
 let studentAuth: Account;
+
+let usersWithAuth: UserWithAuth[] = [];
 
 describe("Account creation, edition and deletion", function () {
     before(function () {
@@ -26,29 +28,34 @@ describe("Account creation, edition and deletion", function () {
             (a as Admin).username += random;
             admin = a as Admin;
         });
-        cy.fixture("adminAuthUser.json").then((a) => {
-            (a as Account).username += random;
-            adminAuthUser = a as Account;
-        });
+        cy.fixture("logins/admin.json")
+            .then((admin) => {
+                adminAuth = admin;
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(() => {
+                cy.fixture("student.json").then((s) => {
+                    (s as Student).username += random;
+                    student = s as Student;
+                    student.matriculationId = getRandomMatriculationId();
+                });
+            })
+            .then(() => {
+                cy.fixture("studentAuthUser.json").then((s) => {
+                    (s as Account).username += random;
+                    studentAuthUser = s as Account;
+                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                });
+            })
+            .then(async () => {
+                await createUsers(usersWithAuth);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
 
-        cy.fixture("student.json").then((s) => {
-            (s as Student).username += random;
-            student = s as Student;
-            var today = new Date();
-            var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
-            var dayPadded = ("00" + today.getDate()).substr(-2);
-            var random2 = Math.floor(Math.random() * 999).toString();
-            var randomPadded = ("000" + random2).substr(-3);
-            student.matriculationId = monthPadded + dayPadded + randomPadded;
-        });
-        cy.fixture("studentAuthUser.json").then((s) => {
-            (s as Account).username += random;
-            studentAuthUser = s as Account;
-        });
-
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
         cy.fixture("logins/student.json").then((student) => {
             studentAuth = student;
         });
@@ -61,10 +68,6 @@ describe("Account creation, edition and deletion", function () {
 
     it("Login as admin", function () {
         loginAsDefaultAdmin();
-    });
-
-    it("Create student account", () => {
-        createNewStudent(student, studentAuthUser);
     });
 
     it("Check matriculation history is empty in account form", function () {

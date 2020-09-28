@@ -2,6 +2,7 @@
 
 ## Feature
 - add test data cleanup on server after test fails cause them to not be deleted [#522](https://github.com/upb-uc4/ui-web/pull/522)
+- speed up tests by removing cypress procedures that were used for creating test objects [#523](https://github.com/upb-uc4/ui-web/pull/523)
 
 ## Bugfix
 - rework clickable areas in all mobile menus [#513](https://github.com/upb-uc4/ui-web/pull/513)
