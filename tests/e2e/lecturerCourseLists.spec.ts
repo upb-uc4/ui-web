@@ -27,7 +27,6 @@ describe("Course List Behavior", function () {
         cy.fixture("logins/admin.json")
             .then((admin) => {
                 adminAuth = admin;
-                adminAuth.role = Role.ADMIN;
             })
             .then(async () => {
                 await getMachineUserAuth(adminAuth);
