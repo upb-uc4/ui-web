@@ -2,9 +2,13 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import { navigateToAccountForm, navigateToAccountList } from "./NavigationHelper";
 import Student from "@/api/api_models/user_management/Student";
-import { loginAsUser } from "./AuthHelper";
+import { loginAsDefaultAdmin, loginAsUser, logout } from "./AuthHelper";
 import User from "@/api/api_models/user_management/User";
 import Admin from "@/api/api_models/user_management/Admin";
+import UserManagement from "@/api/UserManagement";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
+import { readFileSync } from "fs";
+import { UserWithAuth } from "./UserWithAuth";
 
 export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account) {
     navigateToAccountForm();
@@ -125,4 +129,35 @@ export function deleteUser(user: User) {
 export function loginAndDeleteUser(user: User, adminAuth: Account) {
     loginAsUser(adminAuth);
     deleteUser(user);
+}
+
+export async function createUsers(users: UserWithAuth[]) {
+    const user_management = new UserManagement();
+    users.forEach(async (user) => {
+        await user_management.createUser(user.auth, user.userInfo);
+    });
+}
+
+export async function deleteUsers(users: Account[], adminAuth: Account) {
+    let userNames: string[] = [];
+    users.forEach((user) => userNames.push(user.username));
+    MachineUserAuthenticationManagement.setVueEnvVariable();
+    await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
+
+    const user_management = new UserManagement();
+    const existingUsers = await user_management.getUsers(...userNames);
+    Object.values(existingUsers.returnValue)
+        .flat()
+        .forEach(async (user) => {
+            await user_management.deleteUser(user.username);
+        });
+}
+
+export function getRandomMatriculationId(): string {
+    var today = new Date();
+    var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
+    var dayPadded = ("00" + today.getDate()).substr(-2);
+    var random2 = Math.floor(Math.random() * 999).toString();
+    var randomPadded = ("000" + random2).substr(-3);
+    return monthPadded + dayPadded + randomPadded;
 }

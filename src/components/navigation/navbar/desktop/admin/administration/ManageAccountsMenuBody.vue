@@ -3,6 +3,7 @@
         <ul class="w-full px-2">
             <li class="mb-4">
                 <menu-item
+                    id="nav_desktop_admin_menu_manage_accounts_all"
                     title="All Users"
                     description="List of all users"
                     icon-class="fa-globe-americas"
@@ -11,6 +12,7 @@
             </li>
             <li>
                 <menu-item
+                    id="nav_desktop_admin_menu_manage_accounts_create"
                     title="New Account"
                     description="Create a new user"
                     icon-class="fa-star"

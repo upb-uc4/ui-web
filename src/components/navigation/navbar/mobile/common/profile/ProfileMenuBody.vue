@@ -1,14 +1,14 @@
 <template>
     <section class="flex flex-col px-2 pt-3 pb-1">
         <ul class="w-full px-2">
-            <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
+            <li class="mb-2">
                 <menu-item id="nav_mobile_profile" title="Profile" icon-class="fa-user" target-route-name="profile.private" />
             </li>
-            <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
+            <li class="mb-2">
                 <menu-item id="nav_mobile_settings" title="Settings" icon-class="fa-cog" target-route-name="settings" />
             </li>
-            <li class="cursor-pointer rounded-lg p-2 hover:bg-blue-800">
-                <menu-item id="nav_mobile_logout" title="Sign out" icon-class="fa-sign-out-alt" @click="logout" />
+            <li>
+                <menu-item id="nav_mobile_logout" title="Sign out" icon-class="fa-sign-out-alt" :action="logout" />
             </li>
         </ul>
     </section>
@@ -16,12 +16,6 @@
 
 <script lang="ts">
     import MenuItem from "../MenuItem.vue";
-    import { useStore } from "@/use/store/store";
-    import { MutationTypes } from "@/use/store/mutation-types";
-    import Lecturer from "@/api/api_models/user_management/Lecturer";
-    import Admin from "@/api/api_models/user_management/Admin";
-    import Student from "@/api/api_models/user_management/Student";
-    import { Role } from "@/entities/Role";
     import { logout } from "@/use/helpers/Logout";
 
     export default {

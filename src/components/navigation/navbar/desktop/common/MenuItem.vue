@@ -1,5 +1,5 @@
 <template>
-    <button @click="onClick">
+    <span class="cursor-pointer" @click="onClick">
         <div class="rounded-lg" :class="[isHorizontallyAligned ? 'p-4 hover:bg-gray-300' : 'p-2 hover:bg-gray-200']">
             <div class="flex items-center">
                 <i class="fas text-lg text-blue-500 group-hover:text-blue-800 w-4" :class="iconClass" />
@@ -14,7 +14,7 @@
                 <span class="block text-sm text-gray-600 group-hover:text-blue-800">{{ description }}</span>
             </div>
         </div>
-    </button>
+    </span>
 </template>
 
 <script lang="ts">
