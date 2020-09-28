@@ -157,6 +157,7 @@
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
+    import Error from "@/api/api_models/errors/Error";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -358,6 +359,10 @@
                 account.authUser.role = account.user.role;
 
                 var newUser: Student | Lecturer | Admin = assembleAccount();
+                if (newUser.role == undefined) {
+                    errorBag.value = new ErrorBag([{ name: "role", reason: "You have to select a role!" }]);
+                    return;
+                }
 
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler = new AccountValidationResponseHandler();
