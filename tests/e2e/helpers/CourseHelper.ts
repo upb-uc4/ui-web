@@ -1,6 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { clear } from "console";
+import CourseManagement from "@/api/CourseManagement";
 import { loginAsUser } from "./AuthHelper";
 import {
     navigateToCourseFormAdmin,
@@ -44,6 +45,13 @@ export function createCourseAdmin(course: Course) {
     cy.get("div").contains(course.courseName).should("exist");
 }
 
+export async function createCourses(courses: Course[]) {
+    const course_management = new CourseManagement();
+    courses.forEach(async (course) => {
+        await course_management.createCourse(course);
+    });
+}
+
 export function loginAndCreateCourse(course: Course, lecturer: Account) {
     loginAsUser(lecturer);
     cy.wait(100);
@@ -84,4 +92,17 @@ export function deleteCourseAdmin(course: Course) {
     cy.get('button[id="deleteCourseModalDelete"]').click();
     cy.url().should("contain", "/all-courses");
     cy.get("div").contains(course.courseName).should("not.exist");
+}
+
+export async function deleteCourses(courses: Course[]) {
+    const course_management = new CourseManagement();
+    const existingCourses = (await course_management.getCourses()).returnValue;
+
+    courses.forEach(async (course) => {
+        existingCourses.forEach(async (existingCourse) => {
+            if (existingCourse.courseName == course.courseName) {
+                await course_management.deleteCourse(existingCourse.courseId);
+            }
+        });
+    });
 }

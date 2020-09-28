@@ -7,14 +7,14 @@
         <div v-if="busy">
             <loading-spinner />
         </div>
-        <div v-else class="w-full flex flex-row mt-5">
-            <div class="flex flex-row items-start justify-between w-2/3">
+        <div v-else class="w-full flex flex-wrap mt-5">
+            <div class="flex flex-wrap items-start xl:w-2/3">
                 <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
                     <option disabled :value="''">Semester</option>
                     <option>SS</option>
                     <option>WS</option>
                 </select>
-                <select id="semesterYear" v-model="year" class="form-select input-select mx-2">
+                <select id="semesterYear" v-model="year" class="form-select input-select xl:mx-2">
                     <option disabled :value="''">Year</option>
                     <option v-for="year in selectableYears" :key="year">{{ year }}</option>
                 </select>

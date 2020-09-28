@@ -1,7 +1,7 @@
 <template>
     <section class="flex flex-col px-2 pt-3 pb-1">
         <ul class="w-full px-2">
-            <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
+            <li class="mb-2">
                 <menu-item
                     id="nav_mobile_lecturer_menu_courses_all"
                     title="All Courses"
@@ -9,7 +9,7 @@
                     target-route-name="shared.courses"
                 />
             </li>
-            <li class="cursor-pointer mb-2 rounded-lg p-2 hover:bg-blue-800">
+            <li class="mb-2">
                 <menu-item
                     id="nav_mobile_lecturer_menu_courses_create"
                     title="Create Course"
@@ -17,7 +17,7 @@
                     target-route-name="courseForm.create"
                 />
             </li>
-            <li class="cursor-pointer rounded-lg p-2 hover:bg-blue-800">
+            <li>
                 <menu-item
                     id="nav_mobile_lecturer_menu_courses_my_courses"
                     title="My Courses"

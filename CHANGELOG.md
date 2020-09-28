@@ -1,3 +1,13 @@
+# [v.0.9.0](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.9.0) (2020-09-28)
+
+## Feature
+- add test data cleanup on server after test fails cause them to not be deleted [#522](https://github.com/upb-uc4/ui-web/pull/522)
+- speed up tests by removing cypress procedures that were used for creating test objects [#523](https://github.com/upb-uc4/ui-web/pull/523)
+
+## Bugfix
+- rework clickable areas in all mobile menus [#513](https://github.com/upb-uc4/ui-web/pull/513)
+- fix mobile presentation of matriculation settings in account page [#507](https://github.com/upb-uc4/ui-web/issues/507)
+
 # [v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-22)
 
 ## Feature

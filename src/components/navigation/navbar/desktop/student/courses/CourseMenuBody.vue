@@ -3,6 +3,7 @@
         <ul class="w-full lg:w-1/2 px-2">
             <li class="mb-4">
                 <menu-item
+                    id="nav_desktop_student_menu_courses_all"
                     title="All Courses"
                     description="Complete overview of all courses"
                     icon-class="fa-globe-americas"

@@ -1,8 +1,8 @@
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
-import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
-import { loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListLecturer, navigateToCourseListStudent } from "./helpers/NavigationHelper";
+import { deleteCourses, createCourses } from "./helpers/CourseHelper";
+import { getMachineUserAuth, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
+import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Show public profile correctly", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -18,16 +18,34 @@ describe("Show public profile correctly", () => {
             preserve: ["refresh", "login"],
         });
 
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
+        cy.fixture("logins/admin.json")
+            .then((admin) => {
+                adminAuth = admin;
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(() => {
+                cy.fixture("course.json").then((c) => {
+                    course = c;
+                    course.courseName += "-" + random;
+                });
+            })
+            .then(() => {
+                cy.fixture("logins/lecturer.json").then((lecturer) => {
+                    lecturerAuth = lecturer;
+                    course.lecturerId = lecturerAuth.username;
+                });
+            })
+            .then(async () => {
+                await createCourses([course]);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
 
         cy.fixture("logins/student.json").then((student) => {
             studentAuth = student;
-        });
-
-        cy.fixture("logins/lecturer.json").then((lecturer) => {
-            lecturerAuth = lecturer;
         });
 
         cy.fixture("course.json").then((c) => {
@@ -37,15 +55,11 @@ describe("Show public profile correctly", () => {
     });
 
     after(() => {
+        deleteCourses([course]);
         logout();
-    });
-
-    it("Login as Lecturer to create a course", () => {
-        loginAndCreateCourse(course, lecturerAuth);
     });
 
     it("Login as Student", () => {
-        logout();
         loginAsDefaultStudent();
     });
 
@@ -68,10 +82,5 @@ describe("Show public profile correctly", () => {
     it("Back button works", () => {
         cy.get("button[id='navigateBack']").click();
         cy.url().should("contain", "courses");
-    });
-
-    it("Login as Lecturer to delete the course", () => {
-        logout();
-        loginAndDeleteCourse(course, lecturerAuth);
     });
 });
