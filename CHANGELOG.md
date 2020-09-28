@@ -1,4 +1,4 @@
-# [WIP v.0.8.2](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.8.2) (2020-XX-XX)
+# [v.0.9.0](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.9.0) (2020-09-28)
 
 ## Feature
 - add test data cleanup on server after test fails cause them to not be deleted [#522](https://github.com/upb-uc4/ui-web/pull/522)
