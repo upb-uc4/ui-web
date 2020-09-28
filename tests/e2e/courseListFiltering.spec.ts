@@ -39,7 +39,6 @@ describe("Course Filtering", function () {
             .then(() => {
                 cy.fixture("logins/lecturer.json").then((lecturer) => {
                     lecturerAuth = lecturer;
-                    lecturerAuth.role = Role.LECTURER;
                 });
             })
             .then(async () => {
