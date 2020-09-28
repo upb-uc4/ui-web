@@ -361,6 +361,7 @@
                 var newUser: Student | Lecturer | Admin = assembleAccount();
                 if (newUser.role == undefined) {
                     errorBag.value = new ErrorBag([{ name: "role", reason: "You have to select a role!" }]);
+                    await scrollToTopError(errorBag.value.errors);
                     return;
                 }
 
