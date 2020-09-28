@@ -1,5 +1,5 @@
 <template>
-    <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
+    <section class="py-8 border-t-2 border-gray-400">
         <div class="lg:flex">
             <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                 <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
@@ -20,6 +20,9 @@
                         <i class="far fa-trash-alt"></i>
                     </button>
                 </div>
+                <p v-if="errorBag.hasNested('profilePicture')" class="error-message">
+                    {{ errorBag.getNested("profilePicture") }}
+                </p>
             </div>
         </div>
     </section>

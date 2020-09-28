@@ -47,6 +47,7 @@
                 :latest="account.student.latestImmatriculation"
             />
             <profile-picture-section
+                v-if="editMode"
                 v-model:picture="picture"
                 v-model:changed="pictureChanged"
                 :edit-mode="editMode"
@@ -147,6 +148,7 @@
     import scrollToTopError from "@/use/helpers/TopError";
     import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
+    import Error from "@/api/api_models/errors/Error";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -193,6 +195,7 @@
             const errorBag = ref(new ErrorBag());
             const picture = ref();
             const pictureChanged = ref(false);
+            let pictureError: Error[] = [];
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -394,7 +397,7 @@
                 if (success.value) {
                     back();
                 } else {
-                    errorBag.value = new ErrorBag(handler.errorList);
+                    errorBag.value = new ErrorBag(handler.errorList.concat(pictureError));
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -407,6 +410,7 @@
                 if (result) {
                     return true;
                 } else {
+                    pictureError.concat(handler.errorList);
                     console.log("Error: Uploading profile picture failed!");
                     return false;
                 }
