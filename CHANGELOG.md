@@ -7,6 +7,7 @@
 ## Bugfix
 - rework clickable areas in all mobile menus [#513](https://github.com/upb-uc4/ui-web/pull/513)
 - fix mobile presentation of matriculation settings in account page [#507](https://github.com/upb-uc4/ui-web/issues/507)
+- Error feedback is given on posting an account without role [#535](https://github.com/upb-uc4/ui-web/issues/535)
 
 # [v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-22)
 
