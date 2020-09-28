@@ -28,7 +28,7 @@
             </button>
         </div>
 
-        <nav class="" :class="{ hidden: !isBurgerMenuOpen }">
+        <nav id="nav_mobile_menu_list" class="" :class="{ hidden: !isBurgerMenuOpen }">
             <ul class="pb-4 font-semibold tracking-wider text-gray-100">
                 <slot></slot>
                 <li>
