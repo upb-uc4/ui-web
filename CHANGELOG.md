@@ -1,3 +1,8 @@
+# [WIP v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.1) (2020-XX-XX)
+
+## Bugfix
+- close mobile burger menu on navigation to another page.
+
 # [v.0.9.0](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.9.0) (2020-09-28)
 
 ## Feature
