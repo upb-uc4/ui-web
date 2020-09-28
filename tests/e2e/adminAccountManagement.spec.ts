@@ -18,7 +18,14 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToAccountList } from "./helpers/NavigationHelper";
-import { createNewStudent, createNewAdmin, createNewLecturer, deleteUsers, deleteUser } from "./helpers/UserHelper";
+import {
+    createNewStudent,
+    createNewAdmin,
+    createNewLecturer,
+    deleteUsers,
+    deleteUser,
+    getRandomMatriculationId,
+} from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
@@ -60,12 +67,7 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("student.json").then((s) => {
             (s as Student).username += random;
             student = s as Student;
-            var today = new Date();
-            var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
-            var dayPadded = ("00" + today.getDate()).substr(-2);
-            var random2 = Math.floor(Math.random() * 999).toString();
-            var randomPadded = ("000" + random2).substr(-3);
-            student.matriculationId = monthPadded + dayPadded + randomPadded;
+            student.matriculationId = getRandomMatriculationId();
         });
         cy.fixture("studentAuthUser.json").then((s) => {
             (s as Account).username += random;

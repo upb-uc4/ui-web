@@ -2,7 +2,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Country } from "@/entities/Country";
-import { loginAndCreateStudent, createNewLecturer, deleteUsers, createUsers } from "./helpers/UserHelper";
+import { getRandomMatriculationId, deleteUsers, createUsers } from "./helpers/UserHelper";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
@@ -29,12 +29,7 @@ describe("Change Profile Information", () => {
             .then((s) => {
                 (s as Student).username += random;
                 student = s as Student;
-                var today = new Date();
-                var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
-                var dayPadded = ("00" + today.getDate()).substr(-2);
-                var random2 = Math.floor(Math.random() * 999).toString();
-                var randomPadded = ("000" + random2).substr(-3);
-                student.matriculationId = monthPadded + dayPadded + randomPadded;
+                student.matriculationId = getRandomMatriculationId();
             })
             .then(() => {
                 cy.fixture("studentAuthUser.json").then((s) => {

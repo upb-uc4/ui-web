@@ -3,7 +3,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
-import { createNewStudent, createUsers, deleteUsers } from "./helpers/UserHelper";
+import { getRandomMatriculationId, createUsers, deleteUsers } from "./helpers/UserHelper";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
@@ -39,12 +39,7 @@ describe("Account creation, edition and deletion", function () {
                 cy.fixture("student.json").then((s) => {
                     (s as Student).username += random;
                     student = s as Student;
-                    var today = new Date();
-                    var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
-                    var dayPadded = ("00" + today.getDate()).substr(-2);
-                    var random2 = Math.floor(Math.random() * 999).toString();
-                    var randomPadded = ("000" + random2).substr(-3);
-                    student.matriculationId = monthPadded + dayPadded + randomPadded;
+                    student.matriculationId = getRandomMatriculationId();
                 });
             })
             .then(() => {

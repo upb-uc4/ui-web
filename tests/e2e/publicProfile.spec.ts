@@ -1,9 +1,8 @@
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
-import { loginAndCreateCourse, deleteCourses, createCourses } from "./helpers/CourseHelper";
+import { deleteCourses, createCourses } from "./helpers/CourseHelper";
 import { getMachineUserAuth, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
-import { Role } from "@/entities/Role";
 
 describe("Show public profile correctly", () => {
     const random = Math.floor(Math.random() * 9999);

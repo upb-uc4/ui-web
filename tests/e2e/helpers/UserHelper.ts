@@ -152,3 +152,12 @@ export async function deleteUsers(users: Account[], adminAuth: Account) {
             await user_management.deleteUser(user.username);
         });
 }
+
+export function getRandomMatriculationId(): string {
+    var today = new Date();
+    var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
+    var dayPadded = ("00" + today.getDate()).substr(-2);
+    var random2 = Math.floor(Math.random() * 999).toString();
+    var randomPadded = ("000" + random2).substr(-3);
+    return monthPadded + dayPadded + randomPadded;
+}
