@@ -32,6 +32,9 @@
                         <i class="far fa-trash-alt"></i>
                     </button>
                 </div>
+                <p v-if="errorBag.hasNested('profilePicture')" class="error-message">
+                    {{ errorBag.getNested("profilePicture") }}
+                </p>
             </div>
         </div>
     </section>
@@ -60,6 +63,7 @@
             const selectedPicture = ref();
             let fallbackPicture: any;
             const busy = ref(false);
+            const errorBag = ref(new ErrorBag());
 
             onBeforeMount(() => {
                 getProfilePicture();
@@ -112,7 +116,9 @@
                 const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture = selectedPicture.value;
+                    errorBag.value = new ErrorBag();
                 } else {
+                    errorBag.value = new ErrorBag(handler.errorList);
                     console.log("Error: Uploading profile picture failed!");
                 }
                 busy.value = false;
@@ -130,6 +136,7 @@
                 resetPicture,
                 pictureChanged,
                 confirmPicture,
+                errorBag,
             };
         },
     };

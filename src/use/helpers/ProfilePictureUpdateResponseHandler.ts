@@ -1,8 +1,21 @@
 import ResponseHandler from "./ResponseHandler";
 import APIResponse from "@/api/helpers/models/APIResponse";
+import ValidationError from "@/api/api_models/errors/ValidationError";
+import Error from "@/api/api_models/errors/Error";
 
 export default class ProfilePictureUpdateResponseHandler implements ResponseHandler<boolean> {
+    errorList: Error[] = [] as Error[];
+
+    isValidationError(object: any): object is ValidationError {
+        return "type" in object && object.type == "Validation";
+    }
+
     handleResponse<T>(response: APIResponse<T>): T {
+        if (this.isValidationError(response.error)) {
+            for (let err of response.error.invalidParams) {
+                this.errorList.push(err);
+            }
+        }
         if (response.networkError) {
             //TODO show toast
             console.log("Network Error");
