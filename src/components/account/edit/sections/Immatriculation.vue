@@ -35,8 +35,8 @@
                     Add
                 </button>
             </div>
-            <div v-if="errorBag.hasNested('matriculation')" class="error">Show some errors here</div>
         </div>
+        <p v-if="errorBag.hasNested('matriculations')" class="error-message">{{ errorBag.getNested("matriculation") }}</p>
     </div>
 </template>
 
@@ -66,12 +66,7 @@
                 type: String,
                 required: true,
             },
-            immatriculationHasChange: {
-                type: Boolean,
-                required: true,
-            },
         },
-        emits: ["update:immatriculationHasChange"],
         setup(props: any, { emit }: any) {
             let refreshKey = ref(false);
             let busy = ref(true);
@@ -116,10 +111,6 @@
                     semesterType.value != "" ||
                     (selectedFieldsOfStudy.value.length > 0 && selectedFieldsOfStudy.value[0] != "");
                 return hasInput;
-            });
-
-            watch(hasInput, () => {
-                emit("update:immatriculationHasChange", hasInput.value);
             });
 
             function resetYear() {
