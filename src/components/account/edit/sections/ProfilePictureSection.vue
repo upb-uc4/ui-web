@@ -59,7 +59,6 @@
 
             const pictureChanged = computed(() => {
                 const value = selectedPicture.value !== fallbackPicture;
-                emit("update:changed", value);
                 return value;
             });
 
@@ -77,12 +76,14 @@
                 reader.onload = (e) => {
                     selectedPicture.value = e.target?.result;
                     emit("update:picture", selectedPicture.value);
+                    emit("update:changed", true);
                 };
             }
 
             function resetPicture() {
                 selectedPicture.value = fallbackPicture;
                 emit("update:picture", selectedPicture.value);
+                emit("update:changed", false);
             }
 
             return {
