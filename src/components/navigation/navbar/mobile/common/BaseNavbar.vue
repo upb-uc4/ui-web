@@ -49,12 +49,20 @@
     import { ref } from "vue";
     import { useStore } from "@/use/store/store";
     import Router from "@/use/router";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "MobileBaseNavbar",
         components: {},
         setup() {
+            const store = useStore();
             const isBurgerMenuOpen = ref(false);
+
+            store.subscribe((mutation) => {
+                if (mutation.type === MutationTypes.SET_FORCE_CLOSE_BURGER_MENU) {
+                    isBurgerMenuOpen.value = false;
+                }
+            });
 
             function routeLogo() {
                 let store = useStore();

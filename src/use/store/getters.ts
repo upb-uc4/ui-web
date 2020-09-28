@@ -37,4 +37,7 @@ export const getters: GetterTree<State, State> & Getters = {
         const store = useStore();
         return (await store.getters.user).role;
     },
+    forcedToCloseBurgerMenu: (state) => {
+        return state.forceCloseBurgerMenu;
+    },
 };
