@@ -69,7 +69,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     after(() => {
-        //deleteUsers([studentAuthUser], adminAuth);
+        deleteUsers([studentAuthUser], adminAuth);
         logout();
     });
 
@@ -110,6 +110,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
     });
 
+    //TODO
     // it("Correct profile picture shown in public profile", function () {
     //     cy.visit(`/user/${student.username}`);
     //     cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
@@ -175,22 +176,4 @@ describe("Account creation, edition and deletion", function () {
         cy.get("img[id=picture]").should("not.have.attr", "src", lukePic);
         cy.get("img[id=picture]").should("not.have.attr", "src", vaderPic);
     });
-
-    // it("Change the profile picture", function () {
-    //     cy.fixture("pictures/luke.jpg")
-    //         .as("luke_pic")
-    //         .get("button[id=uploadPicture]")
-    //         .click()
-    //         .then(function (el: any) {
-    //             return Cypress.Blob.base64StringToBlob(this.luke_pic, "luke.jpg").then((blob: any) => {
-    //                 el[0].files[0] = blob;
-    //                 el[0].dispatchEvent(new Event("change", { bubbles: true }));
-    //             });
-    //         });
-    //     cy.get("button[id=confirmPicture]").click();
-    //     cy.wait(5000);
-    //     cy.get("button[id=resetPicture]").should("not.exist");
-    //     cy.get("button[id=confirmPicture]").should("not.exist");
-    //     //TODO check if shown picture is luke
-    // });
 });
