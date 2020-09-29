@@ -40,6 +40,7 @@ describe("Account creation, edition and deletion", function () {
                     (s as Student).username += random;
                     student = s as Student;
                     student.matriculationId = getRandomMatriculationId();
+                    student.birthDate = "2011-01-01";
                 });
             })
             .then(() => {
@@ -83,17 +84,27 @@ describe("Account creation, edition and deletion", function () {
         logout();
     });
 
-    it("FoS multiselect changes are detected", function () {
+    it("Valid FoS selection can be resetted ", function () {
         loginAsDefaultAdmin();
         cy.visit(`editAccount/${student.username}`);
-        cy.get("select[id=semesterType]").select("SS");
-        cy.get("button[id=cancel]").click();
-        cy.wait(100);
-        cy.get("#modal-wrapper").should("exist");
-        cy.get("div").contains("Do you really want to continue and leave this page? You have unsaved changes.");
+        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
+        cy.get("select[id='semesterType']").select("SS");
+        cy.get("select[id='semesterYear']").select("2010");
+        cy.get("select[id='fieldsOfStudy-1']").select(FieldOfStudy.COMPUTER_SCIENCE);
+        cy.get("button[id='removeFieldOfStudy-1']").click();
+        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
+    });
 
-        cy.get("button[id='unsavedChangesModalCancel']").click();
-        cy.wait(100);
+    it("Input a FoS for a semester earlier than birthday results in error", function () {
+        cy.get("button[id='addImmatriculationData']").should("be.disabled");
+        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
+        cy.get("select[id='semesterType']").select("SS");
+        cy.get("select[id='semesterYear']").select("2010");
+        cy.get("select[id='fieldsOfStudy-1']").select(FieldOfStudy.COMPUTER_SCIENCE);
+        cy.get("button[id='addImmatriculationData']").click();
+        cy.wait(4000);
+        cy.get("div[id='immatriculationOptions']").siblings().get("p").should("have.class", "error-message");
+        cy.get("button[id='removeFieldOfStudy-1']").click();
     });
 
     it("Add two fields of studies for one summer semester", function () {
