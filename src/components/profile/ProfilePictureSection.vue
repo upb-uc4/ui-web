@@ -75,8 +75,13 @@
                 const response = await userManagement.getProfilePicture(props.username);
                 const handler = new GenericResponseHandler();
                 const result = handler.handleResponse(response);
+
                 if (result.arrayBuffer != undefined) {
-                    selectedPicture.value = result;
+                    const reader = new FileReader();
+                    reader.readAsDataURL(result);
+                    reader.onload = (e) => {
+                        selectedPicture.value = e.target?.result;
+                    };
                     fallbackPicture = selectedPicture.value;
                 } else {
                     //TODO Show Toast

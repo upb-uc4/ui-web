@@ -417,27 +417,31 @@ export default class UserManagement extends Common {
 
     async getProfilePicture(username: string): Promise<APIResponse<File>> {
         return await this._axios
-            .get(`/users/${username}/image`)
+            .get(`/users/${username}/image`, {
+                responseType: "arraybuffer",
+            })
             .then((response: AxiosResponse) => {
+                let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
+                const file: File = new File([blob], "image.png", { type: response.headers["content-type"] });
                 return {
                     error: {} as APIError,
                     networkError: false,
                     statusCode: response.status,
-                    returnValue: response.data,
+                    returnValue: file,
                 };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    // if (
-                    //     await handleAuthenticationError({
-                    //         statusCode: error.response.status,
-                    //         error: error.response.data as APIError,
-                    //         returnValue: {} as File,
-                    //         networkError: false,
-                    //     })
-                    // ) {
-                    //     return await this.getProfilePicture(username);
-                    // }
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as File,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getProfilePicture(username);
+                    }
                     return {
                         returnValue: {} as File,
                         statusCode: error.response.status,
@@ -466,18 +470,18 @@ export default class UserManagement extends Common {
                     returnValue: true,
                 };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    // if (
-                    //     await handleAuthenticationError({
-                    //         statusCode: error.response.status,
-                    //         error: error.response.data as APIError,
-                    //         returnValue: false,
-                    //         networkError: false,
-                    //     })
-                    // ) {
-                    //     return await this.updateProfilePicture(username, picture);
-                    // }
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.updateProfilePicture(username, picture);
+                    }
                     return {
                         returnValue: false,
                         statusCode: error.response.status,
