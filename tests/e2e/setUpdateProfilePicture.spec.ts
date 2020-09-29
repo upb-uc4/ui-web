@@ -132,6 +132,23 @@ describe("Account creation, edition and deletion", function () {
         cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
     });
 
+    it("Delete profile picture modal is shown", function () {
+        cy.get("button[id=deletePicture]").click();
+        cy.get("#modal-wrapper").should("exist");
+        cy.get("div").contains("Are you sure you want to delete the profile picture?");
+
+        cy.get("button[id='deleteProfilePictureModalCancel']").click();
+        cy.wait(100);
+    });
+
+    it("Deleting profile picture works", function () {
+        cy.get("button[id=deletePicture]").click();
+        cy.get("button[id='deleteProfilePictureModalDelete']").click();
+        cy.wait(1000);
+        cy.get("img[id=picture]").should("not.have.attr", "src", lukePic);
+        cy.get("img[id=picture]").should("not.have.attr", "src", vaderPic);
+    });
+
     it("Changing picture works for students", function () {
         cy.get("input[id=uploadFile]").attachFile("pictures/luke.jpg", { force: true });
         cy.get("button[id=confirmPicture]").click();

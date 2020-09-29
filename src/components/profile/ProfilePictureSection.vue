@@ -5,32 +5,44 @@
                 <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
             </div>
             <div class="flex flex-col">
-                <img id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500 block" :src="selectedPicture" />
+                <img id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
                 <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="uploadPicture" />
                 <div class="flex">
                     <button id="uploadPicture" :disabled="busy" class="btn btn-blue-primary w-48" @click="triggerFileUpload">
                         Select Image
                     </button>
                     <button
-                        v-if="pictureChanged"
-                        id="confirmPicture"
+                        v-if="!pictureChanged"
+                        id="deletePicture"
                         :disabled="busy"
-                        title="Confirm Profile Picture"
-                        class="btn btn-icon-green ml-3 text-xl w-10"
-                        @click="confirmPicture"
-                    >
-                        <i class="fas fa-check"></i>
-                    </button>
-                    <button
-                        v-if="pictureChanged"
-                        id="resetPicture"
-                        :disabled="busy"
-                        title="Reset Profile Picture"
+                        title="Delete Profile Picture"
                         class="btn btn-icon-red ml-3 text-xl w-10"
-                        @click="resetPicture"
+                        @click="confirmDeletePicture"
                     >
                         <i class="far fa-trash-alt"></i>
                     </button>
+                    <div v-else class="flex">
+                        <button
+                            v-if="pictureChanged"
+                            id="confirmPicture"
+                            :disabled="busy"
+                            title="Confirm Profile Picture"
+                            class="btn btn-icon-green ml-3 text-xl w-10"
+                            @click="confirmPicture"
+                        >
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                            v-if="pictureChanged"
+                            id="resetPicture"
+                            :disabled="busy"
+                            title="Reset Profile Picture"
+                            class="btn btn-icon-red ml-3 text-xl w-10"
+                            @click="resetPicture"
+                        >
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>
                 </div>
                 <p v-if="errorBag.hasNested('profilePicture')" class="error-message">
                     {{ errorBag.getNested("profilePicture") }}
@@ -38,6 +50,7 @@
             </div>
         </div>
     </section>
+    <delete-profile-picture-modal ref="deletePictureModal" />
 </template>
 
 <script lang="ts">
@@ -49,9 +62,15 @@
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
+    import Router from "@/use/router/";
+    import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
 
     export default {
-        name: "PrivateProfilePictureSection",
+        name: "ProfilePictureSection",
+        components: {
+            DeleteProfilePictureModal,
+        },
+
         props: {
             username: {
                 type: String,
@@ -60,11 +79,13 @@
         },
 
         setup(props: any, { emit }: any) {
+            const username: string = cloneDeep(props.username);
             const selectedPicture = ref();
             let fileToUpload: File = {} as File;
             const fallbackPicture = ref();
             const busy = ref(false);
             const errorBag = ref(new ErrorBag());
+            const deletePictureModal = ref();
 
             onBeforeMount(() => {
                 getProfilePicture();
@@ -73,7 +94,7 @@
             async function getProfilePicture() {
                 busy.value = true;
                 const userManagement = new UserManagement();
-                const response = await userManagement.getProfilePicture(props.username);
+                const response = await userManagement.getProfilePicture(username);
                 const handler = new GenericResponseHandler();
                 const result = handler.handleResponse(response);
 
@@ -118,7 +139,7 @@
             async function confirmPicture() {
                 busy.value = true;
                 const userManagement = new UserManagement();
-                const response = await userManagement.updateProfilePicture(props.username, fileToUpload);
+                const response = await userManagement.updateProfilePicture(username, fileToUpload);
                 const handler = new ProfilePictureUpdateResponseHandler();
                 const result = await handler.handleResponse(response);
                 if (result) {
@@ -135,6 +156,37 @@
                 selectedPicture.value = fallbackPicture.value;
             }
 
+            async function confirmDeletePicture() {
+                let modal = deletePictureModal.value;
+                let action = modal.action;
+                modal.show().then((response: typeof action) => {
+                    switch (response) {
+                        case action.CANCEL: {
+                            //do nothing
+                            break;
+                        }
+                        case action.DELETE: {
+                            deleteProfilePicture();
+                            break;
+                        }
+                    }
+                });
+            }
+
+            async function deleteProfilePicture() {
+                busy.value = true;
+                const userManagement = new UserManagement();
+                const response = await userManagement.deleteProfilePicture(username);
+                const handler = new GenericResponseHandler();
+                const result = await handler.handleResponse(response);
+                if (result) {
+                    getProfilePicture();
+                } else {
+                    console.log("Error: Picture Deletion Failed!");
+                }
+                busy.value = false;
+            }
+
             return {
                 busy,
                 uploadPicture,
@@ -145,6 +197,8 @@
                 confirmPicture,
                 errorBag,
                 fileToUpload,
+                deletePictureModal,
+                confirmDeletePicture,
             };
         },
     };
