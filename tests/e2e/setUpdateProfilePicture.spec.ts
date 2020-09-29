@@ -2,8 +2,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import Admin from "@/api/api_models/user_management/Admin";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
-import { createNewStudent, deleteUser, getRandomMatriculationId, createUsers, deleteUsers } from "./helpers/UserHelper";
-import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
+import { getRandomMatriculationId, createUsers, deleteUsers } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 const random = Math.floor(Math.random() * 9999);
@@ -14,11 +13,22 @@ let adminAuth: Account;
 let studentAuth: Account;
 let usersWithAuth: UserWithAuth[] = [];
 
+let vaderPic: any;
+let lukePic: any;
+
 describe("Account creation, edition and deletion", function () {
     before(function () {
         cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
+        });
+
+        cy.fixture("pictures/darth_vader.jpg").then((vader) => {
+            vaderPic = "data:image/jpeg;base64," + vader;
+        });
+
+        cy.fixture("pictures/luke.jpg").then((luke) => {
+            lukePic = "data:image/jpeg;base64," + luke;
         });
 
         cy.fixture("admin.json").then((a) => {
@@ -59,7 +69,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     after(() => {
-        deleteUsers([studentAuthUser], adminAuth);
+        //deleteUsers([studentAuthUser], adminAuth);
         logout();
     });
 
@@ -67,111 +77,120 @@ describe("Account creation, edition and deletion", function () {
         loginAsDefaultAdmin();
     });
 
-    it("Create student account", function () {
-        createNewStudent(student, studentAuth);
-    });
-
     it("Pick picture as admin", function () {
         cy.visit(`/editAccount/${student.username}`);
-        cy.fixture("pictures/darth_vader.jpg")
-            .as("vader_pic")
-            .get("button[id=uploadPicture]")
-            .click()
-            .then(function (el: any) {
-                return Cypress.Blob.base64StringToBlob(this.vader_pic, "darth_vader.jpg").then((blob: any) => {
-                    el[0].files[0] = blob;
-                    el[0].dispatchEvent(new Event("change", { bubbles: true }));
-                });
-            });
+        cy.get("button[id=uploadPicture]").should("be.enabled");
+        cy.get("button[id=deletePicture]").should("be.enabled");
+        cy.get("input[id=uploadFile]").attachFile("pictures/darth_vader.jpg", { force: true });
+        cy.get("button[id=confirmPicture]").should("be.enabled");
+        cy.get("button[id=resetPicture]").should("be.enabled");
+        cy.get("button[id=deletePicture]").should("not.exist");
     });
 
-    it("Picture change detected", function () {
-        cy.get("button[id='cancel']").click();
-        cy.wait(100);
-        cy.get("#modal-wrapper").should("exist");
-        cy.get("div").contains("Do you really want to continue and leave this page? You have unsaved changes.");
-
-        cy.get("button[id='unsavedChangesModalCancel']").click();
-        cy.wait(100);
+    it("Check if correct picture is shown", function () {
+        cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
     });
 
-    it("Save Changes works", function () {
-        cy.get("button[id=saveChanges]").click();
-        cy.url().should("not.contain", student.username);
-        cy.visit(`/editAccount/${student.username}`);
-        //TODO check if given picture is the uploaded picture
-    });
-
-    it("Resetting the picture works for admins", function () {
-        cy.fixture("pictures/luke.jpg")
-            .as("luke_pic")
-            .get("button[id=uploadPicture]")
-            .click()
-            .then(function (el: any) {
-                return Cypress.Blob.base64StringToBlob(this.luke_pic, "luke.jpg").then((blob: any) => {
-                    el[0].files[0] = blob;
-                    el[0].dispatchEvent(new Event("change", { bubbles: true }));
-                });
-            });
-        cy.get("button[id=resetPicture]").click();
-        cy.get("button[id=resetPicture]").should("not.exist");
-        //TODO check if darth_vader picture is shown
-    });
-
-    it("Logout", function () {
-        logout();
-    });
-
-    it("Login as student", function () {
-        loginAsUser(studentAuthUser);
-    });
-
-    it("Profile Picture shown corretly", function () {
-        navigateToPrivateProfile();
-        cy.get("button[id=uploadPicture]").should("exist");
-        //TODO compare img content to darth_vader
-    });
-
-    it("Resetting the picture works for students", function () {
-        cy.fixture("pictures/luke.jpg")
-            .as("luke_pic")
-            .get("button[id=uploadPicture]")
-            .click()
-            .then(function (el: any) {
-                return Cypress.Blob.base64StringToBlob(this.luke_pic, "luke.jpg").then((blob: any) => {
-                    el[0].files[0] = blob;
-                    el[0].dispatchEvent(new Event("change", { bubbles: true }));
-                });
-            });
-        cy.get("button[id=resetPicture]").click();
-        cy.get("button[id=resetPicture]").should("not.exist");
-        //TODO check if darth_vader picture is shown
-    });
-
-    it("Change the profile picture", function () {
-        cy.fixture("pictures/luke.jpg")
-            .as("luke_pic")
-            .get("button[id=uploadPicture]")
-            .click()
-            .then(function (el: any) {
-                return Cypress.Blob.base64StringToBlob(this.luke_pic, "luke.jpg").then((blob: any) => {
-                    el[0].files[0] = blob;
-                    el[0].dispatchEvent(new Event("change", { bubbles: true }));
-                });
-            });
+    it("Updating picture works", function () {
         cy.get("button[id=confirmPicture]").click();
-        cy.wait(5000);
-        cy.get("button[id=resetPicture]").should("not.exist");
+        cy.wait(500);
+        cy.get("button[id=uploadPicture]").should("be.enabled");
+        cy.get("button[id=deletePicture]").should("be.enabled");
         cy.get("button[id=confirmPicture]").should("not.exist");
-        //TODO check if shown picture is luke
+        cy.get("button[id=resetPicture]").should("not.exist");
+        cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
     });
 
-    it("Logout", function () {
+    it("Resetting picture works", function () {
+        cy.get("input[id=uploadFile]").attachFile("pictures/luke.jpg", { force: true });
+        cy.get("img[id=picture]").should("have.attr", "src", lukePic);
+        cy.get("button[id=resetPicture]").click();
+        cy.get("button[id=confirmPicture]").should("not.exist");
+        cy.get("button[id=resetPicture]").should("not.exist");
+        cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
+    });
+
+    // it("Correct profile picture shown in public profile", function () {
+    //     cy.visit(`/user/${student.username}`);
+    //     cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
+    // });
+
+    it("Logout as Admin", function () {
         logout();
     });
 
-    it("Delete student", function () {
-        loginAsDefaultAdmin();
-        deleteUser(student);
+    it("Login as student and navigate to private profile", function () {
+        loginAsUser(studentAuthUser);
+        cy.visit("/profile");
     });
+
+    it("Correct profile picture shown", function () {
+        cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
+    });
+
+    it("Resetting profile picture works for student", function () {
+        cy.get("input[id=uploadFile]").attachFile("pictures/luke.jpg", { force: true });
+        cy.get("img[id=picture]").should("have.attr", "src", lukePic);
+        cy.get("button[id=resetPicture]").click();
+        cy.get("button[id=confirmPicture]").should("not.exist");
+        cy.get("button[id=resetPicture]").should("not.exist");
+        cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
+    });
+
+    it("Changing picture works for students", function () {
+        cy.get("input[id=uploadFile]").attachFile("pictures/luke.jpg", { force: true });
+        cy.get("button[id=confirmPicture]").click();
+        cy.wait(1000);
+        cy.get("button[id=confirmPicture]").should("not.exist");
+        cy.get("button[id=resetPicture]").should("not.exist");
+        cy.get("img[id=picture]").should("have.attr", "src", lukePic);
+    });
+
+    it("Logout as students", function () {
+        logout();
+    });
+
+    it("Login as admin and open student's account page", function () {
+        loginAsDefaultAdmin();
+        cy.visit(`/editAccount/${student.username}`);
+    });
+
+    it("Correct profile picture is shown", function () {
+        cy.get("img[id=picture]").should("have.attr", "src", lukePic);
+    });
+
+    it("Delete profile picture modal is shown", function () {
+        cy.get("button[id=deletePicture]").click();
+        cy.get("#modal-wrapper").should("exist");
+        cy.get("div").contains("Are you sure you want to delete the profile picture?");
+
+        cy.get("button[id='deleteProfilePictureModalCancel']").click();
+        cy.wait(100);
+    });
+
+    it("Deleting profile picture works", function () {
+        cy.get("button[id=deletePicture]").click();
+        cy.get("button[id='deleteProfilePictureModalDelete']").click();
+        cy.wait(1000);
+        cy.get("img[id=picture]").should("not.have.attr", "src", lukePic);
+        cy.get("img[id=picture]").should("not.have.attr", "src", vaderPic);
+    });
+
+    // it("Change the profile picture", function () {
+    //     cy.fixture("pictures/luke.jpg")
+    //         .as("luke_pic")
+    //         .get("button[id=uploadPicture]")
+    //         .click()
+    //         .then(function (el: any) {
+    //             return Cypress.Blob.base64StringToBlob(this.luke_pic, "luke.jpg").then((blob: any) => {
+    //                 el[0].files[0] = blob;
+    //                 el[0].dispatchEvent(new Event("change", { bubbles: true }));
+    //             });
+    //         });
+    //     cy.get("button[id=confirmPicture]").click();
+    //     cy.wait(5000);
+    //     cy.get("button[id=resetPicture]").should("not.exist");
+    //     cy.get("button[id=confirmPicture]").should("not.exist");
+    //     //TODO check if shown picture is luke
+    // });
 });

@@ -6,7 +6,7 @@
         </button>
         <div class="flex items-center bg-white rounded-lg mt-12">
             <div class="flex items-center my-12">
-                <img class="w-32 h-32 mb-4 rounded-full object-cover mx-16 border-4 border-blue-700" :src="profilePicture" />
+                <img id="picture" class="w-32 h-32 mb-4 rounded-full object-cover mx-16 border-4 border-blue-700" :src="profilePicture" />
                 <div class="flex flex-col">
                     <h1 class="text-3xl font-medium text-gray-700">
                         {{ student.firstName + " " + student.lastName }}

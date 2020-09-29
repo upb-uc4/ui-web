@@ -1,7 +1,7 @@
 <template>
     <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
-            <p class="text-2xl text-gray-900">Delete course</p>
+            <p class="text-2xl text-gray-900">Delete Profile Picture</p>
         </template>
 
         Are you sure you want to delete the profile picture?<br />
