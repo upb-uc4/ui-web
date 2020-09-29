@@ -82,8 +82,8 @@
                     reader.readAsDataURL(result);
                     reader.onload = (e) => {
                         selectedPicture.value = e.target?.result;
+                        fallbackPicture = selectedPicture.value;
                     };
-                    fallbackPicture = selectedPicture.value;
                 } else {
                     //TODO Show Toast
                     console.log("Error: Loading Profile Picture Failed");
