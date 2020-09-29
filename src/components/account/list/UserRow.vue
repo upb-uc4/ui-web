@@ -8,7 +8,6 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-between">
                 <div class="flex">
-                    <img class="w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
                     <div class="sm:ml-1">
                         <div class="text leading-5 font-medium text-blue-900 mb-1 lg:w-48 w-32 truncate">
                             {{ user.firstName }} {{ user.lastName }}
@@ -74,13 +73,12 @@
             function editAccount(username: string) {
                 router.push({ path: "/editAccount/" + username });
             }
-            const profilePicture = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + props.user.username + "/image";
             const isStudent = props.user.role === Role.STUDENT;
             const isLecturer = props.user.role === Role.LECTURER;
             const isAdmin = props.user.role === Role.ADMIN;
             const student = props.user as Student;
 
-            return { editAccount, isStudent, isLecturer, isAdmin, student, profilePicture };
+            return { editAccount, isStudent, isLecturer, isAdmin, student };
         },
     };
 </script>
