@@ -110,12 +110,6 @@ describe("Account creation, edition and deletion", function () {
         cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
     });
 
-    //TODO
-    // it("Correct profile picture shown in public profile", function () {
-    //     cy.visit(`/user/${student.username}`);
-    //     cy.get("img[id=picture]").should("have.attr", "src", vaderPic);
-    // });
-
     it("Logout as Admin", function () {
         logout();
     });
