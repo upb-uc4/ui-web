@@ -11,7 +11,7 @@ export default class MatriculationValidationResponseHandler implements ResponseH
     errorList: Error[] = [] as Error[];
 
     isValidationError(object: any): object is ValidationError {
-        return "type" in object && object.type == "validation error";
+        return "type" in object && object.type == "HLUnprocessableEntity";
     }
 
     isMatriculationData(object: any): object is MatriculationData {
