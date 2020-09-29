@@ -6,12 +6,13 @@ import {
     deriveKeyFromPassword,
     wrapKey,
     unwrapKey,
+    arrayBufferToBase64,
+    base64ToArrayBuffer,
 } from "@/use/crypto/certificates";
 import { stringToArrayBuffer, arrayBufferToString, toBase64, fromBase64 } from "pvutils";
 import CertificationRequest from "pkijs/src/CertificationRequest";
-import { PrintableString } from "asn1js";
 
-describe("Key generation tests", () => {
+describe("Crypto tests", () => {
     let keypair: CryptoKeyPair;
 
     beforeAll(async () => {
@@ -99,8 +100,12 @@ describe("Key generation tests", () => {
         const crypto = window.crypto.subtle;
         const iv = window.crypto.getRandomValues(new Uint8Array(12));
         const wrapped = await wrapKey(keypair.privateKey, info.key, iv);
+        const wrappedStringBase64 = arrayBufferToBase64(wrapped);
+        const wrapped2 = base64ToArrayBuffer(wrappedStringBase64);
 
-        const unwrapped = await unwrapKey(wrapped, info.key, iv);
+        expect(wrapped).toEqual(wrapped2);
+
+        const unwrapped = await unwrapKey(wrapped2, info.key, iv);
 
         const signed = await crypto.sign({ name: "RSASSA-PKCS1-v1_5" }, unwrapped, new Uint16Array([5, 3, 1, 5, 6, 7, 1]));
         expect(await crypto.verify({ name: "RSASSA-PKCS1-v1_5" }, keypair.publicKey, signed, new Uint16Array([5, 3, 1, 5, 6, 7, 1]))).toBe(

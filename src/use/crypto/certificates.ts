@@ -184,3 +184,11 @@ export async function deriveKeyFromPassword(password: string, salt?: string): Pr
 
     return { key: <CryptoKey>(<unknown>await crypto.deriveKey(deriveAlgorithm, keyMaterial, useAlgorithm, false, usages)), salt: salt };
 }
+
+export function arrayBufferToBase64(buf: ArrayBuffer): string {
+    return btoa(arrayBufferToString(buf));
+}
+
+export function base64ToArrayBuffer(str: string): ArrayBuffer {
+    return stringToArrayBuffer(atob(str));
+}

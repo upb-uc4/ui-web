@@ -29,6 +29,7 @@
     import { ref, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
+    import CertificateManagement from "@/api/CertificateManagement";
 
     export default {
         components: {
@@ -60,6 +61,7 @@
                 let courseManagementVersion = await CourseManagement.getVersion();
                 let userManagementVersion = await UserManagement.getVersion();
                 let matriculationManagementVersion = await MatriculationManagement.getVersion();
+                const certificateManagementVersion = await CertificateManagement.getVersion();
 
                 versions.push({
                     name: "Frontend",
@@ -101,6 +103,15 @@
                         "matriculation-" +
                         matriculationManagementVersion +
                         "/product_code/lagom/hl_course_service/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Certificate Management",
+                    version: certificateManagementVersion,
+                    link:
+                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "certificate-" +
+                        certificateManagementVersion +
+                        "/product_code/certificate_service/CHANGELOG.md",
                 });
 
                 emit("versions", versions);
