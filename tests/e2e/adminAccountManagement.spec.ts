@@ -164,10 +164,9 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Show validation errors", () => {
-        //TODO Include this when error with role is fixed
-        // cy.get("input[id='userName']").type(studentUsername);
-        // cy.get("button[id='createAccount']").click();
-        // cy.get("div[id='roleSelection']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='userName']").type(student.username);
+        cy.get("button[id='createAccount']").click();
+        cy.get("div[id='roleSelection']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[type='radio']").eq(1).click();
         cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
         cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
