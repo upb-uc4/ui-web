@@ -62,7 +62,7 @@
         setup(props: any, { emit }: any) {
             const selectedPicture = ref();
             let fileToUpload: File = {} as File;
-            let fallbackPicture: any;
+            const fallbackPicture = ref();
             const busy = ref(false);
             const errorBag = ref(new ErrorBag());
 
@@ -82,19 +82,19 @@
                     reader.readAsDataURL(result);
                     reader.onload = (e) => {
                         selectedPicture.value = e.target?.result;
-                        fallbackPicture = selectedPicture.value;
+                        fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
                     //TODO Show Toast
                     console.log("Error: Loading Profile Picture Failed");
                     selectedPicture.value = "";
-                    fallbackPicture = selectedPicture.value;
+                    fallbackPicture.value = selectedPicture.value;
                 }
                 busy.value = false;
             }
 
             const pictureChanged = computed(() => {
-                const value = selectedPicture.value !== fallbackPicture;
+                const value = selectedPicture.value !== fallbackPicture.value;
                 return value;
             });
 
@@ -122,7 +122,7 @@
                 const handler = new ProfilePictureUpdateResponseHandler();
                 const result = await handler.handleResponse(response);
                 if (result) {
-                    fallbackPicture = selectedPicture.value;
+                    fallbackPicture.value = selectedPicture.value;
                     errorBag.value = new ErrorBag();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -132,7 +132,7 @@
             }
 
             function resetPicture() {
-                selectedPicture.value = fallbackPicture;
+                selectedPicture.value = fallbackPicture.value;
             }
 
             return {
