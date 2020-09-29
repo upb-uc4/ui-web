@@ -18,8 +18,6 @@ export default class Common {
     }
 
     static async getVersion(endpoint: string): Promise<string> {
-        let version = "unavailable";
-
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
             headers: {
@@ -33,6 +31,8 @@ export default class Common {
             .then((response: AxiosResponse) => {
                 return response.data.versionNumber;
             })
-            .catch((error: AxiosError) => {});
+            .catch((error: AxiosError) => {
+                return "unavailable";
+            });
     }
 }

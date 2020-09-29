@@ -341,6 +341,11 @@
                 account.authUser.role = account.user.role;
 
                 var newUser: Student | Lecturer | Admin = assembleAccount();
+                if (newUser.role == undefined) {
+                    errorBag.value = new ErrorBag([{ name: "role", reason: "You have to select a role!" }]);
+                    await scrollToTopError(errorBag.value.errors);
+                    return;
+                }
 
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler = new AccountValidationResponseHandler();
