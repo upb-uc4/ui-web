@@ -61,6 +61,7 @@
 
         setup(props: any, { emit }: any) {
             const selectedPicture = ref();
+            let fileToUpload: File = {} as File;
             let fallbackPicture: any;
             const busy = ref(false);
             const errorBag = ref(new ErrorBag());
@@ -106,6 +107,7 @@
                 if (files == null) return;
 
                 const file = files[0];
+                fileToUpload = file;
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = (e) => {
@@ -116,7 +118,7 @@
             async function confirmPicture() {
                 busy.value = true;
                 const userManagement = new UserManagement();
-                const response = await userManagement.updateProfilePicture(props.username, selectedPicture.value);
+                const response = await userManagement.updateProfilePicture(props.username, fileToUpload);
                 const handler = new ProfilePictureUpdateResponseHandler();
                 const result = await handler.handleResponse(response);
                 if (result) {
@@ -142,6 +144,7 @@
                 pictureChanged,
                 confirmPicture,
                 errorBag,
+                fileToUpload,
             };
         },
     };
