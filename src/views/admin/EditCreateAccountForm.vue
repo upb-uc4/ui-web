@@ -46,13 +46,7 @@
                 :username="account.user.username"
                 :latest="account.student.latestImmatriculation"
             />
-            <profile-picture-section
-                v-if="editMode"
-                v-model:picture="picture"
-                v-model:changed="pictureChanged"
-                :edit-mode="editMode"
-                :error-bag="errorBag"
-            />
+            <profile-picture-section v-if="editMode" />
             <section class="py-8 border-t-2 border-gray-400 lg:mt-8">
                 <div class="justify-between hidden sm:flex">
                     <div class="flex items-center justify-start">
@@ -193,9 +187,6 @@
             let immatriculationHasChange = ref(false);
 
             const errorBag = ref(new ErrorBag());
-            const picture = ref();
-            const pictureChanged = ref(false);
-            let pictureError: Error[] = [];
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -234,7 +225,6 @@
             onBeforeMount(() => {
                 if (props.editMode) {
                     getUser();
-                    getPicture();
                 }
             });
 
@@ -266,22 +256,6 @@
                 busy.value = false;
             }
 
-            async function getPicture() {
-                busy.value = true;
-                const userManagement = new UserManagement();
-                const response = await userManagement.getProfilePicture(props.username);
-                const handler = new GenericResponseHandler();
-                const result = handler.handleResponse(response);
-                if (result.arrayBuffer != undefined) {
-                    picture.value = result;
-                } else {
-                    //TODO Show Toast
-                    console.log("Error: Loading Profile Picture Failed");
-                    picture.value = "";
-                }
-                busy.value = false;
-            }
-
             let hasInput = computed(() => {
                 if (
                     //Role and password can only be set during account creation
@@ -293,8 +267,6 @@
                     account.user.lastName != initialAccount.user.lastName ||
                     account.user.email != initialAccount.user.email ||
                     account.user.phoneNumber != initialAccount.user.phoneNumber ||
-                    //profile picture
-                    pictureChanged.value ||
                     //default user birthdate from the form
                     account.user.birthDate != initialAccount.user.birthDate ||
                     //default user address
@@ -389,30 +361,13 @@
                 const response = await userManagement.updateUser(adaptedUser);
                 const handler = new ValidationResponseHandler();
                 success.value = handler.handleResponse(response);
-                if (pictureChanged.value && !(picture.value == "")) {
-                    success.value = success.value && (await updateProfilePicture());
-                }
                 emit("update:success", success.value);
 
                 if (success.value) {
                     back();
                 } else {
-                    errorBag.value = new ErrorBag(handler.errorList.concat(pictureError));
+                    errorBag.value = new ErrorBag(handler.errorList);
                     await scrollToTopError(errorBag.value.errors);
-                }
-            }
-
-            async function updateProfilePicture(): Promise<boolean> {
-                const userManagement = new UserManagement();
-                const response = await userManagement.updateProfilePicture(props.username, picture.value);
-                const handler = new ProfilePictureUpdateResponseHandler();
-                const result = await handler.handleResponse(response);
-                if (result) {
-                    return true;
-                } else {
-                    pictureError.concat(handler.errorList);
-                    console.log("Error: Uploading profile picture failed!");
-                    return false;
                 }
             }
 
@@ -451,8 +406,6 @@
                 unsavedChangesModal,
                 errorBag: errorBag,
                 immatriculationHasChange,
-                picture,
-                pictureChanged,
             };
         },
     };
