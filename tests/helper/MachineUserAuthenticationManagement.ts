@@ -130,7 +130,8 @@ export default class MachineUserAuthenticationManagement extends Common {
     }
 
     static setVueEnvVariable() {
-        switch (process.env.NODE_ENV) {
+        console.log(Cypress.env("NODE_ENV"));
+        switch (Cypress.env("NODE_ENV")) {
             case "production":
                 process.env.VUE_APP_API_BASE_URL = "https://uc4.cs.uni-paderborn.de/api/production";
                 break;
