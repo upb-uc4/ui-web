@@ -1,7 +1,13 @@
 # [WIP v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.1) (2020-XX-XX)
 
 ## Bugfix
-- close mobile burger menu on navigation to another page.
+- close mobile burger menu on navigation to another page [#552](https://github.com/upb-uc4/ui-web/issues/552)
+- Error feedback is given on posting an account without role [#535](https://github.com/upb-uc4/ui-web/issues/535)
+
+# [v.0.9.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.0-hotfix.1) (2020-09-28)
+
+## Bugfix
+- enable error display for adding matriculation data [#543](https://github.com/upb-uc4/ui-web/pull/543)
 
 # [v.0.9.0](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.9.0) (2020-09-28)
 
@@ -12,6 +18,7 @@
 ## Bugfix
 - rework clickable areas in all mobile menus [#513](https://github.com/upb-uc4/ui-web/pull/513)
 - fix mobile presentation of matriculation settings in account page [#507](https://github.com/upb-uc4/ui-web/issues/507)
+
 
 # [v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-22)
 

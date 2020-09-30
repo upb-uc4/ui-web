@@ -40,7 +40,6 @@
             <student-information-section
                 v-if="isStudent"
                 v-model:matriculation-id="account.student.matriculationId"
-                v-model:immatriculation-has-change="immatriculationHasChange"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
                 :username="account.user.username"
@@ -157,6 +156,7 @@
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
+    import Error from "@/api/api_models/errors/Error";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -198,7 +198,6 @@
             let success = ref(false);
             let deleteModal = ref();
             let unsavedChangesModal = ref();
-            let immatriculationHasChange = ref(false);
 
             const errorBag = ref(new ErrorBag());
 
@@ -296,8 +295,7 @@
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
                     //student properties
-                    account.student.matriculationId != initialAccount.student.matriculationId ||
-                    immatriculationHasChange.value
+                    account.student.matriculationId != initialAccount.student.matriculationId
                 ) {
                     emit("update:has-input", true);
                     return true;
@@ -358,6 +356,11 @@
                 account.authUser.role = account.user.role;
 
                 var newUser: Student | Lecturer | Admin = assembleAccount();
+                if (newUser.role == undefined) {
+                    errorBag.value = new ErrorBag([{ name: "role", reason: "You have to select a role!" }]);
+                    await scrollToTopError(errorBag.value.errors);
+                    return;
+                }
 
                 const response = await userManagement.createUser(account.authUser, newUser);
                 const handler = new AccountValidationResponseHandler();
@@ -423,7 +426,6 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag: errorBag,
-                immatriculationHasChange,
             };
         },
     };
