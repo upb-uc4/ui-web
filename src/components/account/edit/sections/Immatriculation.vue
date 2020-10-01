@@ -7,7 +7,7 @@
         <div v-if="busy">
             <loading-spinner />
         </div>
-        <div v-else class="w-full flex flex-wrap mt-5">
+        <div v-else id="immatriculationOptions" class="w-full flex flex-wrap mt-5">
             <div class="flex flex-wrap items-start xl:w-2/3">
                 <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
                     <option disabled :value="''">Semester</option>
@@ -35,8 +35,8 @@
                     Add
                 </button>
             </div>
-            <div v-if="errorBag.hasNested('matriculation')" class="error">Show some errors here</div>
         </div>
+        <p v-if="errorBag.hasNested('matriculation')" class="error-message">{{ errorBag.getNested("matriculation") }}</p>
     </div>
 </template>
 
@@ -66,12 +66,7 @@
                 type: String,
                 required: true,
             },
-            immatriculationHasChange: {
-                type: Boolean,
-                required: true,
-            },
         },
-        emits: ["update:immatriculationHasChange"],
         setup(props: any, { emit }: any) {
             let refreshKey = ref(false);
             let busy = ref(true);
@@ -116,10 +111,6 @@
                     semesterType.value != "" ||
                     (selectedFieldsOfStudy.value.length > 0 && selectedFieldsOfStudy.value[0] != "");
                 return hasInput;
-            });
-
-            watch(hasInput, () => {
-                emit("update:immatriculationHasChange", hasInput.value);
             });
 
             function resetYear() {

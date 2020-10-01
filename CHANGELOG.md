@@ -4,7 +4,13 @@
 - introduce profile pictures (set, update, delete, display) [#503](https://github.com/upb-uc4/ui-web/issues/503)
 
 ## Bugfix
-- Error feedback is given on posting an account without role [#535](https://github.com/upb-uc4/ui-web/issues/535)
+- remove stubs from the student's desktop navigation [#537](https://github.com/upb-uc4/ui-web/pull/537)
+- error feedback is given on posting an account without role [#535](https://github.com/upb-uc4/ui-web/issues/535)
+
+# [v.0.9.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.0-hotfix.1) (2020-09-28)
+
+## Bugfix
+- enable error display for adding matriculation data [#543](https://github.com/upb-uc4/ui-web/pull/543)
 
 # [v.0.9.0](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.9.0) (2020-09-28)
 

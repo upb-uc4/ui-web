@@ -14,7 +14,7 @@ export default class ErrorBag {
     }
 
     hasNested(key: string): boolean {
-        return this.errors.some((e) => e.name.endsWith(key));
+        return this.errors.some((e) => e.name.includes(key));
     }
 
     get(key: string): string | undefined {
@@ -23,7 +23,7 @@ export default class ErrorBag {
     }
 
     getNested(key: string): string | undefined {
-        const error = this.errors.find((e) => e.name.endsWith(key));
+        const error = this.errors.find((e) => e.name.includes(key));
         return error?.reason;
     }
 
