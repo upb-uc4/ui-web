@@ -36,8 +36,8 @@
                         </p>
                     </div>
                 </div>
-                <div class="flex flex-col mb-4">
-                    <label class="mb-3 font-medium text-gray-700 text-md"> Birthdate </label>
+                <div class="lg:flex md:flex-col mb-6">
+                    <label class="block mb-3 font-medium text-gray-700 text-md">Birthdate</label>
                     <birth-date-picker v-model:birth-date="accountBirthdate" />
                     <p v-if="errorBag.hasNested('birthDate')" class="error-message">{{ errorBag.getNested("birthDate") }}</p>
                 </div>
