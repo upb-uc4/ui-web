@@ -118,6 +118,7 @@ describe("Account creation, edition and deletion", function () {
     it("Login as student and navigate to private profile", function () {
         loginAsUser(studentAuthUser);
         cy.visit("/profile");
+        cy.wait(2500);
     });
 
     it("Correct profile picture shown", function () {
@@ -166,6 +167,7 @@ describe("Account creation, edition and deletion", function () {
     it("Login as admin and open student's account page", function () {
         loginAsDefaultAdmin();
         cy.visit(`/editAccount/${student.username}`);
+        cy.wait(2500);
     });
 
     it("Correct profile picture is shown", function () {
