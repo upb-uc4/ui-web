@@ -1,5 +1,8 @@
 # [WIP v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.1) (2020-XX-XX)
 
+## Feature
+- introduce profile pictures (set, update, delete, display) [#503](https://github.com/upb-uc4/ui-web/issues/503)
+
 ## Bugfix
 - remove stubs from the student's desktop navigation [#537](https://github.com/upb-uc4/ui-web/pull/537)
 - error feedback is given on posting an account without role [#535](https://github.com/upb-uc4/ui-web/issues/535)

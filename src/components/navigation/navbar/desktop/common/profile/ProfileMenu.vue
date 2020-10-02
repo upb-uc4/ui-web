@@ -5,7 +5,7 @@
                 <div v-if="!busy" class="mr-2 text-gray-100 font-semibold tracking-wide">
                     {{ user.firstName }}
                 </div>
-                <img class="rounded-full w-10 h-10 ml-2" src="@/assets/blank_profile_picture.png" alt="profile_image" />
+                <img class="rounded-full w-10 h-10 ml-2" :src="profilePicture" alt="profile_image" />
             </div>
         </template>
         <template #content>
@@ -33,14 +33,16 @@
         setup() {
             let user = ref({} as User);
             let busy = ref(true);
+            let profilePicture = ref("");
 
             onBeforeMount(async () => {
                 const store = useStore();
                 user.value = await store.getters.user;
+                profilePicture.value = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + user.value.username + "/image";
                 busy.value = false;
             });
 
-            return { user, busy };
+            return { user, busy, profilePicture };
         },
     };
 </script>

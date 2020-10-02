@@ -7,13 +7,10 @@
 
         <div class="flex items-end justify-between">
             <h1 class="mb-8 text-2xl font-medium text-gray-700">{{ admin.firstName + " " + admin.lastName }} (@{{ admin.username }})</h1>
-            <img
-                class="object-cover w-32 h-32 mb-4 rounded-full"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU"
-            />
         </div>
 
         <div>
+            <profile-picture-section :username="admin.username" />
             <personal-section :first-name="admin.firstName" :last-name="admin.lastName" :birth-date="admin.birthDate" />
 
             <contact-section v-model:user="admin" />
@@ -42,6 +39,7 @@
 </template>
 
 <script lang="ts">
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
@@ -56,6 +54,7 @@
             PersonalSection,
             ContactSection,
             AddressSection,
+            ProfilePictureSection,
         },
         props: {
             user: {
