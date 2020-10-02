@@ -24,8 +24,8 @@
             <p v-if="hasError" class="error-message">Wrong Password!</p>
         </div>
         <template #footer>
-            <button id="decryptCertificateModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="decryptCertificateModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">Confirm</button>
+            <button id="decryptPrivateKeyModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
+            <button id="decryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">Confirm</button>
         </template>
     </modal>
 </template>

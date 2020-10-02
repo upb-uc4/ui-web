@@ -50,8 +50,8 @@
             <p v-if="hasError" class="error-message">Please make sure password and confirmation match.</p>
         </div>
         <template #footer>
-            <button id="encryptCertificateModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="encryptCertificateModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">Confirm</button>
+            <button id="encryptPrivateKeyModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
+            <button id="encryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">Confirm</button>
         </template>
     </modal>
 </template>
