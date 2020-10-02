@@ -10,13 +10,18 @@ import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import { getCrypto } from "pkijs/src/common";
-//import CertificateManagement from '@/api/CertificateManagement.ts';
+import CertificateManagement from "@/api/CertificateManagement";
+import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
+import { unwrapKey, base64ToArrayBuffer, deriveKeyFromPassword, privateKeyToPemString } from "@/use/crypto/certificates";
+import Certificate from "@/api/api_models/certificate_management/Certificate";
+import { ActionTypes } from "./action-types";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
     user(state: State): Promise<Student | Lecturer | Admin>;
     loggedIn(state: State): boolean;
     privateKey(state: State): Promise<CryptoKey>;
+    certificate(state: State): Promise<Certificate>;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -43,18 +48,37 @@ export const getters: GetterTree<State, State> & Getters = {
     privateKey: async (state) => {
         if (!("type" in state.privateKey)) {
             const store = useStore();
-            const crypto = getCrypto();
+            const certManagement = new CertificateManagement();
 
-            if (crypto == null) {
-                return Promise.reject("No WebCrypto extension found");
+            const keyResponse = await certManagement.getEncryptedPrivateKey((await store.getters.user).username);
+            const handler = new GenericResponseHandler();
+            const encryptedPrivateKey = handler.handleResponse(keyResponse);
+
+            if (encryptedPrivateKey.key != undefined && encryptedPrivateKey.key != "") {
+                // we saved a key at lagom
+                const privateKey: CryptoKey = await state.decryptPrivateKeyModal(encryptedPrivateKey);
+
+                if (privateKey.type == undefined) {
+                    Promise.reject("Could not decrypt private key");
+                }
+
+                store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
             }
-
-            //const certManagement = new CertificateManagement();
-
-            //const encryptedKey = certManagement.getEncryptedPrivateKey((await store.getters.user).username);
-
-            //crypto.importKey()
         }
         return state.privateKey;
+    },
+    certificate: async (state) => {
+        if (state.certificate.cert == undefined || state.certificate.cert == "") {
+            const store = useStore();
+            const certManagement = new CertificateManagement();
+
+            const certificateResponse = await certManagement.getCertificate((await store.getters.user).username);
+            if (certificateResponse.statusCode == 404) {
+                return await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined);
+            } else {
+                store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);
+            }
+        }
+        return state.certificate;
     },
 };

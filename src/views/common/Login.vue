@@ -88,13 +88,6 @@
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
             async function togglePassword() {
-                let pair = await createKeyPair();
-                console.log(pair);
-                console.log(pair.privateKey);
-                console.log(await createCSR(pair, "testid"));
-                const symmKey = await deriveKeyFromPassword("SuperPasswort");
-                console.log(symmKey);
-
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 

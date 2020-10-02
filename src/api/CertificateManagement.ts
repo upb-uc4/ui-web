@@ -163,7 +163,7 @@ export default class CertificateManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.sendCertificateSigningRequest(username, encPrivKey);
+                        return await this.sendCertificateSigningRequest(username, csr, encryptedPrivateKey);
                     }
                     return {
                         returnValue: {} as Certificate,

@@ -1,5 +1,5 @@
 <template>
-    <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
+    <modal-no-teleport ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
             <p class="text-2xl text-gray-900">Choose Encryption Password</p>
         </template>
@@ -51,18 +51,20 @@
         </div>
         <template #footer>
             <button id="encryptPrivateKeyModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="encryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="checkPassword">Confirm</button>
+            <button id="encryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="close(action.CONFIRM)">
+                Confirm
+            </button>
         </template>
-    </modal>
+    </modal-no-teleport>
 </template>
 
 <script lang="ts">
-    import Modal from "@/components/modals/Modal.vue";
+    import ModalNoTeleport from "@/components/modals/ModalNoTeleport.vue";
     import { ref } from "vue";
 
     export default {
         components: {
-            Modal,
+            ModalNoTeleport,
         },
         setup() {
             const baseModal = ref();
@@ -85,17 +87,28 @@
             }
 
             async function show() {
-                return await baseModal.value.show();
+                await baseModal.value.show();
+                let tempPassword = password.value;
+                password.value = "";
+                passwordConfirmation.value = "";
+                return tempPassword;
             }
 
             async function checkPassword() {
                 hasError.value = password.value !== passwordConfirmation.value;
             }
 
-            function close(action: action) {
-                password.value = "";
-                hasError.value = false;
-                baseModal.value.close(action);
+            function close(a: action) {
+                checkPassword();
+                if (a == action.CANCEL) {
+                    baseModal.value.close(a);
+                }
+
+                if (a == action.CONFIRM) {
+                    if (!hasError.value) {
+                        baseModal.value.close(action.CONFIRM);
+                    }
+                }
             }
 
             return {

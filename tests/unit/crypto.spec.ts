@@ -72,29 +72,6 @@ describe("Crypto tests", () => {
         );
     });
 
-    it("Password derivation works", async () => {
-        const key = await deriveKeyFromPassword("SuperPassword");
-        const crypto = window.crypto.subtle;
-
-        const iv = window.crypto.getRandomValues(new Uint8Array(12));
-        const algorithm = {
-            name: "AES-GCM",
-            iv: iv,
-        };
-
-        const message = stringToArrayBuffer("This is a secret message!");
-
-        console.log(message);
-        const ciphertext = await crypto.encrypt(algorithm, key.key, message);
-
-        const secondDerivation = await deriveKeyFromPassword("SuperPassword", key.salt);
-
-        const plaintext = await crypto.decrypt(algorithm, secondDerivation.key, ciphertext);
-
-        const reconstructed = arrayBufferToString(plaintext);
-        expect(reconstructed).toEqual("This is a secret message!");
-    });
-
     it("Wrapping and unwrapping key works", async () => {
         const info = await deriveKeyFromPassword("SuperPassword");
         const crypto = window.crypto.subtle;

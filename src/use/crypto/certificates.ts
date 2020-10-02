@@ -136,6 +136,7 @@ export async function unwrapKey(key: ArrayBuffer, wrappingKey: CryptoKey, iv: Ar
     }
     const unwrapAlgorithm = {
         name: "AES-GCM",
+        length: 256,
         iv: iv,
     };
 
@@ -161,13 +162,13 @@ export async function deriveKeyFromPassword(password: string, salt?: string): Pr
 
     if (salt == undefined) {
         const rand = window.crypto.getRandomValues(new Uint8Array(32)); // 256 bit salt
-        salt = arrayBufferToString(rand);
+        salt = arrayBufferToBase64(rand);
     }
 
     // password used to derive key from key material
     const deriveAlgorithm = {
         name: "PBKDF2",
-        salt: stringToArrayBuffer(salt),
+        salt: base64ToArrayBuffer(salt),
         iterations: 100000,
         hash: "SHA-256",
     };
@@ -178,7 +179,7 @@ export async function deriveKeyFromPassword(password: string, salt?: string): Pr
         length: 256,
     };
 
-    const usages: KeyUsage[] = ["encrypt", "decrypt"];
+    const usages: KeyUsage[] = ["wrapKey", "unwrapKey"];
 
     const keyMaterial = <CryptoKey>await crypto.importKey("raw", stringToArrayBuffer(password), "PBKDF2", false, ["deriveKey"]);
 
