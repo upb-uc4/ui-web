@@ -181,7 +181,7 @@
                 if (result) {
                     getProfilePicture();
                 } else {
-                    console.log("Error: Picture Deletion Failed!");
+                    console.error("Picture Deletion Failed!");
                 }
                 busy.value = false;
             }
