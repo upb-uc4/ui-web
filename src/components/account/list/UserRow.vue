@@ -8,14 +8,7 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-between">
                 <div class="flex">
-                    <div class="hidden sm:flex flex-shrink-0 w-12 h-12">
-                        <img
-                            class="w-12 h-12 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt="profile_picture"
-                        />
-                    </div>
-                    <div class="sm:ml-8">
+                    <div class="sm:ml-1">
                         <div class="text leading-5 font-medium text-blue-900 mb-1 lg:w-48 w-32 truncate">
                             {{ user.firstName }} {{ user.lastName }}
                         </div>

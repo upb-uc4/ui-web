@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.9.0-hotfix.1",
+    "version": "0.9.1",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -39,7 +39,7 @@
         "internalContainerPort": "80"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.14.0",
+        "@fortawesome/fontawesome-free": "^5.15.0",
         "@vue/cli": "^4.5.6",
         "axios": "^0.20.0",
         "core-js": "^3.6.5",
@@ -56,8 +56,8 @@
         "@cypress/code-coverage": "^3.8.1",
         "@tailwindcss/custom-forms": "^0.2.1",
         "@types/jest": "^26.0.14",
-        "@types/node": "^14.11.2",
         "@types/lodash": "^4.14.161",
+        "@types/node": "^14.11.2",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "@vue/cli-plugin-babel": "^4.5.6",
@@ -69,17 +69,18 @@
         "@vue/cli-service": "^4.5.6",
         "@vue/compiler-sfc": "^3.0.0",
         "@vue/eslint-config-typescript": "^5.1.0",
-        "@vue/test-utils": "^2.0.0-beta.5",
+        "@vue/test-utils": "^2.0.0-beta.6",
         "babel-eslint": "^10.1.0",
         "babel-plugin-istanbul": "^6.0.0",
         "cross-conf-env": "^1.2.0",
-        "cypress": "^5.2.0",
+        "cypress": "^5.3.0",
+        "cypress-file-upload": "^4.1.1",
         "cypress-plugin-snapshots": "^1.4.4",
         "dotenv": "^8.2.0",
         "eslint": "^6.7.2",
         "eslint-config-prettier": "^6.12.0",
         "eslint-plugin-prettier": "^3.1.4",
-        "eslint-plugin-vue": "^7.0.0-beta.4",
+        "eslint-plugin-vue": "^7.0.0",
         "husky": "^4.3.0",
         "jest": "^26.4.0",
         "jest-serializer-vue": "^2.0.2",
@@ -90,6 +91,11 @@
         "vue-cli-plugin-vue-next": "~0.1.4"
     },
     "jest": {
+        "globals": {
+            "ts-jest": {
+                "tsConfig": "tests/unit/tsconfig.json"
+            }
+        },
         "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
         "setupFiles": [
             "<rootDir>/.jest/env.ts"

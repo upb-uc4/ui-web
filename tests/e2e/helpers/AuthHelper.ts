@@ -2,7 +2,7 @@ import { Account } from "@/entities/Account";
 import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
 
 export async function getMachineUserAuth(userAuth: Account) {
-    MachineUserAuthenticationManagement.setVueEnvVariable();
+    MachineUserAuthenticationManagement.setVueEnvVariable(Cypress.env("NODE_ENV"));
     await MachineUserAuthenticationManagement._getRefreshToken(userAuth);
 }
 

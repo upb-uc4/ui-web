@@ -9,7 +9,6 @@ export default class AdminEntity implements Admin {
     address: Address = new AddressEntity();
     firstName = "";
     lastName = "";
-    picture = "";
     email = "";
     birthDate = "";
     phoneNumber = "";
