@@ -1,3 +1,8 @@
+# [WIP v.0.9.2](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.9.2) (2020-XX-XX)
+
+## Bugfix
+- correct ratio of navbar profile picture and update it on user change [#561](https://github.com/upb-uc4/ui-web/pull/561)
+
 # [v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0-hotfix.1...v0.9.1) (2020-10-02)
 
 ## Feature
