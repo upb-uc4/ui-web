@@ -114,8 +114,7 @@
             }
 
             const pictureChanged = computed(() => {
-                const value = selectedPicture.value !== fallbackPicture.value;
-                return value;
+                return selectedPicture.value !== fallbackPicture.value;
             });
 
             function triggerFileUpload() {
