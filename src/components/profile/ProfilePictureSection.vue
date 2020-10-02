@@ -125,7 +125,7 @@
 
             function uploadPicture(e: Event) {
                 const files: FileList | null = (e.target as HTMLInputElement)?.files;
-                if (files == null) return;
+                if (files == null || files?.length == 0) return;
 
                 const file = files[0];
                 fileToUpload = file;
