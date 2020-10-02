@@ -45,24 +45,7 @@
                 :username="account.user.username"
                 :latest="account.student.latestImmatriculation"
             />
-            <section class="py-8 border-t-2 border-gray-400" :hidden="!editMode">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                        <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
-                        <label class="block text-gray-600"> Change the Profile Picture </label>
-                    </div>
-                    <div class="flex flex-col items-center justify-center">
-                        <img class="object-contain h-48" :src="account.user.picture" />
-                        <button
-                            id="updatePicture"
-                            class="px-4 py-2 font-semibold text-blue-700 bg-transparent border border-2 border-blue-700 rounded-lg hover:bg-blue-800 hover:text-white hover:border-transparent"
-                            @click="updatePicture"
-                        >
-                            Update Profile Picture
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <profile-picture-section v-if="editMode" />
             <section class="py-8 border-t-2 border-gray-400 lg:mt-8">
                 <div class="justify-between hidden sm:flex">
                     <div class="flex items-center justify-start">
@@ -156,6 +139,8 @@
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
+    import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
+    import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import Error from "@/api/api_models/errors/Error";
 
     export default {
@@ -167,6 +152,7 @@
             PersonalInformationSection,
             LecturerInformationSection,
             StudentInformationSection,
+            ProfilePictureSection,
             UnsavedChangesModal,
             LoadingComponent,
         },
@@ -193,7 +179,6 @@
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
             };
-
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
             let deleteModal = ref();
@@ -269,8 +254,6 @@
                 busy.value = false;
             }
 
-            function updatePicture() {}
-
             let hasInput = computed(() => {
                 if (
                     //Role and password can only be set during account creation
@@ -290,7 +273,6 @@
                     account.user.address.houseNumber != initialAccount.user.address.houseNumber ||
                     account.user.address.zipCode != initialAccount.user.address.zipCode ||
                     account.user.address.city != initialAccount.user.address.city ||
-                    account.user.picture != initialAccount.user.picture ||
                     //lecturer properties
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
@@ -414,7 +396,6 @@
                 title,
                 account,
                 success,
-                updatePicture,
                 isLecturer,
                 isStudent,
                 hasInput,
