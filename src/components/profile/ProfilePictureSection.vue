@@ -107,7 +107,6 @@
                     };
                 } else {
                     //TODO Show Toast
-                    console.log("Error: Loading Profile Picture Failed");
                     selectedPicture.value = "";
                     fallbackPicture.value = selectedPicture.value;
                 }
