@@ -2,8 +2,8 @@
     <section class="py-8 border-t-2 border-gray-400">
         <div class="lg:flex">
             <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                <label class="block mb-2 text-lg font-medium text-gray-700">User Security</label>
-                <label class="block text-gray-600"> Basic Information of the User for Authentication </label>
+                <label class="block mb-2 text-lg font-medium text-gray-700">Security</label>
+                <label class="block text-gray-600"> Manage the authentication credentials and security related options. </label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="flex flex-col mb-4">

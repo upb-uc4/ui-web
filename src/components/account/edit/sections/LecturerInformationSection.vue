@@ -3,7 +3,7 @@
         <div class="lg:flex">
             <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                 <label class="block mb-2 text-lg font-medium text-gray-700">Lecturer Information</label>
-                <label class="block text-gray-600"> Information Specifically for a Lecturer </label>
+                <label class="block text-gray-600">Manage relevant details of the new lecturer account.</label>
             </div>
             <div class="flex flex-col w-full lg:w-2/3">
                 <label class="mb-3 font-medium text-gray-700 text-md">Description</label>
@@ -16,7 +16,7 @@
                         rows="5"
                         class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
                         :class="{ error: errorBag.hasNested('freeText') }"
-                        placeholder="Add an optional Description for the Lecturer (Publications, Awards ...)"
+                        placeholder="Add an optional description for the Lecturer (publications, awards, etc.)"
                     >
                     </textarea>
                     <p v-if="errorBag.hasNested('freeText')" class="error-message">{{ errorBag.getNested("freeText") }}</p>
@@ -30,7 +30,7 @@
                         rows="3"
                         class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
                         :class="{ error: errorBag.hasNested('researchArea') }"
-                        placeholder="Add an optional Description of the Lecturer's Fields of Research"
+                        placeholder="Add an optional description of the lecturer's fields of research"
                     >
                     </textarea>
                     <p v-if="errorBag.hasNested('researchArea')" class="error-message">
