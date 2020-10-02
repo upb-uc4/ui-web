@@ -174,7 +174,7 @@
                 if (result) {
                     getProfilePicture();
                 } else {
-                    console.log("Error: Picture Deletion Failed!");
+                    // TODO: show toast
                 }
                 busy.value = false;
             }
