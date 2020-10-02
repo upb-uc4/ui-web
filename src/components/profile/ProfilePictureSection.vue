@@ -145,7 +145,6 @@
                     errorBag.value = new ErrorBag();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    console.log("Error: Uploading profile picture failed!");
                 }
                 busy.value = false;
             }
