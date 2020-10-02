@@ -12,7 +12,6 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
 
     handleResponse<T>(response: APIResponse<T>): T {
         if (response.statusCode == 413) {
-            //alert("The uploaded file is too large!");
             this.errorList.push({ name: "profilePicture", reason: "The image size is too large (max 1MB)." });
             return response.returnValue;
         }
