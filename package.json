@@ -91,6 +91,11 @@
         "vue-cli-plugin-vue-next": "~0.1.4"
     },
     "jest": {
+        "globals": {
+            "ts-jest": {
+                "tsConfig": "tests/unit/tsconfig.json"
+            }
+        },
         "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
         "setupFiles": [
             "<rootDir>/.jest/env.ts"
