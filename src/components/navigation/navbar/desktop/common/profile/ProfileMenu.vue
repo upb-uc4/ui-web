@@ -5,7 +5,10 @@
                 <div v-if="!busy" class="mr-2 text-gray-100 font-semibold tracking-wide">
                     {{ user.firstName }}
                 </div>
-                <img class="rounded-full w-10 h-10 ml-2" :src="profilePicture" alt="profile_image" />
+                <div
+                    class="rounded-full w-10 h-10 bg-no-repeat bg-cover bg-center"
+                    :style="{ backgroundImage: `url('${profilePicture}')` }"
+                ></div>
             </div>
         </template>
         <template #content>
@@ -23,6 +26,7 @@
     import { useStore } from "@/use/store/store";
     import { onBeforeMount, ref } from "vue";
     import User from "@/api/api_models/user_management/User";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         components: {
@@ -31,15 +35,28 @@
         },
 
         setup() {
+            const store = useStore();
+
             let user = ref({} as User);
             let busy = ref(true);
             let profilePicture = ref("");
+            let pictureBaseUrl: string;
 
             onBeforeMount(async () => {
-                const store = useStore();
                 user.value = await store.getters.user;
-                profilePicture.value = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + user.value.username + "/image";
+                loadProfilePicture();
                 busy.value = false;
+            });
+
+            function loadProfilePicture() {
+                pictureBaseUrl = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + user.value.username + "/image?";
+                profilePicture.value = pictureBaseUrl;
+            }
+
+            store.subscribe((mutation) => {
+                if (mutation.type === MutationTypes.FORCE_UPDATE_PROFILE_PICTURE) {
+                    profilePicture.value += pictureBaseUrl + new Date().getTime();
+                }
             });
 
             return { user, busy, profilePicture };
