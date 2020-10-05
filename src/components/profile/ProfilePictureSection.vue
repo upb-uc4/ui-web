@@ -169,7 +169,7 @@
                         }
                         case action.DELETE: {
                             deleteProfilePicture();
-                            store.commit(MutationTypes.UPDATE_PROFILE_PICTURE, true);
+                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
                             break;
                         }
                     }
