@@ -146,7 +146,7 @@
                 const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture.value = selectedPicture.value;
-                    store.commit(MutationTypes.UPDATE_PROFILE_PICTURE, true);
+                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
                     errorBag.value = new ErrorBag();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
