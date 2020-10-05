@@ -22,7 +22,7 @@ export const mutations: MutationTree<State> & Mutations = {
     [MutationTypes.SET_USER](state: State, payload: Student | Lecturer | Admin) {
         state.user = payload;
     },
-    [MutationTypes.UPDATE_PROFILE_PICTURE](state: State, payload: boolean) {
+    [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE]() {
         //force update
     },
 };
