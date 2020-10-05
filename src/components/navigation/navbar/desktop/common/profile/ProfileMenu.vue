@@ -54,7 +54,7 @@
             }
 
             store.subscribe((mutation) => {
-                if (mutation.type === MutationTypes.UPDATE_PROFILE_PICTURE) {
+                if (mutation.type === MutationTypes.FORCE_UPDATE_PROFILE_PICTURE) {
                     profilePicture.value += pictureBaseUrl + new Date().getTime();
                 }
             });
