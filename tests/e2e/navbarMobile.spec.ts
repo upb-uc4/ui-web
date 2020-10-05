@@ -1,5 +1,6 @@
 import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent, logoutMobile } from "./helpers/AuthHelper";
 
+const navbar_burger_menu_list = "#nav_mobile_menu_list";
 const navbar_burger_menu = 'button[id="nav_mobile_toggle_menu"]';
 const navbar_about = "#nav_mobile_common_about";
 const navbar_guest_login = "#nav_mobile_guest_login";
@@ -53,17 +54,22 @@ describe("admin", () => {
         cy.get("#nav_mobile_admin_menu_manage_accounts_all").click();
         cy.url().should("contain", "accounts");
 
+        cy.get(navbar_burger_menu).click();
+
         //create account
         cy.get("#nav_mobile_admin_menu_manage_accounts_create").click();
         cy.url().should("contain", "createAccount");
     });
 
-    it("Courses", () => {
+    it("courses", () => {
+        cy.get(navbar_burger_menu).click();
         cy.get("#nav_mobile_admin_menu_courses").click();
 
         //all courses
         cy.get("#nav_mobile_admin_menu_courses_all").click();
         cy.url().should("contain", "all-courses");
+
+        cy.get(navbar_burger_menu).click();
 
         // create course
         cy.get("#nav_mobile_admin_menu_courses_create").click();
@@ -94,9 +100,13 @@ describe("lecturer", () => {
         cy.get("#nav_mobile_lecturer_menu_courses_all").click();
         cy.url().should("contain", "all-courses");
 
+        cy.get(navbar_burger_menu).click();
+
         // create course
         cy.get("#nav_mobile_lecturer_menu_courses_create").click();
         cy.url().should("contain", "createCourse");
+
+        cy.get(navbar_burger_menu).click();
 
         // my courses
         cy.get("#nav_mobile_lecturer_menu_courses_my_courses").click();
@@ -130,9 +140,35 @@ describe("student", () => {
     checkProfile();
 });
 
+describe("menu", () => {
+    beforeEach(() => {
+        cy.viewport("iphone-x");
+    });
+
+    it("toggleMenu", () => {
+        cy.visit("/");
+        cy.wait(50);
+        cy.get(navbar_burger_menu).click();
+        cy.get(navbar_burger_menu_list).should("be.visible");
+        cy.get(navbar_burger_menu).click();
+        cy.get(navbar_burger_menu_list).should("not.be.visible");
+    });
+
+    it("closeOnTransition", () => {
+        cy.visit("/");
+        cy.wait(50);
+        cy.get(navbar_burger_menu).click();
+        cy.get(navbar_burger_menu_list).should("be.visible");
+        cy.get(navbar_about).click();
+        cy.get(navbar_burger_menu_list).should("not.be.visible");
+    });
+});
+
 //checks the profile menu and implicityl logs the current user out.
 function checkProfile() {
     it("profile", () => {
+        cy.get(navbar_burger_menu).click();
+
         //open the menu
         cy.get(".nav_mobile_menu_profile").click();
 
@@ -140,9 +176,13 @@ function checkProfile() {
         cy.get("#nav_mobile_profile").click();
         cy.url().should("contain", "profile");
 
+        cy.get(navbar_burger_menu).click();
+
         //settings
         cy.get("#nav_mobile_settings").click();
         cy.url().should("contain", "settings");
+
+        cy.get(navbar_burger_menu).click();
 
         //logout
         cy.get("#nav_mobile_logout").click();
