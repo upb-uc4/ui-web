@@ -4,7 +4,7 @@
         "target": "esnext",
         "baseUrl": "../../",
         "lib": ["esnext", "dom"],
-        "types": ["cypress", "node", "cypress-plugin-snapshots"],
+        "types": ["cypress", "node", "cypress-plugin-snapshots", "cypress-file-upload"],
         "paths": {
             "@/*": ["src/*"]
         },

@@ -19,12 +19,12 @@ const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.jso
     username: string;
     password: string;
 };
+const picture: File = new File([readFileSync("src/assets/blank_profile_picture.png")], "image.png", { type: "image/png" });
 
 jest.setTimeout(30000);
 
 beforeAll(async () => {
     const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
-
     userManagement = new UserManagement();
     expect(success.returnValue.login).not.toEqual("");
 });
@@ -32,7 +32,7 @@ beforeAll(async () => {
 test("Create user", async () => {
     const success = await userManagement.createUser(authUser, student);
     expect(success.returnValue).toBe(true);
-    await new Promise((r) => setTimeout(r, 5000));
+    await new Promise((r) => setTimeout(r, 1000));
 });
 
 test("Get specific user", async () => {
@@ -120,8 +120,32 @@ test("Update user", async () => {
     await new Promise((r) => setTimeout(r, 5000));
 });
 
+test("get dummy profile picture", async () => {
+    const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
+    expect(pic.size).not.toEqual(picture.size);
+});
+
+test("upload profile picture", async () => {
+    const success = await userManagement.updateProfilePicture(student.username, picture);
+    expect(success.returnValue).toBe(true);
+});
+
+test("get profile picture", async () => {
+    const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
+    expect(pic.size).toEqual(picture.size);
+});
+
+test("delete profile picture", async () => {
+    const success = await userManagement.deleteProfilePicture(student.username);
+    expect(success.returnValue).toBe(true);
+});
+
+test("get dummy profile picture", async () => {
+    const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
+    expect(pic.size).not.toEqual(picture.size);
+});
+
 test("Delete user", async () => {
     const success = await userManagement.deleteUser(student.username);
     expect(success.returnValue).toBe(true);
-    await new Promise((r) => setTimeout(r, 5000));
 });
