@@ -10,6 +10,7 @@ export type Mutations<S = State> = {
     [MutationTypes.SET_MODAL](state: S, payload: string): void;
     [MutationTypes.SET_LOGGEDIN](state: S, payload: boolean): void;
     [MutationTypes.FORCE_CLOSE_BURGER_MENU](state: S, payload: boolean): void;
+    [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S, payload: boolean): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -21,6 +22,9 @@ export const mutations: MutationTree<State> & Mutations = {
     },
     [MutationTypes.SET_USER](state: State, payload: Student | Lecturer | Admin) {
         state.user = payload;
+    },
+    [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE]() {
+        //force update
     },
     [MutationTypes.FORCE_CLOSE_BURGER_MENU]() {
         //do nothing. Just force subscribers to act on it
