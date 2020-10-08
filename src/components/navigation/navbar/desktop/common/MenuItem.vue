@@ -53,12 +53,7 @@
             },
         },
         setup(props: any) {
-            let routeName;
-            Router.getRoutes().forEach((e) => {
-                if (e.name == props.targetRouteName) {
-                    routeName = e.path;
-                }
-            });
+            let routeName = Router.getRoutes().find((e) => e.name == props.targetRouteName)?.path;
 
             async function onClick(event: Event) {
                 event.preventDefault();
