@@ -1,5 +1,5 @@
 <template>
-    <span class="cursor-pointer" @click="onClick">
+    <a :href="routeName" class="cursor-pointer" @click="onClick($event)">
         <div class="rounded-lg" :class="[isHorizontallyAligned ? 'p-4 hover:bg-gray-300' : 'p-2 hover:bg-gray-200']">
             <div class="flex items-center">
                 <i class="fas text-lg text-blue-500 group-hover:text-blue-800 w-4" :class="iconClass" />
@@ -14,7 +14,7 @@
                 <span class="block text-sm text-gray-600 group-hover:text-blue-800">{{ description }}</span>
             </div>
         </div>
-    </span>
+    </a>
 </template>
 
 <script lang="ts">
@@ -53,14 +53,22 @@
             },
         },
         setup(props: any) {
-            function onClick() {
-                props.action();
+            let routeName;
+            Router.getRoutes().forEach((e) => {
+                if (e.name == props.targetRouteName) {
+                    routeName = e.path;
+                }
+            });
+
+            async function onClick(event: Event) {
+                event.preventDefault();
+                await props.action();
                 if (props.targetRouteName != undefined) {
                     Router.push({ name: props.targetRouteName });
                 }
             }
 
-            return { onClick };
+            return { onClick, routeName };
         },
     };
 </script>
