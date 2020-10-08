@@ -1,4 +1,15 @@
-# [WIP v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.1) (2020-XX-XX)
+# [WIP v.0.9.2](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.9.2) (2020-10-XX)
+
+## Bugfix
+- adjust mobile design of "create account" page for admins
+- close mobile burger menu on navigation to another page [#552](https://github.com/upb-uc4/ui-web/issues/552)
+- correct ratio of navbar profile picture and update it on user change [#561](https://github.com/upb-uc4/ui-web/pull/561)
+- enable opening new tabs via navbar menu items [#575](https://github.com/upb-uc4/ui-web/pull/575)
+
+# [v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0-hotfix.1...v0.9.1) (2020-10-02)
+
+## Feature
+- add profile picture functionality (set, update, delete) for admins and users [#551](https://github.com/upb-uc4/ui-web/pull/551)
 
 ## Bugfix
 - remove stubs from the student's desktop navigation [#537](https://github.com/upb-uc4/ui-web/pull/537)

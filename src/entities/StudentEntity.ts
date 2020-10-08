@@ -12,7 +12,6 @@ export default class StudentEntity implements Student {
     address: Address = new AddressEntity();
     firstName = "";
     lastName = "";
-    picture = "";
     email = "";
     birthDate = "";
     phoneNumber = "";

@@ -6,10 +6,7 @@
         </button>
         <div class="flex items-center bg-white rounded-lg mt-12">
             <div class="flex items-center my-12">
-                <img
-                    class="w-32 h-32 mb-4 rounded-full object-cover mx-16 border-4 border-blue-700"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU"
-                />
+                <img id="picture" class="w-32 h-32 mb-4 rounded-full object-cover mx-16 border-4 border-blue-700" :src="profilePicture" />
                 <div class="flex flex-col">
                     <h1 class="text-3xl font-medium text-gray-700">
                         {{ student.firstName + " " + student.lastName }}
@@ -33,11 +30,12 @@
                 type: Object as () => Student,
             },
         },
-        setup() {
+        setup(props: any) {
+            const profilePicture = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + props.student.username + "/image";
             function back() {
                 Router.back();
             }
-            return { back };
+            return { back, profilePicture };
         },
     };
 </script>

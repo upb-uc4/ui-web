@@ -9,13 +9,10 @@
             <h1 class="text-2xl font-medium text-gray-700 mb-8">
                 {{ student.firstName + " " + student.lastName }} (@{{ student.username }})
             </h1>
-            <img
-                class="w-32 h-32 mb-4 rounded-full object-cover"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU"
-            />
         </div>
 
         <div>
+            <profile-picture-section :username="student.username" />
             <personal-section :first-name="student.firstName" :last-name="student.lastName" :birth-date="student.birthDate" />
 
             <contact-section v-model:user="student" />
@@ -53,6 +50,7 @@
 </template>
 
 <script lang="ts">
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
@@ -65,6 +63,7 @@
 
     export default {
         components: {
+            ProfilePictureSection,
             PersonalSection,
             ContactSection,
             AddressSection,
