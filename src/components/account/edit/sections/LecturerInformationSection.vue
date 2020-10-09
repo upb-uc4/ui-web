@@ -16,7 +16,7 @@
                         rows="5"
                         class="w-full text-gray-600 border-2 border-gray-400 rounded-lg form-textarea"
                         :class="{ error: errorBag.hasNested('freeText') }"
-                        placeholder="Add an optional description for the Lecturer (publications, awards, etc.)"
+                        placeholder="Add an optional description for the lecturer (publications, awards, etc.)"
                     >
                     </textarea>
                     <p v-if="errorBag.hasNested('freeText')" class="error-message">{{ errorBag.getNested("freeText") }}</p>
