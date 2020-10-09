@@ -3,7 +3,7 @@
         <div class="lg:flex">
             <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                 <label class="block mb-2 text-lg font-medium text-gray-700">Personal Information</label>
-                <label class="block text-gray-600"> Personal Information and Contact Data for the User </label>
+                <label class="block text-gray-600">Manage personal details to identify the user.</label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-6 lg:flex">

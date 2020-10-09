@@ -131,7 +131,7 @@
     import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
-    import PersonalInformationSection from "@/components/account/edit/sections/PersonalSection.vue";
+    import PersonalInformationSection from "@/components/account/edit/sections/PersonalInformationSection.vue";
     import AddressSection from "@/components/account/edit/sections/AddressSection.vue";
     import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
     import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
