@@ -1,4 +1,4 @@
-# [WIP v.0.9.2](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.9.2) (2020-10-XX)
+# [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
 
 ## Bugfix
 - adjust mobile design of "create account" page for admins
