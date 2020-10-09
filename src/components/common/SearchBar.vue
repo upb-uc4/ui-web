@@ -6,6 +6,7 @@
         <input
             id="message"
             v-model="filterMessage"
+            autocomplete="chrome-off"
             class="w-full border-2 border-gray-300 bg-white h-12 px-12 rounded-lg focus:outline-none"
             type="search"
             placeholder="Filter"
