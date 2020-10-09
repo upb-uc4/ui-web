@@ -26,10 +26,10 @@
                 v-model:first-name="account.user.firstName"
                 v-model:last-name="account.user.lastName"
                 v-model:birth-date="account.user.birthDate"
-                v-model:address="account.user.address"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
+            <address-section v-model:address="account.user.address" :error-bag="errorBag" />
             <lecturer-information-section
                 v-if="isLecturer"
                 v-model:description="account.lecturer.freeText"
@@ -132,6 +132,7 @@
     import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
     import PersonalInformationSection from "@/components/account/edit/sections/PersonalInformationSection.vue";
+    import AddressSection from "@/components/account/edit/sections/AddressSection.vue";
     import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
     import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
@@ -150,6 +151,7 @@
             RoleSection,
             UserSecuritySection,
             PersonalInformationSection,
+            AddressSection,
             LecturerInformationSection,
             StudentInformationSection,
             ProfilePictureSection,

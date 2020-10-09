@@ -1,3 +1,12 @@
+# [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
+
+## Bugfix
+- adjust mobile design of "create account" page for admins
+- close mobile burger menu on navigation to another page [#552](https://github.com/upb-uc4/ui-web/issues/552)
+- correct ratio of navbar profile picture and update it on user change [#561](https://github.com/upb-uc4/ui-web/pull/561)
+- enable opening new tabs via navbar menu items [#575](https://github.com/upb-uc4/ui-web/pull/575)
+- replace placeholder texts in the section descriptions [#559](https://github.com/upb-uc4/ui-web/issues/559)
+
 # [v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0-hotfix.1...v0.9.1) (2020-10-02)
 
 ## Feature

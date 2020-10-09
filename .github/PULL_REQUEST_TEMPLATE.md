@@ -15,9 +15,8 @@ Remove this, if this PR is not to main!
 
 # Description
 
-- Fixes issue #XXX (delete if no issue)
-- Implements issue #XXX (delete if no issue)
-- Closes #XXX
+- Fixes #XXX (for bugfixes)
+- Closes #XXX (for feature implementation)
 
 ## Reason for this PR
 - [INSERT REASONS HERE]

@@ -28,7 +28,7 @@
             </button>
         </div>
 
-        <nav class="" :class="{ hidden: !isBurgerMenuOpen }">
+        <nav id="nav_mobile_menu_list" class="" :class="{ hidden: !isBurgerMenuOpen }">
             <ul class="pb-4 font-semibold tracking-wider text-gray-100">
                 <slot></slot>
                 <li>
@@ -49,12 +49,20 @@
     import { ref } from "vue";
     import { useStore } from "@/use/store/store";
     import Router from "@/use/router";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "MobileBaseNavbar",
         components: {},
         setup() {
+            const store = useStore();
             const isBurgerMenuOpen = ref(false);
+
+            store.subscribe((mutation) => {
+                if (mutation.type === MutationTypes.FORCE_CLOSE_BURGER_MENU) {
+                    isBurgerMenuOpen.value = false;
+                }
+            });
 
             function routeLogo() {
                 let store = useStore();

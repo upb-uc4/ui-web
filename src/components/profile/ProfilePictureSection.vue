@@ -64,6 +64,8 @@
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import Router from "@/use/router/";
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
+    import { useStore } from "vuex";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "ProfilePictureSection",
@@ -79,6 +81,8 @@
         },
 
         setup(props: any, { emit }: any) {
+            const store = useStore();
+
             const username: string = cloneDeep(props.username);
             const selectedPicture = ref();
             let fileToUpload: File = {} as File;
@@ -142,6 +146,7 @@
                 const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture.value = selectedPicture.value;
+                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
                     errorBag.value = new ErrorBag();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -164,6 +169,7 @@
                         }
                         case action.DELETE: {
                             deleteProfilePicture();
+                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
                             break;
                         }
                     }
