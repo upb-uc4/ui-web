@@ -5,6 +5,7 @@
 - close mobile burger menu on navigation to another page [#552](https://github.com/upb-uc4/ui-web/issues/552)
 - correct ratio of navbar profile picture and update it on user change [#561](https://github.com/upb-uc4/ui-web/pull/561)
 - enable opening new tabs via navbar menu items [#575](https://github.com/upb-uc4/ui-web/pull/575)
+- replace placeholder texts in the section descriptions [#559](https://github.com/upb-uc4/ui-web/issues/559)
 
 # [v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0-hotfix.1...v0.9.1) (2020-10-02)
 
@@ -14,7 +15,6 @@
 ## Bugfix
 - remove stubs from the student's desktop navigation [#537](https://github.com/upb-uc4/ui-web/pull/537)
 - error feedback is given on posting an account without role [#535](https://github.com/upb-uc4/ui-web/issues/535)
-- replace placeholder texts in the section descriptions [#559](https://github.com/upb-uc4/ui-web/issues/559)
 
 # [v.0.9.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.0-hotfix.1) (2020-09-28)
 
