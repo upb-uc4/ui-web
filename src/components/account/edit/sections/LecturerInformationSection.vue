@@ -3,7 +3,7 @@
         <div class="lg:flex">
             <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
                 <label class="block mb-2 text-lg font-medium text-gray-700">Lecturer Information</label>
-                <label class="block text-gray-600">Manage relevant details of the new lecturer account.</label>
+                <label class="block text-gray-600">Manage relevant details of the lecturer account.</label>
             </div>
             <div class="flex flex-col w-full lg:w-2/3">
                 <label class="mb-3 font-medium text-gray-700 text-md">Description</label>
