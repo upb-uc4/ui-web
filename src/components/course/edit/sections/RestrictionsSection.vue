@@ -16,6 +16,7 @@
                         class="w-full form-input input-text"
                         :class="{ error: errorBag.has('maxParticipants') }"
                         @keyup="updateLimit($event.target.value)"
+                        @mouseup="updateLimit($event.target.value)"
                         @change="clearField($event.target.value)"
                     />
                     <p v-if="errorBag.has('maxParticipants')" class="error-message">
