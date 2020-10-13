@@ -17,6 +17,7 @@ import { Role } from "@/entities/Role";
 import { useStore } from "@/use/store/store";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import { defineAsyncComponent } from "vue";
+import { MutationTypes } from "@/use/store/mutation-types";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -232,6 +233,11 @@ router.beforeEach(async (to, from, next) => {
     }
 
     return next("/redirect");
+});
+
+router.afterEach(async (to, from, next) => {
+    const store = useStore();
+    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU, true);
 });
 
 export default router;

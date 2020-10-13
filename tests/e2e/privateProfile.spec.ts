@@ -2,9 +2,11 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Country } from "@/entities/Country";
-import { loginAndCreateStudent, createNewLecturer, deleteUser } from "./helpers/UserHelper";
-import { loginAsUser, loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
+import { getRandomMatriculationId, deleteUsers, createUsers } from "./helpers/UserHelper";
+import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
+import { UserWithAuth } from "./helpers/UserWithAuth";
+import { Role } from "@/entities/Role";
 
 describe("Change Profile Information", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -15,57 +17,62 @@ describe("Change Profile Information", () => {
     let lecturerAuthUser: Account;
     let adminAuth: Account;
 
+    let usersWithAuth: UserWithAuth[] = [];
+
     before(() => {
         cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
 
-        cy.fixture("student.json").then((s) => {
-            (s as Student).username += random;
-            student = s as Student;
-            var today = new Date();
-            var monthPadded = ("00" + (today.getMonth() + 1)).substr(-2);
-            var dayPadded = ("00" + today.getDate()).substr(-2);
-            var random2 = Math.floor(Math.random() * 999).toString();
-            var randomPadded = ("000" + random2).substr(-3);
-            student.matriculationId = monthPadded + dayPadded + randomPadded;
-        });
-
-        cy.fixture("studentAuthUser.json").then((s) => {
-            (s as Account).username += random;
-            studentAuthUser = s as Account;
-        });
-
-        cy.fixture("lecturer.json").then((l) => {
-            (l as Student).username += random;
-            lecturer = l as Lecturer;
-        });
-
-        cy.fixture("lecturerAuthUser.json").then((l) => {
-            (l as Account).username += random;
-            lecturerAuthUser = l as Account;
-        });
-
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
+        cy.fixture("student.json")
+            .then((s) => {
+                (s as Student).username += random;
+                student = s as Student;
+                student.matriculationId = getRandomMatriculationId();
+            })
+            .then(() => {
+                cy.fixture("studentAuthUser.json").then((s) => {
+                    (s as Account).username += random;
+                    studentAuthUser = s as Account;
+                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                });
+            })
+            .then(() => {
+                cy.fixture("lecturer.json").then((l) => {
+                    (l as Student).username += random;
+                    lecturer = l as Lecturer;
+                });
+            })
+            .then(() => {
+                cy.fixture("lecturerAuthUser.json").then((l) => {
+                    (l as Account).username += random;
+                    lecturerAuthUser = l as Account;
+                    usersWithAuth.push({ userInfo: lecturer, auth: lecturerAuthUser });
+                });
+            })
+            .then(() => {
+                cy.fixture("logins/admin.json").then((admin) => {
+                    adminAuth = admin;
+                });
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(async () => {
+                await createUsers(usersWithAuth);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
     });
 
     after(() => {
+        deleteUsers([studentAuthUser, lecturerAuthUser], adminAuth);
         logout();
-    });
-
-    it("Create new student", () => {
-        loginAndCreateStudent(student, studentAuthUser, adminAuth);
-    });
-
-    it("Create a Lecturer account works", () => {
-        createNewLecturer(lecturer, lecturerAuthUser);
     });
 
     it("Login with new student account", () => {
-        logout();
         loginAsUser(studentAuthUser);
     });
 
@@ -250,12 +257,5 @@ describe("Change Profile Information", () => {
     it("Check changed information", () => {
         cy.get("textarea[id='researchArea']").should("have.value", lecturer.researchArea);
         cy.get("textarea[id='description']").should("have.value", lecturer.freeText);
-    });
-
-    it("Login as admin and delete users", () => {
-        logout();
-        loginAsDefaultAdmin();
-        deleteUser(student);
-        deleteUser(lecturer);
     });
 });

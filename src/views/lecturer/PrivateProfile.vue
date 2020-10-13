@@ -9,13 +9,10 @@
             <h1 class="text-2xl font-medium text-gray-700 mb-8">
                 {{ lecturer.firstName + " " + lecturer.lastName }} (@{{ lecturer.username }})
             </h1>
-            <img
-                class="w-32 h-32 mb-4 rounded-full object-cover"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRsZsJ3BZuN_DlUM3OBlxrb43heJhRAXhQ9_w&usqp=CAU"
-            />
         </div>
 
         <div>
+            <profile-picture-section :username="lecturer.username" />
             <personal-section :first-name="lecturer.firstName" :last-name="lecturer.lastName" :birth-date="lecturer.birthDate" />
 
             <contact-section v-model:user="lecturer" />
@@ -62,9 +59,11 @@
     import UserManagement from "@/api/UserManagement";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
 
     export default {
         components: {
+            ProfilePictureSection,
             PersonalSection,
             ContactSection,
             AddressSection,

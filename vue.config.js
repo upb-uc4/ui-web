@@ -11,7 +11,7 @@ switch (process.env.NODE_ENV) {
         break;
     case "development":
         process.env.VUE_APP_API_BASE_URL = "/api1";
-        endpoint = "https://uc4.cs.uni-paderborn.de/api/development/";
+        endpoint = "https://uc4.cs.uni-paderborn.de/api/develop/";
         break;
     case "experimental":
         process.env.VUE_APP_API_BASE_URL = "/api2";
@@ -31,24 +31,28 @@ module.exports = {
     },
     //publicPath: process.env.NODE_ENV === "production" ? "/deploy/" : "",
     publicPath: "/deploy/",
-    devServer: {
-        port: 443,
-        https: {
-            key: fs.readFileSync("./certs/server-key.pem"),
-            cert: fs.readFileSync("./certs/server-cert.pem"),
-        },
-        compress: true,
-        proxy: {
-            "/api1/": {
-                target: endpoint,
-                pathRewrite: { "^/api1": "" },
-                changeOrigin: true,
-            },
-            "/api2/": {
-                target: endpoint,
-                pathRewrite: { "^/api2": "" },
-                changeOrigin: true,
-            },
-        },
-    },
+
+    devServer:
+        process.env.NODE_ENV != "production"
+            ? {
+                  port: 443,
+                  https: {
+                      key: fs.readFileSync("./certs/server-key.pem"),
+                      cert: fs.readFileSync("./certs/server-cert.pem"),
+                  },
+                  compress: true,
+                  proxy: {
+                      "/api1/": {
+                          target: endpoint,
+                          pathRewrite: { "^/api1": "" },
+                          changeOrigin: true,
+                      },
+                      "/api2/": {
+                          target: endpoint,
+                          pathRewrite: { "^/api2": "" },
+                          changeOrigin: true,
+                      },
+                  },
+              }
+            : {},
 };

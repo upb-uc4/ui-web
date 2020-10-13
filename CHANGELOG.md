@@ -1,3 +1,37 @@
+# [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
+
+## Bugfix
+- adjust mobile design of "create account" page for admins
+- close mobile burger menu on navigation to another page [#552](https://github.com/upb-uc4/ui-web/issues/552)
+- correct ratio of navbar profile picture and update it on user change [#561](https://github.com/upb-uc4/ui-web/pull/561)
+- enable opening new tabs via navbar menu items [#575](https://github.com/upb-uc4/ui-web/pull/575)
+- replace placeholder texts in the section descriptions [#559](https://github.com/upb-uc4/ui-web/issues/559)
+
+# [v.0.9.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0-hotfix.1...v0.9.1) (2020-10-02)
+
+## Feature
+- add profile picture functionality (set, update, delete) for admins and users [#551](https://github.com/upb-uc4/ui-web/pull/551)
+
+## Bugfix
+- remove stubs from the student's desktop navigation [#537](https://github.com/upb-uc4/ui-web/pull/537)
+- error feedback is given on posting an account without role [#535](https://github.com/upb-uc4/ui-web/issues/535)
+
+# [v.0.9.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.9.0...v0.9.0-hotfix.1) (2020-09-28)
+
+## Bugfix
+- enable error display for adding matriculation data [#543](https://github.com/upb-uc4/ui-web/pull/543)
+
+# [v.0.9.0](https://github.com/upb-uc4/ui-web/compare/v0.8.1...v0.9.0) (2020-09-28)
+
+## Feature
+- add test data cleanup on server after test fails cause them to not be deleted [#522](https://github.com/upb-uc4/ui-web/pull/522)
+- speed up tests by removing cypress procedures that were used for creating test objects [#523](https://github.com/upb-uc4/ui-web/pull/523)
+
+## Bugfix
+- rework clickable areas in all mobile menus [#513](https://github.com/upb-uc4/ui-web/pull/513)
+- fix mobile presentation of matriculation settings in account page [#507](https://github.com/upb-uc4/ui-web/issues/507)
+
+
 # [v.0.8.1](https://github.com/upb-uc4/ui-web/compare/v0.8.0...v0.8.1) (2020-09-22)
 
 ## Feature
@@ -5,6 +39,7 @@
 - improve the performance of our website (by a lot!) [#452](https://github.com/upb-uc4/ui-web/pull/452)
 - JWT authentication [#437](https://github.com/upb-uc4/ui-web/pull/437)
 - create logo and add it to website and application [#479](https://github.com/upb-uc4/ui-web/pull/479) (Website: [#15](https://github.com/upb-uc4/website/pull/15))
+- add E2E tests for matriculation management [#505](https://github.com/upb-uc4/ui-web/pull/505)
 
 # [v.0.8.0](https://github.com/upb-uc4/ui-web/compare/v0.7.0...v0.8.0) (2020-09-14)
 

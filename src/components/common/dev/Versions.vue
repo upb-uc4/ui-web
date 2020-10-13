@@ -75,7 +75,7 @@
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
                         "authentication-" +
                         authenticationManagementVersion +
-                        "/product_code/lagom/authentication_service/CHANGELOG.md",
+                        "/product_code/authentication_service/CHANGELOG.md",
                 });
                 versions.push({
                     name: "Course Management",
@@ -84,7 +84,7 @@
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
                         "course-" +
                         courseManagementVersion +
-                        "/product_code/lagom/course_service/CHANGELOG.md",
+                        "/product_code/course_service/CHANGELOG.md",
                 });
                 versions.push({
                     name: "User Management",
@@ -93,7 +93,7 @@
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
                         "user-" +
                         userManagementVersion +
-                        "/product_code/lagom/user_service/CHANGELOG.md",
+                        "/product_code/user_service/CHANGELOG.md",
                 });
                 versions.push({
                     name: "Matriculation Management",
@@ -102,7 +102,7 @@
                         "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
                         "matriculation-" +
                         matriculationManagementVersion +
-                        "/product_code/lagom/hl_course_service/CHANGELOG.md",
+                        "/product_code/matriculation_service/CHANGELOG.md",
                 });
                 versions.push({
                     name: "Certificate Management",

@@ -14,6 +14,8 @@ export type Mutations<S = State> = {
     [MutationTypes.SET_LOGGEDIN](state: S, payload: boolean): void;
     [MutationTypes.SET_CERTIFICATE](state: S, payload: Certificate): void;
     [MutationTypes.SET_PRIVATE_KEY](state: S, payload: CryptoKey): void;
+    [MutationTypes.FORCE_CLOSE_BURGER_MENU](state: S, payload: boolean): void;
+    [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S, payload: boolean): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -37,5 +39,11 @@ export const mutations: MutationTree<State> & Mutations = {
     },
     [MutationTypes.SET_PRIVATE_KEY](state: State, payload: CryptoKey) {
         state.privateKey = payload;
+    },
+    [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE]() {
+        //force update
+    },
+    [MutationTypes.FORCE_CLOSE_BURGER_MENU]() {
+        //do nothing. Just force subscribers to act on it
     },
 };

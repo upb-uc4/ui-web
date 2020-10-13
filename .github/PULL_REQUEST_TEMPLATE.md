@@ -15,8 +15,8 @@ Remove this, if this PR is not to main!
 
 # Description
 
-Fixes issue #XXX (delete if no issue)
-Implements issue #XXX (delete if no issue)
+- Fixes #XXX (for bugfixes)
+- Closes #XXX (for feature implementation)
 
 ## Reason for this PR
 - [INSERT REASONS HERE]
@@ -32,6 +32,7 @@ Implements issue #XXX (delete if no issue)
 - Bug fix (non-breaking change which fixes an issue)
 - Hotfix
 - New feature (non-breaking change which adds functionality)
+- Testing
 - Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - This change requires a documentation update (README, e.g. deployment changes)
   - I added the documentation
@@ -53,6 +54,7 @@ Please describe the tests that you ran to verify your changes. Provide instructi
   - [ ] No backend needed to test this
   - [ ] deployed production build
   - [ ] deployed development build
+  - [ ] deployed experimental build
   - [ ] Local build (commit hash [XXXXXXX])
 
 # Checklist: (remove all that don't apply)
