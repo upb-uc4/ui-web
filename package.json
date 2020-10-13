@@ -47,6 +47,7 @@
         "jest": "^26.5.2",
         "lodash": "^4.17.20",
         "pkijs": "^2.1.90",
+        "protobufjs": "^6.10.1",
         "random-bigint": "0.0.1",
         "tailwindcss": "^1.8.12",
         "vue": "^3.0.0",
