@@ -141,7 +141,7 @@ export default class CertificateManagement extends Common {
         csr: string,
         encryptedPrivateKey?: EncryptedPrivateKey
     ): Promise<APIResponse<Certificate>> {
-        let encPrivKey = encryptedPrivateKey != undefined ? encryptedPrivateKey : "";
+        let encPrivKey = encryptedPrivateKey != undefined ? encryptedPrivateKey : { iv: "", salt: "", key: "" };
 
         return await this._axios
             .post(`/certificates/${username}`, { certificateSigningRequest: csr, encryptedPrivateKey: encPrivKey })

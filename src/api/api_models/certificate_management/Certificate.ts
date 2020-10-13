@@ -1,3 +1,3 @@
 export default interface Certificate {
-    cert: string;
+    certificate: string;
 }

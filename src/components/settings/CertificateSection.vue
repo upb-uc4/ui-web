@@ -47,9 +47,7 @@
             async function getCertificate() {
                 busy.value = true;
                 const store = useStore();
-                //certificate.value = (await store.getters.certificate).cert;
-                //Mock data for testing
-                //certificate.value = `-----BEGIN CERTIFICATE REQUEST-----\nMIIEhDCCAm4CAQAwETEPMA0GA1UEAxMGdGVzdGlkMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAo1UiEXCnzRaJwPFjAUED4iyoESuh5jwhd74Qtc6bJ669uYjsNamV3LKp3vl9Ti636KorGEbTML7U1e4idz52DYkpyXKc5cozJaM4+1wp7DlEWoHmeBA18iJnTcXdVGMbjfWHQ5xhHKie4h31eQlVUIPQoFkHdj7LzuWqbh99A+AL5s6zzb+tpuoUGRHnr3ZHeOwuWxHTyGvDgTgazrYxosqIaXU63FaFc4fkPPUq/tHxVo/T0nrvYcO2mL+22jLNYXgQij0iiMwYLgvDn7L2rzBDpRfUApuVQw1UtYn+5pbFHMFD0G8vv60GmyP9DIRavLW9yMGF6y4bq3BdJYorF/J1wt7a864eGzl1IrJwCrhx\n-----END CERTIFICATE REQUEST-----`;
+                certificate.value = (await store.getters.certificate).certificate;
                 busy.value = false;
             }
 

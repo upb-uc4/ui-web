@@ -68,7 +68,7 @@ export const getters: GetterTree<State, State> & Getters = {
         return state.privateKey;
     },
     certificate: async (state) => {
-        if (state.certificate.cert == undefined || state.certificate.cert == "") {
+        if (state.certificate.certificate == undefined || state.certificate.certificate == "") {
             const store = useStore();
             const certManagement = new CertificateManagement();
 

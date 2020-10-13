@@ -4,7 +4,7 @@ import CertificateManagement from "@/api/CertificateManagement";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
 import { readFileSync } from "fs";
-import { getRandomizedUserAndAuthUser } from "tests/helper/Users";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import {
     createKeyPair,
@@ -26,6 +26,7 @@ const encryptionPassword = "My-Super-Password";
 const student = getRandomizedUserAndAuthUser(Role.STUDENT) as { authUser: Account; student: Student };
 const student2 = getRandomizedUserAndAuthUser(Role.STUDENT) as { authUser: Account; student: Student };
 let keypair = {} as CryptoKeyPair;
+let certManagement: CertificateManagement;
 
 jest.setTimeout(30000);
 
@@ -36,20 +37,22 @@ describe("Certificate management tests", () => {
         expect(success.returnValue.login).not.toEqual("");
 
         const userManagement = new UserManagement();
-        const success2 = userManagement.createUser(student.authUser, student.student);
-        expect(success2).toBe(true);
+        const success2 = await userManagement.createUser(student.authUser, student.student);
+        expect(success2.returnValue).toBe(true);
 
-        const success3 = userManagement.createUser(student2.authUser, student2.student);
-        expect(success3).toBe(true);
+        const success3 = await userManagement.createUser(student2.authUser, student2.student);
+        expect(success3.returnValue).toBe(true);
+
+        await new Promise((r) => setTimeout(r, 25000));
     });
 
     test("Login as student", async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
         expect(success.returnValue.login).not.toEqual("");
+        certManagement = new CertificateManagement();
     });
 
     test("Fetch enrollmentId", async () => {
-        const certManagement = new CertificateManagement();
         const response = await certManagement.getEnrollmentId(student.authUser.username);
 
         expect(response.statusCode).toEqual(200);
@@ -59,8 +62,6 @@ describe("Certificate management tests", () => {
     });
 
     test("Create and send certificate signing request", async () => {
-        const certManagement = new CertificateManagement();
-
         const csr = await createCSR(keypair, enrollmentId);
         const wrappingKeyObject = await deriveKeyFromPassword(encryptionPassword);
         const encryptedPrivateKey = await wrapKey(keypair.privateKey, wrappingKeyObject.key, iv);
@@ -74,11 +75,10 @@ describe("Certificate management tests", () => {
             salt: wrappingKeyObject.salt,
         });
 
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(202);
     });
 
     test("Fetch encrypted private key", async () => {
-        const certManagement = new CertificateManagement();
         const response = await certManagement.getEncryptedPrivateKey(student.authUser.username);
         expect(response.statusCode).toBe(200);
         const keyObject = response.returnValue;
@@ -96,18 +96,7 @@ describe("Certificate management tests", () => {
     });
 
     test("Fetch own certificate", async () => {
-        const certManagement = new CertificateManagement();
-
         const response = await certManagement.getCertificate(student.authUser.username);
-
-        expect(response.statusCode).toBe(200);
-        expect(response.returnValue.cert).not.toEqual("");
-    });
-
-    test("Fetch other certificate", async () => {
-        const certManagement = new CertificateManagement();
-
-        const response = await certManagement.getCertificate(adminAuth.username);
 
         expect(response.statusCode).toBe(200);
         expect(response.returnValue.cert).not.toEqual("");
@@ -116,10 +105,17 @@ describe("Certificate management tests", () => {
     test("Login as student2", async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student2.authUser);
         expect(success.returnValue.login).not.toEqual("");
+        certManagement = new CertificateManagement();
+    });
+
+    test("Fetch other certificate", async () => {
+        const response = await certManagement.getCertificate(student.authUser.username);
+
+        expect(response.statusCode).toBe(200);
+        expect(response.returnValue.cert).not.toEqual("");
     });
 
     test("Fetch enrollmentId", async () => {
-        const certManagement = new CertificateManagement();
         const response = await certManagement.getEnrollmentId(student2.authUser.username);
 
         expect(response.statusCode).toEqual(200);
@@ -129,20 +125,21 @@ describe("Certificate management tests", () => {
     });
 
     test("Create and send certificate signing request without key", async () => {
-        const certManagement = new CertificateManagement();
         const keys = await createKeyPair();
 
         const csr = await createCSR(keys, enrollmentId);
 
         const response = await certManagement.sendCertificateSigningRequest(student2.authUser.username, csr);
 
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(202);
     });
 
     test("Try to fetch key", async () => {
-        const certManagement = new CertificateManagement();
-        const response = await certManagement.getEncryptedPrivateKey(student.authUser.username);
-        expect(response.statusCode).toBe(404);
+        const response = await certManagement.getEncryptedPrivateKey(student2.authUser.username);
+        expect(response.statusCode).toBe(200);
+        expect(response.returnValue.iv).toEqual("");
+        expect(response.returnValue.salt).toEqual("");
+        expect(response.returnValue.key).toEqual("");
     });
 
     afterAll(async () => {
