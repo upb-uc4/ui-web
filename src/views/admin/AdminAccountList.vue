@@ -14,9 +14,10 @@
                         <i class="fas fa-user-plus" />
                     </router-link>
                 </div>
-
-                <role-filter v-model:selected-role="selectedRole" />
             </div>
+
+            <role-filter v-model:selected-role="selectedRole" class="w-full my-4" />
+
             <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
             <div class="flex justify-center mt-16">
                 <router-link to="/createAccount">
