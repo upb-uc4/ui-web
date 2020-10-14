@@ -1,20 +1,18 @@
 <template>
-    <div class="flex items-baseline w-1/2 mb-3">
-        <div v-for="(type, index) in types" :key="type" class="mb-3">
-            <label class="inline-flex">
-                <button
-                    :id="'courseType-' + type"
-                    class="px-4 py-2 text-gray-800 bg-gray-100 border-gray-200 shadow-md focus:outline-none hover:bg-blue-200"
-                    :class="{
-                        'bg-blue-300 text-white hover:bg-blue-300 shadow-inner': selectedType == type,
-                        'rounded-l': index == 0,
-                        'rounded-r': index == types.length - 1,
-                    }"
-                    @click="select(type)"
-                >
-                    {{ type }}
-                </button>
-            </label>
+    <div class="flex items-baseline w-full">
+        <div v-for="(type, index) in types" :key="type" class="w-full">
+            <button
+                :id="'courseType-' + type"
+                class="px-2 py-2 w-full text-gray-800 bg-gray-100 border-gray-200 shadow-md focus:outline-none hover:bg-blue-200"
+                :class="{
+                    'bg-blue-300 text-white hover:bg-blue-300 shadow-inner': selectedType === type,
+                    'rounded-l': index === 0,
+                    'rounded-r': index === types.length - 1,
+                }"
+                @click="select(type)"
+            >
+                {{ type }}
+            </button>
         </div>
     </div>
 </template>
