@@ -75,7 +75,6 @@
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
-    import { createKeyPair, createCSR, deriveKeyFromPassword } from "@/use/crypto/certificates";
 
     export default {
         components: {},
