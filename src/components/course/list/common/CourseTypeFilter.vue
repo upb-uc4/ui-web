@@ -11,13 +11,17 @@
                 }"
                 @click="select(type)"
             >
-                {{ type }}
+                <!-- do it better than this :D -->
+                <div class="sm:hidden">
+                    <span v-if="type === 'Project Group'">PG</span>
+                    <span v-else>{{ type }}</span>
+                </div>
+                <span class="hidden sm:flex justify-center">{{ type }}</span>
             </button>
         </div>
     </div>
 </template>
 <script lang="ts">
-    import Vue from "vue";
     import { CourseType } from "@/entities/CourseType";
 
     export default {
