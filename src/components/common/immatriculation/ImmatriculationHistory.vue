@@ -42,14 +42,7 @@
         },
         emits: ["update:busy"],
         setup(props: any, { emit }: any) {
-            //TODO Remove mock data as soon as the endpoint in backend provides data
-            let history: MatriculationData = reactive({
-                matriculationId: "egal",
-                firstName: "egal",
-                lastName: "egal",
-                birthDate: "egal",
-                matriculationStatus: [],
-            });
+            let history: MatriculationData = reactive({} as MatriculationData);
             let chronologicalList = ref({});
 
             async function getHistory() {
