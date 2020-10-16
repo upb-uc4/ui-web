@@ -6,8 +6,11 @@
                     {{ course.courseType }}
                 </span>
                 <div class="ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">{{ course.ects }} ECTS</div>
-                <div class="ml-4 text-xl font-semibold tracking-wide text-gray-600 uppercase">🇬🇧</div>
-                <!-- TODO use flags for mobile and text for non-mobile -->
+                <div class="hidden sm:flex ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">
+                    {{ course.courseLanguage }}
+                </div>
+                <div class="sm:hidden ml-4 text-xl font-semibold tracking-wide text-gray-600 uppercase">🇬🇧</div>
+                <!-- TODO use correct flags -->
                 <div class="ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">
                     <i class="inline text-lg fas fa-users" />
                     {{ course.currentParticipants }} / {{ course.maxParticipants }}
