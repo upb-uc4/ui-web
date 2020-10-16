@@ -18,7 +18,13 @@
                                     Download
                                 </button>
                             </div>
-                            <textarea v-model="certificate" class="form-input input-text text-xs w-full" rows="15" readonly />
+                            <textarea
+                                id="certificate"
+                                v-model="certificate"
+                                class="form-input input-text text-xs w-full"
+                                rows="15"
+                                readonly
+                            />
                         </div>
                         <loading-spinner v-else />
                     </div>

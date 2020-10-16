@@ -75,7 +75,9 @@ describe("Certificate management tests", () => {
             salt: wrappingKeyObject.salt,
         });
 
-        expect(response.statusCode).toBe(202);
+        expect(response.statusCode).toBe(201);
+        expect(response.returnValue.certificate).not.toBe(undefined);
+        expect(response.returnValue.certificate).not.toEqual("");
     });
 
     test("Fetch encrypted private key", async () => {
@@ -99,7 +101,7 @@ describe("Certificate management tests", () => {
         const response = await certManagement.getCertificate(student.authUser.username);
 
         expect(response.statusCode).toBe(200);
-        expect(response.returnValue.cert).not.toEqual("");
+        expect(response.returnValue.certificate).not.toEqual("");
     });
 
     test("Login as student2", async () => {
@@ -112,7 +114,7 @@ describe("Certificate management tests", () => {
         const response = await certManagement.getCertificate(student.authUser.username);
 
         expect(response.statusCode).toBe(200);
-        expect(response.returnValue.cert).not.toEqual("");
+        expect(response.returnValue.certificate).not.toEqual("");
     });
 
     test("Fetch enrollmentId", async () => {
@@ -131,7 +133,7 @@ describe("Certificate management tests", () => {
 
         const response = await certManagement.sendCertificateSigningRequest(student2.authUser.username, csr);
 
-        expect(response.statusCode).toBe(202);
+        expect(response.statusCode).toBe(201);
     });
 
     test("Try to fetch key", async () => {
