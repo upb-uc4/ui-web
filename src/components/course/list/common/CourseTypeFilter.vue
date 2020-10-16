@@ -11,11 +11,7 @@
                 }"
                 @click="select(type)"
             >
-                <!-- do it better than this :D -->
-                <div class="sm:hidden">
-                    <span v-if="type === 'Project Group'">PG</span>
-                    <span v-else>{{ type }}</span>
-                </div>
+                <span class="sm:hidden">{{ shortNameFor(type) }}</span>
                 <span class="hidden sm:flex justify-center">{{ type }}</span>
             </button>
         </div>
@@ -41,9 +37,21 @@
                 emit("update:selectedType", type);
             }
 
+            function shortNameFor(type: CourseType) {
+                switch (type) {
+                    case CourseType.PG: {
+                        return "PG";
+                    }
+                    default: {
+                        return type;
+                    }
+                }
+            }
+
             return {
                 types,
                 select,
+                shortNameFor,
             };
         },
     };
