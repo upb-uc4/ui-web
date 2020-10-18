@@ -73,7 +73,7 @@
         "babel-eslint": "^10.1.0",
         "babel-plugin-istanbul": "^6.0.0",
         "cross-conf-env": "^1.2.0",
-        "cypress": "^5.3.0",
+        "cypress": "^5.4.0",
         "cypress-file-upload": "^4.1.1",
         "cypress-plugin-snapshots": "^1.4.4",
         "dotenv": "^8.2.0",
