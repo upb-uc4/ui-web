@@ -53,7 +53,7 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import MatriculationValidationResponseHandler from "@/use/helpers/MatriculationValidationResponseHandler";
+    import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
     import { useToast } from "@/toast";
 
     export default {

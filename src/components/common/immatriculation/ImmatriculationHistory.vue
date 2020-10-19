@@ -25,7 +25,7 @@
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import ImmatriculationHistoryEntry from "./ImmatriculationHistoryEntry.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import ImmatriculationResponseHandler from "@/use/helpers/ImmatriculationResponseHandler";
     export default {
         components: {
             ImmatriculationHistoryEntry,
@@ -56,7 +56,7 @@
                 emit("update:busy", true);
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
-                const responseHandler = new GenericResponseHandler();
+                const responseHandler = new ImmatriculationResponseHandler();
                 const result = responseHandler.handleResponse(response);
                 history = result;
                 chronologicalList.value = historyToSortedList(history);
