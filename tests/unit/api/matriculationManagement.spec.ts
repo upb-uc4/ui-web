@@ -16,6 +16,7 @@ import { readFileSync } from "fs";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 var matriculationManagement: MatriculationManagement;
 var userManagement: UserManagement;
@@ -27,15 +28,13 @@ const authUser = pair.authUser;
 
 jest.useFakeTimers();
 
-describe.skip("Matriculation management", () => {
+describe("Matriculation management", () => {
     beforeAll(async () => {
-        const success = await UserManagement.login(adminAuth);
+        const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         userManagement = new UserManagement();
-        store.commit(MutationTypes.SET_LOGINDATA, adminAuth);
-        store.commit(MutationTypes.SET_LOGGEDIN, true);
-        store.commit(MutationTypes.SET_ROLE, "Admin");
+
         matriculationManagement = new MatriculationManagement();
-        expect(success.returnValue).toBe(true);
+        expect(success.returnValue.login).not.toEqual("");
     });
 
     test("Create student user", async () => {
@@ -45,18 +44,18 @@ describe.skip("Matriculation management", () => {
 
     test("Get empty matriculation history", async () => {
         const response = await matriculationManagement.getMatriculationHistory(student.username);
-        const data: MatriculationData = response.returnValue;
-        expect(data.matriculationId).toBe(student.matriculationId);
-        expect(data.matriculationStatus).toHaveLength(0);
+        expect(response.statusCode).toEqual(404);
     });
 
     test("'Create' matriculation history", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
             { fieldOfStudy: FieldOfStudy.COMPUTER_SCIENCE, semesters: ["SS2020"] },
         ] as SubjectMatriculation[]);
-        const data: boolean | MatriculationData = response.returnValue;
 
         expect(response.statusCode).toBe(201);
+        // wait for https://github.com/upb-uc4/lagom-core/issues/279 fix
+        const filledResponse = await matriculationManagement.getMatriculationHistory(student.username);
+        const data: boolean | MatriculationData = filledResponse.returnValue;
         expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
         expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(FieldOfStudy.COMPUTER_SCIENCE);
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(1);
@@ -64,11 +63,23 @@ describe.skip("Matriculation management", () => {
     });
 
     test("Update matriculation", async () => {
-        const response = await matriculationManagement.updateMatriculationData(student.username, []);
-        const data: boolean | MatriculationData = response.returnValue;
-
+        const response = await matriculationManagement.updateMatriculationData(student.username, [
+            { fieldOfStudy: FieldOfStudy.EDUCATION, semesters: ["SS2020"] },
+        ]);
         expect(response.statusCode).toBe(200);
+
         expect(response.returnValue).toBe(true);
+        // wait for https://github.com/upb-uc4/lagom-core/issues/279 fix
+        const filledResponse = await matriculationManagement.getMatriculationHistory(student.username);
+        const data: boolean | MatriculationData = filledResponse.returnValue;
+        expect((data as MatriculationData).matriculationStatus).toHaveLength(2);
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(FieldOfStudy.COMPUTER_SCIENCE);
+        expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(1);
+        expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
+
+        expect((data as MatriculationData).matriculationStatus[1].fieldOfStudy).toBe(FieldOfStudy.EDUCATION);
+        expect((data as MatriculationData).matriculationStatus[1].semesters).toHaveLength(1);
+        expect((data as MatriculationData).matriculationStatus[1].semesters[0]).toBe("SS2020");
     });
 
     test("Update matriculation even more", async () => {
@@ -85,15 +96,19 @@ describe.skip("Matriculation management", () => {
         const response = await matriculationManagement.getMatriculationHistory(student.username);
         const data: MatriculationData = response.returnValue;
         expect(response.statusCode).toBe(200);
-        expect((data as MatriculationData).matriculationStatus).toHaveLength(2);
+        expect((data as MatriculationData).matriculationStatus).toHaveLength(3);
         expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(FieldOfStudy.COMPUTER_SCIENCE);
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(2);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
         expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2021");
 
-        expect((data as MatriculationData).matriculationStatus[1].fieldOfStudy).toBe(FieldOfStudy.CHEMISTRY);
+        expect((data as MatriculationData).matriculationStatus[1].fieldOfStudy).toBe(FieldOfStudy.EDUCATION);
         expect((data as MatriculationData).matriculationStatus[1].semesters).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[1].semesters[1]).toBe("SS2022");
+        expect((data as MatriculationData).matriculationStatus[1].semesters[0]).toBe("SS2020");
+
+        expect((data as MatriculationData).matriculationStatus[2].fieldOfStudy).toBe(FieldOfStudy.BUSINESS_INFORMATICS);
+        expect((data as MatriculationData).matriculationStatus[2].semesters).toHaveLength(1);
+        expect((data as MatriculationData).matriculationStatus[2].semesters[0]).toBe("SS2021");
     });
 
     test("Delete student user", async () => {

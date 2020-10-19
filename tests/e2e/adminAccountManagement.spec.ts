@@ -16,9 +16,16 @@ import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
-import { loginAsDefaultAdmin } from "./helpers/AuthHelper";
-import { navigateToCourseListLecturer, navigateToAccountList } from "./helpers/NavigationHelper";
-import { createNewStudent, createNewLecturer, createNewAdmin, deleteUser } from "./helpers/UserHelper";
+import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
+import { navigateToAccountList } from "./helpers/NavigationHelper";
+import {
+    createNewStudent,
+    createNewAdmin,
+    createNewLecturer,
+    deleteUsers,
+    deleteUser,
+    getRandomMatriculationId,
+} from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
@@ -34,6 +41,11 @@ let lecturerAuth: Account;
 
 describe("Account creation, edition and deletion", function () {
     before(function () {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("admin.json").then((a) => {
             (a as Admin).username += random;
             admin = a as Admin;
@@ -55,6 +67,7 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("student.json").then((s) => {
             (s as Student).username += random;
             student = s as Student;
+            student.matriculationId = getRandomMatriculationId();
         });
         cy.fixture("studentAuthUser.json").then((s) => {
             (s as Account).username += random;
@@ -70,6 +83,11 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        deleteUsers([studentAuthUser, lecturerAuthUser, adminAuthUser], adminAuth);
+        logout();
     });
 
     it("Login as admin", function () {
@@ -146,10 +164,9 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Show validation errors", () => {
-        //TODO Include this when error with role is fixed
-        // cy.get("input[id='userName']").type(studentUsername);
-        // cy.get("button[id='createAccount']").click();
-        // cy.get("div[id='roleSelection']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='userName']").type(student.username);
+        cy.get("button[id='createAccount']").click();
+        cy.get("div[id='roleSelection']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[type='radio']").eq(1).click();
         cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
         cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
@@ -178,11 +195,7 @@ describe("Account creation, edition and deletion", function () {
     it("Duplicate username detected", () => {
         cy.get("input[id='userName']").type("student");
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='userName']")
-            .siblings()
-            .get("p")
-            .should("have.class", "error-message")
-            .and("contain", "Username is already taken");
+        cy.get("input[id='userName']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='userName']").clear();
     });
     // create student account
@@ -346,18 +359,9 @@ describe("Account creation, edition and deletion", function () {
         cy.url().should("contain", "accounts");
     });
 
-    //delete student account
-    it("Delete student", function () {
+    it("Delete users as admin", function () {
         deleteUser(student);
-    });
-
-    //delete lecturer account
-    it("Delete lecturer", function () {
         deleteUser(lecturer);
-    });
-
-    //delete admin account
-    it("Delete admin", function () {
         deleteUser(admin);
     });
 });

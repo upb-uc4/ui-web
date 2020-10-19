@@ -1,4 +1,10 @@
 import { Account } from "@/entities/Account";
+import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
+
+export async function getMachineUserAuth(userAuth: Account) {
+    MachineUserAuthenticationManagement.setVueEnvVariable(Cypress.env("NODE_ENV"));
+    await MachineUserAuthenticationManagement._getRefreshToken(userAuth);
+}
 
 export function loginAsDefaultAdmin() {
     cy.fixture("logins/admin.json").then((a) => {
@@ -26,7 +32,7 @@ export function loginAsUser(user: Account) {
     cy.get("input[id='email']").type(user.username);
     cy.get("input[id='password']").type(user.password);
     cy.get('button[id="login"]').click();
-    cy.url().should("contain", "welcome");
+    cy.url().should("eq", Cypress.config().baseUrl + "welcome");
     cy.wait(1000);
 }
 
@@ -34,6 +40,14 @@ export function logout() {
     cy.get("div[id='menu_profile']").children().eq(1).should("not.be.visible");
     cy.get("div[id='menu_profile']").trigger("mouseover");
     cy.get("div[id='menu_profile']").children().eq(1).get("span").contains("Sign out").should("be.visible");
-    cy.get("div[id='menu_profile']").children().eq(1).get("a").contains("Sign out").click();
-    cy.url().should("contain", "/");
+    cy.get("#nav_desktop_logout").click();
+    cy.url().should("eq", Cypress.config().baseUrl);
+}
+
+export function logoutMobile() {
+    cy.get("button[id='nav_mobile_toggle_menu']").click();
+    cy.get("nav").should("be.visible");
+    cy.get("div[id='nav_mobile_menu_profile mobile-navbar-menu']").click();
+    cy.get("#nav_mobile_logout").click();
+    cy.url().should("eq", Cypress.config().baseUrl);
 }

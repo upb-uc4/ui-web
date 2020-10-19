@@ -1,14 +1,12 @@
 <template>
-    <div id="birthdate" class="flex flex-row">
-        <div class="flex flex-col w-full mr-2">
-            <label class="text-sm text-gray-700">Day</label>
+    <div id="birthdate" class="flex flex-col md:flex-row">
+        <div class="flex flex-col w-full mr-8 lg:my-0 mb-2">
             <select id="day" v-model="shownDay" class="form-select input-select">
                 <option disabled :value="''">Select a Day</option>
                 <option v-for="selectableDay in 31" :id="'day-' + selectableDay" :key="selectableDay">{{ selectableDay }}</option>
             </select>
         </div>
-        <div class="flex flex-col w-full mx-2">
-            <label class="text-sm text-gray-700">Month </label>
+        <div class="flex flex-col w-full mr-8 lg:my-0 my-2">
             <select id="month" v-model="shownMonth" class="form-select input-select">
                 <option disabled :value="''">Select a Month</option>
                 <option v-for="selectableMonth in months" :id="'month-' + selectableMonth" :key="selectableMonth">
@@ -16,8 +14,7 @@
                 </option>
             </select>
         </div>
-        <div class="flex flex-col w-full ml-2">
-            <label class="text-sm text-gray-700">Year</label>
+        <div class="flex flex-col w-full lg:my-0 mt-2">
             <select id="year" v-model="shownYear" class="form-select input-select">
                 <option disabled :value="''">Select a Year</option>
                 <option v-for="selectableYear in selectableYears" :id="'year-' + selectableYear" :key="selectableYear">

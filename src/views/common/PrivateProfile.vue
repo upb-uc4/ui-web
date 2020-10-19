@@ -23,7 +23,7 @@
             const auth: UserManagement = new UserManagement();
             const responseHandler = new ProfileResponseHandler();
             const response = await auth.getOwnUser();
-            const user = ref(responseHandler.handleReponse(response));
+            const user = ref(responseHandler.handleResponse(response));
             return { Role, user };
         },
     };

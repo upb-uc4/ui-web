@@ -1,8 +1,9 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAndCreateCourse, loginAndDeleteCourse } from "./helpers/CourseHelper";
-import { loginAsDefaultStudent } from "./helpers/AuthHelper";
+import { loginAndCreateCourse, deleteCourses, createCourses } from "./helpers/CourseHelper";
+import { getMachineUserAuth, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
+import { Role } from "@/entities/Role";
 
 describe("Student course view", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -12,22 +13,39 @@ describe("Student course view", () => {
     let course: Course;
 
     before(() => {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("logins/student.json").then((student) => {
             studentAuth = student;
         });
 
-        cy.fixture("logins/lecturer.json").then((lecturer) => {
-            lecturerAuth = lecturer;
-        });
-
-        cy.fixture("course.json").then((c) => {
-            course = c;
-            course.courseName += "-" + random;
-        });
+        cy.fixture("logins/lecturer.json")
+            .then((lecturer) => {
+                lecturerAuth = lecturer;
+            })
+            .then(() => {
+                cy.fixture("course.json").then((c) => {
+                    course = c;
+                    course.courseName += "-" + random;
+                });
+            })
+            .then(async () => {
+                await getMachineUserAuth(lecturerAuth);
+            })
+            .then(async () => {
+                await createCourses([course]);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
     });
 
-    it("Create Course as lecturer", () => {
-        loginAndCreateCourse(course, lecturerAuth);
+    after(() => {
+        deleteCourses([course]);
+        logout();
     });
 
     it("Login as student", () => {
@@ -42,9 +60,5 @@ describe("Student course view", () => {
         cy.wait(2000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName);
-    });
-
-    it("Delete course as lecturer", () => {
-        loginAndDeleteCourse(course, lecturerAuth);
     });
 });

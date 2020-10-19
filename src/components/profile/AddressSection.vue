@@ -146,7 +146,7 @@
                 const auth: UserManagement = new UserManagement();
                 const response = await auth.updateUser(editedUser.value);
                 const handler = new ValidationResponseHandler();
-                if (handler.handleReponse(response)) {
+                if (handler.handleResponse(response)) {
                     isEditing.value = false;
                     emit("update:user", editedUser.value);
                     errorBag.value = new ErrorBag();

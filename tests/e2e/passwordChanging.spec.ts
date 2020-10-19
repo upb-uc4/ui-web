@@ -1,8 +1,10 @@
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { loginAndCreateStudent, loginAndDeleteUser } from "./helpers/UserHelper";
-import { loginAsUser } from "./helpers/AuthHelper";
+import { getRandomMatriculationId, deleteUsers, createUsers } from "./helpers/UserHelper";
+import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
+import { UserWithAuth } from "./helpers/UserWithAuth";
+import { Role } from "@/entities/Role";
 
 describe("Change password", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -10,24 +12,46 @@ describe("Change password", () => {
     let studentAuthUser: Account;
     let adminAuth: Account;
 
+    let usersWithAuth: UserWithAuth[] = [];
+
     before(() => {
-        cy.fixture("student.json").then((s) => {
-            (s as Student).username += random;
-            student = s as Student;
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
         });
 
-        cy.fixture("studentAuthUser.json").then((s) => {
-            (s as Account).username += random;
-            studentAuthUser = s as Account;
-        });
-
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
+        cy.fixture("student.json")
+            .then((s) => {
+                (s as Student).username += random;
+                student = s as Student;
+                student.matriculationId = getRandomMatriculationId();
+            })
+            .then(() => {
+                cy.fixture("studentAuthUser.json").then((s) => {
+                    (s as Account).username += random;
+                    studentAuthUser = s as Account;
+                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                });
+            })
+            .then(() => {
+                cy.fixture("logins/admin.json").then((admin) => {
+                    adminAuth = admin;
+                });
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(async () => {
+                await createUsers(usersWithAuth);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
     });
 
-    it("Create new student", () => {
-        loginAndCreateStudent(student, studentAuthUser, adminAuth);
+    after(() => {
+        deleteUsers([studentAuthUser], adminAuth);
+        logout();
     });
 
     it("Login with new student account", () => {
@@ -111,10 +135,7 @@ describe("Change password", () => {
     });
 
     it("Login with new password", () => {
+        logout();
         loginAsUser(studentAuthUser);
-    });
-
-    it("Delete user", () => {
-        loginAndDeleteUser(student, adminAuth);
     });
 });

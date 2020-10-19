@@ -1,28 +1,23 @@
-import { useStore } from "@/use/store/store";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { AxiosInstance } from "axios";
 
 export default class Common {
-    _authHeader!: Promise<{ auth: { username: string; password: string } }>;
     _axios: AxiosInstance;
 
     constructor(endpoint: string) {
-        this._authHeader = this._getLoginData();
-
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8",
             },
+            withCredentials: true,
         });
 
         this._axios = instance;
     }
 
-    static async getVersion(endpoint: string): Promise<String> {
-        let version = "unavailable";
-
+    static async getVersion(endpoint: string): Promise<string> {
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
             headers: {
@@ -31,22 +26,13 @@ export default class Common {
             },
         });
 
-        await instance
+        return await instance
             .get(`/version`)
             .then((response: AxiosResponse) => {
-                version = response.data.versionNumber;
+                return response.data.versionNumber;
             })
-            .catch((error: AxiosError) => {});
-        return version;
-    }
-
-    getAuthHeader() {
-        return this._authHeader;
-    }
-
-    async _getLoginData() {
-        const store = useStore();
-        const auth = await store.getters.loginData;
-        return { auth: auth };
+            .catch((error: AxiosError) => {
+                return "unavailable";
+            });
     }
 }

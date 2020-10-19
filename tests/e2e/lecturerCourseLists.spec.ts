@@ -1,9 +1,12 @@
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
-import { loginAndCreateCourse, loginAndDeleteCourse, deleteCourse } from "./helpers/CourseHelper";
-import { loginAndCreateLecturer, loginAndDeleteUser } from "./helpers/UserHelper";
+import { loginAndCreateCourse, deleteCourses, createCourses } from "./helpers/CourseHelper";
+import { loginAndCreateLecturer, createUsers, deleteUsers } from "./helpers/UserHelper";
 import { navigateToCourseListLecturer, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
+import { logout, getMachineUserAuth, loginAsDefaultLecturer } from "./helpers/AuthHelper";
+import { Role } from "@/entities/Role";
+import { UserWithAuth } from "./helpers/UserWithAuth";
 
 let lecturer: Lecturer;
 let lecturerAuthUser: Account;
@@ -11,45 +14,71 @@ let course1: Course;
 let course2: Course;
 let adminAuth: Account;
 let lecturerAuth: Account;
+let usersWithAuth: UserWithAuth[] = [];
 
 describe("Course List Behavior", function () {
     const random = Math.floor(Math.random() * 9999);
 
     before(function () {
-        cy.fixture("lecturer.json").then((l) => {
-            (l as Lecturer).username += random;
-            lecturer = l as Lecturer;
-        });
-        cy.fixture("lecturerAuthUser.json").then((lecturer) => {
-            (lecturer as Account).username += random;
-            lecturerAuthUser = lecturer as Account;
-        });
-        cy.fixture("course.json").then((course) => {
-            course1 = { ...(course as Course) };
-            course1.courseName += "1-" + random;
-
-            course2 = { ...(course as Course) };
-            course2.courseName += "2-" + random;
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
         });
 
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
-        cy.fixture("logins/lecturer.json").then((lecturer) => {
-            lecturerAuth = lecturer;
-        });
+        cy.fixture("logins/admin.json")
+            .then((admin) => {
+                adminAuth = admin;
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(() => {
+                cy.fixture("lecturer.json").then((l) => {
+                    (l as Lecturer).username += random;
+                    lecturer = l as Lecturer;
+                });
+            })
+            .then(() => {
+                cy.fixture("logins/lecturer.json").then((lecturer) => {
+                    lecturerAuth = lecturer;
+                });
+            })
+            .then(() => {
+                cy.fixture("lecturerAuthUser.json").then((lecturerAuth) => {
+                    (lecturerAuth as Account).username += random;
+                    lecturerAuthUser = lecturerAuth as Account;
+                    usersWithAuth.push({ userInfo: lecturer, auth: lecturerAuthUser });
+                });
+            })
+            .then(async () => {
+                await createUsers(usersWithAuth);
+            })
+            .then(() => {
+                cy.fixture("course.json").then((course) => {
+                    course1 = { ...(course as Course) };
+                    course1.courseName += "1-" + random;
+
+                    course2 = { ...(course as Course) };
+                    course2.courseName += "2-" + random;
+                });
+            })
+            .then(() => {
+                course1.lecturerId = lecturerAuth.username;
+                course2.lecturerId = lecturerAuthUser.username;
+                createCourses([course1, course2]);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
     });
 
-    it("Login as Admin and create new lecturer", function () {
-        loginAndCreateLecturer(lecturer, lecturerAuthUser, adminAuth);
-    });
-
-    it("Login as other lecturer and create course", function () {
-        loginAndCreateCourse(course2, lecturerAuthUser);
+    after(() => {
+        deleteUsers([lecturerAuthUser], adminAuth);
+        deleteCourses([course1, course2]);
+        logout();
     });
 
     it("Create an own course", function () {
-        loginAndCreateCourse(course1, lecturerAuth);
+        loginAsDefaultLecturer();
     });
 
     it("Tab All Courses should contain both courses", function () {
@@ -67,17 +96,5 @@ describe("Course List Behavior", function () {
         cy.get("div").contains(course1.courseName).should("exist");
         cy.get("div").contains(course1.courseName).parent().parent().find("button[id='editCourse']").should("exist");
         cy.get("div").contains(course2.courseName).should("not.exist");
-    });
-
-    it("Delete own course", function () {
-        deleteCourse(course1);
-    });
-
-    it("Delete the course of other lecturer", function () {
-        loginAndDeleteCourse(course2, lecturerAuthUser);
-    });
-
-    it("Delete other lecturer account", function () {
-        loginAndDeleteUser(lecturer, adminAuth);
     });
 });

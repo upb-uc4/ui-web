@@ -11,7 +11,6 @@ export default class LecturerEntity implements Lecturer {
     address: Address = new AddressEntity();
     firstName = "";
     lastName = "";
-    picture = "";
     email = "";
     birthDate = "";
     phoneNumber = "";

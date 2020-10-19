@@ -10,10 +10,10 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
     errorList: Error[] = [] as Error[];
 
     isValidationError(object: any): object is ValidationError {
-        return "type" in object && object.type == "validation error";
+        return "type" in object && object.type == "Validation";
     }
 
-    handleReponse(response: APIResponse<boolean>): boolean {
+    handleResponse(response: APIResponse<boolean>): boolean {
         if (this.isValidationError(response.error)) {
             for (let err of response.error.invalidParams) {
                 this.errorList.push(err);

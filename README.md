@@ -30,14 +30,20 @@ Here, `/deploy` is the endpoint used for production builds and `/` is used for d
 ### Backend API URL
 You can configure the API url inside the vue config to change the endpoint at which this application will expect the backend server.
 
-For example, if you serve your API on some.domain.com/api, the config should look like this:
-```js
-//vue.config.js
-process.env.VUE_APP_API_BASE_URL = process.env.NODE_ENV === 'production'
-    ? 'http://localhost/api'
-    : 'http://localhost:9000';
+By default, we support three endpoints, depending on the NODE_ENV variable of your shell. 
+On windows cmd:
 ```
-Here, `http://localhost/api` is the endpoint used for production builds and `http://localhost:9000` is used for development builds.
+SET NODE_ENV=production  //to test against production cluster
+SET NODE_ENV=development  //to test against develop cluster
+SET NODE_ENV=experimental  //to test against experimental cluster
+```
+On windows PS:
+```
+$env:NODE_ENV="production"
+$env:NODE_ENV="development"
+$env:NODE_ENV="experimental"
+```
+
 ## Build docker image
 Pre-built images for every version can be found on https://hub.docker.com/r/uc4official/ui-web
 
@@ -78,6 +84,19 @@ npm install
 ```
 Will install all dependencies for our application.
 ### Compiles and hot-reloads for development
+Generate a keypair for localhost tls
+```
+openssl req -x509 -newkey rsa:4096 -days 365 -nodes -keyout certs/ca-key.pem -out certs/ca-cert.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=ca-localhost'
+openssl req -newkey rsa:4096 -nodes -keyout certs/server-key.pem -out certs/server-req.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
+openssl x509 -req -in certs/server-req.pem -days 60 -CA certs/ca-cert.pem -CAkey certs/ca-key.pem -CAcreateserial -out certs/server-cert.pem
+```
+Choose a backend deployment for testing:
+```
+SET NODE_ENV=production  //to test against production cluster
+SET NODE_ENV=development  //to test against develop cluster
+SET NODE_ENV=experimental  //to test against experimental cluster
+```
+Run the development frontend:
 ```
 npm run serve
 ```

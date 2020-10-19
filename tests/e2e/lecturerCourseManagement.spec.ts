@@ -11,9 +11,9 @@
 
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAsDefaultLecturer } from "./helpers/AuthHelper";
+import { loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
-import { createCourse, deleteCourse } from "./helpers/CourseHelper";
+import { createCourse, deleteCourse, deleteCourses } from "./helpers/CourseHelper";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -22,6 +22,11 @@ describe("Course creation, edition and deletion", () => {
     let lecturerAuth: Account;
 
     before(function () {
+        cy.clearCookies();
+        Cypress.Cookies.defaults({
+            preserve: ["refresh", "login"],
+        });
+
         cy.fixture("course.json").then((c) => {
             course = { ...(c as Course) };
             course.courseName += random;
@@ -30,6 +35,11 @@ describe("Course creation, edition and deletion", () => {
         cy.fixture("logins/lecturer.json").then((lecturer) => {
             lecturerAuth = lecturer;
         });
+    });
+
+    after(() => {
+        deleteCourses([course]);
+        logout();
     });
 
     it("Login as lecturer", () => {
@@ -121,6 +131,16 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+    });
+
+    it("Can modify participation limit with arrow keys", () => {
+        //go to edit
+        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+
+        cy.get("input[id='maxParticipants']").type("{downarrow}").trigger("input");
+        cy.get('button[id="saveChanges"]').should("be.enabled");
+        cy.get("input[id='maxParticipants']").type("{uparrow}").trigger("input");
+        cy.get('button[id="saveChanges"]').should("be.disabled");
     });
 
     it("Delete course", () => {

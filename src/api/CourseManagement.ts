@@ -3,26 +3,19 @@ import Course from "./api_models/course_management/Course";
 import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
-import ValidationError from "./api_models/errors/ValidationError";
+import handleAuthenticationError from "./AuthenticationHelper";
 
 export default class CourseManagement extends Common {
     constructor() {
         super("/course-management");
     }
 
-    static async getVersion(): Promise<String> {
+    static async getVersion(): Promise<string> {
         return super.getVersion("/course-management");
     }
 
     async getCourses(courseName?: string, lecturerId?: string): Promise<APIResponse<Course[]>> {
-        let result: APIResponse<Course[]> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: [],
-            statusCode: 0,
-        };
-
-        const requestParameter = { ...(await this._authHeader), params: {} as any };
+        const requestParameter = { params: {} as any };
         //optional name to search by
         if (courseName != undefined) {
             requestParameter.params.courseName = courseName;
@@ -31,46 +24,83 @@ export default class CourseManagement extends Common {
             requestParameter.params.lecturerId = lecturerId;
         }
 
-        await this._axios
+        return await this._axios
             .get(`/courses`, requestParameter)
             .then((response: AxiosResponse) => {
-                result.returnValue = response.data as Course[];
-                result.statusCode = response.status;
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    returnValue: response.data as Course[],
+                    statusCode: response.status,
+                };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getCourses(courseName, lecturerId);
+                    }
+                    return {
+                        error: error.response.data as APIError,
+                        networkError: false,
+                        returnValue: [] as Course[],
+                        statusCode: error.response.status,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        error: {} as APIError,
+                        networkError: true,
+                        returnValue: [] as Course[],
+                        statusCode: 0,
+                    };
                 }
             });
-
-        return result;
     }
 
     async getCourse(id: string): Promise<APIResponse<Course>> {
-        let result: APIResponse<Course> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: {} as Course,
-            statusCode: 0,
-        };
-
-        await this._axios
-            .get(`/courses/${id}`, await this._authHeader)
+        return await this._axios
+            .get(`/courses/${id}`)
             .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                result.returnValue = response.data as Course;
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data as Course,
+                    networkError: false,
+                    error: {} as APIError,
+                };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as Course,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getCourse(id);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        returnValue: {} as Course,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        statusCode: 0,
+                        returnValue: {} as Course,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
                 }
             });
-
-        return result;
     }
 
     async createCourse(course: Course): Promise<APIResponse<boolean>> {
@@ -81,74 +111,124 @@ export default class CourseManagement extends Common {
             statusCode: 0,
         };
 
-        await this._axios
-            .post("/courses", course, await this._authHeader)
+        var reloginSuccess = false;
+
+        return await this._axios
+            .post("/courses", course)
             .then((response: AxiosResponse) => {
-                result.statusCode = response.status;
-                result.returnValue = true;
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: true,
+                };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
-                    result.error = error.response.data as ValidationError;
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as Course,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.createCourse(course);
+                    }
+                    return {
+                        error: error.response.data as APIError,
+                        networkError: false,
+                        statusCode: error.response.status,
+                        returnValue: true,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        error: {} as APIError,
+                        networkError: true,
+                        statusCode: 0,
+                        returnValue: true,
+                    };
                 }
             });
-
-        return result;
     }
 
     async updateCourse(course: Course): Promise<APIResponse<boolean>> {
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
-        const id = course.courseId;
-
-        await this._axios
-            .put(`/courses/${id}`, course, await this._authHeader)
+        return await this._axios
+            .put(`/courses/${course.courseId}`, course)
             .then((response: AxiosResponse) => {
-                result.returnValue = true;
-                result.statusCode = response.status;
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    returnValue: true,
+                    statusCode: response.status,
+                };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
-                    result.error = error.response.data as ValidationError;
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.updateCourse(course);
+                    }
+                    return {
+                        networkError: false,
+                        returnValue: false,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        networkError: false,
+                        returnValue: true,
+                        statusCode: 0,
+                        error: {} as APIError,
+                    };
                 }
             });
-
-        return result;
     }
 
     async deleteCourse(id: string): Promise<APIResponse<boolean>> {
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
-        await this._axios
-            .delete(`/courses/${id}`, await this._authHeader)
+        return await this._axios
+            .delete(`/courses/${id}`)
             .then((response: AxiosResponse) => {
-                result.returnValue = true;
-                result.statusCode = response.status;
+                return {
+                    returnValue: true,
+                    statusCode: response.status,
+                    networkError: false,
+                    error: {} as APIError,
+                };
             })
-            .catch((error: AxiosError) => {
+            .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    result.statusCode = error.response.status;
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.deleteCourse(id);
+                    }
+                    return {
+                        returnValue: false,
+                        statusCode: error.response.status,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
                 } else {
-                    result.networkError = true;
+                    return {
+                        returnValue: false,
+                        statusCode: 0,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
                 }
             });
-
-        return result;
     }
 }

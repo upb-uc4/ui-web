@@ -1,6 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { clear } from "console";
+import CourseManagement from "@/api/CourseManagement";
 import { loginAsUser } from "./AuthHelper";
 import {
     navigateToCourseFormAdmin,
@@ -18,6 +19,7 @@ export function createCourse(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
     navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
     cy.wait(3000);
@@ -35,11 +37,19 @@ export function createCourseAdmin(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
+    cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
     navigateToCourseListAdmin();
     cy.url().should("contain", "all-courses");
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();
     cy.get("div").contains(course.courseName).should("exist");
+}
+
+export async function createCourses(courses: Course[]) {
+    const course_management = new CourseManagement();
+    courses.forEach(async (course) => {
+        await course_management.createCourse(course);
+    });
 }
 
 export function loginAndCreateCourse(course: Course, lecturer: Account) {
@@ -65,7 +75,7 @@ export function deleteCourse(course: Course) {
     cy.get("#modal-wrapper").should("exist");
     cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
     cy.get('button[id="deleteCourseModalDelete"]').click();
-    cy.url().should("contain", "/course-management");
+    cy.url().should("contain", "/all-courses");
     cy.get("div").contains(course.courseName).should("not.exist");
 }
 
@@ -82,4 +92,17 @@ export function deleteCourseAdmin(course: Course) {
     cy.get('button[id="deleteCourseModalDelete"]').click();
     cy.url().should("contain", "/all-courses");
     cy.get("div").contains(course.courseName).should("not.exist");
+}
+
+export async function deleteCourses(courses: Course[]) {
+    const course_management = new CourseManagement();
+    const existingCourses = (await course_management.getCourses()).returnValue;
+
+    courses.forEach(async (course) => {
+        existingCourses.forEach(async (existingCourse) => {
+            if (existingCourse.courseName == course.courseName) {
+                await course_management.deleteCourse(existingCourse.courseId);
+            }
+        });
+    });
 }
