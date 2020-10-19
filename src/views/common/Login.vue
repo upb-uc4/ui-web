@@ -75,8 +75,8 @@
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
-    import { createKeyPair, createCSR, deriveKeyFromPassword, base64ToArrayBuffer } from "@/use/crypto/certificates";
     import { load, Root } from "protobufjs";
+    import { base64ToArrayBuffer } from "@/use/crypto/certificates";
 
     export default {
         components: {},

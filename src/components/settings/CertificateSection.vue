@@ -13,12 +13,23 @@
                     <div class="lg:w-1/2 w-full mb-6 lg:mb-0 flex flex-col lg:mr-16">
                         <div v-if="!busy" class="w-full">
                             <div class="flex items-baseline w-full">
-                                <label class="text-gray-700 text-md font-medium mb-3">Password</label>
-                                <button id="downloadCertificate" class="ml-3 text-sm btn-blue-tertiary" @click="downloadCertificate">
+                                <label class="text-gray-700 text-md font-medium mb-3">Certificate</label>
+                                <a
+                                    id="downloadCertificate"
+                                    class="ml-3 text-sm btn-blue-tertiary"
+                                    :href="certificateBlobURL"
+                                    download="certificate.pem"
+                                >
                                     Download
-                                </button>
+                                </a>
                             </div>
-                            <textarea v-model="certificate" class="form-input input-text text-xs w-full" rows="15" readonly />
+                            <textarea
+                                id="certificate"
+                                v-model="certificate"
+                                class="form-input input-text text-xs w-full"
+                                rows="15"
+                                readonly
+                            />
                         </div>
                         <loading-spinner v-else />
                     </div>
@@ -39,9 +50,12 @@
         setup() {
             const busy = ref(false);
             const certificate = ref("");
+            let certificateBlobURL = ref("");
 
-            onBeforeMount(() => {
-                getCertificate();
+            onBeforeMount(async () => {
+                await getCertificate();
+                let blob = new Blob([certificate.value], { type: "pem" });
+                certificateBlobURL.value = URL.createObjectURL(blob);
             });
 
             async function getCertificate() {
@@ -51,25 +65,10 @@
                 busy.value = false;
             }
 
-            function downloadCertificate() {
-                let blob = new Blob([certificate.value], { type: "pem" });
-
-                let a = document.createElement("a");
-                a.download = "certificate.pem";
-                a.href = URL.createObjectURL(blob);
-                a.dataset.downloadurl = ["pem", a.download, a.href].join(":");
-                a.style.display = "none";
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                setTimeout(() => {
-                    URL.revokeObjectURL(a.href);
-                }, 1500);
-            }
             return {
                 busy,
                 certificate,
-                downloadCertificate,
+                certificateBlobURL,
             };
         },
     };
