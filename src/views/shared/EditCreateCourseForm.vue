@@ -108,6 +108,7 @@
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
+    import { useToast } from "vue-toastification";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -142,6 +143,8 @@
             course.value.endDate = "2020-08-31";
 
             const errorBag = ref(new ErrorBag());
+
+            const toast = useToast();
 
             onBeforeRouteLeave(async (to, from, next) => {
                 if (success.value) {
@@ -230,9 +233,11 @@
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Course '" + course.value.courseName + "' created.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    toast.error("Error: course not created.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -244,9 +249,11 @@
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Course '" + course.value.courseName + "' updated.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    toast.error("Error: course not updated.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -259,6 +266,7 @@
                 const result = genericResponseHandler.handleResponse(response);
 
                 if (result) {
+                    toast.success("Course '" + course.value.courseName + "' deleted.");
                     back();
                 }
             }
