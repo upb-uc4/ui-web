@@ -282,7 +282,9 @@
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
                     //student properties
-                    account.student.matriculationId != initialAccount.student.matriculationId
+                    account.student.matriculationId != initialAccount.student.matriculationId ||
+                    //governmentId
+                    account.governmentId != ""
                 ) {
                     emit("update:has-input", true);
                     return true;
