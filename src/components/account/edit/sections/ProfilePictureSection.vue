@@ -64,6 +64,7 @@
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import Router from "@/use/router/";
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
+    import { useToast } from "vue-toastification";
 
     export default {
         name: "ProfilePictureSection",
@@ -79,6 +80,7 @@
             const busy = ref(false);
             const errorBag = ref(new ErrorBag());
             const deletePictureModal = ref();
+            const toast = useToast();
 
             onBeforeMount(() => {
                 getProfilePicture();
@@ -99,8 +101,7 @@
                         fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
-                    //TODO Show Toast
-                    console.log("Error: Loading Profile Picture Failed");
+                    toast.warning("Error: could not load profile picture.");
                     selectedPicture.value = "";
                     fallbackPicture.value = selectedPicture.value;
                 }
@@ -138,8 +139,10 @@
                 if (result) {
                     fallbackPicture.value = selectedPicture.value;
                     errorBag.value = new ErrorBag();
+                    toast.success("Profile picture updated.");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    toast.error("Error: could not update profile picture");
                 }
                 busy.value = false;
             }
@@ -172,9 +175,10 @@
                 const handler = new GenericResponseHandler();
                 const result = await handler.handleResponse(response);
                 if (result) {
+                    toast.success("Profile picture deleted.");
                     getProfilePicture();
                 } else {
-                    // TODO: show toast
+                    toast.warning("Error: could not delete profile picture.");
                 }
                 busy.value = false;
             }
