@@ -8,6 +8,7 @@ import { Language } from "@/entities/Language";
 import { CourseType } from "@/entities/CourseType";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
+import ConfigurationManagement from "@/api/ConfigurationManagement";
 
 jest.useFakeTimers();
 
@@ -33,4 +34,15 @@ test.skip("matriculation service version", async () => {
     const version = await MatriculationManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
+});
+
+test("configuration management and hyperledger version", async () => {
+    const version = await ConfigurationManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+
+    const hlVersions = await ConfigurationManagement.getHyperledgerVersion();
+    expect(hlVersions.apiVersion).not.toEqual("unavailable");
+    expect(hlVersions.chaincodeVersion).not.toEqual("unavailable");
+    expect(hlVersions.networkVersion).not.toEqual("unavailable");
 });

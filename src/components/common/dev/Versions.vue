@@ -29,6 +29,7 @@
     import { ref, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
+    import ConfigurationManagement from "@/api/ConfigurationManagement";
 
     export default {
         components: {
@@ -60,6 +61,8 @@
                 let courseManagementVersion = await CourseManagement.getVersion();
                 let userManagementVersion = await UserManagement.getVersion();
                 let matriculationManagementVersion = await MatriculationManagement.getVersion();
+                let configurationManagementVersion = await ConfigurationManagement.getVersion();
+                let hlVersions = await ConfigurationManagement.getHyperledgerVersion();
 
                 versions.push({
                     name: "Frontend",
@@ -101,6 +104,30 @@
                         "matriculation-" +
                         matriculationManagementVersion +
                         "/product_code/matriculation_service/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Configuration Management",
+                    version: configurationManagementVersion,
+                    link:
+                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "configuration-" +
+                        configurationManagementVersion +
+                        "/product_code/configuration_service/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Hyperledger API",
+                    version: hlVersions.apiVersion,
+                    link: "https://github.com/upb-uc4/hlf-api/blob/" + hlVersions.apiVersion + "/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Hyperledger Chaincode",
+                    version: hlVersions.chaincodeVersion,
+                    link: "https://github.com/upb-uc4/hlf-chaincode/blob/" + hlVersions.chaincodeVersion + "/CHANGELOG.md",
+                });
+                versions.push({
+                    name: "Hyperledger Network",
+                    version: hlVersions.networkVersion,
+                    link: "https://github.com/upb-uc4/hlf-network/blob/" + hlVersions.networkVersion + "/CHANGELOG.md",
                 });
 
                 emit("versions", versions);

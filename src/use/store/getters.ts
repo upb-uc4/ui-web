@@ -9,6 +9,8 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
+import ConfigurationManagement from "@/api/ConfigurationManagement";
+import lodash from "lodash";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -36,5 +38,11 @@ export const getters: GetterTree<State, State> & Getters = {
     role: async (state) => {
         const store = useStore();
         return (await store.getters.user).role;
+    },
+    validation: async (state) => {
+        if (lodash.isEmpty(state.validation)) {
+            state.validation = (await new ConfigurationManagement().getConfiguration()).returnValue;
+        }
+        return state.validation;
     },
 };

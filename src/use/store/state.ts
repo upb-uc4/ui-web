@@ -7,6 +7,7 @@ export const state = {
     user: {} as Student | Lecturer | Admin,
     loggedIn: false,
     modal: {} as any,
+    validation: {},
 };
 
 export type State = typeof state;
