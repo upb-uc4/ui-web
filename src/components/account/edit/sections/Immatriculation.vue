@@ -54,6 +54,7 @@
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import MatriculationValidationResponseHandler from "@/use/helpers/MatriculationValidationResponseHandler";
+    import { useToast } from "@/toast";
 
     export default {
         components: {
@@ -91,6 +92,8 @@
             });
 
             let errorBag = ref(new ErrorBag());
+
+            const toast = useToast();
 
             let selectedSemester = computed(() => {
                 return semesterType.value + year.value;
@@ -140,8 +143,10 @@
                     year.value = "";
                     selectedFieldsOfStudy.value = [];
                     errorBag.value = new ErrorBag();
+                    toast.success("Immatriculation information updated");
                 } else {
                     errorBag.value = new ErrorBag(responseHandler.errorList);
+                    toast.error("Error: immatriculation information updated");
                 }
                 busy.value = false;
                 refreshKey.value = !refreshKey.value;
