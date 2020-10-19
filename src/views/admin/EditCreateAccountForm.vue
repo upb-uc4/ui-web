@@ -354,11 +354,11 @@
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
                 if (success.value) {
-                    toast.success("Account " + account.user.username + " created.");
+                    toast.success("Account '" + account.user.username + "' created.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    toast.error("Validation Error: Account not created.");
+                    toast.error("Error: account not created.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -373,11 +373,11 @@
                 emit("update:success", success.value);
 
                 if (success.value) {
-                    toast.success("Account " + account.user.username + " updated.");
+                    toast.success("Account '" + account.user.username + "' updated.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    toast.error("Validation Error: Account not updated.");
+                    toast.error("Error: account not updated.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -391,7 +391,7 @@
 
                 if (result) {
                     success.value = true;
-                    toast.success("Account " + account.user.username + " deleted.");
+                    toast.success("Account '" + account.user.username + "' deleted.");
                     emit("update:success", success.value);
                     back();
                 }
