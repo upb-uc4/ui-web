@@ -25,6 +25,7 @@
             <personal-information-section
                 v-model:first-name="account.user.firstName"
                 v-model:last-name="account.user.lastName"
+                v-model:government-id="account.governmentId"
                 v-model:birth-date="account.user.birthDate"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -173,6 +174,7 @@
                 admin: new AdminEntity(),
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
+                governmentId: "",
             });
             let initialAccount = {
                 authUser: new Account(),
@@ -180,6 +182,7 @@
                 admin: new AdminEntity(),
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
+                governmentId: "",
             };
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
@@ -346,7 +349,7 @@
                     return;
                 }
 
-                const response = await userManagement.createUser(account.authUser, newUser);
+                const response = await userManagement.createUser(account.governmentId, account.authUser, newUser);
                 const handler = new AccountValidationResponseHandler();
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
