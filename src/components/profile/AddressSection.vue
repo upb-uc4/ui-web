@@ -101,6 +101,7 @@
     import { cloneDeep } from "lodash";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import Admin from "@/api/api_models/user_management/Admin";
+    import { showUpdateSuccessToast, showUpdateFailedToast } from "@/use/helpers/Toasts";
 
     export default {
         props: {
@@ -150,8 +151,10 @@
                     isEditing.value = false;
                     emit("update:user", editedUser.value);
                     errorBag.value = new ErrorBag();
+                    showUpdateSuccessToast("Address information");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    showUpdateFailedToast("Address information");
                 }
             }
 

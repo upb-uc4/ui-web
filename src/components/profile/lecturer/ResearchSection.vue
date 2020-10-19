@@ -55,6 +55,7 @@
     import { cloneDeep } from "lodash";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import { showUpdateSuccessToast, showUpdateFailedToast } from "@/use/helpers/Toasts";
 
     export default {
         props: {
@@ -107,8 +108,10 @@
                     isEditing.value = false;
                     emit("update:user", editedUser.value);
                     errorBag.value = new ErrorBag();
+                    showUpdateSuccessToast("Research information");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    showUpdateFailedToast("Contact information");
                 }
             }
 
