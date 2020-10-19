@@ -290,8 +290,8 @@ export default class UserManagement extends Common {
         return await this.getSpecificUser(username);
     }
 
-    async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
-        let message = UserManagement._createMessage(user, authUser);
+    async createUser(governmentId: string, authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
+        let message = UserManagement._createMessage(governmentId, user, authUser);
 
         return await this._axios
             .post("/users", message)
@@ -313,7 +313,7 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.createUser(authUser, user);
+                        return await this.createUser(governmentId, authUser, user);
                     }
                     return {
                         statusCode: error.response.status,
@@ -362,11 +362,12 @@ export default class UserManagement extends Common {
             });
     }
 
-    static _createMessage(user: Student | Lecturer | Admin, authUser: Account) {
+    static _createMessage(governmentId: string, user: Student | Lecturer | Admin, authUser: Account) {
         let message;
         switch (user.role) {
             case Role.STUDENT: {
                 message = {
+                    governmentId: governmentId,
                     authUser: authUser,
                     student: user as Student,
                 };
@@ -374,6 +375,7 @@ export default class UserManagement extends Common {
             }
             case Role.LECTURER: {
                 message = {
+                    governmentId: governmentId,
                     authUser: authUser,
                     lecturer: user as Lecturer,
                 };
@@ -381,6 +383,7 @@ export default class UserManagement extends Common {
             }
             case Role.ADMIN: {
                 message = {
+                    governmentId: governmentId,
                     authUser: authUser,
                     admin: user as Admin,
                 };
@@ -531,6 +534,46 @@ export default class UserManagement extends Common {
                 } else {
                     return {
                         returnValue: false,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async getEnrollmentId(username: string): Promise<APIResponse<String>> {
+        return await this._axios
+            .get(`/users/${username}/enrollmentId`)
+            .then((response: AxiosResponse) => {
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: response.data.enrollmentId,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: "",
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getEnrollmentId(username);
+                    }
+                    return {
+                        returnValue: "",
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: "",
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,
