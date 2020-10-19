@@ -143,6 +143,7 @@
     import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import Error from "@/api/api_models/errors/Error";
+    import { useToast, POSITION } from "vue-toastification";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -187,6 +188,8 @@
             let unsavedChangesModal = ref();
 
             const errorBag = ref(new ErrorBag());
+
+            const toast = useToast();
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -351,9 +354,11 @@
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
                 if (success.value) {
+                    toast.success("Account " + account.user.username + " created.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    toast.error("Validation Error: Account not created.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -368,9 +373,11 @@
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Account " + account.user.username + " updated.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
+                    toast.error("Validation Error: Account not updated.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -384,6 +391,7 @@
 
                 if (result) {
                     success.value = true;
+                    toast.success("Account " + account.user.username + " deleted.");
                     emit("update:success", success.value);
                     back();
                 }
