@@ -5,26 +5,22 @@
         :class="{ 'rounded-t-lg': isFirstRow, 'rounded-b-lg': isLastRow, 'border-b': !isLastRow }"
         @click="editAccount(user.username)"
     >
-        <div class="flex items-center justify-between">
-            <div class="flex items-center justify-between">
-                <div class="flex">
-                    <div class="sm:ml-1">
-                        <div class="text leading-5 font-medium text-blue-900 mb-1 w-48 lg:w-48 sm:w-32 truncate">
-                            {{ user.firstName }} {{ user.lastName }}
-                        </div>
-                        <div class="hidden sm:flex text leading-5 text-gray-500 lg:w-48 w-32 truncate">@{{ user.username }}</div>
+        <div class="flex items-center">
+            <div class="w-full flex items-center">
+                <div class="sm:ml-1">
+                    <div class="text leading-5 font-medium text-blue-900 mb-1 w-48 truncate">{{ user.firstName }} {{ user.lastName }}</div>
+                    <div class="hidden sm:flex text leading-5 text-gray-500 w-48 truncate">@{{ user.username }}</div>
 
-                        <span
-                            class="sm:hidden inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
-                            :class="{
-                                'bg-blue-200 text-blue-800': isStudent,
-                                'bg-red-200 text-red-800': isAdmin,
-                                'bg-green-200 text-green-800': isLecturer,
-                            }"
-                        >
-                            {{ user.role }}
-                        </span>
-                    </div>
+                    <span
+                        class="sm:hidden inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
+                        :class="{
+                            'bg-blue-200 text-blue-800': isStudent,
+                            'bg-red-200 text-red-800': isAdmin,
+                            'bg-green-200 text-green-800': isLecturer,
+                        }"
+                    >
+                        {{ user.role }}
+                    </span>
                 </div>
                 <div class="mx-8 hidden sm:flex w-24">
                     <span
@@ -53,8 +49,9 @@
                     </div>
                 </div>
             </div>
+
             <div class="flex">
-                <i class="fas fa-chevron-right text-gray-500" />
+                <i class="fas fa-chevron-right text-gray-500 ml-8" />
             </div>
         </div>
     </div>
