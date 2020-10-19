@@ -8,6 +8,7 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-between">
                 <div class="flex">
+                    <img class="w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
                     <div class="sm:ml-1">
                         <div class="text leading-5 font-medium text-blue-900 mb-1 lg:w-48 w-32 truncate">
                             {{ user.firstName }} {{ user.lastName }}
@@ -54,6 +55,7 @@
     import router from "@/use/router";
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
+    import { onBeforeMount, ref } from "vue";
 
     export default {
         name: "AccountRow",
@@ -70,6 +72,7 @@
             },
         },
         setup(props: any) {
+            let profilePicture = ref("");
             function editAccount(username: string) {
                 router.push({ path: "/editAccount/" + username });
             }
@@ -78,7 +81,9 @@
             const isAdmin = props.user.role === Role.ADMIN;
             const student = props.user as Student;
 
-            return { editAccount, isStudent, isLecturer, isAdmin, student };
+            profilePicture.value = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + props.user.username + "/thumbnail?";
+
+            return { editAccount, isStudent, isLecturer, isAdmin, student, profilePicture };
         },
     };
 </script>
