@@ -75,8 +75,6 @@
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
-    import { useToast } from "vue-toastification";
-
     export default {
         components: {},
         props: [],
@@ -87,12 +85,8 @@
             let error = ref(false);
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
-            const toast = useToast();
-            toast("I'm a toast!");
-
             function togglePassword() {
-                //passwordFieldType.value = isPasswordVisible() ? "password" : "text";
-                toast.info("I'm an info toast!");
+                passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 
             function hideErrors() {
@@ -130,7 +124,6 @@
                 togglePassword,
                 hideErrors,
                 login,
-                toast,
             };
         },
     };
