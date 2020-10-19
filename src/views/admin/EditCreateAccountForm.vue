@@ -143,7 +143,7 @@
     import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import Error from "@/api/api_models/errors/Error";
-    import { useToast } from "vue-toastification";
+    import { useToast } from "@/toast";
 
     export default {
         name: "AdminCreateAccountForm",

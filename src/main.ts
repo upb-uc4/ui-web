@@ -3,13 +3,14 @@ import App from "./App.vue";
 import Router from "./use/router";
 import { store } from "./use/store/store";
 import "./assets/styles/index.css";
-import Toast, { POSITION } from "vue-toastification";
+import { POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import { provideAppToast } from "./toast";
 
 const app = createApp(App);
 app.use(Router);
 app.use(store);
-app.use(Toast, {
+app.use(provideAppToast, {
     maxToasts: 5,
     position: POSITION.BOTTOM_RIGHT,
     timeout: 3000,

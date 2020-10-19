@@ -96,7 +96,7 @@
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import AuthenticationManagement from "../../api/AuthenticationManagement";
-    import { useToast } from "vue-toastification";
+    import { useToast } from "@/toast";
 
     export default {
         name: "SecuritySection",

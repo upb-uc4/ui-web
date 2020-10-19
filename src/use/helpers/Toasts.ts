@@ -1,4 +1,4 @@
-import { useToast } from "vue-toastification";
+import { useToast } from "@/toast";
 
 const toast = useToast();
 
@@ -19,5 +19,5 @@ export function showUpdateSuccessToast(subject: string) {
 }
 
 export function showUpdateFailedToast(subject: string) {
-    toast.success("Error: '" + subject + "' not updated.");
+    toast.error("Error: '" + subject + "' not updated.");
 }

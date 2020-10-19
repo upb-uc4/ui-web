@@ -64,7 +64,7 @@
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import Router from "@/use/router/";
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
-    import { useToast } from "vue-toastification";
+    import { useToast } from "@/toast";
 
     export default {
         name: "ProfilePictureSection",

@@ -108,7 +108,7 @@
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
-    import { useToast } from "vue-toastification";
+    import { useToast } from "@/toast";
 
     export default {
         name: "LecturerCreateCourseForm",

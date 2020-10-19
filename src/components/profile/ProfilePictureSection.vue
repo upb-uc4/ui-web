@@ -66,7 +66,7 @@
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
     import { useStore } from "vuex";
     import { MutationTypes } from "@/use/store/mutation-types";
-    import { useToast } from "vue-toastification";
+    import { useToast } from "@/toast";
 
     export default {
         name: "ProfilePictureSection",
