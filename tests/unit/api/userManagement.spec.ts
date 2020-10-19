@@ -1,7 +1,5 @@
 import UserManagement from "@/api/UserManagement";
 import { Role } from "@/entities/Role";
-import { store } from "@/use/store/store";
-import { MutationTypes } from "@/use/store/mutation-types";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
@@ -9,9 +7,10 @@ import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 var userManagement: UserManagement;
-const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;
+const governmentId = pair.governmentId;
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
 const studentAuth = JSON.parse(readFileSync("tests/fixtures/logins/student.json", "utf-8")) as { username: string; password: string };
@@ -30,7 +29,7 @@ beforeAll(async () => {
 });
 
 test("Create user", async () => {
-    const success = await userManagement.createUser(authUser, student);
+    const success = await userManagement.createUser(governmentId, authUser, student);
     expect(success.returnValue).toBe(true);
     await new Promise((r) => setTimeout(r, 1000));
 });
