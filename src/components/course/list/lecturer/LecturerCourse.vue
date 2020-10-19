@@ -1,7 +1,7 @@
 <template>
     <div :id="'course_' + course.courseId" class="flex shadow-xl">
         <div class="flex flex-col w-full p-4 sm:px-8 bg-white rounded-lg">
-            <div class="flex items-baseline justify-between sm:justify-start">
+            <div class="flex items-center justify-between sm:justify-start">
                 <span class="inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase bg-teal-200 rounded-full">
                     {{ course.courseType }}
                 </span>
@@ -9,8 +9,11 @@
                 <div class="hidden sm:flex ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">
                     {{ course.courseLanguage }}
                 </div>
-                <div class="sm:hidden ml-4 text-xl font-semibold tracking-wide text-gray-600 uppercase">🇬🇧</div>
-                <!-- TODO use correct flags -->
+                <!-- todo replace with flag component -->
+                <img
+                    src="https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/gb.svg"
+                    class="inline rounded ml-4 w-6 h-4 opacity-90"
+                />
                 <div class="ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">
                     <i class="inline text-lg fas fa-users" />
                     {{ course.currentParticipants }} / {{ course.maxParticipants }}
