@@ -154,7 +154,6 @@
                     showUpdateSuccessToast("Address information");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    showUpdateFailedToast("Address information");
                 }
             }
 

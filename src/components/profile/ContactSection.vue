@@ -110,7 +110,6 @@
                     showUpdateSuccessToast("Contact information");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    showUpdateFailedToast("Contact information");
                 }
             }
 

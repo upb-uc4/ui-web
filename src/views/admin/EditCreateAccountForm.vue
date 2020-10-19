@@ -358,7 +358,6 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    toast.error("Error: account not created.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -377,7 +376,6 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    toast.error("Error: account not updated.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }

@@ -142,7 +142,6 @@
                     toast.success("Profile picture updated.");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    toast.error("Error: could not update profile picture");
                 }
                 busy.value = false;
             }

@@ -146,7 +146,6 @@
                     toast.success("Immatriculation information updated");
                 } else {
                     errorBag.value = new ErrorBag(responseHandler.errorList);
-                    toast.error("Error: immatriculation information updated");
                 }
                 busy.value = false;
                 refreshKey.value = !refreshKey.value;

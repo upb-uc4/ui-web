@@ -237,7 +237,6 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    toast.error("Error: course not created.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
@@ -253,7 +252,6 @@
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
-                    toast.error("Error: course not updated.");
                     await scrollToTopError(errorBag.value.errors);
                 }
             }
