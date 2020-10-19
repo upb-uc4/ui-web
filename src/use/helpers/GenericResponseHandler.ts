@@ -1,17 +1,17 @@
 import ResponseHandler from "./ResponseHandler";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
+import { showNetworkErrorToast, showAPI400Toast, showAPI404Toast } from "@/use/helpers/Toasts";
 
 export default class GenericResponseHandler implements ResponseHandler<boolean> {
     handleResponse<T>(response: APIResponse<T>): T {
         if (response.networkError) {
-            //TODO show toast
-            console.log("Network Error");
+            showNetworkErrorToast();
             return response.returnValue;
         }
         switch (response.statusCode) {
             case 400: {
-                //TODO show toast
+                showAPI400Toast();
                 return response.returnValue;
             }
             case 401: {
@@ -23,7 +23,7 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
                 return response.returnValue;
             }
             case 404: {
-                //TODO show toast
+                showAPI404Toast();
                 return response.returnValue;
             }
             case 200: {

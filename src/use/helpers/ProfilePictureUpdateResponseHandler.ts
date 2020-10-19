@@ -2,6 +2,7 @@ import ResponseHandler from "./ResponseHandler";
 import APIResponse from "@/api/helpers/models/APIResponse";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
+import { showNetworkErrorToast, showAPI400Toast, showAPI404Toast } from "@/use/helpers/Toasts";
 
 export default class ProfilePictureUpdateResponseHandler implements ResponseHandler<boolean> {
     errorList: Error[] = [] as Error[];
@@ -21,13 +22,12 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
             }
         }
         if (response.networkError) {
-            //TODO show toast
-            console.log("Network Error");
+            showNetworkErrorToast();
             return response.returnValue;
         }
         switch (response.statusCode) {
             case 400: {
-                //TODO show toast
+                showAPI400Toast();
                 return response.returnValue;
             }
             case 401: {
@@ -39,7 +39,7 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
                 return response.returnValue;
             }
             case 404: {
-                //TODO show toast
+                showAPI404Toast();
                 return response.returnValue;
             }
             case 200: {

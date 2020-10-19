@@ -1,17 +1,17 @@
 import ResponseHandler from "./ResponseHandler";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
+import { showNetworkErrorToast, showAPI400Toast, showAPI404Toast } from "@/use/helpers/Toasts";
 
 export default class LoginResponseHandler implements ResponseHandler<boolean> {
     handleResponse(response: APIResponse<boolean>): boolean {
         if (response.networkError) {
-            //TODO show toast
-            alert("Network Error");
+            showNetworkErrorToast();
             return false;
         }
         switch (response.statusCode) {
             case 400: {
-                //TODO show toast
+                showAPI400Toast();
                 return false;
             }
             case 401: {
@@ -19,7 +19,7 @@ export default class LoginResponseHandler implements ResponseHandler<boolean> {
                 return false;
             }
             case 404: {
-                //TODO show toast
+                showAPI404Toast();
                 return false;
             }
             case 200: {

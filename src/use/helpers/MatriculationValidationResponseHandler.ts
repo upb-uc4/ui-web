@@ -3,6 +3,8 @@ import APIResponse from "@/api/helpers/models/APIResponse";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
+import handleAuthenticationError from "@/api/AuthenticationHelper";
+import { showNetworkErrorToast, showAPI400Toast, showAPI404Toast } from "@/use/helpers/Toasts";
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
@@ -40,21 +42,21 @@ export default class MatriculationValidationResponseHandler implements ResponseH
             }
 
             if (response.networkError) {
-                alert("Network Error!");
+                showNetworkErrorToast();
                 return false;
             }
 
             switch (response.statusCode) {
                 case 400: {
-                    alert("Wrong syntax.. Why are you seeing this?");
+                    showAPI400Toast();
                     return false;
                 }
                 case 401: {
-                    alert("Wrong password or username combination!");
+                    handleAuthenticationError(response);
                     return false;
                 }
                 case 404: {
-                    alert("I don't think this is even possible, HOW IS THIS ERROR CODE GENERATED?");
+                    showAPI404Toast();
                     return false;
                 }
                 case 422: {
