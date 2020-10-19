@@ -25,15 +25,19 @@ import {
     deleteUsers,
     deleteUser,
     getRandomMatriculationId,
+    getRandomizedGovernmentId,
 } from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
 let adminAuthUser: Account;
+let adminGovId: string;
 let student: Student;
 let studentAuthUser: Account;
+let studentGovId: string;
 let lecturer: Lecturer;
 let lecturerAuthUser: Account;
+let lecturerGovId: string;
 
 let adminAuth: Account;
 let studentAuth: Account;
@@ -49,6 +53,7 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("admin.json").then((a) => {
             (a as Admin).username += random;
             admin = a as Admin;
+            adminGovId = getRandomizedGovernmentId();
         });
         cy.fixture("adminAuthUser.json").then((a) => {
             (a as Account).username += random;
@@ -58,6 +63,7 @@ describe("Account creation, edition and deletion", function () {
         cy.fixture("lecturer.json").then((l) => {
             (l as Lecturer).username += random;
             lecturer = l as Lecturer;
+            lecturerGovId = getRandomizedGovernmentId();
         });
         cy.fixture("lecturerAuthUser.json").then((l) => {
             (l as Account).username += random;
@@ -68,6 +74,7 @@ describe("Account creation, edition and deletion", function () {
             (s as Student).username += random;
             student = s as Student;
             student.matriculationId = getRandomMatriculationId();
+            studentGovId = getRandomizedGovernmentId();
         });
         cy.fixture("studentAuthUser.json").then((s) => {
             (s as Account).username += random;
@@ -128,6 +135,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[id='houseNumber']").should("exist");
         cy.get("input[id='zipCode']").should("exist");
         cy.get("input[id='city']").should("exist");
+        cy.get("input[id='governmentId']").should("exist");
     });
 
     it("Can edit role", function () {
@@ -190,6 +198,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[type='radio']").eq(2).click();
         cy.get("button[id='createAccount']").click();
         cy.get("input[id='matriculationId']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='governmentId]").siblings().get("p").should("have.class", "error-message");
     });
 
     it("Duplicate username detected", () => {
@@ -200,7 +209,7 @@ describe("Account creation, edition and deletion", function () {
     });
     // create student account
     it("Create student account", () => {
-        createNewStudent(student, studentAuthUser);
+        createNewStudent(studentGovId, student, studentAuthUser);
     });
 
     // edit account
@@ -251,7 +260,7 @@ describe("Account creation, edition and deletion", function () {
 
     // create lecturer account
     it("Create lecturer account", function () {
-        createNewLecturer(lecturer, lecturerAuthUser);
+        createNewLecturer(lecturerGovId, lecturer, lecturerAuthUser);
     });
 
     // edit account
@@ -312,7 +321,7 @@ describe("Account creation, edition and deletion", function () {
 
     // create admin account
     it("Create admin account", function () {
-        createNewAdmin(admin, adminAuthUser);
+        createNewAdmin(adminGovId, admin, adminAuthUser);
     });
 
     // edit account

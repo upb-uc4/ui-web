@@ -10,13 +10,14 @@ import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthent
 import { readFileSync } from "fs";
 import { UserWithAuth } from "./UserWithAuth";
 
-export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account) {
+export function createNewLecturer(governmentId: string, lecturer: Lecturer, lecturerAuthUser: Account) {
     navigateToAccountForm();
     // create new Lecturer
     cy.get("input[type='radio']").eq(1).click();
     cy.get("input[id='userName']").type(lecturerAuthUser.username);
     cy.get("input[id='password']").should("exist");
     cy.get("input[id='password']").type(lecturerAuthUser.password);
+    cy.get("input[id='governmentId']").type(governmentId);
     cy.get('select[id="country"]').select(lecturer.address.country);
     cy.get("input[id='firstName']").type(lecturer.firstName);
     cy.get("input[id='lastName']").type(lecturer.lastName);
@@ -40,11 +41,12 @@ export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account)
     cy.get(`div[id='user_${lecturer.username}']`).should("exist");
 }
 
-export function createNewStudent(student: Student, studentAuthUser: Account) {
+export function createNewStudent(governmentId: string, student: Student, studentAuthUser: Account) {
     navigateToAccountForm();
     cy.get("input[type='radio']").eq(2).click();
     cy.get("input[id='userName']").type(student.username);
     cy.get("input[id='password']").type(studentAuthUser.password);
+    cy.get("input[id='governmentId']").type(governmentId);
     cy.get('select[id="country"]').select(student.address.country);
     cy.get("input[id='firstName']").type(student.firstName);
     cy.get("input[id='lastName']").type(student.lastName);
@@ -67,11 +69,12 @@ export function createNewStudent(student: Student, studentAuthUser: Account) {
     cy.get(`div[id='user_${student.username}']`).should("exist");
 }
 
-export function createNewAdmin(admin: Admin, adminAuthUser: Account) {
+export function createNewAdmin(governmentId: string, admin: Admin, adminAuthUser: Account) {
     navigateToAccountForm();
     cy.get("input[type='radio']").eq(0).click();
     cy.get("input[id='userName']").type(admin.username);
     cy.get("input[id='password']").type(adminAuthUser.password);
+    cy.get("input[id='governmentId']").type(governmentId);
     cy.get('select[id="country"]').select(admin.address.country);
     cy.get("input[id='firstName']").type(admin.firstName);
     cy.get("input[id='lastName']").type(admin.lastName);
@@ -93,16 +96,16 @@ export function createNewAdmin(admin: Admin, adminAuthUser: Account) {
     cy.get(`div[id='user_${admin.username}']`).should("exist");
 }
 
-export function loginAndCreateLecturer(lecturer: Lecturer, lecturerAuthUser: Account, adminAuth: Account) {
+export function loginAndCreateLecturer(governmentId: string, lecturer: Lecturer, lecturerAuthUser: Account, adminAuth: Account) {
     loginAsUser(adminAuth);
     cy.wait(100);
-    createNewLecturer(lecturer, lecturerAuthUser);
+    createNewLecturer(governmentId, lecturer, lecturerAuthUser);
 }
 
-export function loginAndCreateStudent(student: Student, studentAuthUser: Account, adminAuth: Account) {
+export function loginAndCreateStudent(governmentId: string, student: Student, studentAuthUser: Account, adminAuth: Account) {
     loginAsUser(adminAuth);
     cy.wait(100);
-    createNewStudent(student, studentAuthUser);
+    createNewStudent(governmentId, student, studentAuthUser);
 }
 
 export function deleteUser(user: User) {
@@ -134,7 +137,7 @@ export function loginAndDeleteUser(user: User, adminAuth: Account) {
 export async function createUsers(users: UserWithAuth[]) {
     const user_management = new UserManagement();
     users.forEach(async (user) => {
-        await user_management.createUser(user.auth, user.userInfo);
+        await user_management.createUser(user.governmentId, user.auth, user.userInfo);
     });
 }
 
@@ -160,4 +163,10 @@ export function getRandomMatriculationId(): string {
     var random2 = Math.floor(Math.random() * 999).toString();
     var randomPadded = ("000" + random2).substr(-3);
     return monthPadded + dayPadded + randomPadded;
+}
+
+export function getRandomizedGovernmentId(): string {
+    const random = Math.floor(Math.random() * 999).toString();
+    var randomPadded = ("000" + random).substr(-3);
+    return new Date().toISOString() + "" + randomPadded;
 }

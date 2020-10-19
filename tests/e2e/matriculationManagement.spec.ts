@@ -3,7 +3,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
-import { getRandomMatriculationId, createUsers, deleteUsers } from "./helpers/UserHelper";
+import { getRandomMatriculationId, createUsers, deleteUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
@@ -47,7 +47,8 @@ describe("Account creation, edition and deletion", function () {
                 cy.fixture("studentAuthUser.json").then((s) => {
                     (s as Account).username += random;
                     studentAuthUser = s as Account;
-                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: student, auth: studentAuthUser });
                 });
             })
             .then(async () => {

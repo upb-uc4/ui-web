@@ -2,7 +2,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Country } from "@/entities/Country";
-import { getRandomMatriculationId, deleteUsers, createUsers } from "./helpers/UserHelper";
+import { getRandomMatriculationId, deleteUsers, createUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
@@ -35,7 +35,8 @@ describe("Change Profile Information", () => {
                 cy.fixture("studentAuthUser.json").then((s) => {
                     (s as Account).username += random;
                     studentAuthUser = s as Account;
-                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: student, auth: studentAuthUser });
                 });
             })
             .then(() => {
@@ -48,7 +49,8 @@ describe("Change Profile Information", () => {
                 cy.fixture("lecturerAuthUser.json").then((l) => {
                     (l as Account).username += random;
                     lecturerAuthUser = l as Account;
-                    usersWithAuth.push({ userInfo: lecturer, auth: lecturerAuthUser });
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: lecturer, auth: lecturerAuthUser });
                 });
             })
             .then(() => {
