@@ -13,3 +13,11 @@ export function showAPI400Toast() {
 export function showAPI404Toast() {
     toast.warning("HTTP Not Found");
 }
+
+export function showUpdateSuccessToast(subject: string) {
+    toast.success("'" + subject + "' updated.");
+}
+
+export function showUpdateFailedToast(subject: string) {
+    toast.success("Error: '" + subject + "' not updated.");
+}
