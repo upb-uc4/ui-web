@@ -66,6 +66,7 @@
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
     import { useStore } from "vuex";
     import { MutationTypes } from "@/use/store/mutation-types";
+    import { useToast } from "vue-toastification";
 
     export default {
         name: "ProfilePictureSection",
@@ -90,6 +91,7 @@
             const busy = ref(false);
             const errorBag = ref(new ErrorBag());
             const deletePictureModal = ref();
+            const toast = useToast();
 
             onBeforeMount(() => {
                 getProfilePicture();
@@ -110,7 +112,7 @@
                         fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
-                    //TODO Show Toast
+                    toast.warning("Error: could not load profile picture.");
                     selectedPicture.value = "";
                     fallbackPicture.value = selectedPicture.value;
                 }
@@ -148,7 +150,9 @@
                     fallbackPicture.value = selectedPicture.value;
                     store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
                     errorBag.value = new ErrorBag();
+                    toast.success("Profile picture updated.");
                 } else {
+                    toast.error("Error: could not update profile picture");
                     errorBag.value = new ErrorBag(handler.errorList);
                 }
                 busy.value = false;
@@ -183,9 +187,10 @@
                 const handler = new GenericResponseHandler();
                 const result = await handler.handleResponse(response);
                 if (result) {
+                    toast.success("Profile picture deleted.");
                     getProfilePicture();
                 } else {
-                    console.error("Picture Deletion Failed!");
+                    toast.warning("Error: could not delete profile picture.");
                 }
                 busy.value = false;
             }
