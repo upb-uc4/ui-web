@@ -8,8 +8,28 @@ import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
 import { stringToArrayBuffer, arrayBufferToString, toBase64, fromBase64 } from "pvutils";
 import formatPEM from "./formatPem";
 
-const signAlg = "RSASSA-PKCS1-v1_5";
+const signAlg = "ECDSA";
 const hashAlg = "SHA-256";
+const ellipticCurve = "P-256";
+
+const usedAlgorithmObject = {
+    hash: {
+        name: hashAlg,
+    },
+    namedCurve: ellipticCurve,
+    name: signAlg,
+};
+
+const wrappingAlgorithmObject = {
+    name: "AES-GCM",
+    length: 256,
+};
+
+const passwordDerivationAlgorithmObject = {
+    name: "PBKDF2",
+    iterations: 100000,
+    hash: "SHA-256",
+};
 
 export async function createKeyPair() {
     const crypto = window.crypto.subtle;
@@ -17,17 +37,10 @@ export async function createKeyPair() {
     if (typeof crypto === "undefined") {
         return Promise.reject("No WebCrypto extension found");
     }
-    const algorithm = {
-        hash: {
-            name: hashAlg,
-        },
-        modulusLength: 4096,
-        name: signAlg,
-        publicExponent: new Uint8Array([1, 0, 1]),
-    };
+
     const usages: KeyUsage[] = ["sign", "verify"];
 
-    return (await crypto.generateKey(algorithm, true, usages)) as CryptoKeyPair;
+    return (await crypto.generateKey(usedAlgorithmObject, true, usages)) as CryptoKeyPair;
 }
 
 export async function createCSRObject(keyPair: CryptoKeyPair, enrollmenId: string) {
@@ -107,9 +120,7 @@ export async function pemStringToPrivateKey(pem: string): Promise<CryptoKey> {
     // convert from a binary string to an ArrayBuffer
     const binaryDer = stringToArrayBuffer(binaryDerString);
 
-    const importedKey = await crypto.importKey("pkcs8", binaryDer, { name: "RSASSA-PKCS1-v1_5", hash: { name: "SHA-256" } }, true, [
-        "sign",
-    ]);
+    const importedKey = await crypto.importKey("pkcs8", binaryDer, usedAlgorithmObject, true, ["sign"]);
 
     return importedKey;
 }
@@ -120,7 +131,7 @@ export async function wrapKey(key: CryptoKey, wrappingKey: CryptoKey, iv: ArrayB
         return Promise.reject("No WebCrypto extension found");
     }
     const algorithm = {
-        name: "AES-GCM",
+        ...wrappingAlgorithmObject,
         iv: iv,
     };
 
@@ -135,21 +146,11 @@ export async function unwrapKey(key: ArrayBuffer, wrappingKey: CryptoKey, iv: Ar
         return Promise.reject("No WebCrypto extension found");
     }
     const unwrapAlgorithm = {
-        name: "AES-GCM",
-        length: 256,
+        ...wrappingAlgorithmObject,
         iv: iv,
     };
 
-    const useAlgorithm = {
-        hash: {
-            name: hashAlg,
-        },
-        modulusLength: 4096,
-        name: signAlg,
-        publicExponent: new Uint8Array([1, 0, 1]),
-    };
-
-    const result = await crypto.unwrapKey("pkcs8", key, wrappingKey, unwrapAlgorithm, useAlgorithm, true, ["sign"]);
+    const result = await crypto.unwrapKey("pkcs8", key, wrappingKey, unwrapAlgorithm, usedAlgorithmObject, true, ["sign"]);
 
     return result;
 }
@@ -167,23 +168,18 @@ export async function deriveKeyFromPassword(password: string, salt?: string): Pr
 
     // password used to derive key from key material
     const deriveAlgorithm = {
-        name: "PBKDF2",
+        ...passwordDerivationAlgorithmObject,
         salt: base64ToArrayBuffer(salt),
-        iterations: 100000,
-        hash: "SHA-256",
-    };
-
-    // algorithm the derived key will be used with
-    const useAlgorithm = {
-        name: "AES-GCM",
-        length: 256,
     };
 
     const usages: KeyUsage[] = ["wrapKey", "unwrapKey"];
 
     const keyMaterial = <CryptoKey>await crypto.importKey("raw", stringToArrayBuffer(password), "PBKDF2", false, ["deriveKey"]);
 
-    return { key: <CryptoKey>(<unknown>await crypto.deriveKey(deriveAlgorithm, keyMaterial, useAlgorithm, false, usages)), salt: salt };
+    return {
+        key: <CryptoKey>(<unknown>await crypto.deriveKey(deriveAlgorithm, keyMaterial, wrappingAlgorithmObject, false, usages)),
+        salt: salt,
+    };
 }
 
 export function arrayBufferToBase64(buf: ArrayBuffer): string {
