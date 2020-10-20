@@ -2,7 +2,9 @@
 
 ## Bugfix
 - incrementing and decrementing the participation limit with arrow keys or the arrows provided by the browser for number fields, will be registered as changes made to the course and make it saveable [#590](https://github.com/upb-uc4/ui-web/issues/590)
-- remove npm package as it is no longer needed with the official release of Vue3.
+
+## Dependencies
+- remove npm package "vue-cli-plugin-vue-next" as it is no longer needed with the official release of Vue3 [#592](https://github.com/upb-uc4/ui-web/issues/592)
 
 # [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
 
