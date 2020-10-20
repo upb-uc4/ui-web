@@ -37,7 +37,7 @@
                         </span>
                     </div>
 
-                    <div class="flex-col hidden items-baseline" :class="[isStudent ? 'sm:flex' : 'sm:invisible']">
+                    <div class="flex-col hidden sm:flex items-baseline" :class="[isStudent ? 'sm:flex' : 'sm:invisible']">
                         <div class="leading-5 text-blue-900 ml-1 mb-1">{{ student.matriculationId }}</div>
                         <div class="hidden sm:flex items-center leading-5 text-gray-500">
                             <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em">
