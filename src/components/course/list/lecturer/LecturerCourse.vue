@@ -10,10 +10,7 @@
                     {{ course.courseLanguage }}
                 </div>
                 <!-- todo replace with flag component -->
-                <img
-                    src="https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/gb.svg"
-                    class="sm:hidden inline rounded ml-4 w-6 h-4 opacity-90"
-                />
+                <img :src="flagSrc" class="sm:hidden inline rounded ml-4 w-6 h-4 opacity-90" />
                 <div class="ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">
                     <i class="inline text-lg fas fa-users" />
                     {{ course.currentParticipants }} / {{ course.maxParticipants }}
@@ -84,6 +81,10 @@
         setup(props: any) {
             //todo this might not be a lecturer in the future
             const lecturerDisplayName = props.lecturer.firstName + " " + props.lecturer.lastName;
+            const flagSrc: string =
+                props.course.courseLanguage == "English"
+                    ? "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/gb.svg"
+                    : "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/de.svg";
 
             function editCourse() {
                 router.push({ path: "/editCourse/" + props.course.courseId });
@@ -92,6 +93,7 @@
             return {
                 lecturerDisplayName,
                 editCourse,
+                flagSrc,
             };
         },
     };
