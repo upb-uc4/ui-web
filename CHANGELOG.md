@@ -2,7 +2,14 @@
 
 ## Bugfix
 - incrementing and decrementing the participation limit with arrow keys or the arrows provided by the browser for number fields, will be registered as changes made to the course and make it saveable [#590](https://github.com/upb-uc4/ui-web/issues/590)
-- remove npm package as it is no longer needed with the official release of Vue3.
+- adjust mobile design of the course view
+- adjust mobile design of the account list for admins
+
+## Dependencies
+- remove npm package "vue-cli-plugin-vue-next" as it is no longer needed with the official release of Vue3 [#592](https://github.com/upb-uc4/ui-web/issues/592)
+
+## Refactoring
+- Replace placeholder icons in navbars with proper fa icons [#621](https://github.com/upb-uc4/ui-web/issues/621)
 
 ## Feature
 - add thumbnails to account list [#607](https://github.com/upb-uc4/ui-web/issues/590)

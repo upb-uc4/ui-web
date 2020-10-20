@@ -70,7 +70,7 @@
                     name: "Authentication Management",
                     version: authenticationManagementVersion,
                     link:
-                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "https://github.com/upb-uc4/lagom-core/blob/" +
                         "authentication-" +
                         authenticationManagementVersion +
                         "/product_code/authentication_service/CHANGELOG.md",
@@ -79,7 +79,7 @@
                     name: "Course Management",
                     version: courseManagementVersion,
                     link:
-                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "https://github.com/upb-uc4/lagom-core/blob/" +
                         "course-" +
                         courseManagementVersion +
                         "/product_code/course_service/CHANGELOG.md",
@@ -88,7 +88,7 @@
                     name: "User Management",
                     version: userManagementVersion,
                     link:
-                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "https://github.com/upb-uc4/lagom-core/blob/" +
                         "user-" +
                         userManagementVersion +
                         "/product_code/user_service/CHANGELOG.md",
@@ -97,7 +97,7 @@
                     name: "Matriculation Management",
                     version: matriculationManagementVersion,
                     link:
-                        "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+                        "https://github.com/upb-uc4/lagom-core/blob/" +
                         "matriculation-" +
                         matriculationManagementVersion +
                         "/product_code/matriculation_service/CHANGELOG.md",
