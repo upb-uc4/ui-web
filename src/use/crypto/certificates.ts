@@ -44,7 +44,7 @@ export async function createKeyPair() {
 }
 
 export async function createCSRObject(keyPair: CryptoKeyPair, enrollmenId: string) {
-    const crypto = await getCrypto();
+    const crypto = getCrypto();
     if (typeof crypto === "undefined") {
         return Promise.reject("No WebCrypto extension found");
     }
@@ -113,7 +113,7 @@ export async function pemStringToPrivateKey(pem: string): Promise<CryptoKey> {
     // fetch the part of the PEM string between header and footer
     const pemHeader = "-----BEGIN PRIVATE KEY-----";
     const pemFooter = "-----END PRIVATE KEY-----";
-    const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length);
+    const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length - 1);
     const pemContentsNoBreaks = pemContents.replace(/(\r\n|\n|\r|\t)/gm, "").trim();
     // base64 decode the string to get the binary data
     const binaryDerString = fromBase64(pemContentsNoBreaks);
@@ -121,6 +121,27 @@ export async function pemStringToPrivateKey(pem: string): Promise<CryptoKey> {
     const binaryDer = stringToArrayBuffer(binaryDerString);
 
     const importedKey = await crypto.importKey("pkcs8", binaryDer, usedAlgorithmObject, true, ["sign"]);
+
+    return importedKey;
+}
+
+export async function pemStringToPublicKey(pem: string): Promise<CryptoKey> {
+    const crypto = getCrypto();
+    if (crypto == null) {
+        return Promise.reject("No WebCrypto extension found");
+    }
+
+    // fetch the part of the PEM string between header and footer
+    const pemHeader = "-----BEGIN PUBLIC KEY-----";
+    const pemFooter = "-----END PUBLIC KEY-----";
+    const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length - 1);
+    const pemContentsNoBreaks = pemContents.replace(/(\r\n|\n|\r|\t)/gm, "").trim();
+    // base64 decode the string to get the binary data
+    const binaryDerString = fromBase64(pemContentsNoBreaks);
+    // convert from a binary string to an ArrayBuffer
+    const binaryDer = stringToArrayBuffer(binaryDerString);
+
+    const importedKey = await crypto.importKey("spki", binaryDer, usedAlgorithmObject, true, ["verify"]);
 
     return importedKey;
 }
