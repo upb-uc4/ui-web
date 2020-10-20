@@ -27,6 +27,9 @@ module.exports = {
             minHeight: {
                 20: "5rem",
             },
+            opacity: {
+                90: ".9",
+            },
         },
     },
     variants: {
