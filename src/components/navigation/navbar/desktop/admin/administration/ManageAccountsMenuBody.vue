@@ -6,7 +6,7 @@
                     id="nav_desktop_admin_menu_manage_accounts_all"
                     title="All Users"
                     description="List of all users"
-                    icon-class="fas fa-list-alt"
+                    icon-class="fas fa-users"
                     target-route-name="accountlist"
                 />
             </li>
