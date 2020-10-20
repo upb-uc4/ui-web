@@ -26,7 +26,7 @@
                     id="nav_desktop_lecturer_menu_courses_my_courses"
                     title="My Courses"
                     description="Courses you created"
-                    icon-class="fas fa-list-alt"
+                    icon-class="fas fa-bookmark"
                     target-route-name="lecturer.myCourses"
                 />
             </li>
