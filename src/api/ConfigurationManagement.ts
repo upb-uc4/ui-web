@@ -36,7 +36,7 @@ export default class ConfigurationManagement extends Common {
 
     async getConfiguration(): Promise<APIResponse<Configuration>> {
         return await this._axios
-            .delete(`/configuration`)
+            .get(`/configuration`)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data as Configuration,
@@ -69,8 +69,10 @@ export default class ConfigurationManagement extends Common {
      * @param date must be in format YYYY-MM-DD
      */
     async getSemester(date: string): Promise<APIResponse<string>> {
+        const requestParameter = { params: {} as any };
+        requestParameter.params.date = date;
         return await this._axios
-            .delete(`/semester`)
+            .get(`/semester`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data.semester,
@@ -125,46 +127,6 @@ export default class ConfigurationManagement extends Common {
                 } else {
                     return {
                         returnValue: {},
-                        statusCode: 0,
-                        networkError: true,
-                        error: {} as APIError,
-                    };
-                }
-            });
-    }
-
-    async setConfiguration(configuration: Configuration): Promise<APIResponse<boolean>> {
-        return await this._axios
-            .put(`/configuration`, configuration)
-            .then((response: AxiosResponse) => {
-                return {
-                    returnValue: true,
-                    statusCode: response.status,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: false,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.setConfiguration(configuration);
-                    }
-                    return {
-                        returnValue: false,
-                        statusCode: error.response.status,
-                        networkError: false,
-                        error: error.response.data as APIError,
-                    };
-                } else {
-                    return {
-                        returnValue: false,
                         statusCode: 0,
                         networkError: true,
                         error: {} as APIError,

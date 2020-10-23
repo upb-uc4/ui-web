@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import ConfigurationManagement from "@/api/ConfigurationManagement";
-import { getRandomizedCourse } from "tests/helper/Courses";
+import { getRandomizedCourse } from "../../helper/Courses";
 import ValidationBag from "@/use/helpers/ValidationBag";
 import lodash from "lodash";
 
@@ -29,7 +29,7 @@ describe("Configuration management", () => {
         expect(response.statusCode).toBe(200);
 
         const course = getRandomizedCourse();
-        const validationBag = new ValidationBag(response.returnValue);
+        const validationBag = new ValidationBag({});
 
         expect(validationBag.validate(course)).toBe(true);
     });
@@ -42,25 +42,5 @@ describe("Configuration management", () => {
         const response2 = await configurationManagement.getSemester("2015-10-19");
         expect(response2.statusCode).toBe(200);
         expect(response2.returnValue).not.toEqual("");
-    });
-
-    test("Update configuration", async () => {
-        const response = await configurationManagement.getConfiguration();
-        expect(response.statusCode).toBe(200);
-        expect(response.returnValue.fieldsOfStudy).not.toHaveLength(0);
-
-        const configuration = response.returnValue;
-        const updatedConfiguration = lodash.cloneDeep(configuration);
-        updatedConfiguration.fieldsOfStudy.push("Super Rocket Science");
-
-        const success = await configurationManagement.setConfiguration(updatedConfiguration);
-        expect(success.statusCode).toBe(200);
-
-        const update = await configurationManagement.getConfiguration();
-        expect(update.statusCode).toBe(200);
-        expect(update.returnValue.fieldsOfStudy.includes("Super Rocket Science")).toBe(true);
-
-        const success2 = await configurationManagement.setConfiguration(configuration);
-        expect(success2.statusCode).toBe(200);
     });
 });
