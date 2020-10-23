@@ -71,6 +71,11 @@ describe("Account creation, edition and deletion", function () {
         loginAsDefaultAdmin();
     });
 
+    it("Accountlist shows 'Not Immatriculated'", function () {
+        cy.visit("/accounts");
+        cy.get(`div[id=user_${student.username}`).should("contain", "Not Immatriculated");
+    });
+
     it("Check matriculation history is empty in account form", function () {
         cy.visit(`editAccount/${student.username}`);
         cy.get("div").contains("There is no matriculation data, yet!").should("exist");
@@ -132,6 +137,11 @@ describe("Account creation, edition and deletion", function () {
 
     it("Check if winter semester FoS are shown in matriculation history", function () {
         cy.get("div").should("contain", "WS2015/16").and("contain", FieldOfStudy.COMPUTER_SCIENCE).and("contain", FieldOfStudy.MATHEMATICS);
+    });
+
+    it("Immatriculation correctly shown in accountlist", function () {
+        cy.visit("/accounts");
+        cy.get(`div[id=user_${student.username}`).should("contain", "Last Immatriculated");
         logout();
     });
 
