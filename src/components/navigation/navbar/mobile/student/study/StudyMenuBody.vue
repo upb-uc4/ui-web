@@ -1,11 +1,10 @@
 <template>
-    <section class="flex flex-col lg:flex-row px-8 py-6 border-b -mx-4">
+    <section class="flex flex-col px-2 pt-3 pb-1">
         <ul class="w-full px-2">
-            <li class="">
+            <li>
                 <menu-item
-                    id="nav_desktop_student_menu_study_immatriculation"
+                    id="nav_mobile_student_menu_immatriculation"
                     title="Immatrictulation Management"
-                    description="An Overview of your Immatriculation Status"
                     icon-class="fas fa-list-alt"
                     target-route-name="student.immatriculation"
                 />
@@ -18,7 +17,7 @@
     import MenuItem from "../../common/MenuItem.vue";
 
     export default {
-        name: "StudyMenuBody",
+        name: "MobileStudentStudentMenuBody",
         components: {
             MenuItem,
         },

@@ -1,6 +1,6 @@
 <template>
     <base-menu>
-        <template #hook>Immatriculation</template>
+        <template #hook>Study</template>
         <template #content>
             <div>
                 <!-- hack to keep the menu open even when hovering over the gap between hook and content-->
