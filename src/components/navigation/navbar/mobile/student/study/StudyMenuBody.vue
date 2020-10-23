@@ -5,7 +5,7 @@
                 <menu-item
                     id="nav_mobile_student_menu_immatriculation"
                     title="Immatrictulation Management"
-                    icon-class="fas fa-list-alt"
+                    icon-class="fas fa-clipboard-list"
                     target-route-name="student.immatriculation"
                 />
             </li>

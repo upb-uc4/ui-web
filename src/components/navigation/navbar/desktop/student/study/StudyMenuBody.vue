@@ -6,7 +6,7 @@
                     id="nav_desktop_student_menu_study_immatriculation"
                     title="Immatrictulation Management"
                     description="An Overview of your Immatriculation Status"
-                    icon-class="fas fa-list-alt"
+                    icon-class="fas fa-clipboard-list"
                     target-route-name="student.immatriculation"
                 />
             </li>
