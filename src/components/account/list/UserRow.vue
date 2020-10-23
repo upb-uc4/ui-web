@@ -32,12 +32,18 @@
                     <div class="leading-5 text-blue-900 ml-1 mb-1">{{ student.matriculationId }}</div>
                     <div class="hidden sm:flex items-center leading-5 text-gray-500">
                         <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em">
-                            <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
-                            <i class="fas fa-check fa-stack-1x fa-inverse"></i>
+                            <div v-if="isImmatriculated">
+                                <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
+                                <i class="fas fa-check fa-stack-1x fa-inverse"></i>
+                            </div>
+                            <div v-else>
+                                <i class="fas fa-circle text-red-500 fa-stack-2x"></i>
+                                <i class="fas fa-times fa-stack-1x fa-inverse"></i>
+                            </div>
                         </span>
                         <div class="hidden sm:block">
-                            <!-- TODO when new API is active -->
-                            Immatriculated
+                            <label v-if="isImmatriculated">Immatriculated</label>
+                            <label v-else>Last Immatriculated: {{ student.latestImmatriculation }}</label>
                         </div>
                     </div>
                 </div>
@@ -54,6 +60,7 @@
     import router from "@/use/router";
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
+    import { ref } from "vue";
 
     export default {
         name: "AccountRow",
@@ -68,6 +75,10 @@
             isFirstRow: {
                 type: Boolean,
             },
+            currentSemester: {
+                type: String,
+                required: true,
+            },
         },
         setup(props: any) {
             function editAccount(username: string) {
@@ -77,8 +88,13 @@
             const isLecturer = props.user.role === Role.LECTURER;
             const isAdmin = props.user.role === Role.ADMIN;
             const student = props.user as Student;
+            const isImmatriculated = ref(false);
 
-            return { editAccount, isStudent, isLecturer, isAdmin, student };
+            if (isStudent) {
+                isImmatriculated.value = student.latestImmatriculation == props.currentSemester ? true : false;
+            }
+
+            return { editAccount, isStudent, isLecturer, isAdmin, student, isImmatriculated };
         },
     };
 </script>
