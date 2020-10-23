@@ -43,7 +43,8 @@
                         </span>
                         <div class="hidden sm:block">
                             <label v-if="isImmatriculated">Immatriculated</label>
-                            <label v-else>Last Immatriculated: {{ student.latestImmatriculation }}</label>
+                            <label v-else-if="student.latestImmatriculation != ''">Last Immatriculated: {{ student.latestImmatriculation }}</label>
+                            <label v-else>Not Immatriculated</label>
                         </div>
                     </div>
                 </div>
