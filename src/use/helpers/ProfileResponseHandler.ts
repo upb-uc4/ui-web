@@ -4,7 +4,7 @@ import Student from "@/api/api_models/user_management/Student";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
-import { showNetworkErrorToast, showAPI400Toast, showAPI404Toast } from "@/use/helpers/Toasts";
+import { showNetworkErrorToast, showAPIToast } from "@/use/helpers/Toasts";
 
 export default class ProfileResponseHandler implements ResponseHandler<Student | Lecturer | Admin> {
     handleResponse(response: APIResponse<Student | Lecturer | Admin>): Student | Lecturer | Admin {
@@ -15,7 +15,7 @@ export default class ProfileResponseHandler implements ResponseHandler<Student |
 
         switch (response.statusCode) {
             case 400: {
-                showAPI400Toast();
+                showAPIToast("400");
                 break;
             }
             case 401: {
@@ -23,7 +23,7 @@ export default class ProfileResponseHandler implements ResponseHandler<Student |
                 break;
             }
             case 404: {
-                showAPI404Toast();
+                showAPIToast("404", "user");
                 break;
             }
         }

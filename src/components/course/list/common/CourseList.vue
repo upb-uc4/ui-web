@@ -79,7 +79,7 @@
                 isLecturer.value = role.value == Role.LECTURER;
                 isAdmin.value = role.value == Role.ADMIN;
                 isStudent.value = role.value == Role.STUDENT;
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("courses");
                 let response: APIResponse<Course[]>;
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();

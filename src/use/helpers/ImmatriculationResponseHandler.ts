@@ -1,7 +1,7 @@
 import ResponseHandler from "./ResponseHandler";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
-import { showNetworkErrorToast, showAPI400Toast, showAPI404Toast } from "@/use/helpers/Toasts";
+import { showNetworkErrorToast, showAPIToast } from "@/use/helpers/Toasts";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
@@ -14,7 +14,7 @@ export default class GenericImmatricultationResponseHandler implements ResponseH
         }
         switch (response.statusCode) {
             case 400: {
-                showAPI400Toast();
+                showAPIToast("400");
                 return response.returnValue;
             }
             case 401: {
@@ -26,6 +26,7 @@ export default class GenericImmatricultationResponseHandler implements ResponseH
                 return response.returnValue;
             }
             case 404: {
+                showAPIToast("404", "matriculation data");
                 return response.returnValue;
             }
             case 200: {
@@ -79,7 +80,7 @@ export class MatriculationValidationResponseHandler implements ResponseHandler<b
 
             switch (response.statusCode) {
                 case 400: {
-                    showAPI400Toast();
+                    showAPIToast("400");
                     return false;
                 }
                 case 401: {
@@ -87,7 +88,7 @@ export class MatriculationValidationResponseHandler implements ResponseHandler<b
                     return false;
                 }
                 case 404: {
-                    showAPI404Toast();
+                    showAPIToast("404", "matriculation data");
                     return false;
                 }
                 case 422: {

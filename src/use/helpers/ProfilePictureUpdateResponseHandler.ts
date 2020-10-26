@@ -2,7 +2,7 @@ import ResponseHandler from "./ResponseHandler";
 import APIResponse from "@/api/helpers/models/APIResponse";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
-import { showNetworkErrorToast, showAPI400Toast, showAPI404Toast } from "@/use/helpers/Toasts";
+import { showNetworkErrorToast, showAPIToast } from "@/use/helpers/Toasts";
 
 export default class ProfilePictureUpdateResponseHandler implements ResponseHandler<boolean> {
     errorList: Error[] = [] as Error[];
@@ -27,7 +27,7 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
         }
         switch (response.statusCode) {
             case 400: {
-                showAPI400Toast();
+                showAPIToast("400");
                 return response.returnValue;
             }
             case 401: {
@@ -39,7 +39,7 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
                 return response.returnValue;
             }
             case 404: {
-                showAPI404Toast();
+                showAPIToast("404", "profile picture");
                 return response.returnValue;
             }
             case 200: {

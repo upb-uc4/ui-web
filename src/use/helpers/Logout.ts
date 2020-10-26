@@ -7,7 +7,7 @@ export async function logout() {
     const auth = new AuthenticationManagement();
 
     const response = await auth.logout();
-    const result = new GenericResponseHandler().handleResponse(response);
+    const result = new GenericResponseHandler("user").handleResponse(response);
 
     if (result) {
         nextTick(() => {

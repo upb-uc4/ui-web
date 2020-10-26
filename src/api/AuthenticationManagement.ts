@@ -89,7 +89,7 @@ export default class AuthenticationManagement extends Common {
 
                 store.commit(MutationTypes.SET_LOGGEDIN, true);
                 const userManagement = new UserManagement();
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("user");
                 const userResponse = await userManagement.getSpecificUser(response.data.username);
                 if (response.status == 200) {
                     const user = handler.handleResponse(userResponse);
@@ -178,7 +178,7 @@ export default class AuthenticationManagement extends Common {
                 store.commit(MutationTypes.SET_LOGGEDIN, true);
 
                 const userManagement = new UserManagement();
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("user");
                 const userResponse = await userManagement.getSpecificUser(loginData.username);
                 if (response.status == 200) {
                     const user = handler.handleResponse(userResponse);

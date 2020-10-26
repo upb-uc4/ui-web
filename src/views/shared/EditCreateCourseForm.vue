@@ -192,7 +192,7 @@
             async function getCourse() {
                 busy.value = true;
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("course");
                 const result = genericResponseHandler.handleResponse(response);
 
                 //TODO move this to a non-generic response handler
@@ -228,7 +228,7 @@
                     getLecturerUsername();
                 }
                 const response = await courseManagement.createCourse(course.value);
-                const handler = new AccountValidationResponseHandler();
+                const handler = new AccountValidationResponseHandler("user");
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
 
@@ -243,7 +243,7 @@
 
             async function updateCourse() {
                 const response = await courseManagement.updateCourse(course.value);
-                const handler = new ValidationResponseHandler();
+                const handler = new ValidationResponseHandler("course");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
 
@@ -259,7 +259,7 @@
             async function deleteCourse() {
                 const courseManagement: CourseManagement = new CourseManagement();
 
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("course");
                 const response = await courseManagement.deleteCourse(course.value.courseId);
                 const result = genericResponseHandler.handleResponse(response);
 

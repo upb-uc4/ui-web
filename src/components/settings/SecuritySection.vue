@@ -149,7 +149,7 @@
             }
 
             async function updatePassword() {
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("password");
                 const authenticationManagement: AuthenticationManagement = new AuthenticationManagement();
                 const response = await authenticationManagement.changeOwnPassword(newPassword.value);
                 const result = genericResponseHandler.handleResponse(response);

@@ -236,7 +236,7 @@
                 const userManagement: UserManagement = new UserManagement();
 
                 const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string);
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("user");
                 const result = genericResponseHandler.handleResponse(response);
 
                 //TODO move this to a non-generic response handler
@@ -350,7 +350,7 @@
                 }
 
                 const response = await userManagement.createUser(account.authUser, newUser);
-                const handler = new AccountValidationResponseHandler();
+                const handler = new AccountValidationResponseHandler("user");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
                 if (success.value) {
@@ -367,7 +367,7 @@
                 var adaptedUser: Student | Lecturer | Admin = assembleAccount();
 
                 const response = await userManagement.updateUser(adaptedUser);
-                const handler = new ValidationResponseHandler();
+                const handler = new ValidationResponseHandler("user");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
 
@@ -383,7 +383,7 @@
             async function deleteAccount() {
                 const userManagement: UserManagement = new UserManagement();
 
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("user");
                 const response = await userManagement.deleteUser(account.user.username);
                 const result = genericResponseHandler.handleResponse(response);
 

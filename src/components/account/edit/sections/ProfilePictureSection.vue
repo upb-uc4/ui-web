@@ -90,7 +90,7 @@
                 busy.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.getProfilePicture(username);
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("profile picture");
                 const result = handler.handleResponse(response);
 
                 if (result.arrayBuffer != undefined) {
@@ -171,7 +171,7 @@
                 busy.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.deleteProfilePicture(username);
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("profile picture");
                 const result = await handler.handleResponse(response);
                 if (result) {
                     toast.success("Profile picture deleted.");
