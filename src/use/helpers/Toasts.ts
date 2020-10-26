@@ -21,3 +21,17 @@ export function showUpdateSuccessToast(subject: string) {
 export function showUpdateFailedToast(subject: string) {
     toast.error("Error: '" + subject + "' not updated.");
 }
+
+export function showAPIToast(code: string, msg?: string) {
+    switch (code) {
+        case "400":
+            toast.error("Something went wrong on our side. Please consider to report this bug");
+            break;
+        case "404":
+            toast.error("Could not find " + msg + ".");
+            break;
+        default:
+            toast.error("Something went wrong. Please try again later.");
+            break;
+    }
+}
