@@ -31,6 +31,8 @@ const passwordDerivationAlgorithmObject = {
     hash: "SHA-256",
 };
 
+export const signingAlgorithm = usedAlgorithmObject;
+
 export async function createKeyPair() {
     const crypto = window.crypto.subtle;
 

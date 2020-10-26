@@ -75,10 +75,7 @@
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
-    import { load, Root } from "protobufjs";
-    import { arrayBufferToBase64, base64ToArrayBuffer, pemStringToPrivateKey, pemStringToPublicKey } from "@/use/crypto/certificates";
-    import { stringToArrayBuffer, arrayBufferToString, toBase64, fromBase64 } from "pvutils";
-    import { decodeProposal } from "@/use/transactions/ProtobuffDecoding";
+
     export default {
         components: {},
         props: [],
@@ -91,41 +88,6 @@
 
             async function togglePassword() {
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
-                //let base64 =
-                //    "CpoJCmsIAxABGgwIovOW/AUQuMKLtAMiCW15Y2hhbm5lbCpANDU1YzFlNjhlODE2NDhkYjFmNDg2ZTg1NGM4YzAwZDAyYmZlNjhlNWI1OTJiMTcyZTJlZmQxYmVkMmEzOTkwYjoKEggSBnVjNC1jYxKqCAqNCAoHb3JnMU1TUBKBCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLQpNSUlDeHpDQ0FtMmdBd0lCQWdJVVpIQWszaDZ2OTVqQjFRNWlYOTJaZlBiTGV3OHdDZ1lJS29aSXpqMEVBd0l3CllERUxNQWtHQTFVRUJoTUNWVk14RnpBVkJnTlZCQWdURGs1dmNuUm9JRU5oY205c2FXNWhNUlF3RWdZRFZRUUsKRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKbgpNVEFlRncweU1ERXdNVE14TkRJek1EQmFGdzB5TVRFd01UTXhOREk0TURCYU1EZ3hEakFNQmdOVkJBc1RCV0ZrCmJXbHVNU1l3SkFZRFZRUURFeDF6WTJGc1lTMXlaV2RwYzNSeVlYUnBiMjR0WVdSdGFXNHRiM0puTVRCWk1CTUcKQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJBQndhOG1DMXF0ZldXZFQxV241dUE1bmdzMUlkeFFpcG81egpHN0k3RVFUQm1QQTRDNjljWHJtR2dJeEVONEtTVnpQR2RsV0Zzdy9wVWNqaWRQK2RLYnFqZ2dFck1JSUJKekFPCkJnTlZIUThCQWY4RUJBTUNBNmd3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01Bd0cKQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZBRzZ4TGpPem9WZTVxMS9GcjRiMjJjb1A1RlpNQjhHQTFVZApJd1FZTUJhQUZKYkF2M0VWU2kzcGs1TGV1R3JkQ1VMTXZjNEpNQ2dHQTFVZEVRUWhNQitDSFhOallXeGhMWEpsCloybHpkSEpoZEdsdmJpMWhaRzFwYmkxdmNtY3hNSDRHQ0NvREJBVUdCd2dCQkhKN0ltRjBkSEp6SWpwN0ltRmsKYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRQpJam9pYzJOaGJHRXRjbVZuYVhOMGNtRjBhVzl1TFdGa2JXbHVMVzl5WnpFaUxDSm9aaTVVZVhCbElqb2lZV1J0CmFXNGlmWDB3Q2dZSUtvWkl6ajBFQXdJRFNBQXdSUUloQU1ESndadVc0WUhVaDNxNThuWG1FaTdud05xVWdlcTQKcFZjWTArWG5uSmR4QWlCdS9sdXluWk9qbU45MDhURUdpaDExZjNGM1pkUDFMUityQVRGSURONm1Rdz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0KEhh4ouW91qGu0AcpeWHgHDEsu4WjcIpuls8SQQo/Cj0IARIIEgZ1YzQtY2MaLwoeVUM0LkNlcnRpZmljYXRlOmFkZENlcnRpZmljYXRlCgMxMDEKCFdoYXRldmVy";
-                let base64 =
-                    "CpYJCmsIAxABGgwIs/S6/AUQwNHzlwIiCW15Y2hhbm5lbCpAMGUyMzA4ZDU5OGM4YTg1MGI0ZTM5Mzk1OTA4NGRlY2ZmNDRjMmMwMmIwZWI3MmI3ZmJiNmVmNDdiOTMzZmRmOToKEggSBnVjNC1jYxKmCAqJCAoHb3JnMU1TUBL9By0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLQpNSUlDeGpDQ0FtMmdBd0lCQWdJVUdKRnJ6TXh5T0FkbkpFcmZyK1VmRHJMREpiNHdDZ1lJS29aSXpqMEVBd0l3CllERUxNQWtHQTFVRUJoTUNWVk14RnpBVkJnTlZCQWdURGs1dmNuUm9JRU5oY205c2FXNWhNUlF3RWdZRFZRUUsKRXd0SWVYQmxjbXhsWkdkbGNqRVBNQTBHQTFVRUN4TUdSbUZpY21sak1SRXdEd1lEVlFRREV3aHlZMkV0YjNKbgpNVEFlRncweU1ERXdNakF4TURFek1EQmFGdzB5TVRFd01qQXhNREU0TURCYU1EZ3hEakFNQmdOVkJBc1RCV0ZrCmJXbHVNU1l3SkFZRFZRUURFeDF6WTJGc1lTMXlaV2RwYzNSeVlYUnBiMjR0WVdSdGFXNHRiM0puTVRCWk1CTUcKQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJMU3R4dWloaHliMlhVMHd6TWhWM1N1MkRyN0xVSTR6L0llTAp6ZVVEemhjcW5aeExETjV3NDNyVjBGWHU0eVJxMGtyT2F4UmhwQVk2NWRtUVE2UFJyenVqZ2dFck1JSUJKekFPCkJnTlZIUThCQWY4RUJBTUNBNmd3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01Bd0cKQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZMQWE5OXZPWGhKeWxjaCtNUUd0aEZDRy92K1JNQjhHQTFVZApJd1FZTUJhQUZCSjd6M2hTMU5VNEhwRWFGZ3lXS2lyNjk5czVNQ2dHQTFVZEVRUWhNQitDSFhOallXeGhMWEpsCloybHpkSEpoZEdsdmJpMWhaRzFwYmkxdmNtY3hNSDRHQ0NvREJBVUdCd2dCQkhKN0ltRjBkSEp6SWpwN0ltRmsKYldsdUlqb2lkSEoxWlNJc0ltaG1Ma0ZtWm1sc2FXRjBhVzl1SWpvaUlpd2lhR1l1Ulc1eWIyeHNiV1Z1ZEVsRQpJam9pYzJOaGJHRXRjbVZuYVhOMGNtRjBhVzl1TFdGa2JXbHVMVzl5WnpFaUxDSm9aaTVVZVhCbElqb2lZV1J0CmFXNGlmWDB3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnRWpXZjdiUXlHa0hmMmJqMTZNeVE4NzR3Q1dPYjhsMk0KNjBNbEo0ZURnb3NDSUViRDQrc3ROcVpLS3NKK0M0OEllcnBPSkQzandrTEcrOHk3WXV4VHB4OFoKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQoSGDFgEXYYosB1qlK1KtlA9/HFkbExh4YMQRLLCArICArFCAgBEggSBnVjNC1jYxq2CAoeVUM0LkNlcnRpZmljYXRlOmFkZENlcnRpZmljYXRlCgMxMDEKjggtLS0tLUJFR0lOIENFUlRJRklDQVRFLS0tLS1cbk1JSUN4akNDQW0yZ0F3SUJBZ0lVR0pGcnpNeHlPQWRuSkVyZnIrVWZEckxESmI0d0NnWUlLb1pJemowRUF3SXdcbllERUxNQWtHQTFVRUJoTUNWVk14RnpBVkJnTlZCQWdURGs1dmNuUm9JRU5oY205c2FXNWhNUlF3RWdZRFZRUUtcbkV3dEllWEJsY214bFpHZGxjakVQTUEwR0ExVUVDeE1HUm1GaWNtbGpNUkV3RHdZRFZRUURFd2h5WTJFdGIzSm5cbk1UQWVGdzB5TURFd01qQXhNREV6TURCYUZ3MHlNVEV3TWpBeE1ERTRNREJhTURneERqQU1CZ05WQkFzVEJXRmtcbmJXbHVNU1l3SkFZRFZRUURFeDF6WTJGc1lTMXlaV2RwYzNSeVlYUnBiMjR0WVdSdGFXNHRiM0puTVRCWk1CTUdcbkJ5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUFCTFN0eHVpaGh5YjJYVTB3ek1oVjNTdTJEcjdMVUk0ei9JZUxcbnplVUR6aGNxblp4TERONXc0M3JWMEZYdTR5UnEwa3JPYXhSaHBBWTY1ZG1RUTZQUnJ6dWpnZ0VyTUlJQkp6QU9cbkJnTlZIUThCQWY4RUJBTUNBNmd3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFR0NDc0dBUVVGQndNQ01Bd0dcbkExVWRFd0VCL3dRQ01BQXdIUVlEVlIwT0JCWUVGTEFhOTl2T1hoSnlsY2grTVFHdGhGQ0cvditSTUI4R0ExVWRcbkl3UVlNQmFBRkJKN3ozaFMxTlU0SHBFYUZneVdLaXI2OTlzNU1DZ0dBMVVkRVFRaE1CK0NIWE5qWVd4aExYSmxcbloybHpkSEpoZEdsdmJpMWhaRzFwYmkxdmNtY3hNSDRHQ0NvREJBVUdCd2dCQkhKN0ltRjBkSEp6SWpwN0ltRmtcbmJXbHVJam9pZEhKMVpTSXNJbWhtTGtGbVptbHNhV0YwYVc5dUlqb2lJaXdpYUdZdVJXNXliMnhzYldWdWRFbEVcbklqb2ljMk5oYkdFdGNtVm5hWE4wY21GMGFXOXVMV0ZrYldsdUxXOXlaekVpTENKb1ppNVVlWEJsSWpvaVlXUnRcbmFXNGlmWDB3Q2dZSUtvWkl6ajBFQXdJRFJ3QXdSQUlnRWpXZjdiUXlHa0hmMmJqMTZNeVE4NzR3Q1dPYjhsMk1cbjYwTWxKNGVEZ29zQ0lFYkQ0K3N0TnFaS0tzSitDNDhJZXJwT0pEM2p3a0xHKzh5N1l1eFRweDhaXG4tLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tXG4=";
-                const buf = base64ToArrayBuffer(base64);
-                const knownSig = "MEUCIQD92OsJsVVFqFfifMV14ROiL5Ni/RaOBkR0DqzetvPfkQIgcrgu9vxr5TuZY6lft5adCETaC3CSE8QA+bs9MheeLcI=";
-
-                const keyPem =
-                    "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg+Mg4a86fIXz8PCoL\n1aCesiidCh/GmeoWCjy0mqM9PL2gCgYIKoZIzj0DAQehRANCAAS0rcbooYcm9l1N\nMMzIVd0rtg6+y1COM/yHi83lA84XKp2cSwzecON61dBV7uMkatJKzmsUYaQGOuXZ\nkEOj0a87\n-----END PRIVATE KEY-----\n";
-
-                const pubKeyPem =
-                    "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEtK3G6KGHJvZdTTDMyFXdK7YOvstQ\njjP8h4vN5QPOFyqdnEsM3nDjetXQVe7jJGrSSs5rFGGkBjrl2ZBDo9GvOw==\n-----END PUBLIC KEY-----\n";
-                const crypto = window.crypto.subtle;
-
-                const privateKey = await pemStringToPrivateKey(keyPem);
-                const publicKey = await pemStringToPublicKey(pubKeyPem);
-
-                let signature = await crypto.sign(
-                    { name: "ECDSA", namedCurve: "P-256", hash: { name: "SHA-256" } } as EcdsaParams,
-                    privateKey,
-                    buf
-                );
-                let verify = await crypto.verify({ name: "ECDSA", hash: { name: "SHA-256" } }, publicKey, signature, buf);
-                console.log("VERIFY OWN SIGNATURE:" + verify);
-
-                let verify2 = await crypto.verify(
-                    { name: "ECDSA", hash: { name: "SHA-256" } },
-                    publicKey,
-                    base64ToArrayBuffer(knownSig),
-                    buf
-                );
-                console.log("VERIFY HLF SIGNATURE:" + verify2);
-
-                const decodedProposal = await decodeProposal(base64);
-                console.log(decodedProposal);
             }
 
             function hideErrors() {
