@@ -94,12 +94,14 @@
                         v-else
                         id="mobileCreateAccount"
                         :disabled="!hasInput"
-                        class="w-full mb-4 btn btn-blue-primary"
+                        class="w-full btn btn-blue-primary"
                         @click="createAccount"
                     >
                         Create Account
                     </button>
-                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">Delete</button>
+                    <button v-if="editMode" id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
+                        Delete
+                    </button>
                 </div>
             </section>
             <delete-account-modal ref="deleteModal" />
