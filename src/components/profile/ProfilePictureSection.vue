@@ -112,7 +112,6 @@
                         fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
-                    toast.warning("Error: could not load profile picture.");
                     selectedPicture.value = "";
                     fallbackPicture.value = selectedPicture.value;
                 }
@@ -188,8 +187,6 @@
                 if (result) {
                     toast.success("Profile picture deleted.");
                     getProfilePicture();
-                } else {
-                    toast.warning("Error: could not delete profile picture.");
                 }
                 busy.value = false;
             }

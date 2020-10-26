@@ -3,7 +3,7 @@ import { useToast } from "@/toast";
 const toast = useToast();
 
 export function showNetworkErrorToast() {
-    toast.warning("Network error: make sure to establish a stable internet connection.");
+    toast.error("Network error: make sure to establish a stable internet connection.");
 }
 
 export function showUpdateSuccessToast(subject: string) {
