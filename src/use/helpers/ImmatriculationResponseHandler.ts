@@ -26,7 +26,6 @@ export default class GenericImmatricultationResponseHandler implements ResponseH
                 return response.returnValue;
             }
             case 404: {
-                showAPIToast("404", "matriculation data");
                 return response.returnValue;
             }
             case 200: {
