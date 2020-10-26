@@ -1,4 +1,6 @@
 import { useToast } from "@/toast";
+import ReportBug from "@/components/common/ReportBug.vue";
+import { markRaw } from "vue";
 
 const toast = useToast();
 
@@ -17,7 +19,7 @@ export function showUpdateFailedToast(subject: string) {
 export function showAPIToast(code: string, msg?: string) {
     switch (code) {
         case "400":
-            toast.error("Something went wrong on our side. Please consider to report this bug");
+            toast.error(markRaw(ReportBug));
             break;
         case "404":
             toast.error("Could not find " + msg + ".");
