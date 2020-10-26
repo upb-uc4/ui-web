@@ -43,8 +43,7 @@
 <script lang="ts">
     import MultiSelect from "@/components/common/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import { onBeforeMount, ref, computed, reactive, watch } from "vue";
-    import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+    import { onBeforeMount, ref, computed, reactive, watch, onMounted } from "vue";
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
@@ -54,6 +53,7 @@
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import MatriculationValidationResponseHandler from "@/use/helpers/MatriculationValidationResponseHandler";
+    import { useStore } from "@/use/store/store";
 
     export default {
         components: {
@@ -70,10 +70,16 @@
         setup(props: any, { emit }: any) {
             let refreshKey = ref(false);
             let busy = ref(true);
-            let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
+            let fieldsOfStudy = ref([] as string[]);
             let semesterType = ref("");
             let year = ref("");
-            let selectedFieldsOfStudy = ref([] as FieldOfStudy[]);
+            let selectedFieldsOfStudy = ref([] as string[]);
+
+            const store = useStore();
+
+            onMounted(async () => {
+                fieldsOfStudy.value = (await store.getters.configuration).fieldsOfStudy;
+            });
 
             let currentYear = new Date().getFullYear();
             let selectableYears = computed(() => {
@@ -126,7 +132,7 @@
                 let error = false;
                 let matriculationEntries: SubjectMatriculation[] = [];
                 selectedFieldsOfStudy.value
-                    .filter((s) => s != FieldOfStudy.NONE)
+                    .filter((s) => s != "")
                     .forEach((entry) => {
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });

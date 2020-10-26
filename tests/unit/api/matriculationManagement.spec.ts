@@ -1,17 +1,8 @@
 import { Role } from "@/entities/Role";
 import { Account } from "@/entities/Account";
-import { CourseEntity } from "@/entities/CourseEntity";
-import Course from "@/api/api_models/course_management/Course";
-import { Language } from "@/entities/Language";
-import { CourseType } from "@/entities/CourseType";
 import UserManagement from "@/api/UserManagement";
-import CourseManagement from "@/api/CourseManagement";
-import { store } from "@/use/store/store";
-import { MutationTypes } from "@/use/store/mutation-types";
-import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
-import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import { readFileSync } from "fs";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
@@ -25,6 +16,12 @@ const studentAuth = JSON.parse(readFileSync("tests/fixtures/logins/student.json"
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;
+
+enum FieldOfStudy {
+    COMPUTER_SCIENCE = "Computer Science",
+    EDUCATION = "Education",
+    BUSINESS_INFORMATICS = "Business Informatics",
+}
 
 jest.useFakeTimers();
 

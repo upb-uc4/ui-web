@@ -61,7 +61,7 @@
     import router from "@/use/router";
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
-    import { ref } from "vue";
+    import { computed, ref, watch } from "vue";
 
     export default {
         name: "AccountRow",
@@ -89,11 +89,10 @@
             const isLecturer = props.user.role === Role.LECTURER;
             const isAdmin = props.user.role === Role.ADMIN;
             const student = props.user as Student;
+
             const isImmatriculated = ref(false);
 
-            if (isStudent) {
-                isImmatriculated.value = student.latestImmatriculation == props.currentSemester ? true : false;
-            }
+            isImmatriculated.value = isStudent && student.latestImmatriculation == props.currentSemester;
 
             return { editAccount, isStudent, isLecturer, isAdmin, student, isImmatriculated };
         },

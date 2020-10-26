@@ -1,4 +1,3 @@
-import { Country } from "./Country";
 import Address from "@/api/api_models/user_management/Address";
 
 export default class AddressEntity implements Address {
@@ -6,5 +5,5 @@ export default class AddressEntity implements Address {
     houseNumber: string = "";
     zipCode: string = "";
     city: string = "";
-    country = Country.NONE;
+    country = "";
 }

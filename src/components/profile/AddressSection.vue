@@ -94,13 +94,13 @@
 </template>
 
 <script lang="ts">
-    import { ref, watch } from "vue";
-    import { Country } from "@/entities/Country";
+    import { onMounted, ref, watch } from "vue";
     import UserManagement from "@/api/UserManagement";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import { cloneDeep } from "lodash";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import Admin from "@/api/api_models/user_management/Admin";
+    import { useStore } from "@/use/store/store";
 
     export default {
         props: {
@@ -111,10 +111,15 @@
         },
         emits: ["update:user"],
         setup(props: any, { emit }: any) {
-            const countries = Object.values(Country).filter((e) => e != Country.NONE);
+            const countries = ref([] as string[]);
             const editedUser = ref(cloneDeep(props.user));
             const isEditing = ref(false);
             const errorBag = ref(new ErrorBag());
+
+            onMounted(async () => {
+                const store = useStore();
+                countries.value = (await store.getters.configuration).countries;
+            });
 
             //react on saved changes from other components
             watch(

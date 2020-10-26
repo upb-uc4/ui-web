@@ -2,7 +2,7 @@ import { GetterTree } from "vuex";
 import { State } from "./state";
 import { Role } from "@/entities/Role";
 import UserManagement from "@/api/UserManagement";
-import { useStore } from "./store";
+import { store, useStore } from "./store";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { MutationTypes } from "./mutation-types";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
@@ -11,11 +11,15 @@ import Student from "@/api/api_models/user_management/Student";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import ConfigurationManagement from "@/api/ConfigurationManagement";
 import lodash from "lodash";
+import Configuration from "@/api/api_models/configuration_management/Configuration";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
     user(state: State): Promise<Student | Lecturer | Admin>;
     loggedIn(state: State): boolean;
+    role(state: State): Promise<Role>;
+    validation(state: State): Promise<any>;
+    configuration(state: State): Promise<Configuration>;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -41,8 +45,14 @@ export const getters: GetterTree<State, State> & Getters = {
     },
     validation: async (state) => {
         if (lodash.isEmpty(state.validation)) {
-            state.validation = (await new ConfigurationManagement().getConfiguration()).returnValue;
+            store.commit(MutationTypes.SET_VALIDATION, (await new ConfigurationManagement().getValidation()).returnValue);
         }
         return state.validation;
+    },
+    configuration: async (state) => {
+        if (state.configuration.courseTypes == undefined) {
+            store.commit(MutationTypes.SET_CONFIGURATION, (await new ConfigurationManagement().getConfiguration()).returnValue);
+        }
+        return state.configuration;
     },
 };

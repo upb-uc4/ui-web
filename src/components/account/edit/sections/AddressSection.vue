@@ -87,9 +87,10 @@
 </template>
 
 <script lang="ts">
-    import { Country } from "@/entities/Country";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import { useStore } from "@/use/store/store";
+    import { onMounted, ref } from "vue";
 
     export default {
         name: "AccountAddressSection",
@@ -105,7 +106,12 @@
         },
         emits: ["update:address"],
         setup(props: any, { emit }: any) {
-            const countries = Object.values(Country).filter((e) => e != Country.NONE);
+            const store = useStore();
+            const countries = ref([] as string[]);
+
+            onMounted(async () => {
+                countries.value = (await store.getters.configuration).countries;
+            });
 
             return {
                 countries,

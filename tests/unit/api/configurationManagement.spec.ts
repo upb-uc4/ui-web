@@ -3,7 +3,6 @@ import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthent
 import ConfigurationManagement from "@/api/ConfigurationManagement";
 import { getRandomizedCourse } from "../../helper/Courses";
 import ValidationBag from "@/use/helpers/ValidationBag";
-import lodash from "lodash";
 
 var configurationManagement: ConfigurationManagement;
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };

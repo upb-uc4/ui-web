@@ -19,8 +19,8 @@
     </div>
 </template>
 <script lang="ts">
-    import Vue from "vue";
-    import { CourseType } from "@/entities/CourseType";
+    import Vue, { onMounted, ref } from "vue";
+    import { useStore } from "@/use/store/store";
 
     export default {
         name: "CourseTypeFilter",
@@ -32,8 +32,13 @@
         },
         emits: ["update:selectedType"],
         setup(props: any, { emit }: any) {
-            let types = Object.values(CourseType).filter((e) => e != CourseType.NONE);
-            types.unshift("All" as CourseType);
+            const types = ref([] as string[]);
+
+            onMounted(async () => {
+                const store = useStore();
+                types.value = [...(await store.getters.configuration).courseTypes];
+                types.value.unshift("All");
+            });
 
             function select(type: string) {
                 emit("update:selectedType", type);

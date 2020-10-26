@@ -77,9 +77,9 @@
 
 <script lang="ts">
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import { CourseType } from "@/entities/CourseType";
-    import { Language } from "@/entities/Language";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import { onMounted, ref } from "vue";
+    import { useStore } from "@/use/store/store";
 
     export default {
         name: "BasicsSection",
@@ -107,8 +107,14 @@
         },
         emits: ["update:type", "update:name", "update:language", "update:description"],
         setup(props: any, { emit }: any) {
-            const availableCourseLanguages = Object.values(Language).filter((e) => e != Language.NONE);
-            const availableCourseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
+            const availableCourseLanguages = ref([] as string[]);
+            const availableCourseTypes = ref([] as string[]);
+
+            onMounted(async () => {
+                const store = useStore();
+                availableCourseLanguages.value = (await store.getters.configuration).languages;
+                availableCourseTypes.value = (await store.getters.configuration).courseTypes;
+            });
 
             return {
                 availableCourseLanguages,

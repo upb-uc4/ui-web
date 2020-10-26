@@ -46,9 +46,9 @@
             let users = ref([] as User[]);
             const currentSemester = ref("");
 
-            onBeforeMount(() => {
+            onBeforeMount(async () => {
+                await getCurrentSemester();
                 getUsers();
-                getCurrentSemester();
             });
 
             async function getUsers() {

@@ -112,7 +112,6 @@
     import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
     import { ref, reactive, computed, onBeforeMount, nextTick } from "vue";
-    import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
     import UserManagement from "@/api/UserManagement";
     import StudentEntity from "@/entities/StudentEntity";
     import UserEntity from "@/entities/UserEntity";
@@ -123,7 +122,6 @@
     import Student from "@/api/api_models/user_management/Student";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
-    import { Country } from "@/entities/Country";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
