@@ -1,12 +1,11 @@
 import Course from "@/api/api_models/course_management/Course";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
 import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
-import { createNewLecturer, createUsers, deleteUsers } from "./helpers/UserHelper";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
+import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
+import { createUsers, deleteUsers } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
-import { Role } from "@/entities/Role";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);

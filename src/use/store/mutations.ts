@@ -1,9 +1,9 @@
+import Admin from "@/api/api_models/user_management/Admin";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
+import Student from "@/api/api_models/user_management/Student";
+import { MutationTree } from "vuex";
 import { MutationTypes } from "./mutation-types";
 import { State } from "./state";
-import { MutationTree } from "vuex";
-import Student from "@/api/api_models/user_management/Student";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
-import Admin from "@/api/api_models/user_management/Admin";
 
 export type Mutations<S = State> = {
     [MutationTypes.SET_USER](state: S, payload: Student | Lecturer | Admin): void;

@@ -1,10 +1,10 @@
 import Admin from "@/api/api_models/user_management/Admin";
+import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
-import { getRandomMatriculationId, createUsers, deleteUsers } from "./helpers/UserHelper";
-import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 const random = Math.floor(Math.random() * 9999);

@@ -1,5 +1,5 @@
-import Address from "./Address";
 import { Role } from "@/entities/Role";
+import Address from "./Address";
 
 export default interface User {
     username: string;

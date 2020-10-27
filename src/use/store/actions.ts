@@ -1,8 +1,6 @@
-import { ActionTree, ActionContext } from "vuex";
-import { State } from "./state";
+import { ActionContext, ActionTree } from "vuex";
 import { Mutations } from "./mutations";
-import { ActionTypes } from "./action-types";
-import { MutationTypes } from "./mutation-types";
+import { State } from "./state";
 
 type AugmentedActionContext = {
     commit<K extends keyof Mutations>(key: K, payload: Parameters<Mutations[K]>[1]): ReturnType<Mutations[K]>;

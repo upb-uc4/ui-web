@@ -1,6 +1,6 @@
+import Admin from "@/api/api_models/user_management/Admin";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
-import Admin from "@/api/api_models/user_management/Admin";
 
 export const state = {
     apiUrl: "",
