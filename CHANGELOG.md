@@ -1,3 +1,8 @@
+# [WIP v0.11.1](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.11.1) (2020-XX-XX)
+
+## Feature
+- Add support for pseudonymization of student matriculation data
+
 # [WIP v.0.10.1](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.10.1) (2020-10-XX)
 
 ## Bugfix
@@ -10,11 +15,6 @@
 
 ## Refactoring
 - Replace placeholder icons in navbars with proper fa icons [#621](https://github.com/upb-uc4/ui-web/issues/621)
-
-## Feature
-- Add support for pseudonymization of student matriculation data
-- 
-## Refactor
 
 # [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
 
