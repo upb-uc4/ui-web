@@ -5,7 +5,8 @@
                 <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
             </div>
             <div class="flex flex-col">
-                <img id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
+                <loading-spinner v-if="busy" class="object-cover mb-5 rounded-full" />
+                <img v-else id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
                 <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="uploadPicture" />
                 <div class="flex">
                     <button id="uploadPicture" :disabled="busy" class="btn btn-blue-primary w-48" @click="triggerFileUpload">
@@ -66,11 +67,13 @@
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
     import { useStore } from "vuex";
     import { MutationTypes } from "@/use/store/mutation-types";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
         name: "ProfilePictureSection",
         components: {
             DeleteProfilePictureModal,
+            LoadingSpinner,
         },
 
         props: {
@@ -91,8 +94,8 @@
             const errorBag = ref(new ErrorBag());
             const deletePictureModal = ref();
 
-            onBeforeMount(() => {
-                getProfilePicture();
+            onBeforeMount(async () => {
+                await getProfilePicture();
             });
 
             async function getProfilePicture() {

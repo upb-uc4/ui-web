@@ -222,9 +222,9 @@
                 }
             });
 
-            onBeforeMount(() => {
+            onBeforeMount(async () => {
                 if (props.editMode) {
-                    getUser();
+                    await getUser();
                 }
             });
 

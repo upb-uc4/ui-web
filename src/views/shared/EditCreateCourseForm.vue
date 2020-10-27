@@ -169,10 +169,10 @@
                 }
             });
 
-            onBeforeMount(() => {
-                askAdminRole();
+            onBeforeMount(async () => {
+                await askAdminRole();
                 if (props.editMode) {
-                    getCourse();
+                    await getCourse();
                 }
             });
 
