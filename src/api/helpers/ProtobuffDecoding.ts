@@ -1,6 +1,6 @@
 import { load } from "protobufjs";
-import { base64ToArrayBuffer } from "../crypto/certificates";
-import Proposal, { ChaincodeHeaderExtension, ChannelHeader, ProposalPayload, SignatureHeader } from "./Proposal";
+import { base64ToArrayBuffer } from "@/use/crypto/certificates";
+import Proposal, { ChaincodeHeaderExtension, ChannelHeader, ProposalPayload, SignatureHeader } from "../api_models/transactions/Proposal";
 
 export async function decodeProposal(base64Proposal: string): Promise<Proposal | undefined> {
     const buf = base64ToArrayBuffer(base64Proposal);
