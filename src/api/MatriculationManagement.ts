@@ -6,12 +6,109 @@ import { AxiosResponse, AxiosError } from "axios";
 import { useStore } from "@/use/store/store";
 import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
 import handleAuthenticationError from "./AuthenticationHelper";
+import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
+import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 
 export default class MatriculationManagement extends Common {
     constructor() {
         super("/matriculation-management");
     }
 
+    /**
+     * Fetch an unsigned proposal for matriculation
+     * @param username username of student to matriculate
+     * @param matriculation matriculation data
+     */
+    async getUnsignedMatriculationProposal(
+        username: string,
+        matriculation: SubjectMatriculation[]
+    ): Promise<APIResponse<UnsignedProposalMessage>> {
+        let payload = { matriculation: matriculation };
+
+        return await this._axios
+            .post(`/matriculation/${username}/proposal`, payload)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data as UnsignedProposalMessage,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as UnsignedProposalMessage,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getUnsignedMatriculationProposal(username, matriculation);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async submitSignedMatriculationProposal(username: string, message: SignedProposalMessage): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .post(`/matriculation/${username}/submit`, message)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: true,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.submitSignedMatriculationProposal(username, message);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: false,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: false,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    /**
+     * @deprecated
+     * @param username
+     * @param matriculation
+     */
     async updateMatriculationData(
         username: string,
         matriculation: SubjectMatriculation[]
