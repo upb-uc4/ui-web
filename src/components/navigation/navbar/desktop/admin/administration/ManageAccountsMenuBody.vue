@@ -6,7 +6,7 @@
                     id="nav_desktop_admin_menu_manage_accounts_all"
                     title="All Users"
                     description="List of all users"
-                    icon-class="fa-globe-americas"
+                    icon-class="fas fa-users"
                     target-route-name="accountlist"
                 />
             </li>
@@ -15,7 +15,7 @@
                     id="nav_desktop_admin_menu_manage_accounts_create"
                     title="New Account"
                     description="Create a new user"
-                    icon-class="fa-star"
+                    icon-class="fas fa-user-plus"
                     target-route-name="accountForm.create"
                 />
             </li>
