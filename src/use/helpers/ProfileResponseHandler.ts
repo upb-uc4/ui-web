@@ -26,6 +26,10 @@ export default class ProfileResponseHandler implements ResponseHandler<Student |
                 showAPIToast("404", "user");
                 break;
             }
+            case 500: {
+                showAPIToast("500");
+                break;
+            }
         }
         return response.returnValue;
     }

@@ -28,6 +28,10 @@ export default class GenericImmatricultationResponseHandler implements ResponseH
             case 404: {
                 return response.returnValue;
             }
+            case 500: {
+                showAPIToast("500");
+                return response.returnValue;
+            }
             case 200: {
                 return response.returnValue;
             }
@@ -91,6 +95,10 @@ export class MatriculationValidationResponseHandler implements ResponseHandler<b
                     return false;
                 }
                 case 422: {
+                    return false;
+                }
+                case 500: {
+                    showAPIToast("500");
                     return false;
                 }
                 case 200: {

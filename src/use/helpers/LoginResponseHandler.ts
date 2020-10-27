@@ -22,6 +22,10 @@ export default class LoginResponseHandler implements ResponseHandler<boolean> {
                 showAPIToast("404", "login data");
                 return false;
             }
+            case 500: {
+                showAPIToast("500");
+                return false;
+            }
             case 200: {
                 return true;
             }

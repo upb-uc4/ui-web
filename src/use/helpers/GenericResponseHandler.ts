@@ -32,6 +32,10 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
                 showAPIToast("404", this.dataType);
                 return response.returnValue;
             }
+            case 500: {
+                showAPIToast("500");
+                return response.returnValue;
+            }
             case 200: {
                 return response.returnValue;
             }

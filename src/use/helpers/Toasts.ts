@@ -19,6 +19,7 @@ export function showUpdateFailedToast(subject: string) {
 export function showAPIToast(code: string, msg?: string) {
     switch (code) {
         case "400":
+        case "500":
             toast.error(markRaw(ReportBug));
             break;
         case "404":

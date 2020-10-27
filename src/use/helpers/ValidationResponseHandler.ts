@@ -48,6 +48,10 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
             case 422: {
                 return false;
             }
+            case 500: {
+                showAPIToast("500");
+                return false;
+            }
             case 201: {
                 return true;
             }

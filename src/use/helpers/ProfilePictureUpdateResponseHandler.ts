@@ -42,6 +42,10 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
                 showAPIToast("404", "profile picture");
                 return response.returnValue;
             }
+            case 500: {
+                showAPIToast("500");
+                return response.returnValue;
+            }
             case 200: {
                 return response.returnValue;
             }
