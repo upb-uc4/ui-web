@@ -54,7 +54,6 @@
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import { cloneDeep } from "lodash";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import { showUpdateSuccessToast, showUpdateFailedToast } from "@/use/helpers/Toasts";
 
     export default {
         props: {
@@ -107,7 +106,6 @@
                     isEditing.value = false;
                     emit("update:user", editedUser.value);
                     errorBag.value = new ErrorBag();
-                    showUpdateSuccessToast("Contact information");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
                 }
