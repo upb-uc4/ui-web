@@ -20,6 +20,7 @@ const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.jso
     password: string;
 };
 const picture: File = new File([readFileSync("src/assets/blank_profile_picture.png")], "image.png", { type: "image/png" });
+let dummyPic: File;
 
 jest.setTimeout(30000);
 
@@ -122,6 +123,7 @@ test("Update user", async () => {
 
 test("get dummy profile picture", async () => {
     const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
+    dummyPic = pic;
     expect(pic.size).not.toEqual(picture.size);
 });
 
@@ -132,7 +134,7 @@ test("upload profile picture", async () => {
 
 test("get profile picture", async () => {
     const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
-    expect(pic.size).toEqual(picture.size);
+    expect(pic.size).not.toEqual(dummyPic.size);
 });
 
 test("delete profile picture", async () => {
