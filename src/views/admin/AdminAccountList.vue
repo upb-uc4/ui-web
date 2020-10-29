@@ -1,19 +1,23 @@
 <template>
-    <div class="mt-32 text-4xl text-center font-semibold text-gray-900">Available Accounts</div>
-    <div class="mt-8 flex justify-center">
+    <div class="mt-12 sm:mt-32 text-4xl text-center font-semibold text-gray-900">Available Accounts</div>
+    <div class="sm:mt-8 flex justify-center">
         <div class="w-full max-w-4xl">
             <div class="flex flex-col">
-                <div class="flex flex-row w-full pt-2 mb-8">
-                    <seach-bar v-model:message="message" @refresh="refresh" />
-                    <router-link to="/createAccount" class="w-2/12 ml-4 w-">
-                        <button title="Add a new User" class="flex flex-row items-center justify-center w-full p-2 btn-icon-green">
-                            <p class="mr-3 text-lg font-semibold">Add</p>
-                            <i class="inline text-lg fas fa-user-plus" />
-                        </button>
+                <div class="flex sm:flex-row flex-col-reverse w-full">
+                    <seach-bar v-model:message="message" class="sm:mr-4" @refresh="refresh" />
+
+                    <router-link
+                        to="/createAccount"
+                        class="flex flex-row items-center justify-center mb-4 sm:mb-0 sm:w-32 w-full border-2 rounded-lg border-gray-300 h-12 px-12 btn-green-primary-500"
+                    >
+                        <p class="mr-3 font-semibold">Add</p>
+                        <i class="fas fa-user-plus" />
                     </router-link>
                 </div>
-                <role-filter v-model:selected-role="selectedRole" />
             </div>
+
+            <role-filter v-model:selected-role="selectedRole" class="w-full my-4" />
+
             <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
             <div class="flex justify-center mt-16">
                 <router-link to="/createAccount">
