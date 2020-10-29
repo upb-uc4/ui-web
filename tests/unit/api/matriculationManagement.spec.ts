@@ -28,6 +28,7 @@ const authUser = pair.authUser;
 
 jest.setTimeout(30000);
 
+
 describe("Matriculation management", () => {
     beforeAll(async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);

@@ -1,3 +1,8 @@
+# [WIP v0.11.1](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.11.1) (2020-XX-XX)
+
+## Feature
+- Add support for pseudonymization of student matriculation data
+
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
 
 ## Bugfix
