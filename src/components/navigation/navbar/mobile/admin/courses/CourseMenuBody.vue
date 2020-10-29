@@ -5,7 +5,7 @@
                 <menu-item
                     id="nav_mobile_admin_menu_courses_all"
                     title="All Courses"
-                    icon-class="fa-globe-americas"
+                    icon-class="fas fa-list-alt"
                     target-route-name="shared.courses"
                 />
             </li>
@@ -13,7 +13,7 @@
                 <menu-item
                     id="nav_mobile_admin_menu_courses_create"
                     title="Create Course"
-                    icon-class="fa-star"
+                    icon-class="fas fa-calendar-plus"
                     target-route-name="courseForm.create"
                 />
             </li>

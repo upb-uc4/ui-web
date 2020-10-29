@@ -26,7 +26,7 @@ const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; a
 const student = pair.student;
 const authUser = pair.authUser;
 
-jest.useFakeTimers();
+jest.setTimeout(30000);
 
 describe("Matriculation management", () => {
     beforeAll(async () => {
@@ -40,6 +40,7 @@ describe("Matriculation management", () => {
     test("Create student user", async () => {
         const success = await userManagement.createUser(authUser, student);
         expect(success.returnValue).toBe(true);
+        await new Promise((r) => setTimeout(r, 15000));
     });
 
     test("Get empty matriculation history", async () => {
