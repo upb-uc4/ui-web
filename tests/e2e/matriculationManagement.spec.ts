@@ -95,18 +95,18 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
     });
 
-    // Commented out until backend validation is implemented again
-    // it("Input a FoS for a semester earlier than birthday results in error", function () {
-    //     cy.get("button[id='addImmatriculationData']").should("be.disabled");
-    //     cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
-    //     cy.get("select[id='semesterType']").select("SS");
-    //     cy.get("select[id='semesterYear']").select("2011");
-    //     cy.get("select[id='fieldsOfStudy-1']").select(FieldOfStudy.COMPUTER_SCIENCE);
-    //     cy.get("button[id='addImmatriculationData']").click();
-    //     cy.wait(4000);
-    //     cy.get("div[id='immatriculationOptions']").siblings().get("p").should("have.class", "error-message");
-    //     cy.get("button[id='removeFieldOfStudy-1']").click();
-    // });
+    // Skip until backend validation is implemented again
+    it.skip("Input a FoS for a semester earlier than birthday results in error", function () {
+        cy.get("button[id='addImmatriculationData']").should("be.disabled");
+        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
+        cy.get("select[id='semesterType']").select("SS");
+        cy.get("select[id='semesterYear']").select("2011");
+        cy.get("select[id='fieldsOfStudy-1']").select(FieldOfStudy.COMPUTER_SCIENCE);
+        cy.get("button[id='addImmatriculationData']").click();
+        cy.wait(4000);
+        cy.get("div[id='immatriculationOptions']").siblings().get("p").should("have.class", "error-message");
+        cy.get("button[id='removeFieldOfStudy-1']").click();
+    });
 
     it("Add two fields of studies for one summer semester", function () {
         cy.get("select[id=semesterType]").select("SS");
