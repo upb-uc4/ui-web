@@ -34,12 +34,6 @@ test("Create user", async () => {
     await new Promise((r) => setTimeout(r, 1000));
 });
 
-test("Fetch government id", async () => {
-    const response = await userManagement.getEnrollmentId(student.username);
-    expect(response.returnValue).not.toBe(undefined);
-    expect(response.returnValue).not.toBe("");
-});
-
 test("Get specific user", async () => {
     var result = false;
     const user = await userManagement.getSpecificUser(student.username);

@@ -541,44 +541,4 @@ export default class UserManagement extends Common {
                 }
             });
     }
-
-    async getEnrollmentId(username: string): Promise<APIResponse<String>> {
-        return await this._axios
-            .get(`/users/${username}/enrollmentId`)
-            .then((response: AxiosResponse) => {
-                return {
-                    error: {} as APIError,
-                    networkError: false,
-                    statusCode: response.status,
-                    returnValue: response.data.enrollmentId,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: "",
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getEnrollmentId(username);
-                    }
-                    return {
-                        returnValue: "",
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        returnValue: "",
-                        statusCode: 0,
-                        error: {} as APIError,
-                        networkError: true,
-                    };
-                }
-            });
-    }
 }

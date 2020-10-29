@@ -15,5 +15,6 @@ export default class StudentEntity implements Student {
     email = "";
     birthDate = "";
     phoneNumber = "";
+    enrollmentIdSecret = "";
     constructor() {}
 }
