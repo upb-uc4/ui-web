@@ -1,9 +1,9 @@
-import ResponseHandler from "./ResponseHandler";
-import APIResponse from "@/api/helpers/models/APIResponse";
-import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
+import ValidationError from "@/api/api_models/errors/ValidationError";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
-import { showNetworkErrorToast, showAPIToast } from "@/use/helpers/Toasts";
+import APIResponse from "@/api/helpers/models/APIResponse";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
+import ResponseHandler from "./ResponseHandler";
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
@@ -34,7 +34,7 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
 
         switch (response.statusCode) {
             case 400: {
-                showAPIToast("400");
+                showAPIToast(response.statusCode);
                 return false;
             }
             case 401: {
@@ -42,14 +42,14 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
                 return false;
             }
             case 404: {
-                showAPIToast("404", this.dataType);
+                showAPIToast(response.statusCode, this.dataType);
                 return false;
             }
             case 422: {
                 return false;
             }
             case 500: {
-                showAPIToast("500");
+                showAPIToast(response.statusCode);
                 return false;
             }
             case 201: {

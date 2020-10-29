@@ -1,10 +1,10 @@
-import ResponseHandler from "./ResponseHandler";
+import Error from "@/api/api_models/errors/Error";
+import ValidationError from "@/api/api_models/errors/ValidationError";
+import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
-import { showNetworkErrorToast, showAPIToast } from "@/use/helpers/Toasts";
-import ValidationError from "@/api/api_models/errors/ValidationError";
-import Error from "@/api/api_models/errors/Error";
-import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
+import ResponseHandler from "./ResponseHandler";
 
 export default class GenericImmatricultationResponseHandler implements ResponseHandler<boolean> {
     handleResponse<T>(response: APIResponse<T>): T {
@@ -14,7 +14,7 @@ export default class GenericImmatricultationResponseHandler implements ResponseH
         }
         switch (response.statusCode) {
             case 400: {
-                showAPIToast("400");
+                showAPIToast(response.statusCode);
                 return response.returnValue;
             }
             case 401: {
@@ -29,7 +29,7 @@ export default class GenericImmatricultationResponseHandler implements ResponseH
                 return response.returnValue;
             }
             case 500: {
-                showAPIToast("500");
+                showAPIToast(response.statusCode);
                 return response.returnValue;
             }
             case 200: {
@@ -83,7 +83,7 @@ export class MatriculationValidationResponseHandler implements ResponseHandler<b
 
             switch (response.statusCode) {
                 case 400: {
-                    showAPIToast("400");
+                    showAPIToast(response.statusCode);
                     return false;
                 }
                 case 401: {
@@ -91,14 +91,14 @@ export class MatriculationValidationResponseHandler implements ResponseHandler<b
                     return false;
                 }
                 case 404: {
-                    showAPIToast("404", "matriculation data");
+                    showAPIToast(response.statusCode, "matriculation data");
                     return false;
                 }
                 case 422: {
                     return false;
                 }
                 case 500: {
-                    showAPIToast("500");
+                    showAPIToast(response.statusCode);
                     return false;
                 }
                 case 200: {
