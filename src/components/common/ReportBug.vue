@@ -1,6 +1,6 @@
 <template>
     <div class="flex">
-        <label>Something went wrong on our side. Please consider to report this bug</label>
+        <label>Something went wrong on our side. Please consider reporting this bug.</label>
         <button class="btn text-blue-700 bg-gray-100 px-1 py-1 text-sm hover:bg-gray-300" @click="reportProblem()">Report</button>
     </div>
 </template>
