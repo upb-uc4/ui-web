@@ -20,6 +20,7 @@
                 v-model:description="course.courseDescription"
                 :error-bag="errorBag"
             />
+            <course-module-section v-model="course.moduleIds" :error-bag="errorBag" />
             <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
             <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
 
@@ -108,6 +109,7 @@
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
+    import CourseModuleSection from "@/components/course/edit/sections/CourseModulesSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -119,6 +121,7 @@
             DeleteCourseModal,
             UnsavedChangesModal,
             LoadingComponent,
+            CourseModuleSection,
         },
         props: {
             editMode: {
