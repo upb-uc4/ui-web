@@ -9,5 +9,6 @@
     "startDate" : "1999-01-01",
     "endDate" : "2000-01-01",
     "lecturerId" : "lecturer",
-    "maxParticipants" : 10
+    "maxParticipants" : 10,
+    "moduleIds": []
 }
