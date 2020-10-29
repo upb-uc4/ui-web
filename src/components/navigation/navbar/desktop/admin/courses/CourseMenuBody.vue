@@ -6,7 +6,7 @@
                     id="nav_desktop_admin_menu_courses_all"
                     title="All Courses"
                     description="Overview of all courses"
-                    icon-class="fa-globe-americas"
+                    icon-class="fas fa-list-alt"
                     target-route-name="shared.courses"
                 />
             </li>
@@ -15,7 +15,7 @@
                     id="nav_desktop_admin_menu_courses_create"
                     title="Create Course"
                     description="Create a new course"
-                    icon-class="fa-star"
+                    icon-class="fas fa-calendar-plus"
                     target-route-name="courseForm.create"
                 />
             </li>

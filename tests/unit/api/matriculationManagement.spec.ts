@@ -27,7 +27,7 @@ const student = pair.student;
 const authUser = pair.authUser;
 const governmentId = pair.governmentId;
 
-jest.useFakeTimers();
+jest.setTimeout(15000);
 
 describe("Matriculation management", () => {
     beforeAll(async () => {
@@ -41,6 +41,7 @@ describe("Matriculation management", () => {
     test("Create student user", async () => {
         const success = await userManagement.createUser(governmentId, authUser, student);
         expect(success.returnValue).toBe(true);
+        await new Promise((r) => setTimeout(r, 5000));
     });
 
     test("Get empty matriculation history", async () => {
