@@ -12,7 +12,7 @@ const signAlg = "ECDSA";
 const hashAlg = "SHA-256";
 const ellipticCurve = "P-256";
 
-const usedAlgorithmObject = {
+export const usedAlgorithmObject = {
     hash: {
         name: hashAlg,
     },
@@ -20,12 +20,12 @@ const usedAlgorithmObject = {
     name: signAlg,
 };
 
-const wrappingAlgorithmObject = {
+export const wrappingAlgorithmObject = {
     name: "AES-GCM",
     length: 256,
 };
 
-const passwordDerivationAlgorithmObject = {
+export const passwordDerivationAlgorithmObject = {
     name: "PBKDF2",
     iterations: 100000,
     hash: "SHA-256",
