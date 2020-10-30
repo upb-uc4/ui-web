@@ -46,7 +46,7 @@
         "jest": "^26.6.1",
         "lodash": "^4.17.20",
         "random-bigint": "0.0.1",
-        "tailwindcss": "^1.9.5",
+        "tailwindcss": "^1.9.6",
         "vue": "^3.0.2",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-rc.1",
