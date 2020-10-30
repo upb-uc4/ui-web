@@ -74,7 +74,9 @@ export const getters: GetterTree<State, State> & Getters = {
 
             const certificateResponse = await certManagement.getCertificate((await store.getters.user).username);
             if (certificateResponse.statusCode == 404) {
-                return await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined);
+                return await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
+                    return { certificate: "" };
+                });
             } else {
                 store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);
             }
