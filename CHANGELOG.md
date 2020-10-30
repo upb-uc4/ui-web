@@ -2,6 +2,7 @@
 
 ## Feature
 - Add support for pseudonymization of student matriculation data
+- Add thumbnails to account list [#607](https://github.com/upb-uc4/ui-web/issues/607)
 
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
 
@@ -15,9 +16,6 @@
 
 ## Refactoring
 - Replace placeholder icons in navbars with proper fa icons [#621](https://github.com/upb-uc4/ui-web/issues/621)
-
-## Feature
-- add thumbnails to account list [#607](https://github.com/upb-uc4/ui-web/issues/590)
 
 # [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
 
