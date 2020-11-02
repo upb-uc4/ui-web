@@ -65,7 +65,7 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
-        name: "RoleSection",
+        name: "UserSecuritySection",
         props: {
             errorBag: {
                 type: ErrorBag,

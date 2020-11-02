@@ -53,7 +53,7 @@
     import { ref } from "vue";
 
     export default {
-        name: "RoleSection",
+        name: "PersonalSection",
         components: {
             BirthDatePicker,
         },

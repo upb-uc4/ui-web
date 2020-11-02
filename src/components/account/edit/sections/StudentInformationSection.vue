@@ -47,7 +47,7 @@
     import Immatriculation from "./Immatriculation.vue";
 
     export default {
-        name: "RoleSection",
+        name: "StudentSection",
         components: {
             Immatriculation,
         },
