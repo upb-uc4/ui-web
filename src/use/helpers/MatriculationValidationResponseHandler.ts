@@ -15,13 +15,7 @@ export default class MatriculationValidationResponseHandler implements ResponseH
     }
 
     isMatriculationData(object: any): object is MatriculationData {
-        return (
-            (object as MatriculationData).birthDate !== undefined &&
-            (object as MatriculationData).firstName !== undefined &&
-            (object as MatriculationData).lastName !== undefined &&
-            (object as MatriculationData).matriculationId !== undefined &&
-            (object as MatriculationData).matriculationStatus !== undefined
-        );
+        return (object as MatriculationData).enrollmentId !== undefined && (object as MatriculationData).matriculationStatus !== undefined;
     }
 
     handleResponse(response: APIResponse<boolean | MatriculationData>): boolean {
