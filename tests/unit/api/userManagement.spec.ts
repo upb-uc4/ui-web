@@ -18,6 +18,7 @@ const lecturerAuth = JSON.parse(readFileSync("tests/fixtures/logins/lecturer.jso
     password: string;
 };
 const picture: File = new File([readFileSync("src/assets/blank_profile_picture.png")], "image.png", { type: "image/png" });
+let dummySize = 0;
 let dummyPic: File;
 
 jest.setTimeout(30000);
@@ -121,6 +122,8 @@ test("Update user", async () => {
 
 test("get dummy profile picture", async () => {
     const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
+    dummySize = pic.size;
+    expect(dummySize).not.toEqual(picture.size);
     dummyPic = pic;
     expect(pic.size).not.toEqual(picture.size);
 });
@@ -132,6 +135,10 @@ test("upload profile picture", async () => {
 
 test("get profile picture", async () => {
     const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
+    expect(pic.size).toBeLessThanOrEqual(picture.size);
+    expect(pic.size).not.toEqual(dummySize);
+    const thumb = (await userManagement.getThumbnail(student.username)).returnValue;
+    expect(thumb.size).toBeGreaterThan(0);
     expect(pic.size).not.toEqual(dummyPic.size);
 });
 
@@ -142,7 +149,7 @@ test("delete profile picture", async () => {
 
 test("get dummy profile picture", async () => {
     const pic = (await userManagement.getProfilePicture(student.username)).returnValue;
-    expect(pic.size).not.toEqual(picture.size);
+    expect(pic.size).toEqual(dummySize);
 });
 
 test("Delete user", async () => {

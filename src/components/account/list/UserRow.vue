@@ -1,26 +1,28 @@
 <template>
     <div
         :id="'user_' + user.username"
-        class="px-8 py-4 whitespace-no-wrap border-gray-200 cursor-pointer hover:bg-gray-200"
+        class="px-6 py-4 whitespace-no-wrap border-gray-200 cursor-pointer hover:bg-gray-200"
         :class="{ 'rounded-t-lg': isFirstRow, 'rounded-b-lg': isLastRow, 'border-b': !isLastRow }"
         @click="editAccount(user.username)"
     >
         <div class="flex items-center">
             <div class="w-full flex justify-between">
-                <div class="sm:ml-1">
-                    <div class="text leading-5 font-medium text-blue-900 mb-1 truncate">{{ user.firstName }} {{ user.lastName }}</div>
-                    <div class="hidden sm:flex text leading-5 text-gray-500 truncate">@{{ user.username }}</div>
-
-                    <span
-                        class="sm:hidden inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
-                        :class="{
-                            'bg-blue-200 text-blue-800': isStudent,
-                            'bg-red-200 text-red-800': isAdmin,
-                            'bg-green-200 text-green-800': isLecturer,
-                        }"
-                    >
-                        {{ user.role }}
-                    </span>
+                <div class="flex items-center">
+                    <img class="hidden sm:block w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
+                    <div class="sm:ml-4">
+                        <div class="text leading-5 font-medium text-blue-900 mb-1 truncate">{{ user.firstName }} {{ user.lastName }}</div>
+                        <div class="hidden sm:flex text leading-5 text-gray-500 truncate">@{{ user.username }}</div>
+                        <span
+                            class="sm:hidden inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
+                            :class="{
+                                'bg-blue-200 text-blue-800': isStudent,
+                                'bg-red-200 text-red-800': isAdmin,
+                                'bg-green-200 text-green-800': isLecturer,
+                            }"
+                        >
+                            {{ user.role }}
+                        </span>
+                    </div>
                 </div>
 
                 <div class="flex items-center">
@@ -65,6 +67,7 @@
     import router from "@/use/router";
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
+    import { onBeforeMount, ref } from "vue";
 
     export default {
         name: "AccountRow",
@@ -81,6 +84,7 @@
             },
         },
         setup(props: any) {
+            let profilePicture = ref("");
             function editAccount(username: string) {
                 router.push({ path: "/editAccount/" + username });
             }
@@ -89,7 +93,9 @@
             const isAdmin = props.user.role === Role.ADMIN;
             const student = props.user as Student;
 
-            return { editAccount, isStudent, isLecturer, isAdmin, student };
+            profilePicture.value = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + props.user.username + "/thumbnail?";
+
+            return { editAccount, isStudent, isLecturer, isAdmin, student, profilePicture };
         },
     };
 </script>

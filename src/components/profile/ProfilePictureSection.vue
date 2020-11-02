@@ -6,9 +6,12 @@
             </div>
             <div class="flex flex-col">
                 <loading-spinner v-if="busy" class="object-cover mb-5 rounded-full" />
-                <img v-else id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
+                <div v-else class="w-full flex justify-center sm:justify-start">
+                    <img id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
+                </div>
+
                 <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="uploadPicture" />
-                <div class="flex">
+                <div class="flex justify-center sm:justify-start ml-12 sm:ml-0">
                     <button id="uploadPicture" :disabled="busy" class="btn btn-blue-primary w-48" @click="triggerFileUpload">
                         Select Image
                     </button>
