@@ -499,6 +499,50 @@ export default class UserManagement extends Common {
             });
     }
 
+    async getThumbnail(username: string): Promise<APIResponse<File>> {
+        return await this._axios
+            .get(`/users/${username}/thumbnail`, {
+                responseType: "arraybuffer",
+            })
+            .then((response: AxiosResponse) => {
+                let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
+                const file: File = new File([blob], "image.png", { type: response.headers["content-type"] });
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: file,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as File,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getProfilePicture(username);
+                    }
+                    return {
+                        returnValue: {} as File,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as File,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
     async updateProfilePicture(username: string, picture: File): Promise<APIResponse<boolean>> {
         return await this._axios
             .put(`/users/${username}/image`, picture)
