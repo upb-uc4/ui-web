@@ -1,11 +1,11 @@
 import * as asn1js from "asn1js";
 import Attribute from "pkijs/src/Attribute";
+import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
 import CertificationRequest from "pkijs/src/CertificationRequest";
 import { getCrypto } from "pkijs/src/common";
 import Extension from "pkijs/src/Extension";
 import Extensions from "pkijs/src/Extensions";
-import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
-import { stringToArrayBuffer, arrayBufferToString, toBase64, fromBase64 } from "pvutils";
+import { arrayBufferToString, fromBase64, stringToArrayBuffer, toBase64 } from "pvutils";
 import formatPEM from "./formatPem";
 
 const signAlg = "ECDSA";

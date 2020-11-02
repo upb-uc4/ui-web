@@ -1,20 +1,15 @@
-import { GetterTree } from "vuex";
-import { State, state } from "./state";
-import { Role } from "@/entities/Role";
-import UserManagement from "@/api/UserManagement";
-import { useStore } from "./store";
-import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-import { MutationTypes } from "./mutation-types";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
+import Certificate from "@/api/api_models/certificate_management/Certificate";
 import Admin from "@/api/api_models/user_management/Admin";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
-import { getCrypto } from "pkijs/src/common";
 import CertificateManagement from "@/api/CertificateManagement";
-import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
-import { unwrapKey, base64ToArrayBuffer, deriveKeyFromPassword, privateKeyToPemString } from "@/use/crypto/certificates";
-import Certificate from "@/api/api_models/certificate_management/Certificate";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import { GetterTree } from "vuex";
 import { ActionTypes } from "./action-types";
+import { MutationTypes } from "./mutation-types";
+import { State } from "./state";
+import { useStore } from "./store";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -22,6 +17,7 @@ export type Getters = {
     loggedIn(state: State): boolean;
     privateKey(state: State): Promise<CryptoKey>;
     certificate(state: State): Promise<Certificate>;
+    hasCertificate(state: State): Promise<boolean>;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -75,6 +71,7 @@ export const getters: GetterTree<State, State> & Getters = {
             const certificateResponse = await certManagement.getCertificate((await store.getters.user).username);
             if (certificateResponse.statusCode == 404) {
                 return await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
+                    store.commit(MutationTypes.SET_HAS_CERTIFICATE, false);
                     return { certificate: "" };
                 });
             } else {
@@ -82,5 +79,19 @@ export const getters: GetterTree<State, State> & Getters = {
             }
         }
         return state.certificate;
+    },
+    hasCertificate: async (state) => {
+        const store = useStore();
+        const certManagement = new CertificateManagement();
+
+        const certificateResponse = await certManagement.getCertificate((await store.getters.user).username);
+        if (certificateResponse.statusCode == 404) {
+            store.commit(MutationTypes.SET_HAS_CERTIFICATE, false);
+        } else {
+            store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);
+            store.commit(MutationTypes.SET_HAS_CERTIFICATE, true);
+            console.log("hello");
+        }
+        return state.hasCertificate;
     },
 };

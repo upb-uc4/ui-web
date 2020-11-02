@@ -1,10 +1,10 @@
+import Certificate from "@/api/api_models/certificate_management/Certificate";
+import Admin from "@/api/api_models/user_management/Admin";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
+import Student from "@/api/api_models/user_management/Student";
+import { MutationTree } from "vuex";
 import { MutationTypes } from "./mutation-types";
 import { State } from "./state";
-import { MutationTree } from "vuex";
-import Student from "@/api/api_models/user_management/Student";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
-import Admin from "@/api/api_models/user_management/Admin";
-import Certificate from "@/api/api_models/certificate_management/Certificate";
 
 export type Mutations<S = State> = {
     [MutationTypes.SET_USER](state: S, payload: Student | Lecturer | Admin): void;
@@ -16,6 +16,7 @@ export type Mutations<S = State> = {
     [MutationTypes.SET_PRIVATE_KEY](state: S, payload: CryptoKey): void;
     [MutationTypes.FORCE_CLOSE_BURGER_MENU](state: S, payload: boolean): void;
     [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S, payload: boolean): void;
+    [MutationTypes.SET_HAS_CERTIFICATE](state: S, payload: boolean): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -45,5 +46,8 @@ export const mutations: MutationTree<State> & Mutations = {
     },
     [MutationTypes.FORCE_CLOSE_BURGER_MENU]() {
         //do nothing. Just force subscribers to act on it
+    },
+    [MutationTypes.SET_HAS_CERTIFICATE](state: State, payload: boolean) {
+        state.hasCertificate = payload;
     },
 };
