@@ -4,8 +4,8 @@
             <div v-for="(pair, index) in chronologicalList" :key="pair">
                 <immatriculation-history-entry
                     class="w-1/2"
-                    :is-first-row="index == 0"
-                    :is-last-row="index == chronologicalList.length - 1"
+                    :is-first-row="index === 0"
+                    :is-last-row="index === chronologicalList.length - 1"
                     :fields-of-study="pair.fieldsOfStudy"
                     :semester="pair.semester"
                 />
