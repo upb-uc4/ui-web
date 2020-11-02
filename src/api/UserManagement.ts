@@ -1,15 +1,15 @@
-import Common from "./Common";
-import { useStore } from "@/use/store/store";
-import User_List from "./api_models/user_management/User_List";
-import { AxiosResponse, AxiosError } from "axios";
-import Student from "./api_models/user_management/Student";
-import Lecturer from "./api_models/user_management/Lecturer";
-import Admin from "./api_models/user_management/Admin";
-import { Role } from "@/entities/Role";
 import { Account } from "@/entities/Account";
-import APIResponse from "./helpers/models/APIResponse";
+import { Role } from "@/entities/Role";
+import { useStore } from "@/use/store/store";
+import { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
+import Admin from "./api_models/user_management/Admin";
+import Lecturer from "./api_models/user_management/Lecturer";
+import Student from "./api_models/user_management/Student";
+import User_List from "./api_models/user_management/User_List";
 import handleAuthenticationError from "./AuthenticationHelper";
+import Common from "./Common";
+import APIResponse from "./helpers/models/APIResponse";
 
 export default class UserManagement extends Common {
     constructor() {

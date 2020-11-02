@@ -1,6 +1,6 @@
-import ResponseHandler from "./ResponseHandler";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
+import ResponseHandler from "./ResponseHandler";
 
 export default class LoginResponseHandler implements ResponseHandler<boolean> {
     handleResponse(response: APIResponse<boolean>): boolean {

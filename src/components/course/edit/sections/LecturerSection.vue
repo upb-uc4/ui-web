@@ -85,8 +85,8 @@
             const input = ref(props.lecturerId);
             const optionsShown = ref(false);
 
-            onBeforeMount(() => {
-                getLecturers();
+            onBeforeMount(async () => {
+                await getLecturers();
             });
 
             const filteredLecturers = computed(() => {

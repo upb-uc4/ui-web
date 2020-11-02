@@ -11,6 +11,9 @@
 - fix image view of private profile on mobile [#651](https://github.com/upb-uc4/ui-web/pull/651)
 - remove delete button in creation forms on mobile [#646](https://github.com/upb-uc4/ui-web/pull/646)
 
+## Refactoring
+- cleanup of imports and onBeforeMount hooks [#655](https://github.com/upb-uc4/ui-web/issues/655)
+
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
 
 ## Bugfix

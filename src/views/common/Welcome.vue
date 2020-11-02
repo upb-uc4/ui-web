@@ -54,8 +54,8 @@
             let busy = ref(false);
             let name = ref("");
 
-            onBeforeMount(() => {
-                getName();
+            onBeforeMount(async () => {
+                await getName();
             });
 
             async function getName() {

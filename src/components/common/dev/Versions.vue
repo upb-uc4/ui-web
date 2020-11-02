@@ -46,8 +46,9 @@
             }
 
             let versions: version[] = [];
-            onBeforeMount(() => {
-                getVersions();
+
+            onBeforeMount(async () => {
+                await getVersions();
             });
 
             async function getVersions() {

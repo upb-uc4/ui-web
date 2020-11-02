@@ -1,12 +1,10 @@
-import UserManagement from "@/api/UserManagement";
-import { Role } from "@/entities/Role";
-import { store } from "@/use/store/store";
-import { MutationTypes } from "@/use/store/mutation-types";
-import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import Student from "@/api/api_models/user_management/Student";
+import UserManagement from "@/api/UserManagement";
 import { Account } from "@/entities/Account";
+import { Role } from "@/entities/Role";
 import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 
 var userManagement: UserManagement;
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
