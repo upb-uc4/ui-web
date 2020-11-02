@@ -7,6 +7,7 @@
 ## Bugfix
 - adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)g
 - fix use of wrong navigation icon on mobile [#649](https://github.com/upb-uc4/ui-web/pull/649)
+- fix image view of private profile on mobile [#651](https://github.com/upb-uc4/ui-web/pull/651)
 - remove delete button in creation forms on mobile [#646](https://github.com/upb-uc4/ui-web/pull/646)
 
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
