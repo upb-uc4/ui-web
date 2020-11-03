@@ -166,7 +166,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/redirect",
+            path: paths.REDIRECT,
             name: "redirect",
             component: Redirect,
             meta: {
@@ -231,7 +231,7 @@ router.beforeEach(async (to, from, next) => {
         return next(paths.LOGIN_PAGE);
     }
 
-    return next("/redirect");
+    return next(paths.REDIRECT);
 });
 
 router.afterEach(async (to, from, next) => {

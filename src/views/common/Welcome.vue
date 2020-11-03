@@ -48,7 +48,7 @@
                 return next(paths.LOGIN_PAGE);
             }
 
-            return next("/redirect");
+            return next(paths.REDIRECT);
         },
 
         setup() {
