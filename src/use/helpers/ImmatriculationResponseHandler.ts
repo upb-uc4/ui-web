@@ -6,7 +6,7 @@ import APIResponse from "@/api/helpers/models/APIResponse";
 import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 import ResponseHandler from "./ResponseHandler";
 
-export default class GenericImmatricultationResponseHandler implements ResponseHandler<boolean> {
+export default class GenericImmatriculationResponseHandler implements ResponseHandler<boolean> {
     handleResponse<T>(response: APIResponse<T>): T {
         if (response.networkError) {
             showNetworkErrorToast();
