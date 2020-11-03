@@ -3,6 +3,7 @@
 ## Feature
 - add support for pseudonymization of student matriculation data
 - add thumbnails to account list [#607](https://github.com/upb-uc4/ui-web/issues/607)
+- add all functionality for creating certificates [#564](https://github.com/upb-uc4/ui-web/issues/564)
 
 ## Bugfix
 - adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)g
