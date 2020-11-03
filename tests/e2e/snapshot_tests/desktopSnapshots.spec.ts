@@ -1,15 +1,12 @@
-import {
-    navigateToAccountList,
-    navigateToAccountForm,
-    navigateToPrivateProfile,
-    navigateToCourseForm,
-    navigateToSettingsPage,
-    navigateToAboutPage,
-} from "../helpers/NavigationHelper";
+import { paths } from "@/use/router/paths";
 import { loginAsDefaultAdmin, loginAsDefaultLecturer } from "../helpers/AuthHelper";
-import { createCourse } from "../helpers/CourseHelper";
-import Course from "@/api/api_models/course_management/Course";
-import { CourseType } from "@/entities/CourseType";
+import {
+    navigateToAccountForm,
+    navigateToAccountList,
+    navigateToCourseForm,
+    navigateToPrivateProfile,
+    navigateToSettingsPage,
+} from "../helpers/NavigationHelper";
 
 // seem to be bugged in the workflow.. will investigate
 describe.skip("Snapshot testing", () => {
@@ -24,7 +21,7 @@ describe.skip("Snapshot testing", () => {
 
     it("Login modal", () => {
         const testName = "login-modal-" + suffix;
-        cy.visit("/welcome");
+        cy.visit(paths.WELCOME_PAGE);
         cy.wait(500);
         cy.get("div[id='loginModal']").toMatchImageSnapshot({ name: testName });
     });

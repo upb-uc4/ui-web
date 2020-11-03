@@ -8,6 +8,7 @@ import WelcomePage from "@/views/common/Welcome.vue";
 import Redirect from "@/views/errors/403.vue";
 import PageNotFound from "@/views/errors/404.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import { paths } from "./paths";
 const LoginView = () => import("@/views/common/Login.vue");
 const StudentCourseView = () => import("@/views/student/StudentCourseList.vue");
 const AllCourseView = () => import("@/views/shared/CourseList.vue");
@@ -24,7 +25,7 @@ const router = createRouter({
     history: routerHistory,
     routes: [
         {
-            path: "/welcome",
+            path: paths.WELCOME_PAGE,
             name: "welcome",
             component: WelcomePage,
             meta: {
@@ -212,7 +213,7 @@ router.beforeEach(async (to, from, next) => {
         if (await store.getters.loggedIn) {
             // We need to explicitly set the title here, because the component is not rendered again if going back from "/welcome" to "/login"
             window.document.title = "Welcome" + suffix;
-            return next("/welcome");
+            return next(paths.WELCOME_PAGE);
         }
     }
 

@@ -75,6 +75,7 @@
     import { ref, onMounted } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
+    import { paths } from "@/use/router/paths";
 
     export default {
         components: {},
@@ -109,7 +110,7 @@
                 const loginSuccess = loginResponseHandler.handleResponse(response);
 
                 if (loginSuccess) {
-                    Router.push("/welcome");
+                    Router.push(paths.WELCOME_PAGE);
                 } else {
                     error.value = true;
                 }
