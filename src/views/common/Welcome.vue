@@ -30,6 +30,7 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "WelcomePage",
@@ -44,7 +45,7 @@
                 return next();
             }
             if (!response.authenticated) {
-                return next("/login");
+                return next(paths.LOGIN_PAGE);
             }
 
             return next("/redirect");

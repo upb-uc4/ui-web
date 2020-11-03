@@ -20,6 +20,7 @@
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import CertificateSection from "@/components/settings/CertificateSection.vue";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "Settings",
@@ -35,7 +36,7 @@
                 return next();
             }
             if (!response.authenticated) {
-                return next("/login");
+                return next(paths.LOGIN_PAGE);
             }
 
             return next("/redirect");

@@ -17,6 +17,7 @@
     import { Role } from "@/entities/Role";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
+    import { paths } from "@/use/router/paths";
 
     export default {
         components: {
@@ -31,7 +32,7 @@
                 return next();
             }
             if (!response.authenticated) {
-                return next("/login");
+                return next(paths.LOGIN_PAGE);
             }
 
             return next("/redirect");

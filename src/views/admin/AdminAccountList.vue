@@ -35,6 +35,7 @@
     import { ref } from "vue";
     import { Role } from "@/entities/Role";
     import RoleFilter from "@/components/account/list/RoleFilter.vue";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "AdminAccountList",
@@ -51,7 +52,7 @@
                 return next();
             }
             if (!response.authenticated) {
-                return next("/login");
+                return next(paths.LOGIN_PAGE);
             }
 
             return next("/redirect");

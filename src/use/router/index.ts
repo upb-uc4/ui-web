@@ -34,7 +34,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/about",
+            path: paths.ABOUT_PAGE,
             name: "about",
             component: AboutPage,
             meta: {
@@ -42,7 +42,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/login",
+            path: paths.LOGIN_PAGE,
             name: "login",
             component: LoginView,
             meta: {
@@ -228,7 +228,7 @@ router.beforeEach(async (to, from, next) => {
         return next();
     }
     if (!response.authenticated) {
-        return next("/login");
+        return next(paths.LOGIN_PAGE);
     }
 
     return next("/redirect");
