@@ -74,7 +74,7 @@ describe("admin", () => {
 
         // create course
         cy.get("#nav_mobile_admin_menu_courses_create").click();
-        cy.url().should("contain", "createCourse");
+        cy.url().should("contain", paths.CREATE_COURSE);
     });
     checkProfile();
 });
@@ -105,7 +105,7 @@ describe("lecturer", () => {
 
         // create course
         cy.get("#nav_mobile_lecturer_menu_courses_create").click();
-        cy.url().should("contain", "createCourse");
+        cy.url().should("contain", paths.CREATE_COURSE);
 
         cy.get(navbar_burger_menu).click();
 

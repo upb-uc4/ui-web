@@ -19,7 +19,7 @@ export function createCourse(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
-    cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
+    cy.url().should("not.eq", Cypress.config().baseUrl + paths.CREATE_COURSE);
     navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
     cy.wait(3000);
@@ -37,7 +37,7 @@ export function createCourseAdmin(course: Course) {
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
-    cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
+    cy.url().should("not.eq", Cypress.config().baseUrl + paths.CREATE_COURSE);
     navigateToCourseListAdmin();
     cy.url().should("contain", "all-courses");
     cy.wait(3000);

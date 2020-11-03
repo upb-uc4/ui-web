@@ -42,7 +42,7 @@ describe("admin", () => {
         // create course
         cy.get("#nav_desktop_admin_menu_courses").trigger("mouseover");
         cy.get("#nav_desktop_admin_menu_courses_create").click();
-        cy.url().should("contain", "createCourse");
+        cy.url().should("contain", paths.CREATE_COURSE);
     });
     checkProfile();
 });
@@ -62,7 +62,7 @@ describe("lecturer", () => {
 
         // create course
         cy.get("#nav_desktop_lecturer_menu_courses_create").click();
-        cy.url().should("contain", "createCourse");
+        cy.url().should("contain", paths.CREATE_COURSE);
 
         // my courses
         cy.get("#nav_desktop_lecturer_menu_courses_my_courses").click();
