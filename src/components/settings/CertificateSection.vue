@@ -8,10 +8,10 @@
                 <label class="block text-gray-600"> Here, you can see and download your personal UC4 security certificate. </label>
             </div>
 
-            <div class="w-full lg:w-2/3">
-                <div class="lg:flex mb-6">
-                    <div class="lg:w-1/2 w-full mb-6 lg:mb-0 flex flex-col lg:mr-16">
-                        <div v-if="!busy" class="w-full">
+            <div v-if="!busy" class="w-full lg:w-2/3">
+                <div v-if="hasCertificate" class="w-full">
+                    <div class="lg:flex mb-6">
+                        <div class="lg:w-1/2 w-full mb-6 lg:mb-0 flex flex-col lg:mr-16">
                             <div class="flex items-baseline w-full">
                                 <label class="text-gray-700 text-md font-medium mb-3">Certificate</label>
                                 <a
@@ -31,10 +31,14 @@
                                 readonly
                             />
                         </div>
-                        <loading-spinner v-else />
                     </div>
                 </div>
+                <div v-else class="w-full flex flex-col">
+                    <label class="text-gray-700 mb-3">You do not have a UC4 certificate, yet.</label>
+                    <button id="createCertificate" class="btn btn-blue-primary w-48" @click="getCertificate()">Create certificate</button>
+                </div>
             </div>
+            <loading-spinner v-else />
         </div>
     </section>
 </template>
@@ -51,9 +55,14 @@
             const busy = ref(false);
             const certificate = ref("");
             let certificateBlobURL = ref("");
+            const hasCertificate = ref(false);
 
             onBeforeMount(async () => {
-                await getCertificate();
+                const store = useStore();
+                hasCertificate.value = await store.getters.hasCertificate;
+                if (hasCertificate.value) {
+                    await getCertificate();
+                }
                 let blob = new Blob([certificate.value], { type: "pem" });
                 certificateBlobURL.value = URL.createObjectURL(blob);
             });
@@ -62,6 +71,11 @@
                 busy.value = true;
                 const store = useStore();
                 certificate.value = (await store.getters.certificate).certificate;
+                if (certificate.value == "") {
+                    hasCertificate.value = false;
+                } else {
+                    hasCertificate.value = true;
+                }
                 busy.value = false;
             }
 
@@ -69,6 +83,8 @@
                 busy,
                 certificate,
                 certificateBlobURL,
+                hasCertificate,
+                getCertificate,
             };
         },
     };

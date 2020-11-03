@@ -8,6 +8,7 @@ import {
     unwrapKey,
     arrayBufferToBase64,
     base64ToArrayBuffer,
+    usedAlgorithmObject,
 } from "@/use/crypto/certificates";
 import { stringToArrayBuffer, arrayBufferToString, toBase64, fromBase64 } from "pvutils";
 import CertificationRequest from "pkijs/src/CertificationRequest";
@@ -40,59 +41,17 @@ describe("Crypto tests", () => {
     it("Tests that keys match", async () => {
         const crypto = window.crypto.subtle;
 
-        const signed = await crypto.sign(
-            {
-                hash: {
-                    name: "SHA-256",
-                },
-                name: "ECDSA",
-            },
-            keypair.privateKey,
-            new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-        );
+        const signed = await crypto.sign(usedAlgorithmObject, keypair.privateKey, new Uint16Array([5, 3, 1, 5, 6, 7, 1]));
 
-        expect(
-            await crypto.verify(
-                {
-                    hash: {
-                        name: "SHA-256",
-                    },
-                    name: "ECDSA",
-                },
-                keypair.publicKey,
-                signed,
-                new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-            )
-        ).toBe(true);
+        expect(await crypto.verify(usedAlgorithmObject, keypair.publicKey, signed, new Uint16Array([5, 3, 1, 5, 6, 7, 1]))).toBe(true);
     });
 
     it("Second keypair is different", async () => {
         const secondKeypair = await createKeyPair();
         const crypto = window.crypto.subtle;
 
-        const signed = await crypto.sign(
-            {
-                hash: {
-                    name: "SHA-256",
-                },
-                name: "ECDSA",
-            },
-            secondKeypair.privateKey,
-            new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-        );
-        expect(
-            await crypto.verify(
-                {
-                    hash: {
-                        name: "SHA-256",
-                    },
-                    name: "ECDSA",
-                },
-                keypair.publicKey,
-                signed,
-                new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-            )
-        ).toBe(false);
+        const signed = await crypto.sign(usedAlgorithmObject, secondKeypair.privateKey, new Uint16Array([5, 3, 1, 5, 6, 7, 1]));
+        expect(await crypto.verify(usedAlgorithmObject, keypair.publicKey, signed, new Uint16Array([5, 3, 1, 5, 6, 7, 1]))).toBe(false);
     });
 
     it("PEM export import works", async () => {
@@ -102,29 +61,8 @@ describe("Crypto tests", () => {
 
         expect(importedKey).toEqual(keypair.privateKey);
 
-        const signed = await crypto.sign(
-            {
-                hash: {
-                    name: "SHA-256",
-                },
-                name: "ECDSA",
-            },
-            importedKey,
-            new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-        );
-        expect(
-            await crypto.verify(
-                {
-                    hash: {
-                        name: "SHA-256",
-                    },
-                    name: "ECDSA",
-                },
-                keypair.publicKey,
-                signed,
-                new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-            )
-        ).toBe(true);
+        const signed = await crypto.sign(usedAlgorithmObject, importedKey, new Uint16Array([5, 3, 1, 5, 6, 7, 1]));
+        expect(await crypto.verify(usedAlgorithmObject, keypair.publicKey, signed, new Uint16Array([5, 3, 1, 5, 6, 7, 1]))).toBe(true);
     });
 
     it("Wrapping and unwrapping key works", async () => {
@@ -139,46 +77,17 @@ describe("Crypto tests", () => {
 
         const unwrapped = await unwrapKey(wrapped2, info.key, iv);
 
-        const signed = await crypto.sign(
-            {
-                hash: {
-                    name: "SHA-256",
-                },
-                name: "ECDSA",
-            },
-            unwrapped,
-            new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-        );
-        expect(
-            await crypto.verify(
-                {
-                    hash: {
-                        name: "SHA-256",
-                    },
-                    name: "ECDSA",
-                },
-                keypair.publicKey,
-                signed,
-                new Uint16Array([5, 3, 1, 5, 6, 7, 1])
-            )
-        ).toBe(true);
+        const signed = await crypto.sign(usedAlgorithmObject, unwrapped, new Uint16Array([5, 3, 1, 5, 6, 7, 1]));
+        expect(await crypto.verify(usedAlgorithmObject, keypair.publicKey, signed, new Uint16Array([5, 3, 1, 5, 6, 7, 1]))).toBe(true);
     });
 
     it("Certificate creation works", async () => {
         const csr: CertificationRequest = await createCSRObject(keypair, "exampleId");
 
         const crypto = window.crypto.subtle;
-        const publicKeyInfo = await crypto.exportKey("spki", keypair.publicKey);
 
         expect(csr.signatureAlgorithm.algorithmId).toEqual("1.2.840.10045.4.3.2");
 
-        const algorithm = {
-            hash: {
-                name: "SHA-256",
-            },
-            name: "ECDSA",
-            namedCurve: "P-256",
-        };
         expect(await csr.verify()).toBe(true);
     });
 });

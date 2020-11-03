@@ -15,6 +15,7 @@ import {
     arrayBufferToBase64,
     base64ToArrayBuffer,
 } from "@/use/crypto/certificates";
+import { usedAlgorithmObject } from "@/use/crypto/certificates";
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as {
     username: string;
@@ -92,8 +93,8 @@ describe("Certificate management tests", () => {
 
         // test that we fetched the correct key and it works
         const crypto = window.crypto.subtle;
-        const signature = await crypto.sign({ name: "RSASSA-PKCS1-v1_5" }, decryptedPrivateKey, base64ToArrayBuffer("asdf"));
-        const success = await crypto.verify({ name: "RSASSA-PKCS1-v1_5" }, keypair.publicKey, signature, base64ToArrayBuffer("asdf"));
+        const signature = await crypto.sign(usedAlgorithmObject, decryptedPrivateKey, base64ToArrayBuffer("asdf"));
+        const success = await crypto.verify(usedAlgorithmObject, keypair.publicKey, signature, base64ToArrayBuffer("asdf"));
         expect(success).toBe(true);
     });
 

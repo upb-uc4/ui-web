@@ -1,18 +1,18 @@
 import * as asn1js from "asn1js";
 import Attribute from "pkijs/src/Attribute";
+import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
 import CertificationRequest from "pkijs/src/CertificationRequest";
 import { getCrypto } from "pkijs/src/common";
 import Extension from "pkijs/src/Extension";
 import Extensions from "pkijs/src/Extensions";
-import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
-import { stringToArrayBuffer, arrayBufferToString, toBase64, fromBase64 } from "pvutils";
+import { arrayBufferToString, fromBase64, stringToArrayBuffer, toBase64 } from "pvutils";
 import formatPEM from "./formatPem";
 
 const signAlg = "ECDSA";
 const hashAlg = "SHA-256";
 const ellipticCurve = "P-256";
 
-const usedAlgorithmObject = {
+export const usedAlgorithmObject = {
     hash: {
         name: hashAlg,
     },
@@ -20,12 +20,12 @@ const usedAlgorithmObject = {
     name: signAlg,
 };
 
-const wrappingAlgorithmObject = {
+export const wrappingAlgorithmObject = {
     name: "AES-GCM",
     length: 256,
 };
 
-const passwordDerivationAlgorithmObject = {
+export const passwordDerivationAlgorithmObject = {
     name: "PBKDF2",
     iterations: 100000,
     hash: "SHA-256",
@@ -149,6 +149,15 @@ export async function pemStringToPublicKey(pem: string): Promise<CryptoKey> {
 }
 
 export async function wrapKey(key: CryptoKey, wrappingKey: CryptoKey, iv: ArrayBuffer): Promise<ArrayBuffer> {
+    // Firefox 1.0+
+    const userAgentString = navigator.userAgent;
+    const firefoxAgent = userAgentString.indexOf("Firefox") > -1;
+
+    if (firefoxAgent) {
+        // firefox implementation of subtle crypto wrapKey is broken, imitate behaivour using encryption
+        return _wrapKeyFirefox(key, wrappingKey, iv);
+    }
+
     const crypto = getCrypto();
     if (crypto == null) {
         return Promise.reject("No WebCrypto extension found");
@@ -163,7 +172,31 @@ export async function wrapKey(key: CryptoKey, wrappingKey: CryptoKey, iv: ArrayB
     return result;
 }
 
+async function _wrapKeyFirefox(key: CryptoKey, wrappingKey: CryptoKey, iv: ArrayBuffer): Promise<ArrayBuffer> {
+    const crypto = getCrypto();
+    if (crypto == null) {
+        return Promise.reject("No WebCrypto extension found");
+    }
+    const algorithm = {
+        ...wrappingAlgorithmObject,
+        iv: iv,
+    };
+
+    const exportedKey = await crypto.exportKey("pkcs8", key);
+    const encryptedKey = await window.crypto.subtle.encrypt(algorithm, wrappingKey, exportedKey);
+
+    return encryptedKey;
+}
+
 export async function unwrapKey(key: ArrayBuffer, wrappingKey: CryptoKey, iv: ArrayBuffer): Promise<CryptoKey> {
+    // Firefox 1.0+
+    const userAgentString = navigator.userAgent;
+    const firefoxAgent = userAgentString.indexOf("Firefox") > -1;
+
+    if (firefoxAgent) {
+        // firefox implementation of subtle crypto wrapKey is broken, imitate behaivour using encryption
+        return _unwrapKeyFirefox(key, wrappingKey, iv);
+    }
     const crypto = getCrypto();
     if (crypto == null) {
         return Promise.reject("No WebCrypto extension found");
@@ -176,6 +209,22 @@ export async function unwrapKey(key: ArrayBuffer, wrappingKey: CryptoKey, iv: Ar
     const result = await crypto.unwrapKey("pkcs8", key, wrappingKey, unwrapAlgorithm, usedAlgorithmObject, true, ["sign"]);
 
     return result;
+}
+
+async function _unwrapKeyFirefox(key: ArrayBuffer, wrappingKey: CryptoKey, iv: ArrayBuffer): Promise<CryptoKey> {
+    const crypto = getCrypto();
+    if (crypto == null) {
+        return Promise.reject("No WebCrypto extension found");
+    }
+    const unwrapAlgorithm = {
+        ...wrappingAlgorithmObject,
+        iv: iv,
+    };
+
+    const decryptedKey = await crypto.decrypt(unwrapAlgorithm, wrappingKey, key);
+    const importedKey = await crypto.importKey("pkcs8", decryptedKey, usedAlgorithmObject, true, ["sign"]);
+
+    return importedKey;
 }
 
 export async function deriveKeyFromPassword(password: string, salt?: string): Promise<{ key: CryptoKey; salt: string }> {
@@ -195,7 +244,7 @@ export async function deriveKeyFromPassword(password: string, salt?: string): Pr
         salt: base64ToArrayBuffer(salt),
     };
 
-    const usages: KeyUsage[] = ["wrapKey", "unwrapKey"];
+    const usages: KeyUsage[] = ["wrapKey", "unwrapKey", "encrypt", "decrypt"];
 
     const keyMaterial = <CryptoKey>await crypto.importKey("raw", stringToArrayBuffer(password), "PBKDF2", false, ["deriveKey"]);
 

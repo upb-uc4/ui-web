@@ -45,6 +45,10 @@
             let history: MatriculationData = reactive({} as MatriculationData);
             let chronologicalList = ref({});
 
+            onBeforeMount(async () => {
+                await getHistory();
+            });
+
             async function getHistory() {
                 emit("update:busy", true);
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
@@ -55,10 +59,6 @@
                 chronologicalList.value = historyToSortedList(history);
                 emit("update:busy", false);
             }
-
-            onBeforeMount(() => {
-                getHistory();
-            });
 
             return {
                 chronologicalList,

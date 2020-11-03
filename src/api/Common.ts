@@ -1,5 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
-import { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
 export default class Common {
     _axios: AxiosInstance;
