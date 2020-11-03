@@ -1,3 +1,4 @@
+import { paths } from "@/use/router/paths";
 import { AxiosError, AxiosResponse } from "axios";
 import Course from "./api_models/course_management/Course";
 import APIError from "./api_models/errors/APIError";
@@ -7,11 +8,11 @@ import APIResponse from "./helpers/models/APIResponse";
 
 export default class CourseManagement extends Common {
     constructor() {
-        super("/course-management");
+        super(paths.LECTURER_MY_COURSES);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/course-management");
+        return super.getVersion(paths.LECTURER_MY_COURSES);
     }
 
     async getCourses(courseName?: string, lecturerId?: string): Promise<APIResponse<Course[]>> {

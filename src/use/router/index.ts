@@ -59,7 +59,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/course-management",
+            path: paths.LECTURER_MY_COURSES,
             name: "lecturer.myCourses",
             props: { showAllCourses: false },
             component: AllCourseView,
