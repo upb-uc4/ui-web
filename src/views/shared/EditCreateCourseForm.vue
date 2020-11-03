@@ -104,6 +104,7 @@
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -277,7 +278,7 @@
             }
 
             function back() {
-                Router.push("/all-courses");
+                Router.push(paths.ALL_COURSES);
             }
 
             return {

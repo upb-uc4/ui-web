@@ -69,7 +69,7 @@ const router = createRouter({
         },
 
         {
-            path: "/all-courses",
+            path: paths.ALL_COURSES,
             name: "shared.courses",
             props: { showAllCourses: true },
             component: AllCourseView,

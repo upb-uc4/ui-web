@@ -1,6 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import CourseManagement from "@/api/CourseManagement";
 import { Account } from "@/entities/Account";
+import { paths } from "@/use/router/paths";
 import { loginAsUser } from "./AuthHelper";
 import {
     navigateToCourseForm,
@@ -74,7 +75,7 @@ export function deleteCourse(course: Course) {
     cy.get("#modal-wrapper").should("exist");
     cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
     cy.get('button[id="deleteCourseModalDelete"]').click();
-    cy.url().should("contain", "/all-courses");
+    cy.url().should("contain", paths.ALL_COURSES);
     cy.get("div").contains(course.courseName).should("not.exist");
 }
 
@@ -89,7 +90,7 @@ export function deleteCourseAdmin(course: Course) {
     cy.get("#modal-wrapper").should("exist");
     cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
     cy.get('button[id="deleteCourseModalDelete"]').click();
-    cy.url().should("contain", "/all-courses");
+    cy.url().should("contain", paths.ALL_COURSES);
     cy.get("div").contains(course.courseName).should("not.exist");
 }
 
