@@ -142,7 +142,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/createAccount",
+            path: paths.CREATE_ACCOUNT,
             name: "accountForm.create",
             props: {
                 editMode: false,

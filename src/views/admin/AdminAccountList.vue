@@ -7,7 +7,7 @@
                     <seach-bar v-model:message="message" class="sm:mr-4" @refresh="refresh" />
 
                     <router-link
-                        to="/createAccount"
+                        :to="url"
                         class="flex flex-row items-center justify-center mb-4 sm:mb-0 sm:w-32 w-full border-2 rounded-lg border-gray-300 h-12 px-12 btn-green-primary-500"
                     >
                         <p class="mr-3 font-semibold">Add</p>
@@ -20,7 +20,7 @@
 
             <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
             <div class="flex justify-center mt-16">
-                <router-link to="/createAccount">
+                <router-link :to="url">
                     <button id="addAccount" title="Add a new User" class="px-4 btn btn-green-primary-500">New Account</button>
                 </router-link>
             </div>
@@ -60,6 +60,7 @@
         setup() {
             let message = ref("");
             let refreshKey = ref(false);
+            let url = paths.CREATE_ACCOUNT;
 
             let selectedRole = ref("All" as Role);
 
@@ -71,6 +72,7 @@
                 refresh,
                 message,
                 selectedRole,
+                url,
             };
         },
     };

@@ -16,6 +16,7 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
+import { paths } from "@/use/router/paths";
 import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToAccountList } from "./helpers/NavigationHelper";
 import {
@@ -100,7 +101,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Show new account page", function () {
         cy.get('button[id="addAccount"]').click({ force: true });
-        cy.url().should("contain", "/createAccount");
+        cy.url().should("contain", paths.CREATE_ACCOUNT);
     });
 
     it("Create Account button is disabled", function () {
@@ -160,7 +161,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Show new account page", () => {
         cy.get('button[id="addAccount"]').click({ force: true });
-        cy.url().should("contain", "/createAccount");
+        cy.url().should("contain", paths.CREATE_ACCOUNT);
     });
 
     it("Show validation errors", () => {
