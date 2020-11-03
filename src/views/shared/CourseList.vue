@@ -9,7 +9,7 @@
                     <router-link
                         id="createAccountIcon"
                         title="Add a new Course"
-                        to="/createCourse"
+                        :to="url"
                         class="flex flex-row items-center justify-center mb-4 sm:mb-0 sm:w-32 w-full border-2 rounded-lg border-gray-300 h-12 px-12 btn-green-primary-500"
                     >
                         <p class="mr-3 font-semibold">Add</p>
@@ -23,7 +23,7 @@
             <course-list :key="refreshKey" :show-all-courses="showAllCourses" :selected-type="selectedType" :filter="message" />
 
             <div class="flex justify-center mt-16">
-                <router-link to="/createCourse">
+                <router-link :to="url">
                     <button id="addCourse" class="px-4 btn btn-green-primary-500">New Course</button>
                 </router-link>
             </div>
@@ -39,6 +39,7 @@
     import { CourseType } from "@/entities/CourseType";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "LecturerCourseList",
@@ -57,6 +58,7 @@
             let message = ref("");
             let refreshKey = ref(false);
             let title = ref(props.showAllCourses ? "All Courses" : "My Courses");
+            let url = paths.CREATE_COURSE;
             watch(
                 () => props.showAllCourses,
                 () => {
@@ -76,6 +78,7 @@
                 message,
                 selectedType,
                 title,
+                url,
             };
         },
     };

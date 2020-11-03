@@ -90,7 +90,7 @@ const router = createRouter({
         },
 
         {
-            path: "/createCourse",
+            path: paths.CREATE_COURSE,
             name: "courseForm.create",
             props: {
                 editMode: false,

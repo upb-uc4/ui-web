@@ -1,6 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
+import { paths } from "@/use/router/paths";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
@@ -75,7 +76,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Show new course page", () => {
         cy.get('button[id="addCourse"]').click({ force: true });
-        cy.url().should("contain", "/createCourse");
+        cy.url().should("contain", paths.CREATE_COURSE);
     });
 
     it("Check existence of all fields", () => {
@@ -125,7 +126,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Show new course page", () => {
         cy.get('button[id="addCourse"]').click({ force: true });
-        cy.url().should("contain", "/createCourse");
+        cy.url().should("contain", paths.CREATE_COURSE);
     });
 
     it("Filtering lecturer list in selection works", () => {
