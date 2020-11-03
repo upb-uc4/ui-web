@@ -50,7 +50,7 @@ describe("Certificate Management", function () {
     });
 
     it("Show encryption modal", function () {
-        cy.get("buttone[id='createButton']").click();
+        cy.get("button[id='createButton']").click();
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains(
             "Please choose a password to encrypt your private key, so it can be securely stored on our servers. Ensure that you do not lose this password as it cannot be restored."
