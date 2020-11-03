@@ -102,7 +102,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/editCourse/:id",
+            path: paths.EDIT_COURSE + "/:id",
             name: "courseForm.edit",
             props: {
                 editMode: true,

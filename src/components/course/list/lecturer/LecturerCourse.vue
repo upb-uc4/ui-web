@@ -58,6 +58,7 @@
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "LecturerCourse",
@@ -87,7 +88,7 @@
                     : "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/de.svg";
 
             function editCourse() {
-                router.push({ path: "/editCourse/" + props.course.courseId });
+                router.push({ path: paths.EDIT_COURSE + "/" + props.course.courseId });
             }
 
             return {
