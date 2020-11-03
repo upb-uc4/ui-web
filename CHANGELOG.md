@@ -14,6 +14,7 @@
 
 ## Refactoring
 - cleanup of imports and onBeforeMount hooks [#655](https://github.com/upb-uc4/ui-web/issues/655)
+- make all URLs kebab-case [#676](https://github.com/upb-uc4/ui-web/issues/676)
 
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
 
