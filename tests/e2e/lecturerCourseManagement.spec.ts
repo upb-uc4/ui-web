@@ -12,8 +12,8 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
 import { createCourse, deleteCourse, deleteCourses } from "./helpers/CourseHelper";
+import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);

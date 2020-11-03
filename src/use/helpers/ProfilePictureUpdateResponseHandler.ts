@@ -1,8 +1,8 @@
 import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import APIResponse from "@/api/helpers/models/APIResponse";
-import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 import ResponseHandler from "./ResponseHandler";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 
 export default class ProfilePictureUpdateResponseHandler implements ResponseHandler<boolean> {
     errorList: Error[] = [] as Error[];

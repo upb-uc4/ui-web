@@ -39,8 +39,8 @@
             let busy = ref(false);
             let users = ref([] as User[]);
 
-            onBeforeMount(() => {
-                getUsers();
+            onBeforeMount(async () => {
+                await getUsers();
             });
 
             async function getUsers() {

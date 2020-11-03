@@ -1,10 +1,10 @@
 import Admin from "@/api/api_models/user_management/Admin";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
-import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
-import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 import ResponseHandler from "./ResponseHandler";
+import handleAuthenticationError from "@/api/AuthenticationHelper";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 
 export default class ProfileResponseHandler implements ResponseHandler<Student | Lecturer | Admin> {
     handleResponse(response: APIResponse<Student | Lecturer | Admin>): Student | Lecturer | Admin {

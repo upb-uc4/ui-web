@@ -1,9 +1,9 @@
 import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
-import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
-import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 import ResponseHandler from "./ResponseHandler";
+import handleAuthenticationError from "@/api/AuthenticationHelper";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
