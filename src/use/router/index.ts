@@ -154,7 +154,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/editAccount/:username",
+            path: paths.EDIT_ACCOUNT + "/:username",
             name: "accountForm.edit",
             props: {
                 editMode: true,

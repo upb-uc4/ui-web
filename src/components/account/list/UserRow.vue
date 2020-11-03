@@ -68,6 +68,7 @@
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
     import { onBeforeMount, ref } from "vue";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "AccountRow",
@@ -86,7 +87,7 @@
         setup(props: any) {
             let profilePicture = ref("");
             function editAccount(username: string) {
-                router.push({ path: "/editAccount/" + username });
+                router.push({ path: paths.EDIT_ACCOUNT + "/" + username });
             }
             const isStudent = props.user.role === Role.STUDENT;
             const isLecturer = props.user.role === Role.LECTURER;

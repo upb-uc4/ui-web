@@ -89,7 +89,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Pick picture as admin", function () {
-        cy.visit(`/editAccount/${student.username}`);
+        cy.visit(paths.EDIT_ACCOUNT + `/${student.username}`);
         cy.wait(3000);
         cy.get("button[id='uploadPicture']").should("be.enabled");
         cy.get("button[id='deletePicture']").should("be.enabled");
@@ -177,7 +177,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Login as admin and open student's account page", function () {
         loginAsDefaultAdmin();
-        cy.visit(`/editAccount/${student.username}`);
+        cy.visit(paths.EDIT_ACCOUNT + `/${student.username}`);
         cy.wait(2500);
     });
 
