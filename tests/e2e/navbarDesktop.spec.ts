@@ -30,7 +30,7 @@ describe("admin", () => {
         //create account
         cy.get("#nav_desktop_admin_menu_manage_accounts").trigger("mouseover");
         cy.get("#nav_desktop_admin_menu_manage_accounts_create").click();
-        cy.url().should("contain", "createAccount");
+        cy.url().should("contain", paths.CREATE_ACCOUNT);
     });
 
     it("courses", () => {

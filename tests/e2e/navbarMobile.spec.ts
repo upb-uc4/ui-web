@@ -59,7 +59,7 @@ describe("admin", () => {
 
         //create account
         cy.get("#nav_mobile_admin_menu_manage_accounts_create").click();
-        cy.url().should("contain", "createAccount");
+        cy.url().should("contain", paths.CREATE_ACCOUNT);
     });
 
     it("courses", () => {
