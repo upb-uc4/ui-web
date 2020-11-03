@@ -20,6 +20,7 @@ describe("guest", () => {
 
     it("login", () => {
         cy.visit(paths.HOME);
+        cy.wait(500);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         cy.url().should("contain", "login");
@@ -27,6 +28,7 @@ describe("guest", () => {
 
     it("about", () => {
         cy.visit(paths.HOME);
+        cy.wait(500);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_about).click();
         cy.url().should("contain", paths.ABOUT_PAGE);
@@ -40,6 +42,7 @@ describe("admin", () => {
 
     it("login", () => {
         cy.visit(paths.HOME);
+        cy.wait(500);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         loginAsDefaultAdmin();
@@ -86,6 +89,7 @@ describe("lecturer", () => {
 
     it("login", () => {
         cy.visit(paths.HOME);
+        cy.wait(500);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         loginAsDefaultLecturer();
@@ -123,6 +127,7 @@ describe("student", () => {
 
     it("login", () => {
         cy.visit(paths.HOME);
+        cy.wait(500);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         loginAsDefaultStudent();
@@ -148,7 +153,7 @@ describe("menu", () => {
 
     it("toggleMenu", () => {
         cy.visit(paths.HOME);
-        cy.wait(50);
+        cy.wait(500);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_burger_menu_list).should("be.visible");
         cy.get(navbar_burger_menu).click();
@@ -157,7 +162,7 @@ describe("menu", () => {
 
     it("closeOnTransition", () => {
         cy.visit(paths.HOME);
-        cy.wait(50);
+        cy.wait(500);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_burger_menu_list).should("be.visible");
         cy.get(navbar_about).click();
