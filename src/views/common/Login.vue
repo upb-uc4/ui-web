@@ -86,7 +86,7 @@
             let error = ref(false);
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
-            function togglePassword() {
+            async function togglePassword() {
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 
