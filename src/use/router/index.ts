@@ -174,7 +174,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/settings",
+            path: paths.SETTINGS,
             name: "settings",
             component: Settings,
             meta: {
