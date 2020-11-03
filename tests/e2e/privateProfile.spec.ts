@@ -2,6 +2,7 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { Country } from "@/entities/Country";
+import { paths } from "@/use/router/paths";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
 import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
@@ -196,7 +197,7 @@ describe("Change Profile Information", () => {
 
     it("Refresh", () => {
         cy.reload();
-        cy.url().should("contain", "/profile");
+        cy.url().should("contain", paths.PRIVATE_PROFILE);
     });
 
     it("Check changed information", () => {
@@ -250,7 +251,7 @@ describe("Change Profile Information", () => {
 
     it("Refresh", () => {
         cy.reload();
-        cy.url().should("contain", "/profile");
+        cy.url().should("contain", paths.PRIVATE_PROFILE);
     });
 
     it("Check changed information", () => {

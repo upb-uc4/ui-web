@@ -114,7 +114,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/user/:username",
+            path: paths.PUBLIC_PROFILE + "/:username",
             name: "profile.public",
             props: { isPrivate: false },
             component: ProfileWrapper,
@@ -124,7 +124,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/profile",
+            path: paths.PRIVATE_PROFILE,
             name: "profile.private",
             props: { isPrivate: true },
             component: ProfileWrapper,

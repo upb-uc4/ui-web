@@ -1,6 +1,7 @@
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
+import { paths } from "@/use/router/paths";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
@@ -127,7 +128,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Login as student and navigate to private profile", function () {
         loginAsUser(studentAuthUser);
-        cy.visit("/profile");
+        cy.visit(paths.PRIVATE_PROFILE);
         cy.wait(2500);
     });
 

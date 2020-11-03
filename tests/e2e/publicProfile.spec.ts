@@ -69,7 +69,7 @@ describe("Show public profile correctly", () => {
         cy.url().should("contain", paths.STUDENT_COURSES);
         cy.wait(2000);
         cy.get("div").contains(course.courseName).parent().parent().find("a[id='showLecturer']").click();
-        cy.url().should("contain", "/user/lecturer");
+        cy.url().should("contain", paths.PUBLIC_PROFILE + "/lecturer");
     });
 
     it("Public Profile contains correct information", () => {
