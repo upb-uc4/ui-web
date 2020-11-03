@@ -44,7 +44,7 @@
         "@types/pkijs": "0.0.5",
         "axios": "^0.20.0",
         "core-js": "^3.6.5",
-        "jest": "^26.6.1",
+        "jest": "^26.6.2",
         "lodash": "^4.17.20",
         "pkijs": "^2.1.90",
         "random-bigint": "0.0.1",
@@ -55,17 +55,17 @@
         "vuex": "^4.0.0-beta.4"
     },
     "devDependencies": {
-        "@cypress/code-coverage": "^3.8.2",
+        "@cypress/code-coverage": "^3.8.3",
         "@peculiar/webcrypto": "^1.1.3",
         "@tailwindcss/custom-forms": "^0.2.1",
         "@types/jest": "^26.0.15",
-        "@types/lodash": "^4.14.162",
+        "@types/lodash": "^4.14.164",
         "@types/node": "^14.14.6",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "@vue/cli-plugin-babel": "^4.5.8",
         "@vue/cli-plugin-eslint": "^4.5.8",
-        "@vue/cli-plugin-router": "^4.5.7",
+        "@vue/cli-plugin-router": "^4.5.8",
         "@vue/cli-plugin-typescript": "^4.5.8",
         "@vue/cli-plugin-unit-jest": "^4.5.8",
         "@vue/cli-plugin-vuex": "^4.5.8",
@@ -85,12 +85,12 @@
         "eslint-plugin-prettier": "^3.1.4",
         "eslint-plugin-vue": "^7.1.0",
         "husky": "^4.3.0",
-        "jest": "^26.6.1",
+        "jest": "^26.6.2",
         "jest-serializer-vue": "^2.0.2",
-        "lint-staged": "^10.5.0",
+        "lint-staged": "^10.5.1",
         "npm-run-all": "^4.1.5",
         "prettier": "^2.1.2",
-        "typescript": "^4.0.3"
+        "typescript": "^4.0.5"
     },
     "jest": {
         "globals": {

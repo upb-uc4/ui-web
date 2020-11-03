@@ -1,13 +1,12 @@
-import Lecturer from "@/api/api_models/user_management/Lecturer";
-import { Account } from "@/entities/Account";
-import { navigateToAccountForm, navigateToAccountList } from "./NavigationHelper";
-import Student from "@/api/api_models/user_management/Student";
-import { loginAsDefaultAdmin, loginAsUser, logout } from "./AuthHelper";
-import User from "@/api/api_models/user_management/User";
 import Admin from "@/api/api_models/user_management/Admin";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
+import Student from "@/api/api_models/user_management/Student";
+import User from "@/api/api_models/user_management/User";
 import UserManagement from "@/api/UserManagement";
+import { Account } from "@/entities/Account";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
-import { readFileSync } from "fs";
+import { loginAsUser } from "./AuthHelper";
+import { navigateToAccountForm, navigateToAccountList } from "./NavigationHelper";
 import { UserWithAuth } from "./UserWithAuth";
 
 export function createNewLecturer(lecturer: Lecturer, lecturerAuthUser: Account) {

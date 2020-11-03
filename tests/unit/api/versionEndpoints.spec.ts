@@ -1,6 +1,7 @@
 import UserManagement from "@/api/UserManagement";
 import CourseManagement from "@/api/CourseManagement";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
+import CourseManagement from "@/api/CourseManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 

@@ -1,4 +1,4 @@
-import { loginAsDefaultLecturer, loginAsDefaultAdmin, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
+import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 
 describe("Login behaviour", () => {
     before(() => {
