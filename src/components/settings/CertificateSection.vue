@@ -33,7 +33,7 @@
                 </div>
                 <div v-else class="w-full flex flex-col">
                     <label class="text-gray-700 mb-3">You do not have a UC4 certificate, yet.</label>
-                    <button class="btn btn-blue-primary w-48" @click="getCertificate()">Create certificate</button>
+                    <button id="createCertificate" class="btn btn-blue-primary w-48" @click="getCertificate()">Create certificate</button>
                 </div>
             </div>
             <loading-spinner v-else />
