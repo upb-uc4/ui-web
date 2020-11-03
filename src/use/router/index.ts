@@ -50,7 +50,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/courses",
+            path: paths.STUDENT_COURSES,
             name: "student.courses",
             component: StudentCourseView,
             meta: {

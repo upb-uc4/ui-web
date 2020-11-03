@@ -1,5 +1,6 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
+import { paths } from "@/use/router/paths";
 import { getMachineUserAuth, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
@@ -65,7 +66,7 @@ describe("Show public profile correctly", () => {
 
     it("Navigate to 'lecturer's public profile via created course", () => {
         navigateToCourseListStudent();
-        cy.url().should("contain", "/courses");
+        cy.url().should("contain", paths.STUDENT_COURSES);
         cy.wait(2000);
         cy.get("div").contains(course.courseName).parent().parent().find("a[id='showLecturer']").click();
         cy.url().should("contain", "/user/lecturer");
