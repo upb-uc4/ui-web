@@ -80,7 +80,7 @@ const router = createRouter({
         },
 
         {
-            path: "/accounts",
+            path: paths.ACCOUNT_LIST,
             name: "accountlist",
             component: AdminAccountListView,
             meta: {

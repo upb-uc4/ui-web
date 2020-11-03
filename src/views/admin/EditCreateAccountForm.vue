@@ -139,6 +139,7 @@
     import { onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
     import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -386,7 +387,7 @@
             }
 
             function back() {
-                Router.push("/accounts");
+                Router.push(paths.ACCOUNT_LIST);
             }
 
             return {

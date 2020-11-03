@@ -4,6 +4,7 @@ import Student from "@/api/api_models/user_management/Student";
 import User from "@/api/api_models/user_management/User";
 import UserManagement from "@/api/UserManagement";
 import { Account } from "@/entities/Account";
+import { paths } from "@/use/router/paths";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { loginAsUser } from "./AuthHelper";
 import { navigateToAccountForm, navigateToAccountList } from "./NavigationHelper";
@@ -118,7 +119,7 @@ export function deleteUser(user: User) {
     cy.get('button[id="deleteAccountModalDelete"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
-    cy.url().should("contain", "/accounts");
+    cy.url().should("contain", paths.ACCOUNT_LIST);
     cy.get(`div[id='user_${user.username}']`).should("not.exist");
     cy.get("div[id='user_student']").should("exist");
     cy.get("div[id='user_lecturer']").should("exist");
