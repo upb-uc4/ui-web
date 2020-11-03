@@ -82,6 +82,6 @@ describe("Show public profile correctly", () => {
 
     it("Back button works", () => {
         cy.get("button[id='navigateBack']").click();
-        cy.url().should("contain", "courses");
+        cy.url().should("contain", paths.STUDENT_COURSES);
     });
 });

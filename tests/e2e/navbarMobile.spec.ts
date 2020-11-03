@@ -29,7 +29,7 @@ describe("guest", () => {
         cy.visit(paths.HOME);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_about).click();
-        cy.url().should("contain", "about");
+        cy.url().should("contain", paths.ABOUT_PAGE);
     });
 });
 
@@ -136,7 +136,7 @@ describe("student", () => {
 
         //all courses
         cy.get("#nav_mobile_student_menu_courses_all").click();
-        cy.url().should("contain", "courses");
+        cy.url().should("contain", paths.STUDENT_COURSES);
     });
     checkProfile();
 });
@@ -175,13 +175,13 @@ function checkProfile() {
 
         //profile
         cy.get("#nav_mobile_profile").click();
-        cy.url().should("contain", "profile");
+        cy.url().should("contain", paths.PRIVATE_PROFILE);
 
         cy.get(navbar_burger_menu).click();
 
         //settings
         cy.get("#nav_mobile_settings").click();
-        cy.url().should("contain", "settings");
+        cy.url().should("contain", paths.SETTINGS);
 
         cy.get(navbar_burger_menu).click();
 

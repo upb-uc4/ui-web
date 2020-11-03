@@ -26,6 +26,7 @@
 <script lang="ts">
     import { useStore } from "@/use/store/store";
     import Router from "@/use/router";
+    import { paths } from "@/use/router/paths";
 
     export default {
         name: "BaseNavbar",
@@ -33,7 +34,7 @@
             function routeLogo() {
                 let store = useStore();
                 let loggedIn = store.getters.loggedIn;
-                let logoTargetRoute = loggedIn ? "welcome" : "login";
+                let logoTargetRoute = loggedIn ? paths.WELCOME_PAGE : paths.LOGIN_PAGE;
                 Router.push(logoTargetRoute);
             }
             return { routeLogo };

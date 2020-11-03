@@ -82,7 +82,7 @@ describe("student", () => {
 
         //all courses
         cy.get("#nav_desktop_student_menu_courses_all").click();
-        cy.url().should("contain", "courses");
+        cy.url().should("contain", paths.STUDENT_COURSES);
     });
     checkProfile();
 });
@@ -95,11 +95,11 @@ function checkProfile() {
 
         //profile
         cy.get("#nav_desktop_profile").click();
-        cy.url().should("contain", "profile");
+        cy.url().should("contain", paths.PRIVATE_PROFILE);
 
         //settings
         cy.get("#nav_desktop_settings").click();
-        cy.url().should("contain", "settings");
+        cy.url().should("contain", paths.SETTINGS);
 
         logout();
     });

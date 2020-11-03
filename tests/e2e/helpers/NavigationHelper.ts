@@ -1,43 +1,45 @@
+import { paths } from "@/use/router/paths";
+
 export function navigateToAccountList() {
-    cy.visit("accounts");
+    cy.visit(paths.ACCOUNT_LIST);
 }
 
 export function navigateToCourseListAdmin() {
-    cy.visit("all-courses");
+    cy.visit(paths.ALL_COURSES);
 }
 
 export function navigateToAccountForm() {
-    cy.visit("createAccount");
+    cy.visit(paths.CREATE_ACCOUNT);
 }
 
 export function navigateToCourseListLecturer() {
-    cy.visit("all-courses");
+    cy.visit(paths.ALL_COURSES);
 }
 
 export function navigateToMyCoursesLecturer() {
-    cy.visit("course-management");
+    cy.visit(paths.LECTURER_MY_COURSES);
 }
 
 export function navigateToCourseListStudent() {
-    cy.visit("courses");
+    cy.visit(paths.STUDENT_COURSES);
 }
 
 export function navigateToCourseForm() {
-    cy.visit("createCourse");
+    cy.visit(paths.CREATE_COURSE);
 }
 
 export function navigateToCourseFormAdmin() {
-    cy.visit("createCourse");
+    cy.visit(paths.CREATE_COURSE);
 }
 
 export function navigateToSettingsPage() {
-    cy.visit("settings");
+    cy.visit(paths.SETTINGS);
 }
 
 export function navigateToPrivateProfile() {
-    cy.visit("profile");
+    cy.visit(paths.PRIVATE_PROFILE);
 }
 
 export function navigateToAboutPage() {
-    cy.visit("about");
+    cy.visit(paths.ABOUT_PAGE);
 }
