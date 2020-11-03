@@ -207,8 +207,7 @@ describe("Account creation, edition and deletion", function () {
     // edit account
     it("Show student account edit page", function () {
         cy.get(`div[id='user_${student.username}']`).click();
-
-        //todo check if everything is there
+        cy.url().should("contain", student.username);
     });
 
     it("Save Changes button is disabled", function () {
@@ -258,6 +257,7 @@ describe("Account creation, edition and deletion", function () {
     // edit account
     it("Show lecturer account edit page", function () {
         cy.get(`div[id='user_${lecturer.username}']`).click();
+        cy.url().should("contain", lecturer.username);
     });
 
     it("Save Changes button is disabled", function () {
@@ -319,6 +319,7 @@ describe("Account creation, edition and deletion", function () {
     // edit account
     it("Show admin account edit page", function () {
         cy.get(`div[id='user_${admin.username}']`).click();
+        cy.url().should("contain", admin.username);
     });
 
     it("Save Changes button is disabled", function () {
