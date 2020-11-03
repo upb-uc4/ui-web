@@ -2,6 +2,7 @@ import Admin from "@/api/api_models/user_management/Admin";
 import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
+import { paths } from "@/use/router/paths";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
 import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
@@ -72,7 +73,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Check matriculation history is empty in account form", function () {
-        cy.visit(`editAccount/${student.username}`);
+        cy.visit(paths.EDIT_ACCOUNT + `/${student.username}`);
         cy.get("div").contains("There is no matriculation data, yet!").should("exist");
         logout();
     });
@@ -86,7 +87,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Valid FoS selection can be resetted ", function () {
         loginAsDefaultAdmin();
-        cy.visit(`editAccount/${student.username}`);
+        cy.visit(paths.EDIT_ACCOUNT + `/${student.username}`);
         cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
         cy.get("select[id='semesterType']").select("SS");
         cy.get("select[id='semesterYear']").select("2010");
