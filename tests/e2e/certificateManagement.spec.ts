@@ -1,48 +1,66 @@
+import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { loginAsUser, logout } from "./helpers/AuthHelper";
+import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
-import { getRandomMatriculationId, loginAndCreateStudent, loginAndDeleteUser } from "./helpers/UserHelper";
+import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
+import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Certificate Management", function () {
     const random = Math.floor(Math.random() * 9999);
+    let admin: Admin;
     let student: Student;
     let studentAuthUser: Account;
     let adminAuth: Account;
 
-    before(() => {
+    let usersWithAuth: UserWithAuth[] = [];
+
+    before(function () {
         cy.clearCookies();
         Cypress.Cookies.defaults({
             preserve: ["refresh", "login"],
         });
 
-        cy.fixture("student.json").then((s) => {
-            (s as Student).username += random;
-            student = s as Student;
-            student.matriculationId = getRandomMatriculationId();
+        cy.fixture("admin.json").then((a) => {
+            (a as Admin).username += random;
+            admin = a as Admin;
         });
-
-        cy.fixture("studentAuthUser.json").then((s) => {
-            (s as Account).username += random;
-            studentAuthUser = s as Account;
-        });
-
-        cy.fixture("logins/admin.json").then((admin) => {
-            adminAuth = admin;
-        });
+        cy.fixture("logins/admin.json")
+            .then((admin) => {
+                adminAuth = admin;
+            })
+            .then(async () => {
+                await getMachineUserAuth(adminAuth);
+            })
+            .then(() => {
+                cy.fixture("student.json").then((s) => {
+                    (s as Student).username += random;
+                    student = s as Student;
+                    student.matriculationId = getRandomMatriculationId();
+                    student.birthDate = "2012-01-01";
+                });
+            })
+            .then(() => {
+                cy.fixture("studentAuthUser.json").then((s) => {
+                    (s as Account).username += random;
+                    studentAuthUser = s as Account;
+                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                });
+            })
+            .then(async () => {
+                await createUsers(usersWithAuth);
+            })
+            .then(() => {
+                console.log("Setup finished");
+            });
     });
 
     after(() => {
-        loginAndDeleteUser(student, adminAuth);
+        deleteUsers([studentAuthUser], adminAuth);
         logout();
     });
 
-    it("Create student", () => {
-        loginAndCreateStudent(student, studentAuthUser, adminAuth);
-        logout();
-    });
-
-    it("Navigate to Settings Page", function () {
+    it("Login and navigate to settings page as student", function () {
         cy.wait(1500);
         loginAsUser(studentAuthUser);
         navigateToSettingsPage();
@@ -70,9 +88,5 @@ describe("Certificate Management", function () {
         cy.get("textarea[id='certificate']").should("exist");
         cy.get("textarea[id='certificate']").should("not.have.value", "");
         cy.get("textarea[id='certificate']").should("not.have.value", "undefined");
-    });
-
-    it("Logout", function () {
-        logout();
     });
 });
