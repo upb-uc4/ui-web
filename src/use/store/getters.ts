@@ -90,7 +90,6 @@ export const getters: GetterTree<State, State> & Getters = {
         } else {
             store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);
             store.commit(MutationTypes.SET_HAS_CERTIFICATE, true);
-            console.log("hello");
         }
         return state.hasCertificate;
     },

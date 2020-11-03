@@ -57,7 +57,7 @@
 
             onBeforeMount(async () => {
                 const store = useStore();
-                //hasCertificate.value = await store.getters.hasCertificate;
+                hasCertificate.value = await store.getters.hasCertificate;
                 if (hasCertificate.value) {
                     await getCertificate();
                 }

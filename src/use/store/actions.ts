@@ -40,10 +40,7 @@ export const actions: ActionTree<State, State> & Actions = {
         const iv = window.crypto.getRandomValues(new Uint8Array(12));
 
         const wrappingKey = await deriveKeyFromPassword(password);
-        console.log("test1");
-        console.log(await wrapKey(keypair.privateKey, wrappingKey.key, iv));
         const wrappedKey = await wrapKey(keypair.privateKey, wrappingKey.key, iv);
-        console.log("test2");
         const wrappedKeyBase64 = arrayBufferToBase64(wrappedKey);
         const keyInfo: EncryptedPrivateKey = { key: wrappedKeyBase64, iv: arrayBufferToBase64(iv), salt: wrappingKey.salt };
 
