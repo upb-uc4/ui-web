@@ -14,7 +14,7 @@ describe.skip("Snapshot testing", () => {
 
     it("Login page", () => {
         const testName = "login-page-" + suffix;
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.wait(500);
         cy.document().toMatchImageSnapshot({ name: testName, capture: "fullPage" });
     });

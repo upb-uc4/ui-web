@@ -1,3 +1,4 @@
+import { paths } from "@/use/router/paths";
 import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 
 before(() => {
@@ -9,7 +10,7 @@ before(() => {
 
 describe("guest", () => {
     it("about", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.get("#routeAbout").click();
         cy.url().should("contain", "about");
     });

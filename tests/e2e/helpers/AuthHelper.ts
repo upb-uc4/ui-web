@@ -1,4 +1,5 @@
 import { Account } from "@/entities/Account";
+import { paths } from "@/use/router/paths";
 import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
 
 export async function getMachineUserAuth(userAuth: Account) {
@@ -28,7 +29,7 @@ export function loginAsDefaultLecturer() {
 }
 
 export function loginAsUser(user: Account) {
-    cy.visit("/");
+    cy.visit(paths.HOME);
     cy.get("input[id='email']").type(user.username);
     cy.get("input[id='password']").type(user.password);
     cy.get('button[id="login"]').click();

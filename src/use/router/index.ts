@@ -134,7 +134,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/",
+            path: paths.HOME,
             name: "home",
             component: LoginView,
             meta: {

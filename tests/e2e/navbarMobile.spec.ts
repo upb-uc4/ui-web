@@ -1,3 +1,4 @@
+import { paths } from "@/use/router/paths";
 import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent } from "./helpers/AuthHelper";
 
 const navbar_burger_menu_list = "#nav_mobile_menu_list";
@@ -18,14 +19,14 @@ describe("guest", () => {
     });
 
     it("login", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         cy.url().should("contain", "login");
     });
 
     it("about", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_about).click();
         cy.url().should("contain", "about");
@@ -38,7 +39,7 @@ describe("admin", () => {
     });
 
     it("login", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         loginAsDefaultAdmin();
@@ -84,7 +85,7 @@ describe("lecturer", () => {
     });
 
     it("login", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         loginAsDefaultLecturer();
@@ -121,7 +122,7 @@ describe("student", () => {
     });
 
     it("login", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_guest_login).click();
         loginAsDefaultStudent();
@@ -146,7 +147,7 @@ describe("menu", () => {
     });
 
     it("toggleMenu", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.wait(50);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_burger_menu_list).should("be.visible");
@@ -155,7 +156,7 @@ describe("menu", () => {
     });
 
     it("closeOnTransition", () => {
-        cy.visit("/");
+        cy.visit(paths.HOME);
         cy.wait(50);
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_burger_menu_list).should("be.visible");
