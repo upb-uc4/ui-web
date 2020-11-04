@@ -124,7 +124,7 @@
 
             function getExRegsFromModules() {
                 (props.moduleIds as string[]).forEach((m) => {
-                    selectedExRegNames.value.push(
+                    selectedExRegNames.value.unshift(
                         ...examinationRegs.value
                             .filter((e) => e.modules.filter((mo) => mo.id == m))
                             .map((e) => e.name)
