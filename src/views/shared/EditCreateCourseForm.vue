@@ -20,7 +20,12 @@
                 v-model:description="course.courseDescription"
                 :error-bag="errorBag"
             />
-            <course-module-section v-model="course.moduleIds" :error-bag="errorBag" />
+            <course-module-section
+                v-model:module-ids="course.moduleIds"
+                :error-bag="errorBag"
+                @toggle-module="toggleModule($event)"
+                @remove-modules="removeModules($event)"
+            />
             <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
             <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
 
@@ -174,6 +179,7 @@
 
             onBeforeMount(() => {
                 askAdminRole();
+                course.value.moduleIds = ["1", "3"];
                 if (props.editMode) {
                     getCourse();
                 }
@@ -206,6 +212,7 @@
             }
 
             let hasInput = computed(() => {
+                //TODO include module thingies
                 let returnValue: boolean = !course.value.editableInfoEquals(initialCourseState);
                 emit("update:has-input", returnValue);
                 return returnValue;
@@ -287,6 +294,20 @@
                 Router.push("/all-courses");
             }
 
+            function toggleModule(value: any) {
+                if (course.value.moduleIds.includes(value)) {
+                    course.value.moduleIds = course.value.moduleIds.filter((e) => e != value);
+                } else {
+                    course.value.moduleIds.push(value);
+                }
+            }
+
+            function removeModules(value: any[]) {
+                value.forEach((e) => {
+                    course.value.moduleIds = course.value.moduleIds.filter((m) => m != e.id);
+                });
+            }
+
             return {
                 busy,
                 isAdmin,
@@ -304,6 +325,8 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag,
+                toggleModule,
+                removeModules,
             };
         },
     };
