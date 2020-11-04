@@ -6,6 +6,10 @@
                 <label class="block text-gray-600"> Modules and examination regulations that the course should be assigned to. </label>
             </div>
             <div class="flex flex-col">
+                <div class="mb-4">
+                    <TagList :elements="demoElements" @on-remove="updateDemoList" />
+                </div>
+
                 <div
                     v-for="index in selectedExRegNames.length"
                     :key="index"
@@ -49,9 +53,14 @@
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
     import { computed, onBeforeMount, ref } from "vue";
     import Module from "@/api/api_models/exam_reg_management/Module";
+    import TagList from "@/components/common/TagList.vue";
+    import { reactive } from "vue";
 
     export default {
         name: "CourseModulesSection",
+        components: {
+            TagList,
+        },
         props: {
             errorBag: {
                 required: true,
@@ -151,7 +160,24 @@
                 return (props.moduleIds as String[]).includes(id);
             }
 
-            return { examinationRegs, selectedExRegNames, availableExRegs, addValue, selectedExRegs, removeValue, toggleModule, isChecked };
+            //TODO remove demo elements for tag list
+            let demoElements = reactive(["Summer", "Sun", "Beach"]);
+            function updateDemoList(index: number) {
+                demoElements.splice(index, 1);
+            }
+
+            return {
+                examinationRegs,
+                selectedExRegNames,
+                availableExRegs,
+                addValue,
+                selectedExRegs,
+                removeValue,
+                toggleModule,
+                isChecked,
+                demoElements,
+                updateDemoList,
+            };
         },
     };
 </script>
