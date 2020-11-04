@@ -48,8 +48,6 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
     import { computed, onBeforeMount, ref } from "vue";
-    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
-    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Module from "@/api/api_models/exam_reg_management/Module";
 
     export default {
