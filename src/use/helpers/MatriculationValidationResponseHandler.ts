@@ -1,8 +1,8 @@
-import ResponseHandler from "./ResponseHandler";
-import APIResponse from "@/api/helpers/models/APIResponse";
-import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
+import ValidationError from "@/api/api_models/errors/ValidationError";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
+import APIResponse from "@/api/helpers/models/APIResponse";
+import ResponseHandler from "./ResponseHandler";
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
@@ -15,13 +15,7 @@ export default class MatriculationValidationResponseHandler implements ResponseH
     }
 
     isMatriculationData(object: any): object is MatriculationData {
-        return (
-            (object as MatriculationData).birthDate !== undefined &&
-            (object as MatriculationData).firstName !== undefined &&
-            (object as MatriculationData).lastName !== undefined &&
-            (object as MatriculationData).matriculationId !== undefined &&
-            (object as MatriculationData).matriculationStatus !== undefined
-        );
+        return (object as MatriculationData).enrollmentId !== undefined && (object as MatriculationData).matriculationStatus !== undefined;
     }
 
     handleResponse(response: APIResponse<boolean | MatriculationData>): boolean {

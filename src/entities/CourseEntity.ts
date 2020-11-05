@@ -1,6 +1,6 @@
+import Course from "@/api/api_models/course_management/Course";
 import { CourseType } from "./CourseType";
 import { Language } from "./Language";
-import Course from "@/api/api_models/course_management/Course";
 
 export class CourseEntity implements Course {
     courseType: CourseType = CourseType.NONE;

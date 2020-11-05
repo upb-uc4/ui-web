@@ -1,8 +1,8 @@
-import { createStore, Store as VuexStore, CommitOptions, DispatchOptions } from "vuex";
-import { State, state } from "./state";
+import { CommitOptions, createStore, DispatchOptions, Store as VuexStore } from "vuex";
+import { Actions, actions } from "./actions";
 import { Getters, getters } from "./getters";
 import { Mutations, mutations } from "./mutations";
-import { Actions, actions } from "./actions";
+import { State, state } from "./state";
 
 export const store = createStore({
     state,

@@ -1,13 +1,12 @@
 import Course from "@/api/api_models/course_management/Course";
-import { Account } from "@/entities/Account";
-import { clear } from "console";
 import CourseManagement from "@/api/CourseManagement";
+import { Account } from "@/entities/Account";
 import { loginAsUser } from "./AuthHelper";
 import {
-    navigateToCourseFormAdmin,
     navigateToCourseForm,
-    navigateToMyCoursesLecturer,
+    navigateToCourseFormAdmin,
     navigateToCourseListAdmin,
+    navigateToMyCoursesLecturer,
 } from "./NavigationHelper";
 
 export function createCourse(course: Course) {

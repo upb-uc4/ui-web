@@ -1,8 +1,8 @@
-import ResponseHandler from "./ResponseHandler";
-import APIResponse from "@/api/helpers/models/APIResponse";
-import Student from "@/api/api_models/user_management/Student";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
+import Student from "@/api/api_models/user_management/Student";
+import APIResponse from "@/api/helpers/models/APIResponse";
+import ResponseHandler from "./ResponseHandler";
 
 export default class ProfileResponseHandler implements ResponseHandler<Student | Lecturer | Admin> {
     handleResponse(response: APIResponse<Student | Lecturer | Admin>): Student | Lecturer | Admin {
