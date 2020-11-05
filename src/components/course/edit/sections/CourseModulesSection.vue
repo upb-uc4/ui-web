@@ -45,6 +45,7 @@
                 </div>
             </div>
         </div>
+        Selected Names {{ selectedExRegNames }} Module IDs {{ moduleIds }}
     </section>
 </template>
 
@@ -93,7 +94,16 @@
                     modules: [
                         { id: "1", name: "Module1" } as Module,
                         { id: "3", name: "Module3" } as Module,
-                        { id: "2", name: "Module4" } as Module,
+                        { id: "4", name: "Module4" } as Module,
+                    ],
+                },
+                {
+                    name: "ExReg3",
+                    active: false,
+                    modules: [
+                        { id: "5", name: "Module5" } as Module,
+                        { id: "6", name: "Module6" } as Module,
+                        { id: "7", name: "Module7" } as Module,
                     ],
                 },
             ];
@@ -131,12 +141,11 @@
 
             function getExRegsFromModules() {
                 (props.moduleIds as string[]).forEach((m) => {
-                    selectedExRegNames.value.unshift(
-                        ...examinationRegs.value
-                            .filter((e) => e.modules.filter((mo) => mo.id == m))
-                            .map((e) => e.name)
-                            .filter((e) => !selectedExRegNames.value.includes(e))
-                    );
+                    examinationRegs.value.forEach((exReg) => {
+                        if (exReg.modules.find((e) => e.id == m) != undefined && !selectedExRegNames.value.includes(exReg.name)) {
+                            selectedExRegNames.value.splice(selectedExRegNames.value.length - 1, 0, exReg.name);
+                        }
+                    });
                 });
             }
 
@@ -152,8 +161,8 @@
             }
 
             function toggleModule(id: string) {
-                console.log(id);
                 emit("toggle-module", id);
+                getExRegsFromModules();
             }
 
             function isChecked(id: string) {
