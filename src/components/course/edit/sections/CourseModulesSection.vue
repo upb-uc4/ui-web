@@ -20,6 +20,7 @@
                         :id="'exReg-' + index"
                         v-model="selectedExRegNames[index - 1]"
                         class="input-select form-select mr-2 w-108"
+                        :disabled="hasCheckedModule(selectedExRegs[index - 1])"
                         @change="addValue($event.target.value, index - 1)"
                     >
                         <option disabled :value="''">Select an examination regulation</option>
@@ -176,6 +177,16 @@
                 demoElements.splice(index, 1);
             }
 
+            function hasCheckedModule(exReg: ExaminationRegulation): Boolean {
+                if (exReg == undefined) return false;
+                for (let index = 0; index < props.moduleIds.length; index++) {
+                    if (exReg.modules.find((m) => m.id == props.moduleIds[index]) != undefined) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
             return {
                 examinationRegs,
                 selectedExRegNames,
@@ -187,6 +198,7 @@
                 isChecked,
                 demoElements,
                 updateDemoList,
+                hasCheckedModule,
             };
         },
     };
