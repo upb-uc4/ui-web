@@ -6,43 +6,40 @@ import * as asn1js from "asn1js";
 
 // map for easy lookup of the "N/2" and "N" value per elliptic curve
 const p256ec = new ec("p256");
-const p384ec = new ec("p384");
-
 const ordersForCurve = {
     secp256r1: {
         halfOrder: p256ec.n?.shrn(1),
         order: p256ec.n,
     },
-    secp384r1: {
-        halfOrder: p384ec.n?.shrn(1),
-        order: p384ec.n,
-    },
 };
 
-export function preventMalleability(signature: { r: Uint8Array; s: Uint8Array }, curveParams: { name: string }) {
-    let halfOrder = undefined;
-    switch (curveParams.name) {
-        case "P-256":
-            halfOrder = ordersForCurve.secp256r1.halfOrder;
-            break;
-        case "P-384":
-            halfOrder = ordersForCurve.secp384r1.halfOrder;
-            break;
-        default:
-            break;
-    }
+function getHalfOrder(curve: string) {
+    if (curve !== "P-256") throw new Error("Curve not supported");
 
-    let order = undefined;
-    switch (curveParams.name) {
-        case "P-256":
-            order = ordersForCurve.secp256r1.order;
-            break;
-        case "P-384":
-            order = ordersForCurve.secp384r1.order;
-            break;
-        default:
-            break;
-    }
+    return ordersForCurve.secp256r1.halfOrder;
+}
+
+function getOrder(curve: string) {
+    if (curve !== "P-256") throw new Error("Curve not supported");
+
+    return ordersForCurve.secp256r1.order;
+}
+
+export function preventMalleability(signature: { r: Uint8Array; s: Uint8Array }, curveParams: { name: string }) {
+    // from https://github.com/hyperledger/fabric-sdk-node/blob/master/fabric-common/lib/impl/CryptoSuite_ECDSA_AES.js
+
+    // [Angelo De Caro] ECDSA signatures do not have unique representation and this can facilitate
+    // replay attacks and more. In order to have a unique representation,
+    // this change-set forses BCCSP to generate and accept only signatures
+    // with low-S.
+    // Bitcoin has also addressed this issue with the following BIP:
+    // https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki
+    // Before merging this change-set, we need to ensure that client-sdks
+    // generates signatures properly in order to avoid massive rejection
+    // of transactions.
+
+    const halfOrder = getHalfOrder(curveParams.name);
+    const order = getOrder(curveParams.name);
 
     if (!(halfOrder && order)) {
         throw new Error(
@@ -67,17 +64,7 @@ export function preventMalleability(signature: { r: Uint8Array; s: Uint8Array },
 }
 
 export function _checkMalleability(signature: { r: Uint8Array; s: Uint8Array }, curveParams: { name: string }) {
-    let halfOrder = undefined;
-    switch (curveParams.name) {
-        case "P-256":
-            halfOrder = ordersForCurve.secp256r1.halfOrder;
-            break;
-        case "P-384":
-            halfOrder = ordersForCurve.secp384r1.halfOrder;
-            break;
-        default:
-            break;
-    }
+    const halfOrder = getHalfOrder(curveParams.name);
 
     if (!halfOrder) {
         throw new Error(
