@@ -2,7 +2,7 @@
 
 import MatriculationData from "../api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
-import Proposal from "../api_models/transactions/Proposal";
+import Proposal from "../api_models/common/Proposal";
 import { isEqual } from "lodash";
 import { UC4Identifier } from "./UC4Identifier";
 
