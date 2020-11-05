@@ -18,8 +18,7 @@ export function validateMatriculationProposal(enrollmentId: string, matriculatio
         const proposalEnrollmentId = paramsArray[0];
         const proposalMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
 
-        let result = true;
-        result = result && proposalEnrollmentId === enrollmentId;
+        let result = proposalEnrollmentId === enrollmentId;
         result = result && isEqual(proposalMatriculation, matriculation);
 
         return result;
