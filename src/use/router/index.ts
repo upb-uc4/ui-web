@@ -106,7 +106,7 @@ const router = createRouter({
             component: CourseFormSuspenseWrapper,
             meta: {
                 title: "Course Creation" + suffix,
-                roles: ["Lecturer", "Admin"],
+                // roles: ["Lecturer", "Admin"],
             },
         },
         {
