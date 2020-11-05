@@ -24,7 +24,7 @@ export function validateMatriculationProposal(enrollmentId: string, matriculatio
         return result;
     }
 
-    if (name == "UC4.MatriculationData:addMatriculationData" || name === "UC4.MatriculationData:updateMatriculationData") {
+    if (name === "UC4.MatriculationData:addMatriculationData" || name === "UC4.MatriculationData:updateMatriculationData") {
         const jsonString = proposal.payload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
