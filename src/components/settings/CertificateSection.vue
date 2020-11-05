@@ -19,7 +19,9 @@
                                     class="ml-3 text-sm btn-blue-tertiary"
                                     :href="certificateBlobURL"
                                     download="certificate.pem"
-                                >Download</a>
+                                >
+                                    Download
+                                </a>
                             </div>
                             <textarea
                                 id="certificate"

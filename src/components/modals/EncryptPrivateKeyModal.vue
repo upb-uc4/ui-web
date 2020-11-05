@@ -11,7 +11,8 @@
                 </div>
             </div>
             <p>
-                Please choose a password to encrypt your private key, so it can be securely stored on our servers. Ensure that you do not lose this password as it <span class="text-blue-800 font-semibold">cannot be restored</span>.
+                Please choose a password to encrypt your private key, so it can be securely stored on our servers. Ensure that you do not
+                lose this password as it <span class="text-blue-800 font-semibold">cannot be restored</span>.
             </p>
             <div class="mt-6 relative">
                 <i
