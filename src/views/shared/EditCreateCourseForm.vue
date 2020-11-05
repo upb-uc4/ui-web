@@ -212,7 +212,6 @@
             }
 
             let hasInput = computed(() => {
-                //TODO include module thingies
                 let returnValue: boolean = !course.value.editableInfoEquals(initialCourseState);
                 emit("update:has-input", returnValue);
                 return returnValue;
@@ -299,6 +298,7 @@
                     course.value.moduleIds = course.value.moduleIds.filter((e) => e != value);
                 } else {
                     course.value.moduleIds.push(value);
+                    course.value.moduleIds.sort((one, two) => (one > two ? -1 : 1));
                 }
             }
 

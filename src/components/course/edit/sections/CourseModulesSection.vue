@@ -54,6 +54,7 @@
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
     import { computed, onBeforeMount, ref } from "vue";
     import Module from "@/api/api_models/exam_reg_management/Module";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import TagList from "@/components/common/TagList.vue";
     import { reactive } from "vue";
 

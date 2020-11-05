@@ -1,6 +1,7 @@
+import Course from "@/api/api_models/course_management/Course";
+import compareArrays from "@/use/helpers/CompareArrayValues";
 import { CourseType } from "./CourseType";
 import { Language } from "./Language";
-import Course from "@/api/api_models/course_management/Course";
 
 export class CourseEntity implements Course {
     courseType: CourseType = CourseType.NONE;
@@ -75,7 +76,7 @@ export class CourseEntity implements Course {
         //equal = equal && (this.lecturerId === course.lecturerId);
         equal = equal && this.ects === course.ects;
         equal = equal && this.maxParticipants === course.maxParticipants;
-        equal = equal && this.moduleIds === course.moduleIds;
+        equal = equal && compareArrays(this.moduleIds, course.moduleIds);
         equal = equal && this.courseDescription === course.courseDescription;
         equal = equal && this.courseLanguage === course.courseLanguage;
         //equal = equal && (this.startDate === course.startDate);
