@@ -25,6 +25,9 @@
                     >
                         <option disabled :value="''">Select an examination regulation</option>
 
+                        <!-- add selected option, because the computed "unchosenValues" will not contain it -->
+                        <option v-if="selectedExRegNames[index - 1] != ''">{{ selectedExRegNames[index - 1] }}</option>
+
                         <option v-for="exReg in availableExRegs" :key="exReg.name" :value="exReg.name">{{ exReg.name }}</option>
                     </select>
                     <div v-if="selectedExRegNames[index - 1] != ''" class="overflow-y-auto flex items-center">
