@@ -5,46 +5,55 @@
                 <label class="block text-gray-700 text-lg font-medium mb-2">Module Information</label>
                 <label class="block text-gray-600"> Modules and examination regulations that the course should be assigned to. </label>
             </div>
-            <div class="flex flex-col">
-                <div class="mb-4">
-                    <TagList :elements="demoElements" @on-remove="updateDemoList" />
-                </div>
-
+            <div class="flex flex-col w-full">
                 <div
                     v-for="index in selectedExRegNames.length"
                     :key="index"
-                    class="flex flex-row items-start"
-                    :class="{ 'mb-2': index != selectedExRegNames.length }"
+                    class="flex flex-col items-start"
+                    :class="{ 'mb-10': index != selectedExRegNames.length }"
                 >
-                    <select
-                        :id="'exReg-' + index"
-                        v-model="selectedExRegNames[index - 1]"
-                        class="input-select form-select mr-2 w-108"
-                        :disabled="hasCheckedModule(selectedExRegs[index - 1])"
-                        @change="addValue($event.target.value, index - 1)"
-                    >
-                        <option disabled :value="''">Select an examination regulation</option>
+                    <div class="flex items-center w-full pb-1">
+                        <select
+                            :id="'exReg-' + index"
+                            v-model="selectedExRegNames[index - 1]"
+                            class="input-select form-select w-full"
+                            :disabled="hasCheckedModule(selectedExRegs[index - 1])"
+                            @change="addValue($event.target.value, index - 1)"
+                        >
+                            <option disabled :value="''">Select an examination regulation</option>
 
-                        <!-- add selected option, because the computed "unchosenValues" will not contain it -->
-                        <option v-if="selectedExRegNames[index - 1] != ''">{{ selectedExRegNames[index - 1] }}</option>
+                            <!-- add selected option, because the computed "unchosenValues" will not contain it -->
+                            <option v-if="selectedExRegNames[index - 1] != ''">{{ selectedExRegNames[index - 1] }}</option>
 
-                        <option v-for="exReg in availableExRegs" :key="exReg.name" :value="exReg.name">{{ exReg.name }}</option>
-                    </select>
-                    <div v-if="selectedExRegNames[index - 1] != ''" class="overflow-y-auto flex items-center">
-                        <div class="flex flex-col bg-gray-100 p-4 mr-4 rounded-md">
-                            <div v-for="module in selectedExRegs[index - 1].modules" :key="module" class="items-center">
-                                <input
-                                    class="form-checkbox border-2 border-gray-500 mr-2"
-                                    type="checkbox"
-                                    :checked="isChecked(module.id)"
-                                    @click="toggleModule(module.id)"
-                                />
-                                <label>{{ module.name }}</label>
+                            <option v-for="exReg in availableExRegs" :key="exReg.name" :value="exReg.name">{{ exReg.name }}</option>
+                        </select>
+                        <button
+                            v-if="selectedExRegNames[index - 1] != ''"
+                            title="Remove Selected ER"
+                            class="text-red-500 hover:text-red-600 m-4"
+                            @click="removeValue(index - 1)"
+                        >
+                            <i class="inline far fa-trash-alt text-2xl"></i>
+                        </button>
+                    </div>
+                    <div v-if="selectedExRegNames[index - 1] != ''" class="w-full bg-gray-100 rounded-lg border-2 border-gray-400 p-2">
+                        <div class="w-full flex content-center flex-wrap">
+                            <div v-for="module in selectedExRegs[index - 1].modules" :key="module" class="w-1/4 p-2">
+                                <div class="flex">
+                                    <div class="w-4 mr-2" />
+                                    <div class="flex text-sm text-gray-500 leading-none">{{ module.id }}</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <input
+                                        class="w-4 mr-2 text-blue-500 form-checkbox hover:bg-blue-600"
+                                        type="checkbox"
+                                        :checked="isChecked(module.id)"
+                                        @click="toggleModule(module.id)"
+                                    />
+                                    <div class="align-baseline text-sm text-gray-900">{{ module.name }}</div>
+                                </div>
                             </div>
                         </div>
-                        <button title="Remove Selected ER" class="btn-icon-red" @click="removeValue(index - 1)">
-                            <i class="inline far fa-trash-alt text-lg"></i>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -59,14 +68,11 @@
     import { computed, onBeforeMount, ref } from "vue";
     import Module from "@/api/api_models/exam_reg_management/Module";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import TagList from "@/components/common/TagList.vue";
     import { reactive } from "vue";
 
     export default {
         name: "CourseModulesSection",
-        components: {
-            TagList,
-        },
+        components: {},
         props: {
             errorBag: {
                 required: true,
