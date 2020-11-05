@@ -4,15 +4,17 @@ import MatriculationData from "../api_models/matriculation_management/Matriculat
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
 import Proposal from "../api_models/transactions/Proposal";
 import { isEqual } from "lodash";
+import { UC4Identifier } from "./UC4Identifier";
 
 export function validateMatriculationProposal(enrollmentId: string, matriculation: SubjectMatriculation[], proposal: Proposal): boolean {
-    const txName = proposal.payload.input.input.args[0];
+    const name = proposal.payload.input.input.args[0];
+    const contractToApprove = proposal.payload.input.input.args[1];
+    const transactionToApprove = proposal.payload.input.input.args[2];
 
-    if (txName !== "UC4.Approval:approveTransaction") return false;
+    if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_APPROVAL) return false;
+    if (contractToApprove !== UC4Identifier.CONTRACT_MATRICULATION) return false;
 
-    const name = proposal.payload.input.input.args[1] + ":" + proposal.payload.input.input.args[2];
-
-    if (name === "UC4.MatriculationData:addEntriesToMatriculationData") {
+    if (transactionToApprove === UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION) {
         const jsonString = proposal.payload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalEnrollmentId = paramsArray[0];
@@ -24,7 +26,10 @@ export function validateMatriculationProposal(enrollmentId: string, matriculatio
         return result;
     }
 
-    if (name === "UC4.MatriculationData:addMatriculationData" || name === "UC4.MatriculationData:updateMatriculationData") {
+    if (
+        transactionToApprove === UC4Identifier.TRANSACTION_ADD_MATRICULATION ||
+        transactionToApprove === UC4Identifier.TRANSACTION_UPDATE_MATRICULATION
+    ) {
         const jsonString = proposal.payload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
