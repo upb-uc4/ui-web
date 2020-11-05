@@ -12,7 +12,7 @@ export function validateMatriculationProposal(enrollmentId: string, matriculatio
 
     const name = proposal.payload.input.input.args[1] + ":" + proposal.payload.input.input.args[2];
 
-    if (name == "UC4.MatriculationData:addEntriesToMatriculationData") {
+    if (name === "UC4.MatriculationData:addEntriesToMatriculationData") {
         const jsonString = proposal.payload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalEnrollmentId = paramsArray[0];
