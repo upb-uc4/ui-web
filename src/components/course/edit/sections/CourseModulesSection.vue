@@ -14,7 +14,7 @@
                 >
                     <div class="flex items-center w-full pb-1">
                         <select
-                            :id="'exReg-' + index"
+                            :id="'exReg-' + selectedExRegNames[index - 1]"
                             v-model="selectedExRegNames[index - 1]"
                             class="input-select form-select w-full"
                             :disabled="hasCheckedModule(selectedExRegs[index - 1])"
@@ -29,7 +29,8 @@
                         </select>
                         <button
                             v-if="selectedExRegNames[index - 1] != ''"
-                            title="Remove Selected ER"
+                            :id="'remove_exReg_' + index"
+                            title="Remove selected exam regulation"
                             class="text-red-500 hover:text-red-600 m-4"
                             @click="removeValue(index - 1)"
                         >
@@ -45,6 +46,7 @@
                                 </div>
                                 <div class="flex items-center">
                                     <input
+                                        :id="'check_module_' + module.id"
                                         class="w-4 mr-2 text-blue-500 form-checkbox hover:bg-blue-600"
                                         type="checkbox"
                                         :checked="isChecked(module.id)"
