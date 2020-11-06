@@ -1,3 +1,21 @@
+# [v0.12.0](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.12.0) (2020-11-06)
+
+## Feature
+- add support for pseudonymization of student matriculation data
+- add thumbnails to account list [#607](https://github.com/upb-uc4/ui-web/issues/607)
+- add all functionality for creating certificates [#564](https://github.com/upb-uc4/ui-web/issues/564)
+- add functionality for signing proposals and validating proposal inputs [#642](https://github.com/upb-uc4/ui-web/pull/642)
+
+## Bugfix
+- adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)
+- fix use of wrong navigation icon on mobile [#649](https://github.com/upb-uc4/ui-web/pull/649)
+- fix spacing on student course list on mobile [#648](https://github.com/upb-uc4/ui-web/pull/648)
+- fix image view of private profile on mobile [#651](https://github.com/upb-uc4/ui-web/pull/651)
+- remove delete button in creation forms on mobile [#646](https://github.com/upb-uc4/ui-web/pull/646)
+
+## Refactoring
+- cleanup of imports and onBeforeMount hooks [#655](https://github.com/upb-uc4/ui-web/issues/655)
+
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
 
 ## Bugfix
@@ -9,7 +27,7 @@
 - remove npm package "vue-cli-plugin-vue-next" as it is no longer needed with the official release of Vue3 [#592](https://github.com/upb-uc4/ui-web/issues/592)
 
 ## Refactoring
-- Replace placeholder icons in navbars with proper fa icons [#621](https://github.com/upb-uc4/ui-web/issues/621)
+- replace placeholder icons in navbars with proper fa icons [#621](https://github.com/upb-uc4/ui-web/issues/621)
 
 # [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
 

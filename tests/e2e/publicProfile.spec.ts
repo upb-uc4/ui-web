@@ -1,7 +1,7 @@
-import { Account } from "@/entities/Account";
 import Course from "@/api/api_models/course_management/Course";
-import { deleteCourses, createCourses } from "./helpers/CourseHelper";
+import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
+import { createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
 
 describe("Show public profile correctly", () => {

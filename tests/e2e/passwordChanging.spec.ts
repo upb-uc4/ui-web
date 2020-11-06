@@ -1,10 +1,9 @@
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { getRandomMatriculationId, deleteUsers, createUsers } from "./helpers/UserHelper";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
+import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
-import { Role } from "@/entities/Role";
 
 describe("Change password", () => {
     const random = Math.floor(Math.random() * 9999);

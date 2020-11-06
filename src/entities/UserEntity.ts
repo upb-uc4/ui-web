@@ -1,7 +1,7 @@
-import User from "@/api/api_models/user_management/User";
-import { Role } from "./Role";
-import AddressEntity from "./AddressEntity";
 import Address from "@/api/api_models/user_management/Address";
+import User from "@/api/api_models/user_management/User";
+import AddressEntity from "./AddressEntity";
+import { Role } from "./Role";
 
 export default class UserEntity implements User {
     username = "";

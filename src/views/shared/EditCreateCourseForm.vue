@@ -67,16 +67,12 @@
                     >
                         Save Changes
                     </button>
-                    <button
-                        v-else
-                        id="mobileCreateCourse"
-                        :disabled="!hasInput"
-                        class="mb-4 w-full btn btn-blue-primary"
-                        @click="createCourse"
-                    >
+                    <button v-else id="mobileCreateCourse" :disabled="!hasInput" class="w-full btn btn-blue-primary" @click="createCourse">
                         Create Course
                     </button>
-                    <button id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">Delete</button>
+                    <button v-if="editMode" id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
+                        Delete
+                    </button>
                 </div>
             </section>
             <delete-course-modal ref="deleteModal" />
@@ -169,10 +165,10 @@
                 }
             });
 
-            onBeforeMount(() => {
-                askAdminRole();
+            onBeforeMount(async () => {
+                await askAdminRole();
                 if (props.editMode) {
-                    getCourse();
+                    await getCourse();
                 }
             });
 
