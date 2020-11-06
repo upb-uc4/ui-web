@@ -58,7 +58,6 @@
                 </div>
             </div>
         </div>
-        Selected Names {{ selectedExRegNames }} Module IDs {{ moduleIds }}
     </section>
 </template>
 
