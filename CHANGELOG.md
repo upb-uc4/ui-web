@@ -7,7 +7,7 @@
 - add functionality for signing proposals and validating proposal inputs [#642](https://github.com/upb-uc4/ui-web/pull/642)
 
 ## Bugfix
-- adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)g
+- adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)
 - fix use of wrong navigation icon on mobile [#649](https://github.com/upb-uc4/ui-web/pull/649)
 - fix spacing on student course list on mobile [#648](https://github.com/upb-uc4/ui-web/pull/648)
 - fix image view of private profile on mobile [#651](https://github.com/upb-uc4/ui-web/pull/651)
