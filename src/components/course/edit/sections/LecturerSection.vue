@@ -67,7 +67,7 @@
             const lecturers = ref([] as Lecturer[]);
             const currentLecturer = ref({} as Lecturer);
             const lecturerFound = ref(false);
-            
+
             const optionsArray = ref([] as String[]);
             const selectedOption = ref("");
 
@@ -107,7 +107,7 @@
             }
 
             function createOptionString(l: Lecturer): string {
-                return l.firstName + " " + l.lastName + " (@" + l.username + ")";
+                return `${l.firstName} ${l.lastName} (@${l.username})`;
             }
 
             return {
