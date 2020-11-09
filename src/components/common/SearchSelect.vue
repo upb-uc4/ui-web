@@ -8,17 +8,24 @@
         @blur="hideOptions()"
         @keyup="keyMonitor"
     />
-    <div v-show="optionsShown" :id="inputId + '_options'" class="bg-white overflow-auto max-h-50 border absolute border-gray-500 w-full">
-        <div
-            v-for="(option, index) in filteredOptions"
-            :key="option"
-            class="p-2 text-md cursor-pointer block"
-            :class="{ 'bg-blue-500 text-gray-100': index == hoveredOption }"
-            @mousedown="selectOption(option)"
-            @mouseover="setHoveredOption(index)"
-        >
-            {{ option.display }}
+    <div
+        v-show="optionsShown"
+        :id="inputId + '_options'"
+        class="bg-white overflow-auto max-h-50 border absolute border-gray-500 w-full text-gray-700 rounded-b-md"
+    >
+        <div v-if="filteredOptions.length > 0">
+            <div
+                v-for="(option, index) in filteredOptions"
+                :key="option"
+                class="p-2 text-md cursor-pointer block"
+                :class="{ 'bg-blue-500 text-gray-100': index == hoveredOption }"
+                @mousedown="selectOption(option)"
+                @mouseover="setHoveredOption(index)"
+            >
+                {{ option.display }}
+            </div>
         </div>
+        <div v-else class="p-2 text-md block">No results found.</div>
     </div>
 </template>
 
