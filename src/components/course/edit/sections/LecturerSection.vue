@@ -46,6 +46,7 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import Router from "@/use/router";
     import SearchSelect from "@/components/common/SearchSelect.vue";
+    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
 
     export default {
         name: "LecturerSection",
@@ -68,19 +69,17 @@
             const currentLecturer = ref({} as Lecturer);
             const lecturerFound = ref(false);
 
-            const optionsArray = ref([] as String[]);
-            const selectedOption = ref("");
+            const optionsArray = ref([] as SearchSelectOption[]);
+            const selectedOption = ref({} as SearchSelectOption);
 
             onBeforeMount(async () => {
                 await getLecturers();
             });
 
             watch(selectedOption, () => {
-                let lecId = selectedOption.value.substring(selectedOption.value.lastIndexOf("@") + 1, selectedOption.value.length - 1);
-                let tmp = lecturers.value.find((l) => l.username === lecId) as Lecturer;
-                if (tmp !== undefined) {
-                    currentLecturer.value = tmp;
-                    emit("update:lecturerId", tmp.username);
+                if (Object.keys(selectedOption.value.value).length != 0) {
+                    currentLecturer.value = selectedOption.value.value as Lecturer;
+                    emit("update:lecturerId", currentLecturer.value.username);
                     lecturerFound.value = true;
                 } else {
                     lecturerFound.value = false;
@@ -96,11 +95,11 @@
                 if (result) {
                     lecturers.value = result as Lecturer[];
                     lecturers.value.forEach((l) => {
-                        optionsArray.value.push(createOptionString(l));
+                        optionsArray.value.push({ value: l, display: createOptionString(l) });
                     });
                     if (props.lecturerId != "") {
                         currentLecturer.value = lecturers.value.filter((e) => e.username == props.lecturerId)[0];
-                        selectedOption.value = createOptionString(currentLecturer.value);
+                        selectedOption.value = { value: currentLecturer, display: createOptionString(currentLecturer.value) };
                         lecturerFound.value = true;
                     }
                 }

@@ -15,13 +15,15 @@
             class="text-gray-600 p-2 text-md cursor-pointer hover:bg-blue-500 hover:text-gray-100 block"
             @mousedown="selectOption(option)"
         >
-            {{ option }}
+            {{ option.display }}
         </div>
     </div>
 </template>
 
 <script lang="ts">
     import { computed, ref, watch } from "vue";
+    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
+    import { filter } from "cypress/types/bluebird";
 
     export default {
         name: "SearchSelect",
@@ -31,7 +33,7 @@
                 required: true,
             },
             selected: {
-                type: String,
+                type: Object,
                 required: true,
             },
             inputId: {
@@ -45,21 +47,29 @@
             const input = ref("");
 
             let filteredOptions = computed(() => {
-                return (props.options as String[]).filter((e) => e.toLowerCase().includes(input.value.toLowerCase()));
+                return (props.options as SearchSelectOption[]).filter((e) => e.display.toLowerCase().includes(input.value.toLowerCase()));
             });
 
             watch(
                 () => props.selected,
                 () => {
-                    input.value = props.selected;
+                    input.value = props.selected.display;
                 }
             );
 
             watch(input, () => {
-                emit("update:selected", input.value);
+                // emit:    empty value if input of search select is not exactly the value of one displayed option
+                //          the option that exactly matches the input string
+                // Emitting empty values is needed for updating the v-model (parent component) and the connected input (this component), as it is watched.
+                let tmp = (props.options as SearchSelectOption[]).filter((o) => o.display == input.value);
+                if (tmp.length == 0) {
+                    emit("update:selected", { value: {}, display: input.value } as SearchSelectOption);
+                } else if (tmp.length == 1) {
+                    selectOption(tmp[0]);
+                }
             });
 
-            function selectOption(option: String) {
+            function selectOption(option: SearchSelectOption) {
                 emit("update:selected", option);
             }
 
