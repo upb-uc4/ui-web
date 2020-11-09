@@ -67,7 +67,7 @@
             const lecturers = ref([] as Lecturer[]);
             const currentLecturer = ref({} as Lecturer);
             const lecturerFound = ref(false);
-            const optionsShown = ref(false);
+            
             const optionsArray = ref([] as String[]);
             const selectedOption = ref("");
 
