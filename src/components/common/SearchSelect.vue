@@ -41,7 +41,7 @@
             const input = ref("");
 
             let filteredOptions = computed(() => {
-                return (props.options as String[]).filter((e) => e.includes(input.value.toLowerCase()));
+                return (props.options as String[]).filter((e) => e.toLowerCase().includes(input.value.toLowerCase()));
             });
 
             watch(
