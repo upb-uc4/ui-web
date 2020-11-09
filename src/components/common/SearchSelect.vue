@@ -8,7 +8,7 @@
         @blur="hideOptions()"
         @keyup="keyMonitor"
     />
-    <div v-show="optionsShown" :id="inputId + '_options'" class="bg-white overflow-auto border absolute border-gray-500 w-full">
+    <div v-show="optionsShown" :id="inputId + '_options'" class="bg-white overflow-auto max-h-50 border absolute border-gray-500 w-full">
         <div
             v-for="option in filteredOptions"
             :key="option"
