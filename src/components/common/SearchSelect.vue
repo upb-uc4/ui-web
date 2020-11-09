@@ -1,6 +1,6 @@
 <template>
     <input
-        id="lecturerId"
+        :id="inputId"
         v-model="input"
         class="form-select input-select block w-full"
         placeholder="Select a Lecturer"
@@ -31,6 +31,10 @@
                 required: true,
             },
             selected: {
+                type: String,
+                required: true,
+            },
+            inputId: {
                 type: String,
                 required: true,
             },
