@@ -51,7 +51,11 @@
                 }
             );
 
-            function selectOption(option: any) {
+            watch(input, () => {
+                emit("update:selected", input.value);
+            });
+
+            function selectOption(option: String) {
                 emit("update:selected", option);
             }
 
