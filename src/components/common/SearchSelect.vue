@@ -69,6 +69,7 @@
                 if (tmp.length == 0) {
                     emit("update:selected", { value: {}, display: input.value } as SearchSelectOption);
                     hoveredOption.value = -1;
+                    showOptions();
                 } else if (tmp.length == 1) {
                     selectOption(tmp[0]);
                     hoveredOption.value = 0;
