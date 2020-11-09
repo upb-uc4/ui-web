@@ -77,7 +77,7 @@
 
             watch(selectedOption, () => {
                 let lecId = selectedOption.value.substring(selectedOption.value.lastIndexOf("@") + 1, selectedOption.value.length - 1);
-                let tmp = lecturers.value.find((l) => l.username == lecId) as Lecturer;
+                let tmp = lecturers.value.find((l) => l.username === lecId) as Lecturer;
                 if (tmp != undefined) {
                     currentLecturer.value = tmp;
                     emit("update:lecturerId", tmp.username);
