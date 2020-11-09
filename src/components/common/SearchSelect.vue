@@ -10,10 +10,12 @@
     />
     <div v-show="optionsShown" :id="inputId + '_options'" class="bg-white overflow-auto max-h-50 border absolute border-gray-500 w-full">
         <div
-            v-for="option in filteredOptions"
+            v-for="(option, index) in filteredOptions"
             :key="option"
-            class="text-gray-600 p-2 text-md cursor-pointer hover:bg-blue-500 hover:text-gray-100 block"
+            class="p-2 text-md cursor-pointer block"
+            :class="{ 'bg-blue-500 text-gray-100': index == hoveredOption }"
             @mousedown="selectOption(option)"
+            @mouseover="setHoveredOption(index)"
         >
             {{ option.display }}
         </div>
@@ -46,6 +48,8 @@
             const optionsShown = ref(false);
             const input = ref("");
 
+            const hoveredOption = ref(-1);
+
             let filteredOptions = computed(() => {
                 return (props.options as SearchSelectOption[]).filter((e) => e.display.toLowerCase().includes(input.value.toLowerCase()));
             });
@@ -64,8 +68,10 @@
                 let tmp = (props.options as SearchSelectOption[]).filter((o) => o.display == input.value);
                 if (tmp.length == 0) {
                     emit("update:selected", { value: {}, display: input.value } as SearchSelectOption);
+                    hoveredOption.value = -1;
                 } else if (tmp.length == 1) {
                     selectOption(tmp[0]);
+                    hoveredOption.value = 0;
                 }
             });
 
@@ -78,16 +84,36 @@
             }
 
             function keyMonitor(event: KeyboardEvent) {
-                if (event.key === "Enter" && filteredOptions.value[0]) {
-                    selectOption(filteredOptions.value[0]);
+                if (event.key === "Enter" && hoveredOption.value >= 0) {
+                    selectOption(filteredOptions.value[hoveredOption.value]);
+                    hideOptions();
+                } else if (event.key == "ArrowUp" && hoveredOption.value >= 0) {
+                    hoveredOption.value--;
+                } else if (event.key == "ArrowDown" && hoveredOption.value < filteredOptions.value.length - 1) {
+                    hoveredOption.value++;
                 }
             }
 
             function hideOptions() {
                 optionsShown.value = false;
+                hoveredOption.value = -1;
             }
 
-            return { showOptions, hideOptions, keyMonitor, selectOption, input, optionsShown, filteredOptions };
+            function setHoveredOption(index: number) {
+                hoveredOption.value = index;
+            }
+
+            return {
+                showOptions,
+                hideOptions,
+                keyMonitor,
+                selectOption,
+                input,
+                optionsShown,
+                filteredOptions,
+                hoveredOption,
+                setHoveredOption,
+            };
         },
     };
 </script>
