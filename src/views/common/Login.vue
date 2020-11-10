@@ -6,38 +6,37 @@
                 <h1 class="mt-2 mb-10 text-4xl font-bold text-center text-gray-900 lg:text-5xl">Login to Your Account</h1>
 
                 <div class="items-center justify-center flex-auto w-full mx-4 lg:w-3/5">
-                    <div class="mb-6 text-center">
-                        <i class="absolute m-3 mt-4 ml-4 text-gray-500 fas fa-envelope"></i>
-                        <input
+                    <div class="mb-6">
+                        <i class="absolute m-3 mt-4 pl-16 ml-6 text-gray-500 fas fa-envelope"></i>
+                        <base-input
                             id="email"
-                            v-model="email"
-                            class="pl-10 font-semibold lg:w-3/4 form-input input-text"
+                            v-model:value="email"
                             type="text"
+                            valid-class="pl-10 font-semibold lg:w-3/4 form-input input-text"
                             placeholder="Email"
-                            :class="{ error: error }"
-                            @change="hideErrors()"
+                            error-class="error"
+                            validation-query="authenticationUser.username"
                         />
                     </div>
-
-                    <div class="mb-6 text-center">
-                        <i class="absolute m-3 mt-4 ml-4 text-gray-500 fas fa-lock"></i>
-                        <input
+                    <div class="mb-6 flex relative">
+                        <i class="absolute m-3 mt-4 pl-16 ml-6 text-gray-500 fas fa-lock"></i>
+                        <base-input
                             id="password"
-                            v-model="password"
+                            v-model:value="password"
                             :type="passwordFieldType"
-                            class="pl-10 font-semibold lg:w-3/4 form-input input-text"
+                            valid-class="pl-10 font-semibold lg:w-3/4 form-input input-text"
                             placeholder="Password"
-                            :class="{ error: error }"
-                            @change="hideErrors()"
+                            error-class="error"
+                            validation-query="authenticationUser.password"
                         />
                         <button
                             id="togglePassword"
                             type="button"
                             tabIndex="-1"
-                            class="absolute mt-1 ml-3 text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
+                            class="-ml-32 text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
                             @click="togglePassword"
                         >
-                            <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="absolute mt-3 ml-1 mr-1 fas"></i>
+                            <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="fas"></i>
                         </button>
                         <p v-if="error" class="mt-2 lg:w-3/4 lg:ml-3 xl:ml-5 error-message">Wrong username and password combination!</p>
                     </div>
@@ -72,12 +71,15 @@
     import { useStore, store } from "@/use/store/store";
     import { Role } from "@/entities/Role";
     import UserManagement from "@/api/UserManagement";
-    import { ref, onMounted } from "vue";
+    import { ref, onMounted, watch } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
+    import BaseInput from "@/components/common/BaseInput.vue";
 
     export default {
-        components: {},
+        components: {
+            BaseInput,
+        },
         props: [],
         setup() {
             let email = ref("");
@@ -93,6 +95,10 @@
             function hideErrors() {
                 error.value = false;
             }
+
+            watch([email, password], () => {
+                hideErrors();
+            });
 
             function isPasswordVisible() {
                 return passwordFieldType.value === "text";
