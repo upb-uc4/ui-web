@@ -13,6 +13,7 @@ const StudentCourseView = () => import("@/views/student/StudentCourseList.vue");
 const AllCourseView = () => import("@/views/common/CourseList.vue");
 const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
 const CourseFormSuspenseWrapper = () => import("@/views/shared/EditCreateCourseForm.vue");
+const ExamRegFormSuspenseWrapper = () => import("@/views/admin/CreateExamRegForm.vue");
 const AccountFormSuspenseWrapper = () => import("@/views/admin/EditCreateAccountForm.vue");
 const ProfileWrapper = () => import("@/components/profile/Wrapper.vue");
 const Settings = () => import("@/views/common/Settings.vue");
@@ -119,6 +120,14 @@ const router = createRouter({
             meta: {
                 title: "Course Editing" + suffix,
                 roles: ["Lecturer", "Admin"],
+            },
+        },
+        {
+            path: "/createExamReg",
+            name: "examRegForm",
+            component: ExamRegFormSuspenseWrapper,
+            meta: {
+                title: "Examination Registration Creation" + suffix,
             },
         },
         {
