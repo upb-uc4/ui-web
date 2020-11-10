@@ -36,10 +36,7 @@
                                     {{ moduleName }}
                                 </label>
                                 <div class="absolute inset-y-0 right-0">
-                                    <button
-                                        class="btn bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded"
-                                        @click="addCurrentModule"
-                                    >
+                                    <button class="btn btn-green-primary-500 w-48" @click="addCurrentModule">
                                         <div v-if="moduleExists">Add Module</div>
                                         <div v-else>Create Module</div>
                                     </button>
@@ -50,7 +47,7 @@
                 </div>
                 <div class="mb-4 w-full">
                     <div v-for="(module, index) in selectedModules" :key="module.id">
-                        <div class="mb-4 p-3 bg-gray-100 rounded flex w-full">
+                        <div class="mb-4 p-3 bg-gray-100 rounded-lg shadow-sm flex w-full">
                             <div class="w-full flex flex-col">
                                 <label class="block text-gray-700 text-md font-medium mb-1">
                                     {{ module.id }}
@@ -60,9 +57,14 @@
                                 </label>
                             </div>
                             <div class="w-full flex justify-end">
-                                <button class="btn btn-icon-red ml-3 text-xl w-12 h-12" @click="removeModule(index)">
-                                    <i class="fas fa-trash text-md"></i>
-                                </button>
+                                <div class="hidden sm:flex">
+                                    <button class="w-48 btn btn-red-secondary" @click="removeModule(index)">Remove Module</button>
+                                </div>
+                                <div class="sm:hidden">
+                                    <button class="btn btn-icon-red ml-3 text-xl w-12 h-12" @click="removeModule(index)">
+                                        <i class="fas fa-trash text-md" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

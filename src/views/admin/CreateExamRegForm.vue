@@ -17,7 +17,13 @@
                 <div class="hidden sm:flex justify-between">
                     <div class="flex justify-end items-center">
                         <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
-                        <button id="createExamReg" :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createExamReg">
+                        <button
+                            id="createExamReg"
+                            :disabled="!canCreate"
+                            style="width: 18rem"
+                            class="btn btn-blue-primary"
+                            @click="createExamReg"
+                        >
                             Create Examination Regulation
                         </button>
                     </div>
@@ -26,7 +32,7 @@
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
                     <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
-                    <button id="mobileCreateCourse" :disabled="!hasInput" class="mb-4 w-full btn btn-blue-primary" @click="createExamReg">
+                    <button id="mobileCreateCourse" :disabled="!canCreate" class="mb-4 w-full btn btn-blue-primary" @click="createExamReg">
                         Create Examination Regulation
                     </button>
                 </div>
