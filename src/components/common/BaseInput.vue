@@ -1,20 +1,21 @@
 <template>
-    <div class="w-full flex flex-col items-center">
-        <label v-if="label != ''" class="w-full text-gray-700 text-sm font-medium mb-1">
+    <div class="flex flex-col items-center">
+        <label v-if="hasLabel" class="w-full text-gray-700 text-sm font-medium mb-1">
             {{ label }}
             <span v-if="required" class="text-blue-700"> *</span>
         </label>
         <input
             ref="BaseInput"
             v-model="model"
+            class="w-full appearance-none text-gray-400 text-lg rounded-lg border-2 border-gray-400 block w-full px-3 pl-10 py-3 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
             :type="type"
-            :class="[isValid ? validClass : errClass]"
+            :class="{ error: !isValid }"
             :placeholder="placeholder || label"
             :disabled="disabled"
             :readonly="readonly"
             @blur="validate"
         />
-        <div v-if="!isValid && !disabled" class="input-errors text-sm text-red-500 mt-1">
+        <div v-if="!isValid && !disabled" class="error error-message text-sm">
             {{ errorMessage || getDefaultErrorsMessage }}
         </div>
     </div>
@@ -27,19 +28,8 @@
     import ValidationBag from "@/use/helpers/ValidationBag";
     export default {
         name: "BaseInput",
-        inheritAttrs: false,
         props: {
             label: {
-                type: String,
-                required: false,
-                default: "",
-            },
-            validClass: {
-                type: String,
-                required: false,
-                default: "",
-            },
-            errorClass: {
                 type: String,
                 required: false,
                 default: "",
@@ -86,6 +76,7 @@
             let isValid = ref(true);
             let errClass = props.validClass + " " + props.errorClass;
             let validation = ref("");
+            const hasLabel = props.label !== "";
 
             const model = useModelWrapper(props, emit, "value");
 
@@ -132,6 +123,7 @@
 
             return {
                 isValid,
+                hasLabel,
                 model,
                 getDefaultErrorsMessage,
                 validate,

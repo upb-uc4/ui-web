@@ -7,37 +7,31 @@
 
                 <div class="items-center justify-center flex-auto w-full mx-4 lg:w-3/5">
                     <div class="mb-6">
-                        <i class="absolute m-3 mt-4 pl-16 ml-6 text-gray-500 fas fa-envelope"></i>
+                        <i class="absolute m-3 mt-4 ml-24 text-gray-500 fas fa-user" />
                         <base-input
                             id="email"
                             v-model:value="email"
                             type="text"
-                            valid-class="pl-10 font-semibold lg:w-3/4 form-input input-text"
+                            class="w-full px-20"
                             placeholder="Email"
-                            error-class="error"
                             validation-query="authenticationUser.username"
                         />
                     </div>
-                    <div class="mb-6 flex relative">
-                        <i class="absolute m-3 mt-4 pl-16 ml-6 text-gray-500 fas fa-lock"></i>
+                    <div class="w-full mb-6 flex relative">
+                        <i class="absolute m-3 mt-4 ml-24 text-gray-500 fas fa-lock" />
+                        <i
+                            :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
+                            class="fas absolute mt-4 mr-24 right-0 text-gray-500 cursor-pointer"
+                            @click="togglePassword"
+                        />
                         <base-input
                             id="password"
                             v-model:value="password"
                             :type="passwordFieldType"
-                            valid-class="pl-10 font-semibold lg:w-3/4 form-input input-text"
+                            class="w-full px-20"
                             placeholder="Password"
-                            error-class="error"
                             validation-query="authenticationUser.password"
                         />
-                        <button
-                            id="togglePassword"
-                            type="button"
-                            tabIndex="-1"
-                            class="-ml-32 text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
-                            @click="togglePassword"
-                        >
-                            <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="fas"></i>
-                        </button>
                         <p v-if="error" class="mt-2 lg:w-3/4 lg:ml-3 xl:ml-5 error-message">Wrong username and password combination!</p>
                     </div>
 
