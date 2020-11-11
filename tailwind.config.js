@@ -30,6 +30,9 @@ module.exports = {
             opacity: {
                 90: ".9",
             },
+            maxHeight: {
+                50: "50vh",
+            },
         },
     },
     variants: {

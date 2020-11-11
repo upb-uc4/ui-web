@@ -1,6 +1,7 @@
-# [v0.12.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
+# [v0.12.0 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
 
-## Refactor
+## Refactoring
+- add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
 - add a message for the student if not immatriculated to any semester yet [#692](https://github.com/upb-uc4/ui-web/pull/692)
 
 # [v0.12.0](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.12.0) (2020-11-06)
