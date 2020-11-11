@@ -18,6 +18,7 @@
                         class="w-full form-input input-text"
                         placeholder="Matriculation-ID"
                     />
+                    <p v-if="latest == ''" class="mb-3 mt-1 text-xs font-medium text-gray-600">There is no matriculation, yet!</p>
                 </div>
                 <div v-if="latest != ''" class="flex flex-col w-1/2 mt-3">
                     <label class="mb-3 text-sm font-medium text-gray-700 flex">
