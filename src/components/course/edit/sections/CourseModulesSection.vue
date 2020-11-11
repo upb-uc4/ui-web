@@ -5,7 +5,7 @@
                 <label class="block text-gray-700 text-lg font-medium mb-2">Module Information</label>
                 <label class="block text-gray-600"> Modules and examination regulations that the course should be assigned to. </label>
             </div>
-            <div class="flex flex-col w-full">
+            <div class="flex flex-col lg:w-2/3 w-full">
                 <div
                     v-for="index in selectedExRegNames.length"
                     :key="index"
