@@ -204,12 +204,6 @@
                 return (props.moduleIds as String[]).includes(id);
             }
 
-            //TODO remove demo elements for tag list
-            let demoElements = reactive(["Summer", "Sun", "Beach"]);
-            function updateDemoList(index: number) {
-                demoElements.splice(index, 1);
-            }
-
             function hasCheckedModule(exReg: ExaminationRegulation): Boolean {
                 if (exReg == undefined) return false;
                 for (let index = 0; index < props.moduleIds.length; index++) {
@@ -233,8 +227,6 @@
                 removeValue,
                 toggleModule,
                 isChecked,
-                demoElements,
-                updateDemoList,
                 hasCheckedModule,
                 selectedModules,
                 removeModule,
