@@ -175,7 +175,7 @@
 
             onBeforeMount(async () => {
                 await askAdminRole();
-                course.value.moduleIds = ["1", "3"];
+                course.value.moduleIds = ["M1", "M3"];
                 if (props.editMode) {
                     await getCourse();
                 }

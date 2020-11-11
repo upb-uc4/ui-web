@@ -56,6 +56,7 @@
                                 </div>
                             </div>
                         </div>
+                        <tag-list :elements="selectedModules[index - 1]" @on-remove="removeModule(index - 1, $event)" />
                     </div>
                 </div>
                 <p v-if="errorBag.has('moduleIds')" id="moduleError" class="error-message">
@@ -77,7 +78,7 @@
 
     export default {
         name: "CourseModulesSection",
-        //components: {TagList},
+        components: { TagList },
         props: {
             errorBag: {
                 required: true,
@@ -96,37 +97,38 @@
         setup(props: any, { emit }: any) {
             const examinationRegs = ref([] as ExaminationRegulation[]);
             const selectedExRegNames = ref([""]);
+            const selectedModules = ref([] as String[][]);
 
             //TODO Remove Mock Data
             let mockData = [
                 {
                     name: "ExReg1",
                     active: true,
-                    modules: [{ id: "1", name: "Module1" } as Module, { id: "2", name: "Module2" } as Module],
+                    modules: [{ id: "M1", name: "Module1" } as Module, { id: "2", name: "Module2" } as Module],
                 },
                 {
                     name: "ExReg2",
                     active: false,
                     modules: [
-                        { id: "1", name: "Module1" } as Module,
-                        { id: "3", name: "Module3" } as Module,
-                        { id: "4", name: "Module4" } as Module,
+                        { id: "M1", name: "Module1" } as Module,
+                        { id: "M3", name: "Module3" } as Module,
+                        { id: "M4", name: "Module4" } as Module,
                     ],
                 },
                 {
                     name: "ExReg3",
                     active: false,
                     modules: [
-                        { id: "5", name: "Module5" } as Module,
-                        { id: "6", name: "Module6" } as Module,
-                        { id: "7", name: "Module7" } as Module,
+                        { id: "M5", name: "Module5" } as Module,
+                        { id: "M6", name: "Module6" } as Module,
+                        { id: "M7", name: "Module7" } as Module,
                     ],
                 },
             ];
 
             onBeforeMount(async () => {
                 await getExmatriculationRegs();
-                if (props.editMode) {
+                if (!props.editMode) {
                     getExRegsFromModules();
                 }
             });
@@ -139,6 +141,13 @@
                 let tmp = [] as ExaminationRegulation[];
                 selectedExRegNames.value.forEach((selectedName) => {
                     tmp.push(examinationRegs.value.find((e) => e.name == selectedName) as ExaminationRegulation);
+                    if (tmp.length > 0) {
+                        let selected: String[] = [];
+                        tmp[tmp.length - 1]?.modules.forEach((m) => {
+                            if ((props.moduleIds as String[]).find((x) => x == m.id)) selected.push(m.id);
+                        });
+                        selectedModules.value[tmp.length - 1] = selected;
+                    }
                 });
                 return tmp;
             });
@@ -156,7 +165,7 @@
             }
 
             function getExRegsFromModules() {
-                (props.moduleIds as string[]).forEach((m) => {
+                (props.moduleIds as String[]).forEach((m) => {
                     examinationRegs.value.forEach((exReg) => {
                         if (exReg.modules.find((e) => e.id == m) != undefined && !selectedExRegNames.value.includes(exReg.name)) {
                             selectedExRegNames.value.splice(selectedExRegNames.value.length - 1, 0, exReg.name);
@@ -183,7 +192,7 @@
                 selectedExRegNames.value.splice(index, 1);
             }
 
-            function toggleModule(id: string) {
+            function toggleModule(id: String) {
                 emit("toggle-module", id);
                 getExRegsFromModules();
             }
@@ -208,6 +217,10 @@
                 return false;
             }
 
+            function removeModule(exRegIndex: number, moduleIndex: number) {
+                toggleModule(selectedModules.value[exRegIndex][moduleIndex]);
+            }
+
             return {
                 examinationRegs,
                 selectedExRegNames,
@@ -220,6 +233,8 @@
                 demoElements,
                 updateDemoList,
                 hasCheckedModule,
+                selectedModules,
+                removeModule,
             };
         },
     };
