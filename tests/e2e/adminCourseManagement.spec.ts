@@ -1,12 +1,11 @@
 import Course from "@/api/api_models/course_management/Course";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
 import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
-import { createNewLecturer, createUsers, deleteUsers } from "./helpers/UserHelper";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
+import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
+import { createUsers, deleteUsers } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
-import { Role } from "@/entities/Role";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -17,6 +16,7 @@ describe("Course creation, edition and deletion", () => {
     let adminAuth: Account;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
+    let newModule: String = "M.1275.56002";
 
     before(function () {
         cy.clearCookies();
@@ -84,6 +84,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='courseType']").should("exist");
         cy.get("input[id='courseName']").should("exist");
         cy.get("select[id='courseLanguage']").should("exist");
+        cy.get("select[id='exReg-']").should("exist");
         cy.get("textarea[id='courseDescription']").should("exist");
         cy.get("input[id='maxParticipants']").should("exist");
         cy.get("input[id='startDate']").should("exist");
@@ -195,6 +196,11 @@ describe("Course creation, edition and deletion", () => {
         cy.get('input[id="courseName"]').clear().type(course.courseName);
     });
 
+    it("Can edit modules", () => {
+        cy.get(`input[id=check_module_${course.moduleIds[0]}]`).uncheck();
+        cy.get(`input[id=check_module_${newModule}]`).check();
+    });
+
     it("Can save course", () => {
         cy.get('button[id="saveChanges"]').should("be.enabled");
         cy.get('button[id="saveChanges"]').click();
@@ -204,6 +210,8 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.get(`input[id=check_module_${course.moduleIds[0]}]`).should("not.have.attr", "checked");
+        cy.get(`input[id=check_module_${newModule}]`).should("have.attr", "checked");
     });
 
     it("Delete course", () => {

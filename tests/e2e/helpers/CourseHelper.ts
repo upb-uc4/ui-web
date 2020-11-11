@@ -1,13 +1,12 @@
 import Course from "@/api/api_models/course_management/Course";
-import { Account } from "@/entities/Account";
-import { clear } from "console";
 import CourseManagement from "@/api/CourseManagement";
+import { Account } from "@/entities/Account";
 import { loginAsUser } from "./AuthHelper";
 import {
-    navigateToCourseFormAdmin,
     navigateToCourseForm,
-    navigateToMyCoursesLecturer,
+    navigateToCourseFormAdmin,
     navigateToCourseListAdmin,
+    navigateToMyCoursesLecturer,
 } from "./NavigationHelper";
 
 export function createCourse(course: Course) {
@@ -17,6 +16,8 @@ export function createCourse(course: Course) {
     cy.get("select").select(course.courseLanguage);
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
+    cy.get('select[id="exReg-"]').select("Computer Science v3");
+    cy.get(`input[id='check_module_${course.moduleIds[0]}']`).check();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
@@ -35,6 +36,8 @@ export function createCourseAdmin(course: Course) {
     cy.get("select").select(course.courseLanguage);
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
+    cy.get('select[id="exReg-"]').select("Computer Science v3");
+    cy.get(`input[id='check_module_${course.moduleIds[0]}']`).check();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");

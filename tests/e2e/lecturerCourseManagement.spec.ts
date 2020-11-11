@@ -12,14 +12,15 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
 import { loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
-import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
 import { createCourse, deleteCourse, deleteCourses } from "./helpers/CourseHelper";
+import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
 
 describe("Course creation, edition and deletion", () => {
     const random = Math.floor(Math.random() * 9999);
 
     let course: Course;
     let lecturerAuth: Account;
+    let newModule: String = "M.1275.56002";
 
     before(function () {
         cy.clearCookies();
@@ -122,6 +123,11 @@ describe("Course creation, edition and deletion", () => {
         cy.get('input[id="courseName"]').clear().type(course.courseName);
     });
 
+    it("Can edit modules", () => {
+        cy.get(`input[id=check_module_${course.moduleIds[0]}]`).uncheck();
+        cy.get(`input[id=check_module_${newModule}]`).check();
+    });
+
     it("Can save course", () => {
         cy.get('button[id="saveChanges"]').should("be.enabled");
         cy.get('button[id="saveChanges"]').click();
@@ -131,6 +137,8 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.get(`input[id=check_module_${course.moduleIds[0]}]`).should("not.have.attr", "checked");
+        cy.get(`input[id=check_module_${newModule}]`).should("have.attr", "checked");
     });
 
     it("Can modify participation limit with arrow keys", () => {

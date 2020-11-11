@@ -10,5 +10,5 @@
     "endDate" : "2000-01-01",
     "lecturerId" : "lecturer",
     "maxParticipants" : 10,
-    "moduleIds": []
+    "moduleIds": ["M.1358.91583"]
 }

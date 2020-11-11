@@ -58,6 +58,9 @@
                         </div>
                     </div>
                 </div>
+                <p v-if="errorBag.has('moduleIds')" id="moduleError" class="error-message">
+                    {{ errorBag.get("moduleIds") }}
+                </p>
             </div>
         </div>
     </section>
