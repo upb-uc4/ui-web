@@ -100,10 +100,9 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Show validation errors", () => {
-        // TODO include as soon as error feedback implemented in backend
-        //cy.get("input[id='lecturerId']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='courseName']").type("test");
         cy.get('button[id="createCourse"]').click();
+        cy.get("input[id='lecturerId']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='courseType']").siblings().get("p").should("have.class", "error-message");
         cy.get("select[id='courseLanguage']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='maxParticipants']").siblings().get("p").should("have.class", "error-message");
@@ -141,8 +140,8 @@ describe("Course creation, edition and deletion", () => {
     it("Can select default lecturer", () => {
         cy.get("input[id='lecturerId']").clear();
         cy.get("input[id='lecturerId']").click();
-        cy.get("div").contains(`(@${lecturerAuth.username})`).click();
-        cy.get("input[id='lecturerId']").should("have.value", lecturerAuth.username);
+        cy.get("div[id='lecturerId_options']").get("div").contains(`(@${lecturerAuth.username})`).click();
+        cy.get("input[id='lecturerId']").should("contain.value", lecturerAuth.username);
     });
 
     it("Create course", () => {
@@ -181,7 +180,9 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='lecturerId']").type("some nonsense");
         cy.get("label").should("contain", "Lecturer-ID not found!");
 
-        cy.get("input[id='lecturerId']").clear().type(course.lecturerId);
+        cy.get("input[id='lecturerId']").clear();
+        cy.get("input[id='lecturerId']").click();
+        cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
         cy.get("label").should("contain", "firstName LastName");
         cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
         cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");

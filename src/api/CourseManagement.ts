@@ -1,9 +1,9 @@
-import Common from "./Common";
+import { AxiosError, AxiosResponse } from "axios";
 import Course from "./api_models/course_management/Course";
-import APIResponse from "./helpers/models/APIResponse";
 import APIError from "./api_models/errors/APIError";
-import { AxiosResponse, AxiosError } from "axios";
 import handleAuthenticationError from "./AuthenticationHelper";
+import Common from "./Common";
+import APIResponse from "./helpers/models/APIResponse";
 
 export default class CourseManagement extends Common {
     constructor() {

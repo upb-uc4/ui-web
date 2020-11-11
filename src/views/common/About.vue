@@ -168,8 +168,8 @@
             const labels = "&labels=bug";
             const bodyBase = "&body=";
 
-            onBeforeMount(() => {
-                createURL();
+            onBeforeMount(async () => {
+                await createURL();
             });
 
             async function createURL() {

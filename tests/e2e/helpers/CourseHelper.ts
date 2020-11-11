@@ -30,7 +30,9 @@ export function createCourse(course: Course) {
 
 export function createCourseAdmin(course: Course) {
     navigateToCourseFormAdmin();
-    cy.get('input[id="lecturerId"]').clear().type(course.lecturerId);
+    cy.get("input[id='lecturerId']").clear();
+    cy.get("input[id='lecturerId']").click();
+    cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
     cy.get("select").select(course.courseLanguage);

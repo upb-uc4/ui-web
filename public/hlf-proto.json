@@ -1,0 +1,4485 @@
+{
+  "options": {
+    "go_package": "github.com/hyperledger/fabric-protos-go/peer",
+    "java_package": "org.hyperledger.fabric.protos.peer",
+    "java_outer_classname": "ProposalPackage"
+  },
+  "nested": {
+    "common": {
+      "nested": {
+        "Status": {
+          "values": {
+            "UNKNOWN": 0,
+            "SUCCESS": 200,
+            "BAD_REQUEST": 400,
+            "FORBIDDEN": 403,
+            "NOT_FOUND": 404,
+            "REQUEST_ENTITY_TOO_LARGE": 413,
+            "INTERNAL_SERVER_ERROR": 500,
+            "NOT_IMPLEMENTED": 501,
+            "SERVICE_UNAVAILABLE": 503
+          }
+        },
+        "HeaderType": {
+          "values": {
+            "MESSAGE": 0,
+            "CONFIG": 1,
+            "CONFIG_UPDATE": 2,
+            "ENDORSER_TRANSACTION": 3,
+            "ORDERER_TRANSACTION": 4,
+            "DELIVER_SEEK_INFO": 5,
+            "CHAINCODE_PACKAGE": 6,
+            "PEER_ADMIN_OPERATION": 8
+          },
+          "reserved": [
+            [
+              7,
+              7
+            ],
+            [
+              9,
+              9
+            ],
+            "PEER_RESOURCE_UPDATE",
+            "TOKEN_TRANSACTION"
+          ]
+        },
+        "BlockMetadataIndex": {
+          "values": {
+            "SIGNATURES": 0,
+            "LAST_CONFIG": 1,
+            "TRANSACTIONS_FILTER": 2,
+            "ORDERER": 3,
+            "COMMIT_HASH": 4
+          }
+        },
+        "LastConfig": {
+          "fields": {
+            "index": {
+              "type": "uint64",
+              "id": 1
+            }
+          }
+        },
+        "Metadata": {
+          "fields": {
+            "value": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signatures": {
+              "rule": "repeated",
+              "type": "MetadataSignature",
+              "id": 2
+            }
+          }
+        },
+        "MetadataSignature": {
+          "fields": {
+            "signatureHeader": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Header": {
+          "fields": {
+            "channelHeader": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signatureHeader": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "ChannelHeader": {
+          "fields": {
+            "type": {
+              "type": "int32",
+              "id": 1
+            },
+            "version": {
+              "type": "int32",
+              "id": 2
+            },
+            "timestamp": {
+              "type": "google.protobuf.Timestamp",
+              "id": 3
+            },
+            "channelId": {
+              "type": "string",
+              "id": 4
+            },
+            "txId": {
+              "type": "string",
+              "id": 5
+            },
+            "epoch": {
+              "type": "uint64",
+              "id": 6
+            },
+            "extension": {
+              "type": "bytes",
+              "id": 7
+            },
+            "tlsCertHash": {
+              "type": "bytes",
+              "id": 8
+            }
+          }
+        },
+        "SignatureHeader": {
+          "fields": {
+            "creator": {
+              "type": "bytes",
+              "id": 1
+            },
+            "nonce": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Payload": {
+          "fields": {
+            "header": {
+              "type": "Header",
+              "id": 1
+            },
+            "data": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Envelope": {
+          "fields": {
+            "payload": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Block": {
+          "fields": {
+            "header": {
+              "type": "BlockHeader",
+              "id": 1
+            },
+            "data": {
+              "type": "BlockData",
+              "id": 2
+            },
+            "metadata": {
+              "type": "BlockMetadata",
+              "id": 3
+            }
+          }
+        },
+        "BlockHeader": {
+          "fields": {
+            "number": {
+              "type": "uint64",
+              "id": 1
+            },
+            "previousHash": {
+              "type": "bytes",
+              "id": 2
+            },
+            "dataHash": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "BlockData": {
+          "fields": {
+            "data": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "BlockMetadata": {
+          "fields": {
+            "metadata": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "OrdererBlockMetadata": {
+          "fields": {
+            "lastConfig": {
+              "type": "LastConfig",
+              "id": 1
+            },
+            "consenterMetadata": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "ConfigEnvelope": {
+          "fields": {
+            "config": {
+              "type": "Config",
+              "id": 1
+            },
+            "lastUpdate": {
+              "type": "Envelope",
+              "id": 2
+            }
+          }
+        },
+        "ConfigGroupSchema": {
+          "fields": {
+            "groups": {
+              "keyType": "string",
+              "type": "ConfigGroupSchema",
+              "id": 1
+            },
+            "values": {
+              "keyType": "string",
+              "type": "ConfigValueSchema",
+              "id": 2
+            },
+            "policies": {
+              "keyType": "string",
+              "type": "ConfigPolicySchema",
+              "id": 3
+            }
+          }
+        },
+        "ConfigValueSchema": {
+          "fields": {}
+        },
+        "ConfigPolicySchema": {
+          "fields": {}
+        },
+        "Config": {
+          "fields": {
+            "sequence": {
+              "type": "uint64",
+              "id": 1
+            },
+            "channelGroup": {
+              "type": "ConfigGroup",
+              "id": 2
+            }
+          },
+          "reserved": [
+            [
+              3,
+              3
+            ],
+            "type"
+          ]
+        },
+        "ConfigUpdateEnvelope": {
+          "fields": {
+            "configUpdate": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signatures": {
+              "rule": "repeated",
+              "type": "ConfigSignature",
+              "id": 2
+            }
+          }
+        },
+        "ConfigUpdate": {
+          "fields": {
+            "channelId": {
+              "type": "string",
+              "id": 1
+            },
+            "readSet": {
+              "type": "ConfigGroup",
+              "id": 2
+            },
+            "writeSet": {
+              "type": "ConfigGroup",
+              "id": 3
+            },
+            "isolatedData": {
+              "keyType": "string",
+              "type": "bytes",
+              "id": 5
+            }
+          },
+          "reserved": [
+            [
+              4,
+              4
+            ],
+            "type"
+          ]
+        },
+        "ConfigGroup": {
+          "fields": {
+            "version": {
+              "type": "uint64",
+              "id": 1
+            },
+            "groups": {
+              "keyType": "string",
+              "type": "ConfigGroup",
+              "id": 2
+            },
+            "values": {
+              "keyType": "string",
+              "type": "ConfigValue",
+              "id": 3
+            },
+            "policies": {
+              "keyType": "string",
+              "type": "ConfigPolicy",
+              "id": 4
+            },
+            "modPolicy": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        },
+        "ConfigValue": {
+          "fields": {
+            "version": {
+              "type": "uint64",
+              "id": 1
+            },
+            "value": {
+              "type": "bytes",
+              "id": 2
+            },
+            "modPolicy": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "ConfigPolicy": {
+          "fields": {
+            "version": {
+              "type": "uint64",
+              "id": 1
+            },
+            "policy": {
+              "type": "Policy",
+              "id": 2
+            },
+            "modPolicy": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "ConfigSignature": {
+          "fields": {
+            "signatureHeader": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "HashingAlgorithm": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "BlockDataHashingStructure": {
+          "fields": {
+            "width": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "OrdererAddresses": {
+          "fields": {
+            "addresses": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "Consortium": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "Capabilities": {
+          "fields": {
+            "capabilities": {
+              "keyType": "string",
+              "type": "Capability",
+              "id": 1
+            }
+          }
+        },
+        "Capability": {
+          "fields": {}
+        },
+        "BlockchainInfo": {
+          "fields": {
+            "height": {
+              "type": "uint64",
+              "id": 1
+            },
+            "currentBlockHash": {
+              "type": "bytes",
+              "id": 2
+            },
+            "previousBlockHash": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "Policy": {
+          "fields": {
+            "type": {
+              "type": "int32",
+              "id": 1
+            },
+            "value": {
+              "type": "bytes",
+              "id": 2
+            }
+          },
+          "nested": {
+            "PolicyType": {
+              "values": {
+                "UNKNOWN": 0,
+                "SIGNATURE": 1,
+                "MSP": 2,
+                "IMPLICIT_META": 3
+              }
+            }
+          }
+        },
+        "SignaturePolicyEnvelope": {
+          "fields": {
+            "version": {
+              "type": "int32",
+              "id": 1
+            },
+            "rule": {
+              "type": "SignaturePolicy",
+              "id": 2
+            },
+            "identities": {
+              "rule": "repeated",
+              "type": "MSPPrincipal",
+              "id": 3
+            }
+          }
+        },
+        "SignaturePolicy": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "signedBy",
+                "nOutOf"
+              ]
+            }
+          },
+          "fields": {
+            "signedBy": {
+              "type": "int32",
+              "id": 1
+            },
+            "nOutOf": {
+              "type": "NOutOf",
+              "id": 2
+            }
+          },
+          "nested": {
+            "NOutOf": {
+              "fields": {
+                "n": {
+                  "type": "int32",
+                  "id": 1
+                },
+                "rules": {
+                  "rule": "repeated",
+                  "type": "SignaturePolicy",
+                  "id": 2
+                }
+              }
+            }
+          }
+        },
+        "ImplicitMetaPolicy": {
+          "fields": {
+            "subPolicy": {
+              "type": "string",
+              "id": 1
+            },
+            "rule": {
+              "type": "Rule",
+              "id": 2
+            }
+          },
+          "nested": {
+            "Rule": {
+              "values": {
+                "ANY": 0,
+                "ALL": 1,
+                "MAJORITY": 2
+              }
+            }
+          }
+        },
+        "ApplicationPolicy": {
+          "options": {
+            "deprecated": true
+          },
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "signaturePolicy",
+                "channelConfigPolicyReference"
+              ]
+            }
+          },
+          "fields": {
+            "signaturePolicy": {
+              "type": "SignaturePolicyEnvelope",
+              "id": 1
+            },
+            "channelConfigPolicyReference": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "MSPPrincipal": {
+          "fields": {
+            "principalClassification": {
+              "type": "Classification",
+              "id": 1
+            },
+            "principal": {
+              "type": "bytes",
+              "id": 2
+            }
+          },
+          "nested": {
+            "Classification": {
+              "values": {
+                "ROLE": 0,
+                "ORGANIZATION_UNIT": 1,
+                "IDENTITY": 2,
+                "ANONYMITY": 3,
+                "COMBINED": 4
+              }
+            }
+          }
+        },
+        "OrganizationUnit": {
+          "fields": {
+            "mspIdentifier": {
+              "type": "string",
+              "id": 1
+            },
+            "organizationalUnitIdentifier": {
+              "type": "string",
+              "id": 2
+            },
+            "certifiersIdentifier": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "MSPRole": {
+          "fields": {
+            "mspIdentifier": {
+              "type": "string",
+              "id": 1
+            },
+            "role": {
+              "type": "MSPRoleType",
+              "id": 2
+            }
+          },
+          "nested": {
+            "MSPRoleType": {
+              "values": {
+                "MEMBER": 0,
+                "ADMIN": 1,
+                "CLIENT": 2,
+                "PEER": 3,
+                "ORDERER": 4
+              }
+            }
+          }
+        },
+        "MSPIdentityAnonymity": {
+          "fields": {
+            "anonymityType": {
+              "type": "MSPIdentityAnonymityType",
+              "id": 1
+            }
+          },
+          "nested": {
+            "MSPIdentityAnonymityType": {
+              "values": {
+                "NOMINAL": 0,
+                "ANONYMOUS": 1
+              }
+            }
+          }
+        },
+        "CombinedPrincipal": {
+          "fields": {
+            "principals": {
+              "rule": "repeated",
+              "type": "MSPPrincipal",
+              "id": 1
+            }
+          }
+        }
+      }
+    },
+    "google": {
+      "nested": {
+        "protobuf": {
+          "nested": {
+            "Timestamp": {
+              "fields": {
+                "seconds": {
+                  "type": "int64",
+                  "id": 1
+                },
+                "nanos": {
+                  "type": "int32",
+                  "id": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "discovery": {
+      "nested": {
+        "Discovery": {
+          "methods": {
+            "Discover": {
+              "requestType": "SignedRequest",
+              "responseType": "Response"
+            }
+          }
+        },
+        "SignedRequest": {
+          "fields": {
+            "payload": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Request": {
+          "fields": {
+            "authentication": {
+              "type": "AuthInfo",
+              "id": 1
+            },
+            "queries": {
+              "rule": "repeated",
+              "type": "Query",
+              "id": 2
+            }
+          }
+        },
+        "Response": {
+          "fields": {
+            "results": {
+              "rule": "repeated",
+              "type": "QueryResult",
+              "id": 1
+            }
+          }
+        },
+        "AuthInfo": {
+          "fields": {
+            "clientIdentity": {
+              "type": "bytes",
+              "id": 1
+            },
+            "clientTlsCertHash": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Query": {
+          "oneofs": {
+            "query": {
+              "oneof": [
+                "configQuery",
+                "peerQuery",
+                "ccQuery",
+                "localPeers"
+              ]
+            }
+          },
+          "fields": {
+            "channel": {
+              "type": "string",
+              "id": 1
+            },
+            "configQuery": {
+              "type": "ConfigQuery",
+              "id": 2
+            },
+            "peerQuery": {
+              "type": "PeerMembershipQuery",
+              "id": 3
+            },
+            "ccQuery": {
+              "type": "ChaincodeQuery",
+              "id": 4
+            },
+            "localPeers": {
+              "type": "LocalPeerQuery",
+              "id": 5
+            }
+          }
+        },
+        "QueryResult": {
+          "oneofs": {
+            "result": {
+              "oneof": [
+                "error",
+                "configResult",
+                "ccQueryRes",
+                "members"
+              ]
+            }
+          },
+          "fields": {
+            "error": {
+              "type": "Error",
+              "id": 1
+            },
+            "configResult": {
+              "type": "ConfigResult",
+              "id": 2
+            },
+            "ccQueryRes": {
+              "type": "ChaincodeQueryResult",
+              "id": 3
+            },
+            "members": {
+              "type": "PeerMembershipResult",
+              "id": 4
+            }
+          }
+        },
+        "ConfigQuery": {
+          "fields": {}
+        },
+        "ConfigResult": {
+          "fields": {
+            "msps": {
+              "keyType": "string",
+              "type": "msp.FabricMSPConfig",
+              "id": 1
+            },
+            "orderers": {
+              "keyType": "string",
+              "type": "Endpoints",
+              "id": 2
+            }
+          }
+        },
+        "PeerMembershipQuery": {
+          "fields": {
+            "filter": {
+              "type": "ChaincodeInterest",
+              "id": 1
+            }
+          }
+        },
+        "PeerMembershipResult": {
+          "fields": {
+            "peersByOrg": {
+              "keyType": "string",
+              "type": "Peers",
+              "id": 1
+            }
+          }
+        },
+        "ChaincodeQuery": {
+          "fields": {
+            "interests": {
+              "rule": "repeated",
+              "type": "ChaincodeInterest",
+              "id": 1
+            }
+          }
+        },
+        "ChaincodeInterest": {
+          "fields": {
+            "chaincodes": {
+              "rule": "repeated",
+              "type": "ChaincodeCall",
+              "id": 1
+            }
+          }
+        },
+        "ChaincodeCall": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "collectionNames": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "ChaincodeQueryResult": {
+          "fields": {
+            "content": {
+              "rule": "repeated",
+              "type": "EndorsementDescriptor",
+              "id": 1
+            }
+          }
+        },
+        "LocalPeerQuery": {
+          "fields": {}
+        },
+        "EndorsementDescriptor": {
+          "fields": {
+            "chaincode": {
+              "type": "string",
+              "id": 1
+            },
+            "endorsersByGroups": {
+              "keyType": "string",
+              "type": "Peers",
+              "id": 2
+            },
+            "layouts": {
+              "rule": "repeated",
+              "type": "Layout",
+              "id": 3
+            }
+          }
+        },
+        "Layout": {
+          "fields": {
+            "quantitiesByGroup": {
+              "keyType": "string",
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "Peers": {
+          "fields": {
+            "peers": {
+              "rule": "repeated",
+              "type": "Peer",
+              "id": 1
+            }
+          }
+        },
+        "Peer": {
+          "fields": {
+            "stateInfo": {
+              "type": "gossip.Envelope",
+              "id": 1
+            },
+            "membershipInfo": {
+              "type": "gossip.Envelope",
+              "id": 2
+            },
+            "identity": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "Error": {
+          "fields": {
+            "content": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "Endpoints": {
+          "fields": {
+            "endpoint": {
+              "rule": "repeated",
+              "type": "Endpoint",
+              "id": 1
+            }
+          }
+        },
+        "Endpoint": {
+          "fields": {
+            "host": {
+              "type": "string",
+              "id": 1
+            },
+            "port": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        }
+      }
+    },
+    "gossip": {
+      "nested": {
+        "Gossip": {
+          "methods": {
+            "GossipStream": {
+              "requestType": "Envelope",
+              "requestStream": true,
+              "responseType": "Envelope",
+              "responseStream": true
+            },
+            "Ping": {
+              "requestType": "Empty",
+              "responseType": "Empty"
+            }
+          }
+        },
+        "Envelope": {
+          "fields": {
+            "payload": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            },
+            "secretEnvelope": {
+              "type": "SecretEnvelope",
+              "id": 3
+            }
+          }
+        },
+        "SecretEnvelope": {
+          "fields": {
+            "payload": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Secret": {
+          "oneofs": {
+            "content": {
+              "oneof": [
+                "internalEndpoint"
+              ]
+            }
+          },
+          "fields": {
+            "internalEndpoint": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "GossipMessage": {
+          "oneofs": {
+            "content": {
+              "oneof": [
+                "aliveMsg",
+                "memReq",
+                "memRes",
+                "dataMsg",
+                "hello",
+                "dataDig",
+                "dataReq",
+                "dataUpdate",
+                "empty",
+                "conn",
+                "stateInfo",
+                "stateSnapshot",
+                "stateInfoPullReq",
+                "stateRequest",
+                "stateResponse",
+                "leadershipMsg",
+                "peerIdentity",
+                "ack",
+                "privateReq",
+                "privateRes",
+                "privateData"
+              ]
+            }
+          },
+          "fields": {
+            "nonce": {
+              "type": "uint64",
+              "id": 1
+            },
+            "channel": {
+              "type": "bytes",
+              "id": 2
+            },
+            "tag": {
+              "type": "Tag",
+              "id": 3
+            },
+            "aliveMsg": {
+              "type": "AliveMessage",
+              "id": 5
+            },
+            "memReq": {
+              "type": "MembershipRequest",
+              "id": 6
+            },
+            "memRes": {
+              "type": "MembershipResponse",
+              "id": 7
+            },
+            "dataMsg": {
+              "type": "DataMessage",
+              "id": 8
+            },
+            "hello": {
+              "type": "GossipHello",
+              "id": 9
+            },
+            "dataDig": {
+              "type": "DataDigest",
+              "id": 10
+            },
+            "dataReq": {
+              "type": "DataRequest",
+              "id": 11
+            },
+            "dataUpdate": {
+              "type": "DataUpdate",
+              "id": 12
+            },
+            "empty": {
+              "type": "Empty",
+              "id": 13
+            },
+            "conn": {
+              "type": "ConnEstablish",
+              "id": 14
+            },
+            "stateInfo": {
+              "type": "StateInfo",
+              "id": 15
+            },
+            "stateSnapshot": {
+              "type": "StateInfoSnapshot",
+              "id": 16
+            },
+            "stateInfoPullReq": {
+              "type": "StateInfoPullRequest",
+              "id": 17
+            },
+            "stateRequest": {
+              "type": "RemoteStateRequest",
+              "id": 18
+            },
+            "stateResponse": {
+              "type": "RemoteStateResponse",
+              "id": 19
+            },
+            "leadershipMsg": {
+              "type": "LeadershipMessage",
+              "id": 20
+            },
+            "peerIdentity": {
+              "type": "PeerIdentity",
+              "id": 21
+            },
+            "ack": {
+              "type": "Acknowledgement",
+              "id": 22
+            },
+            "privateReq": {
+              "type": "RemotePvtDataRequest",
+              "id": 23
+            },
+            "privateRes": {
+              "type": "RemotePvtDataResponse",
+              "id": 24
+            },
+            "privateData": {
+              "type": "PrivateDataMessage",
+              "id": 25
+            }
+          },
+          "nested": {
+            "Tag": {
+              "values": {
+                "UNDEFINED": 0,
+                "EMPTY": 1,
+                "ORG_ONLY": 2,
+                "CHAN_ONLY": 3,
+                "CHAN_AND_ORG": 4,
+                "CHAN_OR_ORG": 5
+              }
+            }
+          }
+        },
+        "StateInfo": {
+          "fields": {
+            "timestamp": {
+              "type": "PeerTime",
+              "id": 2
+            },
+            "pkiId": {
+              "type": "bytes",
+              "id": 3
+            },
+            "channel_MAC": {
+              "type": "bytes",
+              "id": 4
+            },
+            "properties": {
+              "type": "Properties",
+              "id": 5
+            }
+          }
+        },
+        "Properties": {
+          "fields": {
+            "ledgerHeight": {
+              "type": "uint64",
+              "id": 1
+            },
+            "leftChannel": {
+              "type": "bool",
+              "id": 2
+            },
+            "chaincodes": {
+              "rule": "repeated",
+              "type": "Chaincode",
+              "id": 3
+            }
+          }
+        },
+        "StateInfoSnapshot": {
+          "fields": {
+            "elements": {
+              "rule": "repeated",
+              "type": "Envelope",
+              "id": 1
+            }
+          }
+        },
+        "StateInfoPullRequest": {
+          "fields": {
+            "channel_MAC": {
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "ConnEstablish": {
+          "fields": {
+            "pkiId": {
+              "type": "bytes",
+              "id": 1
+            },
+            "identity": {
+              "type": "bytes",
+              "id": 2
+            },
+            "tlsCertHash": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "PeerIdentity": {
+          "fields": {
+            "pkiId": {
+              "type": "bytes",
+              "id": 1
+            },
+            "cert": {
+              "type": "bytes",
+              "id": 2
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "PullMsgType": {
+          "values": {
+            "UNDEFINED": 0,
+            "BLOCK_MSG": 1,
+            "IDENTITY_MSG": 2
+          }
+        },
+        "DataRequest": {
+          "fields": {
+            "nonce": {
+              "type": "uint64",
+              "id": 1
+            },
+            "digests": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 2
+            },
+            "msgType": {
+              "type": "PullMsgType",
+              "id": 3
+            }
+          }
+        },
+        "GossipHello": {
+          "fields": {
+            "nonce": {
+              "type": "uint64",
+              "id": 1
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 2
+            },
+            "msgType": {
+              "type": "PullMsgType",
+              "id": 3
+            }
+          }
+        },
+        "DataUpdate": {
+          "fields": {
+            "nonce": {
+              "type": "uint64",
+              "id": 1
+            },
+            "data": {
+              "rule": "repeated",
+              "type": "Envelope",
+              "id": 2
+            },
+            "msgType": {
+              "type": "PullMsgType",
+              "id": 3
+            }
+          }
+        },
+        "DataDigest": {
+          "fields": {
+            "nonce": {
+              "type": "uint64",
+              "id": 1
+            },
+            "digests": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 2
+            },
+            "msgType": {
+              "type": "PullMsgType",
+              "id": 3
+            }
+          }
+        },
+        "DataMessage": {
+          "fields": {
+            "payload": {
+              "type": "Payload",
+              "id": 1
+            }
+          }
+        },
+        "PrivateDataMessage": {
+          "fields": {
+            "payload": {
+              "type": "PrivatePayload",
+              "id": 1
+            }
+          }
+        },
+        "Payload": {
+          "fields": {
+            "seqNum": {
+              "type": "uint64",
+              "id": 1
+            },
+            "data": {
+              "type": "bytes",
+              "id": 2
+            },
+            "privateData": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "PrivatePayload": {
+          "fields": {
+            "collectionName": {
+              "type": "string",
+              "id": 1
+            },
+            "namespace": {
+              "type": "string",
+              "id": 2
+            },
+            "txId": {
+              "type": "string",
+              "id": 3
+            },
+            "privateRwset": {
+              "type": "bytes",
+              "id": 4
+            },
+            "privateSimHeight": {
+              "type": "uint64",
+              "id": 5
+            },
+            "collectionConfigs": {
+              "type": "protos.CollectionConfigPackage",
+              "id": 6
+            }
+          }
+        },
+        "AliveMessage": {
+          "fields": {
+            "membership": {
+              "type": "Member",
+              "id": 1
+            },
+            "timestamp": {
+              "type": "PeerTime",
+              "id": 2
+            },
+            "identity": {
+              "type": "bytes",
+              "id": 4
+            }
+          }
+        },
+        "LeadershipMessage": {
+          "fields": {
+            "pkiId": {
+              "type": "bytes",
+              "id": 1
+            },
+            "timestamp": {
+              "type": "PeerTime",
+              "id": 2
+            },
+            "isDeclaration": {
+              "type": "bool",
+              "id": 3
+            }
+          }
+        },
+        "PeerTime": {
+          "fields": {
+            "incNum": {
+              "type": "uint64",
+              "id": 1
+            },
+            "seqNum": {
+              "type": "uint64",
+              "id": 2
+            }
+          }
+        },
+        "MembershipRequest": {
+          "fields": {
+            "selfInformation": {
+              "type": "Envelope",
+              "id": 1
+            },
+            "known": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "MembershipResponse": {
+          "fields": {
+            "alive": {
+              "rule": "repeated",
+              "type": "Envelope",
+              "id": 1
+            },
+            "dead": {
+              "rule": "repeated",
+              "type": "Envelope",
+              "id": 2
+            }
+          }
+        },
+        "Member": {
+          "fields": {
+            "endpoint": {
+              "type": "string",
+              "id": 1
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 2
+            },
+            "pkiId": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "Empty": {
+          "fields": {}
+        },
+        "RemoteStateRequest": {
+          "fields": {
+            "startSeqNum": {
+              "type": "uint64",
+              "id": 1
+            },
+            "endSeqNum": {
+              "type": "uint64",
+              "id": 2
+            }
+          }
+        },
+        "RemoteStateResponse": {
+          "fields": {
+            "payloads": {
+              "rule": "repeated",
+              "type": "Payload",
+              "id": 1
+            }
+          }
+        },
+        "RemotePvtDataRequest": {
+          "fields": {
+            "digests": {
+              "rule": "repeated",
+              "type": "PvtDataDigest",
+              "id": 1
+            }
+          }
+        },
+        "PvtDataDigest": {
+          "fields": {
+            "txId": {
+              "type": "string",
+              "id": 1
+            },
+            "namespace": {
+              "type": "string",
+              "id": 2
+            },
+            "collection": {
+              "type": "string",
+              "id": 3
+            },
+            "blockSeq": {
+              "type": "uint64",
+              "id": 4
+            },
+            "seqInBlock": {
+              "type": "uint64",
+              "id": 5
+            }
+          }
+        },
+        "RemotePvtDataResponse": {
+          "fields": {
+            "elements": {
+              "rule": "repeated",
+              "type": "PvtDataElement",
+              "id": 1
+            }
+          }
+        },
+        "PvtDataElement": {
+          "fields": {
+            "digest": {
+              "type": "PvtDataDigest",
+              "id": 1
+            },
+            "payload": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "PvtDataPayload": {
+          "fields": {
+            "txSeqInBlock": {
+              "type": "uint64",
+              "id": 1
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Acknowledgement": {
+          "fields": {
+            "error": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "Chaincode": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "version": {
+              "type": "string",
+              "id": 2
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        }
+      }
+    },
+    "ECP": {
+      "fields": {
+        "x": {
+          "type": "bytes",
+          "id": 1
+        },
+        "y": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "ECP2": {
+      "fields": {
+        "xa": {
+          "type": "bytes",
+          "id": 1
+        },
+        "xb": {
+          "type": "bytes",
+          "id": 2
+        },
+        "ya": {
+          "type": "bytes",
+          "id": 3
+        },
+        "yb": {
+          "type": "bytes",
+          "id": 4
+        }
+      }
+    },
+    "IssuerPublicKey": {
+      "fields": {
+        "attributeNames": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 1
+        },
+        "hSk": {
+          "type": "ECP",
+          "id": 2
+        },
+        "hRand": {
+          "type": "ECP",
+          "id": 3
+        },
+        "hAttrs": {
+          "rule": "repeated",
+          "type": "ECP",
+          "id": 4
+        },
+        "w": {
+          "type": "ECP2",
+          "id": 5
+        },
+        "barG1": {
+          "type": "ECP",
+          "id": 6
+        },
+        "barG2": {
+          "type": "ECP",
+          "id": 7
+        },
+        "proofC": {
+          "type": "bytes",
+          "id": 8
+        },
+        "proofS": {
+          "type": "bytes",
+          "id": 9
+        },
+        "hash": {
+          "type": "bytes",
+          "id": 10
+        }
+      }
+    },
+    "IssuerKey": {
+      "fields": {
+        "isk": {
+          "type": "bytes",
+          "id": 1
+        },
+        "ipk": {
+          "type": "IssuerPublicKey",
+          "id": 2
+        }
+      }
+    },
+    "Credential": {
+      "fields": {
+        "a": {
+          "type": "ECP",
+          "id": 1
+        },
+        "b": {
+          "type": "ECP",
+          "id": 2
+        },
+        "e": {
+          "type": "bytes",
+          "id": 3
+        },
+        "s": {
+          "type": "bytes",
+          "id": 4
+        },
+        "attrs": {
+          "rule": "repeated",
+          "type": "bytes",
+          "id": 5
+        }
+      }
+    },
+    "CredRequest": {
+      "fields": {
+        "nym": {
+          "type": "ECP",
+          "id": 1
+        },
+        "issuerNonce": {
+          "type": "bytes",
+          "id": 2
+        },
+        "proofC": {
+          "type": "bytes",
+          "id": 3
+        },
+        "proofS": {
+          "type": "bytes",
+          "id": 4
+        }
+      }
+    },
+    "Signature": {
+      "fields": {
+        "aPrime": {
+          "type": "ECP",
+          "id": 1
+        },
+        "aBar": {
+          "type": "ECP",
+          "id": 2
+        },
+        "bPrime": {
+          "type": "ECP",
+          "id": 3
+        },
+        "proofC": {
+          "type": "bytes",
+          "id": 4
+        },
+        "proofSSk": {
+          "type": "bytes",
+          "id": 5
+        },
+        "proofSE": {
+          "type": "bytes",
+          "id": 6
+        },
+        "proofSR2": {
+          "type": "bytes",
+          "id": 7
+        },
+        "proofSR3": {
+          "type": "bytes",
+          "id": 8
+        },
+        "proofSSPrime": {
+          "type": "bytes",
+          "id": 9
+        },
+        "proofSAttrs": {
+          "rule": "repeated",
+          "type": "bytes",
+          "id": 10
+        },
+        "nonce": {
+          "type": "bytes",
+          "id": 11
+        },
+        "nym": {
+          "type": "ECP",
+          "id": 12
+        },
+        "proofSRNym": {
+          "type": "bytes",
+          "id": 13
+        },
+        "revocationEpochPk": {
+          "type": "ECP2",
+          "id": 14
+        },
+        "revocationPkSig": {
+          "type": "bytes",
+          "id": 15
+        },
+        "epoch": {
+          "type": "int64",
+          "id": 16
+        },
+        "nonRevocationProof": {
+          "type": "NonRevocationProof",
+          "id": 17
+        }
+      }
+    },
+    "NonRevocationProof": {
+      "fields": {
+        "revocationAlg": {
+          "type": "int32",
+          "id": 1
+        },
+        "nonRevocationProof": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "NymSignature": {
+      "fields": {
+        "proofC": {
+          "type": "bytes",
+          "id": 1
+        },
+        "proofSSk": {
+          "type": "bytes",
+          "id": 2
+        },
+        "proofSRNym": {
+          "type": "bytes",
+          "id": 3
+        },
+        "nonce": {
+          "type": "bytes",
+          "id": 4
+        }
+      }
+    },
+    "CredentialRevocationInformation": {
+      "fields": {
+        "epoch": {
+          "type": "int64",
+          "id": 1
+        },
+        "epochPk": {
+          "type": "ECP2",
+          "id": 2
+        },
+        "epochPkSig": {
+          "type": "bytes",
+          "id": 3
+        },
+        "revocationAlg": {
+          "type": "int32",
+          "id": 4
+        },
+        "revocationData": {
+          "type": "bytes",
+          "id": 5
+        }
+      }
+    },
+    "queryresult": {
+      "options": {
+        "go_package": "github.com/hyperledger/fabric-protos-go/ledger/queryresult",
+        "java_package": "org.hyperledger.fabric.protos.ledger.queryresult"
+      },
+      "nested": {
+        "KV": {
+          "fields": {
+            "namespace": {
+              "type": "string",
+              "id": 1
+            },
+            "key": {
+              "type": "string",
+              "id": 2
+            },
+            "value": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "KeyModification": {
+          "fields": {
+            "txId": {
+              "type": "string",
+              "id": 1
+            },
+            "value": {
+              "type": "bytes",
+              "id": 2
+            },
+            "timestamp": {
+              "type": "google.protobuf.Timestamp",
+              "id": 3
+            },
+            "isDelete": {
+              "type": "bool",
+              "id": 4
+            }
+          }
+        }
+      }
+    },
+    "kvrwset": {
+      "nested": {
+        "KVRWSet": {
+          "fields": {
+            "reads": {
+              "rule": "repeated",
+              "type": "KVRead",
+              "id": 1
+            },
+            "rangeQueriesInfo": {
+              "rule": "repeated",
+              "type": "RangeQueryInfo",
+              "id": 2
+            },
+            "writes": {
+              "rule": "repeated",
+              "type": "KVWrite",
+              "id": 3
+            },
+            "metadataWrites": {
+              "rule": "repeated",
+              "type": "KVMetadataWrite",
+              "id": 4
+            }
+          }
+        },
+        "HashedRWSet": {
+          "fields": {
+            "hashedReads": {
+              "rule": "repeated",
+              "type": "KVReadHash",
+              "id": 1
+            },
+            "hashedWrites": {
+              "rule": "repeated",
+              "type": "KVWriteHash",
+              "id": 2
+            },
+            "metadataWrites": {
+              "rule": "repeated",
+              "type": "KVMetadataWriteHash",
+              "id": 3
+            }
+          }
+        },
+        "KVRead": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "version": {
+              "type": "Version",
+              "id": 2
+            }
+          }
+        },
+        "KVWrite": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "isDelete": {
+              "type": "bool",
+              "id": 2
+            },
+            "value": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "KVMetadataWrite": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "entries": {
+              "rule": "repeated",
+              "type": "KVMetadataEntry",
+              "id": 2
+            }
+          }
+        },
+        "KVReadHash": {
+          "fields": {
+            "keyHash": {
+              "type": "bytes",
+              "id": 1
+            },
+            "version": {
+              "type": "Version",
+              "id": 2
+            }
+          }
+        },
+        "KVWriteHash": {
+          "fields": {
+            "keyHash": {
+              "type": "bytes",
+              "id": 1
+            },
+            "isDelete": {
+              "type": "bool",
+              "id": 2
+            },
+            "valueHash": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "KVMetadataWriteHash": {
+          "fields": {
+            "keyHash": {
+              "type": "bytes",
+              "id": 1
+            },
+            "entries": {
+              "rule": "repeated",
+              "type": "KVMetadataEntry",
+              "id": 2
+            }
+          }
+        },
+        "KVMetadataEntry": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "value": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Version": {
+          "fields": {
+            "blockNum": {
+              "type": "uint64",
+              "id": 1
+            },
+            "txNum": {
+              "type": "uint64",
+              "id": 2
+            }
+          }
+        },
+        "RangeQueryInfo": {
+          "oneofs": {
+            "readsInfo": {
+              "oneof": [
+                "rawReads",
+                "readsMerkleHashes"
+              ]
+            }
+          },
+          "fields": {
+            "startKey": {
+              "type": "string",
+              "id": 1
+            },
+            "endKey": {
+              "type": "string",
+              "id": 2
+            },
+            "itrExhausted": {
+              "type": "bool",
+              "id": 3
+            },
+            "rawReads": {
+              "type": "QueryReads",
+              "id": 4
+            },
+            "readsMerkleHashes": {
+              "type": "QueryReadsMerkleSummary",
+              "id": 5
+            }
+          }
+        },
+        "QueryReads": {
+          "fields": {
+            "kvReads": {
+              "rule": "repeated",
+              "type": "KVRead",
+              "id": 1
+            }
+          }
+        },
+        "QueryReadsMerkleSummary": {
+          "fields": {
+            "maxDegree": {
+              "type": "uint32",
+              "id": 1
+            },
+            "maxLevel": {
+              "type": "uint32",
+              "id": 2
+            },
+            "maxLevelHashes": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        }
+      }
+    },
+    "rwset": {
+      "nested": {
+        "TxReadWriteSet": {
+          "fields": {
+            "dataModel": {
+              "type": "DataModel",
+              "id": 1
+            },
+            "nsRwset": {
+              "rule": "repeated",
+              "type": "NsReadWriteSet",
+              "id": 2
+            }
+          },
+          "nested": {
+            "DataModel": {
+              "values": {
+                "KV": 0
+              }
+            }
+          }
+        },
+        "NsReadWriteSet": {
+          "fields": {
+            "namespace": {
+              "type": "string",
+              "id": 1
+            },
+            "rwset": {
+              "type": "bytes",
+              "id": 2
+            },
+            "collectionHashedRwset": {
+              "rule": "repeated",
+              "type": "CollectionHashedReadWriteSet",
+              "id": 3
+            }
+          }
+        },
+        "CollectionHashedReadWriteSet": {
+          "fields": {
+            "collectionName": {
+              "type": "string",
+              "id": 1
+            },
+            "hashedRwset": {
+              "type": "bytes",
+              "id": 2
+            },
+            "pvtRwsetHash": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "TxPvtReadWriteSet": {
+          "fields": {
+            "dataModel": {
+              "type": "TxReadWriteSet.DataModel",
+              "id": 1
+            },
+            "nsPvtRwset": {
+              "rule": "repeated",
+              "type": "NsPvtReadWriteSet",
+              "id": 2
+            }
+          }
+        },
+        "NsPvtReadWriteSet": {
+          "fields": {
+            "namespace": {
+              "type": "string",
+              "id": 1
+            },
+            "collectionPvtRwset": {
+              "rule": "repeated",
+              "type": "CollectionPvtReadWriteSet",
+              "id": 2
+            }
+          }
+        },
+        "CollectionPvtReadWriteSet": {
+          "fields": {
+            "collectionName": {
+              "type": "string",
+              "id": 1
+            },
+            "rwset": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        }
+      }
+    },
+    "msp": {
+      "nested": {
+        "SerializedIdentity": {
+          "fields": {
+            "mspid": {
+              "type": "string",
+              "id": 1
+            },
+            "idBytes": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "SerializedIdemixIdentity": {
+          "fields": {
+            "nymX": {
+              "type": "bytes",
+              "id": 1
+            },
+            "nymY": {
+              "type": "bytes",
+              "id": 2
+            },
+            "ou": {
+              "type": "bytes",
+              "id": 3
+            },
+            "role": {
+              "type": "bytes",
+              "id": 4
+            },
+            "proof": {
+              "type": "bytes",
+              "id": 5
+            }
+          }
+        },
+        "MSPConfig": {
+          "fields": {
+            "type": {
+              "type": "int32",
+              "id": 1
+            },
+            "config": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "FabricMSPConfig": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "rootCerts": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 2
+            },
+            "intermediateCerts": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 3
+            },
+            "admins": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 4
+            },
+            "revocationList": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 5
+            },
+            "signingIdentity": {
+              "type": "SigningIdentityInfo",
+              "id": 6
+            },
+            "organizationalUnitIdentifiers": {
+              "rule": "repeated",
+              "type": "FabricOUIdentifier",
+              "id": 7
+            },
+            "cryptoConfig": {
+              "type": "FabricCryptoConfig",
+              "id": 8
+            },
+            "tlsRootCerts": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 9
+            },
+            "tlsIntermediateCerts": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 10
+            },
+            "fabricNodeOus": {
+              "type": "FabricNodeOUs",
+              "id": 11
+            }
+          }
+        },
+        "FabricCryptoConfig": {
+          "fields": {
+            "signatureHashFamily": {
+              "type": "string",
+              "id": 1
+            },
+            "identityIdentifierHashFunction": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "IdemixMSPConfig": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "ipk": {
+              "type": "bytes",
+              "id": 2
+            },
+            "signer": {
+              "type": "IdemixMSPSignerConfig",
+              "id": 3
+            },
+            "revocationPk": {
+              "type": "bytes",
+              "id": 4
+            },
+            "epoch": {
+              "type": "int64",
+              "id": 5
+            }
+          }
+        },
+        "IdemixMSPSignerConfig": {
+          "fields": {
+            "cred": {
+              "type": "bytes",
+              "id": 1
+            },
+            "sk": {
+              "type": "bytes",
+              "id": 2
+            },
+            "organizationalUnitIdentifier": {
+              "type": "string",
+              "id": 3
+            },
+            "role": {
+              "type": "int32",
+              "id": 4
+            },
+            "enrollmentId": {
+              "type": "string",
+              "id": 5
+            },
+            "credentialRevocationInformation": {
+              "type": "bytes",
+              "id": 6
+            }
+          }
+        },
+        "SigningIdentityInfo": {
+          "fields": {
+            "publicSigner": {
+              "type": "bytes",
+              "id": 1
+            },
+            "privateSigner": {
+              "type": "KeyInfo",
+              "id": 2
+            }
+          }
+        },
+        "KeyInfo": {
+          "fields": {
+            "keyIdentifier": {
+              "type": "string",
+              "id": 1
+            },
+            "keyMaterial": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "FabricOUIdentifier": {
+          "fields": {
+            "certificate": {
+              "type": "bytes",
+              "id": 1
+            },
+            "organizationalUnitIdentifier": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "FabricNodeOUs": {
+          "fields": {
+            "enable": {
+              "type": "bool",
+              "id": 1
+            },
+            "clientOuIdentifier": {
+              "type": "FabricOUIdentifier",
+              "id": 2
+            },
+            "peerOuIdentifier": {
+              "type": "FabricOUIdentifier",
+              "id": 3
+            },
+            "adminOuIdentifier": {
+              "type": "FabricOUIdentifier",
+              "id": 4
+            },
+            "ordererOuIdentifier": {
+              "type": "FabricOUIdentifier",
+              "id": 5
+            }
+          }
+        }
+      }
+    },
+    "orderer": {
+      "nested": {
+        "BroadcastResponse": {
+          "fields": {
+            "status": {
+              "type": "common.Status",
+              "id": 1
+            },
+            "info": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SeekNewest": {
+          "fields": {}
+        },
+        "SeekOldest": {
+          "fields": {}
+        },
+        "SeekSpecified": {
+          "fields": {
+            "number": {
+              "type": "uint64",
+              "id": 1
+            }
+          }
+        },
+        "SeekPosition": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "newest",
+                "oldest",
+                "specified"
+              ]
+            }
+          },
+          "fields": {
+            "newest": {
+              "type": "SeekNewest",
+              "id": 1
+            },
+            "oldest": {
+              "type": "SeekOldest",
+              "id": 2
+            },
+            "specified": {
+              "type": "SeekSpecified",
+              "id": 3
+            }
+          }
+        },
+        "SeekInfo": {
+          "fields": {
+            "start": {
+              "type": "SeekPosition",
+              "id": 1
+            },
+            "stop": {
+              "type": "SeekPosition",
+              "id": 2
+            },
+            "behavior": {
+              "type": "SeekBehavior",
+              "id": 3
+            },
+            "errorResponse": {
+              "type": "SeekErrorResponse",
+              "id": 4
+            }
+          },
+          "nested": {
+            "SeekBehavior": {
+              "values": {
+                "BLOCK_UNTIL_READY": 0,
+                "FAIL_IF_NOT_READY": 1
+              }
+            },
+            "SeekErrorResponse": {
+              "values": {
+                "STRICT": 0,
+                "BEST_EFFORT": 1
+              }
+            }
+          }
+        },
+        "DeliverResponse": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "status",
+                "block"
+              ]
+            }
+          },
+          "fields": {
+            "status": {
+              "type": "common.Status",
+              "id": 1
+            },
+            "block": {
+              "type": "common.Block",
+              "id": 2
+            }
+          }
+        },
+        "AtomicBroadcast": {
+          "methods": {
+            "Broadcast": {
+              "requestType": "common.Envelope",
+              "requestStream": true,
+              "responseType": "BroadcastResponse",
+              "responseStream": true
+            },
+            "Deliver": {
+              "requestType": "common.Envelope",
+              "requestStream": true,
+              "responseType": "DeliverResponse",
+              "responseStream": true
+            }
+          }
+        },
+        "Cluster": {
+          "methods": {
+            "Step": {
+              "requestType": "StepRequest",
+              "requestStream": true,
+              "responseType": "StepResponse",
+              "responseStream": true
+            }
+          }
+        },
+        "StepRequest": {
+          "oneofs": {
+            "payload": {
+              "oneof": [
+                "consensusRequest",
+                "submitRequest"
+              ]
+            }
+          },
+          "fields": {
+            "consensusRequest": {
+              "type": "ConsensusRequest",
+              "id": 1
+            },
+            "submitRequest": {
+              "type": "SubmitRequest",
+              "id": 2
+            }
+          }
+        },
+        "StepResponse": {
+          "oneofs": {
+            "payload": {
+              "oneof": [
+                "submitRes"
+              ]
+            }
+          },
+          "fields": {
+            "submitRes": {
+              "type": "SubmitResponse",
+              "id": 1
+            }
+          }
+        },
+        "ConsensusRequest": {
+          "fields": {
+            "channel": {
+              "type": "string",
+              "id": 1
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 2
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "SubmitRequest": {
+          "fields": {
+            "channel": {
+              "type": "string",
+              "id": 1
+            },
+            "lastValidationSeq": {
+              "type": "uint64",
+              "id": 2
+            },
+            "payload": {
+              "type": "common.Envelope",
+              "id": 3
+            }
+          }
+        },
+        "SubmitResponse": {
+          "fields": {
+            "channel": {
+              "type": "string",
+              "id": 1
+            },
+            "status": {
+              "type": "common.Status",
+              "id": 2
+            },
+            "info": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "ConsensusType": {
+          "fields": {
+            "type": {
+              "type": "string",
+              "id": 1
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 2
+            },
+            "state": {
+              "type": "State",
+              "id": 3
+            }
+          },
+          "nested": {
+            "State": {
+              "values": {
+                "STATE_NORMAL": 0,
+                "STATE_MAINTENANCE": 1
+              }
+            }
+          }
+        },
+        "BatchSize": {
+          "fields": {
+            "maxMessageCount": {
+              "type": "uint32",
+              "id": 1
+            },
+            "absoluteMaxBytes": {
+              "type": "uint32",
+              "id": 2
+            },
+            "preferredMaxBytes": {
+              "type": "uint32",
+              "id": 3
+            }
+          }
+        },
+        "BatchTimeout": {
+          "fields": {
+            "timeout": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "KafkaBrokers": {
+          "fields": {
+            "brokers": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "ChannelRestrictions": {
+          "fields": {
+            "maxCount": {
+              "type": "uint64",
+              "id": 1
+            }
+          }
+        },
+        "KafkaMessage": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "regular",
+                "timeToCut",
+                "connect"
+              ]
+            }
+          },
+          "fields": {
+            "regular": {
+              "type": "KafkaMessageRegular",
+              "id": 1
+            },
+            "timeToCut": {
+              "type": "KafkaMessageTimeToCut",
+              "id": 2
+            },
+            "connect": {
+              "type": "KafkaMessageConnect",
+              "id": 3
+            }
+          }
+        },
+        "KafkaMessageRegular": {
+          "fields": {
+            "payload": {
+              "type": "bytes",
+              "id": 1
+            },
+            "configSeq": {
+              "type": "uint64",
+              "id": 2
+            },
+            "class": {
+              "type": "Class",
+              "id": 3
+            },
+            "originalOffset": {
+              "type": "int64",
+              "id": 4
+            }
+          },
+          "nested": {
+            "Class": {
+              "values": {
+                "UNKNOWN": 0,
+                "NORMAL": 1,
+                "CONFIG": 2
+              }
+            }
+          }
+        },
+        "KafkaMessageTimeToCut": {
+          "fields": {
+            "blockNumber": {
+              "type": "uint64",
+              "id": 1
+            }
+          }
+        },
+        "KafkaMessageConnect": {
+          "fields": {
+            "payload": {
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "KafkaMetadata": {
+          "fields": {
+            "lastOffsetPersisted": {
+              "type": "int64",
+              "id": 1
+            },
+            "lastOriginalOffsetProcessed": {
+              "type": "int64",
+              "id": 2
+            },
+            "lastResubmittedConfigOffset": {
+              "type": "int64",
+              "id": 3
+            }
+          }
+        }
+      }
+    },
+    "etcdraft": {
+      "nested": {
+        "ConfigMetadata": {
+          "fields": {
+            "consenters": {
+              "rule": "repeated",
+              "type": "Consenter",
+              "id": 1
+            },
+            "options": {
+              "type": "Options",
+              "id": 2
+            }
+          }
+        },
+        "Consenter": {
+          "fields": {
+            "host": {
+              "type": "string",
+              "id": 1
+            },
+            "port": {
+              "type": "uint32",
+              "id": 2
+            },
+            "clientTlsCert": {
+              "type": "bytes",
+              "id": 3
+            },
+            "serverTlsCert": {
+              "type": "bytes",
+              "id": 4
+            }
+          }
+        },
+        "Options": {
+          "fields": {
+            "tickInterval": {
+              "type": "string",
+              "id": 1
+            },
+            "electionTick": {
+              "type": "uint32",
+              "id": 2
+            },
+            "heartbeatTick": {
+              "type": "uint32",
+              "id": 3
+            },
+            "maxInflightBlocks": {
+              "type": "uint32",
+              "id": 4
+            },
+            "snapshotIntervalSize": {
+              "type": "uint32",
+              "id": 5
+            }
+          }
+        },
+        "BlockMetadata": {
+          "fields": {
+            "consenterIds": {
+              "rule": "repeated",
+              "type": "uint64",
+              "id": 1
+            },
+            "nextConsenterId": {
+              "type": "uint64",
+              "id": 2
+            },
+            "raftIndex": {
+              "type": "uint64",
+              "id": 3
+            }
+          }
+        },
+        "ClusterMetadata": {
+          "fields": {
+            "activeNodes": {
+              "rule": "repeated",
+              "type": "uint64",
+              "id": 1
+            }
+          }
+        }
+      }
+    },
+    "protos": {
+      "nested": {
+        "ChaincodeEvent": {
+          "fields": {
+            "chaincodeId": {
+              "type": "string",
+              "id": 1
+            },
+            "txId": {
+              "type": "string",
+              "id": 2
+            },
+            "eventName": {
+              "type": "string",
+              "id": 3
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 4
+            }
+          }
+        },
+        "ChaincodeMessage": {
+          "fields": {
+            "type": {
+              "type": "Type",
+              "id": 1
+            },
+            "timestamp": {
+              "type": "google.protobuf.Timestamp",
+              "id": 2
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 3
+            },
+            "txid": {
+              "type": "string",
+              "id": 4
+            },
+            "proposal": {
+              "type": "SignedProposal",
+              "id": 5
+            },
+            "chaincodeEvent": {
+              "type": "ChaincodeEvent",
+              "id": 6
+            },
+            "channelId": {
+              "type": "string",
+              "id": 7
+            }
+          },
+          "nested": {
+            "Type": {
+              "values": {
+                "UNDEFINED": 0,
+                "REGISTER": 1,
+                "REGISTERED": 2,
+                "INIT": 3,
+                "READY": 4,
+                "TRANSACTION": 5,
+                "COMPLETED": 6,
+                "ERROR": 7,
+                "GET_STATE": 8,
+                "PUT_STATE": 9,
+                "DEL_STATE": 10,
+                "INVOKE_CHAINCODE": 11,
+                "RESPONSE": 13,
+                "GET_STATE_BY_RANGE": 14,
+                "GET_QUERY_RESULT": 15,
+                "QUERY_STATE_NEXT": 16,
+                "QUERY_STATE_CLOSE": 17,
+                "KEEPALIVE": 18,
+                "GET_HISTORY_FOR_KEY": 19,
+                "GET_STATE_METADATA": 20,
+                "PUT_STATE_METADATA": 21,
+                "GET_PRIVATE_DATA_HASH": 22
+              }
+            }
+          }
+        },
+        "GetState": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "collection": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "GetStateMetadata": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "collection": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "PutState": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "value": {
+              "type": "bytes",
+              "id": 2
+            },
+            "collection": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "PutStateMetadata": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "collection": {
+              "type": "string",
+              "id": 3
+            },
+            "metadata": {
+              "type": "StateMetadata",
+              "id": 4
+            }
+          }
+        },
+        "DelState": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            },
+            "collection": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "GetStateByRange": {
+          "fields": {
+            "startKey": {
+              "type": "string",
+              "id": 1
+            },
+            "endKey": {
+              "type": "string",
+              "id": 2
+            },
+            "collection": {
+              "type": "string",
+              "id": 3
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 4
+            }
+          }
+        },
+        "GetQueryResult": {
+          "fields": {
+            "query": {
+              "type": "string",
+              "id": 1
+            },
+            "collection": {
+              "type": "string",
+              "id": 2
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "QueryMetadata": {
+          "fields": {
+            "pageSize": {
+              "type": "int32",
+              "id": 1
+            },
+            "bookmark": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "GetHistoryForKey": {
+          "fields": {
+            "key": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "QueryStateNext": {
+          "fields": {
+            "id": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "QueryStateClose": {
+          "fields": {
+            "id": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "QueryResultBytes": {
+          "fields": {
+            "resultBytes": {
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "QueryResponse": {
+          "fields": {
+            "results": {
+              "rule": "repeated",
+              "type": "QueryResultBytes",
+              "id": 1
+            },
+            "hasMore": {
+              "type": "bool",
+              "id": 2
+            },
+            "id": {
+              "type": "string",
+              "id": 3
+            },
+            "metadata": {
+              "type": "bytes",
+              "id": 4
+            }
+          }
+        },
+        "QueryResponseMetadata": {
+          "fields": {
+            "fetchedRecordsCount": {
+              "type": "int32",
+              "id": 1
+            },
+            "bookmark": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "StateMetadata": {
+          "fields": {
+            "metakey": {
+              "type": "string",
+              "id": 1
+            },
+            "value": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "StateMetadataResult": {
+          "fields": {
+            "entries": {
+              "rule": "repeated",
+              "type": "StateMetadata",
+              "id": 1
+            }
+          }
+        },
+        "ChaincodeSupport": {
+          "methods": {
+            "Register": {
+              "requestType": "ChaincodeMessage",
+              "requestStream": true,
+              "responseType": "ChaincodeMessage",
+              "responseStream": true
+            }
+          }
+        },
+        "Chaincode": {
+          "methods": {
+            "Connect": {
+              "requestType": "ChaincodeMessage",
+              "requestStream": true,
+              "responseType": "ChaincodeMessage",
+              "responseStream": true
+            }
+          }
+        },
+        "ChaincodeID": {
+          "fields": {
+            "path": {
+              "type": "string",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "version": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "ChaincodeInput": {
+          "fields": {
+            "args": {
+              "rule": "repeated",
+              "type": "bytes",
+              "id": 1
+            },
+            "decorations": {
+              "keyType": "string",
+              "type": "bytes",
+              "id": 2
+            },
+            "isInit": {
+              "type": "bool",
+              "id": 3
+            }
+          }
+        },
+        "ChaincodeSpec": {
+          "fields": {
+            "type": {
+              "type": "Type",
+              "id": 1
+            },
+            "chaincodeId": {
+              "type": "ChaincodeID",
+              "id": 2
+            },
+            "input": {
+              "type": "ChaincodeInput",
+              "id": 3
+            },
+            "timeout": {
+              "type": "int32",
+              "id": 4
+            }
+          },
+          "nested": {
+            "Type": {
+              "values": {
+                "UNDEFINED": 0,
+                "GOLANG": 1,
+                "NODE": 2,
+                "CAR": 3,
+                "JAVA": 4
+              }
+            }
+          }
+        },
+        "ChaincodeDeploymentSpec": {
+          "fields": {
+            "chaincodeSpec": {
+              "type": "ChaincodeSpec",
+              "id": 1
+            },
+            "codePackage": {
+              "type": "bytes",
+              "id": 3
+            }
+          },
+          "reserved": [
+            [
+              2,
+              2
+            ],
+            [
+              4,
+              4
+            ],
+            "effective_date",
+            "exec_env"
+          ]
+        },
+        "ChaincodeInvocationSpec": {
+          "fields": {
+            "chaincodeSpec": {
+              "type": "ChaincodeSpec",
+              "id": 1
+            }
+          },
+          "reserved": [
+            [
+              2,
+              2
+            ],
+            "id_generation_alg"
+          ]
+        },
+        "LifecycleEvent": {
+          "fields": {
+            "chaincodeName": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "CDSData": {
+          "fields": {
+            "hash": {
+              "type": "bytes",
+              "id": 1
+            },
+            "metadatahash": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "ChaincodeData": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "version": {
+              "type": "string",
+              "id": 2
+            },
+            "escc": {
+              "type": "string",
+              "id": 3
+            },
+            "vscc": {
+              "type": "string",
+              "id": 4
+            },
+            "policy": {
+              "type": "common.SignaturePolicyEnvelope",
+              "id": 5
+            },
+            "data": {
+              "type": "bytes",
+              "id": 6
+            },
+            "id": {
+              "type": "bytes",
+              "id": 7
+            },
+            "instantiationPolicy": {
+              "type": "common.SignaturePolicyEnvelope",
+              "id": 8
+            }
+          }
+        },
+        "CollectionConfigPackage": {
+          "fields": {
+            "config": {
+              "rule": "repeated",
+              "type": "CollectionConfig",
+              "id": 1
+            }
+          }
+        },
+        "CollectionConfig": {
+          "oneofs": {
+            "payload": {
+              "oneof": [
+                "staticCollectionConfig"
+              ]
+            }
+          },
+          "fields": {
+            "staticCollectionConfig": {
+              "type": "StaticCollectionConfig",
+              "id": 1
+            }
+          }
+        },
+        "StaticCollectionConfig": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "memberOrgsPolicy": {
+              "type": "CollectionPolicyConfig",
+              "id": 2
+            },
+            "requiredPeerCount": {
+              "type": "int32",
+              "id": 3
+            },
+            "maximumPeerCount": {
+              "type": "int32",
+              "id": 4
+            },
+            "blockToLive": {
+              "type": "uint64",
+              "id": 5
+            },
+            "memberOnlyRead": {
+              "type": "bool",
+              "id": 6
+            },
+            "memberOnlyWrite": {
+              "type": "bool",
+              "id": 7
+            },
+            "endorsementPolicy": {
+              "type": "ApplicationPolicy",
+              "id": 8
+            }
+          }
+        },
+        "CollectionPolicyConfig": {
+          "oneofs": {
+            "payload": {
+              "oneof": [
+                "signaturePolicy"
+              ]
+            }
+          },
+          "fields": {
+            "signaturePolicy": {
+              "type": "common.SignaturePolicyEnvelope",
+              "id": 1
+            }
+          }
+        },
+        "AnchorPeers": {
+          "fields": {
+            "anchorPeers": {
+              "rule": "repeated",
+              "type": "AnchorPeer",
+              "id": 1
+            }
+          }
+        },
+        "AnchorPeer": {
+          "fields": {
+            "host": {
+              "type": "string",
+              "id": 1
+            },
+            "port": {
+              "type": "int32",
+              "id": 2
+            }
+          }
+        },
+        "APIResource": {
+          "fields": {
+            "policyRef": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "ACLs": {
+          "fields": {
+            "acls": {
+              "keyType": "string",
+              "type": "APIResource",
+              "id": 1
+            }
+          }
+        },
+        "FilteredBlock": {
+          "fields": {
+            "channelId": {
+              "type": "string",
+              "id": 1
+            },
+            "number": {
+              "type": "uint64",
+              "id": 2
+            },
+            "filteredTransactions": {
+              "rule": "repeated",
+              "type": "FilteredTransaction",
+              "id": 4
+            }
+          }
+        },
+        "FilteredTransaction": {
+          "oneofs": {
+            "Data": {
+              "oneof": [
+                "transactionActions"
+              ]
+            }
+          },
+          "fields": {
+            "txid": {
+              "type": "string",
+              "id": 1
+            },
+            "type": {
+              "type": "common.HeaderType",
+              "id": 2
+            },
+            "txValidationCode": {
+              "type": "TxValidationCode",
+              "id": 3
+            },
+            "transactionActions": {
+              "type": "FilteredTransactionActions",
+              "id": 4
+            }
+          }
+        },
+        "FilteredTransactionActions": {
+          "fields": {
+            "chaincodeActions": {
+              "rule": "repeated",
+              "type": "FilteredChaincodeAction",
+              "id": 1
+            }
+          }
+        },
+        "FilteredChaincodeAction": {
+          "fields": {
+            "chaincodeEvent": {
+              "type": "ChaincodeEvent",
+              "id": 1
+            }
+          }
+        },
+        "BlockAndPrivateData": {
+          "fields": {
+            "block": {
+              "type": "common.Block",
+              "id": 1
+            },
+            "privateDataMap": {
+              "keyType": "uint64",
+              "type": "rwset.TxPvtReadWriteSet",
+              "id": 2
+            }
+          }
+        },
+        "DeliverResponse": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "status",
+                "block",
+                "filteredBlock",
+                "blockAndPrivateData"
+              ]
+            }
+          },
+          "fields": {
+            "status": {
+              "type": "common.Status",
+              "id": 1
+            },
+            "block": {
+              "type": "common.Block",
+              "id": 2
+            },
+            "filteredBlock": {
+              "type": "FilteredBlock",
+              "id": 3
+            },
+            "blockAndPrivateData": {
+              "type": "BlockAndPrivateData",
+              "id": 4
+            }
+          }
+        },
+        "Deliver": {
+          "methods": {
+            "Deliver": {
+              "requestType": "common.Envelope",
+              "requestStream": true,
+              "responseType": "DeliverResponse",
+              "responseStream": true
+            },
+            "DeliverFiltered": {
+              "requestType": "common.Envelope",
+              "requestStream": true,
+              "responseType": "DeliverResponse",
+              "responseStream": true
+            },
+            "DeliverWithPrivateData": {
+              "requestType": "common.Envelope",
+              "requestStream": true,
+              "responseType": "DeliverResponse",
+              "responseStream": true
+            }
+          }
+        },
+        "Endorser": {
+          "methods": {
+            "ProcessProposal": {
+              "requestType": "SignedProposal",
+              "responseType": "ProposalResponse"
+            }
+          }
+        },
+        "ApplicationPolicy": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "signaturePolicy",
+                "channelConfigPolicyReference"
+              ]
+            }
+          },
+          "fields": {
+            "signaturePolicy": {
+              "type": "common.SignaturePolicyEnvelope",
+              "id": 1
+            },
+            "channelConfigPolicyReference": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "ProposalResponse": {
+          "fields": {
+            "version": {
+              "type": "int32",
+              "id": 1
+            },
+            "timestamp": {
+              "type": "google.protobuf.Timestamp",
+              "id": 2
+            },
+            "response": {
+              "type": "Response",
+              "id": 4
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 5
+            },
+            "endorsement": {
+              "type": "Endorsement",
+              "id": 6
+            }
+          }
+        },
+        "Response": {
+          "fields": {
+            "status": {
+              "type": "int32",
+              "id": 1
+            },
+            "message": {
+              "type": "string",
+              "id": 2
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "ProposalResponsePayload": {
+          "fields": {
+            "proposalHash": {
+              "type": "bytes",
+              "id": 1
+            },
+            "extension": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Endorsement": {
+          "fields": {
+            "endorser": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "SignedProposal": {
+          "fields": {
+            "proposalBytes": {
+              "type": "bytes",
+              "id": 1
+            },
+            "signature": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Proposal": {
+          "fields": {
+            "header": {
+              "type": "bytes",
+              "id": 1
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 2
+            },
+            "extension": {
+              "type": "bytes",
+              "id": 3
+            }
+          }
+        },
+        "ChaincodeHeaderExtension": {
+          "fields": {
+            "chaincodeId": {
+              "type": "ChaincodeID",
+              "id": 2
+            }
+          },
+          "reserved": [
+            [
+              1,
+              1
+            ],
+            "payload_visbility"
+          ]
+        },
+        "ChaincodeProposalPayload": {
+          "fields": {
+            "input": {
+              "type": "bytes",
+              "id": 1
+            },
+            "TransientMap": {
+              "keyType": "string",
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "ChaincodeAction": {
+          "fields": {
+            "results": {
+              "type": "bytes",
+              "id": 1
+            },
+            "events": {
+              "type": "bytes",
+              "id": 2
+            },
+            "response": {
+              "type": "Response",
+              "id": 3
+            },
+            "chaincodeId": {
+              "type": "ChaincodeID",
+              "id": 4
+            }
+          },
+          "reserved": [
+            [
+              5,
+              5
+            ],
+            "token_operations"
+          ]
+        },
+        "ChaincodeQueryResponse": {
+          "fields": {
+            "chaincodes": {
+              "rule": "repeated",
+              "type": "ChaincodeInfo",
+              "id": 1
+            }
+          }
+        },
+        "ChaincodeInfo": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "version": {
+              "type": "string",
+              "id": 2
+            },
+            "path": {
+              "type": "string",
+              "id": 3
+            },
+            "input": {
+              "type": "string",
+              "id": 4
+            },
+            "escc": {
+              "type": "string",
+              "id": 5
+            },
+            "vscc": {
+              "type": "string",
+              "id": 6
+            },
+            "id": {
+              "type": "bytes",
+              "id": 7
+            }
+          }
+        },
+        "ChannelQueryResponse": {
+          "fields": {
+            "channels": {
+              "rule": "repeated",
+              "type": "ChannelInfo",
+              "id": 1
+            }
+          }
+        },
+        "ChannelInfo": {
+          "fields": {
+            "channelId": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "ChaincodeIdentifier": {
+          "fields": {
+            "hash": {
+              "type": "bytes",
+              "id": 1
+            },
+            "version": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "ChaincodeValidation": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "argument": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "VSCCArgs": {
+          "fields": {
+            "endorsementPolicyRef": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "ChaincodeEndorsement": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "ConfigTree": {
+          "fields": {
+            "channelConfig": {
+              "type": "common.Config",
+              "id": 1
+            },
+            "resourcesConfig": {
+              "type": "common.Config",
+              "id": 2
+            }
+          }
+        },
+        "SignedChaincodeDeploymentSpec": {
+          "fields": {
+            "chaincodeDeploymentSpec": {
+              "type": "bytes",
+              "id": 1
+            },
+            "instantiationPolicy": {
+              "type": "bytes",
+              "id": 2
+            },
+            "ownerEndorsements": {
+              "rule": "repeated",
+              "type": "Endorsement",
+              "id": 3
+            }
+          }
+        },
+        "ProcessedTransaction": {
+          "fields": {
+            "transactionEnvelope": {
+              "type": "common.Envelope",
+              "id": 1
+            },
+            "validationCode": {
+              "type": "int32",
+              "id": 2
+            }
+          }
+        },
+        "Transaction": {
+          "fields": {
+            "actions": {
+              "rule": "repeated",
+              "type": "TransactionAction",
+              "id": 1
+            }
+          }
+        },
+        "TransactionAction": {
+          "fields": {
+            "header": {
+              "type": "bytes",
+              "id": 1
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "ChaincodeActionPayload": {
+          "fields": {
+            "chaincodeProposalPayload": {
+              "type": "bytes",
+              "id": 1
+            },
+            "action": {
+              "type": "ChaincodeEndorsedAction",
+              "id": 2
+            }
+          }
+        },
+        "ChaincodeEndorsedAction": {
+          "fields": {
+            "proposalResponsePayload": {
+              "type": "bytes",
+              "id": 1
+            },
+            "endorsements": {
+              "rule": "repeated",
+              "type": "Endorsement",
+              "id": 2
+            }
+          }
+        },
+        "TxValidationCode": {
+          "values": {
+            "VALID": 0,
+            "NIL_ENVELOPE": 1,
+            "BAD_PAYLOAD": 2,
+            "BAD_COMMON_HEADER": 3,
+            "BAD_CREATOR_SIGNATURE": 4,
+            "INVALID_ENDORSER_TRANSACTION": 5,
+            "INVALID_CONFIG_TRANSACTION": 6,
+            "UNSUPPORTED_TX_PAYLOAD": 7,
+            "BAD_PROPOSAL_TXID": 8,
+            "DUPLICATE_TXID": 9,
+            "ENDORSEMENT_POLICY_FAILURE": 10,
+            "MVCC_READ_CONFLICT": 11,
+            "PHANTOM_READ_CONFLICT": 12,
+            "UNKNOWN_TX_TYPE": 13,
+            "TARGET_CHAIN_NOT_FOUND": 14,
+            "MARSHAL_TX_ERROR": 15,
+            "NIL_TXACTION": 16,
+            "EXPIRED_CHAINCODE": 17,
+            "CHAINCODE_VERSION_CONFLICT": 18,
+            "BAD_HEADER_EXTENSION": 19,
+            "BAD_CHANNEL_HEADER": 20,
+            "BAD_RESPONSE_PAYLOAD": 21,
+            "BAD_RWSET": 22,
+            "ILLEGAL_WRITESET": 23,
+            "INVALID_WRITESET": 24,
+            "INVALID_CHAINCODE": 25,
+            "NOT_VALIDATED": 254,
+            "INVALID_OTHER_REASON": 255
+          }
+        },
+        "MetaDataKeys": {
+          "values": {
+            "VALIDATION_PARAMETER": 0,
+            "VALIDATION_PARAMETER_V2": 1
+          }
+        }
+      }
+    },
+    "lifecycle": {
+      "nested": {
+        "ChaincodeEndorsementInfo": {
+          "fields": {
+            "version": {
+              "type": "string",
+              "id": 1
+            },
+            "initRequired": {
+              "type": "bool",
+              "id": 2
+            },
+            "endorsementPlugin": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "ChaincodeValidationInfo": {
+          "fields": {
+            "validationPlugin": {
+              "type": "string",
+              "id": 1
+            },
+            "validationParameter": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "StateMetadata": {
+          "fields": {
+            "datatype": {
+              "type": "string",
+              "id": 1
+            },
+            "fields": {
+              "rule": "repeated",
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "StateData": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "Int64",
+                "Bytes",
+                "String"
+              ]
+            }
+          },
+          "fields": {
+            "Int64": {
+              "type": "int64",
+              "id": 1
+            },
+            "Bytes": {
+              "type": "bytes",
+              "id": 2
+            },
+            "String": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "InstallChaincodeArgs": {
+          "fields": {
+            "chaincodeInstallPackage": {
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "InstallChaincodeResult": {
+          "fields": {
+            "packageId": {
+              "type": "string",
+              "id": 1
+            },
+            "label": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "QueryInstalledChaincodeArgs": {
+          "fields": {
+            "packageId": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "QueryInstalledChaincodeResult": {
+          "fields": {
+            "packageId": {
+              "type": "string",
+              "id": 1
+            },
+            "label": {
+              "type": "string",
+              "id": 2
+            },
+            "references": {
+              "keyType": "string",
+              "type": "References",
+              "id": 3
+            }
+          },
+          "nested": {
+            "References": {
+              "fields": {
+                "chaincodes": {
+                  "rule": "repeated",
+                  "type": "Chaincode",
+                  "id": 1
+                }
+              }
+            },
+            "Chaincode": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "version": {
+                  "type": "string",
+                  "id": 2
+                }
+              }
+            }
+          }
+        },
+        "GetInstalledChaincodePackageArgs": {
+          "fields": {
+            "packageId": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "GetInstalledChaincodePackageResult": {
+          "fields": {
+            "chaincodeInstallPackage": {
+              "type": "bytes",
+              "id": 1
+            }
+          }
+        },
+        "QueryInstalledChaincodesArgs": {
+          "fields": {}
+        },
+        "QueryInstalledChaincodesResult": {
+          "fields": {
+            "installedChaincodes": {
+              "rule": "repeated",
+              "type": "InstalledChaincode",
+              "id": 1
+            }
+          },
+          "nested": {
+            "InstalledChaincode": {
+              "fields": {
+                "packageId": {
+                  "type": "string",
+                  "id": 1
+                },
+                "label": {
+                  "type": "string",
+                  "id": 2
+                },
+                "references": {
+                  "keyType": "string",
+                  "type": "References",
+                  "id": 3
+                }
+              }
+            },
+            "References": {
+              "fields": {
+                "chaincodes": {
+                  "rule": "repeated",
+                  "type": "Chaincode",
+                  "id": 1
+                }
+              }
+            },
+            "Chaincode": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "version": {
+                  "type": "string",
+                  "id": 2
+                }
+              }
+            }
+          }
+        },
+        "ApproveChaincodeDefinitionForMyOrgArgs": {
+          "fields": {
+            "sequence": {
+              "type": "int64",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "version": {
+              "type": "string",
+              "id": 3
+            },
+            "endorsementPlugin": {
+              "type": "string",
+              "id": 4
+            },
+            "validationPlugin": {
+              "type": "string",
+              "id": 5
+            },
+            "validationParameter": {
+              "type": "bytes",
+              "id": 6
+            },
+            "collections": {
+              "type": "protos.CollectionConfigPackage",
+              "id": 7
+            },
+            "initRequired": {
+              "type": "bool",
+              "id": 8
+            },
+            "source": {
+              "type": "ChaincodeSource",
+              "id": 9
+            }
+          }
+        },
+        "ChaincodeSource": {
+          "oneofs": {
+            "Type": {
+              "oneof": [
+                "unavailable",
+                "localPackage"
+              ]
+            }
+          },
+          "fields": {
+            "unavailable": {
+              "type": "Unavailable",
+              "id": 1
+            },
+            "localPackage": {
+              "type": "Local",
+              "id": 2
+            }
+          },
+          "nested": {
+            "Unavailable": {
+              "fields": {}
+            },
+            "Local": {
+              "fields": {
+                "packageId": {
+                  "type": "string",
+                  "id": 1
+                }
+              }
+            }
+          }
+        },
+        "ApproveChaincodeDefinitionForMyOrgResult": {
+          "fields": {}
+        },
+        "CommitChaincodeDefinitionArgs": {
+          "fields": {
+            "sequence": {
+              "type": "int64",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "version": {
+              "type": "string",
+              "id": 3
+            },
+            "endorsementPlugin": {
+              "type": "string",
+              "id": 4
+            },
+            "validationPlugin": {
+              "type": "string",
+              "id": 5
+            },
+            "validationParameter": {
+              "type": "bytes",
+              "id": 6
+            },
+            "collections": {
+              "type": "protos.CollectionConfigPackage",
+              "id": 7
+            },
+            "initRequired": {
+              "type": "bool",
+              "id": 8
+            }
+          }
+        },
+        "CommitChaincodeDefinitionResult": {
+          "fields": {}
+        },
+        "CheckCommitReadinessArgs": {
+          "fields": {
+            "sequence": {
+              "type": "int64",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "version": {
+              "type": "string",
+              "id": 3
+            },
+            "endorsementPlugin": {
+              "type": "string",
+              "id": 4
+            },
+            "validationPlugin": {
+              "type": "string",
+              "id": 5
+            },
+            "validationParameter": {
+              "type": "bytes",
+              "id": 6
+            },
+            "collections": {
+              "type": "protos.CollectionConfigPackage",
+              "id": 7
+            },
+            "initRequired": {
+              "type": "bool",
+              "id": 8
+            }
+          }
+        },
+        "CheckCommitReadinessResult": {
+          "fields": {
+            "approvals": {
+              "keyType": "string",
+              "type": "bool",
+              "id": 1
+            }
+          }
+        },
+        "QueryChaincodeDefinitionArgs": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "QueryChaincodeDefinitionResult": {
+          "fields": {
+            "sequence": {
+              "type": "int64",
+              "id": 1
+            },
+            "version": {
+              "type": "string",
+              "id": 2
+            },
+            "endorsementPlugin": {
+              "type": "string",
+              "id": 3
+            },
+            "validationPlugin": {
+              "type": "string",
+              "id": 4
+            },
+            "validationParameter": {
+              "type": "bytes",
+              "id": 5
+            },
+            "collections": {
+              "type": "protos.CollectionConfigPackage",
+              "id": 6
+            },
+            "initRequired": {
+              "type": "bool",
+              "id": 7
+            },
+            "approvals": {
+              "keyType": "string",
+              "type": "bool",
+              "id": 8
+            }
+          }
+        },
+        "QueryChaincodeDefinitionsArgs": {
+          "fields": {}
+        },
+        "QueryChaincodeDefinitionsResult": {
+          "fields": {
+            "chaincodeDefinitions": {
+              "rule": "repeated",
+              "type": "ChaincodeDefinition",
+              "id": 1
+            }
+          },
+          "nested": {
+            "ChaincodeDefinition": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "sequence": {
+                  "type": "int64",
+                  "id": 2
+                },
+                "version": {
+                  "type": "string",
+                  "id": 3
+                },
+                "endorsementPlugin": {
+                  "type": "string",
+                  "id": 4
+                },
+                "validationPlugin": {
+                  "type": "string",
+                  "id": 5
+                },
+                "validationParameter": {
+                  "type": "bytes",
+                  "id": 6
+                },
+                "collections": {
+                  "type": "protos.CollectionConfigPackage",
+                  "id": 7
+                },
+                "initRequired": {
+                  "type": "bool",
+                  "id": 8
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "transientstore": {
+      "options": {
+        "go_package": "github.com/hyperledger/fabric-protos-go/transientstore",
+        "java_package": "org.hyperledger.fabric.protos.transientstore"
+      },
+      "nested": {
+        "TxPvtReadWriteSetWithConfigInfo": {
+          "fields": {
+            "endorsedAt": {
+              "type": "uint64",
+              "id": 1
+            },
+            "pvtRwset": {
+              "type": "rwset.TxPvtReadWriteSet",
+              "id": 2
+            },
+            "collectionConfigs": {
+              "keyType": "string",
+              "type": "protos.CollectionConfigPackage",
+              "id": 3
+            }
+          }
+        }
+      }
+    }
+  }
+}
