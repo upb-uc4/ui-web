@@ -69,14 +69,15 @@
 <script lang="ts">
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
-    import { computed, onBeforeMount, ref } from "vue";
+    import { computed, onBeforeMount, ref, watch } from "vue";
     import Module from "@/api/api_models/exam_reg_management/Module";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { reactive } from "vue";
+    import TagList from "@/components/common/TagList.vue";
 
     export default {
         name: "CourseModulesSection",
-        components: {},
+        //components: {TagList},
         props: {
             errorBag: {
                 required: true,
@@ -163,6 +164,13 @@
                     });
                 });
             }
+
+            watch(
+                () => props.moduleIds,
+                () => {
+                    getExRegsFromModules();
+                }
+            );
 
             function addValue(value: string, index: number) {
                 if (selectedExRegNames.value.length - 1 == index) {
