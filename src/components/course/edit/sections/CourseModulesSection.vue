@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <tag-list :elements="selectedModules[index - 1]" @on-remove="removeModule(index - 1, $event)" />
+                        <tag-list :elements="selectedModules[index - 1].displayStrings" @on-remove="removeModule(index - 1, $event)" />
                     </div>
                 </div>
                 <p v-if="errorBag.has('moduleIds')" id="moduleError" class="error-message">
@@ -97,7 +97,7 @@
         setup(props: any, { emit }: any) {
             const examinationRegs = ref([] as ExaminationRegulation[]);
             const selectedExRegNames = ref([""]);
-            const selectedModules = ref([] as String[][]);
+            const selectedModules = ref([] as { ids: String[]; displayStrings: String[] }[]);
 
             //TODO Remove Mock Data
             let mockData = [
@@ -142,9 +142,12 @@
                 selectedExRegNames.value.forEach((selectedName) => {
                     tmp.push(examinationRegs.value.find((e) => e.name == selectedName) as ExaminationRegulation);
                     if (tmp.length > 0) {
-                        let selected: String[] = [];
+                        let selected: { ids: String[]; displayStrings: String[] } = { ids: [], displayStrings: [] };
                         tmp[tmp.length - 1]?.modules.forEach((m) => {
-                            if ((props.moduleIds as String[]).find((x) => x == m.id)) selected.push(m.id);
+                            if ((props.moduleIds as String[]).find((x) => x == m.id)) {
+                                selected.ids.push(m.id);
+                                selected.displayStrings.push(`${m.id}: ${m.name}`);
+                            }
                         });
                         selectedModules.value[tmp.length - 1] = selected;
                     }
@@ -218,7 +221,7 @@
             }
 
             function removeModule(exRegIndex: number, moduleIndex: number) {
-                toggleModule(selectedModules.value[exRegIndex][moduleIndex]);
+                toggleModule(selectedModules.value[exRegIndex].ids[moduleIndex]);
             }
 
             return {
