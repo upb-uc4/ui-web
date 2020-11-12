@@ -57,6 +57,14 @@
                             </div>
                         </div>
                         <tag-list :elements="selectedModules[index - 1].displayStrings" @on-remove="removeModule(index - 1, $event)" />
+                        <search-select
+                            class="w-full mt-2"
+                            :input-id="'modules_' + (index - 1)"
+                            :options="createSearchSelectInput(index - 1)"
+                            :selected="{}"
+                            :category-name="'Module'"
+                            @selected="toggleModule($event.value.id)"
+                        />
                     </div>
                 </div>
                 <p v-if="errorBag.has('moduleIds')" id="moduleError" class="error-message">
@@ -75,10 +83,12 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { reactive } from "vue";
     import TagList from "@/components/common/TagList.vue";
+    import SearchSelect from "@/components/common/SearchSelect.vue";
+    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
 
     export default {
         name: "CourseModulesSection",
-        components: { TagList },
+        components: { TagList, SearchSelect },
         props: {
             errorBag: {
                 required: true,
@@ -98,13 +108,14 @@
             const examinationRegs = ref([] as ExaminationRegulation[]);
             const selectedExRegNames = ref([""]);
             const selectedModules = ref([] as { ids: String[]; displayStrings: String[] }[]);
+            const selectedOption = ref({} as SearchSelectOption);
 
             //TODO Remove Mock Data
             let mockData = [
                 {
                     name: "ExReg1",
                     active: true,
-                    modules: [{ id: "M1", name: "Module1" } as Module, { id: "2", name: "Module2" } as Module],
+                    modules: [{ id: "M1", name: "Module1" } as Module, { id: "M2", name: "Module2" } as Module],
                 },
                 {
                     name: "ExReg2",
@@ -184,6 +195,12 @@
                 }
             );
 
+            watch(selectedOption.value, () => {
+                console.log("DO");
+                toggleModule((selectedOption.value.value as Module).id);
+                selectedOption.value = {} as SearchSelectOption;
+            });
+
             function addValue(value: string, index: number) {
                 if (selectedExRegNames.value.length - 1 == index) {
                     selectedExRegNames.value.push("");
@@ -218,6 +235,14 @@
                 toggleModule(selectedModules.value[exRegIndex].ids[moduleIndex]);
             }
 
+            function createSearchSelectInput(index: number): SearchSelectOption[] {
+                let value: SearchSelectOption[] = [];
+                selectedExRegs.value[index].modules.forEach((m) => {
+                    if (!isChecked(m.id)) value.push({ value: m, display: `${m.id}: ${m.name}` } as SearchSelectOption);
+                });
+                return value;
+            }
+
             return {
                 examinationRegs,
                 selectedExRegNames,
@@ -230,6 +255,8 @@
                 hasCheckedModule,
                 selectedModules,
                 removeModule,
+                createSearchSelectInput,
+                selectedOption,
             };
         },
     };
