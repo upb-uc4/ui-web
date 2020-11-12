@@ -8,11 +8,11 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-8 w-full relative">
                     <div class="mb-4">
-                        <label class="text-gray-700 text-md font-medium block mb-3"> Choose Module ID </label>
+                        <label for="moduleID" class="text-gray-700 text-md font-medium block mb-3"> Choose Module ID </label>
                         <input id="moduleID" v-model.trim="moduleID" class="w-full form-input input-text" placeholder="Module ID" />
                     </div>
                     <div v-if="moduleID !== '' && !moduleUsed && !moduleExists" class="mb-4">
-                        <label class="text-gray-700 text-md font-medium block mb-3"> Choose Module Name </label>
+                        <label for="moduleName" class="text-gray-700 text-md font-medium block mb-3"> Choose Module Name </label>
                         <input
                             id="moduleName"
                             v-model.trim="moduleNameInput"
@@ -26,7 +26,7 @@
                             Module {{ moduleID }} already selected!
                         </label>
                     </div>
-                    <div :hidden="moduleID === '' || moduleName === '' || moduleUsed">
+                    <div v-if="moduleID !== '' && moduleName !== '' && !moduleUsed">
                         <div class="mb-4 p-3 bg-gray-100 rounded">
                             <div class="relative">
                                 <label class="block text-gray-700 text-md font-medium mb-1">
@@ -37,8 +37,7 @@
                                 </label>
                                 <div class="absolute inset-y-0 right-0">
                                     <button class="btn btn-green-primary-500 w-48" @click="addCurrentModule">
-                                        <div v-if="moduleExists">Add Module</div>
-                                        <div v-else>Create Module</div>
+                                        {{ moduleExist ? AddModule : CreateModule }}
                                     </button>
                                 </div>
                             </div>
@@ -91,16 +90,15 @@
             },
         },
         emits: ["update:modules"],
-        setup: (props: any, { emit }: any) => {
-            const existingModules = props.existingModules as Module[];
-            let selectedModules = ref(props.modules as Module[]);
-            let moduleID = ref("");
-            let moduleNameInput = ref("");
-            let moduleExists = computed(() => existingModules.map((m) => m.id).includes(moduleID.value));
-            let moduleUsed = computed(() => selectedModules.value.map((m) => m.id).includes(moduleID.value));
-            let moduleName = computed(() => {
+        setup: (props: { existingModules: Module[]; modules: Module[] }, { emit }: any) => {
+            const selectedModules = ref(props.modules as Module[]);
+            const moduleID = ref("");
+            const moduleNameInput = ref("");
+            const moduleExists = computed(() => props.existingModules.map((m) => m.id).includes(moduleID.value));
+            const moduleUsed = computed(() => selectedModules.value.map((m) => m.id).includes(moduleID.value));
+            const moduleName = computed(() => {
                 if (moduleExists.value) {
-                    return existingModules.filter((m) => m.id === moduleID.value)[0].name;
+                    return props.existingModules.filter((m) => m.id === moduleID.value)[0].name;
                 } else {
                     return moduleNameInput.value;
                 }
