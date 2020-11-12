@@ -7,14 +7,14 @@
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-4 w-full relative">
-                    <label class="text-gray-700 text-md font-medium block mb-4"> Examination Regulation Name </label>
+                    <label for="examRegName" class="text-gray-700 text-md font-medium block mb-4"> Examination Regulation Name </label>
                     <input
                         id="examRegName"
                         v-model.trim="examRegNameInput"
                         class="w-full form-input input-text"
                         placeholder="Exam regulation name"
                     />
-                    <div :hidden="examRegNameInput == ''" class="text-gray-700 text-md font-medium my-3">
+                    <div v-if="examRegNameInput !== ''" class="text-gray-700 text-md font-medium my-3">
                         <label v-if="validInput" class="">
                             <i class="text-green-400 fas fa-check mr-2"></i>
                             {{ examRegNameInput }} is available
@@ -31,19 +31,18 @@
 </template>
 
 <script lang="ts">
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import { ref, watch, computed } from "vue";
+    import { ref, computed } from "vue";
 
     export default {
         name: "ExaminationRegulationInformation",
         props: {
             name: {
                 type: String,
-                default: "",
+                required: true,
             },
             valid: {
                 type: Boolean,
-                default: false,
+                required: true,
             },
             examRegs: {
                 type: Array,
@@ -51,18 +50,16 @@
             },
         },
         emits: ["update:name", "update:valid"],
-        setup(props: any, { emit }: any) {
-            const usedExamRegNames = props.examRegs as String[];
-            let examRegNameInput = ref(props.name);
+        setup(props: { name: string; valid: boolean; examRegs: string[] }, { emit }: any) {
+            const examRegNameInput = ref(props.name);
 
-            let validInput = computed(() => {
-                let tmp = !(examRegNameInput.value === "" || usedExamRegNames.find((e) => e == examRegNameInput.value));
+            const validInput = computed(() => {
+                const tmp = !(examRegNameInput.value === "" || props.examRegs.find((e) => e == examRegNameInput.value));
                 emit("update:valid", tmp);
                 return tmp;
             });
 
             return {
-                usedExamRegNames,
                 examRegNameInput,
                 validInput,
             };
