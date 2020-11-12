@@ -38,24 +38,6 @@
                         </button>
                     </div>
                     <div v-if="selectedExRegNames[index - 1] != ''" class="w-full bg-gray-100 rounded-lg border-2 border-gray-400 p-2">
-                        <div class="w-full flex content-center flex-wrap">
-                            <div v-for="module in selectedExRegs[index - 1].modules" :key="module" class="w-1/4 p-2">
-                                <div class="flex">
-                                    <div class="w-4 mr-2" />
-                                    <div class="flex text-sm text-gray-500 leading-none">{{ module.id }}</div>
-                                </div>
-                                <div class="flex items-center">
-                                    <input
-                                        :id="'check_module_' + module.id"
-                                        class="w-4 mr-2 text-blue-500 form-checkbox hover:bg-blue-600"
-                                        type="checkbox"
-                                        :checked="isChecked(module.id)"
-                                        @click="toggleModule(module.id)"
-                                    />
-                                    <div class="align-baseline text-sm text-gray-900">{{ module.name }}</div>
-                                </div>
-                            </div>
-                        </div>
                         <tag-list :elements="selectedModules[index - 1].displayStrings" @on-remove="removeModule(index - 1, $event)" />
                         <search-select
                             class="w-full mt-2"
