@@ -37,10 +37,23 @@
                             <i class="inline far fa-trash-alt text-2xl"></i>
                         </button>
                     </div>
-                    <div v-if="selectedExRegNames[index - 1] != ''" class="w-full bg-gray-100 rounded-lg border-2 border-gray-400 p-2">
-                        <tag-list :elements="selectedModules[index - 1].displayStrings" @on-remove="removeModule(index - 1, $event)" />
+                    <div
+                        v-if="selectedExRegNames[index - 1] != ''"
+                        class="w-full bg-gray-100 rounded-lg border-2 border-gray-400 px-1 py-2"
+                    >
+                        <div class="flex p-1">
+                            <p class="text-gray-600 text-md mr-3">Modules:</p>
+                            <p v-if="selectedModules[index - 1].displayStrings.length == 0" class="text-gray-600 text-md">
+                                Please select at least one module!
+                            </p>
+                            <tag-list
+                                v-else
+                                :elements="selectedModules[index - 1].displayStrings"
+                                @on-remove="removeModule(index - 1, $event)"
+                            />
+                        </div>
                         <search-select
-                            class="w-full mt-2"
+                            class="w-full mt-4"
                             :input-id="'modules_' + (index - 1)"
                             :options="createSearchSelectInput(index - 1)"
                             :selected="{}"
