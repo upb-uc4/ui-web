@@ -20,7 +20,7 @@
                     :key="option"
                     class="p-2 text-md cursor-pointer block"
                     :class="{ 'bg-blue-500 text-gray-100': index == hoveredOption }"
-                    @mousedown="selectOption(option)"
+                    @click="selectOption(option)"
                     @mouseover="setHoveredOption(index)"
                 >
                     {{ option.display }}
