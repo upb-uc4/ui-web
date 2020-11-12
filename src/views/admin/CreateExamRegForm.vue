@@ -49,6 +49,7 @@
     import Module from "@/api/api_models/exam_reg_management/Module";
     import ExRegInfoSection from "@/components/exreg/ExRegInfoSection.vue";
     import ExRegModuleSection from "@/components/exreg/ExRegModuleSection.vue";
+    import LoadingComponent from "@/components/common/loading/Spinner.vue";
 
     export default {
         name: "CreateExamRegForm",
@@ -56,6 +57,7 @@
             ExRegModuleSection,
             UnsavedChangesModal,
             ExRegInfoSection,
+            LoadingComponent,
         },
         props: {
             name: {
@@ -64,7 +66,7 @@
                 required: false,
             },
         },
-        setup: function (props: any) {
+        setup: function () {
             const heading = "Create Examination Regulation";
             const examRegName = ref("");
             const examRegNameValid = ref(false);
@@ -109,7 +111,7 @@
             }
 
             function createExamReg() {
-                const result = "";
+                return;
             }
 
             return {
