@@ -65,18 +65,18 @@
             },
         },
         setup: function (props: any) {
-            let heading = "Create Examination Regulation";
-            let examRegName = ref("");
-            let examRegNameValid = ref(false);
-            let busy = ref(false); // for later use
-            let existingExamRegNames = [
+            const heading = "Create Examination Regulation";
+            const examRegName = ref("");
+            const examRegNameValid = ref(false);
+            const busy = ref(false); // for later use
+            const existingExamRegNames = [
                 "Informatik Bachelor v1",
                 "Informatik Bachelor v2",
                 "Informatik Master v1",
                 "Informatik Master v1.1",
                 "Informatik Master v1.2",
             ];
-            let selectedModules = ref([
+            const selectedModules = ref([
                 {
                     id: "M100",
                     name: "Algorithms",
@@ -102,7 +102,7 @@
                 },
             ] as Module[]);
 
-            let canCreate = computed(() => selectedModules.value.length > 0 && examRegNameValid.value);
+            const canCreate = computed(() => selectedModules.value.length > 0 && examRegNameValid.value);
 
             function back() {
                 Router.push("/all-courses");
