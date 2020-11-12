@@ -128,6 +128,7 @@ const router = createRouter({
             component: ExamRegFormSuspenseWrapper,
             meta: {
                 title: "Examination Registration Creation" + suffix,
+                roles: ["Admin"],
             },
         },
         {
