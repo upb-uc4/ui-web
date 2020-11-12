@@ -1,11 +1,10 @@
+import Course from "@/api/api_models/course_management/Course";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import { Account } from "@/entities/Account";
-import Course from "@/api/api_models/course_management/Course";
-import { loginAndCreateCourse, deleteCourses, createCourses } from "./helpers/CourseHelper";
-import { loginAndCreateLecturer, createUsers, deleteUsers } from "./helpers/UserHelper";
+import { getMachineUserAuth, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
+import { createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListLecturer, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
-import { logout, getMachineUserAuth, loginAsDefaultLecturer } from "./helpers/AuthHelper";
-import { Role } from "@/entities/Role";
+import { createUsers, deleteUsers } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 let lecturer: Lecturer;

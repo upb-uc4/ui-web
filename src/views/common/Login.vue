@@ -39,7 +39,7 @@
                         >
                             <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="absolute mt-3 ml-1 mr-1 fas"></i>
                         </button>
-                        <p v-if="error" class="mt-2 lg:w-3/4 lg:ml-3 xl:ml-5 error-message">Wrong username and password combination!</p>
+                        <p v-if="error" class="mt-2 lg:w-3/4 lg:ml-3 xl:ml-5 error-message">Authentication failed.</p>
                     </div>
 
                     <div class="w-full text-center lg:text-left lg:pl-16 lg:ml-3">
@@ -86,7 +86,7 @@
             let error = ref(false);
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
-            function togglePassword() {
+            async function togglePassword() {
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
             }
 
