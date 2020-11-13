@@ -69,10 +69,7 @@
 </template>
 <script lang="ts">
     import Router from "@/use/router/";
-    import { useStore, store } from "@/use/store/store";
-    import { Role } from "@/entities/Role";
-    import UserManagement from "@/api/UserManagement";
-    import { ref, onMounted } from "vue";
+    import { ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
 
