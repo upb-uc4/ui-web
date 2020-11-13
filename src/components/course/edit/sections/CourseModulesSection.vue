@@ -17,8 +17,8 @@
                             :id="'exReg-' + selectedExRegNames[index - 1]"
                             v-model="selectedExRegNames[index - 1]"
                             class="input-select form-select w-full"
-                            :disabled="hasCheckedModule(selectedExRegs[index - 1])"
-                            @change="addValue($event.target.value, index - 1)"
+                            :disabled="hasSelectedModule(selectedExRegs[index - 1])"
+                            @change="checkIfLastExReg(index - 1)"
                         >
                             <option disabled :value="''">Select an examination regulation</option>
 
@@ -32,7 +32,7 @@
                             :id="'remove_exReg_' + index"
                             title="Remove selected exam regulation"
                             class="text-red-500 hover:text-red-600 m-4"
-                            @click="removeValue(index - 1)"
+                            @click="removeExReg(index - 1)"
                         >
                             <i class="inline far fa-trash-alt text-2xl"></i>
                         </button>
@@ -134,7 +134,7 @@
 
             onBeforeMount(async () => {
                 await getExmatriculationRegs();
-                if (!props.editMode) {
+                if (props.editMode) {
                     getExRegsFromModules();
                 }
             });
@@ -148,6 +148,7 @@
                 selectedExRegNames.value.forEach((selectedName) => {
                     tmp.push(examinationRegs.value.find((e) => e.name == selectedName) as ExaminationRegulation);
                     if (tmp.length > 0) {
+                        // Fill the selectedModules array (input for the search-selects and taglists) with the modules that are selected accourding to the prop
                         let selected: { ids: String[]; displayStrings: String[] } = { ids: [], displayStrings: [] };
                         tmp[tmp.length - 1]?.modules.forEach((m) => {
                             if ((props.moduleIds as String[]).find((x) => x == m.id)) {
@@ -159,6 +160,19 @@
                     }
                 });
                 return tmp;
+            });
+
+            watch(
+                () => props.moduleIds,
+                () => {
+                    getExRegsFromModules();
+                }
+            );
+
+            watch(selectedOption.value, () => {
+                // Toggle the module and erase the input of the search-select
+                toggleModule((selectedOption.value.value as Module).id);
+                selectedOption.value = {} as SearchSelectOption;
             });
 
             async function getExmatriculationRegs() {
@@ -183,40 +197,19 @@
                 });
             }
 
-            watch(
-                () => props.moduleIds,
-                () => {
-                    getExRegsFromModules();
-                }
-            );
-
-            watch(selectedOption.value, () => {
-                console.log("DO");
-                toggleModule((selectedOption.value.value as Module).id);
-                selectedOption.value = {} as SearchSelectOption;
-            });
-
-            function addValue(value: string, index: number) {
-                if (selectedExRegNames.value.length - 1 == index) {
+            function checkIfLastExReg(index: number) {
+                // push an empty ExRegNam if the last element of selectedExRegNames was filled (for showing the next select)
+                if (selectedExRegNames.value.length - 1 == index && !(availableExRegs.value.length == 0)) {
                     selectedExRegNames.value.push("");
                 }
             }
 
-            function removeValue(index: number) {
+            function removeExReg(index: number) {
                 emit("remove-modules", selectedExRegs.value[index].modules);
                 selectedExRegNames.value.splice(index, 1);
             }
 
-            function toggleModule(id: String) {
-                emit("toggle-module", id);
-                getExRegsFromModules();
-            }
-
-            function isChecked(id: string) {
-                return (props.moduleIds as String[]).includes(id);
-            }
-
-            function hasCheckedModule(exReg: ExaminationRegulation): Boolean {
+            function hasSelectedModule(exReg: ExaminationRegulation): Boolean {
                 if (exReg == undefined) return false;
                 for (let index = 0; index < props.moduleIds.length; index++) {
                     if (exReg.modules.find((m) => m.id == props.moduleIds[index]) != undefined) {
@@ -226,6 +219,11 @@
                 return false;
             }
 
+            function toggleModule(id: String) {
+                emit("toggle-module", id);
+                getExRegsFromModules();
+            }
+
             function removeModule(exRegIndex: number, moduleIndex: number) {
                 toggleModule(selectedModules.value[exRegIndex].ids[moduleIndex]);
             }
@@ -233,7 +231,8 @@
             function createSearchSelectInput(index: number): SearchSelectOption[] {
                 let value: SearchSelectOption[] = [];
                 selectedExRegs.value[index].modules.forEach((m) => {
-                    if (!isChecked(m.id)) value.push({ value: m, display: `${m.id}: ${m.name}` } as SearchSelectOption);
+                    if (!(props.moduleIds as String[]).includes(m.id))
+                        value.push({ value: m, display: `${m.id}: ${m.name}` } as SearchSelectOption);
                 });
                 return value;
             }
@@ -242,12 +241,11 @@
                 examinationRegs,
                 selectedExRegNames,
                 availableExRegs,
-                addValue,
+                checkIfLastExReg,
                 selectedExRegs,
-                removeValue,
+                removeExReg,
                 toggleModule,
-                isChecked,
-                hasCheckedModule,
+                hasSelectedModule,
                 selectedModules,
                 removeModule,
                 createSearchSelectInput,
