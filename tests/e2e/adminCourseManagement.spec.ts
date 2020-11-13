@@ -198,8 +198,9 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit modules", () => {
-        cy.get(`input[id=check_module_${course.moduleIds[0]}]`).uncheck();
-        cy.get(`input[id=check_module_${newModule}]`).check();
+        cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
+        cy.get(`input[id='modules_0']`).click();
+        cy.get("div").contains(`${newModule}`).click();
     });
 
     it("Can save course", () => {
@@ -211,8 +212,8 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
-        cy.get(`input[id=check_module_${course.moduleIds[0]}]`).should("not.have.attr", "checked");
-        cy.get(`input[id=check_module_${newModule}]`).should("have.attr", "checked");
+        cy.get("span").contains(course.moduleIds[0]).should("not.exist");
+        cy.get("span").contains(`${newModule}`).should("exist");
     });
 
     it("Delete course", () => {

@@ -17,7 +17,8 @@ export function createCourse(course: Course) {
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.get('select[id="exReg-"]').select("Computer Science v3");
-    cy.get(`input[id='check_module_${course.moduleIds[0]}']`).check();
+    cy.get(`input[id='modules_0']`).click();
+    cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
@@ -39,7 +40,8 @@ export function createCourseAdmin(course: Course) {
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
     cy.get('select[id="exReg-"]').select("Computer Science v3");
-    cy.get(`input[id='check_module_${course.moduleIds[0]}']`).check();
+    cy.get(`input[id='modules_0']`).click();
+    cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");

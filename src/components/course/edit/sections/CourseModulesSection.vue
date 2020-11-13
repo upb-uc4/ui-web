@@ -17,8 +17,8 @@
                             :id="'exReg-' + selectedExRegNames[index - 1]"
                             v-model="selectedExRegNames[index - 1]"
                             class="input-select form-select w-full"
-                            :disabled="hasCheckedModule(selectedExRegs[index - 1])"
-                            @change="addValue($event.target.value, index - 1)"
+                            :disabled="hasSelectedModule(selectedExRegs[index - 1])"
+                            @change="checkIfLastExReg(index - 1)"
                         >
                             <option disabled :value="''">Select an examination regulation</option>
 
@@ -32,30 +32,34 @@
                             :id="'remove_exReg_' + index"
                             title="Remove selected exam regulation"
                             class="text-red-500 hover:text-red-600 m-4"
-                            @click="removeValue(index - 1)"
+                            @click="removeExReg(index - 1)"
                         >
                             <i class="inline far fa-trash-alt text-2xl"></i>
                         </button>
                     </div>
-                    <div v-if="selectedExRegNames[index - 1] != ''" class="w-full bg-gray-100 rounded-lg border-2 border-gray-400 p-2">
-                        <div class="w-full flex content-center flex-wrap">
-                            <div v-for="module in selectedExRegs[index - 1].modules" :key="module" class="w-1/4 p-2">
-                                <div class="flex">
-                                    <div class="w-4 mr-2" />
-                                    <div class="flex text-sm text-gray-500 leading-none">{{ module.id }}</div>
-                                </div>
-                                <div class="flex items-center">
-                                    <input
-                                        :id="'check_module_' + module.id"
-                                        class="w-4 mr-2 text-blue-500 form-checkbox hover:bg-blue-600"
-                                        type="checkbox"
-                                        :checked="isChecked(module.id)"
-                                        @click="toggleModule(module.id)"
-                                    />
-                                    <div class="align-baseline text-sm text-gray-900">{{ module.name }}</div>
-                                </div>
-                            </div>
+                    <div
+                        v-if="selectedExRegNames[index - 1] != ''"
+                        class="w-full bg-gray-100 rounded-lg border-2 border-gray-400 px-1 py-2"
+                    >
+                        <div class="flex p-1">
+                            <p class="text-gray-600 text-md mr-3">Modules:</p>
+                            <p v-if="selectedModules[index - 1].displayStrings.length == 0" class="text-gray-600 text-md">
+                                Please select at least one module!
+                            </p>
+                            <tag-list
+                                v-else
+                                :elements="selectedModules[index - 1].displayStrings"
+                                @on-remove="removeModule(index - 1, $event)"
+                            />
                         </div>
+                        <search-select
+                            class="w-full mt-4"
+                            :input-id="'modules_' + (index - 1)"
+                            :options="createSearchSelectInput(index - 1)"
+                            :selected="{}"
+                            :category-name="'Module'"
+                            @selected="toggleModule($event.value.id)"
+                        />
                     </div>
                 </div>
                 <p v-if="errorBag.has('moduleIds')" id="moduleError" class="error-message">
@@ -74,10 +78,12 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { reactive } from "vue";
     import TagList from "@/components/common/TagList.vue";
+    import SearchSelect from "@/components/common/SearchSelect.vue";
+    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
 
     export default {
         name: "CourseModulesSection",
-        //components: {TagList},
+        components: { TagList, SearchSelect },
         props: {
             errorBag: {
                 required: true,
@@ -96,30 +102,32 @@
         setup(props: any, { emit }: any) {
             const examinationRegs = ref([] as ExaminationRegulation[]);
             const selectedExRegNames = ref([""]);
+            const selectedModules = ref([] as { ids: String[]; displayStrings: String[] }[]);
+            const selectedOption = ref({} as SearchSelectOption);
 
             //TODO Remove Mock Data
             let mockData = [
                 {
                     name: "ExReg1",
                     active: true,
-                    modules: [{ id: "1", name: "Module1" } as Module, { id: "2", name: "Module2" } as Module],
+                    modules: [{ id: "M1", name: "Module1" } as Module, { id: "M2", name: "Module2" } as Module],
                 },
                 {
                     name: "ExReg2",
                     active: false,
                     modules: [
-                        { id: "1", name: "Module1" } as Module,
-                        { id: "3", name: "Module3" } as Module,
-                        { id: "4", name: "Module4" } as Module,
+                        { id: "M1", name: "Module1" } as Module,
+                        { id: "M3", name: "Module3" } as Module,
+                        { id: "M4", name: "Module4" } as Module,
                     ],
                 },
                 {
                     name: "ExReg3",
                     active: false,
                     modules: [
-                        { id: "5", name: "Module5" } as Module,
-                        { id: "6", name: "Module6" } as Module,
-                        { id: "7", name: "Module7" } as Module,
+                        { id: "M5", name: "Module5" } as Module,
+                        { id: "M6", name: "Module6" } as Module,
+                        { id: "M7", name: "Module7" } as Module,
                     ],
                 },
             ];
@@ -139,8 +147,32 @@
                 let tmp = [] as ExaminationRegulation[];
                 selectedExRegNames.value.forEach((selectedName) => {
                     tmp.push(examinationRegs.value.find((e) => e.name == selectedName) as ExaminationRegulation);
+                    if (tmp.length > 0) {
+                        // Fill the selectedModules array (input for the search-selects and taglists) with the modules that are selected accourding to the prop
+                        let selected: { ids: String[]; displayStrings: String[] } = { ids: [], displayStrings: [] };
+                        tmp[tmp.length - 1]?.modules.forEach((m) => {
+                            if ((props.moduleIds as String[]).find((x) => x == m.id)) {
+                                selected.ids.push(m.id);
+                                selected.displayStrings.push(`${m.id}: ${m.name}`);
+                            }
+                        });
+                        selectedModules.value[tmp.length - 1] = selected;
+                    }
                 });
                 return tmp;
+            });
+
+            watch(
+                () => props.moduleIds,
+                () => {
+                    getExRegsFromModules();
+                }
+            );
+
+            watch(selectedOption.value, () => {
+                // Toggle the module and erase the input of the search-select
+                toggleModule((selectedOption.value.value as Module).id);
+                selectedOption.value = {} as SearchSelectOption;
             });
 
             async function getExmatriculationRegs() {
@@ -156,7 +188,7 @@
             }
 
             function getExRegsFromModules() {
-                (props.moduleIds as string[]).forEach((m) => {
+                (props.moduleIds as String[]).forEach((m) => {
                     examinationRegs.value.forEach((exReg) => {
                         if (exReg.modules.find((e) => e.id == m) != undefined && !selectedExRegNames.value.includes(exReg.name)) {
                             selectedExRegNames.value.splice(selectedExRegNames.value.length - 1, 0, exReg.name);
@@ -165,40 +197,19 @@
                 });
             }
 
-            watch(
-                () => props.moduleIds,
-                () => {
-                    getExRegsFromModules();
-                }
-            );
-
-            function addValue(value: string, index: number) {
-                if (selectedExRegNames.value.length - 1 == index) {
+            function checkIfLastExReg(index: number) {
+                // push an empty ExRegNam if the last element of selectedExRegNames was filled (for showing the next select)
+                if (selectedExRegNames.value.length - 1 == index && !(availableExRegs.value.length == 0)) {
                     selectedExRegNames.value.push("");
                 }
             }
 
-            function removeValue(index: number) {
+            function removeExReg(index: number) {
                 emit("remove-modules", selectedExRegs.value[index].modules);
                 selectedExRegNames.value.splice(index, 1);
             }
 
-            function toggleModule(id: string) {
-                emit("toggle-module", id);
-                getExRegsFromModules();
-            }
-
-            function isChecked(id: string) {
-                return (props.moduleIds as String[]).includes(id);
-            }
-
-            //TODO remove demo elements for tag list
-            let demoElements = reactive(["Summer", "Sun", "Beach"]);
-            function updateDemoList(index: number) {
-                demoElements.splice(index, 1);
-            }
-
-            function hasCheckedModule(exReg: ExaminationRegulation): Boolean {
+            function hasSelectedModule(exReg: ExaminationRegulation): Boolean {
                 if (exReg == undefined) return false;
                 for (let index = 0; index < props.moduleIds.length; index++) {
                     if (exReg.modules.find((m) => m.id == props.moduleIds[index]) != undefined) {
@@ -208,18 +219,37 @@
                 return false;
             }
 
+            function toggleModule(id: String) {
+                emit("toggle-module", id);
+                getExRegsFromModules();
+            }
+
+            function removeModule(exRegIndex: number, moduleIndex: number) {
+                toggleModule(selectedModules.value[exRegIndex].ids[moduleIndex]);
+            }
+
+            function createSearchSelectInput(index: number): SearchSelectOption[] {
+                let value: SearchSelectOption[] = [];
+                selectedExRegs.value[index].modules.forEach((m) => {
+                    if (!(props.moduleIds as String[]).includes(m.id))
+                        value.push({ value: m, display: `${m.id}: ${m.name}` } as SearchSelectOption);
+                });
+                return value;
+            }
+
             return {
                 examinationRegs,
                 selectedExRegNames,
                 availableExRegs,
-                addValue,
+                checkIfLastExReg,
                 selectedExRegs,
-                removeValue,
+                removeExReg,
                 toggleModule,
-                isChecked,
-                demoElements,
-                updateDemoList,
-                hasCheckedModule,
+                hasSelectedModule,
+                selectedModules,
+                removeModule,
+                createSearchSelectInput,
+                selectedOption,
             };
         },
     };

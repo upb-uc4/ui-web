@@ -6,9 +6,14 @@
                 <label class="block text-gray-600"> Select a lecturer that will hold the course</label>
             </div>
             <div class="w-full lg:w-2/3">
-                <div class="mb-4 w-full relative">
+                <div class="mb-4 w-full">
                     <label class="text-gray-700 text-md font-medium block mb-4">Lecturer-ID</label>
-                    <search-select v-model:selected="selectedOption" :options="optionsArray" input-id="lecturerId" />
+                    <search-select
+                        v-model:selected="selectedOption"
+                        :options="optionsArray"
+                        input-id="lecturerId"
+                        :category-name="'Lecturer'"
+                    />
                     <div :hidden="currentLecturer.username == ''" class="text-gray-700 text-md font-medium my-3">
                         <label v-if="lecturerFound">
                             <i class="text-green-400 fas fa-check mr-2"></i>
