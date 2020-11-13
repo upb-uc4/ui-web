@@ -198,7 +198,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit modules", () => {
-        cy.get("span").contains(course.moduleIds[0]).get("i[id='remove']").click();
+        cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
         cy.get(`input[id='modules_0']`).click();
         cy.get("div").contains(`${newModule}`).click();
     });

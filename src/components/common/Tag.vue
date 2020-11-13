@@ -1,7 +1,7 @@
 <template>
     <span class="mr-2 text-sm font-medium py-1 px-2 rounded align-middle" :class="[bgColor, computedBgColor, textColor]">
         {{ title }}
-        <i id="removeTag" class="fa fa-times pl- cursor-pointer" @click="remove" />
+        <i class="fa fa-times cursor-pointer remove-tag" @click="remove" />
     </span>
 </template>
 
