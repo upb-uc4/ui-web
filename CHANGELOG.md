@@ -1,11 +1,19 @@
-# [WIP v0.11.1](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.11.1) (2020-XX-XX)
+# [v0.12.0 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
+
+## Refactoring
+- add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
+- add a message for the student if not immatriculated to any semester yet [#692](https://github.com/upb-uc4/ui-web/pull/692)
+
+# [v0.12.0](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.12.0) (2020-11-06)
 
 ## Feature
 - add support for pseudonymization of student matriculation data
 - add thumbnails to account list [#607](https://github.com/upb-uc4/ui-web/issues/607)
+- add all functionality for creating certificates [#564](https://github.com/upb-uc4/ui-web/issues/564)
+- add functionality for signing proposals and validating proposal inputs [#642](https://github.com/upb-uc4/ui-web/pull/642)
 
 ## Bugfix
-- adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)g
+- adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)
 - fix use of wrong navigation icon on mobile [#649](https://github.com/upb-uc4/ui-web/pull/649)
 - fix spacing on student course list on mobile [#648](https://github.com/upb-uc4/ui-web/pull/648)
 - fix image view of private profile on mobile [#651](https://github.com/upb-uc4/ui-web/pull/651)

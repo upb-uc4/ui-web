@@ -1,4 +1,5 @@
 import AuthenticationManagement from "@/api/AuthenticationManagement";
+import CertificateManagement from "@/api/CertificateManagement";
 import CourseManagement from "@/api/CourseManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import UserManagement from "@/api/UserManagement";
@@ -20,6 +21,7 @@ export async function getVersions(): Promise<version[]> {
     let courseManagementVersion = await CourseManagement.getVersion();
     let userManagementVersion = await UserManagement.getVersion();
     let matriculationManagementVersion = await MatriculationManagement.getVersion();
+    let certificateManagementVersion = await CertificateManagement.getVersion();
 
     versions.push({
         name: "Frontend",
@@ -61,6 +63,15 @@ export async function getVersions(): Promise<version[]> {
             "matriculation-" +
             matriculationManagementVersion +
             "/product_code/matriculation_service/CHANGELOG.md",
+    });
+    versions.push({
+        name: "Certificate Management",
+        version: certificateManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "certificate-" +
+            certificateManagementVersion +
+            "/product_code/certificate_service/CHANGELOG.md",
     });
 
     return versions;

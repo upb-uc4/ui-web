@@ -9,6 +9,7 @@
 
         <div>
             <security-section />
+            <certificate-section />
         </div>
     </div>
 </template>
@@ -18,11 +19,13 @@
     import Router from "@/use/router";
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
+    import CertificateSection from "@/components/settings/CertificateSection.vue";
 
     export default {
         name: "Settings",
         components: {
             SecuritySection,
+            CertificateSection,
         },
 
         async beforeRouteEnter(_from: any, _to: any, next: any) {
