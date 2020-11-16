@@ -27,8 +27,8 @@
                     <div class="mt-6 relative">
                         <label class="block mb-1 text-gray-700 font-medium tracking-wide">Password</label>
                         <i
-                            :class="[isPasswordVisible ? 'fa-eye-slash' : 'fa-eye']"
-                            class="fas absolute mt-4 mr-4 right-0 text-gray-500 cursor-pointer"
+                            :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
+                            class="fas absolute z-20 mt-4 mr-4 right-0 text-gray-500 cursor-pointer"
                             @click="togglePassword"
                         />
                         <input
