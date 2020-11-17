@@ -104,56 +104,6 @@ export default class MatriculationManagement extends Common {
             });
     }
 
-    /**
-     * @deprecated
-     * @param username
-     * @param matriculation
-     */
-    async updateMatriculationData(
-        username: string,
-        matriculation: SubjectMatriculation[]
-    ): Promise<APIResponse<boolean | MatriculationData>> {
-        let payload = { matriculation: matriculation };
-
-        return await this._axios
-            .put(`/${username}`, payload)
-            .then((response: AxiosResponse) => {
-                return {
-                    statusCode: response.status,
-                    returnValue: response.status == 201 ? (response.data as MatriculationData) : true,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: false,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.updateMatriculationData(username, matriculation);
-                    }
-                    return {
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        returnValue: false,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        error: {} as APIError,
-                        returnValue: false,
-                        networkError: true,
-                    };
-                }
-            });
-    }
-
     async getMatriculationHistory(username: string): Promise<APIResponse<MatriculationData>> {
         return await this._axios
             .get(`/history/${username}`)
