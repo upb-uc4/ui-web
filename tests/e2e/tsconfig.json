@@ -1,13 +1,15 @@
 {
     "compilerOptions": {
+        "moduleResolution": "node",
         "strict": true,
         "target": "esnext",
         "baseUrl": "../../",
         "lib": ["esnext", "dom"],
-        "types": ["cypress", "node", "cypress-plugin-snapshots", "cypress-file-upload"],
+        "types": ["cypress", "node", "cypress-file-upload"],
+        "typeRoots": ["./support"],
         "paths": {
             "@/*": ["src/*"]
         },
     },
-    "include": ["**/*.ts"]
+    "include": ["**/*.ts", "plugins/index.ts"]
 }

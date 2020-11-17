@@ -4,3 +4,5 @@ LICENSE
 src/assets/*
 tests/testOverview.md
 certs/*
+node_modules/*
+dist/*

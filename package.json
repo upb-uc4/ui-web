@@ -3,9 +3,9 @@
     "version": "0.11.0",
     "private": true,
     "scripts": {
-        "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint",
+        "serve": "webpack serve",
+        "build": "webpack",
+        "lint": "eslint . --cache --fix",
         "lint-staged": "lint-staged",
         "test:unit": "jest",
         "test:e2e": "cypress run --browser chrome",
@@ -40,15 +40,12 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
-        "@vue/cli": "^4.5.8",
         "axios": "^0.20.0",
         "core-js": "^3.6.5",
-        "jest": "^26.5.3",
         "lodash": "^4.17.20",
         "random-bigint": "0.0.1",
         "tailwindcss": "^1.9.5",
         "vue": "^3.0.1",
-        "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-beta.13",
         "vue-toastification": "^2.0.0-beta.7",
         "vuex": "^4.0.0-beta.4"
@@ -62,50 +59,49 @@
         "@typescript-eslint/eslint-plugin": "^2.33.0",
         "@typescript-eslint/parser": "^2.33.0",
         "@vue/cli-plugin-babel": "^4.5.8",
-        "@vue/cli-plugin-eslint": "^4.5.8",
-        "@vue/cli-plugin-router": "^4.5.7",
-        "@vue/cli-plugin-typescript": "^4.5.8",
-        "@vue/cli-plugin-unit-jest": "^4.5.8",
-        "@vue/cli-plugin-vuex": "^4.5.8",
-        "@vue/cli-service": "^4.5.8",
         "@vue/compiler-sfc": "^3.0.1",
         "@vue/eslint-config-typescript": "^5.1.0",
-        "@vue/test-utils": "^2.0.0-beta.7",
         "babel-eslint": "^10.1.0",
+        "babel-jest": "^26.6.3",
+        "babel-loader": "^8.2.1",
         "babel-plugin-istanbul": "^6.0.0",
+        "chalk": "^4.1.0",
+        "copy-webpack-plugin": "^6.3.0",
         "cross-conf-env": "^1.2.0",
+        "css-loader": "^5.0.0",
         "cypress": "^5.4.0",
         "cypress-file-upload": "^4.1.1",
-        "cypress-plugin-snapshots": "^1.4.4",
+        "cypress-webpack-preprocessor-v5": "^5.0.0-alpha.1",
         "dotenv": "^8.2.0",
         "eslint": "^6.7.2",
         "eslint-config-prettier": "^6.13.0",
+        "eslint-loader": "^4.0.2",
         "eslint-plugin-prettier": "^3.1.4",
         "eslint-plugin-vue": "^7.0.1",
+        "file-loader": "^6.2.0",
+        "fork-ts-checker-webpack-plugin": "^6.0.1",
+        "html-webpack-plugin": "^5.0.0-alpha.14",
         "husky": "^4.3.0",
         "jest": "^26.5.3",
         "jest-serializer-vue": "^2.0.2",
         "lint-staged": "^10.4.2",
-        "npm-run-all": "^4.1.5",
+        "mini-css-extract-plugin": "^1.2.1",
+        "path-browserify": "^1.0.1",
+        "postcss-loader": "^4.0.4",
         "prettier": "^2.1.2",
-        "typescript": "^4.0.3"
-    },
-    "jest": {
-        "globals": {
-            "ts-jest": {
-                "tsConfig": "tests/unit/tsconfig.json"
-            }
-        },
-        "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
-        "setupFiles": [
-            "<rootDir>/.jest/env.ts"
-        ],
-        "testMatch": [
-            "<rootDir>/tests/unit/**/*.spec.ts"
-        ],
-        "testPathIgnorePatterns": [
-            "<rootDir>/tests/e2e/"
-        ]
+        "progress-bar-webpack-plugin": "^2.1.0",
+        "style-loader": "^2.0.0",
+        "ts-jest": "^26.4.4",
+        "ts-loader": "^8.0.7",
+        "tsconfig-paths-jest": "0.0.1",
+        "tsconfig-paths-webpack-plugin": "^3.3.0",
+        "typescript": "^4.0.3",
+        "url-loader": "^4.1.1",
+        "vue-jest": "^5.0.0-alpha.5",
+        "vue-loader": "^16.0.0-rc.1",
+        "webpack": "^5.4.0",
+        "webpack-cli": "^4.2.0",
+        "webpack-dev-server": "^3.11.0"
     },
     "eslintConfig": {
         "root": true,
@@ -184,6 +180,6 @@
         "not dead"
     ],
     "lint-staged": {
-        "*.{js,ts,vue}": "vue-cli-service lint"
+        "*.{js,ts,vue}": "eslint . --cache --fix"
     }
 }

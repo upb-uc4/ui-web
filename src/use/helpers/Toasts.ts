@@ -1,4 +1,4 @@
-import ReportBug from "@/components/common/ReportBug.vue";
+const ReportBug = () => import("@/components/common/ReportBug.vue");
 import { useToast } from "@/toast";
 import { markRaw } from "vue";
 

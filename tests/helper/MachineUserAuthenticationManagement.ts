@@ -1,18 +1,12 @@
 import Common from "@/api/Common";
 import APIResponse from "@/api/helpers/models/APIResponse";
 import { useStore } from "@/use/store/store";
-import { Role } from "@/entities/Role";
 import APIError from "@/api/api_models/errors/APIError";
 import { AxiosResponse, AxiosError } from "axios";
-import ValidationError from "@/api/api_models/errors/ValidationError";
-import { Account } from "@/entities/Account";
 import { MutationTypes } from "@/use/store/mutation-types";
 import UserManagement from "@/api/UserManagement";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import axios from "axios";
-import handleAuthenticationError from "@/api/AuthenticationHelper";
-import User from "@/api/api_models/user_management/User";
-import AuthenticationManagement from "@/api/AuthenticationManagement";
 
 export default class MachineUserAuthenticationManagement extends Common {
     constructor() {

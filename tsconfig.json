@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",
-        "strict": true,
+        "allowJs": true,
         "jsx": "preserve",
         "importHelpers": true,
         "moduleResolution": "node",
@@ -12,12 +12,12 @@
         "skipLibCheck": true,
         "sourceMap": true,
         "baseUrl": ".",
-        "types": ["webpack-env", "jest", "cypress", "cypress-plugin-snapshots", "lodash", "node", "vue-toastification"],
+        "types": ["jest", "webpack-env", "cypress-plugin-snapshots", "lodash", "node", "vue-toastification"],
         "paths": {
             "@/*": ["src/*"]
         },
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
-    "exclude": ["node_modules"]
+    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+    "exclude": ["node_modules/", "**/*.spec.ts"]
 }
