@@ -43,13 +43,15 @@
 </template>
 
 <script lang="ts">
-    import { ref, computed } from "vue";
+    import { ref, computed, onBeforeMount } from "vue";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import Router from "@/use/router";
     import Module from "@/api/api_models/exam_reg_management/Module";
     import ExRegInfoSection from "@/components/exreg/ExRegInfoSection.vue";
     import ExRegModuleSection from "@/components/exreg/ExRegModuleSection.vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 
     export default {
         name: "CreateExamRegForm",
@@ -59,50 +61,34 @@
             ExRegInfoSection,
             LoadingComponent,
         },
-        props: {
-            name: {
-                type: String,
-                default: "",
-                required: false,
-            },
-        },
         setup: function () {
             const heading = "Create Examination Regulation";
             const examRegName = ref("");
             const examRegNameValid = ref(false);
-            const busy = ref(false); // for later use
-            const existingExamRegNames = [
-                "Informatik Bachelor v1",
-                "Informatik Bachelor v2",
-                "Informatik Master v1",
-                "Informatik Master v1.1",
-                "Informatik Master v1.2",
-            ];
-            const selectedModules = ref([
-                {
-                    id: "M100",
-                    name: "Algorithms",
-                },
-                {
-                    id: "M101",
-                    name: "IT Security",
-                },
-                {
-                    id: "M201",
-                    name: "Complexity",
-                },
-            ] as Module[]);
 
-            const existingModules = ref([
-                {
-                    id: "M300",
-                    name: "Algorithms",
-                },
-                {
-                    id: "M201",
-                    name: "Complexity",
-                },
-            ] as Module[]);
+            const busy = ref(false); // for later use
+            const examApi = new ExaminationRegulationManagement();
+            const responseHandler = new GenericResponseHandler();
+
+            const existingExamRegNames = ref([] as string[]);
+            const selectedModules = ref([] as Module[]);
+            const existingModules = ref([] as Module[]);
+
+            onBeforeMount(async () => {
+                busy.value = true;
+                await Promise.all([getModules(), getExamRegNames()]);
+                busy.value = false;
+            });
+
+            async function getExamRegNames() {
+                let namesResponse = await examApi.getExaminationRegulationNames();
+                existingExamRegNames.value = responseHandler.handleResponse(namesResponse);
+            }
+
+            async function getModules() {
+                let moduleResponse = await examApi.getModules();
+                existingModules.value = responseHandler.handleResponse(moduleResponse);
+            }
 
             const canCreate = computed(() => selectedModules.value.length > 0 && examRegNameValid.value);
 
