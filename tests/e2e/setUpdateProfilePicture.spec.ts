@@ -1,6 +1,6 @@
+import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import Admin from "@/api/api_models/user_management/Admin";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { getRandomMatriculationId, createUsers, deleteUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
@@ -15,6 +15,8 @@ let usersWithAuth: UserWithAuth[] = [];
 
 let vaderPic: any;
 let lukePic: any;
+let vaderPicCropped: any;
+let lukePicCropped: any;
 
 describe("Account creation, edition and deletion", function () {
     before(function () {
@@ -29,6 +31,14 @@ describe("Account creation, edition and deletion", function () {
 
         cy.fixture("pictures/luke.jpg").then((luke) => {
             lukePic = "data:image/jpeg;base64," + luke;
+        });
+
+        cy.fixture("pictures/vaderCropped.jpg").then((vaderCropped) => {
+            vaderPicCropped = "data:image/jpeg;base64," + vaderCropped;
+        });
+
+        cy.fixture("pictures/lukeCropped.jpg").then((lukeCropped) => {
+            lukePicCropped = "data:image/jpeg;base64," + lukeCropped;
         });
 
         cy.fixture("admin.json").then((a) => {
@@ -123,7 +133,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Correct profile picture shown", function () {
-        cy.get("img[id='picture']").should("have.attr", "src", vaderPic);
+        cy.get("img[id='picture']").should("have.attr", "src", vaderPicCropped);
     });
 
     it("Resetting profile picture works for student", function () {
@@ -132,7 +142,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='resetPicture']").click();
         cy.get("button[id='confirmPicture']").should("not.exist");
         cy.get("button[id='resetPicture']").should("not.exist");
-        cy.get("img[id='picture']").should("have.attr", "src", vaderPic);
+        cy.get("img[id='picture']").should("have.attr", "src", vaderPicCropped);
     });
 
     it("Delete profile picture modal is shown", function () {
@@ -172,7 +182,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Correct profile picture is shown", function () {
-        cy.get("img[id='picture']").should("have.attr", "src", lukePic);
+        cy.get("img[id='picture']").should("have.attr", "src", lukePicCropped);
     });
 
     it("Delete profile picture modal is shown", function () {

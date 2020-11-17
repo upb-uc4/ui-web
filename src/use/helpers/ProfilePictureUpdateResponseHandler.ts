@@ -1,7 +1,7 @@
-import ResponseHandler from "./ResponseHandler";
-import APIResponse from "@/api/helpers/models/APIResponse";
-import ValidationError from "@/api/api_models/errors/ValidationError";
 import Error from "@/api/api_models/errors/Error";
+import ValidationError from "@/api/api_models/errors/ValidationError";
+import APIResponse from "@/api/helpers/models/APIResponse";
+import ResponseHandler from "./ResponseHandler";
 
 export default class ProfilePictureUpdateResponseHandler implements ResponseHandler<boolean> {
     errorList: Error[] = [] as Error[];

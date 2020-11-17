@@ -12,7 +12,7 @@
         "skipLibCheck": true,
         "sourceMap": true,
         "baseUrl": ".",
-        "types": ["webpack-env", "jest", "cypress", "cypress-plugin-snapshots", "lodash", "node"],
+        "types": ["webpack-env", "jest", "cypress", "cypress-plugin-snapshots", "lodash", "node", "pkijs", "elliptic"],
         "paths": {
             "@/*": ["src/*"]
         },

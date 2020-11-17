@@ -1,15 +1,15 @@
-import Common from "./Common";
-import { useStore } from "@/use/store/store";
-import User_List from "./api_models/user_management/User_List";
-import { AxiosResponse, AxiosError } from "axios";
-import Student from "./api_models/user_management/Student";
-import Lecturer from "./api_models/user_management/Lecturer";
-import Admin from "./api_models/user_management/Admin";
-import { Role } from "@/entities/Role";
 import { Account } from "@/entities/Account";
-import APIResponse from "./helpers/models/APIResponse";
+import { Role } from "@/entities/Role";
+import { useStore } from "@/use/store/store";
+import { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
+import Admin from "./api_models/user_management/Admin";
+import Lecturer from "./api_models/user_management/Lecturer";
+import Student from "./api_models/user_management/Student";
+import User_List from "./api_models/user_management/User_List";
 import handleAuthenticationError from "./AuthenticationHelper";
+import Common from "./Common";
+import APIResponse from "./helpers/models/APIResponse";
 
 export default class UserManagement extends Common {
     constructor() {
@@ -502,9 +502,57 @@ export default class UserManagement extends Common {
             });
     }
 
+    async getThumbnail(username: string): Promise<APIResponse<File>> {
+        return await this._axios
+            .get(`/users/${username}/thumbnail`, {
+                responseType: "arraybuffer",
+            })
+            .then((response: AxiosResponse) => {
+                let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
+                const file: File = new File([blob], "image.png", { type: response.headers["content-type"] });
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: file,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as File,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getProfilePicture(username);
+                    }
+                    return {
+                        returnValue: {} as File,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as File,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
     async updateProfilePicture(username: string, picture: File): Promise<APIResponse<boolean>> {
         return await this._axios
-            .put(`/users/${username}/image`, picture)
+            .put(`/users/${username}/image`, picture, {
+                headers: {
+                    "content-type": picture.type,
+                },
+            })
             .then((response: AxiosResponse) => {
                 return {
                     error: {} as APIError,

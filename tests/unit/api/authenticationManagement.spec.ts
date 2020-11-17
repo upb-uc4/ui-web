@@ -1,13 +1,11 @@
-import UserManagement from "@/api/UserManagement";
-import { store } from "@/use/store/store";
-import AuthenticationManagement from "@/api/AuthenticationManagement";
-import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
-import { MutationTypes } from "@/use/store/mutation-types";
 import Student from "@/api/api_models/user_management/Student";
+import AuthenticationManagement from "@/api/AuthenticationManagement";
+import UserManagement from "@/api/UserManagement";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
-import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import { readFileSync } from "fs";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 
 var authenticationManagement: AuthenticationManagement;
 var userManagement: UserManagement;

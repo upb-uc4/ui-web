@@ -69,8 +69,8 @@
             let courses = ref([] as Course[]);
             let username = ref("");
 
-            onBeforeMount(() => {
-                getCourses();
+            onBeforeMount(async () => {
+                await getCourses();
             });
             async function getCourses() {
                 busy.value = true;

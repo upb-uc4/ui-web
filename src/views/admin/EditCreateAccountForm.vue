@@ -95,12 +95,14 @@
                         v-else
                         id="mobileCreateAccount"
                         :disabled="!hasInput"
-                        class="w-full mb-4 btn btn-blue-primary"
+                        class="w-full btn btn-blue-primary"
                         @click="createAccount"
                     >
                         Create Account
                     </button>
-                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">Delete</button>
+                    <button v-if="editMode" id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
+                        Delete
+                    </button>
                 </div>
             </section>
             <delete-account-modal ref="deleteModal" />
@@ -112,8 +114,7 @@
 <script lang="ts">
     import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
-    import { ref, reactive, computed, onBeforeMount, nextTick } from "vue";
-    import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+    import { ref, reactive, computed, onBeforeMount } from "vue";
     import UserManagement from "@/api/UserManagement";
     import StudentEntity from "@/entities/StudentEntity";
     import UserEntity from "@/entities/UserEntity";
@@ -124,12 +125,10 @@
     import Student from "@/api/api_models/user_management/Student";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
-    import { Country } from "@/entities/Country";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
     import PersonalInformationSection from "@/components/account/edit/sections/PersonalInformationSection.vue";
@@ -137,13 +136,10 @@
     import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
     import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
-    import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+    import { onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
     import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
-    import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
-    import Error from "@/api/api_models/errors/Error";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -225,9 +221,9 @@
                 }
             });
 
-            onBeforeMount(() => {
+            onBeforeMount(async () => {
                 if (props.editMode) {
-                    getUser();
+                    await getUser();
                 }
             });
 

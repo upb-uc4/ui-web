@@ -1,8 +1,7 @@
-import Student from "@/api/api_models/user_management/Student";
-import { Role } from "./Role";
-import AddressEntity from "./AddressEntity";
 import Address from "@/api/api_models/user_management/Address";
-import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+import Student from "@/api/api_models/user_management/Student";
+import AddressEntity from "./AddressEntity";
+import { Role } from "./Role";
 
 export default class StudentEntity implements Student {
     matriculationId = "";

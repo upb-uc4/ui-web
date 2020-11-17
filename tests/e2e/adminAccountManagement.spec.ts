@@ -11,19 +11,19 @@
  * test account deletion modal
  */
 
+import Admin from "@/api/api_models/user_management/Admin";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
-import Admin from "@/api/api_models/user_management/Admin";
 import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
 import { navigateToAccountList } from "./helpers/NavigationHelper";
 import {
-    createNewStudent,
     createNewAdmin,
     createNewLecturer,
-    deleteUsers,
+    createNewStudent,
     deleteUser,
+    deleteUsers,
     getRandomMatriculationId,
     getRandomizedGovernmentId,
 } from "./helpers/UserHelper";

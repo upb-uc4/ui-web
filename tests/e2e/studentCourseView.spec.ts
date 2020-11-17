@@ -1,9 +1,8 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAndCreateCourse, deleteCourses, createCourses } from "./helpers/CourseHelper";
 import { getMachineUserAuth, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
+import { createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListStudent } from "./helpers/NavigationHelper";
-import { Role } from "@/entities/Role";
 
 describe("Student course view", () => {
     const random = Math.floor(Math.random() * 9999);
