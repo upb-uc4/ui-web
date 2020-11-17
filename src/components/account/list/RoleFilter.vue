@@ -15,7 +15,7 @@
             </button>
         </div>
         <div class="flex w-full ml-3 items-center justify-end">
-            <input v-model="showInactiveAccounts" type="checkbox" class="m-2" />
+            <input id="toggleInactive" v-model="showInactiveAccounts" type="checkbox" class="m-2" />
             <label class="text-sm text-gray-700">inactive</label>
         </div>
     </div>
