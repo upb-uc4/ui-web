@@ -1,4 +1,7 @@
-# [v0.12.0 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
+# [v0.12.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
+
+## Feature
+- add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
 
 ## Refactoring
 - add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
@@ -24,8 +27,6 @@
 
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
 
-## Feature
-- add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
 
 ## Bugfix
 - incrementing and decrementing the participation limit with arrow keys or the arrows provided by the browser for number fields, will be registered as changes made to the course and make it saveable [#590](https://github.com/upb-uc4/ui-web/issues/590)
