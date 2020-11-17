@@ -2,7 +2,12 @@
     <div
         :id="'user_' + user.username"
         class="px-6 py-4 whitespace-no-wrap border-gray-200 cursor-pointer hover:bg-gray-200"
-        :class="{ 'rounded-t-lg': isFirstRow, 'rounded-b-lg': isLastRow, 'border-b': !isLastRow }"
+        :class="{
+            'rounded-t-lg': isFirstRow,
+            'rounded-b-lg': isLastRow,
+            'border-b': !isLastRow,
+            'cursor-pointer hover:bg-gray-200': user.isActive,
+        }"
         @click="editAccount(user.username)"
     >
         <div class="flex items-center">
@@ -89,7 +94,7 @@
         setup(props: any) {
             let profilePicture = ref("");
             function editAccount(username: string) {
-                router.push({ path: "/editAccount/" + username });
+                if (props.user.isActive) router.push({ path: "/editAccount/" + username });
             }
             const isStudent = props.user.role === Role.STUDENT;
             const isLecturer = props.user.role === Role.LECTURER;
