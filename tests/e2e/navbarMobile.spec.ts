@@ -1,4 +1,4 @@
-import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent, logoutMobile } from "./helpers/AuthHelper";
+import { loginAsDefaultAdmin, loginAsDefaultLecturer, loginAsDefaultStudent } from "./helpers/AuthHelper";
 
 const navbar_burger_menu_list = "#nav_mobile_menu_list";
 const navbar_burger_menu = 'button[id="nav_mobile_toggle_menu"]';

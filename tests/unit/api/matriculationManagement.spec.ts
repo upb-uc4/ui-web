@@ -1,22 +1,14 @@
-import { Role } from "@/entities/Role";
-import { Account } from "@/entities/Account";
-import { CourseEntity } from "@/entities/CourseEntity";
-import Course from "@/api/api_models/course_management/Course";
-import { Language } from "@/entities/Language";
-import { CourseType } from "@/entities/CourseType";
-import UserManagement from "@/api/UserManagement";
-import CourseManagement from "@/api/CourseManagement";
-import { store } from "@/use/store/store";
-import { MutationTypes } from "@/use/store/mutation-types";
-import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-import MatriculationManagement from "@/api/MatriculationManagement";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
-import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
-import { readFileSync } from "fs";
-import { getRandomizedUserAndAuthUser } from "../../helper/Users";
-import Student from "@/api/api_models/user_management/Student";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
+import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+import Student from "@/api/api_models/user_management/Student";
+import MatriculationManagement from "@/api/MatriculationManagement";
+import UserManagement from "@/api/UserManagement";
+import { Account } from "@/entities/Account";
+import { Role } from "@/entities/Role";
+import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 
 var matriculationManagement: MatriculationManagement;
 var userManagement: UserManagement;
@@ -26,7 +18,7 @@ const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; a
 const student = pair.student;
 const authUser = pair.authUser;
 
-jest.useFakeTimers();
+jest.setTimeout(30000);
 
 describe("Matriculation management", () => {
     beforeAll(async () => {
@@ -40,6 +32,7 @@ describe("Matriculation management", () => {
     test("Create student user", async () => {
         const success = await userManagement.createUser(authUser, student);
         expect(success.returnValue).toBe(true);
+        await new Promise((r) => setTimeout(r, 15000));
     });
 
     test("Get empty matriculation history", async () => {
