@@ -96,8 +96,8 @@
                     courses.value = genericResponseHandler.handleResponse(response);
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
-                const resp = await userManagement.getLecturers(...lecturerIds);
-                lecturers.value = genericResponseHandler.handleResponse(resp);
+                const resp = await userManagement.getUsers(Role.LECTURER, [...lecturerIds]);
+                lecturers.value = genericResponseHandler.handleResponse(resp) as Lecturer[];
                 busy.value = false;
             }
 

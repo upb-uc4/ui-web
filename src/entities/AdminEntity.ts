@@ -12,6 +12,7 @@ export default class AdminEntity implements Admin {
     email = "";
     birthDate = "";
     phoneNumber = "";
+    is_Active = true;
 
     constructor() {}
 }

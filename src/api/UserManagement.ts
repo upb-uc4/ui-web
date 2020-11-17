@@ -20,9 +20,20 @@ export default class UserManagement extends Common {
         return super.getVersion("/user-management");
     }
 
-    async getAllUsers(): Promise<APIResponse<User_List>> {
+    async getUsers(
+        role?: Role,
+        usernames?: string[],
+        only_active?: boolean
+    ): Promise<APIResponse<User_List | Student[] | Lecturer[] | Admin[]>> {
+        const requestParameter = { params: {} as any };
+        let endpoint = "/users";
+
+        if (usernames) requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
+        if (only_active) requestParameter.params.only_active = only_active;
+        if (role) endpoint = UserManagement._createEndpointByRole(role);
+
         return await this._axios
-            .get("/users")
+            .get(endpoint, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data,
@@ -41,7 +52,7 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.getAllUsers();
+                        return await this.getUsers(role, usernames, only_active);
                     }
                     return {
                         returnValue: {} as User_List,
@@ -55,69 +66,6 @@ export default class UserManagement extends Common {
                         statusCode: 0,
                         networkError: true,
                         error: {} as APIError,
-                    };
-                }
-            });
-    }
-
-    async getUsers(...usernames: string[]): Promise<APIResponse<User_List>> {
-        let resp = await this._getByUsername(usernames, "/users");
-        return resp as APIResponse<User_List>;
-    }
-
-    async getStudents(...usernames: string[]): Promise<APIResponse<Student[]>> {
-        let resp = await this._getByUsername(usernames, "/students");
-        return resp as APIResponse<Student[]>;
-    }
-
-    async getLecturers(...usernames: string[]): Promise<APIResponse<Lecturer[]>> {
-        let resp = await this._getByUsername(usernames, "/lecturers");
-        return resp as APIResponse<Lecturer[]>;
-    }
-
-    async getAdmins(...usernames: string[]): Promise<APIResponse<Admin[]>> {
-        let resp = await this._getByUsername(usernames, "/admins");
-        return resp as APIResponse<Admin[]>;
-    }
-
-    async _getByUsername(usernames: string[], endpoint: string): Promise<APIResponse<User_List | Student[] | Lecturer[] | Admin[]>> {
-        const requestParameter = { params: {} as any };
-        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
-
-        return await this._axios
-            .get(endpoint, requestParameter)
-            .then((response: AxiosResponse) => {
-                return {
-                    returnValue: response.data,
-                    statusCode: response.status,
-                    error: {} as APIError,
-                    networkError: false,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as User_List,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this._getByUsername(usernames, endpoint);
-                    }
-                    return {
-                        returnValue: {} as User_List,
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        returnValue: {} as User_List,
-                        statusCode: 0,
-                        error: {} as APIError,
-                        networkError: true,
                     };
                 }
             });
@@ -155,47 +103,6 @@ export default class UserManagement extends Common {
                 } else {
                     return {
                         returnValue: false,
-                        statusCode: 0,
-                        error: {} as APIError,
-                        networkError: true,
-                    };
-                }
-            });
-    }
-
-    async getAllUsersByRole(role: Role): Promise<APIResponse<Student[] | Lecturer[] | Admin[]>> {
-        let endpoint = UserManagement._createEndpointByRole(role);
-        return await this._axios
-            .get(endpoint)
-            .then((response: AxiosResponse) => {
-                return {
-                    returnValue: response.data,
-                    statusCode: response.status,
-                    error: {} as APIError,
-                    networkError: false,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: false,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getAllUsersByRole(role);
-                    }
-                    return {
-                        returnValue: [],
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        returnValue: [],
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,
@@ -397,19 +304,20 @@ export default class UserManagement extends Common {
         let endpoint = "";
         switch (role) {
             case Role.STUDENT: {
-                endpoint += "/students";
+                endpoint = "/students";
                 break;
             }
             case Role.LECTURER: {
-                endpoint += "/lecturers";
+                endpoint = "/lecturers";
                 break;
             }
             case Role.ADMIN: {
-                endpoint += "/admins";
+                endpoint = "/admins";
                 break;
             }
-            case Role.NONE: {
-                new Error("Endpoint undefined");
+            default: {
+                endpoint = "/users";
+                break;
             }
         }
         return endpoint;

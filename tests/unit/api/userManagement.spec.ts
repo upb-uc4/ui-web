@@ -1,4 +1,5 @@
 import Student from "@/api/api_models/user_management/Student";
+import User_List from "@/api/api_models/user_management/User_List";
 import UserManagement from "@/api/UserManagement";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
@@ -71,44 +72,50 @@ test("Get own user", async () => {
 });
 
 test("Get all users", async () => {
-    const users = await userManagement.getAllUsers();
+    const users = await userManagement.getUsers();
     let result = true;
-    result = result && users.returnValue.students.length > 0;
+    result = result && (users.returnValue as User_List).students.length > 0;
     expect(result).toBe(true);
 });
 
 test("Get all students", async () => {
-    const users = await userManagement.getAllUsersByRole(Role.STUDENT);
-    let result = users.returnValue.length > 0;
+    const users = await userManagement.getUsers(Role.STUDENT);
+    let result = (users.returnValue as Student[]).length > 0;
     expect(result).toBe(true);
 });
 
 test("Get users by usernames", async () => {
-    const users = await userManagement.getUsers(studentAuth.username, lecturerAuth.username);
+    const users = await userManagement.getUsers(undefined, [studentAuth.username, lecturerAuth.username]);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(2);
 });
 
 test("Get lecturers by usernames", async () => {
-    const users = await userManagement.getLecturers(studentAuth.username, lecturerAuth.username);
+    const users = await userManagement.getUsers(Role.LECTURER, [studentAuth.username, lecturerAuth.username]);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(1);
 });
 
 test("Get empty list of lecturers by usernames", async () => {
-    const users = await userManagement.getLecturers();
+    const users = await userManagement.getUsers(Role.LECTURER, []);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(0);
 });
 
 test("Get students by usernames", async () => {
-    const users = await userManagement.getStudents(studentAuth.username, lecturerAuth.username);
+    const users = await userManagement.getUsers(Role.STUDENT, [studentAuth.username, lecturerAuth.username]);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(1);
 });
 
 test("Get admins by usernames", async () => {
-    const users = await userManagement.getAdmins(studentAuth.username, lecturerAuth.username, adminAuth.username);
+    const users = await userManagement.getUsers(Role.ADMIN, [studentAuth.username, lecturerAuth.username, adminAuth.username]);
+    let result = Object.values(users.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
+test("Get active student", async () => {
+    const users = await userManagement.getUsers(undefined, [student.username], true);
     let result = Object.values(users.returnValue).flat();
     expect(result).toHaveLength(1);
 });

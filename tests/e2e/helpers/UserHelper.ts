@@ -144,7 +144,7 @@ export async function deleteUsers(users: Account[], adminAuth: Account) {
     await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
 
     const user_management = new UserManagement();
-    const existingUsers = await user_management.getUsers(...userNames);
+    const existingUsers = await user_management.getUsers(undefined, userNames);
     Object.values(existingUsers.returnValue)
         .flat()
         .forEach(async (user) => {
