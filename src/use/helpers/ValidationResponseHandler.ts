@@ -2,12 +2,19 @@ import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import APIResponse from "@/api/helpers/models/APIResponse";
 import ResponseHandler from "./ResponseHandler";
+import handleAuthenticationError from "@/api/AuthenticationHelper";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
  */
 export default class ValidationResponseHandler implements ResponseHandler<boolean> {
+    dataType: string;
     errorList: Error[] = [] as Error[];
+
+    constructor(msg: string) {
+        this.dataType = msg;
+    }
 
     isValidationError(object: any): object is ValidationError {
         return "type" in object && object.type == "Validation";
@@ -21,24 +28,28 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
         }
 
         if (response.networkError) {
-            alert("Network Error!");
+            showNetworkErrorToast();
             return false;
         }
 
         switch (response.statusCode) {
             case 400: {
-                alert("Wrong syntax.. Why are you seeing this?");
+                showAPIToast(response.statusCode);
                 return false;
             }
             case 401: {
-                alert("Wrong password or username combination!");
+                handleAuthenticationError(response);
                 return false;
             }
             case 404: {
-                alert("I don't think this is even possible, HOW IS THIS ERROR CODE GENERATED?");
+                showAPIToast(response.statusCode, this.dataType);
                 return false;
             }
             case 422: {
+                return false;
+            }
+            case 500: {
+                showAPIToast(response.statusCode);
                 return false;
             }
             case 201: {
