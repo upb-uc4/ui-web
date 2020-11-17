@@ -163,3 +163,9 @@ test("Delete user", async () => {
     const success = await userManagement.deleteUser(student.username);
     expect(success.returnValue).toBe(true);
 });
+
+test("Get active user", async () => {
+    const resp = await userManagement.getUsers(undefined, [student.username], true);
+    let result = Object.values(resp.returnValue).flat();
+    expect(result).toHaveLength(0);
+});
