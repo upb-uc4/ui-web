@@ -57,7 +57,8 @@
         "vue": "^3.0.2",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-rc.3",
-        "vuex": "^4.0.0-rc.1"
+        "vuex": "^4.0.0-rc.1",
+        "vue-toastification": "^2.0.0-beta.7"
     },
     "devDependencies": {
         "@cypress/code-coverage": "^3.8.3",

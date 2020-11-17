@@ -153,7 +153,7 @@ describe("Course creation, edition and deletion", () => {
     it("Lecturer sees his new course", () => {
         loginAsDefaultLecturer();
         navigateToMyCoursesLecturer();
-        cy.get("div").contains(course.courseName).should("exist");
+        cy.get("div[id='courseName']").contains(course.courseName).should("exist");
         logout();
     });
 
@@ -164,7 +164,7 @@ describe("Course creation, edition and deletion", () => {
     // edit course
     it("Show course edit page", () => {
         navigateToCourseListAdmin();
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
 
         cy.get('input[id="courseName"]').should("have.value", course.courseName);
     });
@@ -203,7 +203,7 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
     });
 
     it("Delete course", () => {
