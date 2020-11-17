@@ -10,7 +10,10 @@
                 <div class="flex items-center">
                     <img class="hidden sm:block w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
                     <div class="sm:ml-4">
-                        <div class="text leading-5 font-medium text-blue-900 mb-1 truncate">{{ user.firstName }} {{ user.lastName }}</div>
+                        <div class="text leading-5 font-medium text-blue-900 mb-1 truncate">
+                            {{ user.firstName }} {{ user.lastName }}
+                            <label v-if="!user.isActive" class="text-gray-600 italic">(inactive)</label>
+                        </div>
                         <div class="hidden sm:flex text leading-5 text-gray-500 truncate">@{{ user.username }}</div>
                         <span
                             class="sm:hidden inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
@@ -92,7 +95,6 @@
             const isLecturer = props.user.role === Role.LECTURER;
             const isAdmin = props.user.role === Role.ADMIN;
             const student = props.user as Student;
-
             profilePicture.value = process.env.VUE_APP_API_BASE_URL + "/user-management/users/" + props.user.username + "/thumbnail?";
 
             return { editAccount, isStudent, isLecturer, isAdmin, student, profilePicture };

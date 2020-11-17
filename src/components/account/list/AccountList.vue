@@ -34,6 +34,10 @@
                 type: String,
                 required: true,
             },
+            showInactive: {
+                type: Boolean,
+                required: true,
+            },
         },
         setup(props: any) {
             let busy = ref(false);
@@ -43,12 +47,21 @@
                 await getUsers();
             });
 
+            watch(
+                () => props.showInactive,
+                () => {
+                    getUsers();
+                }
+            );
+
             async function getUsers() {
                 busy.value = true;
                 const userManagement: UserManagement = new UserManagement();
 
                 const genericResponseHandler = new GenericResponseHandler();
-                const response = await userManagement.getUsers();
+                const response = props.showInactive
+                    ? await userManagement.getUsers(undefined, undefined, false)
+                    : await userManagement.getUsers();
                 const userLists = genericResponseHandler.handleResponse(response);
                 users.value = Object.values(userLists).flat();
                 busy.value = false;
