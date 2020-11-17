@@ -15,8 +15,8 @@
                     <div class="">
                         <label class="block mb-1 text-gray-700 font-medium tracking-wide">Email Address</label>
                         <input
+                            id="email"
                             v-model="email"
-                            name="email"
                             type="text"
                             :class="[hasError ? 'border-red-500' : 'border-gray-300']"
                             class="appearance-none rounded-lg block w-full px-3 py-3 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
@@ -32,8 +32,8 @@
                             @click="togglePassword"
                         />
                         <input
+                            id="password"
                             v-model="password"
-                            name="password"
                             :type="passwordFieldType"
                             :class="[hasError ? 'border-red-500' : 'border-gray-300']"
                             class="appearance-none rounded-lg block w-full px-3 py-3 pr-12 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
@@ -65,6 +65,7 @@
 
                 <div class="mt-6">
                     <button
+                        id="login"
                         class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
                         @click="login"
                     >
