@@ -111,6 +111,46 @@ export default class UserManagement extends Common {
             });
     }
 
+    async forceDeleteUser(username: string): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .delete(`/users/${username}/force`)
+            .then((response: AxiosResponse) => {
+                return {
+                    returnValue: true,
+                    statusCode: response.status,
+                    error: {} as APIError,
+                    networkError: false,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.forceDeleteUser(username);
+                    }
+                    return {
+                        returnValue: false,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: false,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
     async getRole(username: string): Promise<APIResponse<Role>> {
         return await this._axios
             .get(`/users/${username}/role`)
