@@ -16,7 +16,7 @@
                     <h2 class="text-xl text-gray-700 text-blue-700 italic">{{ lecturer.role }}</h2>
                 </div>
             </div>
-            <div class="flex flex-col mx-64">
+            <div v-if="lecturer.isActive" class="flex flex-col mx-64">
                 <div class="w-full mr-12 flex flex-col mb-4">
                     <div class="flex mb-2 align-baseline">
                         <label class="block text-gray-700 text-lg font-medium">Research Area</label>
