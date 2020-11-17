@@ -1,7 +1,7 @@
 <template>
     <div
         :id="'user_' + user.username"
-        class="px-6 py-4 whitespace-no-wrap border-gray-200 cursor-pointer hover:bg-gray-200"
+        class="px-6 py-4 whitespace-no-wrap border-gray-200"
         :class="{
             'rounded-t-lg': isFirstRow,
             'rounded-b-lg': isLastRow,
@@ -15,9 +15,9 @@
                 <div class="flex items-center">
                     <img class="hidden sm:block w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
                     <div class="sm:ml-4">
-                        <div class="text leading-5 font-medium text-blue-900 mb-1 truncate">
-                            {{ user.firstName }} {{ user.lastName }}
-                            <label v-if="!user.isActive" class="text-gray-600 italic">(inactive)</label>
+                        <div v-if="!user.isActive" class="mb-1 truncate">
+                            <label v-if="isLecturer" class="text leading-5 font-medium text-blue-900 mr-2">{{ user.firstName }} {{ user.lastName }}</label>
+                            <label class="text-gray-600 italic">(inactive)</label>
                         </div>
                         <div class="hidden sm:flex text leading-5 text-gray-500 truncate">@{{ user.username }}</div>
                         <span
@@ -47,7 +47,7 @@
                         </span>
                     </div>
 
-                    <div class="flex-col hidden sm:flex items-baseline" :class="[isStudent ? 'sm:flex' : 'sm:invisible']">
+                    <div class="flex-col hidden sm:flex items-baseline" :class="[isStudent && user.isActive ? 'sm:flex' : 'sm:invisible']">
                         <div class="leading-5 text-blue-900 ml-1 mb-1">{{ student.matriculationId }}</div>
                         <div class="hidden sm:flex items-center leading-5 text-gray-500">
                             <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em">
