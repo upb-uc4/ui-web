@@ -63,6 +63,11 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import MatriculationValidationResponseHandler from "@/use/helpers/MatriculationValidationResponseHandler";
     import { useStore } from "@/use/store/store";
+    import { validateMatriculationProposal } from "@/api/helpers/ProposalValidator";
+    import CertificateManagement from "@/api/CertificateManagement";
+    import { decodeProposal } from "@/api/helpers/ProtobuffDecoding";
+    import { signProposal } from "@/use/crypto/signing";
+    import SignedProposalMessage from "@/api/api_models/common/SignedProposalMessage";
 
     export default {
         components: {
@@ -145,18 +150,46 @@
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
-                const response = await matriculationManagement.updateMatriculationData(props.username, matriculationEntries);
-                const responseHandler = new MatriculationValidationResponseHandler();
-                const result = responseHandler.handleResponse(response);
-                if (result) {
+                const response = await matriculationManagement.getUnsignedMatriculationProposal(props.username, matriculationEntries);
+                const matriculationResponseHandler = new MatriculationValidationResponseHandler();
+                const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(props.username);
+                const responseHandler = new GenericResponseHandler();
+                const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
+
+                const unsignedProposal = matriculationResponseHandler.handleResponse(response);
+                if (unsignedProposal) {
                     error = false;
                     semesterType.value = "";
                     year.value = "";
                     selectedFieldsOfStudy.value = [];
                     errorBag.value = new ErrorBag();
                 } else {
-                    errorBag.value = new ErrorBag(responseHandler.errorList);
+                    errorBag.value = new ErrorBag(matriculationResponseHandler.errorList);
                 }
+
+                const proposal = await decodeProposal(response.returnValue.unsignedProposal);
+
+                if (!proposal) {
+                    return alert("Show toast that proposal was broken (HLF failure)");
+                }
+
+                const validation = validateMatriculationProposal(enrollmentId.id, matriculationEntries, proposal);
+
+                if (!validation) {
+                    return alert("Show toast that we were asked to sign information that we did not submit (TRUST ISSUES)");
+                }
+
+                const store = useStore();
+
+                const privateKey = await store.getters.privateKey;
+
+                const signature = await signProposal(response.returnValue.unsignedProposal, privateKey);
+                const signedProposal: SignedProposalMessage = { unsignedProposal: response.returnValue.unsignedProposal, signature };
+
+                const matr = await matriculationManagement.submitSignedMatriculationProposal(props.username, signedProposal);
+
+                const result = new GenericResponseHandler().handleResponse(matr);
+
                 busy.value = false;
                 refreshKey.value = !refreshKey.value;
             }

@@ -1,3 +1,4 @@
+import UnsignedProposalMessage from "@/api/api_models/common/UnsignedProposalMessage";
 import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
@@ -14,19 +15,14 @@ export default class MatriculationValidationResponseHandler implements ResponseH
         return "type" in object && object.type == "HLUnprocessableEntity";
     }
 
-    isMatriculationData(object: any): object is MatriculationData {
-        return (object as MatriculationData).enrollmentId !== undefined && (object as MatriculationData).matriculationStatus !== undefined;
+    isUnsignedProposalMessage(object: any): object is UnsignedProposalMessage {
+        return (object as UnsignedProposalMessage).unsignedProposal !== undefined;
     }
 
-    handleResponse(response: APIResponse<boolean | MatriculationData>): boolean {
-        //TODO Remove following lines as they just avoid a temorary bug
-        if (200 <= response.statusCode && response.statusCode <= 300) {
+    handleResponse(response: APIResponse<boolean | UnsignedProposalMessage>): boolean {
+        if (this.isUnsignedProposalMessage(response.returnValue)) {
             return true;
-        }
-
-        if (this.isMatriculationData(response.returnValue)) {
-            return true;
-        } else if (response.returnValue === true || response.returnValue === false) {
+        } else {
             if (this.isValidationError(response.error)) {
                 for (let err of response.error.invalidParams) {
                     this.errorList.push(err);
