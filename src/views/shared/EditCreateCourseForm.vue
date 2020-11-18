@@ -23,6 +23,7 @@
             <course-module-section
                 v-model:module-ids="course.moduleIds"
                 :error-bag="errorBag"
+                :edit-mode="editMode"
                 @toggle-module="toggleModule($event)"
                 @remove-modules="removeModules($event)"
             />
@@ -178,7 +179,6 @@
 
             onBeforeMount(async () => {
                 await askAdminRole();
-                course.value.moduleIds = ["M1", "M3"];
                 if (props.editMode) {
                     await getCourse();
                 }

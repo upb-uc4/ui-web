@@ -80,6 +80,7 @@
     import TagList from "@/components/common/TagList.vue";
     import SearchSelect from "@/components/common/SearchSelect.vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
     export default {
         name: "CourseModulesSection",
@@ -105,35 +106,8 @@
             const selectedModules = ref([] as { ids: String[]; displayStrings: String[] }[]);
             const selectedOption = ref({} as SearchSelectOption);
 
-            //TODO Remove Mock Data
-            let mockData = [
-                {
-                    name: "ExReg1",
-                    active: true,
-                    modules: [{ id: "M1", name: "Module1" } as Module, { id: "M2", name: "Module2" } as Module],
-                },
-                {
-                    name: "ExReg2",
-                    active: false,
-                    modules: [
-                        { id: "M1", name: "Module1" } as Module,
-                        { id: "M3", name: "Module3" } as Module,
-                        { id: "M4", name: "Module4" } as Module,
-                    ],
-                },
-                {
-                    name: "ExReg3",
-                    active: false,
-                    modules: [
-                        { id: "M5", name: "Module5" } as Module,
-                        { id: "M6", name: "Module6" } as Module,
-                        { id: "M7", name: "Module7" } as Module,
-                    ],
-                },
-            ];
-
             onBeforeMount(async () => {
-                await getExmatriculationRegs();
+                await getExRegs();
                 if (props.editMode) {
                     getExRegsFromModules();
                 }
@@ -175,16 +149,14 @@
                 selectedOption.value = {} as SearchSelectOption;
             });
 
-            async function getExmatriculationRegs() {
-                // TODO include API
-                // const examinationRegulationManagement = new ExaminationRegulationManagement();
-                // const response = await examinationRegulationManagement.getExaminationRegulation();
-                // const handler = new GenericResponseHandler();
-                // const result = handler.handleResponse(response);
-                // if (result) {
-                //     examinationRegs.value = result;
-                // }
-                examinationRegs.value = mockData;
+            async function getExRegs() {
+                const examinationRegulationManagement = new ExaminationRegulationManagement();
+                const response = await examinationRegulationManagement.getExaminationRegulation();
+                const handler = new GenericResponseHandler("exam regulation");
+                const result = handler.handleResponse(response);
+                if (result) {
+                    examinationRegs.value = result;
+                }
             }
 
             function getExRegsFromModules() {
