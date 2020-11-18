@@ -16,7 +16,8 @@ describe("Course creation, edition and deletion", () => {
     let adminAuth: Account;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
-    let newModule: String = "M.1275.56002";
+    let newModule: String = "M.1275.01158";
+    let lecturerName = "Lect Urer";
 
     before(function () {
         cy.clearCookies();
@@ -127,6 +128,7 @@ describe("Course creation, edition and deletion", () => {
     it("Show new course page", () => {
         cy.get('button[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
+        cy.wait(750);
     });
 
     it("Filtering lecturer list in selection works", () => {
@@ -173,7 +175,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Display of lecturer found works", () => {
         // initially the default lecturer is loaded
-        cy.get("label").should("contain", "firstName LastName");
+        cy.get("label").should("contain", lecturerName);
         cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
         cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
 
@@ -183,7 +185,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='lecturerId']").clear();
         cy.get("input[id='lecturerId']").click();
         cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
-        cy.get("label").should("contain", "firstName LastName");
+        cy.get("label").should("contain", lecturerName);
         cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
         cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
     });
@@ -199,7 +201,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Can edit modules", () => {
         cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
-        cy.get(`input[id='modules_0']`).click();
+        cy.get("input[id='modules_0']").click();
         cy.get("div").contains(`${newModule}`).click();
     });
 
