@@ -15,8 +15,10 @@
             Tag,
         },
         props: {
-            elements: Array,
-            default: () => [],
+            elements: {
+                type: Array,
+                default: () => [] as any[],
+            },
         },
         emits: ["on-remove"],
         setup(props: any, { emit }: any) {
