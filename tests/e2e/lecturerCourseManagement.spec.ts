@@ -20,7 +20,7 @@ describe("Course creation, edition and deletion", () => {
 
     let course: Course;
     let lecturerAuth: Account;
-    let newModule: String = "M.1275.56002";
+    let newModule: String = "M.1275.01158";
 
     before(function () {
         cy.clearCookies();
@@ -60,6 +60,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='courseType']").should("exist");
         cy.get("input[id='courseName']").should("exist");
         cy.get("select[id='courseLanguage']").should("exist");
+        cy.get("select[id='exReg-']").should("exist");
         cy.get("textarea[id='courseDescription']").should("exist");
         cy.get("input[id='maxParticipants']").should("exist");
         cy.get("input[id='startDate']").should("exist");
@@ -137,6 +138,7 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
+        cy.wait(2000);
         cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
         cy.get("span").contains(course.moduleIds[0]).should("not.exist");
         cy.get("span").contains(`${newModule}`).should("exist");
