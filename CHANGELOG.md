@@ -2,6 +2,7 @@
 
 ## Feature
 - add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
+- add option for (de-)assigning modules to courses [#716](https://github.com/upb-uc4/ui-web/pull/716)
 
 ## Refactoring
 - add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
