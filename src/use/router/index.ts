@@ -15,6 +15,7 @@ const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
 const CourseFormSuspenseWrapper = () => import("@/views/shared/EditCreateCourseForm.vue");
 const AccountFormSuspenseWrapper = () => import("@/views/admin/EditCreateAccountForm.vue");
 const ProfileWrapper = () => import("@/components/profile/Wrapper.vue");
+const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -115,8 +116,7 @@ const router = createRouter({
         {
             path: "/user/:username",
             name: "profile.public",
-            props: { isPrivate: false },
-            component: ProfileWrapper,
+            component: PublicProfile,
             // The page title is set within the component depending on the username
             meta: {
                 roles: ["Admin", "Lecturer", "Student"],
