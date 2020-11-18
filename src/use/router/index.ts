@@ -14,7 +14,7 @@ const AllCourseView = () => import("@/views/shared/CourseList.vue");
 const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
 const CourseFormSuspenseWrapper = () => import("@/views/shared/EditCreateCourseForm.vue");
 const AccountFormSuspenseWrapper = () => import("@/views/admin/EditCreateAccountForm.vue");
-const ProfileWrapper = () => import("@/components/profile/Wrapper.vue");
+const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
 const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 
@@ -125,8 +125,7 @@ const router = createRouter({
         {
             path: "/profile",
             name: "profile.private",
-            props: { isPrivate: true },
-            component: ProfileWrapper,
+            component: PrivateProfile,
             meta: {
                 title: "My Profile" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
