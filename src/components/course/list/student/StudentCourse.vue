@@ -17,10 +17,11 @@
                 </div>
             </div>
 
-            <div class="flex mb-4">
-                <div class="flex flex-col items-start w-full">
-                    <div class="mt-2 text-2xl font-semibold leading-tight text-gray-900">{{ course.courseName }}</div>
-
+            <div class="flex">
+                <div class="flex flex-col items-start w-2/3 lg:w-5/6">
+                    <div id="courseName" class="mt-2 text-2xl font-semibold leading-tight text-gray-900">
+                        {{ course.courseName }}
+                    </div>
                     <router-link
                         id="showLecturer"
                         :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
