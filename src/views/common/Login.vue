@@ -93,7 +93,6 @@
             const passwordFieldType = ref("password");
             const hasError = ref(false);
             const errorText = ref("You have entered an invalid email or password.");
-            let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
             function togglePassword() {
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
@@ -110,7 +109,7 @@
             async function login() {
                 const username = email.value;
                 const response = await AuthenticationManagement._getRefreshToken({ username: username, password: password.value });
-
+                let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
                 const loginSuccess = loginResponseHandler.handleResponse(response);
 
                 if (loginSuccess) {
