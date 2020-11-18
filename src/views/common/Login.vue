@@ -55,8 +55,8 @@
 
                     <div class="text-sm leading-5">
                         <a
-                            href="/not-implemented-yet"
-                            class="font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:underline transition ease-in-out duration-150"
+                            class="cursor-pointer font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:underline transition ease-in-out duration-150"
+                            @click="restorePassword"
                         >
                             Forgot your password?
                         </a>
@@ -83,6 +83,8 @@
     import { computed, ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
+    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
+
     export default {
         components: {},
         props: [],
@@ -122,6 +124,10 @@
                 hasError.value = false;
             }
 
+            function restorePassword() {
+                showNotYetImplementedToast();
+            }
+
             return {
                 email,
                 password,
@@ -133,6 +139,7 @@
                 isInputEmpty,
                 login,
                 resetError,
+                restorePassword,
             };
         },
     };

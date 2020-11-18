@@ -23,3 +23,7 @@ export function showAPIToast(code: number, msg?: string) {
             break;
     }
 }
+
+export function showNotYetImplementedToast() {
+    toast.warning("Not yet implemented.");
+}
