@@ -12,8 +12,8 @@ const LoginView = () => import("@/views/common/Login.vue");
 const StudentCourseView = () => import("@/views/student/StudentCourseList.vue");
 const AllCourseView = () => import("@/views/shared/CourseList.vue");
 const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
-const CourseFormSuspenseWrapper = () => import("@/views/shared/EditCreateCourseForm.vue");
-const AccountFormSuspenseWrapper = () => import("@/views/admin/EditCreateAccountForm.vue");
+const CourseForm = () => import("@/views/shared/EditCreateCourseForm.vue");
+const AccountForm = () => import("@/views/admin/EditCreateAccountForm.vue");
 const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
 const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const Settings = () => import("@/views/common/Settings.vue");
@@ -95,7 +95,7 @@ const router = createRouter({
             props: {
                 editMode: false,
             },
-            component: CourseFormSuspenseWrapper,
+            component: CourseForm,
             meta: {
                 title: "Course Creation" + suffix,
                 roles: ["Lecturer", "Admin"],
@@ -107,7 +107,7 @@ const router = createRouter({
             props: {
                 editMode: true,
             },
-            component: CourseFormSuspenseWrapper,
+            component: CourseForm,
             meta: {
                 title: "Course Editing" + suffix,
                 roles: ["Lecturer", "Admin"],
@@ -145,7 +145,7 @@ const router = createRouter({
             props: {
                 editMode: false,
             },
-            component: AccountFormSuspenseWrapper,
+            component: AccountForm,
             meta: {
                 title: "Account Creation" + suffix,
                 roles: ["Admin"],
@@ -157,7 +157,7 @@ const router = createRouter({
             props: {
                 editMode: true,
             },
-            component: AccountFormSuspenseWrapper,
+            component: AccountForm,
             meta: {
                 title: "Account Editing" + suffix,
                 roles: ["Admin"],
