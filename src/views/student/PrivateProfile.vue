@@ -76,8 +76,8 @@
             },
         },
         emits: ["update:user"],
-        async setup(props: any, { emit }: any) {
-            const student = ref(props.user);
+        setup(props: any, { emit }: any) {
+            const student = ref(props.user as Student);
 
             function back() {
                 Router.back();
