@@ -42,7 +42,10 @@
                 const auth: UserManagement = new UserManagement();
                 const responseHandler = new ProfileResponseHandler();
                 const response = await auth.getOwnUser();
-                user.value = responseHandler.handleResponse(response);
+                const result = responseHandler.handleResponse(response);
+                if (result) {
+                    user.value = result;
+                }
                 busy.value = false;
             }
             return { Role, user, busy };
