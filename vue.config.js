@@ -10,8 +10,11 @@ switch (process.env.NODE_ENV) {
         endpoint = "https://uc4.cs.uni-paderborn.de/api/production/";
         break;
     case "development":
-        process.env.VUE_APP_API_BASE_URL = "/api1";
-        endpoint = "https://uc4.cs.uni-paderborn.de/api/develop/";
+        // Revert this comment before merging on develop
+        // process.env.VUE_APP_API_BASE_URL = "/api1";
+        // endpoint = "https://uc4.cs.uni-paderborn.de/api/develop/";
+        process.env.VUE_APP_API_BASE_URL = "/api2";
+        endpoint = "https://uc4.cs.uni-paderborn.de/api/experimental/";
         break;
     case "experimental":
         process.env.VUE_APP_API_BASE_URL = "/api2";
