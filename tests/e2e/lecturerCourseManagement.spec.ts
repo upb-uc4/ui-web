@@ -140,9 +140,8 @@ describe("Course creation, edition and deletion", () => {
         cy.get("button[title='Refresh']").click();
         cy.wait(1000);
         cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
-        cy.wait(500);
-        cy.get("span").contains(course.moduleIds[0]).should("not.exist");
-        cy.get("span").contains(`${newModule}`).should("exist");
+        cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
+        cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
     });
 
     it("Can modify participation limit with arrow keys", () => {

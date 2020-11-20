@@ -1,5 +1,5 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
+    <section id="moduleSection" class="border-t-2 py-8 border-gray-400">
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-lg font-medium mb-2">Module Information</label>
