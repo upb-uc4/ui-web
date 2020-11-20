@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 p-10 mt-10 rounded-lg w-full flex justify-between">
+    <div class="bg-gray-100 p-10 mt-10 rounded-lg w-full sm:flex justify-between">
         <div class="">
             <h1 class="font-medium text-2xl text-gray-600 mb-2">Inputs</h1>
             <div class="">
@@ -35,11 +35,11 @@
             </div>
         </div>
 
-        <div class="">
+        <div class="mt-12 sm:mt-0">
             <div>
                 <h1 class="font-medium text-2xl text-gray-600 mb-2">Primary Buttons</h1>
-                <div class="flex">
-                    <div class="mr-8">
+                <div class="sm:flex">
+                    <div class="sm:mr-8">
                         <div class="">
                             <label class="input-label-tmp">default</label>
                             <button class="w-64 btn-tmp">Click Me</button>
@@ -55,7 +55,7 @@
                             <button class="w-64 btn-remove-tmp">Click Me</button>
                         </div>
                     </div>
-                    <div class="">
+                    <div class="sm:mt-0 mt-6">
                         <div class="">
                             <label class="input-label-tmp">default disabled</label>
                             <button disabled class="w-64 btn-tmp">Can't Click Me</button>
@@ -74,9 +74,9 @@
 
             <div class="mt-10">
                 <h1 class="font-medium text-2xl text-gray-600 mb-2">Secondary Buttons</h1>
-                <div class="flex">
-                    <div class="mr-8">
-                        <div class="mt-6">
+                <div class="sm:flex">
+                    <div class="sm:mr-8">
+                        <div class="">
                             <label class="input-label-tmp">default</label>
                             <button class="w-64 btn-secondary-tmp">Click Me</button>
                         </div>
@@ -91,8 +91,8 @@
                             <button class="w-64 btn-secondary-remove-tmp">Click Me</button>
                         </div>
                     </div>
-                    <div>
-                        <div class="mt-6">
+                    <div class="sm:mt-0 mt-6">
+                        <div class="">
                             <label class="input-label-tmp">normal disabled</label>
                             <button disabled class="w-64 btn-secondary-tmp">Can't Click Me</button>
                         </div>
@@ -113,44 +113,44 @@
             <div class="mt-10">
                 <h1 class="font-medium text-2xl text-gray-600 mb-2">Tertiary Buttons</h1>
 
-                <div class="flex">
-                    <div class="">
-                        <div class="mt-6">
+                <div class="sm:flex">
+                    <div class="sm:mr-8 sm:mt-0 mt-6 w-64">
+                        <div class="">
                             <label class="input-label-tmp">default</label>
-                            <button class="w-64 btn-tertiary-tmp">Click Me</button>
+                            <button class="btn-tertiary-tmp">Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">add</label>
-                            <button class="w-64 btn-tertiary-add-tmp">Click Me</button>
+                            <button class="btn-tertiary-add-tmp">Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">remove</label>
-                            <button class="w-64 btn-tertiary-remove-tmp">Click Me</button>
+                            <button class="btn-tertiary-remove-tmp">Click Me</button>
                         </div>
                     </div>
-                    <div>
-                        <div class="mt-6">
+                    <div class="w-64">
+                        <div class="">
                             <label class="input-label-tmp">normal default</label>
-                            <button disabled class="w-64 btn-tertiary-tmp">Can't Click Me</button>
+                            <button disabled class="btn-tertiary-tmp">Can't Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">add default</label>
-                            <button disabled class="w-64 btn-tertiary-add-tmp">Can't Click Me</button>
+                            <button disabled class="btn-tertiary-add-tmp">Can't Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">remove default</label>
-                            <button disabled class="w-64 btn-tertiary-remove-tmp">Can't Click Me</button>
+                            <button disabled class="btn-tertiary-remove-tmp">Can't Click Me</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div>
+        <div class="mt-12 sm:mt-0">
             <h1 class="font-medium text-2xl text-gray-600 mb-2">Radio Buttons</h1>
         </div>
     </div>

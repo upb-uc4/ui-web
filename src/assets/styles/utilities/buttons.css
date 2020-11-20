@@ -170,10 +170,6 @@
     @apply hover:bg-red-600
 }
 
-.btn-primary-base-tmp {
-    @apply btn-base-tmp text-white
-}
-
 /* SECONDARY BUTTONS */
 
 /* e.g. cancel button next to a primary action button */
@@ -210,22 +206,30 @@
 /* TERTIARY BUTTONS */
 
 /* e.g. cancel button next to a primary action button */
-.btn-secondary-tmp {
-
+.btn-tertiary-tmp {
+    @apply btn-tertiary-base-tmp text-blue-600 hover:text-blue-700
 }
 
 /* when adding is the secondary action on the page */
-.btn-secondary-add-tmp {
-
+.btn-tertiary-add-tmp {
+    @apply btn-tertiary-base-tmp text-green-600 hover:text-green-700
 }
 
 /* when removing is the secondary action on the page */
-.btn-secondary-remove-tmp {
+.btn-tertiary-remove-tmp {
+    @apply btn-tertiary-base-tmp text-red-600 hover:text-red-700
+}
 
+.btn-tertiary-base-tmp {
+    @apply btn-base-tmp border-0 p-0 !important;
 }
 
 .btn-secondary-base-tmp {
     @apply btn-base-tmp
+}
+
+.btn-primary-base-tmp {
+    @apply btn-base-tmp text-white
 }
 
 .btn-base-tmp {
