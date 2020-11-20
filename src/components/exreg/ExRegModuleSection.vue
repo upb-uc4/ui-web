@@ -36,9 +36,16 @@
                                     {{ moduleName }}
                                 </label>
                                 <div class="absolute inset-y-0 right-0">
-                                    <button class="btn btn-green-primary-500 w-48" @click="addCurrentModule">
-                                        {{ moduleExist ? AddModule : CreateModule }}
-                                    </button>
+                                    <div class="hidden sm:flex">
+                                        <button class="btn btn-green-secondary w-48" @click="addCurrentModule">
+                                            {{ moduleExist ? "Add Module" : "Create Module" }}
+                                        </button>
+                                    </div>
+                                    <div class="sm:hidden">
+                                        <button class="btn btn-icon-green ml-3 text-xl w-12 h-12" @click="addCurrentModule">
+                                            <i class="fas fa-plus text-md" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
