@@ -58,15 +58,15 @@
                     <div class="">
                         <div class="">
                             <label class="input-label-tmp">default disabled</label>
-                            <button disabled class="w-64 btn-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-tmp">Can't Click Me</button>
                         </div>
                         <div class="mt-6">
                             <label class="input-label-tmp">add disabled</label>
-                            <button disabled class="w-64 btn-add-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-add-tmp">Can't Click Me</button>
                         </div>
                         <div class="mt-6">
                             <label class="input-label-tmp">remove disabled</label>
-                            <button disabled class="w-64 btn-remove-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-remove-tmp">Can't Click Me</button>
                         </div>
                     </div>
                 </div>
@@ -94,17 +94,17 @@
                     <div>
                         <div class="mt-6">
                             <label class="input-label-tmp">normal disabled</label>
-                            <button disabled class="w-64 btn-secondary-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-secondary-tmp">Can't Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">add disabled</label>
-                            <button disabled class="w-64 btn-secondary-add-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-secondary-add-tmp">Can't Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">remove disabled</label>
-                            <button disabled class="w-64 btn-secondary-remove-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-secondary-remove-tmp">Can't Click Me</button>
                         </div>
                     </div>
                 </div>
@@ -133,17 +133,17 @@
                     <div>
                         <div class="mt-6">
                             <label class="input-label-tmp">normal default</label>
-                            <button disabled class="w-64 btn-tertiary-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-tertiary-tmp">Can't Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">add default</label>
-                            <button disabled class="w-64 btn-tertiary-add-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-tertiary-add-tmp">Can't Click Me</button>
                         </div>
 
                         <div class="mt-6">
                             <label class="input-label-tmp">remove default</label>
-                            <button disabled class="w-64 btn-tertiary-remove-tmp">Click Me</button>
+                            <button disabled class="w-64 btn-tertiary-remove-tmp">Can't Click Me</button>
                         </div>
                     </div>
                 </div>

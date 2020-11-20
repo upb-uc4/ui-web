@@ -142,8 +142,8 @@
 
 /* e.g. accept, login, etc. */
 .btn-tmp {
-    @apply btn-base-tmp text-white bg-blue-600
-    hover:bg-blue-700
+    @apply btn-primary-base-tmp bg-blue-600 border-blue-600
+    hover:bg-blue-700 hover:border-blue-700
 }
 
 .btn-tmp:disabled {
@@ -152,8 +152,8 @@
 
 /* when adding/creating is the primary action on the page */
 .btn-add-tmp {
-    @apply btn-base-tmp text-white bg-green-500
-    hover:bg-green-600
+    @apply btn-primary-base-tmp bg-green-600 border-green-600
+    hover:bg-green-700 hover:border-green-700
 }
 
 .btn-add-tmp:disabled {
@@ -162,29 +162,48 @@
 
 /* when removing/deleting is the primary action on the page */
 .btn-remove-tmp {
-    @apply btn-base-tmp text-white bg-red-500
-    hover:bg-red-600
+    @apply btn-primary-base-tmp bg-red-600 border-red-600
+    hover:bg-red-700 hover:border-red-700
 }
 
 .btn-remove-tmp:disabled {
-    @apply hover:bg-red-500
+    @apply hover:bg-red-600
+}
+
+.btn-primary-base-tmp {
+    @apply btn-base-tmp text-white
 }
 
 /* SECONDARY BUTTONS */
 
 /* e.g. cancel button next to a primary action button */
 .btn-secondary-tmp {
-    @apply btn-secondary-base-tmp text-blue-700 bg-white border-gray-400 hover:bg-blue-700 hover:text-white
+    @apply btn-secondary-base-tmp text-blue-600 border-blue-600
+}
+
+/* disabled hover:bg-transparent is not working, hence use enabled and reverse the state */
+.btn-secondary-tmp:enabled {
+    @apply hover:bg-blue-600 hover:text-white
 }
 
 /* when adding is the secondary action on the page */
 .btn-secondary-add-tmp {
+    @apply btn-secondary-base-tmp text-green-600 border-green-600
+}
 
+/* disabled hover:bg-transparent is not working, hence use enabled and reverse the state */
+.btn-secondary-add-tmp:enabled {
+    @apply hover:bg-green-600 hover:text-white
 }
 
 /* when removing is the secondary action on the page */
 .btn-secondary-remove-tmp {
+    @apply btn-secondary-base-tmp text-red-600 border-red-600
+}
 
+/* disabled hover:bg-transparent is not working, hence use enabled and reverse the state */
+.btn-secondary-remove-tmp:enabled {
+    @apply hover:bg-red-600 hover:text-white
 }
 
 
@@ -206,11 +225,11 @@
 }
 
 .btn-secondary-base-tmp {
-    @apply btn-base-tmp border-2 border-gray-400
+    @apply btn-base-tmp
 }
 
 .btn-base-tmp {
-    @apply p-3 border rounded-md text-sm leading-5 font-medium focus:outline-none
+    @apply p-3 border-2 rounded-md leading-5 font-medium focus:outline-none
     transition duration-150 ease-in-out
     disabled:opacity-50 disabled:cursor-not-allowed
 }
