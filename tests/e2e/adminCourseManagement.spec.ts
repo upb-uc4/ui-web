@@ -214,7 +214,7 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
         cy.wait(2000);
-        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
         cy.get("span").contains(course.moduleIds[0]).should("not.exist");
         cy.get("span").contains(`${newModule}`).should("exist");
     });
