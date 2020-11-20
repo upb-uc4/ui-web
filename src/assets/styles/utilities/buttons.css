@@ -142,19 +142,33 @@
 
 /* e.g. accept, login, etc. */
 .btn-tmp {
-    @apply btn-base-tmp text-white bg-blue-600 hover:bg-blue-700
+    @apply btn-base-tmp text-white bg-blue-600
+    hover:bg-blue-700
+}
+
+.btn-tmp:disabled {
+    @apply hover:bg-blue-600
 }
 
 /* when adding/creating is the primary action on the page */
 .btn-add-tmp {
-    @apply btn-base-tmp text-white bg-green-500 hover:bg-green-600
+    @apply btn-base-tmp text-white bg-green-500
+    hover:bg-green-600
+}
+
+.btn-add-tmp:disabled {
+    @apply hover:bg-green-500
 }
 
 /* when removing/deleting is the primary action on the page */
 .btn-remove-tmp {
-    @apply btn-base-tmp text-white bg-red-500 hover:bg-red-600
+    @apply btn-base-tmp text-white bg-red-500
+    hover:bg-red-600
 }
 
+.btn-remove-tmp:disabled {
+    @apply hover:bg-red-500
+}
 
 /* SECONDARY BUTTONS */
 
@@ -192,7 +206,7 @@
 }
 
 .btn-secondary-base-tmp {
-    @apply btn-base-tmp border-4 border-gray-400
+    @apply btn-base-tmp border-2 border-gray-400
 }
 
 .btn-base-tmp {
