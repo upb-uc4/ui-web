@@ -1,7 +1,7 @@
 process.env.VUE_APP_VERSION = require("./package.json").version;
 const fs = require("fs");
 
-let endpoint = "https://uc4.cs.uni-paderborn.de/api/development/";
+let endpoint = "https://uc4.cs.uni-paderborn.de/api/experimental/";
 
 // do not add trailing forward slash
 switch (process.env.NODE_ENV) {
@@ -21,7 +21,7 @@ switch (process.env.NODE_ENV) {
         endpoint = "https://uc4.cs.uni-paderborn.de/api/experimental/";
         break;
     default:
-        process.env.VUE_APP_API_BASE_URL = "/api3";
+        process.env.VUE_APP_API_BASE_URL = "/api2";
         break;
 }
 
