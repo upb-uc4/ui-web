@@ -24,13 +24,13 @@
             <div class="mt-6">
                 <label class="input-label-tmp">error</label>
                 <input type="text" class="w-64 input-text-error-tmp" value="empty" />
-                <label class="input-label-error-temp">This indicates that something is wrong.</label>
+                <label class="input-label-error-tmp">This indicates that something is wrong.</label>
             </div>
 
             <div class="mt-6">
                 <label class="input-label-tmp">warning</label>
                 <input type="text" class="w-64 input-text-warning-tmp" value="empty" />
-                <label class="input-label-warning-temp">This is a warning.</label>
+                <label class="input-label-warning-tmp">This is a warning.</label>
             </div>
         </div>
         <div class="mr-16">
