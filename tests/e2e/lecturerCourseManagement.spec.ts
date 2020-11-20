@@ -138,16 +138,14 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.wait(2000);
-        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.wait(1000);
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.wait(500);
         cy.get("span").contains(course.moduleIds[0]).should("not.exist");
         cy.get("span").contains(`${newModule}`).should("exist");
     });
 
     it("Can modify participation limit with arrow keys", () => {
-        //go to edit
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
-
         cy.get("input[id='maxParticipants']").type("{downarrow}").trigger("input");
         cy.get('button[id="saveChanges"]').should("be.enabled");
         cy.get("input[id='maxParticipants']").type("{uparrow}").trigger("input");
