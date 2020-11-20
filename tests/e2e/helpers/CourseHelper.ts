@@ -11,11 +11,15 @@ import {
 
 export function createCourse(course: Course) {
     navigateToCourseForm();
+    cy.wait(750);
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select").select(course.courseLanguage);
+    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
+    cy.get('select[id="exReg-"]').select("Bachelor Computer Science v3");
+    cy.get(`input[id='modules_0']`).click();
+    cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
@@ -23,19 +27,23 @@ export function createCourse(course: Course) {
     cy.url().should("contain", "course-management");
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();
-    cy.get("div").contains(course.courseName).should("exist");
+    cy.get("div[id='courseName']").contains(course.courseName).should("exist");
 }
 
 export function createCourseAdmin(course: Course) {
     navigateToCourseFormAdmin();
+    cy.wait(750);
     cy.get("input[id='lecturerId']").clear();
     cy.get("input[id='lecturerId']").click();
     cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select").select(course.courseLanguage);
+    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
+    cy.get('select[id="exReg-"]').select("Bachelor Computer Science v3");
+    cy.get(`input[id='modules_0']`).click();
+    cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
@@ -43,7 +51,7 @@ export function createCourseAdmin(course: Course) {
     cy.url().should("contain", "all-courses");
     cy.wait(3000);
     cy.get("button[title='Refresh']").click();
-    cy.get("div").contains(course.courseName).should("exist");
+    cy.get("div[id='courseName']").contains(course.courseName).should("exist");
 }
 
 export async function createCourses(courses: Course[]) {
@@ -68,7 +76,7 @@ export function loginAndDeleteCourse(course: Course, lecturerAuthUser: Account) 
 export function deleteCourse(course: Course) {
     navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
-    cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+    cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
     cy.wait(100);
     cy.get("button[id='deleteCourse']").click();
     cy.wait(100);
@@ -77,13 +85,13 @@ export function deleteCourse(course: Course) {
     cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
     cy.get('button[id="deleteCourseModalDelete"]').click();
     cy.url().should("contain", "/all-courses");
-    cy.get("div").contains(course.courseName).should("not.exist");
+    cy.get("div[id='courseName']").contains(course.courseName).should("not.exist");
 }
 
 export function deleteCourseAdmin(course: Course) {
     navigateToCourseListAdmin();
     cy.url().should("contain", "all-courses");
-    cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+    cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
     cy.wait(100);
     cy.get("button[id='deleteCourse']").click();
     cy.wait(100);
@@ -92,7 +100,7 @@ export function deleteCourseAdmin(course: Course) {
     cy.get("div").contains("Are you sure you want to delete this course?").should("exist");
     cy.get('button[id="deleteCourseModalDelete"]').click();
     cy.url().should("contain", "/all-courses");
-    cy.get("div").contains(course.courseName).should("not.exist");
+    cy.get("div[id='courseName']").contains(course.courseName).should("not.exist");
 }
 
 export async function deleteCourses(courses: Course[]) {

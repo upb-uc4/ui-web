@@ -19,7 +19,7 @@ describe("Examination Regulation Management", () => {
     });
 
     test("Get part of examination regulations", async () => {
-        const response = await examinationRegulationManagement.getExaminationRegulation([name]);
+        const response = await examinationRegulationManagement.getExaminationRegulation([someName]);
         expect(response.statusCode).toBe(200);
         expect(response.returnValue.length == 1).toBe(true);
         expect(response.returnValue[0].name).toEqual(someName);

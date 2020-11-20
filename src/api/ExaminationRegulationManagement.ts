@@ -8,7 +8,7 @@ import Module from "./api_models/exam_reg_management/Module";
 
 export default class ExaminationRegulationManagement extends Common {
     constructor() {
-        super("/exam-reg-management");
+        super("/examreg-management");
     }
 
     async getModules(moduleIds?: string[]): Promise<APIResponse<Module[]>> {

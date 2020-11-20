@@ -23,6 +23,7 @@
             <course-module-section
                 v-model:module-ids="course.moduleIds"
                 :error-bag="errorBag"
+                :edit-mode="editMode"
                 @toggle-module="toggleModule($event)"
                 @remove-modules="removeModules($event)"
             />
@@ -111,6 +112,7 @@
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
     import CourseModuleSection from "@/components/course/edit/sections/CourseModulesSection.vue";
+    import { useToast } from "@/toast";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -147,6 +149,8 @@
 
             const errorBag = ref(new ErrorBag());
 
+            const toast = useToast();
+
             onBeforeRouteLeave(async (to, from, next) => {
                 if (success.value) {
                     return next();
@@ -175,7 +179,6 @@
 
             onBeforeMount(async () => {
                 await askAdminRole();
-                course.value.moduleIds = ["1", "3"];
                 if (props.editMode) {
                     await getCourse();
                 }
@@ -194,7 +197,7 @@
             async function getCourse() {
                 busy.value = true;
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("course");
                 const result = genericResponseHandler.handleResponse(response);
 
                 //TODO move this to a non-generic response handler
@@ -230,11 +233,12 @@
                     getLecturerUsername();
                 }
                 const response = await courseManagement.createCourse(course.value);
-                const handler = new AccountValidationResponseHandler();
+                const handler = new AccountValidationResponseHandler("user");
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Course '" + course.value.courseName + "' created.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -244,11 +248,12 @@
 
             async function updateCourse() {
                 const response = await courseManagement.updateCourse(course.value);
-                const handler = new ValidationResponseHandler();
+                const handler = new ValidationResponseHandler("course");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Course '" + course.value.courseName + "' updated.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -259,11 +264,12 @@
             async function deleteCourse() {
                 const courseManagement: CourseManagement = new CourseManagement();
 
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("course");
                 const response = await courseManagement.deleteCourse(course.value.courseId);
                 const result = genericResponseHandler.handleResponse(response);
 
                 if (result) {
+                    toast.success("Course '" + course.value.courseName + "' deleted.");
                     back();
                 }
             }

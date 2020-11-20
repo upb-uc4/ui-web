@@ -87,15 +87,6 @@ export default class CourseManagement extends Common {
     }
 
     async createCourse(course: Course): Promise<APIResponse<boolean>> {
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
-        var reloginSuccess = false;
-
         return await this._axios
             .post("/courses", course)
             .then((response: AxiosResponse) => {
@@ -122,14 +113,14 @@ export default class CourseManagement extends Common {
                         error: error.response.data as APIError,
                         networkError: false,
                         statusCode: error.response.status,
-                        returnValue: true,
+                        returnValue: false,
                     };
                 } else {
                     return {
                         error: {} as APIError,
                         networkError: true,
                         statusCode: 0,
-                        returnValue: true,
+                        returnValue: false,
                     };
                 }
             });
