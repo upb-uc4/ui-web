@@ -1,0 +1,10 @@
+{
+    "name": "Test Examination Regulation",
+    "active": "true",
+    "modules": [
+        {
+            "id": "Some Module ID",
+            "name": "Some Module Name"
+        }
+    ]
+}
