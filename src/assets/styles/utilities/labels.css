@@ -1,0 +1,20 @@
+
+.input-label-tmp {
+    @apply input-label-base-tmp mb-1 text-gray-600
+}
+
+.input-label-error-temp {
+    @apply input-label-feedback-temp text-red-600
+}
+
+.input-label-warning-temp {
+    @apply input-label-feedback-temp text-yellow-500
+}
+
+.input-label-feedback-temp {
+    @apply input-label-base-tmp mt-1
+}
+
+.input-label-base-tmp {
+    @apply block text-sm font-medium tracking-wide
+}

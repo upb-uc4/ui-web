@@ -17,3 +17,35 @@
 .input-text:disabled:focus {
     @apply outline-none shadow-none border-gray-400 !important;
 }
+
+
+/*
+    ReDesign
+*/
+
+.input-text-tmp {
+    @apply input-text-base-tmp
+    focus:border-blue-600
+}
+
+.input-text-error-tmp {
+    @apply input-text-base-tmp border-red-600
+}
+
+.input-text-warning-tmp {
+    @apply input-text-base-tmp border-yellow-500
+}
+
+.input-text-base-tmp {
+    @apply p-3 block border-2 appearance-none text-gray-600 placeholder-gray-400 rounded-lg
+    focus:outline-none
+    sm:leading-5
+}
+
+.input-text-base-tmp:disabled  {
+    @apply bg-gray-100 text-gray-400
+}
+
+.input-text-base-tmp:read-only {
+    @apply bg-gray-100 text-gray-400 focus:border-gray-400
+}

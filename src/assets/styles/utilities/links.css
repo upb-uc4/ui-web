@@ -17,3 +17,12 @@
 .mobile-navbar-menu {
     @apply py-1 px-3 block;
 }
+
+
+/*
+    ReDesign
+*/
+
+.navigation-link-tmp {
+    @apply cursor-pointer font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus:underline transition ease-in-out duration-150
+}

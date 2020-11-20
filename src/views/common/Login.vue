@@ -4,7 +4,7 @@
         <form class="sm:mt-24 mt-8 max-w-lg w-full" @submit.prevent="login">
             <div class="">
                 <img class="hidden sm:block mx-auto h-32 w-auto" src="../../assets/logo/logo.svg" alt="uc4_logo" />
-                <h2 class="sm:mt-2 text-center text-3xl font-bold text-blue-700 leading-snug">University Credits 4.0</h2>
+                <h2 class="sm:mt-2 text-center text-3xl font-bold text-blue-600 leading-snug">University Credits 4.0</h2>
             </div>
             <div class="sm:mt-10 mt-4 bg-white sm:p-10 py-8 p-4 rounded-lg shadow-lg relative">
                 <div v-show="hasError" class="mb-6">
@@ -19,7 +19,7 @@
                             v-model="email"
                             type="text"
                             :class="[hasError ? 'border-red-500' : 'border-gray-300']"
-                            class="appearance-none rounded-lg block w-full px-3 py-3 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            class="w-full input-text-tmp"
                             placeholder=""
                             @input="resetError"
                         />
@@ -36,7 +36,7 @@
                             v-model="password"
                             :type="passwordFieldType"
                             :class="[hasError ? 'border-red-500' : 'border-gray-300']"
-                            class="appearance-none rounded-lg block w-full px-3 py-3 pr-12 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            class="w-full input-text-tmp"
                             placeholder=""
                             @input="resetError"
                         />
@@ -54,24 +54,12 @@
                     </div>
 
                     <div class="text-sm leading-5">
-                        <a
-                            class="cursor-pointer font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:underline transition ease-in-out duration-150"
-                            @click="restorePassword"
-                        >
-                            Forgot your password?
-                        </a>
+                        <a class="navigation-link-tmp" @click="restorePassword"> Forgot your password? </a>
                     </div>
                 </div>
 
                 <div class="mt-6">
-                    <button
-                        id="login"
-                        :disabled="isInputEmpty"
-                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out disabled:bg-blue-300 disabled:cursor-not-allowed"
-                        @click="login"
-                    >
-                        Login
-                    </button>
+                    <button id="login" :disabled="isInputEmpty" class="w-full btn-tmp" @click="login">Login</button>
                 </div>
             </div>
         </form>
@@ -92,7 +80,7 @@
             const email = ref("");
             const password = ref("");
             const passwordFieldType = ref("password");
-            const hasError = ref(false);
+            const hasError = ref(true);
             const errorText = ref("You have entered an invalid email or password.");
 
             function togglePassword() {

@@ -17,6 +17,7 @@ const AccountForm = () => import("@/views/admin/EditCreateAccountForm.vue");
 const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
 const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const Settings = () => import("@/views/common/Settings.vue");
+const Playground = () => import("@/views/common/dev/Playground.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -31,6 +32,14 @@ const router = createRouter({
             meta: {
                 title: "Welcome" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/playground",
+            name: "playground",
+            component: Playground,
+            meta: {
+                title: "Playground" + suffix,
             },
         },
         {

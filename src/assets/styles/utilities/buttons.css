@@ -129,3 +129,70 @@
 .btn-icon-green:focus {
     @apply outline-none
 }
+
+
+
+
+/*
+    ReDesign, todo: remove tmp-suffix
+*/
+
+
+/* PRIMARY BUTTONS */
+
+/* e.g. accept, login, etc. */
+.btn-tmp {
+    @apply btn-base-tmp text-white bg-blue-600 hover:bg-blue-700
+}
+
+/* when adding/creating is the primary action on the page */
+.btn-add-tmp {
+
+}
+
+/* when removing/deleting is the primary action on the page */
+.btn-remove-tmp {
+
+}
+
+
+/* SECONDARY BUTTONS */
+
+/* e.g. cancel button next to a primary action button */
+.btn-secondary-tmp {
+
+}
+
+/* when adding is the secondary action on the page */
+.btn-secondary-add-tmp {
+
+}
+
+/* when removing is the secondary action on the page */
+.btn-secondary-remove-tmp {
+
+}
+
+
+/* SECONDARY BUTTONS */
+
+/* e.g. cancel button next to a primary action button */
+.btn-secondary-tmp {
+
+}
+
+/* when adding is the secondary action on the page */
+.btn-secondary-add-tmp {
+
+}
+
+/* when removing is the secondary action on the page */
+.btn-secondary-remove-tmp {
+
+}
+
+.btn-base-tmp {
+    @apply p-3 border rounded-md text-sm leading-5 font-medium focus:outline-none
+    transition duration-150 ease-in-out
+    disabled:opacity-50 disabled:cursor-not-allowed
+}
