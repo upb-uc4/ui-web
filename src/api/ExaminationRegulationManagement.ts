@@ -1,10 +1,10 @@
+import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
+import { AxiosError, AxiosResponse } from "axios";
+import APIError from "./api_models/errors/APIError";
+import Module from "./api_models/exam_reg_management/Module";
+import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import APIError from "./api_models/errors/APIError";
-import { AxiosResponse, AxiosError } from "axios";
-import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
-import handleAuthenticationError from "./AuthenticationHelper";
-import Module from "./api_models/exam_reg_management/Module";
 
 export default class ExaminationRegulationManagement extends Common {
     constructor() {
@@ -142,6 +142,6 @@ export default class ExaminationRegulationManagement extends Common {
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/exam-reg-management");
+        return super.getVersion("/examreg-management");
     }
 }
