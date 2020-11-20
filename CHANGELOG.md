@@ -3,6 +3,7 @@
 ## Feature
 - add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
 - add option for (de-)assigning modules to courses [#716](https://github.com/upb-uc4/ui-web/pull/716)
+- add a simple course catalogue view containing all courses that is reachable for guests, too [#706](https://github.com/upb-uc4/ui-web/pull/706)
 
 ## Refactoring
 - add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
