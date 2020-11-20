@@ -9,7 +9,7 @@
         "lint-staged": "lint-staged",
         "test:unit": "jest",
         "test:e2e": "cypress run --browser chrome",
-        "test:e2e:headless": "cypress run --headless --browser chrome",
+        "test:e2e:headless": "cypress run --headless --browser chrome --env NODE_ENV=experimental",
         "test": "npm run test:e2e:headless && jest",
         "cypress": "cypress open",
         "//": "Docker scripts from: https://github.com/expertly-simple/mrm-task-npm-docker",
