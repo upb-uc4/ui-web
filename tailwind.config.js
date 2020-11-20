@@ -1,22 +1,6 @@
 module.exports = {
     purge: ["./src/**/*.html", "./src/**/*.vue"],
     theme: {
-        customForms: (theme) => ({
-            default: {
-                checkbox: {
-                    "&:focus": {
-                        boxShadow: undefined,
-                        borderColor: undefined,
-                    },
-                },
-                radio: {
-                    "&:focus": {
-                        boxShadow: undefined,
-                        borderColor: undefined,
-                    },
-                },
-            },
-        }),
         extend: {
             spacing: {
                 80: "20rem",
@@ -42,7 +26,6 @@ module.exports = {
         tableLayout: ["responsive", "hover", "focus"],
     },
     plugins: [
-        require("@tailwindcss/custom-forms"),
         require("tailwind-heropatterns")({
             // as per tailwind docs you can pass variants
             variants: [],
