@@ -147,16 +147,34 @@
 
 /* when adding/creating is the primary action on the page */
 .btn-add-tmp {
-
+    @apply btn-base-tmp text-white bg-green-500 hover:bg-green-600
 }
 
 /* when removing/deleting is the primary action on the page */
 .btn-remove-tmp {
-
+    @apply btn-base-tmp text-white bg-red-500 hover:bg-red-600
 }
 
 
 /* SECONDARY BUTTONS */
+
+/* e.g. cancel button next to a primary action button */
+.btn-secondary-tmp {
+    @apply btn-secondary-base-tmp text-blue-700 bg-white border-gray-400 hover:bg-blue-700 hover:text-white
+}
+
+/* when adding is the secondary action on the page */
+.btn-secondary-add-tmp {
+
+}
+
+/* when removing is the secondary action on the page */
+.btn-secondary-remove-tmp {
+
+}
+
+
+/* TERTIARY BUTTONS */
 
 /* e.g. cancel button next to a primary action button */
 .btn-secondary-tmp {
@@ -173,22 +191,8 @@
 
 }
 
-
-/* SECONDARY BUTTONS */
-
-/* e.g. cancel button next to a primary action button */
-.btn-secondary-tmp {
-
-}
-
-/* when adding is the secondary action on the page */
-.btn-secondary-add-tmp {
-
-}
-
-/* when removing is the secondary action on the page */
-.btn-secondary-remove-tmp {
-
+.btn-secondary-base-tmp {
+    @apply btn-base-tmp border-4 border-gray-400
 }
 
 .btn-base-tmp {

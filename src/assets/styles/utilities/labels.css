@@ -3,15 +3,15 @@
     @apply input-label-base-tmp mb-1 text-gray-600
 }
 
-.input-label-error-temp {
-    @apply input-label-feedback-temp text-red-600
+.input-label-error-tmp {
+    @apply input-label-feedback-tmp text-red-600
 }
 
-.input-label-warning-temp {
-    @apply input-label-feedback-temp text-yellow-500
+.input-label-warning-tmp {
+    @apply input-label-feedback-tmp text-yellow-500
 }
 
-.input-label-feedback-temp {
+.input-label-feedback-tmp {
     @apply input-label-base-tmp mt-1
 }
 
