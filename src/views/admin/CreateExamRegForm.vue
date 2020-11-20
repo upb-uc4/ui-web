@@ -68,7 +68,7 @@
 
             const busy = ref(false); // for later use
             const examApi = new ExaminationRegulationManagement();
-            const responseHandler = new GenericResponseHandler();
+            const responseHandler = new GenericResponseHandler("Examination Regulation Data");
 
             const existingExamRegNames = ref([] as string[]);
             const selectedModules = ref([] as Module[]);
