@@ -2,9 +2,11 @@ const colors = require("tailwindcss/colors");
 
 module.exports = {
     purge: ["./src/**/*.html", "./src/**/*.vue"],
+    darkMode: "class",
     theme: {
         colors: {
             white: colors.white,
+            black: colors.black,
             gray: colors.coolGray,
             red: colors.red,
             blue: colors.lightBlue,
@@ -31,7 +33,7 @@ module.exports = {
     },
     variants: {
         opacity: ["responsive", "hover", "focus", "disabled"],
-        backgroundColor: ["responsive", "hover", "focus", "disabled"],
+        backgroundColor: ["responsive", "hover", "focus", "disabled", "dark"],
         cursor: ["responsive", "disabled"],
         tableLayout: ["responsive", "hover", "focus"],
     },
