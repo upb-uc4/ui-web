@@ -5,6 +5,7 @@ module.exports = {
     darkMode: "class",
     theme: {
         colors: {
+            transparent: "transparent",
             white: colors.white,
             black: colors.black,
             gray: colors.coolGray,
@@ -12,9 +13,13 @@ module.exports = {
             blue: colors.lightBlue,
             yellow: colors.amber,
             green: colors.green,
+            lime: colors.lime,
         },
         extend: {
             spacing: {
+                0.5: ".125rem",
+                9: "2.25rem",
+                18: "4.5rem",
                 80: "20rem",
                 108: "27rem",
                 160: "40rem",
