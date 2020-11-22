@@ -49,7 +49,7 @@
             let role = ref(Role.NONE);
 
             store.subscribe((mutation, state) => {
-                if (mutation.type === MutationTypes.SET_USER) {
+                if (mutation.type === MutationTypes.SET_USER || mutation.type === MutationTypes.RESET_STATE) {
                     role.value = (mutation.payload as User).role;
                 }
             });
