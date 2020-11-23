@@ -37,7 +37,7 @@
 }
 
 .input-text-base-tmp {
-    @apply p-3 block border-2 appearance-none text-gray-600 placeholder-gray-400 rounded-lg
+    @apply px-3 py-2 block border-2 appearance-none text-gray-600 placeholder-gray-400 rounded-lg
     focus:outline-none
     sm:leading-5
 }

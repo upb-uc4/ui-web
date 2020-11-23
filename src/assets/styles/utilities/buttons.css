@@ -143,31 +143,28 @@
 /* e.g. accept, login, etc. */
 .btn-tmp {
     @apply btn-primary-base-tmp bg-blue-600 border-blue-600
-    hover:bg-blue-700 hover:border-blue-700
 }
 
-.btn-tmp:disabled {
-    @apply hover:bg-blue-600
+.btn-tmp:enabled {
+    @apply hover:bg-blue-700 hover:border-blue-700
 }
 
 /* when adding/creating is the primary action on the page */
 .btn-add-tmp {
     @apply btn-primary-base-tmp bg-green-600 border-green-600
-    hover:bg-green-700 hover:border-green-700
 }
 
-.btn-add-tmp:disabled {
-    @apply hover:bg-green-500
+.btn-add-tmp:enabled {
+    @apply hover:bg-green-700 hover:border-green-700
 }
 
 /* when removing/deleting is the primary action on the page */
 .btn-remove-tmp {
     @apply btn-primary-base-tmp bg-red-600 border-red-600
-    hover:bg-red-700 hover:border-red-700
 }
 
-.btn-remove-tmp:disabled {
-    @apply hover:bg-red-600
+.btn-remove-tmp:enabled {
+    @apply hover:bg-red-700 hover:border-red-700
 }
 
 /* SECONDARY BUTTONS */
@@ -233,7 +230,7 @@
 }
 
 .btn-base-tmp {
-    @apply p-3 border-2 rounded-md leading-5 font-medium focus:outline-none
+    @apply p-2 border-2 rounded-md leading-5 font-medium focus:outline-none
     transition duration-150 ease-in-out
     disabled:opacity-50 disabled:cursor-not-allowed
 }
