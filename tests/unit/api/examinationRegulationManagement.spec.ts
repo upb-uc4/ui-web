@@ -1,7 +1,7 @@
 import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import { readFileSync } from "fs";
-import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 let examinationRegulationManagement: ExaminationRegulationManagement;
 let someName = "";
