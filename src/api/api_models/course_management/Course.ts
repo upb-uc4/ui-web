@@ -3,6 +3,7 @@ import { Language } from "@/entities/Language";
 
 export default interface Course {
     courseType: CourseType;
+    moduleIds: string[];
     courseId: string;
     courseName: string;
     lecturerId: string;

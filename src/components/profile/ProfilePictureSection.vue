@@ -71,6 +71,7 @@
     import { useStore } from "vuex";
     import { MutationTypes } from "@/use/store/mutation-types";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import { useToast } from "@/toast";
 
     export default {
         name: "ProfilePictureSection",
@@ -96,6 +97,7 @@
             const busy = ref(false);
             const errorBag = ref(new ErrorBag());
             const deletePictureModal = ref();
+            const toast = useToast();
 
             onBeforeMount(async () => {
                 await getProfilePicture();
@@ -105,7 +107,7 @@
                 busy.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.getProfilePicture(username);
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("profile picture");
                 const result = handler.handleResponse(response);
 
                 if (result.arrayBuffer != undefined) {
@@ -116,7 +118,6 @@
                         fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
-                    //TODO Show Toast
                     selectedPicture.value = "";
                     fallbackPicture.value = selectedPicture.value;
                 }
@@ -154,6 +155,7 @@
                     fallbackPicture.value = selectedPicture.value;
                     store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
                     errorBag.value = new ErrorBag();
+                    toast.success("Profile picture updated.");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
                 }
@@ -186,12 +188,11 @@
                 busy.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.deleteProfilePicture(username);
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("profile picture");
                 const result = await handler.handleResponse(response);
                 if (result) {
+                    toast.success("Profile picture deleted.");
                     getProfilePicture();
-                } else {
-                    console.error("Picture Deletion Failed!");
                 }
                 busy.value = false;
             }

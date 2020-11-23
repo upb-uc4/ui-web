@@ -16,6 +16,8 @@ describe("Course creation, edition and deletion", () => {
     let adminAuth: Account;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
+    let newModule: String = "M.1275.01158";
+    let lecturerName = "Lect Urer";
 
     before(function () {
         cy.clearCookies();
@@ -83,6 +85,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='courseType']").should("exist");
         cy.get("input[id='courseName']").should("exist");
         cy.get("select[id='courseLanguage']").should("exist");
+        cy.get("select[id='exReg-']").should("exist");
         cy.get("textarea[id='courseDescription']").should("exist");
         cy.get("input[id='maxParticipants']").should("exist");
         cy.get("input[id='startDate']").should("exist");
@@ -98,10 +101,9 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Show validation errors", () => {
-        // TODO include as soon as error feedback implemented in backend
-        //cy.get("input[id='lecturerId']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='courseName']").type("test");
         cy.get('button[id="createCourse"]').click();
+        cy.get("input[id='lecturerId']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='courseType']").siblings().get("p").should("have.class", "error-message");
         cy.get("select[id='courseLanguage']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='maxParticipants']").siblings().get("p").should("have.class", "error-message");
@@ -126,6 +128,7 @@ describe("Course creation, edition and deletion", () => {
     it("Show new course page", () => {
         cy.get('button[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
+        cy.wait(750);
     });
 
     it("Filtering lecturer list in selection works", () => {
@@ -139,8 +142,8 @@ describe("Course creation, edition and deletion", () => {
     it("Can select default lecturer", () => {
         cy.get("input[id='lecturerId']").clear();
         cy.get("input[id='lecturerId']").click();
-        cy.get("div").contains(`(@${lecturerAuth.username})`).click();
-        cy.get("input[id='lecturerId']").should("have.value", lecturerAuth.username);
+        cy.get("div[id='lecturerId_options']").get("div").contains(`(@${lecturerAuth.username})`).click();
+        cy.get("input[id='lecturerId']").should("contain.value", lecturerAuth.username);
     });
 
     it("Create course", () => {
@@ -154,7 +157,7 @@ describe("Course creation, edition and deletion", () => {
     it("Lecturer sees his new course", () => {
         loginAsDefaultLecturer();
         navigateToMyCoursesLecturer();
-        cy.get("div").contains(course.courseName).should("exist");
+        cy.get("div[id='courseName']").contains(course.courseName).should("exist");
         logout();
     });
 
@@ -165,22 +168,24 @@ describe("Course creation, edition and deletion", () => {
     // edit course
     it("Show course edit page", () => {
         navigateToCourseListAdmin();
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
 
         cy.get('input[id="courseName"]').should("have.value", course.courseName);
     });
 
     it("Display of lecturer found works", () => {
         // initially the default lecturer is loaded
-        cy.get("label").should("contain", "firstName LastName");
+        cy.get("label").should("contain", lecturerName);
         cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
         cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
 
         cy.get("input[id='lecturerId']").type("some nonsense");
         cy.get("label").should("contain", "Lecturer-ID not found!");
 
-        cy.get("input[id='lecturerId']").clear().type(course.lecturerId);
-        cy.get("label").should("contain", "firstName LastName");
+        cy.get("input[id='lecturerId']").clear();
+        cy.get("input[id='lecturerId']").click();
+        cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
+        cy.get("label").should("contain", lecturerName);
         cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
         cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
     });
@@ -194,6 +199,12 @@ describe("Course creation, edition and deletion", () => {
         cy.get('input[id="courseName"]').clear().type(course.courseName);
     });
 
+    it("Can edit modules", () => {
+        cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
+        cy.get("input[id='modules_0']").click();
+        cy.get("div").contains(`${newModule}`).click();
+    });
+
     it("Can save course", () => {
         cy.get('button[id="saveChanges"]').should("be.enabled");
         cy.get('button[id="saveChanges"]').click();
@@ -202,7 +213,11 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.wait(1000);
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.wait(1000);
+        cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
+        cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
     });
 
     it("Delete course", () => {

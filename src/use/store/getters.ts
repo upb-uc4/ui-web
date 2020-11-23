@@ -47,7 +47,7 @@ export const getters: GetterTree<State, State> & Getters = {
             const certManagement = new CertificateManagement();
 
             const keyResponse = await certManagement.getEncryptedPrivateKey((await store.getters.user).username);
-            const handler = new GenericResponseHandler();
+            const handler = new GenericResponseHandler("certificate");
             const encryptedPrivateKey = handler.handleResponse(keyResponse);
 
             if (encryptedPrivateKey.key != undefined && encryptedPrivateKey.key != "") {

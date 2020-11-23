@@ -20,6 +20,7 @@ describe("Course creation, edition and deletion", () => {
 
     let course: Course;
     let lecturerAuth: Account;
+    let newModule: String = "M.1275.01158";
 
     before(function () {
         cy.clearCookies();
@@ -59,6 +60,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='courseType']").should("exist");
         cy.get("input[id='courseName']").should("exist");
         cy.get("select[id='courseLanguage']").should("exist");
+        cy.get("select[id='exReg-']").should("exist");
         cy.get("textarea[id='courseDescription']").should("exist");
         cy.get("input[id='maxParticipants']").should("exist");
         cy.get("input[id='startDate']").should("exist");
@@ -108,7 +110,7 @@ describe("Course creation, edition and deletion", () => {
 
     // edit course
     it("Show course edit page", () => {
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
 
         cy.get('input[id="courseName"]').should("have.value", course.courseName);
     });
@@ -122,6 +124,12 @@ describe("Course creation, edition and deletion", () => {
         cy.get('input[id="courseName"]').clear().type(course.courseName);
     });
 
+    it("Can edit modules", () => {
+        cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
+        cy.get(`input[id='modules_0']`).click();
+        cy.get("div").contains(`${newModule}`).click();
+    });
+
     it("Can save course", () => {
         cy.get('button[id="saveChanges"]').should("be.enabled");
         cy.get('button[id="saveChanges"]').click();
@@ -130,13 +138,14 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.wait(1000);
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.wait(1000);
+        cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
+        cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
     });
 
     it("Can modify participation limit with arrow keys", () => {
-        //go to edit
-        cy.get("div").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
-
         cy.get("input[id='maxParticipants']").type("{downarrow}").trigger("input");
         cy.get('button[id="saveChanges"]').should("be.enabled");
         cy.get("input[id='maxParticipants']").type("{uparrow}").trigger("input");

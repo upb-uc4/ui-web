@@ -545,7 +545,11 @@ export default class UserManagement extends Common {
 
     async updateProfilePicture(username: string, picture: File): Promise<APIResponse<boolean>> {
         return await this._axios
-            .put(`/users/${username}/image`, picture)
+            .put(`/users/${username}/image`, picture, {
+                headers: {
+                    "content-type": picture.type,
+                },
+            })
             .then((response: AxiosResponse) => {
                 return {
                     error: {} as APIError,
