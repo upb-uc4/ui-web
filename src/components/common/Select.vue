@@ -1,18 +1,18 @@
 <template>
     <div class="w-full max-w-xs mx-auto">
         <Listbox v-slot="{ open }" v-model="selectedElement" as="div" class="space-y-1">
-            <ListboxLabel class="block text-sm leading-5 font-medium text-gray-700"> Assigned to</ListboxLabel>
+            <ListboxLabel class="input-label-tmp"> Assigned to</ListboxLabel>
             <div class="relative">
-                <span class="inline-block w-full rounded-md shadow-sm">
+                <span class="inline-block w-full">
                     <ListboxButton
-                        class="cursor-default relative w-full rounded-md border border-gray-300 bg-white pl-3 pr-10 py-2 text-left focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                        class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-300 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
                             {{ selectedElement }}
                         </span>
                         <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
-                                <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </span>
                     </ListboxButton>
