@@ -1,4 +1,4 @@
-# [v0.12.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
+# [v0.13.0](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.13.0) (2020-11-23)
 
 ## Feature
 - add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
