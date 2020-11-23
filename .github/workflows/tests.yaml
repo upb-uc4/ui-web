@@ -53,7 +53,7 @@ jobs:
         run: npm run test:unit
   api-exp:
     name: API Tests Experimental Cluster
-    if: ${{ contains(github.event.issue.labels.*.name, 'experimental') }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -153,7 +153,7 @@ jobs:
 
   e2e-exp:
     name: E2E Tests Experimental Cluster
-    if: ${{ contains(github.event.issue.labels.*.name, 'experimental') }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') }}
     runs-on: ubuntu-latest
     
     steps:
