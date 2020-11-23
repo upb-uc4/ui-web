@@ -174,7 +174,7 @@
                 <div>
                     <h1 class="font-medium text-2xl text-gray-600 mb-2">Selects</h1>
                     <div class="flex items-center justify-center">
-                        <Select v-model:elements="people" :selected-element="selectedPerson" :placeholder="people[0]" />
+                        <Select v-model:elements="people" :selected-element="selectedPerson" />
                     </div>
                 </div>
             </div>

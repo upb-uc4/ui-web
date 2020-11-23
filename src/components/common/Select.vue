@@ -74,10 +74,6 @@
                 type: Array,
                 required: true,
             },
-            placeholder: {
-                type: String,
-                default: " ",
-            },
         },
         setup(props: any) {
             const selectedElement = ref(props.elements[0]);
