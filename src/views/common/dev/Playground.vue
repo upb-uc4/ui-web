@@ -173,8 +173,19 @@
                 </div>
                 <div>
                     <h1 class="font-medium text-2xl text-gray-600 mb-2">Selects</h1>
-                    <div class="flex items-center justify-center">
-                        <Select v-model:elements="people" :selected-element="selectedPerson" />
+                    <Select v-model:elements="people" :selected-element="selectedPerson" />
+                </div>
+                <div>
+                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Radio Buttons <span class="text-yellow-600">(TODO)</span></h1>
+                    <div class="flex space-x-8">
+                        <label class="flex items-center">
+                            <input v-model="picked" type="radio" class="radio" value="A" />
+                            <span class="ml-2">Student</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input v-model="picked" type="radio" class="radio" value="B" />
+                            <span class="ml-2">Lecturer</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -208,9 +219,9 @@
             ];
 
             const selectedPerson = ref(people[0]);
-
             const isDarkModeEnabled = ref(false);
-            return { isDarkModeEnabled, people, selectedPerson };
+            const picked = ref("A");
+            return { isDarkModeEnabled, people, selectedPerson, picked };
         },
     };
 </script>
