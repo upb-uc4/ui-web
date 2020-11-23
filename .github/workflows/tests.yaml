@@ -20,7 +20,7 @@ on:
 jobs:
   api-dev:
     name: API Tests Development Cluster
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'development') || (!contains(github.event.pull_request.labels.*.name, 'development') && !contains(github.event.pull_request.labels.*.name, 'experimental')) }}
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -88,7 +88,7 @@ jobs:
         run: export TEST_ENV=experimental && npm run test:unit
   e2e-dev:
     name: E2E Tests Development Cluster
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'development') || (!contains(github.event.pull_request.labels.*.name, 'development') && !contains(github.event.pull_request.labels.*.name, 'experimental')) }}
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') }}
     runs-on: ubuntu-latest
     
     steps:
