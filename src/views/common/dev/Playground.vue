@@ -184,7 +184,7 @@
 
 <script lang="ts">
     import { ref } from "vue";
-    import { Switch, Listbox, ListboxLabel, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
+    import { Switch } from "@headlessui/vue";
     import Select from "@/components/common/Select.vue";
 
     export default {
