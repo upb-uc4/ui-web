@@ -5,7 +5,7 @@
             <div class="relative">
                 <span class="inline-block w-full">
                     <ListboxButton
-                        class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-300 transition ease-in-out duration-150"
+                        class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
                             {{ selectedElement }}
