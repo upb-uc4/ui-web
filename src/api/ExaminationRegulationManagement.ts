@@ -143,7 +143,7 @@ export default class ExaminationRegulationManagement extends Common {
 
     async createExaminationRegulation(examReg: ExaminationRegulation): Promise<APIResponse<boolean>> {
         return await this._axios
-            .post("/examination-regulation", examReg)
+            .post("/examination-regulations", examReg)
             .then((response: AxiosResponse) => {
                 return {
                     error: {} as APIError,
@@ -183,7 +183,7 @@ export default class ExaminationRegulationManagement extends Common {
 
     async deleteExaminationRegulation(name: string): Promise<APIResponse<boolean>> {
         return await this._axios
-            .delete(`/examination-regulation/${name}`)
+            .delete(`/examination-regulations/${name}`)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: true,

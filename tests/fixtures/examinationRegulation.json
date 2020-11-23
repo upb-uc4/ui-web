@@ -1,6 +1,6 @@
 {
     "name": "Test Examination Regulation",
-    "active": "true",
+    "active": true,
     "modules": [
         {
             "id": "Some Module ID",
