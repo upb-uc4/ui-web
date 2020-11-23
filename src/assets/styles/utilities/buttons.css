@@ -172,31 +172,31 @@
 /* e.g. cancel button next to a primary action button */
 .btn-secondary-tmp {
     @apply btn-secondary-base-tmp text-blue-600 border-blue-600
+    hover:bg-blue-600 hover:text-white
 }
 
-/* disabled hover:bg-transparent is not working, hence use enabled and reverse the state */
-.btn-secondary-tmp:enabled {
-    @apply hover:bg-blue-600 hover:text-white
+.btn-secondary-tmp:disabled {
+    @apply bg-transparent text-blue-600
 }
 
 /* when adding is the secondary action on the page */
 .btn-secondary-add-tmp {
     @apply btn-secondary-base-tmp text-green-600 border-green-600
+    hover:bg-green-600 hover:text-white
 }
 
-/* disabled hover:bg-transparent is not working, hence use enabled and reverse the state */
-.btn-secondary-add-tmp:enabled {
-    @apply hover:bg-green-600 hover:text-white
+.btn-secondary-add-tmp:disabled {
+    @apply bg-transparent text-green-600
 }
 
 /* when removing is the secondary action on the page */
 .btn-secondary-remove-tmp {
     @apply btn-secondary-base-tmp text-red-600 border-red-600
+    hover:bg-red-600 hover:text-white
 }
 
-/* disabled hover:bg-transparent is not working, hence use enabled and reverse the state */
-.btn-secondary-remove-tmp:enabled {
-    @apply hover:bg-red-600 hover:text-white
+.btn-secondary-remove-tmp:disabled {
+    @apply bg-transparent text-red-600
 }
 
 
