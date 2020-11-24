@@ -14,7 +14,7 @@
                         class="w-full form-input input-text"
                         placeholder="Exam regulation name"
                     />
-                    <div v-if="newName !== ''" class="text-gray-700 text-md font-medium my-3">
+                    <div v-if="newName !== ''" id="examRegNameFeedback" class="text-gray-700 text-md font-medium my-3">
                         <label v-if="valid" class="">
                             <i class="text-green-400 fas fa-check mr-2"></i>
                             {{ newName }} is available
