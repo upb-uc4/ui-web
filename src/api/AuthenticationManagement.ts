@@ -131,7 +131,7 @@ export default class AuthenticationManagement extends Common {
             .get(`/logout`)
             .then((response: AxiosResponse) => {
                 const store = useStore();
-                store.commit(MutationTypes.RESET_STATE, true);
+                store.commit(MutationTypes.RESET_STATE);
                 return {
                     error: {} as APIError,
                     networkError: false,

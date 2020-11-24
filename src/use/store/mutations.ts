@@ -17,7 +17,7 @@ export type Mutations<S = State> = {
     [MutationTypes.FORCE_CLOSE_BURGER_MENU](state: S, payload: boolean): void;
     [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S, payload: boolean): void;
     [MutationTypes.SET_HAS_CERTIFICATE](state: S, payload: boolean): void;
-    [MutationTypes.RESET_STATE](state: S, payload: boolean): void;
+    [MutationTypes.RESET_STATE](state: S, payload: void): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
