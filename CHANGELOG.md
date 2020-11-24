@@ -2,6 +2,7 @@
 
 ## Bugfix
 - add ECTS field to course form [#738](https://github.com/upb-uc4/ui-web/pull/738)
+- reset store state on logout [#732](https://github.com/upb-uc4/ui-web/pull/732)
 
 # [v0.13.0](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.13.0) (2020-11-23)
 
