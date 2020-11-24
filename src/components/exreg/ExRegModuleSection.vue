@@ -38,7 +38,7 @@
                                 <div class="absolute inset-y-0 right-0">
                                     <div class="hidden sm:flex">
                                         <button class="btn btn-green-secondary w-48" @click="addCurrentModule">
-                                            {{ moduleExist ? "Add Module" : "Create Module" }}
+                                            {{ moduleExists ? "Add Module" : "Create Module" }}
                                         </button>
                                     </div>
                                     <div class="sm:hidden">
@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts">
-    import { ref, computed } from "vue";
+    import { watch, ref, computed } from "vue";
     import Module from "@/api/api_models/exam_reg_management/Module";
 
     export default {
@@ -119,8 +119,16 @@
                 selectedModules.value.unshift(module);
                 moduleID.value = "";
                 moduleNameInput.value = "";
-                emit("update:modules", selectedModules);
+                emit("update:modules", selectedModules.value);
             }
+
+            watch(
+                () => props.modules,
+                () => {
+                    selectedModules.value = props.modules;
+                    console.log("watch triggered");
+                }
+            );
 
             function removeModule(index: number) {
                 selectedModules.value.splice(index, 1);

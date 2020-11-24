@@ -11,7 +11,7 @@
         </button>
         <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
         <div>
-            <ExRegInfoSection v-model:name="examRegName" v-model:valid="nameValid" :exam-regs="existingExamRegNames" />
+            <ExRegInfoSection v-model:name="examRegName" v-model:valid="nameValid" :existing-names="existingExamRegNames" />
             <ExRegModuleSection v-model:modules="selectedModules" :existing-modules="existingModules" />
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
@@ -53,6 +53,8 @@
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import { useToast } from "@/toast";
 
     export default {
         name: "CreateExamRegForm",
@@ -65,6 +67,7 @@
         setup: function () {
             const heading = "Create Examination Regulation";
             const examRegName = ref("");
+            const nameValid = ref(false);
 
             const busy = ref(false); // for later use
             const examApi = new ExaminationRegulationManagement();
@@ -90,7 +93,7 @@
                 existingModules.value = responseHandler.handleResponse(moduleResponse);
             }
 
-            const canCreate = computed(() => selectedModules.value.length > 0 && nameValid);
+            const canCreate = computed(() => selectedModules.value.length > 0 && nameValid.value);
 
             function back() {
                 Router.push("/all-courses");
@@ -107,12 +110,22 @@
                     modules: selectedModules.value,
                 };
                 busy.value = true;
-                let response = await examApi.createExaminationRegulation(examReg);
-                let handledResponse = responseHandler.handleResponse(response);
+                const response = await examApi.createExaminationRegulation(examReg);
+                const validationResponseHandler = new ValidationResponseHandler("examination regulation");
+                const handledResponse = validationResponseHandler.handleResponse(response);
+                if (handledResponse) {
+                    const toast = useToast();
+                    toast.success(`Examination regulation ${examRegName.value} created.`);
+                    // reset ui, add new exam regs and modules since blockchain is lazy...
+                    existingExamRegNames.value.push(examRegName.value);
+                    let newModules = selectedModules.value.filter((m) => !existingModules.value.find((x) => m == x));
+                    existingModules.value.push(...newModules);
+                    selectedModules.value = [] as Module[];
+                    console.log(selectedModules.value);
+                    examRegName.value = "";
+                }
                 busy.value = false;
             }
-
-            const nameValid = computed(() => !(examRegName.value === "" || existingExamRegNames.value.find((e) => e == examRegName.value)));
 
             return {
                 busy,
@@ -122,9 +135,9 @@
                 heading,
                 selectedModules,
                 canCreate,
+                nameValid,
                 back,
                 createExamReg,
-                nameValid,
             };
         },
     };

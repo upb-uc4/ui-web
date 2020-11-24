@@ -10,19 +10,18 @@
                     <label for="examRegName" class="text-gray-700 text-md font-medium block mb-4"> Examination Regulation Name </label>
                     <input
                         id="examRegName"
-                        :value="name"
+                        v-model.trim="newName"
                         class="w-full form-input input-text"
                         placeholder="Exam regulation name"
-                        @input="$emit('update:name', $event.target.value.trim())"
                     />
-                    <div v-if="name !== ''" class="text-gray-700 text-md font-medium my-3">
+                    <div v-if="newName !== ''" class="text-gray-700 text-md font-medium my-3">
                         <label v-if="valid" class="">
                             <i class="text-green-400 fas fa-check mr-2"></i>
-                            {{ name }} is available
+                            {{ newName }} is available
                         </label>
                         <label v-else class="">
                             <i class="text-red-400 fas fa-times mr-2"></i>
-                            Examination regulation {{ name }} already exists!
+                            Examination regulation {{ newName }} already exists!
                         </label>
                     </div>
                 </div>
@@ -32,9 +31,16 @@
 </template>
 
 <script lang="ts">
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import { watch } from "vue";
+
     export default {
         name: "ExaminationRegulationInformation",
         props: {
+            existingNames: {
+                type: Array,
+                required: true,
+            },
             name: {
                 type: String,
                 required: true,
@@ -44,6 +50,16 @@
                 required: true,
             },
         },
-        emits: ["update:name"],
+        emits: ["update:name", "update:valid"],
+        setup(props: { existingNames: string[]; name: string; valid: boolean }, { emit }: any) {
+            watch(
+                () => props.name,
+                () => emit("update:valid", !(props.name === "" || props.existingNames.find((e) => e == props.name)))
+            );
+
+            return {
+                newName: useModelWrapper(props, emit, "name"),
+            };
+        },
     };
 </script>
