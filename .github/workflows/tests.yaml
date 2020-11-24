@@ -24,13 +24,14 @@ jobs:
     steps:
       - name: Calculate Test Sets
         id: set-matrix 
-        run: tot-lines=$(find tests/e2e -name "*.spec.ts" | wc -l)
-        run: echo "Found $tot-lines test suites"
-        run: lines=$(($tot-lines/4))
-        run: find tests/e2e -name "*.spec.ts" | split -l $lines -
-        run: if [[ $yournumber =~ $re ]] ; then matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\", \"$(cat xae | tr '\n' ',')\"]" else matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\"]" fi
-        run: echo "Built matrix: $matrix"
-        run: echo "::set-output name=matrix::$( echo "$matrix" )"
+        run: | 
+        tot-lines=$(find tests/e2e -name "*.spec.ts" | wc -l)
+        echo "Found $tot-lines test suites"
+        lines=$(($tot-lines/4))
+        find tests/e2e -name "*.spec.ts" | split -l $lines -
+        if [[ $yournumber =~ $re ]] ; then matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\", \"$(cat xae | tr '\n' ',')\"]" else matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\"]" fi
+        echo "Built matrix: $matrix"
+        echo "::set-output name=matrix::$( echo "$matrix" )"
   work:
     name: Run unit tests
     runs-on: ubuntu-latest
