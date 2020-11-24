@@ -6,6 +6,10 @@ export function navigateToCourseListAdmin() {
     cy.visit("all-courses");
 }
 
+export function navigateToExamRegForm() {
+    cy.visit("createExamReg");
+}
+
 export function navigateToAccountForm() {
     cy.visit("createAccount");
 }
