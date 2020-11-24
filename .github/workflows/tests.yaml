@@ -17,6 +17,20 @@ on:
       - main
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Calculate Test Sets
+        id: set-matrix 
+        run: tot-lines=$(find tests/e2e -name "*.spec.ts" | wc -l)
+        run: echo "Found $tot-lines test suites"
+        run: lines=$(($tot-lines/4))
+        run: find tests/e2e -name "*.spec.ts" | split -l $lines -
+        run: if [[ $yournumber =~ $re ]] ; then matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\", \"$(cat xae | tr '\n' ',')\"]" else matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\"]" fi
+        run: echo "Built matrix: $matrix"
+        run: echo "::set-output name=matrix::$( echo "$matrix" )"
   work:
     name: Run unit tests
     runs-on: ubuntu-latest
@@ -53,8 +67,11 @@ jobs:
 
   e2e:
     name: Run e2e tests
+    needs: setup
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix: ${{fromJson(needs.setup.outputs.matrix)}}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -96,7 +113,7 @@ jobs:
       - name: Run nginx to reverse proxy for e2e tests
         run: docker run --name reverse-proxy -p 443:443 --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs/ --mount type=bind,source=$(pwd)/dist/,target=/app/deploy -d nginx
       - name: run e2e tests
-        run: npm run test:e2e:headless
+        run: npm run test:e2e:headless -- --spec $matrix
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()
