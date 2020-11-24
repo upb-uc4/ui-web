@@ -70,7 +70,7 @@
             async function getCertificate() {
                 busy.value = true;
                 const store = useStore();
-                certificate.value = (await store.getters.certificate).certificate;
+                certificate.value = (await store.getters.certificate()).certificate;
                 if (certificate.value == "") {
                     hasCertificate.value = false;
                 } else {
