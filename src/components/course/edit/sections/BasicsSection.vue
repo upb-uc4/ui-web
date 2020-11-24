@@ -53,6 +53,21 @@
                     </p>
                 </div>
                 <div class="mb-4 flex flex-col">
+                    <label class="text-gray-700 text-md font-medium mb-3">Credits</label>
+                    <input
+                        id="ects"
+                        v-model="courseEcts"
+                        type="number"
+                        min="0"
+                        class="w-full form-input input-text"
+                        :class="{ error: errorBag.has('ects') }"
+                        @input="updateEcts($event.target.value)"
+                    />
+                    <p v-if="errorBag.has('ects')" class="error-message">
+                        {{ errorBag.get("ects") }}
+                    </p>
+                </div>
+                <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">
                         Description
                         <span class="text-gray-600 font-normal"> (Optional) </span>
@@ -80,6 +95,7 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import { ref } from "vue";
 
     export default {
         name: "BasicsSection",
@@ -100,19 +116,37 @@
                 required: true,
                 type: String,
             },
+            ects: {
+                type: Number,
+                required: true,
+            },
             description: {
                 required: true,
                 type: String,
             },
         },
-        emits: ["update:type", "update:name", "update:language", "update:description"],
+        emits: ["update:type", "update:name", "update:language", "update:description", "update:ects"],
         setup(props: any, { emit }: any) {
             const availableCourseLanguages = Object.values(Language).filter((e) => e != Language.NONE);
             const availableCourseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
+            const courseEcts = ref(props.ects);
 
+            function isNumber(value: string) {
+                return /[0-9]/g.test(value);
+            }
+
+            function updateEcts(value: string) {
+                if (isNumber(value)) {
+                    emit("update:ects", parseInt(value));
+                } else {
+                    emit("update:ects", 0);
+                }
+            }
             return {
                 availableCourseLanguages,
                 availableCourseTypes,
+                courseEcts,
+                updateEcts,
                 courseType: useModelWrapper(props, emit, "type"),
                 courseName: useModelWrapper(props, emit, "name"),
                 courseLanguage: useModelWrapper(props, emit, "language"),
