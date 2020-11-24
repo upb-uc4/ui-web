@@ -37,7 +37,7 @@
                                 </label>
                                 <div class="absolute inset-y-0 right-0">
                                     <div class="hidden sm:flex">
-                                        <button class="btn btn-green-secondary w-48" @click="addCurrentModule">
+                                        <button id="addModule" class="btn btn-green-secondary w-48" @click="addCurrentModule">
                                             {{ moduleExists ? "Add Module" : "Create Module" }}
                                         </button>
                                     </div>
@@ -64,7 +64,9 @@
                             </div>
                             <div class="w-full flex justify-end">
                                 <div class="hidden sm:flex">
-                                    <button class="w-48 btn btn-red-secondary" @click="removeModule(index)">Remove Module</button>
+                                    <button :id="'removeModule' + index" class="w-48 btn btn-red-secondary" @click="removeModule(index)">
+                                        Remove Module
+                                    </button>
                                 </div>
                                 <div class="sm:hidden">
                                     <button class="btn btn-icon-red ml-3 text-xl w-12 h-12" @click="removeModule(index)">
