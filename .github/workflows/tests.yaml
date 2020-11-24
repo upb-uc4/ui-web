@@ -78,7 +78,7 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.setup.outputs.matrix)}}
+      matrix: ${{needs.setup.outputs.matrix}}
 
     steps:
       - name: Checkout repository
