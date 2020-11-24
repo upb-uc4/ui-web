@@ -10,18 +10,19 @@
                     <label for="examRegName" class="text-gray-700 text-md font-medium block mb-4"> Examination Regulation Name </label>
                     <input
                         id="examRegName"
-                        v-model.trim="examRegNameInput"
+                        :value="name"
                         class="w-full form-input input-text"
                         placeholder="Exam regulation name"
+                        @input="$emit('update:name', $event.target.value.trim())"
                     />
-                    <div v-if="examRegNameInput !== ''" class="text-gray-700 text-md font-medium my-3">
-                        <label v-if="validInput" class="">
+                    <div v-if="name !== ''" class="text-gray-700 text-md font-medium my-3">
+                        <label v-if="valid" class="">
                             <i class="text-green-400 fas fa-check mr-2"></i>
-                            {{ examRegNameInput }} is available
+                            {{ name }} is available
                         </label>
                         <label v-else class="">
                             <i class="text-red-400 fas fa-times mr-2"></i>
-                            Examination regulation {{ examRegNameInput }} already exists!
+                            Examination regulation {{ name }} already exists!
                         </label>
                     </div>
                 </div>
@@ -31,8 +32,6 @@
 </template>
 
 <script lang="ts">
-    import { ref, computed } from "vue";
-
     export default {
         name: "ExaminationRegulationInformation",
         props: {
@@ -44,25 +43,7 @@
                 type: Boolean,
                 required: true,
             },
-            examRegs: {
-                type: Array,
-                required: true,
-            },
         },
-        emits: ["update:name", "update:valid"],
-        setup(props: { name: string; valid: boolean; examRegs: string[] }, { emit }: any) {
-            const examRegNameInput = ref(props.name);
-
-            const validInput = computed(() => {
-                const tmp = !(examRegNameInput.value === "" || props.examRegs.find((e) => e == examRegNameInput.value));
-                emit("update:valid", tmp);
-                return tmp;
-            });
-
-            return {
-                examRegNameInput,
-                validInput,
-            };
-        },
+        emits: ["update:name"],
     };
 </script>

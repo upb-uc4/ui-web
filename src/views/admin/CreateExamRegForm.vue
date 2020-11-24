@@ -11,7 +11,7 @@
         </button>
         <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
         <div>
-            <ExRegInfoSection v-model:name="examRegName" v-model:valid="examRegNameValid" :exam-regs="existingExamRegNames" />
+            <ExRegInfoSection v-model:name="examRegName" v-model:valid="nameValid" :exam-regs="existingExamRegNames" />
             <ExRegModuleSection v-model:modules="selectedModules" :existing-modules="existingModules" />
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex justify-between">
@@ -47,6 +47,7 @@
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import Router from "@/use/router";
     import Module from "@/api/api_models/exam_reg_management/Module";
+    import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
     import ExRegInfoSection from "@/components/exreg/ExRegInfoSection.vue";
     import ExRegModuleSection from "@/components/exreg/ExRegModuleSection.vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
@@ -64,7 +65,6 @@
         setup: function () {
             const heading = "Create Examination Regulation";
             const examRegName = ref("");
-            const examRegNameValid = ref(false);
 
             const busy = ref(false); // for later use
             const examApi = new ExaminationRegulationManagement();
@@ -90,7 +90,7 @@
                 existingModules.value = responseHandler.handleResponse(moduleResponse);
             }
 
-            const canCreate = computed(() => selectedModules.value.length > 0 && examRegNameValid.value);
+            const canCreate = computed(() => selectedModules.value.length > 0 && nameValid);
 
             function back() {
                 Router.push("/all-courses");
@@ -100,17 +100,19 @@
                 return;
             }
 
+            const nameValid = computed(() => !(examRegName.value === "" || existingExamRegNames.value.find((e) => e == examRegName.value)));
+
             return {
                 busy,
                 existingModules,
                 examRegName,
-                examRegNameValid,
                 existingExamRegNames,
                 heading,
                 selectedModules,
                 canCreate,
                 back,
                 createExamReg,
+                nameValid,
             };
         },
     };
