@@ -33,9 +33,9 @@ jobs:
           find tests/e2e -name "*.spec.ts" | split -l $lines -
           if [[ $lines =~ '^[0-9]+$' ]] ; 
           then 
-            matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\", \"$(cat xae | tr '\n' ',')\"]" 
+            matrix="{\"tests\"": [\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\", \"$(cat xae | tr '\n' ',')\"]}" 
           else 
-            matrix="[\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\"]" 
+            matrix="{\"tests\"": [\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\"]}" 
           fi
           echo "Built matrix: $matrix"
           echo "::set-output name=matrix::$( echo "$matrix" )"
@@ -78,7 +78,7 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{needs.setup.outputs.matrix}}
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
@@ -121,7 +121,7 @@ jobs:
       - name: Run nginx to reverse proxy for e2e tests
         run: docker run --name reverse-proxy -p 443:443 --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs/ --mount type=bind,source=$(pwd)/dist/,target=/app/deploy -d nginx
       - name: run e2e tests
-        run: npm run test:e2e:headless -- --spec $matrix
+        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }}
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()
