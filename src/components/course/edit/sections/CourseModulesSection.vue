@@ -1,5 +1,8 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
+    <section id="moduleSection" class="border-t-2 py-8 border-gray-400">
+        <div v-if="busy" class="m-auto">
+            <loading-component />
+        </div>
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-lg font-medium mb-2">Module Information</label>
@@ -81,10 +84,11 @@
     import SearchSelect from "@/components/common/SearchSelect.vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import LoadingComponent from "@/components/common/loading/Spinner.vue";
 
     export default {
         name: "CourseModulesSection",
-        components: { TagList, SearchSelect },
+        components: { TagList, SearchSelect, LoadingComponent },
         props: {
             errorBag: {
                 required: true,
@@ -105,6 +109,7 @@
             const selectedExRegNames = ref([""]);
             const selectedModules = ref([] as { ids: String[]; displayStrings: String[] }[]);
             const selectedOption = ref({} as SearchSelectOption);
+            const busy = ref(false);
 
             onBeforeMount(async () => {
                 await getExRegs();
@@ -150,6 +155,7 @@
             });
 
             async function getExRegs() {
+                busy.value = true;
                 const examinationRegulationManagement = new ExaminationRegulationManagement();
                 const response = await examinationRegulationManagement.getExaminationRegulation();
                 const handler = new GenericResponseHandler("exam regulation");
@@ -157,6 +163,7 @@
                 if (result) {
                     examinationRegs.value = result;
                 }
+                busy.value = false;
             }
 
             function getExRegsFromModules() {
@@ -222,6 +229,7 @@
                 removeModule,
                 createSearchSelectInput,
                 selectedOption,
+                busy,
             };
         },
     };

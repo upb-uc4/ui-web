@@ -1,12 +1,19 @@
-# [v0.12.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
+# [v0.13.0](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.13.0) (2020-11-23)
 
 ## Feature
 - add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
 - add option for (de-)assigning modules to courses [#716](https://github.com/upb-uc4/ui-web/pull/716)
+- add a simple course catalogue view containing all courses that is reachable for guests, too [#706](https://github.com/upb-uc4/ui-web/pull/706)
 
 ## Refactoring
 - add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
 - add a message for the student if not immatriculated to any semester yet [#692](https://github.com/upb-uc4/ui-web/pull/692)
+- Replace deprecated suspense wrapper by onBeforeMount hooks and a "busy" variable [#714](https://github.com/upb-uc4/ui-web/pull/714)
+- restyle login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
+## Bugfix
+- fix mobile view of login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
 
 # [v0.12.0](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.12.0) (2020-11-06)
 

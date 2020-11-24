@@ -1,10 +1,10 @@
+import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
+import { AxiosError, AxiosResponse } from "axios";
+import APIError from "./api_models/errors/APIError";
+import Module from "./api_models/exam_reg_management/Module";
+import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import APIError from "./api_models/errors/APIError";
-import { AxiosResponse, AxiosError } from "axios";
-import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
-import handleAuthenticationError from "./AuthenticationHelper";
-import Module from "./api_models/exam_reg_management/Module";
 
 export default class ExaminationRegulationManagement extends Common {
     constructor() {
@@ -141,7 +141,87 @@ export default class ExaminationRegulationManagement extends Common {
             });
     }
 
+    async createExaminationRegulation(examReg: ExaminationRegulation): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .post("/examination-regulations", examReg)
+            .then((response: AxiosResponse) => {
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: true,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.createExaminationRegulation(examReg);
+                    }
+                    return {
+                        error: error.response.data as APIError,
+                        networkError: false,
+                        statusCode: error.response.status,
+                        returnValue: false,
+                    };
+                } else {
+                    return {
+                        error: {} as APIError,
+                        networkError: true,
+                        statusCode: 0,
+                        returnValue: false,
+                    };
+                }
+            });
+    }
+
+    async deleteExaminationRegulation(name: string): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .delete(`/examination-regulations/${name}`)
+            .then((response: AxiosResponse) => {
+                return {
+                    returnValue: true,
+                    statusCode: response.status,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.deleteExaminationRegulation(name);
+                    }
+                    return {
+                        returnValue: false,
+                        statusCode: error.response.status,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
+                } else {
+                    return {
+                        returnValue: false,
+                        statusCode: 0,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
+                }
+            });
+    }
+
     static async getVersion(): Promise<string> {
-        return super.getVersion("/exam-reg-management");
+        return super.getVersion("/examreg-management");
     }
 }
