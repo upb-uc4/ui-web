@@ -96,8 +96,20 @@
                 Router.push("/all-courses");
             }
 
-            function createExamReg() {
-                return;
+            async function createExamReg() {
+                if (!canCreate.value) {
+                    return;
+                }
+                let examReg: ExaminationRegulation;
+                examReg = {
+                    name: examRegName.value,
+                    active: true,
+                    modules: selectedModules.value,
+                };
+                busy.value = true;
+                let response = await examApi.createExaminationRegulation(examReg);
+                let handledResponse = responseHandler.handleResponse(response);
+                busy.value = false;
             }
 
             const nameValid = computed(() => !(examRegName.value === "" || existingExamRegNames.value.find((e) => e == examRegName.value)));
