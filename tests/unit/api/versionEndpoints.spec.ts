@@ -3,6 +3,7 @@ import CourseManagement from "@/api/CourseManagement";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
+import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
 jest.useFakeTimers();
 
@@ -32,6 +33,12 @@ test("matriculation service version", async () => {
 
 test("certificate service version", async () => {
     const version = await CertificateManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+});
+
+test("exam regulations service version", async () => {
+    const version = await ExaminationRegulationManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });
