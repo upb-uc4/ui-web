@@ -34,21 +34,29 @@ export function getRandomizedUser(role: Role): Student | Admin | Lecturer {
 
 export function getRandomizedUserAndAuthUser(
     role: Role
-): { student: Student; authUser: Account } | { lecturer: Lecturer; authUser: Account } | { admin: Admin; authUser: Account } {
+):
+    | { governmentId: string; student: Student; authUser: Account }
+    | { governmentId: string; lecturer: Lecturer; authUser: Account }
+    | { governmentId: string; admin: Admin; authUser: Account } {
     const authUser: Account = JSON.parse(
         fs.readFileSync(`tests/fixtures/${role[0].toLowerCase() + role.substring(1) + "AuthUser.json"}`, "utf-8")
     );
     const user = getRandomizedUser(role);
+    const governmentId = getRandomizedGovernmentId();
     authUser.username = user.username;
 
     switch (role) {
         case Role.ADMIN:
-            return { admin: user as Admin, authUser: authUser };
+            return { governmentId, admin: user as Admin, authUser: authUser };
         case Role.STUDENT:
-            return { student: user as Student, authUser: authUser };
+            return { governmentId, student: user as Student, authUser: authUser };
         case Role.LECTURER:
-            return { lecturer: user as Lecturer, authUser: authUser };
+            return { governmentId, lecturer: user as Lecturer, authUser: authUser };
         default:
-            return {} as { admin: Admin; authUser: Account };
+            return {} as { governmentId: string; admin: Admin; authUser: Account };
     }
+}
+
+export function getRandomizedGovernmentId(): string {
+    return new Date().toISOString();
 }
