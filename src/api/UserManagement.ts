@@ -290,9 +290,9 @@ export default class UserManagement extends Common {
         return await this.getSpecificUser(username);
     }
 
-    async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
+    async createUser(governmentId: string, authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
         return await this._axios
-            .post("/users", { authUser, user })
+            .post("/users", { governmentId, authUser, user })
             .then((reponse: AxiosResponse) => {
                 return {
                     statusCode: reponse.status,
@@ -311,7 +311,7 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.createUser(authUser, user);
+                        return await this.createUser(governmentId, authUser, user);
                     }
                     return {
                         statusCode: error.response.status,

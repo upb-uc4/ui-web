@@ -3,7 +3,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
-import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
+import { createUsers, deleteUsers, getRandomizedGovernmentId, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Certificate Management", function () {
@@ -44,7 +44,8 @@ describe("Certificate Management", function () {
                 cy.fixture("studentAuthUser.json").then((s) => {
                     (s as Account).username += random;
                     studentAuthUser = s as Account;
-                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                    const governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: student, auth: studentAuthUser });
                 });
             })
             .then(async () => {
