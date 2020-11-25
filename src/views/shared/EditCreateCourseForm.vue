@@ -17,8 +17,16 @@
                 v-model:name="course.courseName"
                 v-model:type="course.courseType"
                 v-model:language="course.courseLanguage"
+                v-model:ects="course.ects"
                 v-model:description="course.courseDescription"
                 :error-bag="errorBag"
+            />
+            <course-module-section
+                v-model:module-ids="course.moduleIds"
+                :error-bag="errorBag"
+                :edit-mode="editMode"
+                @toggle-module="toggleModule($event)"
+                @remove-modules="removeModules($event)"
             />
             <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
             <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
@@ -104,6 +112,8 @@
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
+    import CourseModuleSection from "@/components/course/edit/sections/CourseModulesSection.vue";
+    import { useToast } from "@/toast";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -115,6 +125,7 @@
             DeleteCourseModal,
             UnsavedChangesModal,
             LoadingComponent,
+            CourseModuleSection,
         },
         props: {
             editMode: {
@@ -138,6 +149,8 @@
             course.value.endDate = "2020-08-31";
 
             const errorBag = ref(new ErrorBag());
+
+            const toast = useToast();
 
             onBeforeRouteLeave(async (to, from, next) => {
                 if (success.value) {
@@ -185,7 +198,7 @@
             async function getCourse() {
                 busy.value = true;
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("course");
                 const result = genericResponseHandler.handleResponse(response);
 
                 //TODO move this to a non-generic response handler
@@ -221,11 +234,12 @@
                     getLecturerUsername();
                 }
                 const response = await courseManagement.createCourse(course.value);
-                const handler = new AccountValidationResponseHandler();
+                const handler = new AccountValidationResponseHandler("user");
                 success.value = handler.handleReponse(response);
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Course '" + course.value.courseName + "' created.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -235,11 +249,12 @@
 
             async function updateCourse() {
                 const response = await courseManagement.updateCourse(course.value);
-                const handler = new ValidationResponseHandler();
+                const handler = new ValidationResponseHandler("course");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Course '" + course.value.courseName + "' updated.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -250,11 +265,12 @@
             async function deleteCourse() {
                 const courseManagement: CourseManagement = new CourseManagement();
 
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("course");
                 const response = await courseManagement.deleteCourse(course.value.courseId);
                 const result = genericResponseHandler.handleResponse(response);
 
                 if (result) {
+                    toast.success("Course '" + course.value.courseName + "' deleted.");
                     back();
                 }
             }
@@ -280,6 +296,21 @@
                 Router.push("/all-courses");
             }
 
+            function toggleModule(value: any) {
+                if (course.value.moduleIds.includes(value)) {
+                    course.value.moduleIds = course.value.moduleIds.filter((e) => e != value);
+                } else {
+                    course.value.moduleIds.push(value);
+                    course.value.moduleIds.sort((one, two) => (one > two ? -1 : 1));
+                }
+            }
+
+            function removeModules(value: any[]) {
+                value.forEach((e) => {
+                    course.value.moduleIds = course.value.moduleIds.filter((m) => m != e.id);
+                });
+            }
+
             return {
                 busy,
                 isAdmin,
@@ -297,6 +328,8 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag,
+                toggleModule,
+                removeModules,
             };
         },
     };

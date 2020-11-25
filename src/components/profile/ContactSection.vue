@@ -101,7 +101,7 @@
             async function save() {
                 const auth: UserManagement = new UserManagement();
                 const response = await auth.updateUser(editedUser.value);
-                const handler = new ValidationResponseHandler();
+                const handler = new ValidationResponseHandler("contact data");
                 if (handler.handleResponse(response)) {
                     isEditing.value = false;
                     emit("update:user", editedUser.value);
