@@ -96,6 +96,7 @@
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import AuthenticationManagement from "../../api/AuthenticationManagement";
+    import { useToast } from "@/toast";
 
     export default {
         name: "SecuritySection",
@@ -108,6 +109,7 @@
             let enterPasswordModal = ref();
             let newPassword = ref("");
             let confirmationPassword = ref("");
+            const toast = useToast();
 
             let passwordMatch = computed(() => {
                 return !(newPassword.value === confirmationPassword.value && newPassword.value != "");
@@ -147,7 +149,7 @@
             }
 
             async function updatePassword() {
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("password");
                 const authenticationManagement: AuthenticationManagement = new AuthenticationManagement();
                 const response = await authenticationManagement.changeOwnPassword(newPassword.value);
                 const result = genericResponseHandler.handleResponse(response);
@@ -158,6 +160,7 @@
                     confirmationPassword.value = "";
                     passwordFieldType.value = "password";
                     editPassword.value = false;
+                    toast.success("Password updated.");
                 }
             }
 

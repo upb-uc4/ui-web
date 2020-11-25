@@ -1,13 +1,50 @@
 import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
+import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 import ResponseHandler from "./ResponseHandler";
+
+export default class GenericImmatriculationResponseHandler implements ResponseHandler<boolean> {
+    handleResponse<T>(response: APIResponse<T>): T {
+        if (response.networkError) {
+            showNetworkErrorToast();
+            return response.returnValue;
+        }
+        switch (response.statusCode) {
+            case 400: {
+                showAPIToast(response.statusCode);
+                return response.returnValue;
+            }
+            case 401: {
+                handleAuthenticationError(response);
+                return response.returnValue;
+            }
+            case 403: {
+                alert("You do not have the neccessary user rights for this action!");
+                return response.returnValue;
+            }
+            case 404: {
+                return response.returnValue;
+            }
+            case 500: {
+                showAPIToast(response.statusCode);
+                return response.returnValue;
+            }
+            case 200: {
+                return response.returnValue;
+            }
+        }
+
+        return response.returnValue;
+    }
+}
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
  */
-export default class MatriculationValidationResponseHandler implements ResponseHandler<boolean> {
+export class MatriculationValidationResponseHandler implements ResponseHandler<boolean> {
     errorList: Error[] = [] as Error[];
 
     isValidationError(object: any): object is ValidationError {
@@ -34,24 +71,28 @@ export default class MatriculationValidationResponseHandler implements ResponseH
             }
 
             if (response.networkError) {
-                alert("Network Error!");
+                showNetworkErrorToast();
                 return false;
             }
 
             switch (response.statusCode) {
                 case 400: {
-                    alert("Wrong syntax.. Why are you seeing this?");
+                    showAPIToast(response.statusCode);
                     return false;
                 }
                 case 401: {
-                    alert("Wrong password or username combination!");
+                    handleAuthenticationError(response);
                     return false;
                 }
                 case 404: {
-                    alert("I don't think this is even possible, HOW IS THIS ERROR CODE GENERATED?");
+                    showAPIToast(response.statusCode, "matriculation data");
                     return false;
                 }
                 case 422: {
+                    return false;
+                }
+                case 500: {
+                    showAPIToast(response.statusCode);
                     return false;
                 }
                 case 200: {
