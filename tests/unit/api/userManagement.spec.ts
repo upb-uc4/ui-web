@@ -5,11 +5,8 @@ import { Role } from "@/entities/Role";
 import { store } from "@/use/store/store";
 import { MutationTypes } from "@/use/store/mutation-types";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
-import Student from "@/api/api_models/user_management/Student";
-import { Account } from "@/entities/Account";
 import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
-import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 
 var userManagement: UserManagement;
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
@@ -45,6 +42,7 @@ test("Get specific user", async () => {
     var result = false;
     const user = await userManagement.getSpecificUser(student.username);
     result = user.returnValue.username == student.username;
+    student.enrollmentIdSecret = user.returnValue.enrollmentIdSecret;
     expect(result).toBe(true);
 });
 

@@ -198,7 +198,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[type='radio']").eq(2).click();
         cy.get("button[id='createAccount']").click();
         cy.get("input[id='matriculationId']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='governmentId]").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='governmentId']").siblings().get("p").should("have.class", "error-message");
     });
 
     it("Duplicate username detected", () => {
