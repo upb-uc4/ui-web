@@ -1,5 +1,8 @@
 # [v0.13.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-XX-XX)
 
+## Feature
+- added governmentId to user creation
+
 ## Bugfix
 - add ECTS field to course form [#738](https://github.com/upb-uc4/ui-web/pull/738)
 - reset store state on logout [#732](https://github.com/upb-uc4/ui-web/pull/732)
