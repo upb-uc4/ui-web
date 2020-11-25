@@ -8,7 +8,7 @@ export class CourseEntity implements Course {
     courseId: string = "";
     courseName: string = "";
     lecturerId: string = "";
-    ects: number = 1;
+    ects: number = 0;
     maxParticipants: number = 0;
     currentParticipants: number = 0;
     courseDescription: string = "";
