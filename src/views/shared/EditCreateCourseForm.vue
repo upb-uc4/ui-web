@@ -17,6 +17,7 @@
                 v-model:name="course.courseName"
                 v-model:type="course.courseType"
                 v-model:language="course.courseLanguage"
+                v-model:ects="course.ects"
                 v-model:description="course.courseDescription"
                 :error-bag="errorBag"
             />
