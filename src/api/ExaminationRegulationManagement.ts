@@ -1,100 +1,30 @@
+import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
 import { AxiosError, AxiosResponse } from "axios";
-import Course from "./api_models/course_management/Course";
 import APIError from "./api_models/errors/APIError";
+import Module from "./api_models/exam_reg_management/Module";
 import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 
-export default class CourseManagement extends Common {
+export default class ExaminationRegulationManagement extends Common {
     constructor() {
-        super("/course-management");
+        super("/examreg-management");
     }
 
-    static async getVersion(): Promise<string> {
-        return super.getVersion("/course-management");
-    }
-
-    async getCourses(courseName?: string, lecturerId?: string, moduleIds?: string[]): Promise<APIResponse<Course[]>> {
+    async getModules(moduleIds?: string[]): Promise<APIResponse<Module[]>> {
         const requestParameter = { params: {} as any };
-        //optional name to search by
-        if (courseName != undefined) {
-            requestParameter.params.courseName = courseName;
-        }
-        if (lecturerId != undefined) {
-            requestParameter.params.lecturerId = lecturerId;
-        }
         if (moduleIds != undefined) {
             requestParameter.params.moduleIds = moduleIds.reduce((a, b) => a + "," + b, "");
         }
 
         return await this._axios
-            .get(`/courses`, requestParameter)
-            .then((response: AxiosResponse) => {
-                return {
-                    error: {} as APIError,
-                    networkError: false,
-                    returnValue: response.data as Course[],
-                    statusCode: response.status,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    return {
-                        error: error.response.data as APIError,
-                        networkError: false,
-                        returnValue: [] as Course[],
-                        statusCode: error.response.status,
-                    };
-                } else {
-                    return {
-                        error: {} as APIError,
-                        networkError: true,
-                        returnValue: [] as Course[],
-                        statusCode: 0,
-                    };
-                }
-            });
-    }
-
-    async getCourse(id: string): Promise<APIResponse<Course>> {
-        return await this._axios
-            .get(`/courses/${id}`)
+            .get("/examination-regulations/modules", requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
-                    returnValue: response.data as Course,
+                    returnValue: response.data as Module[],
                     networkError: false,
                     error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    return {
-                        statusCode: error.response.status,
-                        returnValue: {} as Course,
-                        networkError: false,
-                        error: error.response.data as APIError,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        returnValue: {} as Course,
-                        networkError: true,
-                        error: {} as APIError,
-                    };
-                }
-            });
-    }
-
-    async createCourse(course: Course): Promise<APIResponse<boolean>> {
-        return await this._axios
-            .post("/courses", course)
-            .then((response: AxiosResponse) => {
-                return {
-                    error: {} as APIError,
-                    networkError: false,
-                    statusCode: response.status,
-                    returnValue: true,
                 };
             })
             .catch(async (error: AxiosError) => {
@@ -103,38 +33,123 @@ export default class CourseManagement extends Common {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: {} as Course,
+                            returnValue: [] as Module[],
                             networkError: false,
                         })
                     ) {
-                        return await this.createCourse(course);
+                        return await this.getModules(moduleIds);
                     }
                     return {
-                        error: error.response.data as APIError,
-                        networkError: false,
                         statusCode: error.response.status,
-                        returnValue: false,
+                        error: error.response.data as APIError,
+                        returnValue: [] as Module[],
+                        networkError: false,
                     };
                 } else {
                     return {
-                        error: {} as APIError,
-                        networkError: true,
                         statusCode: 0,
-                        returnValue: false,
+                        error: {} as APIError,
+                        returnValue: [] as Module[],
+                        networkError: true,
                     };
                 }
             });
     }
 
-    async updateCourse(course: Course): Promise<APIResponse<boolean>> {
+    async getExaminationRegulation(names?: string[]): Promise<APIResponse<ExaminationRegulation[]>> {
+        const requestParameter = { params: {} as any };
+        if (names != undefined) {
+            requestParameter.params.regulations = names.reduce((a, b) => a + "," + b, "");
+        }
+
         return await this._axios
-            .put(`/courses/${course.courseId}`, course)
+            .get("/examination-regulations", requestParameter)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data as ExaminationRegulation[],
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: [] as ExaminationRegulation[],
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getExaminationRegulation(names);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: [] as ExaminationRegulation[],
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: [] as ExaminationRegulation[],
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async getExaminationRegulationNames(): Promise<APIResponse<string[]>> {
+        return await this._axios
+            .get("/examination-regulations/names")
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data as string[],
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: [] as string[],
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getExaminationRegulationNames();
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: [] as string[],
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: [] as string[],
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async createExaminationRegulation(examReg: ExaminationRegulation): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .post("/examination-regulations", examReg)
             .then((response: AxiosResponse) => {
                 return {
                     error: {} as APIError,
                     networkError: false,
-                    returnValue: true,
                     statusCode: response.status,
+                    returnValue: true,
                 };
             })
             .catch(async (error: AxiosError) => {
@@ -147,28 +162,28 @@ export default class CourseManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.updateCourse(course);
+                        return await this.createExaminationRegulation(examReg);
                     }
                     return {
-                        networkError: false,
-                        returnValue: false,
-                        statusCode: error.response.status,
                         error: error.response.data as APIError,
+                        networkError: false,
+                        statusCode: error.response.status,
+                        returnValue: false,
                     };
                 } else {
                     return {
-                        networkError: false,
-                        returnValue: true,
-                        statusCode: 0,
                         error: {} as APIError,
+                        networkError: true,
+                        statusCode: 0,
+                        returnValue: false,
                     };
                 }
             });
     }
 
-    async deleteCourse(id: string): Promise<APIResponse<boolean>> {
+    async deleteExaminationRegulation(name: string): Promise<APIResponse<boolean>> {
         return await this._axios
-            .delete(`/courses/${id}`)
+            .delete(`/examination-regulations/${name}`)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: true,
@@ -187,7 +202,7 @@ export default class CourseManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.deleteCourse(id);
+                        return await this.deleteExaminationRegulation(name);
                     }
                     return {
                         returnValue: false,
@@ -204,5 +219,9 @@ export default class CourseManagement extends Common {
                     };
                 }
             });
+    }
+
+    static async getVersion(): Promise<string> {
+        return super.getVersion("/examreg-management");
     }
 }
