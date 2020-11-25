@@ -12,4 +12,5 @@ export default class UserEntity implements User {
     email = "";
     birthDate = "";
     phoneNumber = "";
+    enrollmentIdSecret = "";
 }
