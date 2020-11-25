@@ -14,7 +14,7 @@ export default class LecturerEntity implements Lecturer {
     email = "";
     birthDate = "";
     phoneNumber = "";
-    is_Active = true;
+    isActive = true;
 
     constructor() {}
 }

@@ -58,7 +58,7 @@
                 busy.value = true;
                 const userManagement: UserManagement = new UserManagement();
 
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("users");
                 const response = props.showInactive
                     ? await userManagement.getUsers(undefined, undefined, false)
                     : await userManagement.getUsers();
