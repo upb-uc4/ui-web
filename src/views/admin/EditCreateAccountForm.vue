@@ -25,6 +25,7 @@
             <personal-information-section
                 v-model:first-name="account.user.firstName"
                 v-model:last-name="account.user.lastName"
+                v-model:government-id="account.governmentId"
                 v-model:birth-date="account.user.birthDate"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -172,6 +173,7 @@
                 admin: new AdminEntity(),
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
+                governmentId: "",
             });
             let initialAccount = {
                 authUser: new Account(),
@@ -179,6 +181,7 @@
                 admin: new AdminEntity(),
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
+                governmentId: "",
             };
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
@@ -280,7 +283,9 @@
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
                     //student properties
-                    account.student.matriculationId != initialAccount.student.matriculationId
+                    account.student.matriculationId != initialAccount.student.matriculationId ||
+                    //governmentId
+                    account.governmentId != ""
                 ) {
                     emit("update:has-input", true);
                     return true;
@@ -347,7 +352,7 @@
                     return;
                 }
 
-                const response = await userManagement.createUser(account.authUser, newUser);
+                const response = await userManagement.createUser(account.governmentId, account.authUser, newUser);
                 const handler = new AccountValidationResponseHandler("user");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
