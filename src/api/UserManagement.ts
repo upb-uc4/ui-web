@@ -237,11 +237,9 @@ export default class UserManagement extends Common {
         return await this.getSpecificUser(username);
     }
 
-    async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
-        let message = UserManagement._createMessage(user, authUser);
-
+    async createUser(governmentId: string, authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
         return await this._axios
-            .post("/users", message)
+            .post("/users", { governmentId, authUser, user })
             .then((reponse: AxiosResponse) => {
                 return {
                     statusCode: reponse.status,
@@ -260,7 +258,7 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.createUser(authUser, user);
+                        return await this.createUser(governmentId, authUser, user);
                     }
                     return {
                         statusCode: error.response.status,
@@ -307,37 +305,6 @@ export default class UserManagement extends Common {
                     };
                 }
             });
-    }
-
-    static _createMessage(user: Student | Lecturer | Admin, authUser: Account) {
-        let message;
-        switch (user.role) {
-            case Role.STUDENT: {
-                message = {
-                    authUser: authUser,
-                    student: user as Student,
-                };
-                break;
-            }
-            case Role.LECTURER: {
-                message = {
-                    authUser: authUser,
-                    lecturer: user as Lecturer,
-                };
-                break;
-            }
-            case Role.ADMIN: {
-                message = {
-                    authUser: authUser,
-                    admin: user as Admin,
-                };
-                break;
-            }
-            case Role.NONE: {
-                new Error("Endpoint undefined");
-            }
-        }
-        return message;
     }
 
     static _createEndpointByRole(role: Role): string {

@@ -43,6 +43,8 @@ jobs:
   work:
     name: Run unit tests
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -78,10 +80,12 @@ jobs:
     name: Run e2e tests
     needs: setup
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
-
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
