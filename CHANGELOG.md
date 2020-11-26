@@ -2,6 +2,7 @@
 
 ## Feature
 - added governmentId to user creation [#701](https://github.com/upb-uc4/ui-web/pull/701)
+- add soft deletion of users [#702](https://github.com/upb-uc4/ui-web/pull/702)
 
 ## Refactoring
 - Merge endpoints for user creation [#700](https://github.com/upb-uc4/ui-web/pull/700)

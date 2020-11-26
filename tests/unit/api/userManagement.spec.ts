@@ -174,6 +174,12 @@ test("Get active user", async () => {
     expect(result).toHaveLength(0);
 });
 
+test("Get inactive user", async () => {
+    const resp = await userManagement.getUsers(undefined, [student.username], false);
+    let result = Object.values(resp.returnValue).flat();
+    expect(result).toHaveLength(1);
+});
+
 test("Force delete user", async () => {
     const success = await userManagement.forceDeleteUser(student.username);
     expect(success.returnValue).toBe(true);
