@@ -61,7 +61,7 @@
                 const genericResponseHandler = new GenericResponseHandler("users");
                 const response = props.showInactive
                     ? await userManagement.getUsers(undefined, undefined, false)
-                    : await userManagement.getUsers();
+                    : await userManagement.getUsers(undefined, undefined, true);
                 const userLists = genericResponseHandler.handleResponse(response);
                 users.value = Object.values(userLists).flat();
                 busy.value = false;

@@ -15,6 +15,9 @@
                 <div class="flex items-center">
                     <img class="hidden sm:block w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
                     <div class="sm:ml-4">
+                        <div v-if="user.isActive" class="mb-1 truncate">
+                            <label class="text leading-5 font-medium text-blue-900 mr-2">{{ user.firstName }} {{ user.lastName }}</label>
+                        </div>
                         <div v-if="!user.isActive" class="mb-1 truncate">
                             <label v-if="isLecturer" class="text leading-5 font-medium text-blue-900 mr-2">{{ user.firstName }} {{ user.lastName }}</label>
                             <label class="text-gray-600 italic">(inactive)</label>
