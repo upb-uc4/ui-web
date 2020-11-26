@@ -61,7 +61,7 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import MatriculationValidationResponseHandler from "@/use/helpers/MatriculationValidationResponseHandler";
+    import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
     import { useStore } from "@/use/store/store";
     import { validateMatriculationProposal } from "@/api/helpers/ProposalValidator";
     import CertificateManagement from "@/api/CertificateManagement";
@@ -88,8 +88,8 @@
 
             let currentYear = new Date().getFullYear();
 
-            onBeforeMount(() => {
-                getUsername();
+            onBeforeMount(async () => {
+                await getUsername();
             });
 
             async function getUsername() {
@@ -154,9 +154,9 @@
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
-                const response = await matriculationManagement.getUnsignedMatriculationProposal(props.username, matriculationEntries);
+                const response = await matriculationManagement.getUnsignedMatriculationProposal(username.value, matriculationEntries);
                 const matriculationResponseHandler = new MatriculationValidationResponseHandler();
-                const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(props.username);
+                const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(username.value);
                 const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
@@ -191,7 +191,7 @@
                 const signature = await signProposal(response.returnValue.unsignedProposal, privateKey);
                 const signedProposal: SignedProposalMessage = { unsignedProposal: response.returnValue.unsignedProposal, signature };
 
-                const matr = await matriculationManagement.submitSignedMatriculationProposal(props.username, signedProposal);
+                const matr = await matriculationManagement.submitSignedMatriculationProposal(username.value, signedProposal);
 
                 const result = new GenericResponseHandler("matriculation").handleResponse(matr);
 
@@ -212,6 +212,7 @@
                 validSelection,
                 refreshKey,
                 errorBag,
+                username,
             };
         },
     };

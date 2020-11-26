@@ -4,6 +4,7 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
+import { useToast } from "@/toast";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { GetterTree } from "vuex";
 import { ActionTypes } from "./action-types";
@@ -47,6 +48,7 @@ export const getters: GetterTree<State, State> & Getters = {
             const certManagement = new CertificateManagement();
 
             const keyResponse = await certManagement.getEncryptedPrivateKey((await store.getters.user).username);
+
             const handler = new GenericResponseHandler("certificate");
             const encryptedPrivateKey = handler.handleResponse(keyResponse);
 
@@ -59,6 +61,25 @@ export const getters: GetterTree<State, State> & Getters = {
                 }
 
                 store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
+            } else {
+                // no key at lagom?
+                if (state.certificate.certificate) {
+                    const toast = useToast();
+                    toast.error(
+                        "Something went wrong. this user does not have an encrypted private key saved but has a certificate. Please report this."
+                    );
+                } else {
+                    // create certificate
+                    await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
+                        store.commit(MutationTypes.SET_HAS_CERTIFICATE, false);
+                        return { certificate: "" };
+                    });
+
+                    const keyResponse = await certManagement.getEncryptedPrivateKey((await store.getters.user).username);
+                    const encryptedPrivateKey = handler.handleResponse(keyResponse);
+                    const privateKey: CryptoKey = await state.decryptPrivateKeyModal(encryptedPrivateKey);
+                    store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
+                }
             }
         }
         return state.privateKey;
