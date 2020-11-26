@@ -8,6 +8,7 @@
             <div class="flex items-center my-12">
                 <img id="picture" class="w-32 h-32 mb-4 rounded-full object-cover mx-16 border-4 border-blue-700" :src="profilePicture" />
                 <div class="flex flex-col">
+                    <label v-if="!student.isActive" class="text-md italic text-red-400">(inactive)</label>
                     <h1 class="text-3xl font-medium text-gray-700">
                         {{ student.firstName + " " + student.lastName }}
                         <span class="text-xl"> (@{{ student.username }}) </span>

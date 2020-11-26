@@ -150,8 +150,8 @@ describe("Certificate management tests", () => {
     afterAll(async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         const userManagement = new UserManagement();
-        const success2 = await userManagement.deleteUser(student.authUser.username);
-        const success3 = await userManagement.deleteUser(student2.authUser.username);
+        const success2 = await userManagement.forceDeleteUser(student.authUser.username);
+        const success3 = await userManagement.forceDeleteUser(student2.authUser.username);
 
         expect(success.statusCode).toBe(true);
         expect(success2.statusCode).toBe(true);

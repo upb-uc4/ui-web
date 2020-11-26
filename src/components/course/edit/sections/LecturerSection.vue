@@ -95,7 +95,7 @@
             async function getLecturers() {
                 const userManagement: UserManagement = new UserManagement();
                 const handler = new GenericResponseHandler("lecturers");
-                const response = await userManagement.getAllUsersByRole(Role.LECTURER);
+                const response = await userManagement.getUsers(Role.LECTURER);
                 const result = handler.handleResponse(response);
                 if (result) {
                     lecturers.value = result as Lecturer[];

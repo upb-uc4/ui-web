@@ -16,24 +16,6 @@
             <contact-section v-model:user="admin" />
 
             <address-section v-model:user="admin" />
-
-            <section class="py-8 border-t-2 border-gray-400">
-                <div class="lg:flex">
-                    <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                        <label class="block mb-2 text-lg font-medium text-gray-700">Notifications</label>
-                        <label class="block text-gray-600"> Control when and how to stay updated about recent activities. </label>
-                    </div>
-                    <div class="w-full lg:w-2/3">
-                        <div class="flex items-start mb-6">
-                            <input id="otherCheckbox" class="w-6 h-6 mt-2 text-blue-600 form-checkbox" type="checkbox" checked />
-                            <div class="flex flex-col ml-6">
-                                <label class="text-lg font-medium text-gray-700">Some Other Stuff</label>
-                                <label class="text-gray-600">This was just an idea. Feel free to delete it.</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     </div>
 </template>
