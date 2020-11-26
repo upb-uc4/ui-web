@@ -153,7 +153,7 @@
                 const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture.value = selectedPicture.value;
-                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
+                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                     errorBag.value = new ErrorBag();
                     toast.success("Profile picture updated.");
                 } else {
@@ -177,7 +177,7 @@
                         }
                         case action.DELETE: {
                             deleteProfilePicture();
-                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
+                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                             break;
                         }
                     }
