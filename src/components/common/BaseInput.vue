@@ -16,7 +16,7 @@
             @blur="validate"
         />
         <div v-if="!isValid && !disabled" class="error error-message text-sm">
-            {{ errorMessage || getDefaultErrorsMessage }}
+            {{ errorMessage || errMessage || getDefaultErrorsMessage }}
         </div>
     </div>
 </template>
@@ -76,6 +76,7 @@
             let isValid = ref(true);
             let errClass = props.validClass + " " + props.errorClass;
             let validation = ref("");
+            const errMessage = ref("");
             const hasLabel = props.label !== "";
 
             const model = useModelWrapper(props, emit, "value");
@@ -86,7 +87,8 @@
                 const validationBag = new ValidationBag(val);
 
                 if (props.validationQuery) {
-                    validation.value = validationBag.get(props.validationQuery);
+                    validation.value = validationBag.get(props.validationQuery + ".regex");
+                    errMessage.value = validationBag.get(props.validationQuery + ".message");
                 }
             });
 
@@ -128,6 +130,7 @@
                 getDefaultErrorsMessage,
                 validate,
                 errClass,
+                errMessage,
                 validation,
             };
         },

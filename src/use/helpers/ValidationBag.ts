@@ -28,7 +28,6 @@ export default class ValidationBag {
 
     validate(object: any, prefix: string): boolean {
         let result = true;
-
         for (let key of Object.keys(object)) {
             if (typeof object[key] === "object" && object[key] !== null) {
                 // element is an object
@@ -40,8 +39,8 @@ export default class ValidationBag {
                     object[key] instanceof String ||
                     object[key] instanceof Number
                 ) {
-                    if (this.has(prefix + "." + key)) {
-                        const match = object[key].toString().match(this.get(prefix + "." + key));
+                    if (this.has(prefix + "." + key + "." + "regex")) {
+                        const match = object[key].toString().match(this.get(prefix + "." + key + "." + "regex"));
                         result = result && match !== null && match[0] === object[key].toString();
                     }
                 }
