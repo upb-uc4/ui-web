@@ -5,7 +5,7 @@ import { CourseType } from "@/entities/CourseType";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultStudent, logout } from "./helpers/AuthHelper";
 import { createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToAccountList, navigateToCourseListStudent } from "./helpers/NavigationHelper";
-import { createUsers, deleteUsers } from "./helpers/UserHelper";
+import { createUsers, deleteUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Course Filtering", function () {
@@ -15,6 +15,7 @@ describe("Course Filtering", function () {
 
     let adminAuth: Account;
     let lecturer: Lecturer;
+    let lecturerGovId: string;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
 
@@ -49,16 +50,14 @@ describe("Course Filtering", function () {
                 cy.fixture("lecturerAuthUser.json").then((l) => {
                     (l as Account).username += random;
                     lecturerAuth = l as Account;
-                    usersWithAuth.push({ userInfo: lecturer, auth: lecturerAuth });
+                    lecturerGovId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId: lecturerGovId, userInfo: lecturer, auth: lecturerAuth });
                 });
             })
             .then(async () => {
                 await createUsers(usersWithAuth);
-            })
-            .then(async () => {
+                await new Promise((r) => setTimeout(r, 3000));
                 await createCourses([course1]);
-            })
-            .then(async () => {
                 await deleteUsers([lecturerAuth], adminAuth);
             })
             .then(() => {
@@ -83,7 +82,7 @@ describe("Course Filtering", function () {
             .parent()
             .parent()
             .find("a[id='showLecturer']")
-            .should("have.value", `${lecturer.firstName} ${lecturer.lastName}`);
+            .should("contain", `${lecturer.firstName} ${lecturer.lastName}`);
     });
 
     it("Public profile is shown correctly", () => {
@@ -103,9 +102,9 @@ describe("Course Filtering", function () {
 
     it("Deleted lecturer is shown in account list after checking 'inactive'", () => {
         navigateToAccountList();
-        cy.get("input[id='toggleInactive]").should("not.be.checked");
+        cy.get("input[id='toggleInactive']").should("not.be.checked");
         cy.get(`div[id='user_${lecturer.username}']`).should("not.exist");
-        cy.get("input[id='toggleInactive]").check();
+        cy.get("input[id='toggleInactive']").check();
         cy.wait(1000);
         cy.get(`div[id='user_${lecturer.username}']`).should("exist");
         cy.get(`div[id='user_${lecturer.username}']`).should("contain", "(inactive)");
