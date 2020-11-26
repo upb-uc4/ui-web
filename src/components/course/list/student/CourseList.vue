@@ -4,7 +4,7 @@
             <loading-component />
         </div>
         <div v-for="course in shownCourses" v-else :key="course.courseId">
-            <student-course :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+            <student-course :admitted-courses="admittedCourses" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
         </div>
     </div>
 </template>
@@ -44,13 +44,26 @@
             let busy = ref(false);
             let lecturers = ref([] as Lecturer[]);
             let courses = ref([] as Course[]);
+            let admittedCourses = ref([] as any[]);
             let username = ref("");
 
+            let mockAdmitted = [
+                {
+                    admissionId: "123456:TestCourse Registered",
+                    enrollmentId: "1234567",
+                    courseId: "aaf1288c-2fd6-11eb-bf02-f3ae33bfbe73",
+                    moduleId: "M.1275.78235",
+                    timestamp: "something",
+                },
+            ];
+
             onBeforeMount(async () => {
+                busy.value = true;
                 await getCourses();
+                await getAdmittedCourses();
+                busy.value = false;
             });
             async function getCourses() {
-                busy.value = true;
                 const genericResponseHandler = new GenericResponseHandler("courses");
                 let response: APIResponse<Course[]>;
                 const courseManagement: CourseManagement = new CourseManagement();
@@ -60,7 +73,11 @@
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
                 const resp = await userManagement.getLecturers(...lecturerIds);
                 lecturers.value = genericResponseHandler.handleResponse(resp);
-                busy.value = false;
+            }
+
+            async function getAdmittedCourses() {
+                //TODO API CALL
+                admittedCourses.value = mockAdmitted;
             }
 
             function findLecturer(course: Course) {
@@ -90,6 +107,7 @@
                 shownCourses,
                 findLecturer,
                 username,
+                admittedCourses,
             };
         },
     };

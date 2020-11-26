@@ -37,8 +37,18 @@
                         </div>
 
                         <div class="w-full sm:w-1/6 mt-6 sm:mt-0">
-                            <button id="joinCourse" class="w-full py-2 btn btn-blue-primary" :disabled="isCourseFull">Join</button>
+                            <!--
+                            <button id="joinCourse" class="w-full py-2 btn btn-blue-primary" :disabled="isCourseFull">Join</-button>
                             <p v-if="isCourseFull" class="font-semibold text-red-700">This course is already full.</p>
+                            -->
+                            <div v-if="isAdmitted" class="text-green-500 flex items-baseline">
+                                <i class="inline text-lg fas fa-check-circle mr-2" />
+                                Registered
+                            </div>
+                            <div v-else-if="isFull" class="text-red-500 flex items-baseline">
+                                <i class="inline text-lg fas fa-times-circle mr-2" />
+                                course full
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -52,7 +62,7 @@
     import Course from "@/api/api_models/course_management/Course";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import Router from "@/use/router/index";
-    import { ref } from "vue";
+    import { computed, ref } from "vue";
 
     export default {
         name: "StudentCourse",
@@ -68,11 +78,17 @@
                 type: Object as () => Lecturer,
                 required: true,
             },
+            admittedCourses: {
+                type: Array,
+                required: true,
+            },
         },
         setup(props: any) {
             //todo this might not be a lecturer in the future
             const lecturerDisplayName = props.lecturer.firstName + " " + props.lecturer.lastName;
             const isCourseFull = props.course.currentParticipants >= props.course.maxParticipants;
+            const isAdmitted = (props.admittedCourses as any[]).find((m) => m.courseId == props.course.courseId);
+            const isFull = props.course.maxParticipants == props.course.currentParticipants;
             const flagSrc: string =
                 props.course.courseLanguage == "English"
                     ? "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/gb.svg"
@@ -91,6 +107,8 @@
                 flagSrc,
                 showCourseInfo,
                 showLecturer,
+                isAdmitted,
+                isFull,
             };
         },
     };
