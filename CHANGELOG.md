@@ -1,3 +1,7 @@
+# [v0.13.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.1-hotfix.1) (2020-11-26)
+## Bugfix
+- hide create course button in course catalogue [#747](https://github.com/upb-uc4/ui-web/pull/747)
+
 # [v0.13.1](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-11-26)
 
 ## Feature
