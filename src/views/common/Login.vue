@@ -7,7 +7,6 @@
 
                 <div class="items-center justify-center flex-auto w-full mx-4 lg:w-3/5">
                     <div class="mb-6">
-                        <i class="absolute m-3 mt-4 ml-24 text-gray-500 fas fa-user" />
                         <base-input
                             id="email"
                             v-model:value="email"
@@ -18,7 +17,6 @@
                         />
                     </div>
                     <div class="w-full mb-6 flex relative">
-                        <i class="absolute m-3 mt-4 ml-24 text-gray-500 fas fa-lock" />
                         <i
                             :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                             class="fas absolute mt-4 mr-24 right-0 text-gray-500 cursor-pointer"

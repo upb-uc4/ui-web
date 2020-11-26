@@ -7,7 +7,7 @@
         <input
             ref="BaseInput"
             v-model="model"
-            class="w-full appearance-none text-gray-400 text-lg rounded-lg border-2 border-gray-400 block w-full px-3 py-3 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+            class="w-full input-text form-input"
             :type="type"
             :class="{ error: !isValid }"
             :placeholder="placeholder || label"
