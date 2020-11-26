@@ -96,7 +96,7 @@ describe("Matriculation management", () => {
     });
 
     test("Delete student user", async () => {
-        const success = await userManagement.deleteUser(student.username);
+        const success = await userManagement.forceDeleteUser(student.username);
         expect(success.returnValue).toBe(true);
     });
 });
