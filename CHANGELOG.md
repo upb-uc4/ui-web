@@ -6,6 +6,7 @@
 
 ## Refactoring
 - Merge endpoints for user creation [#700](https://github.com/upb-uc4/ui-web/pull/700)
+- Remove unused components [#739](https://github.com/upb-uc4/ui-web/pull/739)
 
 ## Bugfix
 - add ECTS field to course form [#738](https://github.com/upb-uc4/ui-web/pull/738)
