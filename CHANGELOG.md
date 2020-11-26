@@ -1,4 +1,4 @@
-# [v0.13.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-XX-XX)
+# [v0.13.1](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-11-26)
 
 ## Feature
 - added governmentId to user creation [#701](https://github.com/upb-uc4/ui-web/pull/701)
