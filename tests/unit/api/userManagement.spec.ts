@@ -186,7 +186,7 @@ test("Force delete user", async () => {
 });
 
 test("Get user", async () => {
-    const resp = await userManagement.getUsers(undefined, [student.username], undefined);
+    const resp = await userManagement.getUsers(undefined, [student.username]);
     let result = Object.values(resp.returnValue).flat();
     expect(result).toHaveLength(0);
 });
