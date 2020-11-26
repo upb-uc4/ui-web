@@ -4,7 +4,7 @@ import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import { MutationTree } from "vuex";
 import { MutationTypes } from "./mutation-types";
-import { State } from "./state";
+import defaultState, { State } from "./state";
 
 export type Mutations<S = State> = {
     [MutationTypes.SET_USER](state: S, payload: Student | Lecturer | Admin): void;
@@ -14,9 +14,10 @@ export type Mutations<S = State> = {
     [MutationTypes.SET_LOGGEDIN](state: S, payload: boolean): void;
     [MutationTypes.SET_CERTIFICATE](state: S, payload: Certificate): void;
     [MutationTypes.SET_PRIVATE_KEY](state: S, payload: CryptoKey): void;
-    [MutationTypes.FORCE_CLOSE_BURGER_MENU](state: S, payload: boolean): void;
-    [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S, payload: boolean): void;
+    [MutationTypes.FORCE_CLOSE_BURGER_MENU](state: S): void;
+    [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S): void;
     [MutationTypes.SET_HAS_CERTIFICATE](state: S, payload: boolean): void;
+    [MutationTypes.RESET_STATE](state: S, payload: void): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -49,5 +50,8 @@ export const mutations: MutationTree<State> & Mutations = {
     },
     [MutationTypes.SET_HAS_CERTIFICATE](state: State, payload: boolean) {
         state.hasCertificate = payload;
+    },
+    [MutationTypes.RESET_STATE](state: State) {
+        Object.assign(state, defaultState);
     },
 };

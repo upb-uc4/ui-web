@@ -5,7 +5,6 @@ import { MutationTypes } from "@/use/store/mutation-types";
 import { useStore } from "@/use/store/store";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
-import User from "./api_models/user_management/User";
 import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
@@ -88,7 +87,7 @@ export default class AuthenticationManagement extends Common {
 
                 store.commit(MutationTypes.SET_LOGGEDIN, true);
                 const userManagement = new UserManagement();
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("user");
                 const userResponse = await userManagement.getSpecificUser(response.data.username);
                 if (response.status == 200) {
                     const user = handler.handleResponse(userResponse);
@@ -132,8 +131,7 @@ export default class AuthenticationManagement extends Common {
             .get(`/logout`)
             .then((response: AxiosResponse) => {
                 const store = useStore();
-                store.commit(MutationTypes.SET_LOGGEDIN, false);
-                store.commit(MutationTypes.SET_USER, {} as User);
+                store.commit(MutationTypes.RESET_STATE);
                 return {
                     error: {} as APIError,
                     networkError: false,
@@ -177,7 +175,7 @@ export default class AuthenticationManagement extends Common {
                 store.commit(MutationTypes.SET_LOGGEDIN, true);
 
                 const userManagement = new UserManagement();
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("user");
                 const userResponse = await userManagement.getSpecificUser(loginData.username);
                 if (response.status == 200) {
                     const user = handler.handleResponse(userResponse);

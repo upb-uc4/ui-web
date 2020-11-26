@@ -22,7 +22,7 @@ let userManagement: UserManagement;
 let certManagement: CertificateManagement;
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
 const studentAuth = JSON.parse(readFileSync("tests/fixtures/logins/student.json", "utf-8")) as { username: string; password: string };
-const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;
 let enrollmentId = "";
@@ -33,6 +33,7 @@ let unsignedProposal: UnsignedProposalMessage;
 let matriculation: SubjectMatriculation[];
 let signature: string;
 const protoURL = "public/hlf-proto.json";
+const governmentId = pair.governmentId;
 
 jest.setTimeout(30000);
 
@@ -46,7 +47,7 @@ describe("Matriculation management", () => {
     });
 
     test("Create student user", async () => {
-        const success = await userManagement.createUser(authUser, student);
+        const success = await userManagement.createUser(governmentId, authUser, student);
         expect(success.returnValue).toBe(true);
         expect(success.statusCode).toEqual(201);
         await new Promise((r) => setTimeout(r, 25000));
@@ -211,7 +212,7 @@ describe("Matriculation management", () => {
     });
 
     test("Delete student user", async () => {
-        const success = await userManagement.deleteUser(student.username);
+        const success = await userManagement.forceDeleteUser(student.username);
         expect(success.returnValue).toBe(true);
     });
 });

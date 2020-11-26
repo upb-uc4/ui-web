@@ -1,8 +1,33 @@
-# [v0.12.0 WIP](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.12.1) (2020-XX-XX)
+# [v0.13.1](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-11-26)
+
+## Feature
+- added governmentId to user creation [#701](https://github.com/upb-uc4/ui-web/pull/701)
+- add soft deletion of users [#702](https://github.com/upb-uc4/ui-web/pull/702), [#704](https://github.com/upb-uc4/ui-web/pull/704)
+
+## Refactoring
+- Merge endpoints for user creation [#700](https://github.com/upb-uc4/ui-web/pull/700)
+- Remove unused components [#739](https://github.com/upb-uc4/ui-web/pull/739)
+
+## Bugfix
+- add ECTS field to course form [#738](https://github.com/upb-uc4/ui-web/pull/738)
+- reset store state on logout [#732](https://github.com/upb-uc4/ui-web/pull/732)
+
+# [v0.13.0](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.13.0) (2020-11-23)
+
+## Feature
+- add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
+- add option for (de-)assigning modules to courses [#716](https://github.com/upb-uc4/ui-web/pull/716)
+- add a simple course catalogue view containing all courses that is reachable for guests, too [#706](https://github.com/upb-uc4/ui-web/pull/706)
 
 ## Refactoring
 - add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
 - add a message for the student if not immatriculated to any semester yet [#692](https://github.com/upb-uc4/ui-web/pull/692)
+- Replace deprecated suspense wrapper by onBeforeMount hooks and a "busy" variable [#714](https://github.com/upb-uc4/ui-web/pull/714)
+- restyle login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
+## Bugfix
+- fix mobile view of login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
 
 # [v0.12.0](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.12.0) (2020-11-06)
 
@@ -23,6 +48,7 @@
 - cleanup of imports and onBeforeMount hooks [#655](https://github.com/upb-uc4/ui-web/issues/655)
 
 # [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
+
 
 ## Bugfix
 - incrementing and decrementing the participation limit with arrow keys or the arrows provided by the browser for number fields, will be registered as changes made to the course and make it saveable [#590](https://github.com/upb-uc4/ui-web/issues/590)

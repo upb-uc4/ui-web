@@ -68,6 +68,8 @@
     import { decodeProposal } from "@/api/helpers/ProtobuffDecoding";
     import { signProposal } from "@/use/crypto/signing";
     import SignedProposalMessage from "@/api/api_models/common/SignedProposalMessage";
+    import { useToast } from "@/toast";
+    import { showAPIToast } from "@/use/helpers/Toasts";
 
     export default {
         components: {
@@ -111,6 +113,8 @@
 
             let errorBag = ref(new ErrorBag());
 
+            const toast = useToast();
+
             let selectedSemester = computed(() => {
                 return semesterType.value + year.value;
             });
@@ -153,7 +157,7 @@
                 const response = await matriculationManagement.getUnsignedMatriculationProposal(props.username, matriculationEntries);
                 const matriculationResponseHandler = new MatriculationValidationResponseHandler();
                 const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(props.username);
-                const responseHandler = new GenericResponseHandler();
+                const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
                 const unsignedProposal = matriculationResponseHandler.handleResponse(response);
@@ -163,6 +167,7 @@
                     year.value = "";
                     selectedFieldsOfStudy.value = [];
                     errorBag.value = new ErrorBag();
+                    toast.success("Immatriculation information updated");
                 } else {
                     errorBag.value = new ErrorBag(matriculationResponseHandler.errorList);
                 }
@@ -170,13 +175,13 @@
                 const proposal = await decodeProposal(response.returnValue.unsignedProposal);
 
                 if (!proposal) {
-                    return alert("Show toast that proposal was broken (HLF failure)");
+                    return showAPIToast(500, "Proposal broken.");
                 }
 
                 const validation = validateMatriculationProposal(enrollmentId.id, matriculationEntries, proposal);
 
                 if (!validation) {
-                    return alert("Show toast that we were asked to sign information that we did not submit (TRUST ISSUES)");
+                    return showAPIToast(500, "Proposal contained wrong information.");
                 }
 
                 const store = useStore();
@@ -188,7 +193,7 @@
 
                 const matr = await matriculationManagement.submitSignedMatriculationProposal(props.username, signedProposal);
 
-                const result = new GenericResponseHandler().handleResponse(matr);
+                const result = new GenericResponseHandler("matriculation").handleResponse(matr);
 
                 busy.value = false;
                 refreshKey.value = !refreshKey.value;

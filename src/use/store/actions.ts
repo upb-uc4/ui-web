@@ -45,7 +45,7 @@ export const actions: ActionTree<State, State> & Actions = {
         const keyInfo: EncryptedPrivateKey = { key: wrappedKeyBase64, iv: arrayBufferToBase64(iv), salt: wrappingKey.salt };
 
         const csrResponse = await certificateManagement.sendCertificateSigningRequest(username, csr, keyInfo);
-        const handler = new GenericResponseHandler();
+        const handler = new GenericResponseHandler("certificate");
 
         const certificate = handler.handleResponse(csrResponse);
 

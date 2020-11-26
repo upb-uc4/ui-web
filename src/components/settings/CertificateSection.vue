@@ -58,24 +58,26 @@
             const hasCertificate = ref(false);
 
             onBeforeMount(async () => {
+                busy.value = true;
                 const store = useStore();
                 hasCertificate.value = await store.getters.hasCertificate;
                 if (hasCertificate.value) {
                     await getCertificate();
                 }
-                let blob = new Blob([certificate.value], { type: "pem" });
-                certificateBlobURL.value = URL.createObjectURL(blob);
+                busy.value = false;
             });
 
             async function getCertificate() {
                 busy.value = true;
                 const store = useStore();
-                certificate.value = (await store.getters.certificate).certificate;
+                certificate.value = (await store.getters.certificate()).certificate;
                 if (certificate.value == "") {
                     hasCertificate.value = false;
                 } else {
                     hasCertificate.value = true;
                 }
+                let blob = new Blob([certificate.value], { type: "pem" });
+                certificateBlobURL.value = URL.createObjectURL(blob);
                 busy.value = false;
             }
 

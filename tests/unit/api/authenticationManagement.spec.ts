@@ -12,9 +12,10 @@ var userManagement: UserManagement;
 jest.setTimeout(30000);
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
-const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;
+const governmentId = pair.governmentId;
 
 beforeAll(async () => {
     const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
@@ -24,7 +25,7 @@ beforeAll(async () => {
 });
 
 test("Create user", async () => {
-    const success = await userManagement.createUser(authUser, student);
+    const success = await userManagement.createUser(governmentId, authUser, student);
     expect(success.returnValue).toBe(true);
     await new Promise((r) => setTimeout(r, 5000));
 });
@@ -60,7 +61,7 @@ test("Login as admin", async () => {
 });
 
 test("Delete user", async () => {
-    const success = await userManagement.deleteUser(student.username);
+    const success = await userManagement.forceDeleteUser(student.username);
     expect(success.returnValue).toBe(true);
     await new Promise((r) => setTimeout(r, 5000));
 });
