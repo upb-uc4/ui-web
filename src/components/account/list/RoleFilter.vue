@@ -14,10 +14,16 @@
                 {{ vrole }}
             </button>
         </div>
+        <div class="flex w-full ml-3 items-center justify-end">
+            <input id="toggleInactive" v-model="showInactiveAccounts" type="checkbox" class="m-2" />
+            <label class="text-sm text-gray-700">inactive</label>
+        </div>
     </div>
 </template>
 <script lang="ts">
     import { Role } from "@/entities/Role";
+    import { ref } from "vue";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         name: "RoleFilter",
@@ -25,6 +31,10 @@
             selectedRole: {
                 type: String,
                 required: true,
+            },
+            showInactive: {
+                type: Boolean,
+                default: false,
             },
         },
         emits: ["update:selectedRole"],
@@ -39,6 +49,7 @@
             return {
                 roles,
                 select,
+                showInactiveAccounts: useModelWrapper(props, emit, "showInactive"),
             };
         },
     };
