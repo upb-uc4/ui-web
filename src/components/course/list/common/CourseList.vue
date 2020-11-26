@@ -5,13 +5,11 @@
         </div>
         <div v-for="course in shownCourses" v-else :key="course.courseId">
             <lecturer-course
-                v-if="isLecturer || isAdmin"
                 :course="course"
                 :allow-edit="isAdmin || course.lecturerId == username"
                 :lecturer="findLecturer(course)"
                 class="mb-8"
             />
-            <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
         </div>
     </div>
 </template>
@@ -20,7 +18,6 @@
     import { useStore } from "@/use/store/store";
     import { Role } from "@/entities/Role";
     import LecturerCourse from "../lecturer/LecturerCourse.vue";
-    import StudentCourse from "../student/StudentCourse.vue";
     import CourseManagement from "@/api/CourseManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Course from "@/api/api_models/course_management/Course";
@@ -35,7 +32,6 @@
         name: "CourseList",
         components: {
             LecturerCourse,
-            StudentCourse,
             LoadingComponent,
         },
         props: {
@@ -58,9 +54,7 @@
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
             let lecturers = ref([] as Lecturer[]);
             let role = ref("");
-            let isLecturer = ref(false);
             let isAdmin = ref(false);
-            let isStudent = ref(false);
             let courses = ref([] as Course[]);
             let username = ref("");
 
@@ -71,25 +65,18 @@
                 busy.value = true;
                 const store = useStore();
                 role.value = (await store.getters.user).role;
-                isLecturer.value = role.value == Role.LECTURER;
                 isAdmin.value = role.value == Role.ADMIN;
-                isStudent.value = role.value == Role.STUDENT;
                 const genericResponseHandler = new GenericResponseHandler("courses");
                 let response: APIResponse<Course[]>;
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
-                if (isLecturer.value || isAdmin.value) {
-                    username.value = (await store.getters.user).username;
-                    if (props.showAllCourses) {
-                        response = await courseManagement.getCourses();
-                    } else {
-                        response = await courseManagement.getCourses(undefined, username.value);
-                    }
-                    courses.value = genericResponseHandler.handleResponse(response);
-                } else if (isStudent.value) {
+                username.value = (await store.getters.user).username;
+                if (props.showAllCourses) {
                     response = await courseManagement.getCourses();
-                    courses.value = genericResponseHandler.handleResponse(response);
+                } else {
+                    response = await courseManagement.getCourses(undefined, username.value);
                 }
+                courses.value = genericResponseHandler.handleResponse(response);
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
                 const resp = await userManagement.getLecturers(...lecturerIds);
                 lecturers.value = genericResponseHandler.handleResponse(resp);
@@ -130,9 +117,7 @@
                 role,
                 roles,
                 shownCourses,
-                isLecturer,
                 isAdmin,
-                isStudent,
                 findLecturer,
                 username,
             };
