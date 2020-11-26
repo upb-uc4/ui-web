@@ -69,7 +69,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/courses/:courseId",
+            path: "/courses/:courseId/drop",
             name: "student.course.drop",
             component: StudentCourseInfoPage,
             props: { isRegistered: true },
@@ -79,7 +79,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/courses/:courseId",
+            path: "/courses/:courseId/join",
             name: "student.course.join",
             component: StudentCourseInfoPage,
             props: { isRegistered: false },
