@@ -21,6 +21,7 @@ jobs:
   setup:
     name: Setup Test Parallelization
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -43,9 +44,8 @@ jobs:
           echo "::set-output name=matrix::$( echo "$matrix" )"
   api-dev:
     name: API Tests Development Cluster
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') }}
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') }} && github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
     timeout-minutes: 30
 
     steps:
@@ -79,7 +79,7 @@ jobs:
         run: npm run test:unit
   api-exp:
     name: API Tests Experimental Cluster
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') }} && github.event.pull_request.draft == false
     runs-on: ubuntu-latest
 
     steps:
@@ -113,9 +113,8 @@ jobs:
         run: export TEST_ENV=experimental && npm run test:unit
   e2e-dev:
     name: E2E Tests Development Cluster
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') }}
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') }} && github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -185,7 +184,7 @@ jobs:
 
   e2e-exp:
     name: E2E Tests Experimental Cluster
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') }} && github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     
     steps:
