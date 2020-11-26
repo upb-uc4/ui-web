@@ -23,13 +23,13 @@ export default class UserManagement extends Common {
     async getUsers(
         role?: Role,
         usernames?: string[],
-        only_active?: boolean
+        active?: boolean
     ): Promise<APIResponse<User_List | Student[] | Lecturer[] | Admin[]>> {
         const requestParameter = { params: {} as any };
         let endpoint = "/users";
 
         if (usernames) requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
-        if (only_active) requestParameter.params.only_active = only_active;
+        if (active) requestParameter.params.active = active;
         if (role) endpoint = UserManagement._createEndpointByRole(role);
 
         return await this._axios
@@ -52,7 +52,7 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUsers(role, usernames, only_active);
+                        return await this.getUsers(role, usernames, active);
                     }
                     return {
                         returnValue: {} as User_List,
