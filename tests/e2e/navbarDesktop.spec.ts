@@ -13,6 +13,12 @@ describe("guest", () => {
         cy.get("#routeAbout").click();
         cy.url().should("contain", "about");
     });
+
+    it("course catalog", () => {
+        cy.visit("/");
+        cy.get("#routeCourseCatalog").click();
+        cy.url().should("contain", "/course-catalog");
+    });
 });
 
 describe("admin", () => {

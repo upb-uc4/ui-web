@@ -17,8 +17,16 @@
                 v-model:name="course.courseName"
                 v-model:type="course.courseType"
                 v-model:language="course.courseLanguage"
+                v-model:ects="course.ects"
                 v-model:description="course.courseDescription"
                 :error-bag="errorBag"
+            />
+            <course-module-section
+                v-model:module-ids="course.moduleIds"
+                :error-bag="errorBag"
+                :edit-mode="editMode"
+                @toggle-module="toggleModule($event)"
+                @remove-modules="removeModules($event)"
             />
             <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
             <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
@@ -104,6 +112,7 @@
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
+    import CourseModuleSection from "@/components/course/edit/sections/CourseModulesSection.vue";
     import { useToast } from "@/toast";
 
     export default {
@@ -116,6 +125,7 @@
             DeleteCourseModal,
             UnsavedChangesModal,
             LoadingComponent,
+            CourseModuleSection,
         },
         props: {
             editMode: {
@@ -286,6 +296,21 @@
                 Router.push("/all-courses");
             }
 
+            function toggleModule(value: any) {
+                if (course.value.moduleIds.includes(value)) {
+                    course.value.moduleIds = course.value.moduleIds.filter((e) => e != value);
+                } else {
+                    course.value.moduleIds.push(value);
+                    course.value.moduleIds.sort((one, two) => (one > two ? -1 : 1));
+                }
+            }
+
+            function removeModules(value: any[]) {
+                value.forEach((e) => {
+                    course.value.moduleIds = course.value.moduleIds.filter((m) => m != e.id);
+                });
+            }
+
             return {
                 busy,
                 isAdmin,
@@ -303,6 +328,8 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag,
+                toggleModule,
+                removeModules,
             };
         },
     };

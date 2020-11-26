@@ -10,7 +10,7 @@ import PageNotFound from "@/views/errors/404.vue";
 import { createRouter, createWebHistory } from "vue-router";
 const LoginView = () => import("@/views/common/Login.vue");
 const StudentCourseView = () => import("@/views/student/StudentCourseList.vue");
-const AllCourseView = () => import("@/views/shared/CourseList.vue");
+const AllCourseView = () => import("@/views/common/CourseList.vue");
 const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
 const CourseForm = () => import("@/views/shared/EditCreateCourseForm.vue");
 const AccountForm = () => import("@/views/admin/EditCreateAccountForm.vue");
@@ -39,6 +39,15 @@ const router = createRouter({
             component: AboutPage,
             meta: {
                 title: "About" + suffix,
+            },
+        },
+        {
+            path: "/course-catalog",
+            name: "courseCatalog",
+            props: { showAllCourses: true },
+            component: AllCourseView,
+            meta: {
+                title: "Course Catalog" + suffix,
             },
         },
         {
@@ -234,7 +243,7 @@ router.beforeEach(async (to, from, next) => {
 
 router.afterEach(async (to, from, next) => {
     const store = useStore();
-    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU, true);
+    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU);
 });
 
 export default router;

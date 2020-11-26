@@ -4,7 +4,7 @@ import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
-import { createUsers, deleteUsers } from "./helpers/UserHelper";
+import { createNewLecturer, createUsers, deleteUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Course creation, edition and deletion", () => {
@@ -16,6 +16,8 @@ describe("Course creation, edition and deletion", () => {
     let adminAuth: Account;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
+    let newModule: String = "M.1275.01158";
+    let lecturerName = "Lect Urer";
 
     before(function () {
         cy.clearCookies();
@@ -44,7 +46,8 @@ describe("Course creation, edition and deletion", () => {
                 cy.fixture("lecturerAuthUser.json").then((lAuth) => {
                     (lAuth as Account).username += random;
                     secondLecturerAuth = lAuth as Account;
-                    usersWithAuth.push({ userInfo: secondLecturer, auth: secondLecturerAuth });
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: secondLecturer, auth: secondLecturerAuth });
                 });
             })
             .then(async () => {
@@ -83,7 +86,9 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='courseType']").should("exist");
         cy.get("input[id='courseName']").should("exist");
         cy.get("select[id='courseLanguage']").should("exist");
+        cy.get("select[id='exReg-']").should("exist");
         cy.get("textarea[id='courseDescription']").should("exist");
+        cy.get("input[id='ects']").should("exist");
         cy.get("input[id='maxParticipants']").should("exist");
         cy.get("input[id='startDate']").should("exist");
         cy.get("input[id='endDate']").should("exist");
@@ -103,6 +108,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='lecturerId']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='courseType']").siblings().get("p").should("have.class", "error-message");
         cy.get("select[id='courseLanguage']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='ects']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='maxParticipants']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='courseName']").clear();
         cy.get("input[type='radio']").eq(0).click();
@@ -125,6 +131,7 @@ describe("Course creation, edition and deletion", () => {
     it("Show new course page", () => {
         cy.get('button[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
+        cy.wait(750);
     });
 
     it("Filtering lecturer list in selection works", () => {
@@ -171,7 +178,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Display of lecturer found works", () => {
         // initially the default lecturer is loaded
-        cy.get("label").should("contain", "firstName LastName");
+        cy.get("label").should("contain", lecturerName);
         cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
         cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
 
@@ -181,7 +188,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='lecturerId']").clear();
         cy.get("input[id='lecturerId']").click();
         cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
-        cy.get("label").should("contain", "firstName LastName");
+        cy.get("label").should("contain", lecturerName);
         cy.get("a").contains("lecturer").should("have.attr", "href").and("include", "/user/lecturer");
         cy.get("a").contains("lecturer").should("have.attr", "target").and("include", "_blank");
     });
@@ -195,6 +202,12 @@ describe("Course creation, edition and deletion", () => {
         cy.get('input[id="courseName"]').clear().type(course.courseName);
     });
 
+    it("Can edit modules", () => {
+        cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
+        cy.get("input[id='modules_0']").click();
+        cy.get("div").contains(`${newModule}`).click();
+    });
+
     it("Can save course", () => {
         cy.get('button[id="saveChanges"]').should("be.enabled");
         cy.get('button[id="saveChanges"]').click();
@@ -203,7 +216,11 @@ describe("Course creation, edition and deletion", () => {
     it("Edit worked", () => {
         cy.wait(3000);
         cy.get("button[title='Refresh']").click();
-        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").should("exist");
+        cy.wait(1000);
+        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.wait(3000);
+        cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
+        cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
     });
 
     it("Delete course", () => {

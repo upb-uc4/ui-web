@@ -15,5 +15,7 @@
     "birthDate": "1950-12-24",
     "phoneNumber": "+49123456789",
     "freeText": "Some cool publications about jedi stuff.",
-    "researchArea": "The light side only, I swear!"
+    "researchArea": "The light side only, I swear!",
+    "enrollmentIdSecret": "",
+    "isActive": true
 }
