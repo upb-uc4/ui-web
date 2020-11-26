@@ -77,9 +77,14 @@
             let selectedFieldsOfStudy = ref([] as string[]);
 
             onMounted(async () => {
+                busy.value = true;
                 const examRegManagement = new ExaminationRegulationManagement();
-                const response = await examRegManagement.getExaminationRegulationNames();
-                fieldsOfStudy.value = new GenericResponseHandler("examination regulations").handleResponse(response);
+                const response = await examRegManagement.getExaminationRegulation();
+                fieldsOfStudy.value = new GenericResponseHandler("examination regulations")
+                    .handleResponse(response)
+                    .filter((e) => e.active)
+                    .map((e) => e.name);
+                busy.value = false;
             });
 
             let currentYear = new Date().getFullYear();

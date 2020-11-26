@@ -17,6 +17,7 @@ const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: strin
 const student = pair.student;
 const authUser = pair.authUser;
 const governmentId = pair.governmentId;
+const EXAM_REG_1 = "Bachelor Computer Science v3";
 
 jest.setTimeout(30000);
 
@@ -42,22 +43,21 @@ describe("Matriculation management", () => {
 
     test("'Create' matriculation history", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
-            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2020"] },
+            { fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] },
         ] as SubjectMatriculation[]);
 
         expect(response.statusCode).toBe(201);
-        // wait for https://github.com/upb-uc4/lagom-core/issues/279 fix
         const filledResponse = await matriculationManagement.getMatriculationHistory(student.username);
         const data: boolean | MatriculationData = filledResponse.returnValue;
         expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe("Bachelor Computer Science v3");
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(EXAM_REG_1);
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(1);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
     });
 
     test("Update matriculation", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
-            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2021"] },
+            { fieldOfStudy: EXAM_REG_1, semesters: ["SS2021"] },
         ]);
         expect(response.statusCode).toBe(200);
 
@@ -66,7 +66,7 @@ describe("Matriculation management", () => {
         const filledResponse = await matriculationManagement.getMatriculationHistory(student.username);
         const data: boolean | MatriculationData = filledResponse.returnValue;
         expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe("Bachelor Computer Science v3");
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(EXAM_REG_1);
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(2);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
         expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2021");
@@ -74,8 +74,8 @@ describe("Matriculation management", () => {
 
     test("Update matriculation even more", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
-            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2022"] },
-            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2019"] },
+            { fieldOfStudy: EXAM_REG_1, semesters: ["SS2022"] },
+            { fieldOfStudy: EXAM_REG_1, semesters: ["SS2019"] },
         ] as SubjectMatriculation[]);
         const data: boolean | MatriculationData = response.returnValue;
         expect(response.statusCode).toBe(200);
@@ -87,7 +87,7 @@ describe("Matriculation management", () => {
         const data: MatriculationData = response.returnValue;
         expect(response.statusCode).toBe(200);
         expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe("Bachelor Computer Science v3");
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(EXAM_REG_1);
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(4);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
         expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2021");
