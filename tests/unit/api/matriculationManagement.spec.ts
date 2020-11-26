@@ -1,6 +1,5 @@
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
-import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import Student from "@/api/api_models/user_management/Student";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import UserManagement from "@/api/UserManagement";
@@ -43,7 +42,7 @@ describe("Matriculation management", () => {
 
     test("'Create' matriculation history", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
-            { fieldOfStudy: FieldOfStudy.COMPUTER_SCIENCE, semesters: ["SS2020"] },
+            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2020"] },
         ] as SubjectMatriculation[]);
 
         expect(response.statusCode).toBe(201);
@@ -51,14 +50,14 @@ describe("Matriculation management", () => {
         const filledResponse = await matriculationManagement.getMatriculationHistory(student.username);
         const data: boolean | MatriculationData = filledResponse.returnValue;
         expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(FieldOfStudy.COMPUTER_SCIENCE);
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe("Bachelor Computer Science v3");
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(1);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
     });
 
     test("Update matriculation", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
-            { fieldOfStudy: FieldOfStudy.EDUCATION, semesters: ["SS2020"] },
+            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2021"] },
         ]);
         expect(response.statusCode).toBe(200);
 
@@ -66,20 +65,17 @@ describe("Matriculation management", () => {
         // wait for https://github.com/upb-uc4/lagom-core/issues/279 fix
         const filledResponse = await matriculationManagement.getMatriculationHistory(student.username);
         const data: boolean | MatriculationData = filledResponse.returnValue;
-        expect((data as MatriculationData).matriculationStatus).toHaveLength(2);
-        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(FieldOfStudy.COMPUTER_SCIENCE);
-        expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(1);
+        expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe("Bachelor Computer Science v3");
+        expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(2);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
-
-        expect((data as MatriculationData).matriculationStatus[1].fieldOfStudy).toBe(FieldOfStudy.EDUCATION);
-        expect((data as MatriculationData).matriculationStatus[1].semesters).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[1].semesters[0]).toBe("SS2020");
+        expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2021");
     });
 
     test("Update matriculation even more", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
-            { fieldOfStudy: FieldOfStudy.COMPUTER_SCIENCE, semesters: ["SS2021"] },
-            { fieldOfStudy: FieldOfStudy.BUSINESS_INFORMATICS, semesters: ["SS2021"] },
+            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2022"] },
+            { fieldOfStudy: "Bachelor Computer Science v3", semesters: ["SS2019"] },
         ] as SubjectMatriculation[]);
         const data: boolean | MatriculationData = response.returnValue;
         expect(response.statusCode).toBe(200);
@@ -90,19 +86,13 @@ describe("Matriculation management", () => {
         const response = await matriculationManagement.getMatriculationHistory(student.username);
         const data: MatriculationData = response.returnValue;
         expect(response.statusCode).toBe(200);
-        expect((data as MatriculationData).matriculationStatus).toHaveLength(3);
-        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(FieldOfStudy.COMPUTER_SCIENCE);
-        expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(2);
+        expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe("Bachelor Computer Science v3");
+        expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(4);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
         expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2021");
-
-        expect((data as MatriculationData).matriculationStatus[1].fieldOfStudy).toBe(FieldOfStudy.EDUCATION);
-        expect((data as MatriculationData).matriculationStatus[1].semesters).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[1].semesters[0]).toBe("SS2020");
-
-        expect((data as MatriculationData).matriculationStatus[2].fieldOfStudy).toBe(FieldOfStudy.BUSINESS_INFORMATICS);
-        expect((data as MatriculationData).matriculationStatus[2].semesters).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[2].semesters[0]).toBe("SS2021");
+        expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2022");
+        expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2019");
     });
 
     test("Delete student user", async () => {
