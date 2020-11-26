@@ -1,6 +1,6 @@
 <template>
     <div :id="'course_' + course.courseId" class="flex shadow-xl">
-        <div class="flex flex-col w-full p-4 sm:px-8 bg-white rounded-lg">
+        <div class="flex flex-col w-full p-4 sm:px-8 bg-white rounded-lg hover:bg-gray-200 cursor-pointer" @click.stop="showCourseInfo">
             <div class="flex items-center justify-between sm:justify-start">
                 <span class="inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase bg-teal-200 rounded-full">
                     {{ course.courseType }}
@@ -22,13 +22,9 @@
                     <div id="courseName" class="mt-2 text-2xl font-semibold leading-tight text-gray-900">
                         {{ course.courseName }}
                     </div>
-                    <router-link
-                        id="showLecturer"
-                        :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
-                        class="mt-1 font-semibold navigation-link hover:cursor-pointer"
-                    >
+                    <label id="showLecturer" class="mt-1 font-semibold navigation-link cursor-pointer" @click.stop="showLecturer()">
                         {{ lecturerDisplayName }}
-                    </router-link>
+                    </label>
 
                     <div class="w-full sm:flex sm:items-center">
                         <div class="mt-3 sm:w-5/6 sm:mr-4">
@@ -55,6 +51,8 @@
     import ReadMore from "@/components/common/ReadMore.vue";
     import Course from "@/api/api_models/course_management/Course";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import Router from "@/use/router/index";
+    import { ref } from "vue";
 
     export default {
         name: "StudentCourse",
@@ -80,10 +78,19 @@
                     ? "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/gb.svg"
                     : "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/de.svg";
 
+            function showCourseInfo() {
+                console.log("hello");
+            }
+            function showLecturer() {
+                Router.push({ name: "profile.public", params: { username: props.lecturer.username } });
+            }
+
             return {
                 lecturerDisplayName,
                 isCourseFull,
                 flagSrc,
+                showCourseInfo,
+                showLecturer,
             };
         },
     };
