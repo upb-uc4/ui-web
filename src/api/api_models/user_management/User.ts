@@ -11,4 +11,5 @@ export default interface User {
     birthDate: string;
     phoneNumber: string;
     enrollmentIdSecret: string;
+    isActive: boolean;
 }
