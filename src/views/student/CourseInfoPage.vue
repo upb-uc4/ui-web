@@ -35,7 +35,7 @@
                             v-if="!isRegistered"
                             id="joinCourse"
                             :disabled="!valid"
-                            class="w-48 w-full btn btn-blue-primary"
+                            class="w-48 btn btn-blue-primary"
                             @click="joinCourse"
                         >
                             Join
@@ -132,7 +132,10 @@
             });
 
             let valid = computed(() => {
-                return true;
+                if (!props.isRegistered && selectedModule.value !== "" && selectedModule.value !== undefined) {
+                    return true;
+                }
+                return false;
             });
 
             async function getAdmission() {
@@ -180,6 +183,7 @@
                 isFull,
                 lecturerName,
                 selectedModule,
+                valid,
             };
         },
     };

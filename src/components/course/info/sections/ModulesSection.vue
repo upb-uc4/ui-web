@@ -9,12 +9,12 @@
                 <label class="text-gray-700 text-md font-medium block mb-4">Module</label>
                 <search-select
                     v-if="!registered"
-                    v-model.selected="selectedModule"
+                    v-model:selected="selectedModuleOption"
                     :options="optionsArray"
                     input-id="selectModule"
                     :category-name="'Module'"
                 />
-                <input v-else id="selectModule" :value="selectedModule" disabled type="text" class="w-full form-input input-text" />
+                <input v-else id="selectModule" :value="selectedModuleString" disabled type="text" class="w-full form-input input-text" />
             </div>
         </div>
     </section>
@@ -25,6 +25,8 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { onBeforeMount, ref } from "vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
+    import Module from "@/api/api_models/exam_reg_management/Module";
+    import { watch } from "vue";
 
     export default {
         name: "CourseModulesSection",
@@ -48,15 +50,32 @@
         emits: ["update:selected"],
         setup(props: any, { emit }: any) {
             let optionsArray = ref([] as SearchSelectOption[]);
+            let selectedModuleString = ref(props.selected);
+            let selectedModuleOption = ref({} as SearchSelectOption);
 
-            onBeforeMount(() => {
-                //TODO get module names via API
-                (props.moduleIds as String[]).forEach((s) => {
-                    optionsArray.value.push({ value: s, display: s });
-                });
+            onBeforeMount(async () => {
+                if (!props.registered) await getModules();
             });
+
+            watch(
+                () => selectedModuleOption.value,
+                () => {
+                    let emitValue = (selectedModuleOption.value.value as Module).id;
+                    emitValue == undefined ? emit("update:selected", "") : emit("update:selected", emitValue);
+                }
+            );
+
+            async function getModules() {
+                (props.moduleIds as String[]).forEach((s) => {
+                    //TODO get module names via API
+                    optionsArray.value.push({ value: { id: s, name: s } as Module, display: s });
+                });
+            }
+
             return {
-                selectedModule: useModelWrapper(props, emit, "selected"),
+                selectedModuleString,
+                selectedModuleOption,
+                optionsArray,
             };
         },
     };
