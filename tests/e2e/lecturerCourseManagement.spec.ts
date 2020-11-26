@@ -62,6 +62,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("select[id='courseLanguage']").should("exist");
         cy.get("select[id='exReg-']").should("exist");
         cy.get("textarea[id='courseDescription']").should("exist");
+        cy.get("input[id='ects']").should("exist");
         cy.get("input[id='maxParticipants']").should("exist");
         cy.get("input[id='startDate']").should("exist");
         cy.get("input[id='endDate']").should("exist");
@@ -80,6 +81,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get('button[id="createCourse"]').click();
         cy.get("input[id='courseType']").siblings().get("p").should("have.class", "error-message");
         cy.get("select[id='courseLanguage']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='ects']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='maxParticipants']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='courseName']").clear();
         cy.get("input[type='radio']").eq(0).click();
@@ -140,7 +142,7 @@ describe("Course creation, edition and deletion", () => {
         cy.get("button[title='Refresh']").click();
         cy.wait(1000);
         cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
-        cy.wait(1000);
+        cy.wait(3000);
         cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
         cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
     });
