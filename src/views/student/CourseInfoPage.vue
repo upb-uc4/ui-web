@@ -40,31 +40,25 @@
                         >
                             Join
                         </button>
-                        <button v-else id="dropCourse" class="w-48 btn btn-blue-primary" @click="dropCourse">Drop</button>
+                        <button v-else id="dropCourse" class="w-48 btn btn-red-primary" @click="dropCourse">Drop</button>
                     </div>
                 </div>
 
-                <!-- different button layout for mobile 
+                <!-- different button layout for mobile -->
                 <div class="sm:hidden">
                     <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
                     <button
-                        v-if="editMode"
-                        id="mobileSaveChanges"
-                        :disabled="!hasInput"
+                        v-if="!isRegistered"
+                        id="mobileJoinCourse"
+                        :disabled="!valid"
                         type="button"
                         class="mb-4 w-full btn btn-blue-primary"
-                        @click="updateCourse"
+                        @click="joinCourse"
                     >
-                        Save Changes
+                        Join
                     </button>
-                    <button v-else id="mobileCreateCourse" :disabled="!hasInput" class="w-full btn btn-blue-primary" @click="createCourse">
-                        Create Course
-                    </button>
-                    <button v-if="editMode" id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
-                        Delete
-                    </button>
+                    <button v-else id="mobileDropCourse" class="w-full btn btn-red-primary" @click="dropCourse">Drop</button>
                 </div>
-                -->
             </section>
         </div>
     </div>
@@ -150,7 +144,6 @@
                 const genericResponseHandler = new GenericResponseHandler("course");
                 const result = genericResponseHandler.handleResponse(response);
 
-                //TODO move this to a non-generic response handler
                 if (result) {
                     course.value = new CourseEntity(result);
                     isFull.value = course.value.currentParticipants == course.value.maxParticipants;
@@ -167,9 +160,13 @@
                 }
             }
 
-            async function joinCourse() {}
+            async function joinCourse() {
+                //TODO API CALL (INCLUDE MODULE
+            }
 
-            async function dropCourse() {}
+            async function dropCourse() {
+                //TODO API CALL
+            }
 
             function back() {
                 Router.go(-1);
@@ -184,6 +181,8 @@
                 lecturerName,
                 selectedModule,
                 valid,
+                joinCourse,
+                dropCourse,
             };
         },
     };
