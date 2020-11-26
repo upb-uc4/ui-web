@@ -22,13 +22,13 @@
                 </div>
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Name</label>
-                    <input
+                    <base-input
                         id="courseName"
-                        v-model="courseName"
+                        v-model:value="courseName"
                         type="text"
-                        class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('courseName') }"
+                        class="w-full"
                         placeholder="Course Name"
+                        validation-query="course.courseName"
                     />
                     <p v-if="errorBag.has('courseName')" class="error-message">
                         {{ errorBag.get("courseName") }}
@@ -80,9 +80,13 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { onMounted, ref } from "vue";
     import { useStore } from "@/use/store/store";
+    import BaseInput from "@/components/common/BaseInput.vue";
 
     export default {
         name: "BasicsSection",
+        components: {
+            BaseInput,
+        },
         props: {
             errorBag: {
                 required: true,

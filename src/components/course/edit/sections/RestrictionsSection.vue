@@ -8,13 +8,12 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
-                    <input
+                    <base-input
                         id="maxParticipants"
-                        v-model="maxParticipants"
+                        v-model:value="maxParticipants"
                         type="number"
-                        min="0"
-                        class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('maxParticipants') }"
+                        class="w-full"
+                        validation-query="course.maxParticipants"
                         @input="updateLimit($event.target.value)"
                     />
                     <p v-if="errorBag.has('maxParticipants')" class="error-message">
@@ -30,9 +29,13 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { ref } from "vue";
+    import BaseInput from "@/components/common/BaseInput.vue";
 
     export default {
         name: "RestrictionsSection",
+        components: {
+            BaseInput,
+        },
         props: {
             errorBag: {
                 required: true,
