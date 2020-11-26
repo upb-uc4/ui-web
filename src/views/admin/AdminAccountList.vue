@@ -16,9 +16,9 @@
                 </div>
             </div>
 
-            <role-filter v-model:selected-role="selectedRole" class="w-full my-4" />
+            <role-filter v-model:selected-role="selectedRole" v-model:show-inactive="showInactive" class="w-full my-4" />
 
-            <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" />
+            <accountList :key="refreshKey" :selected-role="selectedRole" :filter="message" :show-inactive="showInactive" />
             <div class="flex justify-center mt-16">
                 <router-link to="/createAccount">
                     <button id="addAccount" title="Add a new User" class="px-4 btn btn-green-primary-500">New Account</button>
@@ -62,6 +62,8 @@
 
             let selectedRole = ref("All" as Role);
 
+            let showInactive = ref(false);
+
             function refresh() {
                 refreshKey.value = !refreshKey.value;
             }
@@ -70,6 +72,7 @@
                 refresh,
                 message,
                 selectedRole,
+                showInactive,
             };
         },
     };

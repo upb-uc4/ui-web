@@ -143,11 +143,11 @@ export async function createUsers(users: UserWithAuth[]) {
 export async function deleteUsers(users: Account[], adminAuth: Account) {
     let userNames: string[] = [];
     users.forEach((user) => userNames.push(user.username));
-    MachineUserAuthenticationManagement.setVueEnvVariable();
+    MachineUserAuthenticationManagement.setVueEnvVariable(Cypress.env("NODE_ENV"));
     await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
 
     const user_management = new UserManagement();
-    const existingUsers = await user_management.getUsers(...userNames);
+    const existingUsers = await user_management.getUsers(undefined, userNames);
     Object.values(existingUsers.returnValue)
         .flat()
         .forEach(async (user) => {

@@ -16,5 +16,6 @@
     "phoneNumber": "+49123456789",
     "freeText": "Some cool publications about jedi stuff.",
     "researchArea": "The light side only, I swear!",
-    "enrollmentIdSecret": ""
+    "enrollmentIdSecret": "",
+    "isActive": true
 }
