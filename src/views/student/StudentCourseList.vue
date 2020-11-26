@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-    import CourseList from "@/components/course/list/common/CourseList.vue";
+    import CourseList from "@/components/course/list/student/CourseList.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
     import { ref } from "vue";
     import CourseTypeFilter from "@/components/course/list/common/CourseTypeFilter.vue";

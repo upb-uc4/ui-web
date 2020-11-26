@@ -63,7 +63,7 @@ const router = createRouter({
             name: "student.courses",
             component: StudentCourseView,
             meta: {
-                title: "Home" + suffix,
+                title: "Courses" + suffix,
                 roles: ["Student"],
             },
         },
