@@ -1,6 +1,6 @@
 {
     "baseUrl": "https://localhost/deploy/",
-    "defaultCommandTimeout": 8000,
+    "defaultCommandTimeout": 25000,
     "integrationFolder": "tests/e2e/",
     "supportFile": "tests/e2e/support/index.ts",
     "pluginsFile": "tests/e2e/plugins/index.ts",
