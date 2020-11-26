@@ -51,7 +51,7 @@
                 {
                     admissionId: "123456:TestCourse Registered",
                     enrollmentId: "1234567",
-                    courseId: "aaf1288c-2fd6-11eb-bf02-f3ae33bfbe73",
+                    courseId: "20c84312-2fea-11eb-b10d-b546652c1263",
                     moduleId: "M.1275.78235",
                     timestamp: "something",
                 },

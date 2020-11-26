@@ -1,6 +1,6 @@
 <template>
     <div :id="'course_' + course.courseId" class="flex shadow-xl">
-        <div class="flex flex-col w-full p-4 sm:px-8 bg-white rounded-lg hover:bg-gray-200 cursor-pointer" @click.stop="showCourseInfo">
+        <div class="flex flex-col w-full p-4 sm:px-8 bg-white rounded-lg hover:bg-gray-200 cursor-pointer" @click.stop="showCourseInfo()">
             <div class="flex items-center justify-between sm:justify-start">
                 <span class="inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase bg-teal-200 rounded-full">
                     {{ course.courseType }}
@@ -95,7 +95,8 @@
                     : "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/de.svg";
 
             function showCourseInfo() {
-                console.log("hello");
+                let routeName = isAdmitted ? "student.course.drop" : "student.course.join";
+                Router.push({ name: routeName, params: { courseId: props.course.courseId } });
             }
             function showLecturer() {
                 Router.push({ name: "profile.public", params: { username: props.lecturer.username } });
