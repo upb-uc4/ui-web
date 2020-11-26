@@ -1,31 +1,41 @@
+import { Account } from "@/entities/Account";
+import { Role } from "@/entities/Role";
+import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import { MutationTypes } from "@/use/store/mutation-types";
+import { useStore } from "@/use/store/store";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import CourseAdmission from "./api_models/admission_management/CourseAdmission";
+import APIError from "./api_models/errors/APIError";
+import User from "./api_models/user_management/User";
+import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import { AxiosResponse, AxiosError } from "axios";
-import APIError from "./api_models/errors/APIError";
-import Certificate from "./api_models/certificate_management/Certificate";
-import EnrollmentId from "./api_models/certificate_management/EnrollmentId";
-import EncryptedPrivateKey from "./api_models/certificate_management/EncryptedPrivateKey";
-import handleAuthenticationError from "./AuthenticationHelper";
-import { useStore } from "@/use/store/store";
+import UserManagement from "./UserManagement";
+import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
+import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 
-export default class CertificateManagement extends Common {
+export default class AdmissionManagement extends Common {
     constructor() {
-        super("/certificate-management");
+        super("/admission-management");
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/certificate-management");
+        return super.getVersion("/admission-management");
     }
 
-    async getCertificate(username: string): Promise<APIResponse<Certificate>> {
+    /**
+     * Submit a signed admissions proposal
+     * @param signedProposal signed proposal
+     */
+    async submitSignedAdmissionsProposal(signedProposal: SignedProposalMessage): Promise<APIResponse<boolean>> {
         return await this._axios
-            .get(`/certificates/${username}/certificate`)
+            .post(`/admissions/proposal/submit`, signedProposal)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data as Certificate,
                     statusCode: response.status,
-                    error: {} as APIError,
+                    returnValue: true,
                     networkError: false,
+                    error: {} as APIError,
                 };
             })
             .catch(async (error: AxiosError) => {
@@ -34,43 +44,43 @@ export default class CertificateManagement extends Common {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: {} as Certificate,
+                            returnValue: false,
                             networkError: false,
                         })
                     ) {
-                        return await this.getCertificate(username);
+                        return await this.submitSignedAdmissionsProposal(signedProposal);
                     }
                     return {
-                        returnValue: {} as Certificate,
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
+                        returnValue: false,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: {} as Certificate,
                         statusCode: 0,
                         error: {} as APIError,
+                        returnValue: false,
                         networkError: true,
                     };
                 }
             });
     }
 
-    async getOwnEnrollmentId(): Promise<APIResponse<EnrollmentId>> {
-        const username = (await useStore().getters.user).username;
-        return this.getEnrollmentId(username);
-    }
+    async getCourseAdmissions(username?: string, courseId?: string, moduleId?: string): Promise<APIResponse<CourseAdmission[]>> {
+        const requestParameter = { params: {} as any };
+        if (username) requestParameter.params.username = username;
+        if (courseId) requestParameter.params.courseId = courseId;
+        if (moduleId) requestParameter.params.moduleId = moduleId;
 
-    async getEnrollmentId(username: string): Promise<APIResponse<EnrollmentId>> {
         return await this._axios
-            .get(`/certificates/${username}/enrollmentId`)
+            .get(`/admissions/courses`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data as EnrollmentId,
+                    returnValue: response.data as CourseAdmission[],
                     statusCode: response.status,
-                    error: {} as APIError,
                     networkError: false,
+                    error: {} as APIError,
                 };
             })
             .catch(async (error: AxiosError) => {
@@ -79,38 +89,86 @@ export default class CertificateManagement extends Common {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: {} as EnrollmentId,
+                            returnValue: [] as CourseAdmission[],
                             networkError: false,
                         })
                     ) {
-                        return await this.getEnrollmentId(username);
+                        return await this.getCourseAdmissions(username, courseId, moduleId);
                     }
                     return {
-                        returnValue: {} as EnrollmentId,
+                        returnValue: {} as CourseAdmission[],
+                        statusCode: error.response.status,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as CourseAdmission[],
+                        statusCode: 0,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
+                }
+            });
+    }
+
+    /**
+     * Fetch an unsigned proposal for adding a course admission
+     * @param courseAdmission courseAdmission
+     */
+    async getUnsignedCourseAdmissionAddProposal(courseAdmission: CourseAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
+        return await this._axios
+            .post(`/admissions/courses/proposal/add`, courseAdmission)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data as UnsignedProposalMessage,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as UnsignedProposalMessage,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getUnsignedCourseAdmissionAddProposal(courseAdmission);
+                    }
+                    return {
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: {} as EnrollmentId,
                         statusCode: 0,
                         error: {} as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
                         networkError: true,
                     };
                 }
             });
     }
 
-    async getEncryptedPrivateKey(username: string): Promise<APIResponse<EncryptedPrivateKey>> {
+    /**
+     * Fetch an unsigned proposal for dropping a course admission
+     * @param admissionId admission id of admission to drop
+     */
+    async getUnsignedCourseAdmissionDropProposal(admissionId: string): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .get(`/certificates/${username}/privateKey`)
+            .post(`/admissions/courses/proposal/drop`, { admissionId })
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data as EncryptedPrivateKey,
                     statusCode: response.status,
-                    error: {} as APIError,
+                    returnValue: response.data as UnsignedProposalMessage,
                     networkError: false,
+                    error: {} as APIError,
                 };
             })
             .catch(async (error: AxiosError) => {
@@ -119,69 +177,23 @@ export default class CertificateManagement extends Common {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: {} as EncryptedPrivateKey,
+                            returnValue: {} as UnsignedProposalMessage,
                             networkError: false,
                         })
                     ) {
-                        return await this.getEncryptedPrivateKey(username);
+                        return await this.getUnsignedCourseAdmissionDropProposal(admissionId);
                     }
                     return {
-                        returnValue: {} as EncryptedPrivateKey,
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: {} as EncryptedPrivateKey,
                         statusCode: 0,
                         error: {} as APIError,
-                        networkError: true,
-                    };
-                }
-            });
-    }
-
-    async sendCertificateSigningRequest(
-        username: string,
-        csr: string,
-        encryptedPrivateKey?: EncryptedPrivateKey
-    ): Promise<APIResponse<Certificate>> {
-        let encPrivKey = encryptedPrivateKey != undefined ? encryptedPrivateKey : { iv: "", salt: "", key: "" };
-
-        return await this._axios
-            .post(`/certificates/${username}`, { certificateSigningRequest: csr, encryptedPrivateKey: encPrivKey })
-            .then((response: AxiosResponse) => {
-                return {
-                    returnValue: response.data as Certificate,
-                    statusCode: response.status,
-                    error: {} as APIError,
-                    networkError: false,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as Certificate,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.sendCertificateSigningRequest(username, csr, encryptedPrivateKey);
-                    }
-                    return {
-                        returnValue: {} as Certificate,
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        returnValue: {} as Certificate,
-                        statusCode: 0,
-                        error: {} as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
                         networkError: true,
                     };
                 }
