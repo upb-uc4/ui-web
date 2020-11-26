@@ -291,10 +291,8 @@ export default class UserManagement extends Common {
     }
 
     async createUser(governmentId: string, authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
-        let message = UserManagement._createMessage(governmentId, user, authUser);
-
         return await this._axios
-            .post("/users", message)
+            .post("/users", { governmentId, authUser, user })
             .then((reponse: AxiosResponse) => {
                 return {
                     statusCode: reponse.status,
@@ -360,40 +358,6 @@ export default class UserManagement extends Common {
                     };
                 }
             });
-    }
-
-    static _createMessage(governmentId: string, user: Student | Lecturer | Admin, authUser: Account) {
-        let message;
-        switch (user.role) {
-            case Role.STUDENT: {
-                message = {
-                    governmentId: governmentId,
-                    authUser: authUser,
-                    student: user as Student,
-                };
-                break;
-            }
-            case Role.LECTURER: {
-                message = {
-                    governmentId: governmentId,
-                    authUser: authUser,
-                    lecturer: user as Lecturer,
-                };
-                break;
-            }
-            case Role.ADMIN: {
-                message = {
-                    governmentId: governmentId,
-                    authUser: authUser,
-                    admin: user as Admin,
-                };
-                break;
-            }
-            case Role.NONE: {
-                new Error("Endpoint undefined");
-            }
-        }
-        return message;
     }
 
     static _createEndpointByRole(role: Role): string {
