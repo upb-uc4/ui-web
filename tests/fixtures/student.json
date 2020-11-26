@@ -16,5 +16,6 @@
     "phoneNumber": "+49123456789",
     "latestImmatriculation": "",
     "matriculationId": "1234567",
-    "enrollmentIdSecret": ""
+    "enrollmentIdSecret": "",
+    "isActive": true
 }
