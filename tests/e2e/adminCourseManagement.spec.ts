@@ -4,7 +4,7 @@ import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
-import { createUsers, deleteUsers } from "./helpers/UserHelper";
+import { createNewLecturer, createUsers, deleteUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Course creation, edition and deletion", () => {
@@ -46,7 +46,8 @@ describe("Course creation, edition and deletion", () => {
                 cy.fixture("lecturerAuthUser.json").then((lAuth) => {
                     (lAuth as Account).username += random;
                     secondLecturerAuth = lAuth as Account;
-                    usersWithAuth.push({ userInfo: secondLecturer, auth: secondLecturerAuth });
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: secondLecturer, auth: secondLecturerAuth });
                 });
             })
             .then(async () => {
