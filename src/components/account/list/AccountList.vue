@@ -48,7 +48,7 @@
                 const userManagement: UserManagement = new UserManagement();
 
                 const genericResponseHandler = new GenericResponseHandler("users");
-                const response = await userManagement.getAllUsers();
+                const response = await userManagement.getUsers();
                 const userLists = genericResponseHandler.handleResponse(response);
                 users.value = Object.values(userLists).flat();
                 busy.value = false;
