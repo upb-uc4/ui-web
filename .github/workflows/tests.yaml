@@ -114,6 +114,7 @@ jobs:
         run: export TEST_ENV=experimental && npm run test:unit
   e2e-dev:
     name: E2E Tests Development Cluster
+    needs: setup
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') && github.event.pull_request.draft == false }} 
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -185,10 +186,14 @@ jobs:
 
   e2e-exp:
     name: E2E Tests Experimental Cluster
+    needs: setup
     if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') && github.event.pull_request.draft == false }} 
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -230,7 +235,7 @@ jobs:
       - name: Run nginx to reverse proxy for e2e tests
         run: docker run --name reverse-proxy -p 443:443 --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs/ --mount type=bind,source=$(pwd)/dist/,target=/app/deploy -d nginx
       - name: run e2e tests
-        run: npm run test:e2e:headless
+        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }}
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()
