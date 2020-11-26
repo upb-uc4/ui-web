@@ -11,11 +11,16 @@ import {
 
 export function createCourse(course: Course) {
     navigateToCourseForm();
+    cy.wait(750);
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select").select(course.courseLanguage);
+    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
+    cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
+    cy.get('select[id="exReg-"]').select("Bachelor Computer Science v3");
+    cy.get(`input[id='modules_0']`).click();
+    cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");
@@ -28,14 +33,19 @@ export function createCourse(course: Course) {
 
 export function createCourseAdmin(course: Course) {
     navigateToCourseFormAdmin();
+    cy.wait(750);
     cy.get("input[id='lecturerId']").clear();
     cy.get("input[id='lecturerId']").click();
     cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
     cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select").select(course.courseLanguage);
+    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
+    cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
+    cy.get('select[id="exReg-"]').select("Bachelor Computer Science v3");
+    cy.get(`input[id='modules_0']`).click();
+    cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");

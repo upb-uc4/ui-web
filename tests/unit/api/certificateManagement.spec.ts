@@ -24,8 +24,10 @@ const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "u
 let enrollmentId = "";
 const iv = window.crypto.getRandomValues(new Uint8Array(12));
 const encryptionPassword = "My-Super-Password";
-const student = getRandomizedUserAndAuthUser(Role.STUDENT) as { authUser: Account; student: Student };
-const student2 = getRandomizedUserAndAuthUser(Role.STUDENT) as { authUser: Account; student: Student };
+const student = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; authUser: Account; student: Student };
+const governmentId = student.governmentId;
+const student2 = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; authUser: Account; student: Student };
+const governmentId2 = student2.governmentId;
 let keypair = {} as CryptoKeyPair;
 let certManagement: CertificateManagement;
 
@@ -38,10 +40,10 @@ describe("Certificate management tests", () => {
         expect(success.returnValue.login).not.toEqual("");
 
         const userManagement = new UserManagement();
-        const success2 = await userManagement.createUser(student.authUser, student.student);
+        const success2 = await userManagement.createUser(governmentId, student.authUser, student.student);
         expect(success2.returnValue).toBe(true);
 
-        const success3 = await userManagement.createUser(student2.authUser, student2.student);
+        const success3 = await userManagement.createUser(governmentId2, student2.authUser, student2.student);
         expect(success3.returnValue).toBe(true);
 
         await new Promise((r) => setTimeout(r, 25000));
@@ -148,8 +150,8 @@ describe("Certificate management tests", () => {
     afterAll(async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         const userManagement = new UserManagement();
-        const success2 = await userManagement.deleteUser(student.authUser.username);
-        const success3 = await userManagement.deleteUser(student2.authUser.username);
+        const success2 = await userManagement.forceDeleteUser(student.authUser.username);
+        const success3 = await userManagement.forceDeleteUser(student2.authUser.username);
 
         expect(success.statusCode).toBe(true);
         expect(success2.statusCode).toBe(true);

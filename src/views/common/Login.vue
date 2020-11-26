@@ -1,129 +1,118 @@
 <template>
-    <div>
-        <div class="container flex flex-col h-auto max-w-full md:mt-32 lg:flex-row lg:items-center">
-            <form method="POST" action="" class="flex flex-col items-center w-full mx-auto xl:w-3/4" @submit.prevent="login">
-                <img src="../../assets/logo/logo_long_title_right.svg" class="md:w-1/3 w-1/2 mt-3" />
-                <h1 class="mt-2 mb-10 text-4xl font-bold text-center text-gray-900 lg:text-5xl">Login to Your Account</h1>
-
-                <div class="items-center justify-center flex-auto w-full mx-4 lg:w-3/5">
-                    <div class="mb-6 text-center">
-                        <i class="absolute m-3 mt-4 ml-4 text-gray-500 fas fa-envelope"></i>
+    <div class="flex justify-center">
+        <div class="absolute left-0 w-full bg-hero-circuit-board" style="height: calc(100vh - 80px)" />
+        <form class="sm:mt-24 mt-8 max-w-lg w-full" @submit.prevent="login">
+            <div class="">
+                <img class="hidden sm:block mx-auto h-32 w-auto" src="../../assets/logo/logo.svg" alt="uc4_logo" />
+                <h2 class="sm:mt-2 text-center text-3xl font-bold text-blue-700 leading-snug">University Credits 4.0</h2>
+            </div>
+            <div class="sm:mt-10 mt-4 bg-white sm:p-10 py-8 p-4 rounded-lg shadow-lg relative">
+                <div v-show="hasError" class="mb-6">
+                    <span class="text-red-500 font-medium tracking-wide">{{ errorText }}</span>
+                </div>
+                <input type="hidden" name="remember" value="true" />
+                <div class="rounded-md shadow-sm">
+                    <div class="">
+                        <label class="block mb-1 text-gray-700 font-medium tracking-wide">Email Address</label>
                         <input
                             id="email"
                             v-model="email"
-                            class="pl-10 font-semibold lg:w-3/4 form-input input-text"
                             type="text"
-                            placeholder="Email"
-                            :class="{ error: error }"
-                            @change="hideErrors()"
+                            :class="[hasError ? 'border-red-500' : 'border-gray-300']"
+                            class="appearance-none rounded-lg block w-full px-3 py-3 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            placeholder=""
+                            @input="resetError"
                         />
                     </div>
-
-                    <div class="mb-6 text-center">
-                        <i class="absolute m-3 mt-4 ml-4 text-gray-500 fas fa-lock"></i>
+                    <div class="mt-6 relative">
+                        <label class="block mb-1 text-gray-700 font-medium tracking-wide">Password</label>
+                        <i
+                            :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
+                            class="fas absolute z-20 mt-4 mr-4 right-0 text-gray-500 cursor-pointer"
+                            @click="togglePassword"
+                        />
                         <input
                             id="password"
                             v-model="password"
                             :type="passwordFieldType"
-                            class="pl-10 font-semibold lg:w-3/4 form-input input-text"
-                            placeholder="Password"
-                            :class="{ error: error }"
-                            @change="hideErrors()"
+                            :class="[hasError ? 'border-red-500' : 'border-gray-300']"
+                            class="appearance-none rounded-lg block w-full px-3 py-3 pr-12 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                            placeholder=""
+                            @input="resetError"
                         />
-                        <button
-                            id="togglePassword"
-                            type="button"
-                            tabIndex="-1"
-                            class="absolute mt-1 ml-3 text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
-                            @click="togglePassword"
-                        >
-                            <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="absolute mt-3 ml-1 mr-1 fas"></i>
-                        </button>
-                        <p v-if="error" class="mt-2 lg:w-3/4 lg:ml-3 xl:ml-5 error-message">Authentication failed.</p>
-                    </div>
-
-                    <div class="w-full text-center lg:text-left lg:pl-16 lg:ml-3">
-                        <label class="block font-semibold text-gray-500">
-                            <input id="rememberMe" class="mr-2 text-blue-500 form-checkbox hover:bg-blue-600" type="checkbox" checked />
-                            <span class="text-sm">Remember me</span>
-                        </label>
-                        <a id="forgotPassword" class="inline-block mt-2 text-sm font-semibold navigation-link" href="#">
-                            Forgot Password?
-                        </a>
-                    </div>
-
-                    <div class="justify-center mt-10 mb-6 text-center">
-                        <button
-                            id="login"
-                            type="submit"
-                            :disabled="isInputEmpty()"
-                            class="inline-block w-2/5 sm:w-2/5 md:w-2/5 lg:w-2/4 center btn btn-blue-primary"
-                        >
-                            Login
-                        </button>
                     </div>
                 </div>
-            </form>
-        </div>
+
+                <div class="mt-10">
+                    <button
+                        id="login"
+                        :disabled="isInputEmpty"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out disabled:bg-blue-300 disabled:cursor-not-allowed"
+                        @click="login"
+                    >
+                        Login
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </template>
+
 <script lang="ts">
     import Router from "@/use/router/";
-    import { useStore, store } from "@/use/store/store";
-    import { Role } from "@/entities/Role";
-    import UserManagement from "@/api/UserManagement";
-    import { ref, onMounted } from "vue";
+    import { computed, ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
     export default {
         components: {},
         props: [],
         setup() {
-            let email = ref("");
-            let password = ref("");
-            let passwordFieldType = ref("password");
-            let error = ref(false);
-            let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
+            const email = ref("");
+            const password = ref("");
+            const passwordFieldType = ref("password");
+            const hasError = ref(false);
+            const errorText = ref("You have entered an invalid email or password.");
 
-            async function togglePassword() {
+            function togglePassword() {
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
-            }
-
-            function hideErrors() {
-                error.value = false;
             }
 
             function isPasswordVisible() {
                 return passwordFieldType.value === "text";
             }
 
-            function isInputEmpty() {
+            let isInputEmpty = computed(() => {
                 return email.value === "" || password.value === "";
-            }
+            });
 
             async function login() {
                 const username = email.value;
                 const response = await AuthenticationManagement._getRefreshToken({ username: username, password: password.value });
-
+                let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
                 const loginSuccess = loginResponseHandler.handleResponse(response);
 
                 if (loginSuccess) {
-                    Router.push("/welcome");
+                    Router.push({ name: "welcome" });
                 } else {
-                    error.value = true;
+                    hasError.value = true;
                 }
+            }
+
+            function resetError() {
+                hasError.value = false;
             }
 
             return {
                 email,
                 password,
                 passwordFieldType,
-                error,
+                hasError,
+                errorText,
+                togglePassword,
                 isPasswordVisible,
                 isInputEmpty,
-                togglePassword,
-                hideErrors,
                 login,
+                resetError,
             };
         },
     };
