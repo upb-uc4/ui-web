@@ -26,13 +26,12 @@
                 <div class="lg:flex mb-6 justify-between">
                     <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
                         <label class="text-gray-700 text-md font-medium mb-3">City</label>
-                        <input
+                        <base-input
                             id="city"
-                            v-model="addressCopy.city"
+                            v-model:value="addressCopy.city"
                             type="text"
-                            class="w-full form-input input-text"
-                            :class="{ error: errorBag.hasNested('city') }"
                             placeholder="City"
+                            validation-query="address.city"
                         />
                         <p v-if="errorBag.hasNested('city')" class="error-message">{{ errorBag.getNested("city") }}</p>
                     </div>
@@ -41,9 +40,9 @@
                         <input
                             id="zipCode"
                             v-model="addressCopy.zipCode"
-                            type="text"
                             class="w-full form-input input-text"
                             :class="{ error: errorBag.hasNested('zipCode') }"
+                            type="text"
                             placeholder="Zip Code"
                         />
                         <p v-if="errorBag.hasNested('zipCode')" class="error-message">
@@ -54,13 +53,12 @@
                 <div class="lg:flex flex-row justify-between mb-6">
                     <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
                         <label class="text-gray-700 text-md font-medium mb-3">Street</label>
-                        <input
+                        <base-input
                             id="street"
-                            v-model="addressCopy.street"
+                            v-model:value="addressCopy.street"
                             type="text"
-                            class="w-full form-input input-text"
-                            :class="{ error: errorBag.hasNested('street') }"
                             placeholder="Street"
+                            validation-query="address.street"
                         />
                         <p v-if="errorBag.hasNested('street')" class="error-message">
                             {{ errorBag.getNested("street") }}
@@ -68,13 +66,12 @@
                     </div>
                     <div class="flex flex-col w-full lg:w-1/6">
                         <label class="text-gray-700 text-md font-medium mb-3">Nr.</label>
-                        <input
+                        <base-input
                             id="houseNumber"
-                            v-model="addressCopy.houseNumber"
+                            v-model:value="addressCopy.houseNumber"
                             type="text"
-                            class="w-full form-input input-text"
-                            :class="{ error: errorBag.hasNested('houseNumber') }"
                             placeholder="Number"
+                            validation-query="address.houseNumber"
                         />
                         <p v-if="errorBag.hasNested('houseNumber')" class="error-message">
                             {{ errorBag.getNested("houseNumber") }}
@@ -91,9 +88,13 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { useStore } from "@/use/store/store";
     import { onMounted, ref } from "vue";
+    import BaseInput from "@/components/common/BaseInput.vue";
 
     export default {
         name: "AccountAddressSection",
+        components: {
+            BaseInput,
+        },
         props: {
             address: {
                 required: true,
