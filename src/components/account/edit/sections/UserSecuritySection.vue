@@ -37,7 +37,7 @@
                         v-model:value="accountPhoneNumber"
                         type="text"
                         placeholder="+49123456789"
-                        validation-query="user.phone"
+                        validation-query="user.phoneNumber"
                     />
                     <p v-if="errorBag.hasNested('phoneNumber')" class="error-message">{{ errorBag.getNested("phoneNumber") }}</p>
                 </div>
