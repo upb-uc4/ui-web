@@ -55,7 +55,7 @@
             },
             isCourseCatalogue: {
                 type: Boolean,
-                default: () => false,
+                default: false,
             },
         },
         setup(props: any) {
