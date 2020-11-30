@@ -40,7 +40,7 @@
             },
             onlyAdmittedCourses: {
                 type: Boolean,
-                default: false,
+                required: true,
             },
         },
 
@@ -74,10 +74,11 @@
                 if (props.onlyAdmittedCourses) {
                     let tmpCourses = [] as Course[];
                     admittedCourses.value.forEach(async (m) => {
-                        let response: APIResponse<Course>;
-                        response = await courseManagement.getCourse(m.courseId);
-                        let result = genericResponseHandler.handleResponse(response);
-                        if (result) tmpCourses.push(result);
+                        //TODO Include API
+                        // let response: APIResponse<Course>;
+                        // response = await courseManagement.getCourse(m.courseId);
+                        // let result = genericResponseHandler.handleResponse(response);
+                        // if (result) tmpCourses.push(result);
                     });
                     courses.value = tmpCourses;
                 } else {

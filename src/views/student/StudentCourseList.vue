@@ -24,7 +24,7 @@
 <script lang="ts">
     import CourseList from "@/components/course/list/student/CourseList.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
-    import { ref } from "vue";
+    import { ref, watch } from "vue";
     import CourseTypeFilter from "@/components/course/list/common/CourseTypeFilter.vue";
     import { CourseType } from "@/entities/CourseType";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
@@ -57,11 +57,19 @@
             },
         },
         setup(props: any) {
-            let title = props.isMyCoursesPage ? "My Courses" : "Available Courses";
+            let title = ref(props.isMyCoursesPage ? "My Courses" : "Available Courses");
             let message = ref("");
             let refreshKey = ref(false);
 
             let selectedType = ref("All" as CourseType);
+
+            watch(
+                () => props.isMyCoursesPage,
+                () => {
+                    title.value = props.isMyCoursesPage ? "All Courses" : "My Courses";
+                    refresh();
+                }
+            );
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;
