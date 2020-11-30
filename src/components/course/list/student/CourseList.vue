@@ -40,7 +40,7 @@
             },
             onlyAdmittedCourses: {
                 type: Boolean,
-                required: true,
+                default: false,
             },
         },
 
