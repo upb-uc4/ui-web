@@ -1,51 +1,85 @@
 <template>
-    <input
-        v-model="input"
-        class="input-text-tmp w-full"
-        :placeholder=placeholder
-        @focus="show()"
-        @blur="hide()"
-        @keyup="keyMonitor"
-    />
-    <div
-        v-show="!hidden"
-        class="bg-white overflow-auto max-h-50 border border-gray-500 w-full text-gray-700 rounded-b-md"
-    >
-        <div v-if="hasMatch">
-            <div
-                v-for="(option, index) in matches"
-                :key="option"
-                class="p-2 text-md cursor-pointer block"
-                :class="{ 'bg-blue-500 text-gray-100': index === hoveredOption }"
-                @mousedown="selectOption(option)"
-                @mouseover="setHoveredOption(index)"
-            >
-                {{ option.display }}
+    <div class="w-full max-w-xs mx-auto">
+        <Listbox v-model="matches" as="div" class="space-y-1">
+            <ListboxLabel class="input-label-tmp">Awesome Quotes</ListboxLabel>
+            <div class="relative">
+                <span class="inline-block w-full">
+                    <input
+                        v-model="input"
+                        type="text"
+                        autocomplete="off"
+                        class="w-64 input-text-tmp"
+                        @focusin="hidden = false"
+                        @focusout="hidden = true"
+                    />
+                </span>
+                <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
+                    <div v-show="hasMatch && !hidden" class="absolute mt-1 w-full rounded-md bg-white shadow-lg">
+                        <ListboxOptions
+                            static
+                            class="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
+                        >
+                            <ListboxOption
+                                v-for="element in matches"
+                                :key="element"
+                                v-slot="{ selected, active }"
+                                :value="element"
+                                @click="select(element)"
+                            >
+                                <div
+                                    :class="`${
+                                        active ? 'text-white bg-blue-600' : 'text-gray-900'
+                                    } cursor-default select-none relative py-2 pl-8 pr-4`"
+                                >
+                                    <span :class="`${selected ? 'font-semibold' : 'font-normal'} block truncate`">
+                                        {{ element.display }}
+                                    </span>
+                                    <span
+                                        v-if="selected"
+                                        :class="`${
+                                            active ? 'text-white' : 'text-blue-600'
+                                        } absolute inset-y-0 left-0 flex items-center pl-1.5`"
+                                    >
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                clip-rule="evenodd"
+                                            />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </ListboxOption>
+                        </ListboxOptions>
+                    </div>
+                </transition>
             </div>
-        </div>
-        <div v-else class="p-2 text-md block">No results found.</div>
+        </Listbox>
     </div>
 </template>
 
 <script lang="ts">
-    import { computed, ref, watch } from "vue";
+    import { computed, ref } from "vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
+    import { Listbox, ListboxLabel, ListboxOption, ListboxOptions } from "@headlessui/vue";
 
     export default {
         name: "SearchableSelect",
+        components: {
+            Listbox,
+            ListboxLabel,
+            ListboxOptions,
+            ListboxOption,
+        },
         props: {
             elements: {
                 type: Array,
                 required: true,
             },
-            selected: {
-                type: Object,
-                required: true,
-            },
             placeholder: {
                 type: String,
-                default: "Search for a Quote"
-            }
+                default: "Search for a Quote",
+            },
         },
         emits: ["update:selected"],
         setup(props: any, { emit }: any) {
@@ -54,79 +88,30 @@
 
             let matches = computed(() => {
                 const elements = props.elements as SearchSelectOption[];
-                return elements.filter(element => {
+                return elements.filter((element) => {
                     const needle = input.value.toLowerCase();
                     const haystack = element.display.toLocaleLowerCase();
                     return haystack.includes(needle);
-                })
+                });
             });
 
-            let hasMatch = ref(matches.value.length > 0)
+            let hasMatch = computed(() => matches.value.length > 0);
 
-            function show() {
-                hidden.value = false;
-            }
-
-            function hide() {
+            function select(element: SearchSelectOption) {
+                input.value = element.display;
                 hidden.value = true;
-                hoveredOption.value = -1;
+                emit("update:selected", element);
             }
 
-            const hoveredOption = ref(-1);
-
-            watch(
-                () => props.selected,
-                () => {
-                    input.value = props.selected.display;
-                }
-            );
-
-            watch(input, () => {
-                // emit:    empty value if input of search select is not exactly the value of one displayed option
-                //          the option that exactly matches the input string
-                // Emitting empty values is needed for updating the v-model (parent component) and the connected input (this component), as it is watched.
-                let tmp = (props.options as SearchSelectOption[]).filter((o) => o.display == input.value);
-                if (tmp.length == 0) {
-                    emit("update:selected", { value: {}, display: input.value } as SearchSelectOption);
-                    hoveredOption.value = -1;
-                    show();
-                } else if (tmp.length == 1) {
-                    selectOption(tmp[0]);
-                    hoveredOption.value = 0;
-                }
-            });
-
-            function selectOption(option: SearchSelectOption) {
-                emit("update:selected", option);
-            }
-
-            function keyMonitor(event: KeyboardEvent) {
-                if (event.key === "Enter" && hoveredOption.value >= 0) {
-                    selectOption(matches.value[hoveredOption.value]);
-                    hide();
-                } else if (event.key == "ArrowUp" && hoveredOption.value >= 0) {
-                    hoveredOption.value--;
-                } else if (event.key == "ArrowDown" && hoveredOption.value < matches.value.length - 1) {
-                    hoveredOption.value++;
-                }
-            }
-
-            function setHoveredOption(index: number) {
-                hoveredOption.value = index;
-            }
+            //todo key listener (enter, up, down)
 
             return {
                 input,
-                hidden,
-                show,
-                hide,
-                keyMonitor,
-                selectOption,
                 matches,
                 hasMatch,
-                hoveredOption,
-                setHoveredOption,
+                hidden,
+                select,
             };
         },
-    }
+    };
 </script>

@@ -177,7 +177,7 @@
                 </div>
                 <div>
                     <h1 class="font-medium text-2xl text-gray-600 mb-2">Search Selects</h1>
-                    <SearchSelect v-model:options="quotes" :selected="selectedQuote" input-id="playground"/>
+                    <searchable-select v-model:elements="quotes" input-id="playground" />
                 </div>
                 <div>
                     <h1 class="font-medium text-2xl text-gray-600 mb-2">Radio Buttons <span class="text-yellow-600">(TODO)</span></h1>
@@ -201,7 +201,7 @@
     import { ref } from "vue";
     import { Switch } from "@headlessui/vue";
     import Select from "@/components/common/Select.vue";
-    import SearchSelect from "@/components/common/SearchSelect.vue";
+    import SearchableSelect from "@/components/common/SearchableSelect.vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
 
     export default {
@@ -209,7 +209,7 @@
         components: {
             Select,
             Switch,
-            SearchSelect
+            SearchableSelect,
         },
         setup() {
             const people = [
@@ -228,15 +228,14 @@
             const isDarkModeEnabled = ref(false);
 
             const quotes: SearchSelectOption[] = [
-                {value: "something", display: "Ai Caramba"},
-                {value: "something else", display: "I'll be back"},
-                {value: "something else too", display: "Hakuna Matata"}
+                { value: "something", display: "Ai Caramba" },
+                { value: "something else", display: "I'll be back" },
+                { value: "something else too", display: "Hakuna Matata" },
             ];
 
-            const selectedQuote = ref(quotes[0]);
             const picked = ref("A");
 
-            return { isDarkModeEnabled, people, selectedPerson, picked, quotes, selectedQuote };
+            return { isDarkModeEnabled, people, selectedPerson, picked, quotes };
         },
     };
 </script>
