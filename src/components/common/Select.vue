@@ -18,7 +18,7 @@
                     </ListboxButton>
                 </span>
                 <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                    <div v-if="open" class="absolute mt-1 w-full rounded-md bg-white shadow-lg">
+                    <div v-if="open" class="absolute z-30 mt-1 w-full rounded-md bg-white shadow-lg">
                         <ListboxOptions
                             static
                             class="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
