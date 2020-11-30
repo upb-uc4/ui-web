@@ -38,6 +38,10 @@
                 type: String,
                 required: true,
             },
+            onlyAdmittedCourses: {
+                type: Boolean,
+                default: false,
+            },
         },
 
         setup(props: any) {
@@ -59,17 +63,28 @@
 
             onBeforeMount(async () => {
                 busy.value = true;
-                await getCourses();
                 await getAdmittedCourses();
+                await getCourses();
                 busy.value = false;
             });
             async function getCourses() {
                 const genericResponseHandler = new GenericResponseHandler("courses");
-                let response: APIResponse<Course[]>;
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
-                response = await courseManagement.getCourses();
-                courses.value = genericResponseHandler.handleResponse(response);
+                if (props.onlyAdmittedCourses) {
+                    let tmpCourses = [] as Course[];
+                    admittedCourses.value.forEach(async (m) => {
+                        let response: APIResponse<Course>;
+                        response = await courseManagement.getCourse(m.courseId);
+                        let result = genericResponseHandler.handleResponse(response);
+                        if (result) tmpCourses.push(result);
+                    });
+                    courses.value = tmpCourses;
+                } else {
+                    let response: APIResponse<Course[]>;
+                    response = await courseManagement.getCourses();
+                    courses.value = genericResponseHandler.handleResponse(response);
+                }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
                 const resp = await userManagement.getLecturers(...lecturerIds);
                 lecturers.value = genericResponseHandler.handleResponse(resp);

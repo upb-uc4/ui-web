@@ -69,6 +69,16 @@ const router = createRouter({
             },
         },
         {
+            path: "/courses/my-courses",
+            name: "student.my-courses",
+            component: StudentCourseView,
+            props: { isMyCoursesPage: true },
+            meta: {
+                title: "My Courses" + suffix,
+                roles: ["Student"],
+            },
+        },
+        {
             path: "/courses/:courseId/drop",
             name: "student.course.drop",
             component: StudentCourseInfoPage,

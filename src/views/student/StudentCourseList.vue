@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-12 sm:mt-32 text-4xl text-center font-semibold text-gray-900">Available Courses</div>
+    <div class="mt-12 sm:mt-32 text-4xl text-center font-semibold text-gray-900">{{ title }}</div>
     <div class="sm:mt-8 flex justify-center">
         <div class="w-full max-w-4xl">
             <div class="flex flex-col">
@@ -10,7 +10,13 @@
                 <course-type-filter v-model:selected-type="selectedType" class="w-full my-4" />
             </div>
 
-            <courseList :key="refreshKey" :show-all-courses="true" :selected-type="selectedType" :filter="message" />
+            <courseList
+                :key="refreshKey"
+                :only-admitted-courses="isMyCoursesPage"
+                :show-all-courses="true"
+                :selected-type="selectedType"
+                :filter="message"
+            />
         </div>
     </div>
 </template>
@@ -31,7 +37,6 @@
             SeachBar,
             CourseTypeFilter,
         },
-
         async beforeRouteEnter(_to: any, _from: any, next: any) {
             const response = await checkPrivilege(Role.STUDENT);
 
@@ -44,7 +49,15 @@
 
             return next("/redirect");
         },
-        setup() {
+
+        props: {
+            isMyCoursesPage: {
+                type: Boolean,
+                default: false,
+            },
+        },
+        setup(props: any) {
+            let title = props.isMyCoursesPage ? "My Courses" : "Available Courses";
             let message = ref("");
             let refreshKey = ref(false);
 
@@ -58,6 +71,7 @@
                 refresh,
                 message,
                 selectedType,
+                title,
             };
         },
     };
