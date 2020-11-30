@@ -18,7 +18,7 @@ switch (process.env.NODE_ENV) {
         endpoint = "https://uc4.cs.uni-paderborn.de/api/experimental/";
         break;
     default:
-        process.env.VUE_APP_API_BASE_URL = "/api3";
+        process.env.VUE_APP_API_BASE_URL = "/api1";
         break;
 }
 
