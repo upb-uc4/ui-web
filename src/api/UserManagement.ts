@@ -12,12 +12,14 @@ import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 
 export default class UserManagement extends Common {
+    protected static endpoint = "/user-management";
+
     constructor() {
-        super("/user-management");
+        super(UserManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/user-management");
+        return super.getVersion();
     }
 
     async getUsers(

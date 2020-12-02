@@ -4,12 +4,14 @@ import APIError from "./api_models/errors/APIError";
 import MatriculationData from "./api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
 import handleAuthenticationError from "./AuthenticationHelper";
-import Common from "./Common";
+import CommonHyperledger from "./CommonHyperledger";
 import APIResponse from "./helpers/models/APIResponse";
 
-export default class MatriculationManagement extends Common {
+export default class MatriculationManagement extends CommonHyperledger {
+    protected static endpoint = "/matriculation-management";
+
     constructor() {
-        super("/matriculation-management");
+        super(MatriculationManagement.endpoint);
     }
 
     async updateMatriculationData(
@@ -104,6 +106,6 @@ export default class MatriculationManagement extends Common {
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/matriculation-management");
+        return super.getVersion();
     }
 }

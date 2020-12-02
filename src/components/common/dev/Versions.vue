@@ -10,11 +10,36 @@
                 <p class="text-lg">{{ v.name }}</p>
             </div>
             <div class="flex items-center">
+                <p
+                    v-if="v.hlVersions"
+                    class="px-3 py-1 text-lg rounded-lg mr-2"
+                    :class="[
+                        v.hlVersions.hlfApiVersion == 'unavailable' || v.hlVersions.hlfApiVersion == 'endpoint broken'
+                            ? 'bg-red-200'
+                            : 'bg-blue-200',
+                    ]"
+                >
+                    {{ "HLF API: " + v.hlVersions.hlfApiVersion }}
+                </p>
+                <p
+                    v-if="v.hlVersions"
+                    class="px-3 py-1 text-lg rounded-lg mr-4"
+                    :class="[
+                        v.hlVersions.chaincodeVersion == 'unavailable' || v.hlVersions.chaincodeVersion == 'endpoint broken'
+                            ? 'bg-red-200'
+                            : 'bg-blue-200',
+                    ]"
+                >
+                    {{ "CC: " + v.hlVersions.chaincodeVersion }}
+                </p>
                 <a v-if="v.link != ''" :href="v.link" target="_blank" rel="noopener noreferrer">
                     <i v-if="v.version != 'unavailable'" class="pr-4 text-2xl text-grey-600 far fa-file-alt"></i>
                 </a>
-                <p class="px-3 py-1 text-lg rounded-lg" :class="[v.version == 'unavailable' ? 'bg-red-200' : 'bg-blue-200']">
-                    {{ v.version }}
+                <p
+                    class="px-3 py-1 text-lg rounded-lg"
+                    :class="[v.version == 'unavailable' || v.version == 'endpoint broken' ? 'bg-red-200' : 'bg-blue-200']"
+                >
+                    {{ "Service: " + v.version }}
                 </p>
             </div>
         </div>
