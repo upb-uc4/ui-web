@@ -61,15 +61,11 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
     import { useStore } from "@/use/store/store";
-    import { validateMatriculationProposal } from "@/api/helpers/ProposalValidator";
     import CertificateManagement from "@/api/CertificateManagement";
-    import { decodeProposal } from "@/api/helpers/ProtobuffDecoding";
-    import { signProposal } from "@/use/crypto/signing";
-    import SignedProposalMessage from "@/api/api_models/common/SignedProposalMessage";
     import { useToast } from "@/toast";
     import { showAPIToast } from "@/use/helpers/Toasts";
+    import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
 
     export default {
         components: {
@@ -153,47 +149,12 @@
                     .forEach((entry) => {
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
-                const matriculationManagement: MatriculationManagement = new MatriculationManagement();
-                const response = await matriculationManagement.getUnsignedMatriculationProposal(username.value, matriculationEntries);
-                const matriculationResponseHandler = new MatriculationValidationResponseHandler();
+
                 const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(username.value);
                 const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
-                const unsignedProposal = matriculationResponseHandler.handleResponse(response);
-                if (unsignedProposal) {
-                    error = false;
-                    semesterType.value = "";
-                    year.value = "";
-                    selectedFieldsOfStudy.value = [];
-                    errorBag.value = new ErrorBag();
-                    toast.success("Immatriculation information updated");
-                } else {
-                    errorBag.value = new ErrorBag(matriculationResponseHandler.errorList);
-                }
-
-                const proposal = await decodeProposal(response.returnValue.unsignedProposal);
-
-                if (!proposal) {
-                    return showAPIToast(500, "Proposal broken.");
-                }
-
-                const validation = validateMatriculationProposal(enrollmentId.id, matriculationEntries, proposal);
-
-                if (!validation) {
-                    return showAPIToast(500, "Proposal contained wrong information.");
-                }
-
-                const store = useStore();
-
-                const privateKey = await store.getters.privateKey;
-
-                const signature = await signProposal(response.returnValue.unsignedProposal, privateKey);
-                const signedProposal: SignedProposalMessage = { unsignedProposal: response.returnValue.unsignedProposal, signature };
-
-                const matr = await matriculationManagement.submitSignedMatriculationProposal(username.value, signedProposal);
-
-                const result = new GenericResponseHandler("matriculation").handleResponse(matr);
+                await updateMatriculation(enrollmentId.id, username.value, matriculationEntries);
 
                 busy.value = false;
                 refreshKey.value = !refreshKey.value;

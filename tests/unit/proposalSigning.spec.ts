@@ -1,5 +1,5 @@
 import { pemStringToPrivateKey, pemStringToPublicKey } from "@/use/crypto/certificates";
-import { signProposal, verifyProposalSignature } from "@/use/crypto/signing";
+import { signProtobuf, verifyProtobufSignature } from "@/use/crypto/signing";
 
 describe("Proposal Signing Tests", () => {
     const base64Proposal =
@@ -20,15 +20,15 @@ describe("Proposal Signing Tests", () => {
     });
 
     test("Proposal signing", async () => {
-        const signature = await signProposal(base64Proposal, privateKey);
+        const signature = await signProtobuf(base64Proposal, privateKey);
 
-        const ownSignatureVerification = await verifyProposalSignature(base64Proposal, signature, publicKey);
+        const ownSignatureVerification = await verifyProtobufSignature(base64Proposal, signature, publicKey);
         expect(ownSignatureVerification).toBe(true);
 
-        const goodSignatureVerification = await verifyProposalSignature(base64Proposal, base64GoodSignature, publicKey);
+        const goodSignatureVerification = await verifyProtobufSignature(base64Proposal, base64GoodSignature, publicKey);
         expect(goodSignatureVerification).toBe(true);
 
-        const badSignatureVerification = await verifyProposalSignature(base64Proposal, base64BadSignature, publicKey);
+        const badSignatureVerification = await verifyProtobufSignature(base64Proposal, base64BadSignature, publicKey);
         expect(badSignatureVerification).toBe(false);
     });
 });

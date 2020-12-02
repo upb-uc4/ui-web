@@ -8,6 +8,8 @@ import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
 import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
+import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
+import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
 
 export default class MatriculationManagement extends Common {
     constructor() {
@@ -26,7 +28,7 @@ export default class MatriculationManagement extends Common {
         let payload = { matriculation: matriculation };
 
         return await this._axios
-            .post(`/matriculation/${username}/proposal`, payload)
+            .post(`/matriculation/${username}/unsigned_proposal`, payload)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -64,9 +66,52 @@ export default class MatriculationManagement extends Common {
             });
     }
 
-    async submitSignedMatriculationProposal(username: string, message: SignedProposalMessage): Promise<APIResponse<boolean>> {
+    async submitSignedMatriculationProposal(
+        username: string,
+        message: SignedProposalMessage
+    ): Promise<APIResponse<UnsignedTransactionMessage>> {
         return await this._axios
-            .post(`/matriculation/${username}/submit`, message)
+            .post(`/matriculation/${username}/signed_proposal`, message)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as UnsignedTransactionMessage,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.submitSignedMatriculationProposal(username, message);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: {} as UnsignedTransactionMessage,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: {} as UnsignedTransactionMessage,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async submitSignedMatriculationTransaction(username: string, message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .post(`/matriculation/${username}/signed_transaction`, message)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -85,7 +130,7 @@ export default class MatriculationManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedMatriculationProposal(username, message);
+                        return await this.submitSignedMatriculationTransaction(username, message);
                     }
                     return {
                         statusCode: error.response.status,
