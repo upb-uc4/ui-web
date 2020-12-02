@@ -6,7 +6,6 @@ import Proposal from "../api_models/transactions/Proposal";
 import { isEqual } from "lodash";
 import { UC4Identifier } from "./UC4Identifier";
 import CourseAdmission from "../api_models/admission_management/CourseAdmission";
-import { useStore } from "@/use/store/store";
 import CertificateManagement from "../CertificateManagement";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 
@@ -24,6 +23,8 @@ export function validateMatriculationProposal(enrollmentId: string, matriculatio
         const proposalEnrollmentId = paramsArray[0];
         const proposalMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
 
+        if (paramsArray.length > 2) return false;
+
         let result = proposalEnrollmentId === enrollmentId;
         result = result && isEqual(proposalMatriculation, matriculation);
 
@@ -37,6 +38,8 @@ export function validateMatriculationProposal(enrollmentId: string, matriculatio
         const jsonString = proposal.payload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
+
+        if (paramsArray.length > 1) return false;
 
         let result = proposalMatriculationData.enrollmentId === enrollmentId;
         result = result && isEqual(proposalMatriculationData.matriculationStatus, matriculation);
@@ -70,14 +73,13 @@ export async function validateCourseAdmissionProposal(
 
         const jsonString = proposal.payload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
-        const proposalEnrollmentId = paramsArray[0];
-        const proposalCourseId = paramsArray[1];
-        const proposalModuleId = paramsArray[2];
-        const proposalTimestamp = paramsArray[3];
+        const proposalAdmission: CourseAdmission = <CourseAdmission>JSON.parse(paramsArray[0]);
 
-        let result = proposalEnrollmentId === enrollmentId;
-        result = result && proposalCourseId === courseAdmission.courseId;
-        result = result && proposalModuleId === courseAdmission.moduleId;
+        if (paramsArray.length > 1) return false;
+
+        let result = proposalAdmission.courseId === courseAdmission.courseId;
+        result = result && proposalAdmission.moduleId === proposalAdmission.moduleId;
+        result = result && proposalAdmission.enrollmentId === enrollmentId;
 
         return result;
     }
