@@ -1,9 +1,9 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <label class="block text-gray-700 text-lg font-medium mb-2">{{ title }}</label>
-                <label class="block text-gray-600">{{ subtitle }}</label>
+    <section class="border-t-2 py-8 border-gray-300">
+        <div class="md:flex">
+            <div class="w-full lg:w-1/3 md:block mr-12 mb-4">
+                <label class="block text-gray-600 text-lg font-medium mb-2">{{ title }}</label>
+                <label class="block text-gray-500">{{ subtitle }}</label>
             </div>
             <div class="w-full lg:w-2/3">
                 <slot />
