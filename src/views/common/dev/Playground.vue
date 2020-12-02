@@ -184,6 +184,13 @@
                         </label>
                     </div>
                 </div>
+                <div>
+                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Checkboxes <span class="text-yellow-600">(TODO)</span></h1>
+                    <div class="flex space-x-4 items-center">
+                        <input type="checkbox" checked />
+                        <label>Do nothing</label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
