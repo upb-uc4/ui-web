@@ -27,12 +27,14 @@
             Switch,
         },
         setup() {
-            const isDarkModeEnabled = ref(false);
+            const isDarkModeEnabled = ref(localStorage.theme === "dark");
 
             watch(isDarkModeEnabled, (isDarkModeEnabled) => {
                 if (isDarkModeEnabled) {
+                    localStorage.theme = "dark";
                     document.querySelector("html").classList.add("dark");
                 } else {
+                    localStorage.theme = "light";
                     document.querySelector("html").classList.remove("dark");
                 }
             });
