@@ -1,21 +1,5 @@
-/*
- * Login as admin
- * check if admin, lecturer and student exist
- * create new account
- * check all input fields
- * check unsaved changes modal
- * create student account
- * edit student account
- * change fields of study
- * delete account
- * test account deletion modal
- */
-
-import Admin from "@/api/api_models/user_management/Admin";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
-import Student from "@/api/api_models/user_management/Student";
 import { loginAsDefaultAdmin, logout } from "./helpers/AuthHelper";
-import { navigateToExamRegForm } from "./helpers/NavigationHelper";
+import { navigateToCourseFormAdmin, navigateToExamRegForm } from "./helpers/NavigationHelper";
 
 let exRegName = "TestExReg" + Math.floor(Math.random() * 99999999);
 let exRegModuleID = "TestModuleID" + Math.floor(Math.random() * 99999999);
@@ -73,7 +57,6 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='createExamReg']").should("be.enabled");
         cy.get("button[id='createExamReg']").click();
 
-        // TODO: can use intercept and wait with @?
         cy.wait(10000);
         cy.get("input[id='examRegName']").should("have.value", "");
         cy.get("input[id='moduleID']").should("have.value", "");
@@ -111,5 +94,11 @@ describe("Account creation, edition and deletion", function () {
     it("Remove exam regulation name and ensure create button is disabled", function () {
         cy.get("input[id='examRegName']").clear();
         cy.get("button[id='createExamReg']").should("be.disabled");
+    });
+
+    it("Check if examination regulation was created", function () {
+        navigateToCourseFormAdmin();
+        cy.get("#exReg-").select(exRegName);
+        cy.get("section[id='moduleSection']").should("contain.text", exRegModuleID + ": " + exRegModuleName);
     });
 });
