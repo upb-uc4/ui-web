@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="bg-gray-100 dark:bg-gray-800 p-10 mt-10 rounded-lg w-full sm:flex justify-between">
+        <div class="p-10 mt-10 rounded-lg w-full sm:flex justify-between">
             <div>
                 <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Inputs</h1>
                 <div class="space-y-6">

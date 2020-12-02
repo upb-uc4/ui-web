@@ -2,6 +2,7 @@
     <div class="w-full mx-auto lg:mt-20 mt-8">
         <section-header title="Playground" />
         <input-section class="w-full" />
+        <input-section class="w-full" />
     </div>
 </template>
 

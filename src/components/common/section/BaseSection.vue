@@ -1,8 +1,8 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-300">
+    <section class="border-t-2 py-8 border-gray-200">
         <div class="md:flex">
-            <div class="w-full lg:w-1/3 md:block mr-12 mb-4">
-                <label class="block text-gray-600 text-lg font-medium mb-2">{{ title }}</label>
+            <div class="w-full lg:w-1/3 md:block xl:mr-32 mr-12 mb-4">
+                <label class="block text-gray-800 text-lg font-medium mb-2">{{ title }}</label>
                 <label class="block text-gray-500">{{ subtitle }}</label>
             </div>
             <div class="w-full lg:w-2/3">

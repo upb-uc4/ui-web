@@ -1,6 +1,6 @@
 
 .input-label-tmp {
-    @apply input-label-base-tmp mb-1 text-gray-600
+    @apply input-label-base-tmp mb-1 text-gray-800
     dark:text-gray-300
 }
 

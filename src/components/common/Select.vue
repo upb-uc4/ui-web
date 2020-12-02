@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full max-w-xs mx-auto">
+    <div class="w-full">
         <Listbox v-slot="{ open }" v-model="selectedElement" as="div" class="space-y-1">
             <ListboxLabel class="input-label-tmp"> Assigned to</ListboxLabel>
             <div class="relative">
