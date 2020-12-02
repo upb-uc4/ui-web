@@ -18,6 +18,7 @@ const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
 const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 const Playground = () => import("@/views/common/dev/Playground.vue");
+const SectionPlayground = () => import("@/views/common/dev/SectionPlayground.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -40,6 +41,14 @@ const router = createRouter({
             component: Playground,
             meta: {
                 title: "Playground" + suffix,
+            },
+        },
+        {
+            path: "/section-playground",
+            name: "section-playground",
+            component: SectionPlayground,
+            meta: {
+                title: "Section Playground" + suffix,
             },
         },
         {
