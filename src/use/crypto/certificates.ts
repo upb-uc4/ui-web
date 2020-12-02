@@ -264,7 +264,6 @@ export function base64ToArrayBuffer(str: string): ArrayBuffer {
 }
 
 export async function getPublicKeyFromCertificate(certificate: string): Promise<CryptoKey> {
-    console.log(certificate);
     const beginString = "-----BEGIN CERTIFICATE-----";
     const endString = "-----END CERTIFICATE-----";
 

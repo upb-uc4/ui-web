@@ -66,7 +66,9 @@ async function abstractHandler(
 
     if (!unsignedProposal.unsignedProposal) return false;
 
-    const proposal = await decodeProposal(unsignedProposal.unsignedProposal, protoUrl);
+    const proposal = await decodeProposal(unsignedProposal.unsignedProposal, protoUrl).catch((reason: any) => {
+        useToast().error("Could not decode proposal. This is a bug on our side, please consider reporting this.");
+    });
 
     if (!proposal) {
         useToast().error("Could not decode proposal. This is a bug on our side, please consider reporting this.");
@@ -103,7 +105,9 @@ async function abstractHandler(
 
     if (!unsignedTransaction.unsignedTransaction) return false;
 
-    const transaction = await decodeTransaction(unsignedTransaction.unsignedTransaction, protoUrl);
+    const transaction = await decodeTransaction(unsignedTransaction.unsignedTransaction, protoUrl).catch((reason: any) => {
+        useToast().error("Could not decode transaction. This is a bug on our side, please consider reporting this.");
+    });
 
     if (!transaction) {
         useToast().error("Could not decode transaction. This is a bug on our side, please consider reporting this.");
