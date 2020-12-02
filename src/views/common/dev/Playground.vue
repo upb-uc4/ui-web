@@ -140,17 +140,17 @@
                         </div>
                         <div class="w-64">
                             <div class="">
-                                <label class="input-label-tmp">normal default</label>
+                                <label class="input-label-tmp">normal disabled</label>
                                 <button disabled class="btn-tertiary-tmp">Can't Click Me</button>
                             </div>
 
                             <div class="mt-6">
-                                <label class="input-label-tmp">add default</label>
+                                <label class="input-label-tmp">add disabled</label>
                                 <button disabled class="btn-tertiary-add-tmp">Can't Click Me</button>
                             </div>
 
                             <div class="mt-6">
-                                <label class="input-label-tmp">remove default</label>
+                                <label class="input-label-tmp">remove disabled</label>
                                 <button disabled class="btn-tertiary-remove-tmp">Can't Click Me</button>
                             </div>
                         </div>
