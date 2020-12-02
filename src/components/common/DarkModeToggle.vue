@@ -32,10 +32,10 @@
             watch(isDarkModeEnabled, (isDarkModeEnabled) => {
                 if (isDarkModeEnabled) {
                     localStorage.theme = "dark";
-                    document.querySelector("html").classList.add("dark");
+                    document.querySelector("html")?.classList.add("dark");
                 } else {
                     localStorage.theme = "light";
-                    document.querySelector("html").classList.remove("dark");
+                    document.querySelector("html")?.classList.remove("dark");
                 }
             });
             return { isDarkModeEnabled };

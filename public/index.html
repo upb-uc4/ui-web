@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>logo.svg" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <script>
+    <script lang="ts">
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.querySelector('html').classList.add('dark');
+            document.querySelector('html')?.classList.add('dark');
         } else {
-            document.querySelector('html').classList.remove('dark');
+            document.querySelector('html')?.classList.remove('dark');
         }
     </script>
   </head>
