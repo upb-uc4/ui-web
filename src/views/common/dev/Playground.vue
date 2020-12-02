@@ -191,6 +191,39 @@
                         <label>Do nothing</label>
                     </div>
                 </div>
+                <div>
+                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Badges <span class="text-yellow-600">(TODO)</span></h1>
+                    <div class="space-y-6">
+                        <div class="flex space-x-4">
+                            <span
+                                class="text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-20 text-center bg-blue-200 text-blue-800"
+                            >
+                                Student
+                            </span>
+                            <span
+                                class="text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-20 text-center bg-red-200 text-red-800"
+                            >
+                                Admin
+                            </span>
+                            <span
+                                class="text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-20 text-center bg-green-200 text-green-800"
+                            >
+                                Lecturer
+                            </span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <span class="flex items-center fa-stack text-xs">
+                                <i class="fas fa-circle text-green-500 fa-stack-2x" />
+                                <i class="fas fa-check fa-stack-1x fa-inverse" />
+                            </span>
+
+                            <span class="flex items-center fa-stack text-xs">
+                                <i class="fas fa-circle text-red-500 fa-stack-2x" />
+                                <i class="fas fa-times fa-stack-1x fa-inverse" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
