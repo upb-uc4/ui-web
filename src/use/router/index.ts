@@ -253,7 +253,7 @@ router.beforeEach(async (to, from, next) => {
 
 router.afterEach(async (to, from, next) => {
     const store = useStore();
-    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU, true);
+    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU);
 });
 
 export default router;

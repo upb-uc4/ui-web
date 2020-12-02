@@ -1,3 +1,17 @@
+# [v0.13.1](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-11-26)
+
+## Feature
+- added governmentId to user creation [#701](https://github.com/upb-uc4/ui-web/pull/701)
+- add soft deletion of users [#702](https://github.com/upb-uc4/ui-web/pull/702), [#704](https://github.com/upb-uc4/ui-web/pull/704)
+
+## Refactoring
+- Merge endpoints for user creation [#700](https://github.com/upb-uc4/ui-web/pull/700)
+- Remove unused components [#739](https://github.com/upb-uc4/ui-web/pull/739)
+
+## Bugfix
+- add ECTS field to course form [#738](https://github.com/upb-uc4/ui-web/pull/738)
+- reset store state on logout [#732](https://github.com/upb-uc4/ui-web/pull/732)
+
 # [v0.13.0](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.13.0) (2020-11-23)
 
 ## Feature

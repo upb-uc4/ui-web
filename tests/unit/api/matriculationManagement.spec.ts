@@ -14,9 +14,10 @@ var matriculationManagement: MatriculationManagement;
 var userManagement: UserManagement;
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
 const studentAuth = JSON.parse(readFileSync("tests/fixtures/logins/student.json", "utf-8")) as { username: string; password: string };
-const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;
+const governmentId = pair.governmentId;
 
 jest.setTimeout(30000);
 
@@ -30,7 +31,7 @@ describe("Matriculation management", () => {
     });
 
     test("Create student user", async () => {
-        const success = await userManagement.createUser(authUser, student);
+        const success = await userManagement.createUser(governmentId, authUser, student);
         expect(success.returnValue).toBe(true);
         await new Promise((r) => setTimeout(r, 15000));
     });
@@ -105,7 +106,7 @@ describe("Matriculation management", () => {
     });
 
     test("Delete student user", async () => {
-        const success = await userManagement.deleteUser(student.username);
+        const success = await userManagement.forceDeleteUser(student.username);
         expect(success.returnValue).toBe(true);
     });
 });
