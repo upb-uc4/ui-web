@@ -1,6 +1,7 @@
 
 .input-label-tmp {
     @apply input-label-base-tmp mb-1 text-gray-600
+    dark:text-gray-300
 }
 
 .input-label-error-tmp {

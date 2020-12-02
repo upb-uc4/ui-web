@@ -2,7 +2,7 @@
     <div>
         <div class="bg-gray-100 dark:bg-gray-800 p-10 mt-10 rounded-lg w-full sm:flex justify-between">
             <div>
-                <h1 class="font-medium text-2xl text-gray-600 dark:text-blue-200 mb-2">Inputs</h1>
+                <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Inputs</h1>
                 <div class="space-y-6">
                     <div class="">
                         <label class="input-label-tmp">default</label>
@@ -45,7 +45,7 @@
 
             <div class="mt-12 sm:mt-0">
                 <div>
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Primary Buttons</h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Primary Buttons</h1>
                     <div class="sm:flex">
                         <div class="sm:mr-8">
                             <div class="">
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="mt-10">
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Secondary Buttons</h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Secondary Buttons</h1>
                     <div class="sm:flex">
                         <div class="sm:mr-8">
                             <div class="">
@@ -119,7 +119,7 @@
                 </div>
 
                 <div class="mt-10">
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Tertiary Buttons</h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Tertiary Buttons</h1>
 
                     <div class="sm:flex">
                         <div class="sm:mr-8 sm:mt-0 mt-6 w-64">
@@ -160,19 +160,21 @@
 
             <div class="mt-12 sm:mt-0 space-y-10 w-64">
                 <div>
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Switch (Toggle)</h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Switch (Toggle)</h1>
                     <dark-mode-toggle />
                 </div>
                 <div>
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Selects</h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Selects</h1>
                     <Select v-model:elements="people" :selected-element="selectedPerson" />
                 </div>
                 <div>
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Search Selects</h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Search Selects</h1>
                     <searchable-select v-model:elements="quotes" input-id="playground" />
                 </div>
                 <div>
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Radio Buttons <span class="text-yellow-600">(TODO)</span></h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">
+                        Radio Buttons <span class="text-yellow-600">(TODO)</span>
+                    </h1>
                     <div class="flex space-x-8">
                         <label class="flex items-center">
                             <input v-model="picked" type="radio" class="radio" value="A" />
@@ -185,14 +187,18 @@
                     </div>
                 </div>
                 <div>
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Checkboxes <span class="text-yellow-600">(TODO)</span></h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">
+                        Checkboxes <span class="text-yellow-600">(TODO)</span>
+                    </h1>
                     <div class="flex space-x-4 items-center">
                         <input type="checkbox" checked />
                         <label>Do nothing</label>
                     </div>
                 </div>
                 <div>
-                    <h1 class="font-medium text-2xl text-gray-600 mb-2">Badges <span class="text-yellow-600">(TODO)</span></h1>
+                    <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">
+                        Badges <span class="text-yellow-600">(TODO)</span>
+                    </h1>
                     <div class="space-y-6">
                         <div class="flex space-x-4">
                             <span
