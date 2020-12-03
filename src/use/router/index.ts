@@ -124,7 +124,7 @@ const router = createRouter({
             },
         },
         {
-            path: "/createExamReg",
+            path: "/create-exam-reg",
             name: "examRegForm",
             component: ExamRegForm,
             meta: {
