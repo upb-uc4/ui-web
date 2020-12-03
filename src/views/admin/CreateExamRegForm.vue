@@ -121,7 +121,6 @@
                     let newModules = selectedModules.value.filter((m) => !existingModules.value.find((x) => m == x));
                     existingModules.value.push(...newModules);
                     selectedModules.value = [] as Module[];
-                    console.log(selectedModules.value);
                     examRegName.value = "";
                 }
                 busy.value = false;
