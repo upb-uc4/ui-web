@@ -37,16 +37,16 @@
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
-            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
-                <div class="lg:w-1/2 w-full">
-                    <label class="input-label-warning-tmp">Warning</label>
-                    <input type="text" class="w-full input-text-warning-tmp" />
-                </div>
-                <div class="lg:w-1/2 w-full">
-                    <label class="input-label-error-tmp">Error</label>
-                    <input type="text" class="w-full input-text-error-tmp" />
-                </div>
-            </div>
+            <!--            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">-->
+            <!--                <div class="lg:w-1/2 w-full">-->
+            <!--                    <label class="input-label-warning-tmp">Warning</label>-->
+            <!--                    <input type="text" class="w-full input-text-warning-tmp" />-->
+            <!--                </div>-->
+            <!--                <div class="lg:w-1/2 w-full">-->
+            <!--                    <label class="input-label-error-tmp">Error</label>-->
+            <!--                    <input type="text" class="w-full input-text-error-tmp" />-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="w-full">
                     <label class="input-label-tmp">Comment</label>
