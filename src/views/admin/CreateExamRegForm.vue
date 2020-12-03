@@ -64,7 +64,7 @@
             ExRegInfoSection,
             LoadingComponent,
         },
-        setup: function () {
+        setup() {
             const heading = "Create Exam Regulation";
             const examRegName = ref("");
             const nameValid = ref(false);
