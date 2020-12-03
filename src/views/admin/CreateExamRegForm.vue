@@ -65,7 +65,7 @@
             LoadingComponent,
         },
         setup: function () {
-            const heading = "Create Examination Regulation";
+            const heading = "Create Exam Regulation";
             const examRegName = ref("");
             const nameValid = ref(false);
 
