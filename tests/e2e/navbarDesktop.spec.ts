@@ -54,7 +54,7 @@ describe("admin", () => {
         // create exam reg form
         cy.get("#nav_desktop_admin_menu_exreg").trigger("mouseover");
         cy.get("#nav_desktop_admin_menu_exreg_create").click();
-        cy.url().should("contain", "createExamReg");
+        cy.url().should("contain", "create-exam-reg");
     });
     checkProfile();
 });
