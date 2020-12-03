@@ -128,7 +128,7 @@ const router = createRouter({
             name: "examRegForm",
             component: ExamRegForm,
             meta: {
-                title: "Examination Registration Creation" + suffix,
+                title: "Examination Regulation Creation" + suffix,
                 roles: ["Admin"],
             },
         },
