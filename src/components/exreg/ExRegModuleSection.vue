@@ -23,7 +23,7 @@
                     <div v-else-if="moduleUsed" class="mb-4">
                         <label class="text-gray-700 text-md font-medium my-3">
                             <i class="text-red-400 fas fa-times mr-2"></i>
-                            Module {{ moduleID }} already selected!
+                            Module '{{ moduleID }}' already selected!
                         </label>
                     </div>
                     <div v-if="moduleID !== '' && moduleName !== '' && !moduleUsed">
