@@ -33,7 +33,7 @@
                 <div class="sm:hidden">
                     <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
                     <button id="mobileCreateCourse" :disabled="!canCreate" class="mb-4 w-full btn btn-blue-primary" @click="createExamReg">
-                        Create Examination Regulation
+                        Create Exam Regulation
                     </button>
                 </div>
             </section>
