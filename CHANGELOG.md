@@ -1,4 +1,4 @@
-# [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (Draft)
+# [v0.13.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.2)
 
 ## Feature
 - Add create exam regulation form [#690](https://github.com/upb-uc4/ui-web/pull/690)
