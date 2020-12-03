@@ -3,7 +3,7 @@
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-md font-medium mb-2"> Modules </label>
-                <label class="block text-gray-600"> Add modules to the examination regulation </label>
+                <label class="block text-gray-600"> Add modules to the examination regulation.</label>
             </div>
             <div class="w-full lg:w-2/3">
                 <div class="mb-8 w-full relative">
