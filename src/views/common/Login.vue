@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col justify-center">
-        <div class="mt-12">
+        <div class="mt-2">
             <img class="hidden sm:block mx-auto h-16 w-auto" src="../../assets/logo/logo_inverse.svg" alt="uc4_logo" />
             <h2 class="mt-6 text-center text-2xl text-gray-700 tracking-tighter">Log in to University Credits 4.0</h2>
         </div>
