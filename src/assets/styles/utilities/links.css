@@ -11,11 +11,11 @@
 }
 
 .navbar-menu {
-    @apply py-1 px-3 block;
+    @apply py-1 px-3 block font-bold text-sm text-gray-200;
 }
 
 .mobile-navbar-menu {
-    @apply py-1 px-3 block;
+    @apply py-1 px-3 block font-bold text-sm text-gray-200;
 }
 
 

@@ -1,7 +1,7 @@
 <template>
     <section class="flex flex-col lg:flex-row px-8 py-6 border-b -mx-4">
-        <ul class="w-full px-2">
-            <li class="mb-4">
+        <ul class="w-full px-2 space-y-4">
+            <li class="">
                 <menu-item
                     id="nav_desktop_profile"
                     title="Profile"
@@ -10,7 +10,7 @@
                     :is-horizontally-aligned="true"
                 />
             </li>
-            <li class="mb-4">
+            <li class="">
                 <menu-item
                     id="nav_desktop_settings"
                     title="Settings"
@@ -19,7 +19,7 @@
                     :is-horizontally-aligned="true"
                 />
             </li>
-            <li class="mb-4">
+            <li class="">
                 <menu-item
                     id="nav_desktop_logout"
                     title="Sign out"

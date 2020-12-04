@@ -1,13 +1,13 @@
 <template>
-    <header class="flex items-center justify-between bg-gray-800 border-gray-800 md:h-20 min-h-20">
+    <header class="flex items-center justify-between bg-grayalt border-gray-800 md:h-16 min-h-16">
         <div class="flex items-center w-full">
-            <div class="items-center h-20 px-5 rounded-lg cursor-pointer outline-none" title="Home" @click="routeLogo">
-                <img src="../../../../../assets/logo/logo.svg" class="h-full py-3" />
+            <div class="items-center h-16 pl-8 rounded-lg cursor-pointer outline-none" title="Home" @click="routeLogo">
+                <img src="../../../../../assets/logo/logo.svg" alt="uc4-logo" class="h-full py-3" />
             </div>
 
             <div class="flex w-full rounded-lg pl-8 lg:pr-8 pr-4">
                 <nav class="items-center justify-between w-full md:flex">
-                    <ul class="justify-between pt-2 font-semibold tracking-wider text-gray-200 md:flex">
+                    <ul class="justify-between pt-2 font-bold text-sm text-gray-200 md:flex">
                         <slot></slot>
                         <li>
                             <router-link id="routeAbout" :to="{ name: 'about' }" class="navbar-menu">About</router-link>

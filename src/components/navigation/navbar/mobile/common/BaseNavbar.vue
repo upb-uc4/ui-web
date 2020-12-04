@@ -1,5 +1,5 @@
 <template>
-    <header class="flex flex-col w-full px-4 bg-gray-800 min-h-16">
+    <header class="flex flex-col w-full px-4 bg-grayalt min-h-16">
         <div class="flex justify-between pr-2">
             <div class="flex pr-8 mr-8 border-gray-100">
                 <div class="items-center h-20 rounded-lg cursor-pointer outline-none" title="Home" @click="routeLogo">
@@ -29,7 +29,7 @@
         </div>
 
         <nav id="nav_mobile_menu_list" class="" :class="{ hidden: !isBurgerMenuOpen }">
-            <ul class="pb-4 font-semibold tracking-wider text-gray-100">
+            <ul class="pb-4 font-bold text-sm text-gray-200">
                 <slot></slot>
                 <li>
                     <router-link

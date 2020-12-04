@@ -14,6 +14,7 @@ module.exports = {
             yellow: colors.amber,
             green: colors.green,
             lime: colors.lime,
+            grayalt: "#24292e",
         },
         extend: {
             spacing: {
