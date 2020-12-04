@@ -1,65 +1,52 @@
 <template>
-    <div class="flex justify-center">
-        <div class="absolute left-0 w-full bg-hero-circuit-board" style="height: calc(100vh - 80px)" />
-        <form class="sm:mt-24 mt-8 max-w-lg w-full" @submit.prevent="login">
-            <div class="">
-                <img class="hidden sm:block mx-auto h-32 w-auto" src="../../assets/logo/logo.svg" alt="uc4_logo" />
-                <h2 class="sm:mt-2 text-center text-3xl font-bold text-blue-600 leading-snug">University Credits 4.0</h2>
-            </div>
-            <div class="sm:mt-10 mt-4 bg-white sm:p-10 py-8 p-4 rounded-lg shadow-lg relative">
-                <div v-show="hasError" class="mb-6">
-                    <span class="text-red-500 font-medium tracking-wide">{{ errorText }}</span>
-                </div>
-                <input type="hidden" name="remember" value="true" />
+    <div class="flex flex-col justify-center">
+        <div class="mt-12">
+            <img class="hidden sm:block mx-auto h-16 w-auto" src="../../assets/logo/logo_inverse.svg" alt="uc4_logo" />
+            <h2 class="mt-6 text-center text-2xl text-gray-700 tracking-tighter">Log in to University Credits 4.0</h2>
+        </div>
+        <div v-show="hasError" class="relative mt-4 flex justify-center items-center">
+            <span
+                class="max-w-sm w-full text-sm tracking-wide py-3.5 px-6 rounded-md align-middle text-gray-800 bg-red-100 border border-red-400"
+            >
+                {{ errorText }}
+                <i class="fa fa-times ml-20 pl-1 cursor-pointer text-red-400" @click="resetError" />
+            </span>
+        </div>
+        <form class="flex justify-center" @submit.prevent="login">
+            <div class="max-w-sm w-full mt-6 bg-gray-50 sm:px-6 py-6 p-4 rounded-lg shadow-lg relative border border-gray-200">
                 <div class="rounded-md shadow-sm">
                     <div class="">
-                        <label class="block mb-1 text-gray-700 font-medium tracking-wide">Email Address</label>
+                        <label class="input-label-tmp">Email Address</label>
                         <input
                             id="email"
                             v-model="email"
+                            autofocus
                             type="text"
-                            :class="[hasError ? 'border-red-500' : 'border-gray-300']"
-                            class="w-full input-text-tmp"
-                            placeholder=""
+                            :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                            class="w-full bg-white"
                             @input="resetError"
                         />
                     </div>
                     <div class="mt-6 relative">
-                        <label class="block mb-1 text-gray-700 font-medium tracking-wide">Password</label>
+                        <label class="input-label-tmp">Password</label>
                         <i
                             :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                            class="fas absolute z-20 mt-4 mr-4 right-0 text-gray-500 cursor-pointer"
+                            class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                             @click="togglePassword"
                         />
                         <input
                             id="password"
                             v-model="password"
                             :type="passwordFieldType"
-                            :class="[hasError ? 'border-red-500' : 'border-gray-300']"
-                            class="w-full input-text-tmp"
-                            placeholder=""
+                            :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                            class="w-full bg-white"
                             @input="resetError"
                         />
                     </div>
                 </div>
 
-                <div class="mt-6 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-                        />
-                        <label for="remember_me" class="ml-2 block text-sm leading-5 text-gray-900"> Remember me </label>
-                    </div>
-
-                    <div class="text-sm leading-5">
-                        <a class="navigation-link-tmp" @click="restorePassword"> Forgot your password? </a>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <button id="login" :disabled="isInputEmpty" class="w-full btn-tmp" @click="login">Login</button>
+                <div class="mt-8">
+                    <button id="login" class="w-full btn-add-tmp" @click="login">Login</button>
                 </div>
             </div>
         </form>
@@ -81,7 +68,7 @@
             const password = ref("");
             const passwordFieldType = ref("password");
             const hasError = ref(true);
-            const errorText = ref("You have entered an invalid email or password.");
+            const errorText = ref("Incorrect username or password.");
 
             function togglePassword() {
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
