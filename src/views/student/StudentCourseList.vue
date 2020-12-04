@@ -1,13 +1,15 @@
 <template>
-    <div class="mt-32 text-4xl text-center font-semibold text-gray-900">Available Courses</div>
-    <div class="mt-8 flex justify-center">
+    <div class="mt-12 sm:mt-32 text-4xl text-center font-semibold text-gray-900">Available Courses</div>
+    <div class="sm:mt-8 flex justify-center">
         <div class="w-full max-w-4xl">
             <div class="flex flex-col">
-                <div class="w-full pt-2 mb-8">
+                <div class="w-full">
                     <seach-bar v-model:message="message" @refresh="refresh" />
                 </div>
-                <course-type-filter v-model:selected-type="selectedType" />
+
+                <course-type-filter v-model:selected-type="selectedType" class="w-full my-4" />
             </div>
+
             <courseList :key="refreshKey" :show-all-courses="true" :selected-type="selectedType" :filter="message" />
         </div>
     </div>

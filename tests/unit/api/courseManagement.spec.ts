@@ -1,6 +1,6 @@
 import Course from "@/api/api_models/course_management/Course";
 import CourseManagement from "@/api/CourseManagement";
-import { getRandomizedCourse } from "@/../tests/helper/Courses";
+import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
@@ -49,6 +49,11 @@ test("Get lecturers courses by name", async () => {
     const courses = await courseManagement.getCourses(course.courseName, lecturerAuth.username);
     expect(courses.returnValue.length).toBeGreaterThan(0);
     createdCourse = courses.returnValue[0];
+});
+
+test("Get courses by module", async () => {
+    const courses = await courseManagement.getCourses(undefined, undefined, ["M.1275.01159"]);
+    expect(courses.returnValue.length).toBeGreaterThan(0);
 });
 
 test("Update course", async () => {

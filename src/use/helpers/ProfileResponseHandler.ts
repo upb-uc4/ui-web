@@ -1,25 +1,33 @@
-import ResponseHandler from "./ResponseHandler";
-import APIResponse from "@/api/helpers/models/APIResponse";
-import Student from "@/api/api_models/user_management/Student";
-import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Admin from "@/api/api_models/user_management/Admin";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
+import Student from "@/api/api_models/user_management/Student";
+import APIResponse from "@/api/helpers/models/APIResponse";
+import ResponseHandler from "./ResponseHandler";
+import handleAuthenticationError from "@/api/AuthenticationHelper";
+import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
 
 export default class ProfileResponseHandler implements ResponseHandler<Student | Lecturer | Admin> {
     handleResponse(response: APIResponse<Student | Lecturer | Admin>): Student | Lecturer | Admin {
         if (response.networkError) {
-            //todo show or do something
+            showNetworkErrorToast();
+            return response.returnValue;
         }
+
         switch (response.statusCode) {
             case 400: {
-                //todo
+                showAPIToast(response.statusCode);
                 break;
             }
             case 401: {
-                //todo
+                handleAuthenticationError(response);
                 break;
             }
             case 404: {
-                //todo
+                showAPIToast(response.statusCode, "user");
+                break;
+            }
+            case 500: {
+                showAPIToast(response.statusCode);
                 break;
             }
         }

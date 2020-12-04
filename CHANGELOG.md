@@ -1,8 +1,77 @@
-# [WIP v.0.10.1](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.10.1) (2020-10-XX)
+# [v0.13.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.2) (2020-XX-XX)
+## Feature
+- matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
+
+## Bugfix
+- refactor course list items [#715](https://github.com/upb-uc4/ui-web/pull/715)
+
+# [v0.13.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.1-hotfix.1) (2020-11-27)
+## Bugfix
+- hide create course button in course catalogue [#747](https://github.com/upb-uc4/ui-web/pull/747)
+
+# [v0.13.1](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-11-26)
+
+## Feature
+- added governmentId to user creation [#701](https://github.com/upb-uc4/ui-web/pull/701)
+- add soft deletion of users [#702](https://github.com/upb-uc4/ui-web/pull/702), [#704](https://github.com/upb-uc4/ui-web/pull/704)
+
+## Refactoring
+- Merge endpoints for user creation [#700](https://github.com/upb-uc4/ui-web/pull/700)
+- Remove unused components [#739](https://github.com/upb-uc4/ui-web/pull/739)
+
+## Bugfix
+- add ECTS field to course form [#738](https://github.com/upb-uc4/ui-web/pull/738)
+- reset store state on logout [#732](https://github.com/upb-uc4/ui-web/pull/732)
+
+# [v0.13.0](https://github.com/upb-uc4/ui-web/compare/v0.12.0...v0.13.0) (2020-11-23)
+
+## Feature
+- add toasts for user interaction [#613](https://github.com/upb-uc4/ui-web/pull/613)
+- add option for (de-)assigning modules to courses [#716](https://github.com/upb-uc4/ui-web/pull/716)
+- add a simple course catalogue view containing all courses that is reachable for guests, too [#706](https://github.com/upb-uc4/ui-web/pull/706)
+
+## Refactoring
+- add a generic search-select component [#687](https://github.com/upb-uc4/ui-web/issues/687)
+- add a message for the student if not immatriculated to any semester yet [#692](https://github.com/upb-uc4/ui-web/pull/692)
+- Replace deprecated suspense wrapper by onBeforeMount hooks and a "busy" variable [#714](https://github.com/upb-uc4/ui-web/pull/714)
+- restyle login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
+
+## Bugfix
+- fix mobile view of login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
+
+# [v0.12.0](https://github.com/upb-uc4/ui-web/compare/v0.11.0...v0.12.0) (2020-11-06)
+
+## Feature
+- add support for pseudonymization of student matriculation data
+- add thumbnails to account list [#607](https://github.com/upb-uc4/ui-web/issues/607)
+- add all functionality for creating certificates [#564](https://github.com/upb-uc4/ui-web/issues/564)
+- add functionality for signing proposals and validating proposal inputs [#642](https://github.com/upb-uc4/ui-web/pull/642)
+
+## Bugfix
+- adjust error pages for mobile usage [#650](https://github.com/upb-uc4/ui-web/pull/650)
+- fix use of wrong navigation icon on mobile [#649](https://github.com/upb-uc4/ui-web/pull/649)
+- fix spacing on student course list on mobile [#648](https://github.com/upb-uc4/ui-web/pull/648)
+- fix image view of private profile on mobile [#651](https://github.com/upb-uc4/ui-web/pull/651)
+- remove delete button in creation forms on mobile [#646](https://github.com/upb-uc4/ui-web/pull/646)
+
+## Refactoring
+- cleanup of imports and onBeforeMount hooks [#655](https://github.com/upb-uc4/ui-web/issues/655)
+
+# [v.0.11.0](https://github.com/upb-uc4/ui-web/compare/v0.10.0...v0.11.0) (2020-10-29)
+
 
 ## Bugfix
 - incrementing and decrementing the participation limit with arrow keys or the arrows provided by the browser for number fields, will be registered as changes made to the course and make it saveable [#590](https://github.com/upb-uc4/ui-web/issues/590)
-- remove npm package as it is no longer needed with the official release of Vue3.
+- adjust mobile design of the course view
+- adjust mobile design of the account list for admins
+
+## Dependencies
+- remove npm package "vue-cli-plugin-vue-next" as it is no longer needed with the official release of Vue3 [#592](https://github.com/upb-uc4/ui-web/issues/592)
+
+## Refactoring
+- replace placeholder icons in navbars with proper fa icons [#621](https://github.com/upb-uc4/ui-web/issues/621)
 
 # [v.0.10.0](https://github.com/upb-uc4/ui-web/compare/v0.9.1...v0.10.0) (2020-10-09)
 

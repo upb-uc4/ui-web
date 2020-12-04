@@ -1,18 +1,19 @@
 import Course from "@/api/api_models/course_management/Course";
+import compareArrays from "@/use/helpers/CompareArrayValues";
 
 export class CourseEntity implements Course {
     courseType = "";
     courseId: string = "";
     courseName: string = "";
     lecturerId: string = "";
-    ects: number = 1;
+    ects: number = 0;
     maxParticipants: number = 0;
     currentParticipants: number = 0;
     courseDescription: string = "";
     courseLanguage = "";
     startDate: string = "";
     endDate: string = "";
-
+    moduleIds: string[] = [];
     /**
      * Clones all information of object that implements Course in parameter into new object
      * @param course
@@ -30,6 +31,7 @@ export class CourseEntity implements Course {
             this.courseLanguage = course.courseLanguage;
             this.startDate = course.startDate;
             this.endDate = course.endDate;
+            this.moduleIds = course.moduleIds;
         }
     }
 
@@ -51,6 +53,7 @@ export class CourseEntity implements Course {
         equal = equal && this.courseLanguage === course.courseLanguage;
         equal = equal && this.startDate === course.startDate;
         equal = equal && this.endDate === course.endDate;
+        equal = equal && this.moduleIds === course.moduleIds;
 
         return equal;
     }
@@ -71,7 +74,7 @@ export class CourseEntity implements Course {
         //equal = equal && (this.lecturerId === course.lecturerId);
         equal = equal && this.ects === course.ects;
         equal = equal && this.maxParticipants === course.maxParticipants;
-
+        equal = equal && compareArrays(this.moduleIds, course.moduleIds);
         equal = equal && this.courseDescription === course.courseDescription;
         equal = equal && this.courseLanguage === course.courseLanguage;
         //equal = equal && (this.startDate === course.startDate);

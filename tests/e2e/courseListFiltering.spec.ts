@@ -1,9 +1,8 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { loginAsDefaultLecturer, logout, getMachineUserAuth } from "./helpers/AuthHelper";
-import { createCourse, createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { CourseType } from "@/entities/CourseType";
-import { Role } from "@/entities/Role";
+import { getMachineUserAuth, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
+import { createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";
 
 describe("Course Filtering", function () {

@@ -1,23 +1,22 @@
+import AuthenticationManagement from "@/api/AuthenticationManagement";
+import { Role } from "@/entities/Role";
+import { checkPrivilege } from "@/use/helpers/PermissionHelper";
+import { MutationTypes } from "@/use/store/mutation-types";
+import { useStore } from "@/use/store/store";
+import AboutPage from "@/views/common/About.vue";
+import WelcomePage from "@/views/common/Welcome.vue";
+import Redirect from "@/views/errors/403.vue";
+import PageNotFound from "@/views/errors/404.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import LoadingComponent from "@/components/common/loading/Spinner.vue";
 const LoginView = () => import("@/views/common/Login.vue");
 const StudentCourseView = () => import("@/views/student/StudentCourseList.vue");
-const AllCourseView = () => import("@/views/shared/CourseList.vue");
+const AllCourseView = () => import("@/views/common/CourseList.vue");
 const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
-const CourseFormSuspenseWrapper = () => import("@/views/shared/EditCreateCourseForm.vue");
-const AccountFormSuspenseWrapper = () => import("@/views/admin/EditCreateAccountForm.vue");
-import Redirect from "@/views/errors/403.vue";
-const ProfileWrapper = () => import("@/components/profile/Wrapper.vue");
+const CourseForm = () => import("@/views/shared/EditCreateCourseForm.vue");
+const AccountForm = () => import("@/views/admin/EditCreateAccountForm.vue");
+const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
+const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const Settings = () => import("@/views/common/Settings.vue");
-import PageNotFound from "@/views/errors/404.vue";
-import WelcomePage from "@/views/common/Welcome.vue";
-import AboutPage from "@/views/common/About.vue";
-import { checkPrivilege } from "@/use/helpers/PermissionHelper";
-import { Role } from "@/entities/Role";
-import { useStore } from "@/use/store/store";
-import AuthenticationManagement from "@/api/AuthenticationManagement";
-import { defineAsyncComponent } from "vue";
-import { MutationTypes } from "@/use/store/mutation-types";
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -40,6 +39,15 @@ const router = createRouter({
             component: AboutPage,
             meta: {
                 title: "About" + suffix,
+            },
+        },
+        {
+            path: "/course-catalog",
+            name: "courseCatalog",
+            props: { showAllCourses: true, isCourseCatalogue: true },
+            component: AllCourseView,
+            meta: {
+                title: "Course Catalog" + suffix,
             },
         },
         {
@@ -96,7 +104,7 @@ const router = createRouter({
             props: {
                 editMode: false,
             },
-            component: CourseFormSuspenseWrapper,
+            component: CourseForm,
             meta: {
                 title: "Course Creation" + suffix,
                 roles: ["Lecturer", "Admin"],
@@ -108,7 +116,7 @@ const router = createRouter({
             props: {
                 editMode: true,
             },
-            component: CourseFormSuspenseWrapper,
+            component: CourseForm,
             meta: {
                 title: "Course Editing" + suffix,
                 roles: ["Lecturer", "Admin"],
@@ -117,8 +125,7 @@ const router = createRouter({
         {
             path: "/user/:username",
             name: "profile.public",
-            props: { isPrivate: false },
-            component: ProfileWrapper,
+            component: PublicProfile,
             // The page title is set within the component depending on the username
             meta: {
                 roles: ["Admin", "Lecturer", "Student"],
@@ -127,8 +134,7 @@ const router = createRouter({
         {
             path: "/profile",
             name: "profile.private",
-            props: { isPrivate: true },
-            component: ProfileWrapper,
+            component: PrivateProfile,
             meta: {
                 title: "My Profile" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
@@ -148,7 +154,7 @@ const router = createRouter({
             props: {
                 editMode: false,
             },
-            component: AccountFormSuspenseWrapper,
+            component: AccountForm,
             meta: {
                 title: "Account Creation" + suffix,
                 roles: ["Admin"],
@@ -160,7 +166,7 @@ const router = createRouter({
             props: {
                 editMode: true,
             },
-            component: AccountFormSuspenseWrapper,
+            component: AccountForm,
             meta: {
                 title: "Account Editing" + suffix,
                 roles: ["Admin"],
@@ -237,7 +243,7 @@ router.beforeEach(async (to, from, next) => {
 
 router.afterEach(async (to, from, next) => {
     const store = useStore();
-    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU, true);
+    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU);
 });
 
 export default router;

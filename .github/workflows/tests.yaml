@@ -8,6 +8,7 @@ on:
     branches:
       - develop
   pull_request:
+    types: [labeled, opened, synchronize, repoened]
     paths-ignore:
       - README.md
       - CHANGELOG.md
@@ -17,9 +18,35 @@ on:
       - main
 
 jobs:
-  work:
-    name: Run unit tests
+  setup:
+    name: Setup Test Parallelization
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Calculate Test Sets
+        id: set-matrix 
+        run: | 
+          tot_lines=$(find tests/e2e -name "*.spec.ts" | wc -l)
+          echo "Found $tot_lines test suites"
+          lines=$(($tot_lines/4))
+          find tests/e2e -name "*.spec.ts" | split -l $lines -
+          if ! [[ $lines =~ '^[0-9]+$' ]] ; 
+          then 
+            matrix="{\"tests\": [\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\", \"$(cat xae | tr '\n' ',')\"]}"
+          else 
+            matrix="{\"tests\": [\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\"]}" 
+          fi
+          echo "Built matrix: $matrix"
+          echo "::set-output name=matrix::$( echo "$matrix" )"
+  api-dev:
+    name: API Tests Development Cluster
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') && github.event.pull_request.draft == false }} 
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -50,11 +77,51 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:unit
-
-  e2e:
-    name: Run e2e tests
+  api-exp:
+    name: API Tests Experimental Cluster
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') && github.event.pull_request.draft == false }} 
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+          
+      - name: Create localhost certificate
+        run: mkdir certs/ && openssl req -x509 -nodes -days 1024 -newkey rsa:2048 -keyout certs/localhost.key -out certs/localhost.crt -extensions 'v3_req' -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-         
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: export TEST_ENV=experimental && npm run test:unit
+  e2e-dev:
+    name: E2E Tests Development Cluster
+    needs: setup
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'experimental') && github.event.pull_request.draft == false }} 
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -96,7 +163,79 @@ jobs:
       - name: Run nginx to reverse proxy for e2e tests
         run: docker run --name reverse-proxy -p 443:443 --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs/ --mount type=bind,source=$(pwd)/dist/,target=/app/deploy -d nginx
       - name: run e2e tests
-        run: npm run test:e2e:headless
+        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }} --env NODE_ENV=development
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      # Test run video was always captured, so this action uses "always()" condition
+      - name: Upload Videos
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: code-coverage
+          path: coverage/lcov-report/
+
+  e2e-exp:
+    name: E2E Tests Experimental Cluster
+    needs: setup
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'experimental') && github.event.pull_request.draft == false }} 
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Export node conf
+        run: export NODE_TLS_REJECT_UNAUTHORIZED=0
+      - name: mkdir
+        run: mkdir -p certs/
+      - name: Create CA certificate
+        run: openssl req -x509 -newkey rsa:4096 -days 365 -nodes -keyout certs/ca-key.pem -out certs/ca-cert.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=ca-localhost'
+      - name: Create certificate request
+        run: openssl req -newkey rsa:4096 -nodes -keyout certs/server-key.pem -out certs/server-req.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
+      - name: Sign certificate request
+        run: openssl x509 -req -in certs/server-req.pem -days 60 -CA certs/ca-cert.pem -CAkey certs/ca-key.pem -CAcreateserial -out certs/server-cert.pem
+      - name: Trust CA certificate
+        run: sudo cp certs/ca-cert.pem /usr/local/share/ca-certificates/ && sudo update-ca-certificates
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-    
+      - name: Install dependencies
+        run: npm ci
+      - name: Build server
+        run: export NODE_ENV=experimental && npm run build
+      - name: Copy nginx conf
+        run: mkdir -p temp && cp .github/nginx.conf temp/nginx.conf
+      - name: Run nginx to reverse proxy for e2e tests
+        run: docker run --name reverse-proxy -p 443:443 --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs/ --mount type=bind,source=$(pwd)/dist/,target=/app/deploy -d nginx
+      - name: run e2e tests
+        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }} --env NODE_ENV=experimental
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()

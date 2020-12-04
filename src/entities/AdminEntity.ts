@@ -1,7 +1,7 @@
-import { Role } from "./Role";
-import AddressEntity from "./AddressEntity";
 import Address from "@/api/api_models/user_management/Address";
 import Admin from "@/api/api_models/user_management/Admin";
+import AddressEntity from "./AddressEntity";
+import { Role } from "./Role";
 
 export default class AdminEntity implements Admin {
     username = "";
@@ -12,6 +12,8 @@ export default class AdminEntity implements Admin {
     email = "";
     birthDate = "";
     phoneNumber = "";
+    enrollmentIdSecret = "";
+    isActive = true;
 
     constructor() {}
 }

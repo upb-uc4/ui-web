@@ -2,6 +2,8 @@ import UserManagement from "@/api/UserManagement";
 import CourseManagement from "@/api/CourseManagement";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
+import CertificateManagement from "@/api/CertificateManagement";
+import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import ConfigurationManagement from "@/api/ConfigurationManagement";
 
 jest.useFakeTimers();
@@ -24,8 +26,20 @@ test("user service version", async () => {
     expect(version).not.toEqual("unavailable");
 });
 
-test.skip("matriculation service version", async () => {
+test("matriculation service version", async () => {
     const version = await MatriculationManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+});
+
+test("certificate service version", async () => {
+    const version = await CertificateManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+});
+
+test("exam regulations service version", async () => {
+    const version = await ExaminationRegulationManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 });

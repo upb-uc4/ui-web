@@ -1,10 +1,9 @@
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { getRandomMatriculationId, deleteUsers, createUsers } from "./helpers/UserHelper";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
+import { createUsers, deleteUsers, getRandomizedGovernmentId, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
-import { Role } from "@/entities/Role";
 
 describe("Change password", () => {
     const random = Math.floor(Math.random() * 9999);
@@ -30,7 +29,8 @@ describe("Change password", () => {
                 cy.fixture("studentAuthUser.json").then((s) => {
                     (s as Account).username += random;
                     studentAuthUser = s as Account;
-                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: student, auth: studentAuthUser });
                 });
             })
             .then(() => {

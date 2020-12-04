@@ -27,6 +27,20 @@
                         </p>
                     </div>
                 </div>
+                <div v-if="!editMode" class="lg:flex md:flex-col mb-6">
+                    <label class="mb-3 font-medium text-gray-700 text-md">Government issued ID</label>
+                    <input
+                        id="governmentId"
+                        v-model="accountGovernmentId"
+                        type="text"
+                        class="w-full form-input input-text"
+                        :class="{ error: errorBag.hasNested('governmentId') }"
+                        placeholder="Government ID"
+                    />
+                    <p v-if="errorBag.hasNested('governmentId')" class="error-message">
+                        {{ errorBag.getNested("governmentId") }}
+                    </p>
+                </div>
                 <div class="lg:flex md:flex-col mb-6">
                     <label class="block mb-3 font-medium text-gray-700 text-md">Birthdate</label>
                     <birth-date-picker v-model:birth-date="accountBirthdate" />
@@ -71,9 +85,13 @@
                 type: String,
                 required: true,
             },
+            governmentId: {
+                type: String,
+                required: true,
+            },
         },
 
-        emits: ["update:birthDate", "update:firstName", "update:lastName"],
+        emits: ["update:birthDate", "update:firstName", "update:lastName", "update:governmentId"],
         setup(props: any, { emit }: any) {
             let accountBirthdate = ref(props.birthDate);
 
@@ -81,6 +99,7 @@
                 accountFirstName: useModelWrapper(props, emit, "firstName"),
                 accountLastName: useModelWrapper(props, emit, "lastName"),
                 accountBirthdate: useModelWrapper(props, emit, "birthDate"),
+                accountGovernmentId: useModelWrapper(props, emit, "governmentId"),
             };
         },
     };

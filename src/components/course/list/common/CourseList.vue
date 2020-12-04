@@ -3,21 +3,16 @@
         <div v-if="busy">
             <loading-component />
         </div>
-        <suspense v-else>
-            <template #default>
-                <div v-for="course in shownCourses" :key="course.courseId">
-                    <lecturer-course
-                        v-if="isLecturer || isAdmin"
-                        :course="course"
-                        :allow-edit="isAdmin || course.lecturerId == username"
-                        :lecturer="findLecturer(course)"
-                        class="mb-8"
-                    />
-                    <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
-                </div>
-            </template>
-            <template #fallback />
-        </suspense>
+        <div v-for="course in shownCourses" v-else :key="course.courseId">
+            <lecturer-course
+                v-if="isLecturer || isAdmin"
+                :course="course"
+                :allow-edit="isAdmin || course.lecturerId == username"
+                :lecturer="findLecturer(course)"
+                class="mb-8"
+            />
+            <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+        </div>
     </div>
 </template>
 
@@ -68,8 +63,8 @@
             let courses = ref([] as Course[]);
             let username = ref("");
 
-            onBeforeMount(() => {
-                getCourses();
+            onBeforeMount(async () => {
+                await getCourses();
             });
             async function getCourses() {
                 busy.value = true;
@@ -78,7 +73,7 @@
                 isLecturer.value = role.value == Role.LECTURER;
                 isAdmin.value = role.value == Role.ADMIN;
                 isStudent.value = role.value == Role.STUDENT;
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("courses");
                 let response: APIResponse<Course[]>;
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
@@ -95,8 +90,8 @@
                     courses.value = genericResponseHandler.handleResponse(response);
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
-                const resp = await userManagement.getLecturers(...lecturerIds);
-                lecturers.value = genericResponseHandler.handleResponse(resp);
+                const resp = await userManagement.getUsers(Role.LECTURER, [...lecturerIds]);
+                lecturers.value = genericResponseHandler.handleResponse(resp) as Lecturer[];
                 busy.value = false;
             }
 

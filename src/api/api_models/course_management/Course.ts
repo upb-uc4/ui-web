@@ -1,5 +1,6 @@
 export default interface Course {
     courseType: string;
+    moduleIds: string[];
     courseId: string;
     courseName: string;
     lecturerId: string;

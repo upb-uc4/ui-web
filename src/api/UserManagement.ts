@@ -1,15 +1,15 @@
-import Common from "./Common";
-import { useStore } from "@/use/store/store";
-import User_List from "./api_models/user_management/User_List";
-import { AxiosResponse, AxiosError } from "axios";
-import Student from "./api_models/user_management/Student";
-import Lecturer from "./api_models/user_management/Lecturer";
-import Admin from "./api_models/user_management/Admin";
-import { Role } from "@/entities/Role";
 import { Account } from "@/entities/Account";
-import APIResponse from "./helpers/models/APIResponse";
+import { Role } from "@/entities/Role";
+import { useStore } from "@/use/store/store";
+import { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
+import Admin from "./api_models/user_management/Admin";
+import Lecturer from "./api_models/user_management/Lecturer";
+import Student from "./api_models/user_management/Student";
+import User_List from "./api_models/user_management/User_List";
 import handleAuthenticationError from "./AuthenticationHelper";
+import Common from "./Common";
+import APIResponse from "./helpers/models/APIResponse";
 
 export default class UserManagement extends Common {
     constructor() {
@@ -20,9 +20,20 @@ export default class UserManagement extends Common {
         return super.getVersion("/user-management");
     }
 
-    async getAllUsers(): Promise<APIResponse<User_List>> {
+    async getUsers(
+        role?: Role,
+        usernames?: string[],
+        is_active?: boolean
+    ): Promise<APIResponse<User_List | Student[] | Lecturer[] | Admin[]>> {
+        const requestParameter = { params: {} as any };
+        let endpoint = "/users";
+
+        if (usernames) requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
+        if (is_active) requestParameter.params.is_active = is_active;
+        if (role) endpoint = UserManagement._createEndpointByRole(role);
+
         return await this._axios
-            .get("/users")
+            .get(endpoint, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data,
@@ -41,7 +52,7 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.getAllUsers();
+                        return await this.getUsers(role, usernames, is_active);
                     }
                     return {
                         returnValue: {} as User_List,
@@ -55,69 +66,6 @@ export default class UserManagement extends Common {
                         statusCode: 0,
                         networkError: true,
                         error: {} as APIError,
-                    };
-                }
-            });
-    }
-
-    async getUsers(...usernames: string[]): Promise<APIResponse<User_List>> {
-        let resp = await this._getByUsername(usernames, "/users");
-        return resp as APIResponse<User_List>;
-    }
-
-    async getStudents(...usernames: string[]): Promise<APIResponse<Student[]>> {
-        let resp = await this._getByUsername(usernames, "/students");
-        return resp as APIResponse<Student[]>;
-    }
-
-    async getLecturers(...usernames: string[]): Promise<APIResponse<Lecturer[]>> {
-        let resp = await this._getByUsername(usernames, "/lecturers");
-        return resp as APIResponse<Lecturer[]>;
-    }
-
-    async getAdmins(...usernames: string[]): Promise<APIResponse<Admin[]>> {
-        let resp = await this._getByUsername(usernames, "/admins");
-        return resp as APIResponse<Admin[]>;
-    }
-
-    async _getByUsername(usernames: string[], endpoint: string): Promise<APIResponse<User_List | Student[] | Lecturer[] | Admin[]>> {
-        const requestParameter = { params: {} as any };
-        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
-
-        return await this._axios
-            .get(endpoint, requestParameter)
-            .then((response: AxiosResponse) => {
-                return {
-                    returnValue: response.data,
-                    statusCode: response.status,
-                    error: {} as APIError,
-                    networkError: false,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as User_List,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this._getByUsername(usernames, endpoint);
-                    }
-                    return {
-                        returnValue: {} as User_List,
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        returnValue: {} as User_List,
-                        statusCode: 0,
-                        error: {} as APIError,
-                        networkError: true,
                     };
                 }
             });
@@ -163,13 +111,12 @@ export default class UserManagement extends Common {
             });
     }
 
-    async getAllUsersByRole(role: Role): Promise<APIResponse<Student[] | Lecturer[] | Admin[]>> {
-        let endpoint = UserManagement._createEndpointByRole(role);
+    async forceDeleteUser(username: string): Promise<APIResponse<boolean>> {
         return await this._axios
-            .get(endpoint)
+            .delete(`/users/${username}/force`)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data,
+                    returnValue: true,
                     statusCode: response.status,
                     error: {} as APIError,
                     networkError: false,
@@ -185,17 +132,17 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.getAllUsersByRole(role);
+                        return await this.forceDeleteUser(username);
                     }
                     return {
-                        returnValue: [],
+                        returnValue: false,
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: [],
+                        returnValue: false,
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,
@@ -290,11 +237,9 @@ export default class UserManagement extends Common {
         return await this.getSpecificUser(username);
     }
 
-    async createUser(authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
-        let message = UserManagement._createMessage(user, authUser);
-
+    async createUser(governmentId: string, authUser: Account, user: Student | Lecturer | Admin): Promise<APIResponse<boolean>> {
         return await this._axios
-            .post("/users", message)
+            .post("/users", { governmentId, authUser, user })
             .then((reponse: AxiosResponse) => {
                 return {
                     statusCode: reponse.status,
@@ -313,7 +258,7 @@ export default class UserManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.createUser(authUser, user);
+                        return await this.createUser(governmentId, authUser, user);
                     }
                     return {
                         statusCode: error.response.status,
@@ -362,54 +307,24 @@ export default class UserManagement extends Common {
             });
     }
 
-    static _createMessage(user: Student | Lecturer | Admin, authUser: Account) {
-        let message;
-        switch (user.role) {
-            case Role.STUDENT: {
-                message = {
-                    authUser: authUser,
-                    student: user as Student,
-                };
-                break;
-            }
-            case Role.LECTURER: {
-                message = {
-                    authUser: authUser,
-                    lecturer: user as Lecturer,
-                };
-                break;
-            }
-            case Role.ADMIN: {
-                message = {
-                    authUser: authUser,
-                    admin: user as Admin,
-                };
-                break;
-            }
-            case Role.NONE: {
-                new Error("Endpoint undefined");
-            }
-        }
-        return message;
-    }
-
     static _createEndpointByRole(role: Role): string {
         let endpoint = "";
         switch (role) {
             case Role.STUDENT: {
-                endpoint += "/students";
+                endpoint = "/students";
                 break;
             }
             case Role.LECTURER: {
-                endpoint += "/lecturers";
+                endpoint = "/lecturers";
                 break;
             }
             case Role.ADMIN: {
-                endpoint += "/admins";
+                endpoint = "/admins";
                 break;
             }
-            case Role.NONE: {
-                new Error("Endpoint undefined");
+            default: {
+                endpoint = "/users";
+                break;
             }
         }
         return endpoint;
@@ -499,9 +414,57 @@ export default class UserManagement extends Common {
             });
     }
 
+    async getThumbnail(username: string): Promise<APIResponse<File>> {
+        return await this._axios
+            .get(`/users/${username}/thumbnail`, {
+                responseType: "arraybuffer",
+            })
+            .then((response: AxiosResponse) => {
+                let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
+                const file: File = new File([blob], "image.png", { type: response.headers["content-type"] });
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: file,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as File,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getProfilePicture(username);
+                    }
+                    return {
+                        returnValue: {} as File,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as File,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
     async updateProfilePicture(username: string, picture: File): Promise<APIResponse<boolean>> {
         return await this._axios
-            .put(`/users/${username}/image`, picture)
+            .put(`/users/${username}/image`, picture, {
+                headers: {
+                    "content-type": picture.type,
+                },
+            })
             .then((response: AxiosResponse) => {
                 return {
                     error: {} as APIError,

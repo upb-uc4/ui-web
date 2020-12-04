@@ -1,26 +1,29 @@
 <template>
-    <div class="mt-32 text-4xl text-center font-semibold text-gray-900">{{ title }}</div>
-    <div class="mt-8 flex justify-center">
+    <div class="mt-12 sm:mt-32 text-4xl text-center font-semibold text-gray-900">{{ title }}</div>
+    <div class="sm:mt-8 flex justify-center">
         <div class="w-full max-w-4xl">
             <div class="flex flex-col">
-                <div class="flex flex-row w-full pt-2 mb-8">
+                <div class="flex sm:flex-row flex-col-reverse w-full">
                     <seach-bar v-model:message="message" @refresh="refresh" />
-                    <router-link to="/createCourse" class="w-2/12 ml-4">
-                        <button
-                            id="createAccountIcon"
-                            title="Add a new Course"
-                            class="flex flex-row items-center justify-center w-full h-full btn-icon-green"
-                        >
-                            <p class="mr-3 text-lg font-semibold">Add</p>
-                            <i class="inline text-2xl fas fa-calendar-plus" />
-                        </button>
+
+                    <router-link
+                        v-if="!isCourseCatalogue"
+                        id="createAccountIcon"
+                        title="Add a new Course"
+                        to="/createCourse"
+                        class="sm:ml-4 flex flex-row items-center justify-center mb-4 sm:mb-0 sm:w-32 w-full border-2 rounded-lg border-gray-300 h-12 px-12 btn-green-primary-500"
+                    >
+                        <p class="mr-3 font-semibold">Add</p>
+                        <i class="fas fa-calendar-plus" />
                     </router-link>
                 </div>
-                <course-type-filter v-model:selected-type="selectedType" />
             </div>
+
+            <course-type-filter v-model:selected-type="selectedType" class="w-full my-4" />
+
             <course-list :key="refreshKey" :show-all-courses="showAllCourses" :selected-type="selectedType" :filter="message" />
 
-            <div class="flex justify-center mt-16">
+            <div v-if="!isCourseCatalogue" class="flex justify-center mt-16">
                 <router-link to="/createCourse">
                     <button id="addCourse" class="px-4 btn btn-green-primary-500">New Course</button>
                 </router-link>
@@ -48,6 +51,10 @@
             showAllCourses: {
                 type: Boolean,
                 required: true,
+            },
+            isCourseCatalogue: {
+                type: Boolean,
+                default: false,
             },
         },
         setup(props: any) {

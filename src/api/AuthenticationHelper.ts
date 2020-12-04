@@ -1,6 +1,6 @@
+import AuthenticationManagement from "@/api/AuthenticationManagement";
 import APIResponse from "@/api/helpers/models/APIResponse";
 import { useStore } from "@/use/store/store";
-import AuthenticationManagement from "@/api/AuthenticationManagement";
 
 export default async function handleAuthenticationError<T>(response: APIResponse<T>): Promise<boolean> {
     if (response.statusCode == 401) {

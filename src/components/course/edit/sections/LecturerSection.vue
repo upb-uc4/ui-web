@@ -6,28 +6,15 @@
                 <label class="block text-gray-600"> Select a lecturer that will hold the course</label>
             </div>
             <div class="w-full lg:w-2/3">
-                <div class="mb-4 w-full relative">
+                <div class="mb-4 w-full">
                     <label class="text-gray-700 text-md font-medium block mb-4">Lecturer-ID</label>
-                    <input
-                        id="lecturerId"
-                        v-model="input"
-                        class="form-select input-select block w-full"
-                        placeholder="Select a Lecturer"
-                        @focus="showOptions()"
-                        @blur="hideOptions()"
-                        @keyup="keyMonitor"
+                    <search-select
+                        v-model:selected="selectedOption"
+                        :options="optionsArray"
+                        input-id="lecturerId"
+                        :category-name="'Lecturer'"
                     />
-                    <div v-show="optionsShown" class="bg-white overflow-auto border absolute border-gray-500 w-full">
-                        <div
-                            v-for="lecturer in filteredLecturers"
-                            :key="lecturer.username"
-                            class="text-gray-600 p-2 text-md cursor-pointer hover:bg-blue-500 hover:text-gray-100 block"
-                            @mousedown="selectOption(lecturer)"
-                        >
-                            {{ lecturer.firstName }} {{ lecturer.lastName }} (@{{ lecturer.username }})
-                        </div>
-                    </div>
-                    <div :hidden="newLecturerId == ''" class="text-gray-700 text-md font-medium my-3">
+                    <div :hidden="currentLecturer.username == ''" class="text-gray-700 text-md font-medium my-3">
                         <label v-if="lecturerFound">
                             <i class="text-green-400 fas fa-check mr-2"></i>
                             {{ currentLecturer.firstName }} {{ currentLecturer.lastName }} (
@@ -63,9 +50,14 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import Router from "@/use/router";
+    import SearchSelect from "@/components/common/SearchSelect.vue";
+    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
 
     export default {
         name: "LecturerSection",
+        components: {
+            SearchSelect,
+        },
         props: {
             errorBag: {
                 required: true,
@@ -79,83 +71,55 @@
         emits: ["update:lecturerId"],
         setup(props: any, { emit }: any) {
             const lecturers = ref([] as Lecturer[]);
-            const newLecturerId = ref(props.lecturerId);
             const currentLecturer = ref({} as Lecturer);
             const lecturerFound = ref(false);
-            const input = ref(props.lecturerId);
-            const optionsShown = ref(false);
 
-            onBeforeMount(() => {
-                getLecturers();
+            const optionsArray = ref([] as SearchSelectOption[]);
+            const selectedOption = ref({} as SearchSelectOption);
+
+            onBeforeMount(async () => {
+                await getLecturers();
             });
 
-            const filteredLecturers = computed(() => {
-                return lecturers.value.filter(
-                    (e) =>
-                        e.username.toLowerCase().includes(input.value.toLowerCase()) ||
-                        (e.firstName + " " + e.lastName).toLowerCase().includes(input.value.toLowerCase())
-                );
-            });
-
-            function selectOption(lecturer: Lecturer) {
-                currentLecturer.value = lecturer;
-                optionsShown.value = false;
-                input.value = currentLecturer.value.username;
-            }
-
-            function showOptions() {
-                optionsShown.value = true;
-            }
-
-            function keyMonitor(event: KeyboardEvent) {
-                if (event.key === "Enter" && filteredLecturers.value[0]) {
-                    selectOption(filteredLecturers.value[0]);
-                }
-            }
-
-            function hideOptions() {
-                optionsShown.value = false;
-            }
-
-            async function getLecturers() {
-                const userManagement: UserManagement = new UserManagement();
-                const handler = new GenericResponseHandler();
-                const response = await userManagement.getAllUsersByRole(Role.LECTURER);
-                const result = handler.handleResponse(response);
-                if (result) {
-                    lecturers.value = result as Lecturer[];
-                    if (props.lecturerId != "") {
-                        currentLecturer.value = lecturers.value.filter((e) => e.username == props.lecturerId)[0];
-                        lecturerFound.value = true;
-                    }
-                }
-            }
-
-            watch(input, () => {
-                newLecturerId.value = input.value;
-                emit("update:lecturerId", newLecturerId.value);
-                let lecturer = lecturers.value.filter((e) => e.username == newLecturerId.value)[0];
-                if (lecturer) {
+            watch(selectedOption, () => {
+                if (Object.keys(selectedOption.value.value).length != 0) {
+                    currentLecturer.value = selectedOption.value.value as Lecturer;
+                    emit("update:lecturerId", currentLecturer.value.username);
                     lecturerFound.value = true;
-                    currentLecturer.value = lecturer;
                 } else {
                     lecturerFound.value = false;
                     currentLecturer.value = {} as Lecturer;
                 }
             });
 
+            async function getLecturers() {
+                const userManagement: UserManagement = new UserManagement();
+                const handler = new GenericResponseHandler("lecturers");
+                const response = await userManagement.getUsers(Role.LECTURER);
+                const result = handler.handleResponse(response);
+                if (result) {
+                    lecturers.value = result as Lecturer[];
+                    lecturers.value.forEach((l) => {
+                        optionsArray.value.push({ value: l, display: createOptionString(l) });
+                    });
+                    if (props.lecturerId != "") {
+                        currentLecturer.value = lecturers.value.filter((e) => e.username == props.lecturerId)[0];
+                        selectedOption.value = { value: currentLecturer, display: createOptionString(currentLecturer.value) };
+                        lecturerFound.value = true;
+                    }
+                }
+            }
+
+            function createOptionString(l: Lecturer): string {
+                return `${l.firstName} ${l.lastName} (@${l.username})`;
+            }
+
             return {
                 lecturers,
-                newLecturerId,
                 currentLecturer,
                 lecturerFound,
-                filteredLecturers,
-                input,
-                selectOption,
-                showOptions,
-                keyMonitor,
-                optionsShown,
-                hideOptions,
+                optionsArray,
+                selectedOption,
             };
         },
     };

@@ -5,7 +5,7 @@
                 <menu-item
                     id="nav_mobile_student_menu_courses_all"
                     title="All Courses"
-                    icon-class="fa-globe-americas"
+                    icon-class="fas fa-list-alt"
                     target-route-name="student.courses"
                 />
             </li>

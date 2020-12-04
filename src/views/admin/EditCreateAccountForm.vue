@@ -25,6 +25,7 @@
             <personal-information-section
                 v-model:first-name="account.user.firstName"
                 v-model:last-name="account.user.lastName"
+                v-model:government-id="account.governmentId"
                 v-model:birth-date="account.user.birthDate"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -94,12 +95,14 @@
                         v-else
                         id="mobileCreateAccount"
                         :disabled="!hasInput"
-                        class="w-full mb-4 btn btn-blue-primary"
+                        class="w-full btn btn-blue-primary"
                         @click="createAccount"
                     >
                         Create Account
                     </button>
-                    <button id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">Delete</button>
+                    <button v-if="editMode" id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
+                        Delete
+                    </button>
                 </div>
             </section>
             <delete-account-modal ref="deleteModal" />
@@ -126,7 +129,6 @@
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import BirthDatePicker from "@/components/BirthDatePicker.vue";
     import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
     import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
     import PersonalInformationSection from "@/components/account/edit/sections/PersonalInformationSection.vue";
@@ -134,13 +136,13 @@
     import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
     import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
-    import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+    import { onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
     import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import Error from "@/api/api_models/errors/Error";
+    import { useToast } from "@/toast";
 
     export default {
         name: "AdminCreateAccountForm",
@@ -171,6 +173,7 @@
                 admin: new AdminEntity(),
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
+                governmentId: "",
             });
             let initialAccount = {
                 authUser: new Account(),
@@ -178,6 +181,7 @@
                 admin: new AdminEntity(),
                 student: new StudentEntity(),
                 lecturer: new LecturerEntity(),
+                governmentId: "",
             };
             let title = props.editMode ? "Account Editing" : "Account Creation";
             let success = ref(false);
@@ -185,6 +189,8 @@
             let unsavedChangesModal = ref();
 
             const errorBag = ref(new ErrorBag());
+
+            const toast = useToast();
 
             let isLecturer = computed(() => {
                 return account.user.role === Role.LECTURER;
@@ -220,9 +226,9 @@
                 }
             });
 
-            onBeforeMount(() => {
+            onBeforeMount(async () => {
                 if (props.editMode) {
-                    getUser();
+                    await getUser();
                 }
             });
 
@@ -231,7 +237,7 @@
                 const userManagement: UserManagement = new UserManagement();
 
                 const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string);
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("user");
                 const result = genericResponseHandler.handleResponse(response);
 
                 //TODO move this to a non-generic response handler
@@ -277,7 +283,9 @@
                     account.lecturer.freeText != initialAccount.lecturer.freeText ||
                     account.lecturer.researchArea != initialAccount.lecturer.researchArea ||
                     //student properties
-                    account.student.matriculationId != initialAccount.student.matriculationId
+                    account.student.matriculationId != initialAccount.student.matriculationId ||
+                    //governmentId
+                    account.governmentId != ""
                 ) {
                     emit("update:has-input", true);
                     return true;
@@ -344,11 +352,12 @@
                     return;
                 }
 
-                const response = await userManagement.createUser(account.authUser, newUser);
-                const handler = new AccountValidationResponseHandler();
+                const response = await userManagement.createUser(account.governmentId, account.authUser, newUser);
+                const handler = new AccountValidationResponseHandler("user");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
                 if (success.value) {
+                    toast.success("Account '" + account.user.username + "' created.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -361,11 +370,12 @@
                 var adaptedUser: Student | Lecturer | Admin = assembleAccount();
 
                 const response = await userManagement.updateUser(adaptedUser);
-                const handler = new ValidationResponseHandler();
+                const handler = new ValidationResponseHandler("user");
                 success.value = handler.handleResponse(response);
                 emit("update:success", success.value);
 
                 if (success.value) {
+                    toast.success("Account '" + account.user.username + "' updated.");
                     back();
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
@@ -376,12 +386,13 @@
             async function deleteAccount() {
                 const userManagement: UserManagement = new UserManagement();
 
-                const genericResponseHandler = new GenericResponseHandler();
+                const genericResponseHandler = new GenericResponseHandler("user");
                 const response = await userManagement.deleteUser(account.user.username);
                 const result = genericResponseHandler.handleResponse(response);
 
                 if (result) {
                     success.value = true;
+                    toast.success("Account '" + account.user.username + "' deleted.");
                     emit("update:success", success.value);
                     back();
                 }

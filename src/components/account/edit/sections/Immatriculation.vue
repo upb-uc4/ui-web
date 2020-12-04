@@ -43,7 +43,7 @@
 <script lang="ts">
     import MultiSelect from "@/components/common/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import { onBeforeMount, ref, computed, reactive, watch, onMounted } from "vue";
+    import { ref, computed, reactive, watch, onMounted } from "vue";
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
@@ -52,8 +52,9 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import MatriculationValidationResponseHandler from "@/use/helpers/MatriculationValidationResponseHandler";
-    import { useStore } from "@/use/store/store";
+    import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
+    import { useToast } from "@/toast";
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
     export default {
         components: {
@@ -75,10 +76,15 @@
             let year = ref("");
             let selectedFieldsOfStudy = ref([] as string[]);
 
-            const store = useStore();
-
             onMounted(async () => {
-                fieldsOfStudy.value = (await store.getters.configuration).fieldsOfStudy;
+                busy.value = true;
+                const examRegManagement = new ExaminationRegulationManagement();
+                const response = await examRegManagement.getExaminationRegulation();
+                fieldsOfStudy.value = new GenericResponseHandler("examination regulations")
+                    .handleResponse(response)
+                    .filter((e) => e.active)
+                    .map((e) => e.name);
+                busy.value = false;
             });
 
             let currentYear = new Date().getFullYear();
@@ -97,6 +103,8 @@
             });
 
             let errorBag = ref(new ErrorBag());
+
+            const toast = useToast();
 
             let selectedSemester = computed(() => {
                 return semesterType.value + year.value;
@@ -132,7 +140,7 @@
                 let error = false;
                 let matriculationEntries: SubjectMatriculation[] = [];
                 selectedFieldsOfStudy.value
-                    .filter((s) => s != "")
+                    .filter((e) => e != "")
                     .forEach((entry) => {
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
@@ -146,6 +154,7 @@
                     year.value = "";
                     selectedFieldsOfStudy.value = [];
                     errorBag.value = new ErrorBag();
+                    toast.success("Immatriculation information updated");
                 } else {
                     errorBag.value = new ErrorBag(responseHandler.errorList);
                 }

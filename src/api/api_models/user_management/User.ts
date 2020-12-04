@@ -1,5 +1,5 @@
-import Address from "./Address";
 import { Role } from "@/entities/Role";
+import Address from "./Address";
 
 export default interface User {
     username: string;
@@ -10,4 +10,6 @@ export default interface User {
     email: string;
     birthDate: string;
     phoneNumber: string;
+    enrollmentIdSecret: string;
+    isActive: boolean;
 }

@@ -24,7 +24,7 @@
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import ImmatriculationHistoryEntry from "./ImmatriculationHistoryEntry.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import ImmatriculationResponseHandler from "@/use/helpers/ImmatriculationResponseHandler";
     export default {
         components: {
             ImmatriculationHistoryEntry,
@@ -41,30 +41,23 @@
         },
         emits: ["update:busy"],
         setup(props: any, { emit }: any) {
-            //TODO Remove mock data as soon as the endpoint in backend provides data
-            let history: MatriculationData = reactive({
-                matriculationId: "egal",
-                firstName: "egal",
-                lastName: "egal",
-                birthDate: "egal",
-                matriculationStatus: [],
-            });
+            let history: MatriculationData = reactive({} as MatriculationData);
             let chronologicalList = ref({});
+
+            onBeforeMount(async () => {
+                await getHistory();
+            });
 
             async function getHistory() {
                 emit("update:busy", true);
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
-                const responseHandler = new GenericResponseHandler();
+                const responseHandler = new ImmatriculationResponseHandler();
                 const result = responseHandler.handleResponse(response);
                 history = result;
                 chronologicalList.value = historyToSortedList(history);
                 emit("update:busy", false);
             }
-
-            onBeforeMount(() => {
-                getHistory();
-            });
 
             return {
                 chronologicalList,

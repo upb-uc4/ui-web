@@ -1,7 +1,7 @@
-import Lecturer from "@/api/api_models/user_management/Lecturer";
-import { Role } from "./Role";
-import AddressEntity from "./AddressEntity";
 import Address from "@/api/api_models/user_management/Address";
+import Lecturer from "@/api/api_models/user_management/Lecturer";
+import AddressEntity from "./AddressEntity";
+import { Role } from "./Role";
 
 export default class LecturerEntity implements Lecturer {
     freeText = "";
@@ -14,6 +14,8 @@ export default class LecturerEntity implements Lecturer {
     email = "";
     birthDate = "";
     phoneNumber = "";
+    enrollmentIdSecret = "";
+    isActive = true;
 
     constructor() {}
 }

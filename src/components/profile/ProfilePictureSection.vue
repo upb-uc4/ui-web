@@ -5,9 +5,13 @@
                 <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
             </div>
             <div class="flex flex-col">
-                <img id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
+                <loading-spinner v-if="busy" class="object-cover mb-5 rounded-full" />
+                <div v-else class="w-full flex justify-center sm:justify-start">
+                    <img id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
+                </div>
+
                 <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="uploadPicture" />
-                <div class="flex">
+                <div class="flex justify-center sm:justify-start ml-12 sm:ml-0">
                     <button id="uploadPicture" :disabled="busy" class="btn btn-blue-primary w-48" @click="triggerFileUpload">
                         Select Image
                     </button>
@@ -66,11 +70,14 @@
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
     import { useStore } from "vuex";
     import { MutationTypes } from "@/use/store/mutation-types";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import { useToast } from "@/toast";
 
     export default {
         name: "ProfilePictureSection",
         components: {
             DeleteProfilePictureModal,
+            LoadingSpinner,
         },
 
         props: {
@@ -90,16 +97,17 @@
             const busy = ref(false);
             const errorBag = ref(new ErrorBag());
             const deletePictureModal = ref();
+            const toast = useToast();
 
-            onBeforeMount(() => {
-                getProfilePicture();
+            onBeforeMount(async () => {
+                await getProfilePicture();
             });
 
             async function getProfilePicture() {
                 busy.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.getProfilePicture(username);
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("profile picture");
                 const result = handler.handleResponse(response);
 
                 if (result.arrayBuffer != undefined) {
@@ -110,7 +118,6 @@
                         fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
-                    //TODO Show Toast
                     selectedPicture.value = "";
                     fallbackPicture.value = selectedPicture.value;
                 }
@@ -146,8 +153,9 @@
                 const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture.value = selectedPicture.value;
-                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
+                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                     errorBag.value = new ErrorBag();
+                    toast.success("Profile picture updated.");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
                 }
@@ -169,7 +177,7 @@
                         }
                         case action.DELETE: {
                             deleteProfilePicture();
-                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE, true);
+                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                             break;
                         }
                     }
@@ -180,12 +188,11 @@
                 busy.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.deleteProfilePicture(username);
-                const handler = new GenericResponseHandler();
+                const handler = new GenericResponseHandler("profile picture");
                 const result = await handler.handleResponse(response);
                 if (result) {
+                    toast.success("Profile picture deleted.");
                     getProfilePicture();
-                } else {
-                    console.error("Picture Deletion Failed!");
                 }
                 busy.value = false;
             }
