@@ -113,7 +113,7 @@
                         val = val && props.value != null && props.value.length !== 0;
                     }
 
-                    if (val && validation && props.value) {
+                    if (val && validation) {
                         const valueAsString = props.value.toString();
                         const match = valueAsString.match(validation.value);
                         val = val && match !== null && match[0] === valueAsString;
