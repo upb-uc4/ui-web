@@ -67,7 +67,7 @@
             const email = ref("");
             const password = ref("");
             const passwordFieldType = ref("password");
-            const hasError = ref(true);
+            const hasError = ref(false);
             const errorText = ref("Incorrect username or password.");
 
             function togglePassword() {
