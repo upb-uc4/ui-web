@@ -89,8 +89,6 @@ describe("Change password", () => {
     it("Enter correct password", () => {
         cy.get("input[id='enterPasswordModalPassword']").clear().type(studentAuthUser.password);
         cy.get("button[id='enterPasswordModalConfirm']").click();
-
-        cy.get("p").invoke("hasClass", "error-message").should("not.be.visible");
         cy.get("div[id='modal-wrapper']").children().should("not.be.visible");
     });
 
