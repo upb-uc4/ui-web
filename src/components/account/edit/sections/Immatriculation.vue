@@ -139,9 +139,11 @@
                 busy.value = true;
                 let error = false;
                 let matriculationEntries: SubjectMatriculation[] = [];
-                selectedFieldsOfStudy.value.forEach((entry) => {
-                    matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
-                });
+                selectedFieldsOfStudy.value
+                    .filter((e) => e != "")
+                    .forEach((entry) => {
+                        matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
+                    });
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
                 const response = await matriculationManagement.updateMatriculationData(props.username, matriculationEntries);
                 const responseHandler = new MatriculationValidationResponseHandler();
