@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.13.1",
+    "version": "0.13.1-hotfix.1",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -50,7 +50,7 @@
         "elliptic": "^6.5.3",
         "jest": "^26.6.3",
         "lodash": "^4.17.20",
-        "pkijs": "^2.1.90",
+        "pkijs": "^2.1.91",
         "protobufjs": "^6.10.2",
         "random-bigint": "0.0.1",
         "tailwindcss": "^1.9.6",
