@@ -163,7 +163,7 @@ jobs:
       - name: Run nginx to reverse proxy for e2e tests
         run: docker run --name reverse-proxy -p 443:443 --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs/ --mount type=bind,source=$(pwd)/dist/,target=/app/deploy -d nginx
       - name: run e2e tests
-        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }}
+        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }} --env NODE_ENV=development
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()
@@ -235,7 +235,7 @@ jobs:
       - name: Run nginx to reverse proxy for e2e tests
         run: docker run --name reverse-proxy -p 443:443 --mount type=bind,source=$(pwd)/temp/nginx.conf,target=/etc/nginx/nginx.conf --mount type=bind,source=$(pwd)/certs/,target=/etc/nginx/certs/ --mount type=bind,source=$(pwd)/dist/,target=/app/deploy -d nginx
       - name: run e2e tests
-        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }}
+        run: npm run test:e2e:headless -- --spec ${{ matrix.tests }} --env NODE_ENV=experimental
       - name: Upload Screenshots
         uses: actions/upload-artifact@v1
         if: failure()

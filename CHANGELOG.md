@@ -1,8 +1,9 @@
 # [v0.13.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.2) (2020-XX-XX)
+## Feature
+- matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
 
 ## Bugfix
 - refactor course list items [#715](https://github.com/upb-uc4/ui-web/pull/715)
-
 
 # [v0.13.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.1-hotfix.1) (2020-11-27)
 ## Bugfix
