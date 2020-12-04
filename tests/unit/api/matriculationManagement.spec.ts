@@ -74,8 +74,7 @@ describe("Matriculation management", () => {
 
     test("Update matriculation even more", async () => {
         const response = await matriculationManagement.updateMatriculationData(student.username, [
-            { fieldOfStudy: EXAM_REG_1, semesters: ["SS2022"] },
-            { fieldOfStudy: EXAM_REG_1, semesters: ["SS2019"] },
+            { fieldOfStudy: EXAM_REG_1, semesters: ["SS2022", "SS2019"] },
         ] as SubjectMatriculation[]);
         const data: boolean | MatriculationData = response.returnValue;
         expect(response.statusCode).toBe(200);
@@ -91,8 +90,8 @@ describe("Matriculation management", () => {
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(4);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
         expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2021");
-        expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2022");
-        expect((data as MatriculationData).matriculationStatus[0].semesters[1]).toBe("SS2019");
+        expect((data as MatriculationData).matriculationStatus[0].semesters[2]).toBe("SS2022");
+        expect((data as MatriculationData).matriculationStatus[0].semesters[3]).toBe("SS2019");
     });
 
     test("Delete student user", async () => {
