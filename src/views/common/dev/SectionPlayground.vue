@@ -1,7 +1,8 @@
 <template>
     <div class="w-full">
-        <section-header title="Playground" />
-        <input-section class="w-full" />
+        <section-header title="Playground Profile" />
+        <personal-section class="w-full" />
+        <address-section class="w-full" />
         <input-section class="w-full" />
         <button-section>
             <template #left>
@@ -19,11 +20,15 @@
     import InputSection from "@/components/common/dev/playground/InputSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
+    import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
+    import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
 
     export default {
         name: "Playground",
         components: {
             SectionHeader,
+            PersonalSection,
+            AddressSection,
             InputSection,
             ButtonSection,
         },

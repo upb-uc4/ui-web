@@ -1,7 +1,6 @@
 <template>
     <div class="w-full">
         <Listbox v-slot="{ open }" v-model="selectedElement" as="div" class="space-y-1">
-            <ListboxLabel class="input-label-tmp"> Assigned to</ListboxLabel>
             <div class="relative">
                 <span class="inline-block w-full">
                     <ListboxButton
@@ -58,13 +57,12 @@
 
 <script lang="ts">
     import { ref } from "vue";
-    import { Listbox, ListboxLabel, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
+    import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
 
     export default {
         name: "Select",
         components: {
             Listbox,
-            ListboxLabel,
             ListboxButton,
             ListboxOptions,
             ListboxOption,
