@@ -23,7 +23,7 @@ describe("Configuration management", () => {
     test("Fetch configuration", async () => {
         const response = await configurationManagement.getConfiguration();
         expect(response.statusCode).toBe(200);
-        expect(response.returnValue.fieldsOfStudy).not.toHaveLength(0);
+        expect(response.returnValue.courseTypes).not.toHaveLength(0);
     });
 
     test("Fetch validation", async () => {
