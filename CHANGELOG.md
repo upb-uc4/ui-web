@@ -1,3 +1,9 @@
+# [v0.13.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.2) (2020-XX-XX)
+
+## Bugfix
+- refactor course list items [#715](https://github.com/upb-uc4/ui-web/pull/715)
+
+
 # [v0.13.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.1-hotfix.1) (2020-11-27)
 ## Bugfix
 - hide create course button in course catalogue [#747](https://github.com/upb-uc4/ui-web/pull/747)
@@ -28,6 +34,7 @@
 - add a message for the student if not immatriculated to any semester yet [#692](https://github.com/upb-uc4/ui-web/pull/692)
 - Replace deprecated suspense wrapper by onBeforeMount hooks and a "busy" variable [#714](https://github.com/upb-uc4/ui-web/pull/714)
 - restyle login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
 
 ## Bugfix
 - fix mobile view of login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
