@@ -4,13 +4,14 @@
         <div class="w-full max-w-4xl">
             <div class="flex flex-col">
                 <div class="flex sm:flex-row flex-col-reverse w-full">
-                    <seach-bar v-model:message="message" class="sm:mr-4" @refresh="refresh" />
+                    <seach-bar v-model:message="message" @refresh="refresh" />
 
                     <router-link
+                        v-if="!isCourseCatalogue"
                         id="createAccountIcon"
                         title="Add a new Course"
                         to="/createCourse"
-                        class="flex flex-row items-center justify-center mb-4 sm:mb-0 sm:w-32 w-full border-2 rounded-lg border-gray-300 h-12 px-12 btn-green-primary-500"
+                        class="sm:ml-4 flex flex-row items-center justify-center mb-4 sm:mb-0 sm:w-32 w-full border-2 rounded-lg border-gray-300 h-12 px-12 btn-green-primary-500"
                     >
                         <p class="mr-3 font-semibold">Add</p>
                         <i class="fas fa-calendar-plus" />
@@ -22,7 +23,7 @@
 
             <course-list :key="refreshKey" :show-all-courses="showAllCourses" :selected-type="selectedType" :filter="message" />
 
-            <div class="flex justify-center mt-16">
+            <div v-if="!isCourseCatalogue" class="flex justify-center mt-16">
                 <router-link to="/createCourse">
                     <button id="addCourse" class="px-4 btn btn-green-primary-500">New Course</button>
                 </router-link>
@@ -51,6 +52,10 @@
             showAllCourses: {
                 type: Boolean,
                 required: true,
+            },
+            isCourseCatalogue: {
+                type: Boolean,
+                default: false,
             },
         },
         setup(props: any) {
