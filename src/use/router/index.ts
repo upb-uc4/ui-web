@@ -45,7 +45,7 @@ const router = createRouter({
         {
             path: "/course-catalog",
             name: "courseCatalog",
-            props: { showAllCourses: true },
+            props: { showAllCourses: true, isCourseCatalogue: true },
             component: AllCourseView,
             meta: {
                 title: "Course Catalog" + suffix,
