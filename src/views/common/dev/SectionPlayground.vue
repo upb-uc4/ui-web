@@ -1,9 +1,11 @@
 <template>
     <div class="w-full">
         <section-header title="Playground Profile" />
+        <profile-picture-section class="w-full" />
         <personal-section class="w-full" />
         <address-section class="w-full" />
         <input-section class="w-full" />
+
         <button-section>
             <template #left>
                 <button type="button" class="sm:w-32 w-full btn-secondary-remove-tmp">Delete</button>
@@ -22,11 +24,13 @@
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
     import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
+    import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
 
     export default {
         name: "Playground",
         components: {
             SectionHeader,
+            ProfilePictureSection,
             PersonalSection,
             AddressSection,
             InputSection,
