@@ -1,6 +1,7 @@
 # [v0.13.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.2) (2020-XX-XX)
 ## Feature
 - matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
+- Add create exam regulation form [#690](https://github.com/upb-uc4/ui-web/pull/690)
 
 ## Bugfix
 - refactor course list items [#715](https://github.com/upb-uc4/ui-web/pull/715)
