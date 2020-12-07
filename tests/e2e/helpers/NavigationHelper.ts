@@ -7,7 +7,7 @@ export function navigateToCourseListAdmin() {
 }
 
 export function navigateToExamRegForm() {
-    cy.visit("createExamReg");
+    cy.visit("create-exam-reg");
 }
 
 export function navigateToAccountForm() {
