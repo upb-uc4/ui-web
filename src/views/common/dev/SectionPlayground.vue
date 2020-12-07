@@ -3,8 +3,8 @@
         <section-header title="Playground Profile" />
         <profile-picture-section class="w-full" />
         <personal-section class="w-full" />
+        <contact-section class="w-full" />
         <address-section class="w-full" />
-        <input-section class="w-full" />
 
         <button-section>
             <template #left>
@@ -25,6 +25,7 @@
     import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
     import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
     import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
+    import ContactSection from "@/components/common/dev/playground/ContactSection.vue";
 
     export default {
         name: "Playground",
@@ -33,7 +34,7 @@
             ProfilePictureSection,
             PersonalSection,
             AddressSection,
-            InputSection,
+            ContactSection,
             ButtonSection,
         },
     };
