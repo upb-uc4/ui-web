@@ -204,6 +204,10 @@
 
 /* TERTIARY BUTTONS */
 
+.btn-tertiary-modal {
+    @apply btn-tertiary-base-tmp text-gray-600 hover:text-gray-700
+}
+
 /* e.g. cancel button next to a primary action button */
 .btn-tertiary-tmp {
     @apply btn-tertiary-base-tmp text-blue-600 hover:text-blue-700

@@ -19,3 +19,11 @@
 .input-label-base-tmp {
     @apply block text-sm font-medium tracking-wide
 }
+
+.modal-headline {
+    @apply text-gray-800 text-lg font-medium
+}
+
+.modal-description {
+    @apply text-gray-500 text-sm
+}
