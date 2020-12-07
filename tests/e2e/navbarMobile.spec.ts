@@ -90,7 +90,7 @@ describe("admin", () => {
         // create exam regulation
         cy.get("#nav_mobile_menu_exreg").click();
         cy.get("#nav_mobile_admin_menu_exreg_create").click();
-        cy.url().should("contain", "createExamReg");
+        cy.url().should("contain", "create-exam-reg");
     });
     checkProfile();
 });
