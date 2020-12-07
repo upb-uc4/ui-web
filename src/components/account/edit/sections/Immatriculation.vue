@@ -43,8 +43,7 @@
 <script lang="ts">
     import MultiSelect from "@/components/common/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import { ref, computed, reactive, watch } from "vue";
-    import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+    import { ref, computed, reactive, watch, onMounted } from "vue";
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
@@ -55,6 +54,7 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
     import { useToast } from "@/toast";
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
     export default {
         components: {
@@ -71,10 +71,21 @@
         setup(props: any, { emit }: any) {
             let refreshKey = ref(false);
             let busy = ref(true);
-            let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
+            let fieldsOfStudy = ref([] as string[]);
             let semesterType = ref("");
             let year = ref("");
-            let selectedFieldsOfStudy = ref([] as FieldOfStudy[]);
+            let selectedFieldsOfStudy = ref([] as string[]);
+
+            onMounted(async () => {
+                busy.value = true;
+                const examRegManagement = new ExaminationRegulationManagement();
+                const response = await examRegManagement.getExaminationRegulation();
+                fieldsOfStudy.value = new GenericResponseHandler("examination regulations")
+                    .handleResponse(response)
+                    .filter((e) => e.active)
+                    .map((e) => e.name);
+                busy.value = false;
+            });
 
             let currentYear = new Date().getFullYear();
             let selectableYears = computed(() => {
@@ -129,7 +140,7 @@
                 let error = false;
                 let matriculationEntries: SubjectMatriculation[] = [];
                 selectedFieldsOfStudy.value
-                    .filter((s) => s != FieldOfStudy.NONE)
+                    .filter((e) => e != "")
                     .forEach((entry) => {
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
