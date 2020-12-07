@@ -10,7 +10,7 @@
             <course-menu id="nav_mobile_admin_menu_courses" class="mobile-navbar-menu" />
         </li>
         <li>
-            <ex-reg-menu class="nav_mobile_menu_exreg mobile-navbar-menu" />
+            <ex-reg-menu id="nav_mobile_menu_exreg" class="mobile-navbar-menu" />
         </li>
         <li>
             <profile-menu class="nav_mobile_menu_profile mobile-navbar-menu" />
