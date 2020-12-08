@@ -64,19 +64,16 @@ describe("Change password", () => {
 
     it("Open password change modal", () => {
         cy.get("#modal-wrapper").should("exist");
-        cy.get("div[id='modal-wrapper']").children().should("not.be.visible");
 
         // open
         cy.get("button[id='updatePassword'").click();
-        cy.get("div[id='modal-wrapper']").children().eq(0).should("be.visible");
 
         // close with cancel button
+        cy.get("button[id='enterPasswordModalConfirm']").should("be.visible");
         cy.get("button[id='enterPasswordModalCancel']").click();
-        cy.get("div[id='modal-wrapper']").children().should("not.be.visible");
 
         // open
         cy.get("button[id='updatePassword'").click();
-        cy.get("div[id='modal-wrapper']").children().eq(0).should("be.visible");
     });
 
     it("Enter wrong password should show error", () => {

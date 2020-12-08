@@ -12,7 +12,7 @@
             </div>
             <div v-else class="w-full lg:w-2/3">
                 <button
-                    id="createCertificate"
+                    id="showAccountDeletionModal"
                     class="btn text-white btn-red-primary bg-red-500 border-red-500 w-48"
                     @click="showAccountDeletionModal()"
                 >
