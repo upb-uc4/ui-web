@@ -93,7 +93,7 @@
                     password: password.value,
                 });
                 if (loginResponseHandler.handleResponse(response)) {
-                    close(action.CONFIRM);
+                    baseModal.value.close(action.CONFIRM);
                 } else {
                     hasError.value = true;
                 }
@@ -106,10 +106,7 @@
                     baseModal.value.close(a);
                 }
                 if (a == action.CONFIRM) {
-                    await checkPassword();
-                    if (!hasError.value) {
-                        baseModal.value.close(action.CONFIRM);
-                    }
+                    checkPassword();
                 }
             }
 
