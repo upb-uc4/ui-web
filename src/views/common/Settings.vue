@@ -10,6 +10,7 @@
         <div>
             <security-section />
             <certificate-section />
+            <delete-account-section />
         </div>
     </div>
 </template>
@@ -20,12 +21,14 @@
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import CertificateSection from "@/components/settings/CertificateSection.vue";
+    import DeleteAccountSection from "@/components/settings/DeleteAccountSection.vue";
 
     export default {
         name: "Settings",
         components: {
             SecuritySection,
             CertificateSection,
+            DeleteAccountSection,
         },
 
         async beforeRouteEnter(_from: any, _to: any, next: any) {
