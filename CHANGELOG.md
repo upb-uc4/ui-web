@@ -1,4 +1,4 @@
-# [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (2020-12-07)
+# [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (2020-12-08)
 ## Feature
 - matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
 - Add create exam regulation form [#690](https://github.com/upb-uc4/ui-web/pull/690)
