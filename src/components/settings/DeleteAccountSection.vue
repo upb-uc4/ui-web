@@ -53,13 +53,11 @@
                 });
             }
 
-            function deleteAccount() {
-                console.log("triggered");
-            }
+            function deleteAccount() {}
+
             return {
                 deleteOwnAccountModal,
                 showAccountDeletionModal,
-                deleteAccount,
                 busy,
             };
         },

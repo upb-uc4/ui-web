@@ -79,10 +79,8 @@
             }
 
             async function show() {
-                await baseModal.value.show();
-                let tempPassword = password.value;
                 password.value = "";
-                return tempPassword;
+                return await baseModal.value.show();
             }
 
             async function checkPassword() {
