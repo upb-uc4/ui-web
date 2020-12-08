@@ -15,6 +15,9 @@ export function showAPIToast(code: number, msg?: string) {
             //toast.error(markRaw(ReportBug));
             toast.error("Something went wrong on our side. Please consider reporting this bug.");
             break;
+        case 403:
+            toast.error("You are not authorized for " + msg + "!");
+            break;
         case 404:
             toast.error("Could not find " + msg + ".");
             break;

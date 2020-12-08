@@ -29,6 +29,9 @@
     import { useStore } from "@/use/store/store";
     import DeleteOwnAccountModal from "@/components/modals/DeleteOwnAccountModal.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import UserManagement from "@/api/UserManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import { logout } from "@/use/helpers/Logout";
 
     export default {
         name: "CertificateSection",
@@ -53,8 +56,18 @@
                 });
             }
 
-            function deleteAccount() {}
-
+            async function deleteAccount() {
+                busy.value = true;
+                const userManagement = new UserManagement();
+                const handler = new GenericResponseHandler("account deletion");
+                const store = useStore();
+                const response = await userManagement.deleteUser((await store.getters.user).username);
+                const result = handler.handleResponse(response);
+                if (result) {
+                    logout();
+                }
+                busy.value = false;
+            }
             return {
                 deleteOwnAccountModal,
                 showAccountDeletionModal,

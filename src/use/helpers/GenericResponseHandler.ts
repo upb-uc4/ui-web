@@ -25,7 +25,7 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
                 return response.returnValue;
             }
             case 403: {
-                alert("You do not have the neccessary user rights for this action!");
+                showAPIToast(response.statusCode, this.dataType);
                 return response.returnValue;
             }
             case 404: {
