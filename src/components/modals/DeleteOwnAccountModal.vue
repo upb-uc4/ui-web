@@ -37,7 +37,12 @@
         </div>
         <template #footer>
             <button id="deleteOwnAccountModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="deleteOwnAccountModalConfirm" class="px-2 py-2 btn btn-red-primary" @click="close(action.CONFIRM)">
+            <button
+                id="deleteOwnAccountModalConfirm"
+                :disabled="!valid"
+                class="px-2 py-2 btn btn-red-primary"
+                @click="close(action.CONFIRM)"
+            >
                 Confirm Deletion
             </button>
         </template>
@@ -46,7 +51,7 @@
 
 <script lang="ts">
     import ModalNoTeleport from "@/components/modals/ModalNoTeleport.vue";
-    import { ref } from "vue";
+    import { computed, ref } from "vue";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import { useStore } from "@/use/store/store";
@@ -64,6 +69,7 @@
             let password = ref("");
             let passwordFieldType = ref("password");
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
+            let valid = computed(() => password.value != "");
 
             enum action {
                 CANCEL,
@@ -120,6 +126,7 @@
                 show,
                 close,
                 action,
+                valid,
             };
         },
     };
