@@ -14,7 +14,7 @@ export default class CourseManagement extends Common {
         return super.getVersion("/course-management");
     }
 
-    async getCourses(courseName?: string, lecturerId?: string): Promise<APIResponse<Course[]>> {
+    async getCourses(courseName?: string, lecturerId?: string, moduleIds?: string[]): Promise<APIResponse<Course[]>> {
         const requestParameter = { params: {} as any };
         //optional name to search by
         if (courseName != undefined) {
@@ -22,6 +22,9 @@ export default class CourseManagement extends Common {
         }
         if (lecturerId != undefined) {
             requestParameter.params.lecturerId = lecturerId;
+        }
+        if (moduleIds != undefined) {
+            requestParameter.params.moduleIds = moduleIds.reduce((a, b) => a + "," + b, "");
         }
 
         return await this._axios
@@ -36,16 +39,6 @@ export default class CourseManagement extends Common {
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: false,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getCourses(courseName, lecturerId);
-                    }
                     return {
                         error: error.response.data as APIError,
                         networkError: false,
@@ -76,16 +69,6 @@ export default class CourseManagement extends Common {
             })
             .catch(async (error: AxiosError) => {
                 if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as Course,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getCourse(id);
-                    }
                     return {
                         statusCode: error.response.status,
                         returnValue: {} as Course,
@@ -104,15 +87,6 @@ export default class CourseManagement extends Common {
     }
 
     async createCourse(course: Course): Promise<APIResponse<boolean>> {
-        let result: APIResponse<boolean> = {
-            error: {} as APIError,
-            networkError: false,
-            returnValue: false,
-            statusCode: 0,
-        };
-
-        var reloginSuccess = false;
-
         return await this._axios
             .post("/courses", course)
             .then((response: AxiosResponse) => {
@@ -139,14 +113,14 @@ export default class CourseManagement extends Common {
                         error: error.response.data as APIError,
                         networkError: false,
                         statusCode: error.response.status,
-                        returnValue: true,
+                        returnValue: false,
                     };
                 } else {
                     return {
                         error: {} as APIError,
                         networkError: true,
                         statusCode: 0,
-                        returnValue: true,
+                        returnValue: false,
                     };
                 }
             });

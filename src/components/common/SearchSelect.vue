@@ -3,8 +3,8 @@
         <input
             :id="inputId"
             v-model="input"
-            class="input-text-tmp w-full"
-            placeholder="Select a Quote"
+            class="form-select input-select block w-full"
+            :placeholder="`Select a ${shownCategoryName}`"
             @focus="showOptions()"
             @blur="hideOptions()"
             @keyup="keyMonitor"
@@ -12,7 +12,7 @@
         <div
             v-show="optionsShown"
             :id="inputId + '_options'"
-            class="bg-white overflow-auto max-h-50 border border-gray-500 w-full text-gray-700 rounded-b-md"
+            class="bg-white overflow-auto max-h-50 border absolute border-gray-500 w-full text-gray-700 rounded-b-md"
         >
             <div v-if="filteredOptions.length > 0">
                 <div
@@ -29,7 +29,6 @@
             <div v-else class="p-2 text-md block">No results found.</div>
         </div>
     </div>
-
 </template>
 
 <script lang="ts">
@@ -52,11 +51,16 @@
                 type: String,
                 required: true,
             },
+            categoryName: {
+                type: String,
+                required: true,
+            },
         },
-        emits: ["update:selected"],
+        emits: ["update:selected", "selected"],
         setup(props: any, { emit }: any) {
             const optionsShown = ref(false);
             const input = ref("");
+            const shownCategoryName = ref(props.categoryName);
 
             const hoveredOption = ref(-1);
 
@@ -67,7 +71,7 @@
             watch(
                 () => props.selected,
                 () => {
-                    input.value = props.selected.display;
+                    if (props.selected.display != undefined) input.value = props.selected.display;
                 }
             );
 
@@ -88,6 +92,7 @@
 
             function selectOption(option: SearchSelectOption) {
                 emit("update:selected", option);
+                emit("selected", option);
             }
 
             function showOptions() {
@@ -124,6 +129,7 @@
                 filteredOptions,
                 hoveredOption,
                 setHoveredOption,
+                shownCategoryName,
             };
         },
     };

@@ -32,12 +32,22 @@
             let loginModal = ref();
             let encryptionModal = ref();
             let decryptionModal = ref();
+            const store = useStore();
 
-            onMounted(() => {
-                const store = useStore();
+            store.subscribe((mutation, state) => {
+                if (mutation.type === MutationTypes.RESET_STATE) {
+                    setModals();
+                }
+            });
+
+            function setModals() {
                 store.commit(MutationTypes.SET_MODAL, loginModal.value.show);
                 store.commit(MutationTypes.SET_DECRYPT_PRIVATE_KEY_MODAL, decryptionModal.value.show);
                 store.commit(MutationTypes.SET_ENCRYPT_PRIVATE_KEY_MODAL, encryptionModal.value.show);
+            }
+
+            onMounted(() => {
+                setModals();
             });
             return {
                 loginModal,

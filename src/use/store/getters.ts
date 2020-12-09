@@ -16,7 +16,7 @@ export type Getters = {
     user(state: State): Promise<Student | Lecturer | Admin>;
     loggedIn(state: State): boolean;
     privateKey(state: State): Promise<CryptoKey>;
-    certificate(state: State): Promise<Certificate>;
+    certificate(state: State): () => Promise<Certificate>;
     hasCertificate(state: State): Promise<boolean>;
 };
 
@@ -63,7 +63,7 @@ export const getters: GetterTree<State, State> & Getters = {
         }
         return state.privateKey;
     },
-    certificate: async (state) => {
+    certificate: (state) => async () => {
         if (state.certificate.certificate == undefined || state.certificate.certificate == "") {
             const store = useStore();
             const certManagement = new CertificateManagement();

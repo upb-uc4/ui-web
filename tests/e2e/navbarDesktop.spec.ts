@@ -13,6 +13,12 @@ describe("guest", () => {
         cy.get("#routeAbout").click();
         cy.url().should("contain", "about");
     });
+
+    it("course catalog", () => {
+        cy.visit("/");
+        cy.get("#routeCourseCatalog").click();
+        cy.url().should("contain", "/course-catalog");
+    });
 });
 
 describe("admin", () => {
@@ -42,6 +48,13 @@ describe("admin", () => {
         cy.get("#nav_desktop_admin_menu_courses").trigger("mouseover");
         cy.get("#nav_desktop_admin_menu_courses_create").click();
         cy.url().should("contain", "createCourse");
+    });
+
+    it("exam-regs", () => {
+        // create exam reg form
+        cy.get("#nav_desktop_admin_menu_exreg").trigger("mouseover");
+        cy.get("#nav_desktop_admin_menu_exreg_create").click();
+        cy.url().should("contain", "create-exam-reg");
     });
     checkProfile();
 });

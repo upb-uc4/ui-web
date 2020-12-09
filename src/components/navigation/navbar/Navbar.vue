@@ -51,6 +51,8 @@
             store.subscribe((mutation, state) => {
                 if (mutation.type === MutationTypes.SET_USER) {
                     role.value = (mutation.payload as User).role;
+                } else if (mutation.type === MutationTypes.RESET_STATE) {
+                    role.value = Role.NONE;
                 }
             });
 

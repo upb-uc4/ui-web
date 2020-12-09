@@ -4,6 +4,7 @@ const navbar_burger_menu_list = "#nav_mobile_menu_list";
 const navbar_burger_menu = 'button[id="nav_mobile_toggle_menu"]';
 const navbar_about = "#nav_mobile_common_about";
 const navbar_guest_login = "#nav_mobile_guest_login";
+const navbar_course_catalog = "#nav_mobile_common_course_catalog";
 
 before(() => {
     cy.clearCookies();
@@ -29,6 +30,13 @@ describe("guest", () => {
         cy.get(navbar_burger_menu).click();
         cy.get(navbar_about).click();
         cy.url().should("contain", "about");
+    });
+
+    it("course catalog", () => {
+        cy.visit("/");
+        cy.get(navbar_burger_menu).click();
+        cy.get(navbar_course_catalog).click();
+        cy.url().should("contain", "/course-catalog");
     });
 });
 
@@ -74,6 +82,15 @@ describe("admin", () => {
         // create course
         cy.get("#nav_mobile_admin_menu_courses_create").click();
         cy.url().should("contain", "createCourse");
+    });
+
+    it("exam-regs", () => {
+        cy.get(navbar_burger_menu).click();
+
+        // create exam regulation
+        cy.get("#nav_mobile_menu_exreg").click();
+        cy.get("#nav_mobile_admin_menu_exreg_create").click();
+        cy.url().should("contain", "create-exam-reg");
     });
     checkProfile();
 });

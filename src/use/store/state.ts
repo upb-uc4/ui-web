@@ -16,3 +16,15 @@ export const state = {
 };
 
 export type State = typeof state;
+
+export default {
+    apiUrl: "",
+    user: {} as Student | Lecturer | Admin,
+    loggedIn: false,
+    modal: {} as any,
+    privateKey: {} as CryptoKey,
+    decryptPrivateKeyModal: {} as any,
+    encryptPrivateKeyModal: {} as any,
+    certificate: {} as Certificate,
+    hasCertificate: false,
+};
