@@ -14,8 +14,9 @@
                 </div>
             </div>
             <p>
-                <span class="font-bold text-red-600">Warning!</span> You are about to delete your UC4 account. If you continue, all your
-saved data will be permanently deleted and you will no longer be able to use the system. 
+                <span class="font-bold text-red-600">Warning!</span>
+                You are about to delete your UC4 account. If you continue, all your saved data will be permanently deleted and you will no
+                longer be able to use the system.
             </p>
             <div class="mt-6 relative">
                 <i
