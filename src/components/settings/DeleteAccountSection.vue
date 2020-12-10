@@ -5,7 +5,7 @@
                 <div class="flex mb-2 align-baseline">
                     <label class="block text-red-600 text-lg font-medium">Account Deletion</label>
                 </div>
-                <label class="block text-red-600"> Delete your account and get all stored data deleted. </label>
+                <label class="block text-red-600"> Delete my account and all my personal data. </label>
             </div>
             <div v-if="busy">
                 <loading-spinner />
