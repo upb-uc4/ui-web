@@ -1,18 +1,28 @@
 import UnsignedProposalMessage from "@/api/api_models/common/UnsignedProposalMessage";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
-import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 import Student from "@/api/api_models/user_management/Student";
 import CertificateManagement from "@/api/CertificateManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import UserManagement from "@/api/UserManagement";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
-import { arrayBufferToBase64, createCSR, createKeyPair, deriveKeyFromPassword, wrapKey } from "@/use/crypto/certificates";
+import {
+    arrayBufferToBase64,
+    base64ToArrayBuffer,
+    createCSR,
+    createKeyPair,
+    deriveKeyFromPassword,
+    unwrapKey,
+    wrapKey,
+} from "@/use/crypto/certificates";
 import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
+import { useStore } from "@/use/store/store";
+import { MutationTypes } from "@/use/store/mutation-types";
+import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 
 let matriculationManagement: MatriculationManagement;
 let userManagement: UserManagement;
@@ -28,13 +38,19 @@ const encryptionPassword = "My-Super-Password";
 let matriculation: SubjectMatriculation[];
 const protoURL = "public/hlf-proto.json";
 const governmentId = pair.governmentId;
+const EXAM_REG_1 = "Bachelor Computer Science v3";
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("Matriculation management", () => {
     beforeAll(async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         userManagement = new UserManagement();
+
+        useStore().commit(MutationTypes.SET_DECRYPT_PRIVATE_KEY_MODAL, async (encKey: EncryptedPrivateKey) => {
+            const wrappingKey = await deriveKeyFromPassword(encryptionPassword, encKey.salt);
+            return await unwrapKey(base64ToArrayBuffer(encKey.key), wrappingKey.key, base64ToArrayBuffer(encKey.iv));
+        });
 
         matriculationManagement = new MatriculationManagement();
         expect(success.returnValue.login).not.toEqual("");
@@ -89,7 +105,7 @@ describe("Matriculation management", () => {
     });
 
     test("Update matriculation", async () => {
-        matriculation = [{ fieldOfStudy: FieldOfStudy.COMPUTER_SCIENCE, semesters: ["SS2020"] }];
+        matriculation = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
         const result = await updateMatriculation(enrollmentId, authUser.username, matriculation, protoURL);
 
@@ -100,7 +116,7 @@ describe("Matriculation management", () => {
         const filledResponse = await matriculationManagement.getMatriculationHistory(student.username);
         const data: MatriculationData = filledResponse.returnValue;
         expect((data as MatriculationData).matriculationStatus).toHaveLength(1);
-        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(FieldOfStudy.COMPUTER_SCIENCE);
+        expect((data as MatriculationData).matriculationStatus[0].fieldOfStudy).toBe(EXAM_REG_1);
         expect((data as MatriculationData).matriculationStatus[0].semesters).toHaveLength(1);
         expect((data as MatriculationData).matriculationStatus[0].semesters[0]).toBe("SS2020");
     });

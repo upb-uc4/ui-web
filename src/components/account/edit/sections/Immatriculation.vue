@@ -13,8 +13,7 @@
 <script lang="ts">
     import MultiSelect from "@/components/common/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import { ref, computed, reactive, watch } from "vue";
-    import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+    import { ref, computed, reactive, watch, onMounted } from "vue";
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
@@ -25,6 +24,7 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
     import { useToast } from "@/toast";
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
     export default {
         components: {

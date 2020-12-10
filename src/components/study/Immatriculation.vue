@@ -51,8 +51,7 @@
 <script lang="ts">
     import MultiSelect from "@/components/common/MultiSelect.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
-    import { onBeforeMount, ref, computed, reactive, watch } from "vue";
-    import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
+    import { onBeforeMount, ref, computed, reactive, watch, onMounted } from "vue";
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
@@ -66,6 +65,7 @@
     import { useToast } from "@/toast";
     import { showAPIToast } from "@/use/helpers/Toasts";
     import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
     export default {
         components: {
@@ -75,17 +75,28 @@
         },
         setup(props: any, { emit }: any) {
             let refreshKey = ref(false);
-            let busy = ref(true);
-            let fieldsOfStudy = Object.values(FieldOfStudy).filter((e) => e != FieldOfStudy.NONE);
+            let busy = ref(0);
+            let fieldsOfStudy = ref([] as string[]);
             let semesterType = ref("");
             let year = ref("");
-            let selectedFieldsOfStudy = ref([] as FieldOfStudy[]);
+            let selectedFieldsOfStudy = ref([] as string[]);
             const username = ref("");
 
             let currentYear = new Date().getFullYear();
 
             onBeforeMount(async () => {
+                busy.value++;
                 await getUsername();
+                const examRegManagement = new ExaminationRegulationManagement();
+                const response = await examRegManagement.getExaminationRegulation();
+                fieldsOfStudy.value.push(
+                    ...new GenericResponseHandler("examination regulations")
+                        .handleResponse(response)
+                        .filter((e) => e.active)
+                        .map((e) => e.name)
+                );
+
+                busy.value--;
             });
 
             async function getUsername() {
@@ -141,11 +152,11 @@
             }
 
             async function updateImmatriculation() {
-                busy.value = true;
+                busy.value++;
                 let error = false;
                 let matriculationEntries: SubjectMatriculation[] = [];
                 selectedFieldsOfStudy.value
-                    .filter((s) => s != FieldOfStudy.NONE)
+                    .filter((s) => s != "")
                     .forEach((entry) => {
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
@@ -156,7 +167,7 @@
 
                 await updateMatriculation(enrollmentId.id, username.value, matriculationEntries);
 
-                busy.value = false;
+                busy.value--;
                 refreshKey.value = !refreshKey.value;
             }
 

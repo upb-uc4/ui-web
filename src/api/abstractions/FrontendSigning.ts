@@ -28,7 +28,6 @@ export async function updateMatriculation(
     protoUrl?: string
 ): Promise<boolean> {
     const matriculationManagement = new MatriculationManagement();
-    console.log(matriculationManagement._axios);
 
     const handler = new MatriculationValidationResponseHandler();
     const genericHandler = new GenericResponseHandler("transaction");
@@ -73,7 +72,9 @@ async function abstractHandler(
     submitHandler: (...args: any[]) => boolean,
     protoUrl?: string
 ) {
-    console.log(getUnsignedProposal);
+    const privateKey = await useStore().getters.privateKey;
+    const certificate = await useStore().getters.certificate();
+    const publicKey = await getPublicKeyFromCertificate(certificate.certificate);
 
     const proposalResponse = await getUnsignedProposal();
     const unsignedProposal = proposalValidationHandler(proposalResponse);
@@ -95,10 +96,6 @@ async function abstractHandler(
         useToast().error("Proposal validation failed. Your browser or university might be compromised.");
         return false;
     }
-
-    const privateKey = await useStore().getters.privateKey;
-    const certificate = await useStore().getters.certificate();
-    const publicKey = await getPublicKeyFromCertificate(certificate.certificate);
 
     const proposalSignature = await signProtobuf(unsignedProposal.unsignedProposal, privateKey);
 
