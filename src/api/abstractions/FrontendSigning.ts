@@ -5,8 +5,10 @@ import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
 
 import { useStore } from "@/use/store/store";
+import { ProposalPayload } from "../api_models/common/Proposal";
 import SignedProposalMessage from "../api_models/common/SignedProposalMessage";
 import SignedTransactionMessage from "../api_models/common/SignedTransactionMessage";
+import TransactionMessage from "../api_models/common/Transaction";
 import UnsignedProposalMessage from "../api_models/common/UnsignedProposalMessage";
 import UnsignedTransactionMessage from "../api_models/common/UnsignedTransactionMessage";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
@@ -26,42 +28,54 @@ export async function updateMatriculation(
     protoUrl?: string
 ): Promise<boolean> {
     const matriculationManagement = new MatriculationManagement();
+    console.log(matriculationManagement._axios);
+
     const handler = new MatriculationValidationResponseHandler();
     const genericHandler = new GenericResponseHandler("transaction");
 
     return await abstractHandler(
-        matriculationManagement.getUnsignedMatriculationProposal,
-        [username, matriculation],
-        handler.handleResponse,
-        validateMatriculationProposal,
-        matriculationManagement.submitSignedMatriculationProposal,
-        [username],
-        genericHandler.handleResponse,
-        matriculationTransactionValidator,
-        matriculationManagement.submitSignedMatriculationTransaction,
-        [username],
-        [enrollmentId, matriculation],
-        genericHandler.handleResponse,
+        async () => {
+            return await matriculationManagement.getUnsignedMatriculationProposal(username, matriculation);
+        },
+        (arg: APIResponse<UnsignedProposalMessage>) => {
+            return handler.handleResponse(arg);
+        },
+        (payload: ProposalPayload) => {
+            return validateMatriculationProposal(payload, enrollmentId, matriculation);
+        },
+        async (message: SignedProposalMessage) => {
+            return await matriculationManagement.submitSignedMatriculationProposal(username, message);
+        },
+        (response: APIResponse<UnsignedTransactionMessage>) => {
+            return genericHandler.handleResponse(response);
+        },
+        (transaction: TransactionMessage) => {
+            return matriculationTransactionValidator(enrollmentId, matriculation, transaction);
+        },
+        async (message: SignedTransactionMessage) => {
+            return await matriculationManagement.submitSignedMatriculationTransaction(username, message);
+        },
+        (response: APIResponse<boolean>) => {
+            return genericHandler.handleResponse(response);
+        },
         protoUrl
     );
 }
 
 async function abstractHandler(
     getUnsignedProposal: (...args: any[]) => Promise<APIResponse<UnsignedProposalMessage>>,
-    argsUnsignedProposal: any[],
     proposalValidationHandler: (...args: any[]) => UnsignedProposalMessage,
     proposalValidator: (...args: any[]) => boolean,
     submitProposal: (...args: any[]) => Promise<APIResponse<UnsignedTransactionMessage>>,
-    argsSubmitProposal: any[],
     transactionValidationHandler: (...args: any[]) => UnsignedTransactionMessage,
     transactionValidator: (...args: any[]) => boolean,
     submitTransaction: (...args: any[]) => Promise<APIResponse<boolean>>,
-    argsSubmitTransaction: any[],
-    argsValidation: any[],
     submitHandler: (...args: any[]) => boolean,
     protoUrl?: string
 ) {
-    const proposalResponse = await getUnsignedProposal(...argsUnsignedProposal);
+    console.log(getUnsignedProposal);
+
+    const proposalResponse = await getUnsignedProposal();
     const unsignedProposal = proposalValidationHandler(proposalResponse);
 
     if (!unsignedProposal.unsignedProposal) return false;
@@ -75,7 +89,7 @@ async function abstractHandler(
         return false;
     }
 
-    const proposalValidation = proposalValidator(proposal.payload, ...argsValidation);
+    const proposalValidation = proposalValidator(proposal.payload);
 
     if (!proposalValidation) {
         useToast().error("Proposal validation failed. Your browser or university might be compromised.");
@@ -99,7 +113,7 @@ async function abstractHandler(
         signature: proposalSignature,
         unsignedProposal: unsignedProposal.unsignedProposal,
     };
-    const response = await submitProposal(...argsSubmitProposal, signedProposalMessage);
+    const response = await submitProposal(signedProposalMessage);
 
     const unsignedTransaction = transactionValidationHandler(response);
 
@@ -114,7 +128,7 @@ async function abstractHandler(
         return false;
     }
 
-    const transactionValidation = transactionValidator(transaction, ...argsValidation);
+    const transactionValidation = transactionValidator(transaction);
 
     if (!transactionValidation) {
         useToast().error("Transaction validation failed. Your browser or university might be compromised.");
@@ -138,7 +152,7 @@ async function abstractHandler(
         unsignedTransaction: unsignedTransaction.unsignedTransaction,
     };
 
-    const submitResponse = await submitTransaction(...argsSubmitTransaction, signedTransactionMessage);
+    const submitResponse = await submitTransaction(signedTransactionMessage);
 
     return submitHandler(submitResponse);
 }

@@ -38,6 +38,8 @@ export default class MatriculationManagement extends Common {
                 };
             })
             .catch(async (error: AxiosError) => {
+                console.log(error);
+
                 if (error.response) {
                     if (
                         await handleAuthenticationError({
@@ -81,6 +83,7 @@ export default class MatriculationManagement extends Common {
                 };
             })
             .catch(async (error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     if (
                         await handleAuthenticationError({
@@ -121,6 +124,7 @@ export default class MatriculationManagement extends Common {
                 };
             })
             .catch(async (error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     if (
                         await handleAuthenticationError({
@@ -161,6 +165,7 @@ export default class MatriculationManagement extends Common {
                 };
             })
             .catch(async (error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     if (
                         await handleAuthenticationError({
