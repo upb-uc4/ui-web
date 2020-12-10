@@ -6,6 +6,7 @@ import CertificateManagement from "@/api/CertificateManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
 jest.useFakeTimers();
+jest.setTimeout(30000);
 
 test("course service version", async () => {
     const version = await CourseManagement.getVersion();
