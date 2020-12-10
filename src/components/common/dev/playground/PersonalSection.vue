@@ -16,8 +16,7 @@
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Date of Birth</label>
-                    <input type="text" class="w-full input-text-tmp" readonly value="24.05.1993" />
+                    <birth-date-input v-model:birth-date="birthdate" />
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
@@ -28,14 +27,19 @@
 <script>
     import BaseSection from "@/components/common/section/BaseSection";
     import { ref } from "vue";
+    import BirthDateInput from "@/components/account/edit/BirthDateInput";
 
     export default {
         name: "InputSection",
         components: {
             BaseSection,
+            BirthDateInput,
         },
         setup() {
-            return {};
+            const birthdate = ref("24-07-1993");
+            return {
+                birthdate,
+            };
         },
     };
 </script>

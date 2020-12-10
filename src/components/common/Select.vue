@@ -1,13 +1,13 @@
 <template>
     <div class="w-full">
-        <Listbox v-slot="{ open }" v-model="selectedElement" as="div" class="space-y-1">
+        <Listbox v-slot="{ open }" v-model="selection" as="div" class="space-y-1">
             <div class="relative">
                 <span class="inline-block w-full">
                     <ListboxButton
                         class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
-                            {{ selectedElement }}
+                            {{ selection }}
                         </span>
                         <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">
@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-    import { ref } from "vue";
+    import { ref, watch } from "vue";
     import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
 
     export default {
@@ -72,11 +72,24 @@
                 type: Array,
                 required: true,
             },
+            default: {
+                type: String,
+                default: null,
+            },
         },
-        setup(props: any) {
-            const selectedElement = ref(props.elements[0]);
+        emits: ["update:selected"],
+        setup(props: any, { emit }: any) {
+            let selection = ref(props.elements[0]);
 
-            return { selectedElement };
+            if (props.default) {
+                selection = ref(props.default);
+            }
+
+            watch(selection, (value) => {
+                emit("update:selected", value);
+            });
+
+            return { selection };
         },
     };
 </script>
