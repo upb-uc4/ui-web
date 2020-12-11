@@ -10,21 +10,22 @@
                     <div class="flex flex-col mb-6 lg:w-1/2 lg:mb-0 lg:mr-16">
                         <label class="mb-3 font-medium text-gray-700 text-md">First Name</label>
                         <base-input
-                            id="firstName"
                             v-model:value="accountFirstName"
+                            identifier="firstName"
+                            :error-message="getErrorMessage(errorBag, 'firstName', true)"
                             placeholder="Firstname"
                             validation-query="user.firstName"
                         />
-                        <p v-if="errorBag.hasNested('firstName')" class="error-message">
-                            {{ errorBag.getNested("firstName") }}
-                        </p>
                     </div>
                     <div class="flex flex-col mb-6 lg:w-1/2 lg:mb-0">
                         <label class="mb-3 font-medium text-gray-700 text-md">Last Name</label>
-                        <base-input id="lastName" v-model:value="accountLastName" placeholder="Lastname" validation-query="user.lastName" />
-                        <p v-if="errorBag.hasNested('lastName')" class="error-message">
-                            {{ errorBag.getNested("lastName") }}
-                        </p>
+                        <base-input
+                            v-model:value="accountLastName"
+                            identifier="lastName"
+                            :error-message="getErrorMessage(errorBag, 'lastName', true)"
+                            placeholder="Lastname"
+                            validation-query="user.lastName"
+                        />
                     </div>
                 </div>
                 <div v-if="!editMode" class="lg:flex md:flex-col mb-6">
@@ -53,7 +54,7 @@
 
 <script lang="ts">
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import BirthDatePicker from "../BirthDatePicker.vue";
     import { ref } from "vue";
     import BaseInput from "@/components/common/BaseInput.vue";
@@ -96,6 +97,7 @@
             let accountBirthdate = ref(props.birthDate);
 
             return {
+                getErrorMessage,
                 accountFirstName: useModelWrapper(props, emit, "firstName"),
                 accountLastName: useModelWrapper(props, emit, "lastName"),
                 accountBirthdate: useModelWrapper(props, emit, "birthDate"),

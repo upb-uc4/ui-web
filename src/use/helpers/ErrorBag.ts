@@ -53,8 +53,12 @@ export default class ErrorBag {
     }
 }
 
-export function getErrorMessage(errorBag: ErrorBag, field: string): string | undefined {
-    if (errorBag.has(field)) {
+export function getErrorMessage(errorBag: ErrorBag | undefined, field: string, nested?: boolean): string | undefined {
+    if (nested) {
+        if (errorBag?.hasNested(field)) {
+            return errorBag.getNested(field);
+        }
+    } else if (errorBag?.has(field)) {
         return errorBag.get(field);
     }
     return "";

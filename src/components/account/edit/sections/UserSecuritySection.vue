@@ -9,48 +9,48 @@
                 <div class="flex flex-col mb-4">
                     <label class="mb-3 font-medium text-gray-700 text-md">Username</label>
                     <base-input
-                        id="userName"
                         v-model:value="accountUsername"
+                        identifier="userName"
+                        :error-message="getErrorMessage(errorBag, 'username', true)"
                         type="text"
                         class="w-full"
                         placeholder="Username"
                         :readonly="editMode"
                         validation-query="user.username"
                     />
-                    <p v-if="errorBag.hasNested('username')" class="error-message">{{ errorBag.getNested("username") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
                     <label class="mb-3 font-medium text-gray-700 text-md">Email</label>
                     <base-input
-                        id="email"
                         v-model:value="accountEmail"
+                        identifier="email"
+                        :error-message="getErrorMessage(errorBag, 'email', true)"
                         type="text"
                         placeholder="example@mail.com"
                         validation-query="user.email"
                     />
-                    <p v-if="errorBag.hasNested('email')" class="error-message">{{ errorBag.getNested("email") }}</p>
                 </div>
                 <div class="flex flex-col mb-4">
                     <label class="mb-3 font-medium text-gray-700 text-md">Phone Number</label>
                     <base-input
-                        id="phoneNumber"
                         v-model:value="accountPhoneNumber"
+                        identifier="phoneNumber"
+                        :error-message="getErrorMessage(errorBag, 'phoneNumber', true)"
                         type="text"
                         placeholder="+49123456789"
                         validation-query="user.phoneNumber"
                     />
-                    <p v-if="errorBag.hasNested('phoneNumber')" class="error-message">{{ errorBag.getNested("phoneNumber") }}</p>
                 </div>
                 <div v-if="!editMode" class="flex flex-col mb-4">
                     <label for="password" class="mb-3 font-medium text-gray-700 text-md"> Password </label>
                     <base-input
-                        id="password"
                         v-model:value="accountPassword"
+                        :error-message="getErrorMessage(errorBag, 'password', true)"
+                        identifier="password"
                         type="text"
                         placeholder="Password"
                         validation-query="authenticationUser.password"
                     />
-                    <p v-if="errorBag.hasNested('password')" class="error-message">{{ errorBag.getNested("password") }}</p>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@
 
 <script lang="ts">
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import BaseInput from "@/components/common/BaseInput.vue";
 
     export default {
@@ -96,6 +96,7 @@
         emits: ["update:username", "update:email", "update:password", "update:phonenumber"],
         setup(props: any, { emit }: any) {
             return {
+                getErrorMessage,
                 accountUsername: useModelWrapper(props, emit, "username"),
                 accountEmail: useModelWrapper(props, emit, "email"),
                 accountPhoneNumber: useModelWrapper(props, emit, "phonenumber"),

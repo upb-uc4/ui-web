@@ -27,13 +27,13 @@
                     <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
                         <label class="text-gray-700 text-md font-medium mb-3">City</label>
                         <base-input
-                            id="city"
                             v-model:value="addressCopy.city"
+                            identifier="city"
+                            :error-message="getErrorMessage(errorBag, 'city', true)"
                             type="text"
                             placeholder="City"
                             validation-query="address.city"
                         />
-                        <p v-if="errorBag.hasNested('city')" class="error-message">{{ errorBag.getNested("city") }}</p>
                     </div>
                     <div class="flex flex-col w-full lg:w-1/6">
                         <label class="text-gray-700 text-md font-medium mb-3">Postal Code</label>
@@ -54,28 +54,24 @@
                     <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
                         <label class="text-gray-700 text-md font-medium mb-3">Street</label>
                         <base-input
-                            id="street"
                             v-model:value="addressCopy.street"
+                            identifier="street"
+                            :error-message="getErrorMessage(errorBag, 'street', true)"
                             type="text"
                             placeholder="Street"
                             validation-query="address.street"
                         />
-                        <p v-if="errorBag.hasNested('street')" class="error-message">
-                            {{ errorBag.getNested("street") }}
-                        </p>
                     </div>
                     <div class="flex flex-col w-full lg:w-1/6">
                         <label class="text-gray-700 text-md font-medium mb-3">Nr.</label>
                         <base-input
-                            id="houseNumber"
                             v-model:value="addressCopy.houseNumber"
+                            identifier="houseNumber"
+                            :error-message="getErrorMessage(errorBag, 'houseNumber', true)"
                             type="text"
                             placeholder="Number"
                             validation-query="address.houseNumber"
                         />
-                        <p v-if="errorBag.hasNested('houseNumber')" class="error-message">
-                            {{ errorBag.getNested("houseNumber") }}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -84,7 +80,7 @@
 </template>
 
 <script lang="ts">
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { useStore } from "@/use/store/store";
     import { onMounted, ref } from "vue";
@@ -117,6 +113,7 @@
             return {
                 countries,
                 addressCopy: useModelWrapper(props, emit, "address"),
+                getErrorMessage,
             };
         },
     };
