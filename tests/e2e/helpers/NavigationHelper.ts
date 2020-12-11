@@ -47,5 +47,5 @@ export function navigateToAboutPage() {
 }
 
 export function navigateToImmatriculationPage() {
-    y.visit("immatriculation");
+    cy.visit("immatriculation");
 }
