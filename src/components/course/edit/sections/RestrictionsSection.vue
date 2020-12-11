@@ -46,7 +46,7 @@
         },
         emits: ["update:participantsLimit"],
         setup(props: any, { emit }: any) {
-            let maxParticipants = ref(props.participantsLimit);
+            let maxParticipants = ref(props.participantsLimit.toString());
 
             function isNumber(value: string) {
                 return /[0-9]/g.test(value);
