@@ -5,6 +5,7 @@
             <span v-if="required" class="text-blue-700"> *</span>
         </label>
         <input
+            :id="identifier"
             ref="BaseInput"
             v-model="model"
             class="w-full input-text form-input"
@@ -71,6 +72,10 @@
                 type: String,
                 default: "",
             },
+            identifier: {
+                type: String,
+                required: true,
+            },
         },
         setup(props: any, { emit }: any) {
             let isValid = ref(true);
@@ -105,6 +110,13 @@
                     validate();
                 }
             });
+
+            watch(
+                () => props.errorMessage,
+                () => {
+                    if (props.errorMessage != "") isValid.value = false;
+                }
+            );
 
             function validate() {
                 let val = true;

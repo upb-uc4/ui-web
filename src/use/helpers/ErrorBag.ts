@@ -52,3 +52,10 @@ export default class ErrorBag {
         return !this.isEmpty();
     }
 }
+
+export function getErrorMessage(errorBag: ErrorBag, field: string): string | undefined {
+    if (errorBag.has(field)) {
+        return errorBag.get(field);
+    }
+    return "";
+}

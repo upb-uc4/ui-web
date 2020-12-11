@@ -23,16 +23,14 @@
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Name</label>
                     <base-input
-                        id="courseName"
                         v-model:value="courseName"
+                        identifier="courseName"
+                        :error-message="getErrorMessage(errorBag, 'courseName')"
                         type="text"
                         class="w-full"
                         placeholder="Course Name"
                         validation-query="course.courseName"
                     />
-                    <p v-if="errorBag.has('courseName')" class="error-message">
-                        {{ errorBag.get("courseName") }}
-                    </p>
                 </div>
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Language</label>
@@ -91,7 +89,7 @@
 </template>
 
 <script lang="ts">
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { onMounted, ref } from "vue";
     import { useStore } from "@/use/store/store";
@@ -157,6 +155,7 @@
                 availableCourseTypes,
                 courseEcts,
                 updateEcts,
+                getErrorMessage,
                 courseType: useModelWrapper(props, emit, "type"),
                 courseName: useModelWrapper(props, emit, "name"),
                 courseLanguage: useModelWrapper(props, emit, "language"),
