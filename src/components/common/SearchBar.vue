@@ -1,6 +1,6 @@
 <template>
     <div class="w-full relative text-gray-600 flex">
-        <button id="refresh" class="items-center mb-3" title="Search" @click="refresh">
+        <button class="items-center mb-3" title="Search" @click="refresh">
             <i class="fas fa-search ml-3 absolute text-gray-600 hover:text-gray-700" />
         </button>
         <input
