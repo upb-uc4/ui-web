@@ -47,7 +47,7 @@
                 let dates = props.birthDate.split("-");
                 let date = new Date(+dates[2], dates[1] - 1, +dates[0]);
                 selectedDay.value = date.getDay().toString();
-                selectedMonth.value = date.toLocaleString("default", { month: "long" });
+                selectedMonth.value = date.toLocaleString("en-GB", { month: "long" });
                 selectedYear.value = date.getFullYear().toString();
             }
 
