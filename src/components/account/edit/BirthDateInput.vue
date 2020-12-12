@@ -2,15 +2,15 @@
     <div id="birthdate" class="flex space-x-6">
         <div class="w-1/3">
             <label class="input-label-tmp">Day</label>
-            <selection :elements="days" :default="selectedDay" @update:selected="onDayChanged" />
+            <selection :disabled="true" :elements="days" :default="selectedDay" @update:selected="onDayChanged" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Month</label>
-            <selection :elements="months" :default="selectedMonth" @update:selected="onMonthChanged" />
+            <selection :disabled="true" :elements="months" :default="selectedMonth" @update:selected="onMonthChanged" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Year</label>
-            <selection :elements="years" :default="selectedYear" @update:selected="onYearChanged" />
+            <selection :disabled="true" :elements="years" :default="selectedYear" @update:selected="onYearChanged" />
         </div>
     </div>
 </template>
