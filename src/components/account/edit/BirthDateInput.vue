@@ -17,7 +17,7 @@
 
 <script lang="ts">
     import { days, months } from "@/entities/Month";
-    import Select from "@/components/common/Select";
+    import Select from "@/components/common/Select.vue";
     import { ref } from "vue";
 
     export default {
@@ -51,18 +51,18 @@
                 selectedYear.value = date.getFullYear().toString();
             }
 
-            function onDayChanged(day) {
+            function onDayChanged(day: string) {
                 selectedDay.value = day;
                 emitBirthdate();
             }
 
-            function onMonthChanged(month) {
+            function onMonthChanged(month: string) {
                 //use hack to convert month to number, e.g. "January" to "1"
                 selectedMonth.value = new Date(Date.parse(month + " 1, 2020")).getMonth() + 1;
                 emitBirthdate();
             }
 
-            function onYearChanged(year) {
+            function onYearChanged(year: string) {
                 selectedYear.value = year;
                 emitBirthdate();
             }
