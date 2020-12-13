@@ -29,7 +29,7 @@ export default class UserManagement extends Common {
         let endpoint = "/users";
 
         if (usernames) requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
-        if (is_active) requestParameter.params.is_active = is_active;
+        if (is_active !== undefined) requestParameter.params.is_active = is_active;
         if (role) endpoint = UserManagement._createEndpointByRole(role);
 
         return await this._axios
