@@ -56,6 +56,14 @@
     @apply bg-blue-800 border-blue-800 text-white;
 }
 
+.btn-green-secondary {
+    @apply text-green-700 border-green-700;
+}
+
+.btn-green-secondary:hover {
+    @apply bg-green-800 border-green-800 text-white;
+}
+
 .btn-red-secondary {
     @apply text-red-700 border-red-700;
 }
