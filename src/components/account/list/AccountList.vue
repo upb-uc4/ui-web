@@ -39,7 +39,8 @@
                 required: true,
             },
         },
-        setup(props: any) {
+        emits: ["on-updated"],
+        setup(props: any, { emit }: any) {
             let busy = ref(false);
             let users = ref([] as User[]);
 
@@ -87,6 +88,7 @@
                             e.username.toLowerCase().includes(filter)
                     );
                 }
+                emit("on-updated", filteredUsers.length);
                 return filteredUsers;
             });
 
