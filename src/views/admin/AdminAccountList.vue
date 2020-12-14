@@ -24,37 +24,42 @@
             </div>
             <hr class="my-4" />
             <div v-show="isFiltering()" class="text-gray-800 text-sm">
-                <div v-if="isFilteringRole() && isFilteringStatus()">
-                    <span class="font-semibold">{{ matchingUsersCount }}</span> results for
-                    <span class="font-semibold">{{ selectedRole.toLowerCase() }}</span> users who are
-                    <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span>
-                    <span v-if="isFilteringBySearch()">
-                        matching
-                        <span class="font-semibold">{{ message }}.</span>
-                    </span>
-                    <span v-else>.</span>
-                </div>
-                <div v-else-if="isFilteringRole()">
-                    <span class="font-semibold">{{ matchingUsersCount }}</span> results for
-                    <span class="font-semibold">{{ selectedRole.toLowerCase() }}</span> users
-                    <span v-if="isFilteringBySearch()">
-                        matching
-                        <span class="font-semibold">{{ message }}.</span>
-                    </span>
-                    <span v-else>.</span>
-                </div>
-                <div v-else-if="isFilteringStatus()">
-                    <span class="font-semibold">{{ matchingUsersCount }}</span> results for
-                    <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span> users
-                    <span v-if="isFilteringBySearch()">
-                        matching
-                        <span class="font-semibold">{{ message }}.</span>
-                    </span>
-                    <span v-else>.</span>
-                </div>
-                <div v-else>
-                    <span class="font-semibold">{{ matchingUsersCount }}</span> results matching
-                    <span class="font-semibold">{{ message }}</span>.
+                <div class="flex justify-between">
+                    <div>
+                        <div v-if="isFilteringRole() && isFilteringStatus()">
+                            <span class="font-semibold">{{ matchingUsersCount }}</span> results for
+                            <span class="font-semibold">{{ selectedRole.toLowerCase() }}</span> users who are
+                            <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span>
+                            <span v-if="isFilteringBySearch()">
+                                matching
+                                <span class="font-semibold">{{ message }}.</span>
+                            </span>
+                            <span v-else>.</span>
+                        </div>
+                        <div v-else-if="isFilteringRole()">
+                            <span class="font-semibold">{{ matchingUsersCount }}</span> results for
+                            <span class="font-semibold">{{ selectedRole.toLowerCase() }}</span> users
+                            <span v-if="isFilteringBySearch()">
+                                matching
+                                <span class="font-semibold">{{ message }}.</span>
+                            </span>
+                            <span v-else>.</span>
+                        </div>
+                        <div v-else-if="isFilteringStatus()">
+                            <span class="font-semibold">{{ matchingUsersCount }}</span> results for
+                            <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span> users
+                            <span v-if="isFilteringBySearch()">
+                                matching
+                                <span class="font-semibold">{{ message }}.</span>
+                            </span>
+                            <span v-else>.</span>
+                        </div>
+                        <div v-else>
+                            <span class="font-semibold">{{ matchingUsersCount }}</span> results matching
+                            <span class="font-semibold">{{ message }}</span>.
+                        </div>
+                    </div>
+                    <div class="btn-tertiary-tmp" @click="clearFilter()">Clear filter</div>
                 </div>
                 <hr class="mt-4 mb-8" />
             </div>
@@ -130,8 +135,13 @@
 
             function isFiltering() {
                 return isFilteringBySearch() || isFilteringRole() || isFilteringStatus();
-                //TODO: also include filtering by searchbar (message) and display text (... matching "xzy")
-                //TODO: add button RESET FILTER
+            }
+
+            function clearFilter() {
+                //TODO reset selects. OR model them as v-model
+                message.value = "";
+                selectedStatus.value = defaultStatus;
+                selectedRole.value = defaultRole;
             }
 
             return {
@@ -148,6 +158,7 @@
                 isFilteringRole,
                 isFilteringStatus,
                 isFilteringBySearch,
+                clearFilter,
             };
         },
     };
