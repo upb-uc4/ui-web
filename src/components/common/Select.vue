@@ -10,9 +10,9 @@
                         v-else
                         class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
-                        <span class="block truncate font-medium">
-                            <span v-if="label" class="text-gray-600">{{ label }}: </span>
-                            <span class="text-gray-900">{{ selection }}</span>
+                        <span class="block truncate">
+                            <span v-if="label" class="text-gray-600 font-medium">{{ label }}: <span class="font-medium text-gray-900">{{ selection }}</span></span>
+                            <span v-else>{{ selection }}</span>
                         </span>
                     </ListboxButton>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
