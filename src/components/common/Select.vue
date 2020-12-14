@@ -11,7 +11,7 @@
                         class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate font-medium">
-                            <span class="text-gray-600">{{ label }}: </span>
+                            <span v-if="label" class="text-gray-600">{{ label }}: </span>
                             <span class="text-gray-900">{{ selection }}</span>
                         </span>
                     </ListboxButton>
