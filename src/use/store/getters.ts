@@ -62,7 +62,7 @@ export const getters: GetterTree<State, State> & Getters = {
 
                 store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
             } else {
-                // no key at lagom?
+                // no key saved at lagom
                 if (state.certificate.certificate) {
                     const toast = useToast();
                     toast.error(
