@@ -49,6 +49,13 @@ describe("admin", () => {
         cy.get("#nav_desktop_admin_menu_courses_create").click();
         cy.url().should("contain", "createCourse");
     });
+
+    it("exam-regs", () => {
+        // create exam reg form
+        cy.get("#nav_desktop_admin_menu_exreg").trigger("mouseover");
+        cy.get("#nav_desktop_admin_menu_exreg_create").click();
+        cy.url().should("contain", "create-exam-reg");
+    });
     checkProfile();
 });
 

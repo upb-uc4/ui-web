@@ -5,28 +5,39 @@ import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import UserManagement from "@/api/UserManagement";
-import { useStore } from "../store/store";
 
 export interface version {
     name: String;
     version: String;
     link: String;
+    hlVersions?: {
+        hlfApiVersion: string;
+        chaincodeVersion: string;
+    };
 }
 
 export async function getVersions(): Promise<version[]> {
-    let versions: version[] = [];
-    let store = useStore();
+    const versions: version[] = [];
 
-    let frontEndVersion = "v" + process.env.VUE_APP_VERSION;
+    const frontEndVersion = "v" + process.env.VUE_APP_VERSION;
 
-    let authenticationManagementVersion = await AuthenticationManagement.getVersion();
-    let courseManagementVersion = await CourseManagement.getVersion();
-    let userManagementVersion = await UserManagement.getVersion();
-    let matriculationManagementVersion = await MatriculationManagement.getVersion();
-    let certificateManagementVersion = await CertificateManagement.getVersion();
-    let examinationRegulationManagementVersion = await ExaminationRegulationManagement.getVersion();
-    let configurationManagementVersion = await ConfigurationManagement.getVersion();
+    const authenticationManagementVersion = await AuthenticationManagement.getVersion();
 
+    const courseManagementVersion = await CourseManagement.getVersion();
+
+    const userManagementVersion = await UserManagement.getVersion();
+  
+    const configurationManagementVersion = await ConfigurationManagement.getVersion();
+
+    const matriculationManagementVersion = await MatriculationManagement.getVersion();
+    const hlfMatriculationVersion = await MatriculationManagement.getHyperledgerVersion();
+
+    const certificateManagementVersion = await CertificateManagement.getVersion();
+    const hlfCertificateVersion = await CertificateManagement.getHyperledgerVersion();
+
+    const examinationRegulationManagementVersion = await ExaminationRegulationManagement.getVersion();
+    const hlfExamRegVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
+  
     versions.push({
         name: "Frontend",
         version: frontEndVersion,
@@ -67,6 +78,7 @@ export async function getVersions(): Promise<version[]> {
             "matriculation-" +
             matriculationManagementVersion +
             "/product_code/matriculation_service/CHANGELOG.md",
+        hlVersions: hlfMatriculationVersion,
     });
     versions.push({
         name: "Certificate Management",
@@ -76,6 +88,7 @@ export async function getVersions(): Promise<version[]> {
             "certificate-" +
             certificateManagementVersion +
             "/product_code/certificate_service/CHANGELOG.md",
+        hlVersions: hlfCertificateVersion,
     });
     versions.push({
         name: "Examination Regulations Management",
@@ -85,6 +98,7 @@ export async function getVersions(): Promise<version[]> {
             "examreg-" +
             examinationRegulationManagementVersion +
             "/product_code/examreg_service/CHANGELOG.md",
+        hlVersions: hlfExamRegVersion,
     });
     versions.push({
         name: "Configuration Management",

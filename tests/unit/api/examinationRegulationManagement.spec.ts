@@ -10,7 +10,7 @@ let someModuleId = "";
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
 const examReg = JSON.parse(readFileSync("tests/fixtures/examinationRegulation.json", "utf-8")) as ExaminationRegulation;
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("Examination Regulation Management", () => {
     beforeAll(async () => {

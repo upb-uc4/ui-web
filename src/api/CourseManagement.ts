@@ -6,12 +6,14 @@ import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 
 export default class CourseManagement extends Common {
+    protected static endpoint = "/course-management";
+
     constructor() {
-        super("/course-management");
+        super(CourseManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/course-management");
+        return super.getVersion();
     }
 
     async getCourses(courseName?: string, lecturerId?: string, moduleIds?: string[]): Promise<APIResponse<Course[]>> {

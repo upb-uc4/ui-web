@@ -19,7 +19,7 @@ const authUser = pair.authUser;
 const governmentId = pair.governmentId;
 const EXAM_REG_1 = "Bachelor Computer Science v3";
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("Matriculation management", () => {
     beforeAll(async () => {

@@ -1,6 +1,11 @@
-# [v0.13.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.2) (2020-XX-XX)
+# [WIP 0.14.1](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.14.1) (2020-12-XX)
+## Feature
+- add hyperledger versions [#754](https://github.com/upb-uc4/ui-web/pull/754)
+
+# [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (2020-12-08)
 ## Feature
 - matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
+- Add create exam regulation form [#690](https://github.com/upb-uc4/ui-web/pull/690)
 
 ## Bugfix
 - refactor course list items [#715](https://github.com/upb-uc4/ui-web/pull/715)
