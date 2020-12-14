@@ -27,15 +27,34 @@
                 <div v-if="isFilteringRole() && isFilteringStatus()">
                     <span class="font-semibold">{{ matchingUsersCount }}</span> results for
                     <span class="font-semibold">{{ selectedRole.toLowerCase() }}</span> users who are
-                    <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span>.
+                    <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span>
+                    <span v-if="isFilteringBySearch()">
+                        matching
+                        <span class="font-semibold">{{ message }}.</span>
+                    </span>
+                    <span v-else>.</span>
                 </div>
                 <div v-else-if="isFilteringRole()">
                     <span class="font-semibold">{{ matchingUsersCount }}</span> results for
-                    <span class="font-semibold">{{ selectedRole.toLowerCase() }}</span> users.
+                    <span class="font-semibold">{{ selectedRole.toLowerCase() }}</span> users
+                    <span v-if="isFilteringBySearch()">
+                        matching
+                        <span class="font-semibold">{{ message }}.</span>
+                    </span>
+                    <span v-else>.</span>
+                </div>
+                <div v-else-if="isFilteringStatus()">
+                    <span class="font-semibold">{{ matchingUsersCount }}</span> results for
+                    <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span> users
+                    <span v-if="isFilteringBySearch()">
+                        matching
+                        <span class="font-semibold">{{ message }}.</span>
+                    </span>
+                    <span v-else>.</span>
                 </div>
                 <div v-else>
-                    <span class="font-semibold">{{ matchingUsersCount }}</span> results for
-                    <span class="font-semibold">{{ selectedStatus.toLowerCase() }}</span> users.
+                    <span class="font-semibold">{{ matchingUsersCount }}</span> results matching
+                    <span class="font-semibold">{{ message }}</span>.
                 </div>
                 <hr class="mt-4 mb-8" />
             </div>
@@ -97,6 +116,10 @@
                 refreshKey.value = !refreshKey.value;
             }
 
+            function isFilteringBySearch() {
+                return message.value !== "";
+            }
+
             function isFilteringRole() {
                 return selectedRole.value !== defaultRole;
             }
@@ -106,7 +129,7 @@
             }
 
             function isFiltering() {
-                return isFilteringRole() || isFilteringStatus();
+                return isFilteringBySearch() || isFilteringRole() || isFilteringStatus();
                 //TODO: also include filtering by searchbar (message) and display text (... matching "xzy")
                 //TODO: add button RESET FILTER
             }
@@ -124,6 +147,7 @@
                 isFiltering,
                 isFilteringRole,
                 isFilteringStatus,
+                isFilteringBySearch,
             };
         },
     };
