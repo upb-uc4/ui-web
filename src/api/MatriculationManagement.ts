@@ -4,16 +4,18 @@ import APIError from "./api_models/errors/APIError";
 import MatriculationData from "./api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
 import handleAuthenticationError from "./AuthenticationHelper";
-import Common from "./Common";
+import CommonHyperledger from "./CommonHyperledger";
 import APIResponse from "./helpers/models/APIResponse";
 import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
 import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
 import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
 
-export default class MatriculationManagement extends Common {
+export default class MatriculationManagement extends CommonHyperledger {
+    protected static endpoint = "/matriculation-management";
+
     constructor() {
-        super("/matriculation-management");
+        super(MatriculationManagement.endpoint);
     }
 
     /**
@@ -196,6 +198,6 @@ export default class MatriculationManagement extends Common {
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/matriculation-management");
+        return super.getVersion();
     }
 }
