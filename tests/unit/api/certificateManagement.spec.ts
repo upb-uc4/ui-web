@@ -31,7 +31,7 @@ const governmentId2 = student2.governmentId;
 let keypair = {} as CryptoKeyPair;
 let certManagement: CertificateManagement;
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("Certificate management tests", () => {
     beforeAll(async () => {

@@ -1,4 +1,3 @@
-import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 import { AxiosResponse, AxiosError } from "axios";
 import APIError from "./api_models/errors/APIError";
@@ -6,14 +5,17 @@ import Certificate from "./api_models/certificate_management/Certificate";
 import EnrollmentId from "./api_models/certificate_management/EnrollmentId";
 import EncryptedPrivateKey from "./api_models/certificate_management/EncryptedPrivateKey";
 import handleAuthenticationError from "./AuthenticationHelper";
+import CommonHyperledger from "./CommonHyperledger";
 
-export default class CertificateManagement extends Common {
+export default class CertificateManagement extends CommonHyperledger {
+    protected static endpoint = "/certificate-management";
+
     constructor() {
-        super("/certificate-management");
+        super(CertificateManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/certificate-management");
+        return super.getVersion();
     }
 
     async getCertificate(username: string): Promise<APIResponse<Certificate>> {

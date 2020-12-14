@@ -15,12 +15,14 @@ import User from "@/api/api_models/user_management/User";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 
 export default class MachineUserAuthenticationManagement extends Common {
+    protected static endpoint = "/authentication-management";
+
     constructor() {
-        super("/authentication-management");
+        super(MachineUserAuthenticationManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/authentication-management");
+        return super.getVersion();
     }
 
     static async _getLoginToken(refreshToken: string): Promise<APIResponse<{ username: string; login: string }>> {
