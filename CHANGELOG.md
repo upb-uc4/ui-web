@@ -1,3 +1,7 @@
+# [v0.14.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.14.1) (2020-XX-XX)
+## Bugfix
+- enable searching for accounts/courses with whitespaces [#767](https://github.com/upb-uc4/ui-web/pull/767)
+
 # [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (2020-12-08)
 ## Feature
 - matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
