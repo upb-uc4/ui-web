@@ -1,23 +1,23 @@
-import Common from "./Common";
-import APIResponse from "./helpers/models/APIResponse";
-import APIError from "./api_models/errors/APIError";
-import axios, { AxiosResponse, AxiosError } from "axios";
-import handleAuthenticationError from "./AuthenticationHelper";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import Configuration from "./api_models/configuration_management/Configuration";
 import HyperledgerVersion from "./api_models/configuration_management/HyperledgerVersion";
+import APIError from "./api_models/errors/APIError";
+import Common from "./Common";
+import APIResponse from "./helpers/models/APIResponse";
 
 export default class ConfigurationManagement extends Common {
+    protected static endpoint = "/configuration-management";
     constructor() {
-        super("/configuration-management");
+        super(ConfigurationManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/configuration-management");
+        return super.getVersion();
     }
 
     static async getHyperledgerVersion(): Promise<HyperledgerVersion> {
         const instance = axios.create({
-            baseURL: process.env.VUE_APP_API_BASE_URL + "/configuration-management",
+            baseURL: process.env.VUE_APP_API_BASE_URL + ConfigurationManagement.endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8",
