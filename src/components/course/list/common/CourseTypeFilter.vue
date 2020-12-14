@@ -20,6 +20,7 @@
 <script lang="ts">
     import Vue, { onMounted, ref } from "vue";
     import { useStore } from "@/use/store/store";
+    import { useToast } from "@/toast";
 
     export default {
         name: "CourseTypeFilter",
@@ -35,8 +36,15 @@
 
             onMounted(async () => {
                 const store = useStore();
-                types.value = [...(await store.getters.configuration).courseTypes];
-                types.value.unshift("All");
+                await store.getters.configuration
+                    .then((config) => {
+                        types.value = config.courseTypes;
+                        types.value.unshift("All");
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
             });
 
             function select(type: string) {

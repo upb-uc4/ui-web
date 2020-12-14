@@ -1,20 +1,19 @@
 import Certificate from "@/api/api_models/certificate_management/Certificate";
+import Configuration from "@/api/api_models/configuration_management/Configuration";
 import Admin from "@/api/api_models/user_management/Admin";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
+import ConfigurationManagement from "@/api/ConfigurationManagement";
+import { Role } from "@/entities/Role";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import lodash from "lodash";
 import { GetterTree } from "vuex";
 import { ActionTypes } from "./action-types";
 import { MutationTypes } from "./mutation-types";
 import { State } from "./state";
-import UserManagement from "@/api/UserManagement";
 import { store, useStore } from "./store";
-import ConfigurationManagement from "@/api/ConfigurationManagement";
-import lodash from "lodash";
-import Configuration from "@/api/api_models/configuration_management/Configuration";
-import { Role } from "@/entities/Role";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -51,13 +50,27 @@ export const getters: GetterTree<State, State> & Getters = {
     },
     validation: async (state) => {
         if (lodash.isEmpty(state.validation)) {
-            store.commit(MutationTypes.SET_VALIDATION, (await new ConfigurationManagement().getValidation()).returnValue);
+            const response = await new ConfigurationManagement().getValidation();
+            const handler = new GenericResponseHandler("validation");
+            const validation = handler.handleResponse(response);
+            if (Object.keys(validation).length !== 0) {
+                store.commit(MutationTypes.SET_VALIDATION, validation);
+            } else {
+                Promise.reject("Validation not loaded.");
+            }
         }
         return state.validation;
     },
     configuration: async (state) => {
         if (state.configuration.courseTypes == undefined) {
-            store.commit(MutationTypes.SET_CONFIGURATION, (await new ConfigurationManagement().getConfiguration()).returnValue);
+            const response = await new ConfigurationManagement().getConfiguration();
+            const handler = new GenericResponseHandler("configuration");
+            const config = handler.handleResponse(response);
+            if (Object.keys(config).length !== 0) {
+                store.commit(MutationTypes.SET_CONFIGURATION, config);
+            } else {
+                Promise.reject("Configuration not loaded.");
+            }
         }
         return state.configuration;
     },

@@ -85,6 +85,7 @@
     import { useStore } from "@/use/store/store";
     import { onMounted, ref } from "vue";
     import BaseInput from "@/components/common/BaseInput.vue";
+    import { useToast } from "@/toast";
 
     export default {
         name: "AccountAddressSection",
@@ -107,7 +108,14 @@
             const countries = ref([] as string[]);
 
             onMounted(async () => {
-                countries.value = (await store.getters.configuration).countries;
+                await store.getters.configuration
+                    .then((config) => {
+                        countries.value = config.countries;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
             });
 
             return {

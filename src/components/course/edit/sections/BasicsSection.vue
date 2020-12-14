@@ -94,6 +94,7 @@
     import { onMounted, ref } from "vue";
     import { useStore } from "@/use/store/store";
     import BaseInput from "@/components/common/BaseInput.vue";
+    import { useToast } from "@/toast";
 
     export default {
         name: "BasicsSection",
@@ -146,8 +147,15 @@
 
             onMounted(async () => {
                 const store = useStore();
-                availableCourseLanguages.value = (await store.getters.configuration).languages;
-                availableCourseTypes.value = (await store.getters.configuration).courseTypes;
+                await store.getters.configuration
+                    .then((config) => {
+                        availableCourseLanguages.value = config.languages;
+                        availableCourseTypes.value = config.courseTypes;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
             });
 
             return {

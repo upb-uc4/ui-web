@@ -101,6 +101,7 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import Admin from "@/api/api_models/user_management/Admin";
     import { useStore } from "@/use/store/store";
+    import { useToast } from "@/toast";
 
     export default {
         props: {
@@ -118,7 +119,14 @@
 
             onMounted(async () => {
                 const store = useStore();
-                countries.value = (await store.getters.configuration).countries;
+                await store.getters.configuration
+                    .then((config) => {
+                        countries.value = config.countries;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
             });
 
             //react on saved changes from other components

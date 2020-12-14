@@ -27,6 +27,7 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { useStore } from "@/use/store/store";
     import ValidationBag from "@/use/helpers/ValidationBag";
+    import { useToast } from "@/toast";
     export default {
         name: "BaseInput",
         props: {
@@ -88,13 +89,19 @@
 
             onMounted(async () => {
                 const store = useStore();
-                const val = await store.getters.validation;
-                const validationBag = new ValidationBag(val);
+                await store.getters.validation
+                    .then((val) => {
+                        const validationBag = new ValidationBag(val);
 
-                if (props.validationQuery) {
-                    validation.value = validationBag.get(props.validationQuery + ".regex");
-                    errMessage.value = validationBag.get(props.validationQuery + ".message");
-                }
+                        if (props.validationQuery) {
+                            validation.value = validationBag.get(props.validationQuery + ".regex");
+                            errMessage.value = validationBag.get(props.validationQuery + ".message");
+                        }
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
             });
 
             const getDefaultErrorsMessage = computed(() => {
