@@ -10,6 +10,9 @@
             <course-menu id="nav_mobile_admin_menu_courses" class="mobile-navbar-menu" />
         </li>
         <li>
+            <ex-reg-menu id="nav_mobile_menu_exreg" class="mobile-navbar-menu" />
+        </li>
+        <li>
             <profile-menu class="nav_mobile_menu_profile mobile-navbar-menu" />
         </li>
     </base-navbar>
@@ -20,6 +23,7 @@
     import ManageAccountsMenu from "./administration/ManageAccountsMenu.vue";
     import CourseMenu from "./courses/CourseMenu.vue";
     import ProfileMenu from "@/components/navigation/navbar/mobile/common/profile/ProfileMenu.vue";
+    import ExRegMenu from "@/components/navigation/navbar/mobile/admin/exreg/ExRegMenu.vue";
 
     export default {
         name: "MobileAdminNavbar",
@@ -28,6 +32,7 @@
             ManageAccountsMenu,
             CourseMenu,
             ProfileMenu,
+            ExRegMenu,
         },
     };
 </script>

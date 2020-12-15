@@ -2,7 +2,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
-import { createUsers, deleteUsers, getRandomMatriculationId } from "./helpers/UserHelper";
+import { createUsers, deleteUsers, getRandomizedGovernmentId, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Change password", () => {
@@ -29,7 +29,8 @@ describe("Change password", () => {
                 cy.fixture("studentAuthUser.json").then((s) => {
                     (s as Account).username += random;
                     studentAuthUser = s as Account;
-                    usersWithAuth.push({ userInfo: student, auth: studentAuthUser });
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: student, auth: studentAuthUser });
                 });
             })
             .then(() => {
@@ -88,8 +89,6 @@ describe("Change password", () => {
     it("Enter correct password", () => {
         cy.get("input[id='enterPasswordModalPassword']").clear().type(studentAuthUser.password);
         cy.get("button[id='enterPasswordModalConfirm']").click();
-
-        cy.get("p").invoke("hasClass", "error-message").should("not.be.visible");
         cy.get("div[id='modal-wrapper']").children().should("not.be.visible");
     });
 

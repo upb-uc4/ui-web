@@ -5,19 +5,20 @@ import { MutationTypes } from "@/use/store/mutation-types";
 import { useStore } from "@/use/store/store";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
-import User from "./api_models/user_management/User";
 import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 import UserManagement from "./UserManagement";
 
 export default class AuthenticationManagement extends Common {
+    protected static endpoint = "/authentication-management";
+
     constructor() {
-        super("/authentication-management");
+        super(AuthenticationManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/authentication-management");
+        return super.getVersion();
     }
 
     async changeOwnPassword(password: string): Promise<APIResponse<boolean>> {
@@ -73,7 +74,7 @@ export default class AuthenticationManagement extends Common {
 
     static async _getLoginToken(): Promise<APIResponse<boolean>> {
         const instance = axios.create({
-            baseURL: process.env.VUE_APP_API_BASE_URL + "/authentication-management",
+            baseURL: process.env.VUE_APP_API_BASE_URL + AuthenticationManagement.endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8",
@@ -132,8 +133,7 @@ export default class AuthenticationManagement extends Common {
             .get(`/logout`)
             .then((response: AxiosResponse) => {
                 const store = useStore();
-                store.commit(MutationTypes.SET_LOGGEDIN, false);
-                store.commit(MutationTypes.SET_USER, {} as User);
+                store.commit(MutationTypes.RESET_STATE);
                 return {
                     error: {} as APIError,
                     networkError: false,
@@ -163,7 +163,7 @@ export default class AuthenticationManagement extends Common {
     static async _getRefreshToken(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
         const authHeader = { auth: loginData };
         const instance = axios.create({
-            baseURL: process.env.VUE_APP_API_BASE_URL + "/authentication-management",
+            baseURL: process.env.VUE_APP_API_BASE_URL + AuthenticationManagement.endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8",

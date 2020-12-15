@@ -16,7 +16,9 @@ const CourseForm = () => import("@/views/shared/EditCreateCourseForm.vue");
 const AccountForm = () => import("@/views/admin/EditCreateAccountForm.vue");
 const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
 const PublicProfile = () => import("@/views/common/PublicProfile.vue");
+const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
+const StudentImmatricultaion = () => import("@/components/study/Immatriculation.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -44,7 +46,7 @@ const router = createRouter({
         {
             path: "/course-catalog",
             name: "courseCatalog",
-            props: { showAllCourses: true },
+            props: { showAllCourses: true, isCourseCatalogue: true },
             component: AllCourseView,
             meta: {
                 title: "Course Catalog" + suffix,
@@ -63,10 +65,21 @@ const router = createRouter({
             name: "student.courses",
             component: StudentCourseView,
             meta: {
-                title: "Home" + suffix,
+                title: "Courses" + suffix,
                 roles: ["Student"],
             },
         },
+
+        {
+            path: "/immatriculation",
+            name: "student.immatriculation",
+            component: StudentImmatricultaion,
+            meta: {
+                title: "My Immatriculation" + suffix,
+                roles: ["Student"],
+            },
+        },
+
         {
             path: "/course-management",
             name: "lecturer.myCourses",
@@ -120,6 +133,15 @@ const router = createRouter({
             meta: {
                 title: "Course Editing" + suffix,
                 roles: ["Lecturer", "Admin"],
+            },
+        },
+        {
+            path: "/create-exam-reg",
+            name: "examRegForm",
+            component: ExamRegForm,
+            meta: {
+                title: "Examination Regulation Creation" + suffix,
+                roles: ["Admin"],
             },
         },
         {
@@ -243,7 +265,7 @@ router.beforeEach(async (to, from, next) => {
 
 router.afterEach(async (to, from, next) => {
     const store = useStore();
-    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU, true);
+    store.commit(MutationTypes.FORCE_CLOSE_BURGER_MENU);
 });
 
 export default router;

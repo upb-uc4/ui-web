@@ -10,4 +10,6 @@ export default interface User {
     email: string;
     birthDate: string;
     phoneNumber: string;
+    enrollmentIdSecret: string;
+    isActive: boolean;
 }
