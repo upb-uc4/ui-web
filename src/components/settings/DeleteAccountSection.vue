@@ -1,21 +1,17 @@
 <template>
-    <section class="border-t-2 py-8 mt-5 border-red-400">
+    <section class="border-t-2 py-8 mt-5 border-red-700">
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">
-                    <label class="block text-red-600 text-lg font-medium">Account Deletion</label>
+                    <label class="block text-red-700 text-lg font-medium">Account Deletion</label>
                 </div>
-                <label class="block text-red-600"> Delete my account and all my personal data. </label>
+                <label class="block text-red-700"> Delete my account and all my personal data. </label>
             </div>
             <div v-if="busy">
                 <loading-spinner />
             </div>
             <div v-else class="w-full lg:w-2/3">
-                <button
-                    id="showAccountDeletionModal"
-                    class="btn text-white btn-red-primary bg-red-500 border-red-500 w-48"
-                    @click="showAccountDeletionModal()"
-                >
+                <button id="showAccountDeletionModal" class="btn text-white btn-red-primary w-48" @click="showAccountDeletionModal()">
                     Delete Account
                 </button>
             </div>
@@ -25,7 +21,7 @@
 </template>
 
 <script lang="ts">
-    import { onBeforeMount, ref } from "vue";
+    import { ref } from "vue";
     import { useStore } from "@/use/store/store";
     import DeleteOwnAccountModal from "@/components/modals/DeleteOwnAccountModal.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";

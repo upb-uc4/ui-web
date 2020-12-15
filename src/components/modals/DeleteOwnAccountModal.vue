@@ -1,7 +1,7 @@
 <template>
     <modal-no-teleport ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
-            <p class="text-2xl font-semibold text-red-600">Delete Own Account</p>
+            <p class="text-2xl font-semibold text-red-700">Delete Own Account</p>
         </template>
         <div v-if="busy" class="mx-auto">
             <loading-spinner />
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <p>
-                <span class="font-bold text-red-600">Warning!</span>
+                <span class="font-bold text-red-700">Warning!</span>
                 You are about to delete your UC4 account. If you continue, all your saved data will be permanently deleted and you will no
                 longer be able to use the system.
             </p>
