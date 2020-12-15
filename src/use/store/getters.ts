@@ -16,7 +16,7 @@ import { useStore } from "./store";
 export type Getters = {
     user(state: State): Promise<Student | Lecturer | Admin>;
     loggedIn(state: State): boolean;
-    privateKey(state: State): Promise<CryptoKey>;
+    privateKey(state: State): () => Promise<CryptoKey>;
     certificate(state: State): () => Promise<Certificate>;
     hasCertificate(state: State): Promise<boolean>;
 };
@@ -42,7 +42,7 @@ export const getters: GetterTree<State, State> & Getters = {
         const store = useStore();
         return (await store.getters.user).role;
     },
-    privateKey: async (state) => {
+    privateKey: (state) => async () => {
         if (!("type" in state.privateKey)) {
             const store = useStore();
             const certManagement = new CertificateManagement();
@@ -57,7 +57,7 @@ export const getters: GetterTree<State, State> & Getters = {
                 const privateKey: CryptoKey = await state.decryptPrivateKeyModal(encryptedPrivateKey);
 
                 if (privateKey.type == undefined) {
-                    Promise.reject("Could not decrypt private key");
+                    return Promise.reject("Could not decrypt private key");
                 }
 
                 store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
@@ -70,14 +70,17 @@ export const getters: GetterTree<State, State> & Getters = {
                     );
                 } else {
                     // create certificate
-                    await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
+                    const certificate = await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
                         store.commit(MutationTypes.SET_HAS_CERTIFICATE, false);
-                        return { certificate: "" };
+                        return undefined;
                     });
+
+                    if (!certificate) return Promise.reject("Could not create certificate.");
 
                     const keyResponse = await certManagement.getEncryptedPrivateKey((await store.getters.user).username);
                     const encryptedPrivateKey = handler.handleResponse(keyResponse);
                     const privateKey: CryptoKey = await state.decryptPrivateKeyModal(encryptedPrivateKey);
+
                     store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
                 }
             }
@@ -93,7 +96,7 @@ export const getters: GetterTree<State, State> & Getters = {
             if (certificateResponse.statusCode == 404) {
                 return await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
                     store.commit(MutationTypes.SET_HAS_CERTIFICATE, false);
-                    return { certificate: "" };
+                    return Promise.reject("Could not create certificate.");
                 });
             } else {
                 store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);

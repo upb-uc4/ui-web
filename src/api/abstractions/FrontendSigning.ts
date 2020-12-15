@@ -72,8 +72,24 @@ async function abstractHandler(
     submitHandler: (...args: any[]) => boolean,
     protoUrl?: string
 ) {
-    const privateKey = await useStore().getters.privateKey;
-    const certificate = await useStore().getters.certificate();
+    const privateKey = await useStore()
+        .getters.privateKey()
+        .catch(() => {
+            console.log("a");
+            return undefined;
+        });
+
+    if (!privateKey) return false;
+
+    const certificate = await useStore()
+        .getters.certificate()
+        .catch(() => {
+            console.log("b");
+            return undefined;
+        });
+
+    if (!certificate) return false;
+
     const publicKey = await getPublicKeyFromCertificate(certificate.certificate);
 
     const proposalResponse = await getUnsignedProposal();
