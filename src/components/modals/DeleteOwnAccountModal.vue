@@ -10,14 +10,20 @@
             <div class="my-2 w-full flex justify-center my-8">
                 <div class="fa-stack fa-2x">
                     <i class="fas fa-circle fa-stack-2x text-red-200" />
-                    <i class="fas fa-exclamation fa-stack-1x text-red-600" />
+                    <i class="fas fa-exclamation fa-stack-1x text-red-700" />
                 </div>
             </div>
-            <p>
-                <span class="font-bold text-red-700">Warning!</span>
-                You are about to delete your UC4 account. If you continue, all your saved data will be permanently deleted and you will no
-                longer be able to use the system.
-            </p>
+            <div class="flex flex-col">
+                <p class="flex font-semibold">
+                    <span class="text-red-700 mr-2 mb-4 font-bold">Warning!</span>
+                    You are about to delete your UC4 account.
+                </p>
+                <p class="text-sm font-semibold">
+                    If you continue, all your saved personal data will be permanently deleted and you will no will no longer be able to use
+                    the system. Stored study data remains, but you may only access it by requesting it using your secret used for
+                    enrollment.
+                </p>
+            </div>
             <div class="mt-6 relative">
                 <i
                     :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
