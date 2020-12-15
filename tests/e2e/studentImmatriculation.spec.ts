@@ -1,7 +1,7 @@
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
+import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToImmatriculationPage } from "./helpers/NavigationHelper";
 import { createUsers, deleteUsers, getRandomizedGovernmentId, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
@@ -69,6 +69,18 @@ describe("Account creation, edition and deletion", function () {
         logout();
     });
 
+    it("Login as admin", () => {
+        loginAsDefaultAdmin();
+    });
+
+    it("Check matriculation history empty in student's account", () => {
+        cy.visit(`editAccount/${student.username}`);
+        //Timeout needed for waiting for the data
+        cy.wait(20000);
+        cy.get("div").contains("There is no matriculation data, yet!").should("exist");
+        logout();
+    });
+
     it("Login as student", () => {
         loginAsUser(studentAuthUser);
     });
@@ -77,6 +89,32 @@ describe("Account creation, edition and deletion", function () {
         navigateToImmatriculationPage();
         //Timeout needed for waiting for the data
         cy.wait(20000);
+    });
+
+    it("Check matriculation history is empty", function () {
+        cy.get("div").contains("There is no matriculation data, yet!").should("exist");
+    });
+
+    it("Valid FoS selection can be resetted ", function () {
+        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
+        cy.get("select[id='semesterType']").select(fieldOfStudy[0].semesterType);
+        cy.get("select[id='semesterYear']").select(fieldOfStudy[0].year);
+        cy.get("select[id='fieldsOfStudy-1']").select(fieldOfStudy[0].fos[0]);
+        cy.get("button[id='removeFieldOfStudy-1']").click();
+        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
+    });
+
+    // Skip until backend validation is implemented again
+    it.skip("Input a FoS for a semester earlier than birthday results in error", function () {
+        cy.get("button[id='addImmatriculationData']").should("be.disabled");
+        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
+        cy.get("select[id='semesterType']").select("SS");
+        cy.get("select[id='semesterYear']").select("2011");
+        cy.get("select[id='fieldsOfStudy-1']").select(fieldOfStudy[0].fos[0]);
+        cy.get("button[id='addImmatriculationData']").click();
+        cy.wait(4000);
+        cy.get("div[id='immatriculationOptions']").siblings().get("p").should("have.class", "error-message");
+        cy.get("button[id='removeFieldOfStudy-1']").click();
     });
 
     it("Add two fields of studies for one summer semester", function () {
@@ -133,5 +171,41 @@ describe("Account creation, edition and deletion", function () {
     it("Correct immatriculation entries are shown", () => {
         //No modal should be shown
         cy.get("div").should("contain", fieldOfStudy[1].year).and("contain", fieldOfStudy[1].fos[0]);
+    });
+
+    it("Check latest matriculation  in private profile", () => {
+        cy.get("div").contains("Latest Immatriculation");
+        cy.get("input[id=latestImmatriculation]").should("have.value", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`);
+        cy.get("button[id=showHistoryButton]").click();
+    });
+
+    it("Check matriculation modal is filled correctly in privateprofile", function () {
+        //Timeout needed for waiting for the data
+        cy.wait(20000);
+        cy.get("#modal-wrapper").should("exist");
+        cy.get("div").contains("Immatriculation History");
+        cy.get("div")
+            .should("contain", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`)
+            .and("contain", fieldOfStudy[0].fos[0])
+            .and("contain", fieldOfStudy[0].fos[1]);
+        cy.get("div").should("contain", `${fieldOfStudy[1].semesterType}${fieldOfStudy[1].year}`).and("contain", fieldOfStudy[0].fos[1]);
+
+        cy.get("button[id='immatriculationHistoryClose']").click();
+        cy.wait(100);
+        logout();
+    });
+
+    // This test may be removed as the same component is tested again
+    it("Check matriculation table filled correctly in account form", function () {
+        loginAsDefaultAdmin();
+        cy.visit(`editAccount/${student.username}`);
+        //Timeout needed for waiting for the data
+        cy.wait(20000);
+        cy.get("div").contains("Immatriculation History");
+        cy.get("div")
+            .should("contain", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`)
+            .and("contain", fieldOfStudy[0].fos[0])
+            .and("contain", fieldOfStudy[0].fos[1]);
+        cy.get("div").should("contain", `${fieldOfStudy[1].semesterType}${fieldOfStudy[1].year}`).and("contain", fieldOfStudy[0].fos[1]);
     });
 });
