@@ -57,13 +57,11 @@ test("exam regulations service version", async () => {
     expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
 });
 
-test("configuration management and hyperledger version", async () => {
+test("configuration management and hyperledger network version", async () => {
     const version = await ConfigurationManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
 
-    const hlVersions = await ConfigurationManagement.getHyperledgerVersion();
-    expect(hlVersions.apiVersion).not.toEqual("unavailable");
-    expect(hlVersions.chaincodeVersion).not.toEqual("unavailable");
-    expect(hlVersions.networkVersion).not.toEqual("unavailable");
+    const hyperledgerNetworkVersion = await ConfigurationManagement.getHyperledgerNetworkVersion();
+    expect(hyperledgerNetworkVersion.networkVersion).not.toBe(undefined);
 });

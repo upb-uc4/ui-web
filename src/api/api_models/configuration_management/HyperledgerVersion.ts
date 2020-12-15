@@ -1,5 +1,3 @@
-export default interface HyperledgerVersion {
-    apiVersion: string;
-    chaincodeVersion: string;
+export default interface HyperledgerNetworkVersion {
     networkVersion: string;
 }

@@ -26,8 +26,9 @@ export async function getVersions(): Promise<version[]> {
     const courseManagementVersion = await CourseManagement.getVersion();
 
     const userManagementVersion = await UserManagement.getVersion();
-  
+
     const configurationManagementVersion = await ConfigurationManagement.getVersion();
+    const hyperledgerNetworkVersion = (await ConfigurationManagement.getHyperledgerNetworkVersion()).networkVersion;
 
     const matriculationManagementVersion = await MatriculationManagement.getVersion();
     const hlfMatriculationVersion = await MatriculationManagement.getHyperledgerVersion();
@@ -37,11 +38,16 @@ export async function getVersions(): Promise<version[]> {
 
     const examinationRegulationManagementVersion = await ExaminationRegulationManagement.getVersion();
     const hlfExamRegVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
-  
+
     versions.push({
         name: "Frontend",
         version: frontEndVersion,
         link: "https://github.com/upb-uc4/ui-web/blob/" + frontEndVersion + "/CHANGELOG.md",
+    });
+    versions.push({
+        name: "Hyperledger Network",
+        version: hyperledgerNetworkVersion,
+        link: "https://github.com/upb-uc4/hlf-network/blob/" + hyperledgerNetworkVersion + "/CHANGELOG.md",
     });
     versions.push({
         name: "Authentication Management",

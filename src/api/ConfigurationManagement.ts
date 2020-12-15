@@ -1,12 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import Configuration from "./api_models/configuration_management/Configuration";
-import HyperledgerVersion from "./api_models/configuration_management/HyperledgerVersion";
+import HyperledgerNetworkVersion from "./api_models/configuration_management/HyperledgerVersion";
 import APIError from "./api_models/errors/APIError";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 
 export default class ConfigurationManagement extends Common {
     protected static endpoint = "/configuration-management";
+
     constructor() {
         super(ConfigurationManagement.endpoint);
     }
@@ -15,7 +16,7 @@ export default class ConfigurationManagement extends Common {
         return super.getVersion();
     }
 
-    static async getHyperledgerVersion(): Promise<HyperledgerVersion> {
+    static async getHyperledgerNetworkVersion(): Promise<HyperledgerNetworkVersion> {
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + ConfigurationManagement.endpoint,
             headers: {
@@ -27,10 +28,10 @@ export default class ConfigurationManagement extends Common {
         return await instance
             .get(`/version/hyperledger`)
             .then((response: AxiosResponse) => {
-                return response.data as HyperledgerVersion;
+                return response.data as HyperledgerNetworkVersion;
             })
             .catch((error: AxiosError) => {
-                return { apiVersion: "unavailable", chaincodeVersion: "unavailable", networkVersion: "unavailable" } as HyperledgerVersion;
+                return { networkVersion: "unavailable" } as HyperledgerNetworkVersion;
             });
     }
 
