@@ -173,28 +173,28 @@ describe("Account creation, edition and deletion", function () {
     });
 
     // latest immatriculation is currently bugged because lagom does not fill the user object
-    // it("Check latest matriculation  in private profile", () => {
-    //     navigateToPrivateProfile();
-    //     cy.get("div").contains("Latest Immatriculation");
-    //     cy.get("input[id=latestImmatriculation]").should("have.value", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`);
-    //     cy.get("button[id=showHistoryButton]").click();
-    // });
+    it.skip("Check latest matriculation  in private profile", () => {
+        navigateToPrivateProfile();
+        cy.get("div").contains("Latest Immatriculation");
+        cy.get("input[id=latestImmatriculation]").should("have.value", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`);
+        cy.get("button[id=showHistoryButton]").click();
+    });
 
-    // it("Check matriculation modal is filled correctly in privateprofile", function () {
-    //     //Timeout needed for waiting for the data
-    //     cy.wait(20000);
-    //     cy.get("#modal-wrapper").should("exist");
-    //     cy.get("div").contains("Immatriculation History");
-    //     cy.get("div")
-    //         .should("contain", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`)
-    //         .and("contain", fieldOfStudy[0].fos[0])
-    //         .and("contain", fieldOfStudy[0].fos[1]);
-    //     cy.get("div").should("contain", `${fieldOfStudy[1].semesterType}${fieldOfStudy[1].year}`).and("contain", fieldOfStudy[0].fos[1]);
+    it.skip("Check matriculation modal is filled correctly in privateprofile", function () {
+        //Timeout needed for waiting for the data
+        cy.wait(20000);
+        cy.get("#modal-wrapper").should("exist");
+        cy.get("div").contains("Immatriculation History");
+        cy.get("div")
+            .should("contain", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`)
+            .and("contain", fieldOfStudy[0].fos[0])
+            .and("contain", fieldOfStudy[0].fos[1]);
+        cy.get("div").should("contain", `${fieldOfStudy[1].semesterType}${fieldOfStudy[1].year}`).and("contain", fieldOfStudy[0].fos[1]);
 
-    //     cy.get("button[id='immatriculationHistoryClose']").click();
-    //     cy.wait(100);
-    //     logout();
-    // });
+        cy.get("button[id='immatriculationHistoryClose']").click();
+        cy.wait(100);
+        logout();
+    });
 
     // This test may be removed as the same component is tested again
     it("Check matriculation table filled correctly in account form", function () {
