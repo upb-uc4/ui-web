@@ -36,7 +36,7 @@ export default class ReportManagement extends Common {
                         error: {} as APIError,
                         networkError: false,
                         statusCode: response.status,
-                        returnValue: response.data.timestamp,
+                        returnValue: response.headers["X-UC4-timestamp"],
                     };
                 } else {
                     return Promise.reject("Something went wrong in the archive request.");
@@ -63,6 +63,46 @@ export default class ReportManagement extends Common {
                 } else {
                     return {
                         returnValue: {} as File,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async deleteArchive(username: string): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .delete(`/reports/${username}/result`)
+            .then((response: AxiosResponse) => {
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: true,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.deleteArchive(username);
+                    }
+                    return {
+                        returnValue: false,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: false,
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,
