@@ -13,23 +13,68 @@ import APIResponse from "./helpers/models/APIResponse";
 import UserManagement from "./UserManagement";
 import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
 import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
+import CommonHyperledger from "./CommonHyperledger";
+import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
+import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
 
-export default class AdmissionManagement extends Common {
+export default class AdmissionManagement extends CommonHyperledger {
+    protected static endpoint = "/admission-management";
+
     constructor() {
-        super("/admission-management");
+        super(AdmissionManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/admission-management");
+        return super.getVersion();
     }
 
     /**
      * Submit a signed admissions proposal
      * @param signedProposal signed proposal
      */
-    async submitSignedAdmissionsProposal(signedProposal: SignedProposalMessage): Promise<APIResponse<boolean>> {
+    async submitSignedAdmissionsProposal(signedProposal: SignedProposalMessage): Promise<APIResponse<UnsignedTransactionMessage>> {
         return await this._axios
             .post(`/admissions/proposal/submit`, signedProposal)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as any,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.submitSignedAdmissionsProposal(signedProposal);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: {} as any,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: {} as any,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async submitSignedAdmissionsTransaction(message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .post(`/admissions/signed_transaction`, message)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -48,7 +93,7 @@ export default class AdmissionManagement extends Common {
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedAdmissionsProposal(signedProposal);
+                        return await this.submitSignedAdmissionsTransaction(message);
                     }
                     return {
                         statusCode: error.response.status,

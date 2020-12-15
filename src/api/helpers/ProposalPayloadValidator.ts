@@ -55,15 +55,15 @@ export function validateMatriculationProposal(
 }
 
 export async function validateCourseAdmissionProposal(
-    proposal: Proposal,
+    proposalPayload: ProposalPayload,
     admissionId?: string,
     courseAdmission?: CourseAdmission
 ): Promise<boolean> {
     if (!admissionId && !courseAdmission) return false;
 
-    const name = proposal.payload.input.input.args[0];
-    const contractToApprove = proposal.payload.input.input.args[1];
-    const transactionToApprove = proposal.payload.input.input.args[2];
+    const name = proposalPayload.input.input.args[0];
+    const contractToApprove = proposalPayload.input.input.args[1];
+    const transactionToApprove = proposalPayload.input.input.args[2];
 
     if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_APPROVAL) return false;
     if (contractToApprove !== UC4Identifier.CONTRACT_ADMISSION) return false;
@@ -75,7 +75,7 @@ export async function validateCourseAdmissionProposal(
     if (transactionToApprove === UC4Identifier.TRANSACTION_ADD_ADMISSION) {
         if (!courseAdmission) return false;
 
-        const jsonString = proposal.payload.input.input.args[3];
+        const jsonString = proposalPayload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalAdmission: CourseAdmission = <CourseAdmission>JSON.parse(paramsArray[0]);
 
@@ -91,7 +91,7 @@ export async function validateCourseAdmissionProposal(
     if (transactionToApprove === UC4Identifier.TRANSACTION_DROP_ADMISSION) {
         if (!admissionId) return false;
 
-        const jsonString = proposal.payload.input.input.args[3];
+        const jsonString = proposalPayload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalAdmissionId = paramsArray[0];
 

@@ -1,6 +1,7 @@
+import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 import { decodeTransaction } from "@/api/helpers/TransactionDecoding";
-import { matriculationTransactionValidator } from "@/api/helpers/TransactionValidator";
+import { admissionsTransactionValidator, matriculationTransactionValidator } from "@/api/helpers/TransactionValidator";
 
 describe("Transaction Validation Tests", () => {
     const protoURL = "public/hlf-proto.json";
@@ -34,6 +35,35 @@ describe("Transaction Validation Tests", () => {
         transaction.data.actions.push(transaction.data.actions[0]);
 
         expect(matriculationTransactionValidator(enrollmentId, matriculation, transaction)).toBe(false);
+
+        // TODO add invalid peer signature in the future, when we can actually verify it
+    });
+
+    test("Test Course Admission Transaction Validation", async () => {
+        const transactionB64 = "";
+
+        const transaction = await decodeTransaction(transactionB64, protoURL);
+
+        if (!transaction) fail("Could not decode course admission transaction");
+
+        const enrollmentId = "";
+        const courseAddAdmission: CourseAdmission = {} as any;
+
+        expect(admissionsTransactionValidator(transaction, undefined, courseAddAdmission)).toBe(true);
+
+        const tmp = courseAddAdmission.courseId;
+
+        courseAddAdmission.courseId = "some course id";
+
+        expect(admissionsTransactionValidator(transaction, undefined, courseAddAdmission)).toBe(false);
+
+        courseAddAdmission.courseId = tmp;
+
+        expect(admissionsTransactionValidator(transaction, undefined, courseAddAdmission)).toBe(true);
+
+        transaction.data.actions.push(transaction.data.actions[0]);
+
+        expect(admissionsTransactionValidator(transaction, undefined, courseAddAdmission)).toBe(false);
 
         // TODO add invalid peer signature in the future, when we can actually verify it
     });

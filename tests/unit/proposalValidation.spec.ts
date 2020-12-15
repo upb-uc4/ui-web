@@ -1,6 +1,7 @@
 import { decodeProposal } from "@/api/helpers/ProtobuffDecoding";
-import { validateMatriculationProposal } from "@/api/helpers/ProposalPayloadValidator";
+import { validateCourseAdmissionProposal, validateMatriculationProposal } from "@/api/helpers/ProposalPayloadValidator";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
+import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 
 describe("Proposal Validation Tests", () => {
     const protoURL = "public/hlf-proto.json";
@@ -109,5 +110,43 @@ describe("Proposal Validation Tests", () => {
                 addEntriesToMatriculationDataMatriculation
             )
         ).toBe(false);
+    });
+
+    test("Test Admission Proposal Validation addCourseAdmission", async () => {
+        const addCourseAdmissionProposalB64 = "";
+
+        const addCourseAdmissionProposal = await decodeProposal(addCourseAdmissionProposalB64, protoURL);
+
+        if (!addCourseAdmissionProposal) fail("Could not decode Add Course Admission Proposal");
+
+        const addCourseAdmission: CourseAdmission = {
+            admissionId: "",
+            courseId: "",
+            enrollmentId: "",
+            moduleId: "",
+            timestamp: "",
+        };
+
+        expect(validateCourseAdmissionProposal(addCourseAdmissionProposal.payload, undefined, addCourseAdmission)).toBe(true);
+
+        addCourseAdmission.courseId = "this is a different id";
+
+        expect(validateCourseAdmissionProposal(addCourseAdmissionProposal.payload, undefined, addCourseAdmission)).toBe(false);
+    });
+
+    test("Test Admission Proposal Validation dropCourseAdmission", async () => {
+        const dropCourseAdmissionProposalB64 = "";
+
+        const dropCourseAdmissionProposal = await decodeProposal(dropCourseAdmissionProposalB64, protoURL);
+
+        if (!dropCourseAdmissionProposal) fail("Could not decode Drop Course Admission Proposal");
+
+        let admissionId = "";
+
+        expect(validateCourseAdmissionProposal(dropCourseAdmissionProposal.payload, admissionId)).toBe(true);
+
+        admissionId = "this is a different id";
+
+        expect(validateCourseAdmissionProposal(dropCourseAdmissionProposal.payload, admissionId)).toBe(false);
     });
 });

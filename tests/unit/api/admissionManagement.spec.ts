@@ -12,10 +12,7 @@ import { arrayBufferToBase64, createCSR, createKeyPair, deriveKeyFromPassword, w
 import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 import CourseManagement from "@/api/CourseManagement";
 import { getRandomizedCourse } from "tests/helper/Courses";
-import { decodeProposal } from "@/api/helpers/ProtobuffDecoding";
-import { validateCourseAdmissionProposal } from "@/api/helpers/ProposalValidator";
-import { signProposal, verifyProposalSignature } from "@/use/crypto/signing";
-import SignedProposalMessage from "@/api/api_models/common/SignedProposalMessage";
+import { addCourseAdmission, dropCourseAdmission, updateMatriculation } from "@/api/abstractions/FrontendSigning";
 
 let userManagement: UserManagement;
 let certManagement: CertificateManagement;
@@ -27,14 +24,13 @@ let courseId: string;
 const moduleId: string = "M.1275.01158";
 const iv = window.crypto.getRandomValues(new Uint8Array(12));
 const encryptionPassword = "My-Super-Password";
-let unsignedProposal: UnsignedProposalMessage;
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
-const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { student: Student; authUser: Account };
+const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;
 const course = getRandomizedCourse();
 const protoURL = "public/hlf-proto.json";
-let signature: string;
+const EXAM_REG_1 = "Bachelor Computer Science v3";
 
 jest.setTimeout(30000);
 
@@ -47,7 +43,7 @@ describe("Admissions management", () => {
     });
 
     test("Create student user", async () => {
-        const success = await userManagement.createUser(authUser, student);
+        const success = await userManagement.createUser(pair.governmentId, authUser, student);
         expect(success.returnValue).toBe(true);
         expect(success.statusCode).toEqual(201);
         await new Promise((r) => setTimeout(r, 25000));
@@ -83,8 +79,6 @@ describe("Admissions management", () => {
         expect(enrollmentId).not.toEqual("");
     });
 
-    test("Immatriculate student", async () => {});
-
     test("Create and send certificate signing request", async () => {
         keypair = await createKeyPair();
         const csr = await createCSR(keypair, enrollmentId);
@@ -105,43 +99,26 @@ describe("Admissions management", () => {
         expect(response.returnValue.certificate).not.toEqual("");
     });
 
-    test("Fetch Unsinged Proposal for adding admission", async () => {
-        courseAdmission = { courseId, enrollmentId, moduleId, admissionId: "", timestamp: "" };
+    test("Immatriculate student", async () => {
+        const matriculation = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
-        const proposalResponse = await admissionsManagement.getUnsignedCourseAdmissionAddProposal(courseAdmission);
+        const result = await updateMatriculation(enrollmentId, authUser.username, matriculation, protoURL);
 
-        expect(proposalResponse.statusCode).toEqual(200);
-        console.log(proposalResponse);
-        console.log(proposalResponse.returnValue);
-
-        unsignedProposal = proposalResponse.returnValue;
+        expect(result).toBe(true);
     });
 
-    test("Validate and sign Proposal", async () => {
-        const proposal = await decodeProposal(unsignedProposal.unsignedProposal, protoURL);
+    test("Add course admission", async () => {
+        const admission: CourseAdmission = {
+            admissionId: "",
+            courseId,
+            enrollmentId,
+            moduleId,
+            timestamp: "",
+        };
 
-        if (!proposal) fail();
+        const result = await addCourseAdmission(admission, protoURL);
 
-        console.log(proposal);
-        console.log(proposal.payload);
-        console.log(proposal.payload.input);
-        console.log(proposal.payload.input.input);
-        console.log(proposal.payload.input.input.args);
-
-        const validation = validateCourseAdmissionProposal(proposal, undefined, courseAdmission);
-        expect(validation).toBe(true);
-
-        signature = await signProposal(unsignedProposal.unsignedProposal, keypair.privateKey);
-
-        expect(await verifyProposalSignature(unsignedProposal.unsignedProposal, signature, keypair.publicKey)).toBe(true);
-    });
-
-    test("Submit Signed Proposal", async () => {
-        const signedProposalMessage: SignedProposalMessage = { signature, unsignedProposal: unsignedProposal.unsignedProposal };
-
-        const response = await admissionsManagement.submitSignedAdmissionsProposal(signedProposalMessage);
-        expect(response.statusCode).toBe(202);
-        expect(response.returnValue).toBe(true);
+        expect(result).toBe(true);
     });
 
     test("Fetch course admissions", async () => {
@@ -156,41 +133,10 @@ describe("Admissions management", () => {
         courseAdmission = response.returnValue[0];
     });
 
-    test("Fetch Unsinged Proposal for dropping admission", async () => {
-        const proposalResponse = await admissionsManagement.getUnsignedCourseAdmissionDropProposal(courseAdmission.admissionId);
+    test("Drop admission", async () => {
+        const result = await dropCourseAdmission(courseAdmission.admissionId, protoURL);
 
-        expect(proposalResponse.statusCode).toEqual(200);
-        console.log(proposalResponse);
-        console.log(proposalResponse.returnValue);
-
-        unsignedProposal = proposalResponse.returnValue;
-    });
-
-    test("Validate and sign Proposal", async () => {
-        const proposal = await decodeProposal(unsignedProposal.unsignedProposal, protoURL);
-
-        if (!proposal) fail();
-
-        console.log(proposal);
-        console.log(proposal.payload);
-        console.log(proposal.payload.input);
-        console.log(proposal.payload.input.input);
-        console.log(proposal.payload.input.input.args);
-
-        const validation = validateCourseAdmissionProposal(proposal, courseAdmission.admissionId, undefined);
-        expect(validation).toBe(true);
-
-        signature = await signProposal(unsignedProposal.unsignedProposal, keypair.privateKey);
-
-        expect(await verifyProposalSignature(unsignedProposal.unsignedProposal, signature, keypair.publicKey)).toBe(true);
-    });
-
-    test("Submit Signed Proposal", async () => {
-        const signedProposalMessage: SignedProposalMessage = { signature, unsignedProposal: unsignedProposal.unsignedProposal };
-
-        const response = await admissionsManagement.submitSignedAdmissionsProposal(signedProposalMessage);
-        expect(response.statusCode).toBe(202);
-        expect(response.returnValue).toBe(true);
+        expect(result).toBe(true);
     });
 
     test("Fetch course admissions", async () => {

@@ -1,9 +1,10 @@
 import { base64ToArrayBuffer, getPublicKeyFromCertificate } from "@/use/crypto/certificates";
 import { verifyProposalResponsePayloadSignature } from "@/use/crypto/signing";
+import CourseAdmission from "../api_models/admission_management/CourseAdmission";
 import { ProposalPayload } from "../api_models/common/Proposal";
 import TransactionMessage from "../api_models/common/Transaction";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
-import { validateMatriculationProposal } from "./ProposalPayloadValidator";
+import { validateCourseAdmissionProposal, validateMatriculationProposal } from "./ProposalPayloadValidator";
 
 export function matriculationTransactionValidator(
     enrollmentId: string,
@@ -17,6 +18,28 @@ export function matriculationTransactionValidator(
     const payload: ProposalPayload = transaction.data.actions[0].payload.chainCodeProposalPayload;
 
     if (!validateMatriculationProposal(payload, enrollmentId, matriculation)) {
+        return false;
+    }
+
+    if (!verifyPeerSignatures(transaction)) {
+        return false;
+    }
+
+    return true;
+}
+
+export function admissionsTransactionValidator(
+    transaction: TransactionMessage,
+    admissionId?: string,
+    courseAdmission?: CourseAdmission
+): boolean {
+    if (!(transaction.data.actions.length === 1)) {
+        return false;
+    }
+
+    const payload: ProposalPayload = transaction.data.actions[0].payload.chainCodeProposalPayload;
+
+    if (!validateCourseAdmissionProposal(payload, admissionId, courseAdmission)) {
         return false;
     }
 
