@@ -16,11 +16,17 @@ export default class OperationsManagement extends CommonHyperledger {
         return super.getVersion();
     }
 
-    async getOperations(username?: string, onlyOwn?: boolean, onlyWorkable?: boolean): Promise<APIResponse<Operation[]>> {
+    async getOperations(
+        username?: string,
+        onlyOwn?: boolean,
+        onlyWorkable?: boolean,
+        archived?: boolean
+    ): Promise<APIResponse<Operation[]>> {
         const requestParameter = { params: {} as any };
         if (username) requestParameter.params.username = username;
         if (onlyOwn !== undefined) requestParameter.params.onlyOwn = onlyOwn;
         if (onlyWorkable !== undefined) requestParameter.params.onlyWorkable = onlyWorkable;
+        if (archived !== undefined) requestParameter.params.archived = archived;
 
         return await this._axios
             .get(`/operations`, requestParameter)
