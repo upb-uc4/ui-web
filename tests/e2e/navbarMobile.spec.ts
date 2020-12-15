@@ -154,6 +154,15 @@ describe("student", () => {
         cy.get("#nav_mobile_student_menu_courses_all").click();
         cy.url().should("contain", "courses");
     });
+
+    it("study", () => {
+        cy.get(navbar_burger_menu).click();
+        //open the menu
+        cy.get("#nav_mobile_student_menu_study").click;
+
+        cy.get("#nav_mobile_student_menu_immatriculation").click();
+        cy.url().should("contain", "immatriculation");
+    });
     checkProfile();
 });
 

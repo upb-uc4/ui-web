@@ -2,20 +2,24 @@
 
 import MatriculationData from "../api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
-import Proposal from "../api_models/transactions/Proposal";
+import { ProposalPayload } from "../api_models/common/Proposal";
 import { isEqual } from "lodash";
 import { UC4Identifier } from "./UC4Identifier";
 
-export function validateMatriculationProposal(enrollmentId: string, matriculation: SubjectMatriculation[], proposal: Proposal): boolean {
-    const name = proposal.payload.input.input.args[0];
-    const contractToApprove = proposal.payload.input.input.args[1];
-    const transactionToApprove = proposal.payload.input.input.args[2];
+export function validateMatriculationProposal(
+    proposalPayload: ProposalPayload,
+    enrollmentId: string,
+    matriculation: SubjectMatriculation[]
+): boolean {
+    const name = proposalPayload.input.input.args[0];
+    const contractToApprove = proposalPayload.input.input.args[1];
+    const transactionToApprove = proposalPayload.input.input.args[2];
 
     if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_APPROVAL) return false;
     if (contractToApprove !== UC4Identifier.CONTRACT_MATRICULATION) return false;
 
     if (transactionToApprove === UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION) {
-        const jsonString = proposal.payload.input.input.args[3];
+        const jsonString = proposalPayload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalEnrollmentId = paramsArray[0];
         const proposalMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
@@ -30,7 +34,7 @@ export function validateMatriculationProposal(enrollmentId: string, matriculatio
         transactionToApprove === UC4Identifier.TRANSACTION_ADD_MATRICULATION ||
         transactionToApprove === UC4Identifier.TRANSACTION_UPDATE_MATRICULATION
     ) {
-        const jsonString = proposal.payload.input.input.args[3];
+        const jsonString = proposalPayload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);
         const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
 

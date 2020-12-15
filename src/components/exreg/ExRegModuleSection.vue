@@ -128,7 +128,6 @@
                 () => props.modules,
                 () => {
                     selectedModules.value = props.modules;
-                    console.log("watch triggered");
                 }
             );
 
