@@ -64,7 +64,7 @@
         "@cypress/code-coverage": "^3.8.5",
         "@peculiar/webcrypto": "^1.1.4",
         "@tailwindcss/custom-forms": "^0.2.1",
-        "@types/jest": "^26.0.15",
+        "@types/jest": "^26.0.19",
         "@types/lodash": "^4.14.165",
         "@types/node": "^14.14.9",
         "@typescript-eslint/eslint-plugin": "^2.33.0",
