@@ -4,7 +4,10 @@
         <loading-spinner />
     </div>
     <div v-else class="flex flex-col w-full items-center mt-10">
-        <div class="w-full flex justify-between">
+        <div class="flex sm:flex-row flex-col-reverse w-full">
+            <seach-bar v-model:message="message" @refresh="getOperations" />
+        </div>
+        <div class="w-full mt-5 flex justify-between">
             <div class="w-1/2 rounded-lg bg-gray-500 mr-10 h-auto p-4 overflow-y-auto shadow-2xl">
                 <dashboard-component :username="username" :role="role" :operations="finishedOperations" title="Finished Operations" />
             </div>
@@ -26,15 +29,18 @@
     import { OperationStatus } from "@/api/api_models/operations_management/OperationState";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import { useStore } from "@/use/store/store";
+    import SeachBar from "@/components/common/SearchBar.vue";
 
     export default {
         name: "Dashboard",
         components: {
             LoadingSpinner,
             DashboardComponent,
+            SeachBar,
         },
         setup() {
             const busy = ref(false);
+            const message = ref("");
             const operations = ref([] as Operation[]);
             const store = useStore();
             const username = ref("");
@@ -125,14 +131,26 @@
                 //role.value = (await store.getters.user).role;
             });
 
+            const filteredOperations = computed(() => {
+                let filter = message.value.replace(/\s/g, "").toLowerCase();
+                if (filter != "") {
+                    //TODO more filtering
+                    let filteredOperations = operations.value.filter((op) =>
+                        op.operationId.replace(/\s/g, "").toLowerCase().includes(filter)
+                    );
+                    return filteredOperations;
+                }
+                return operations.value;
+            });
+
             const pendingOwnOperations = computed(() =>
-                operations.value.filter((op) => op.state == OperationStatus.PENDING && op.initiator == username.value)
+                filteredOperations.value.filter((op) => op.state == OperationStatus.PENDING && op.initiator == username.value)
             );
             const finishedOperations = computed(() =>
-                operations.value.filter((op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED)
+                filteredOperations.value.filter((op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED)
             );
             const actionNeededOperations = computed(() =>
-                operations.value.filter(
+                filteredOperations.value.filter(
                     (op) =>
                         op.state == OperationStatus.PENDING &&
                         (op.missingApprovals.users.includes(username.value) || op.missingApprovals.groups.includes(role.value))
@@ -153,6 +171,8 @@
                 actionNeededOperations,
                 username,
                 role,
+                message,
+                getOperations,
             };
         },
     };
