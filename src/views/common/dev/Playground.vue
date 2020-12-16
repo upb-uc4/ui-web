@@ -165,7 +165,7 @@
                 </div>
                 <div>
                     <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Selects</h1>
-                    <Select v-model:elements="people" :selected-element="selectedPerson" />
+                    <Select v-model:selection="selectedPerson" :elements="people" />
                 </div>
                 <div>
                     <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Search Selects</h1>

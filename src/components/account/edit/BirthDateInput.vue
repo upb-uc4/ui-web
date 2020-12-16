@@ -2,15 +2,15 @@
     <div id="birthdate" class="flex space-x-6">
         <div class="w-1/3">
             <label class="input-label-tmp">Day</label>
-            <selection :disabled="true" :elements="days" :default="selectedDay" @update:selected="onDayChanged" />
+            <selection v-model:selection="selectedDay" :disabled="true" :elements="days" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Month</label>
-            <selection :disabled="true" :elements="months" :default="selectedMonth" @update:selected="onMonthChanged" />
+            <selection v-model:selection="selectedMonth" :disabled="true" :elements="months" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Year</label>
-            <selection :disabled="true" :elements="years" :default="selectedYear" @update:selected="onYearChanged" />
+            <selection v-model:selection="selectedYear" :disabled="true" :elements="years" />
         </div>
     </div>
 </template>
@@ -18,7 +18,7 @@
 <script lang="ts">
     import { days, months } from "@/entities/Month";
     import Select from "@/components/common/Select.vue";
-    import { ref } from "vue";
+    import { computed, ref, watch } from "vue";
 
     export default {
         name: "BirthDatePicker",
@@ -41,6 +41,7 @@
 
             const selectedDay = ref();
             const selectedMonth = ref();
+            const selectedMonthAsNumber = computed(() => new Date(Date.parse(selectedMonth.value + " 1, 2020")).getMonth() + 1);
             const selectedYear = ref();
 
             if (props.birthDate) {
@@ -51,25 +52,13 @@
                 selectedYear.value = date.getFullYear().toString();
             }
 
-            function onDayChanged(day: string) {
-                selectedDay.value = day;
+            watch([selectedDay, selectedMonth, selectedYear], ([day, month, year]) => {
                 emitBirthdate();
-            }
-
-            function onMonthChanged(month: string) {
-                //use hack to convert month to number, e.g. "January" to "1"
-                selectedMonth.value = new Date(Date.parse(month + " 1, 2020")).getMonth() + 1;
-                emitBirthdate();
-            }
-
-            function onYearChanged(year: string) {
-                selectedYear.value = year;
-                emitBirthdate();
-            }
+            });
 
             function emitBirthdate() {
-                console.log(selectedDay.value, selectedMonth.value, selectedYear.value);
-                emit("update:birthDate", `${selectedDay.value}-${selectedMonth.value}-${selectedYear.value}`);
+                console.log(selectedDay.value, selectedMonthAsNumber.value, selectedYear.value);
+                emit("update:birthDate", `${selectedDay.value}-${selectedMonthAsNumber.value}-${selectedYear.value}`);
             }
 
             return {
@@ -79,9 +68,6 @@
                 selectedDay,
                 selectedMonth,
                 selectedYear,
-                onDayChanged,
-                onMonthChanged,
-                onYearChanged,
             };
         },
     };

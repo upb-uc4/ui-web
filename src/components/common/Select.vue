@@ -1,18 +1,21 @@
 <template>
     <div class="w-full">
-        <Listbox v-slot="{ open }" v-model="selection" as="div" class="space-y-1">
+        <Listbox v-slot="{ open }" v-model="mySelection" as="div" class="space-y-1">
             <div class="relative">
                 <span class="inline-block w-full relative">
                     <div v-if="disabled" class="relative">
-                        <input class="w-full input-text-tmp" :value="selection" readonly />
+                        <input class="w-full input-text-tmp" :value="mySelection" readonly />
                     </div>
                     <ListboxButton
                         v-else
                         class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
-                            <span v-if="label" class="text-gray-600 font-medium">{{ label }}: <span class="font-medium text-gray-900">{{ selection }}</span></span>
-                            <span v-else>{{ selection }}</span>
+                            <span v-if="label" class="text-gray-600 font-medium">
+                                {{ label }}:
+                                <span class="font-medium text-gray-900">{{ mySelection }}</span>
+                            </span>
+                            <span v-else>{{ mySelection }}</span>
                         </span>
                     </ListboxButton>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -61,8 +64,8 @@
 </template>
 
 <script lang="ts">
-    import { ref, watch } from "vue";
     import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         name: "Select",
@@ -81,28 +84,20 @@
                 type: Array,
                 required: true,
             },
-            default: {
+            selection: {
                 type: String,
-                default: null,
+                required: true,
             },
             disabled: {
                 type: Boolean,
                 default: false,
             },
         },
-        emits: ["update:selected"],
+        emits: ["update:selection"],
         setup(props: any, { emit }: any) {
-            let selection = ref(props.elements[0]);
-
-            if (props.default) {
-                selection = ref(props.default);
-            }
-
-            watch(selection, (value) => {
-                emit("update:selected", value);
-            });
-
-            return { selection };
+            return {
+                mySelection: useModelWrapper(props, emit, "selection"),
+            };
         },
     };
 </script>

@@ -8,13 +8,8 @@
                         <seach-bar v-model:message="message" placeholder="Find a user..." @refresh="refresh" />
                     </div>
                     <div class="flex space-x-2">
-                        <filter-select :elements="roles" label="Type" :default="selectedRole" @update:selected="selectedRole = $event" />
-                        <filter-select
-                            :elements="status"
-                            label="Status"
-                            :default="selectedStatus"
-                            @update:selected="selectedStatus = $event"
-                        />
+                        <filter-select v-model:selection="selectedRole" label="Type" :elements="roles" />
+                        <filter-select v-model:selection="selectedStatus" label="Status" :elements="status" />
                     </div>
                 </div>
                 <router-link to="/createAccount" class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2">
@@ -56,7 +51,8 @@
                         </div>
                         <div v-else>
                             <span class="font-semibold">{{ matchingUsersCount }}</span> results matching
-                            <span class="font-semibold">{{ message }}</span>.
+                            <span class="font-semibold">{{ message }}</span>
+                            .
                         </div>
                     </div>
                     <div class="btn-tertiary-tmp" @click="clearFilter()">Clear filter</div>
@@ -138,7 +134,6 @@
             }
 
             function clearFilter() {
-                //TODO reset selects. OR model them as v-model
                 message.value = "";
                 selectedStatus.value = defaultStatus;
                 selectedRole.value = defaultRole;

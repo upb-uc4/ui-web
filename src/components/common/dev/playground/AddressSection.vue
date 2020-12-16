@@ -7,7 +7,7 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Country</label>
-                    <Select v-model:elements="countries" :selected-element="selectedCountry" />
+                    <Select v-model:elements="countries" v-model:selection="selectedCountry" :disabled="true" />
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
