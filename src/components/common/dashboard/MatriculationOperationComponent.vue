@@ -38,7 +38,7 @@
                         title="Approve"
                         @click="approve"
                     >
-                        <i class="far fa-thumbs-up"></i>
+                        <i class="fas fa-check"></i>
                     </button>
                     <button
                         :id="'op_' + operation.operationId + '_approve'"
@@ -48,7 +48,7 @@
                         title="Reject"
                         @click="reject"
                     >
-                        <i class="far fa-thumbs-down"></i>
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
             </div>
