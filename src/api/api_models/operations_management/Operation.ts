@@ -3,6 +3,7 @@ import { OperationStatus } from "./OperationState";
 
 export default interface Operation {
     operationId: string;
+    initiator: string;
     transactionInfo: {
         contractName: UC4Identifier;
         transactionName: UC4Identifier;
