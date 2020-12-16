@@ -5,14 +5,14 @@
     </div>
     <div v-else class="flex flex-col w-full items-center mt-10">
         <div class="w-full flex justify-between">
-            <div class="w-1/2 rounded-lg border border-gray-500 mr-10 h-auto p-4 overflow-y-auto">
+            <div class="w-1/2 rounded-lg bg-gray-500 mr-10 h-auto p-4 overflow-y-auto shadow-2xl">
                 <dashboard-component :username="username" :role="role" :operations="finishedOperations" title="Finished Operations" />
             </div>
-            <div class="w-1/2 rounded-lg border border-gray-500 ml-10 h-auto p-4 overflow-y-auto">
+            <div class="w-1/2 rounded-lg bg-gray-500 ml-10 h-auto p-4 overflow-y-auto shadow-2xl">
                 <dashboard-component :username="username" :role="role" :operations="actionNeededOperations" title="Action Required" />
             </div>
         </div>
-        <div class="w-1/2 rounded-lg border border-gray-500 h-auto p-4 mt-10 mb-10 overflow-y-auto">
+        <div class="w-1/2 rounded-lg bg-gray-500 h-auto p-4 mt-10 mb-10 overflow-y-auto shadow-2xl">
             <dashboard-component :username="username" :role="role" :operations="pendingOwnOperations" title="Pending Operations" />
         </div>
     </div>
