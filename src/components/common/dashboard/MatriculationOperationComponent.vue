@@ -29,7 +29,7 @@
                         </router-link>
                     </div>
                 </div>
-                <div v-if="actionRequired && isPending" class="w-full md:w-1/6 mt-6 sm:mt-1 flex">
+                <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end">
                     <button
                         :id="'op_' + operation.operationId + '_approve'"
                         :disabled="sentApprove"
@@ -51,13 +51,13 @@
                         <i class="far fa-thumbs-down"></i>
                     </button>
                 </div>
-                <div v-else-if="isRejected" class="items-start">
-                    <p class="text-sm text-red-400">Rejected: {{ operation.reason }}</p>
-                </div>
             </div>
-            <div class="flex flex-row mt-1 text-sm">
+            <div class="flex flex-row text-sm">
                 <p class="mr-1">Desired Matriculation:</p>
                 <p v-for="param in operation.transactionInfo.parameters" :key="param" class="ml-4">{{ param }}</p>
+            </div>
+            <div v-if="isRejected" class="mt-1">
+                <p class="text-red-500">Rejected: {{ operation.reason }}</p>
             </div>
         </div>
     </div>
