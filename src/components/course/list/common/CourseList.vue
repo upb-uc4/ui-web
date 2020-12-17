@@ -52,8 +52,8 @@
                 required: true,
             },
         },
-
-        setup(props: any) {
+        emits: ["on-updated"],
+        setup(props: any, { emit }: any) {
             let busy = ref(false);
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
             let lecturers = ref([] as Lecturer[]);
@@ -122,6 +122,7 @@
                             e.lecturerId.toLowerCase().includes(filter)
                     );
                 }
+                emit("on-updated", filteredCourses.length);
                 return filteredCourses;
             });
 

@@ -51,8 +51,7 @@
                         </div>
                         <div v-else>
                             <span class="font-semibold">{{ matchingUsersCount }}</span> results matching
-                            <span class="font-semibold">{{ message }}</span>
-                            .
+                            <span class="font-semibold">{{ message }}.</span>
                         </div>
                     </div>
                     <div class="btn-tertiary-tmp" @click="clearFilter()">Clear filter</div>
