@@ -11,12 +11,14 @@ import APIResponse from "./helpers/models/APIResponse";
 import UserManagement from "./UserManagement";
 
 export default class AuthenticationManagement extends Common {
+    protected static endpoint = "/authentication-management";
+
     constructor() {
-        super("/authentication-management");
+        super(AuthenticationManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/authentication-management");
+        return super.getVersion();
     }
 
     async changeOwnPassword(password: string): Promise<APIResponse<boolean>> {
@@ -72,7 +74,7 @@ export default class AuthenticationManagement extends Common {
 
     static async _getLoginToken(): Promise<APIResponse<boolean>> {
         const instance = axios.create({
-            baseURL: process.env.VUE_APP_API_BASE_URL + "/authentication-management",
+            baseURL: process.env.VUE_APP_API_BASE_URL + AuthenticationManagement.endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8",
@@ -161,7 +163,7 @@ export default class AuthenticationManagement extends Common {
     static async _getRefreshToken(loginData: { username: string; password: string }): Promise<APIResponse<boolean>> {
         const authHeader = { auth: loginData };
         const instance = axios.create({
-            baseURL: process.env.VUE_APP_API_BASE_URL + "/authentication-management",
+            baseURL: process.env.VUE_APP_API_BASE_URL + AuthenticationManagement.endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8",

@@ -3,19 +3,46 @@
         <loading-spinner />
     </div>
     <div v-else class="w-full">
-        <div v-for="v in versions" :key="v.name" class="flex justify-between h-10 px-4 py-8 my-2 bg-white rounded-lg">
+        <div v-for="v in versions" :key="v.name" class="flex justify-between px-4 py-8 my-2 bg-white rounded-lg">
             <div class="flex items-center">
                 <i v-if="v.version == 'unavailable'" class="pr-4 text-2xl text-red-600 fas fa-times-circle"></i>
                 <i v-else class="pr-4 text-2xl text-green-500 fas fa-check-circle"></i>
                 <p class="text-lg">{{ v.name }}</p>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-start w-1/4">
                 <a v-if="v.link != ''" :href="v.link" target="_blank" rel="noopener noreferrer">
                     <i v-if="v.version != 'unavailable'" class="pr-4 text-2xl text-grey-600 far fa-file-alt"></i>
                 </a>
-                <p class="px-3 py-1 text-lg rounded-lg" :class="[v.version == 'unavailable' ? 'bg-red-200' : 'bg-blue-200']">
-                    {{ v.version }}
-                </p>
+                <div class="flex flex-col w-full">
+                    <p
+                        class="px-3 mb-1 text-lg rounded-lg w-full text-center"
+                        :class="[v.version == 'unavailable' || v.version == 'endpoint broken' ? 'bg-red-200' : 'bg-blue-200']"
+                    >
+                        {{ "Service: " + v.version }}
+                    </p>
+                    <p
+                        v-if="v.hlVersions"
+                        class="px-3 mb-1 text-lg rounded-lg w-full text-center"
+                        :class="[
+                            v.hlVersions.hlfApiVersion == 'unavailable' || v.hlVersions.hlfApiVersion == 'endpoint broken'
+                                ? 'bg-red-200'
+                                : 'bg-blue-200',
+                        ]"
+                    >
+                        {{ "HLF API: " + v.hlVersions.hlfApiVersion }}
+                    </p>
+                    <p
+                        v-if="v.hlVersions"
+                        class="px-3 mb-1 text-lg rounded-lg w-full text-center"
+                        :class="[
+                            v.hlVersions.chaincodeVersion == 'unavailable' || v.hlVersions.chaincodeVersion == 'endpoint broken'
+                                ? 'bg-red-200'
+                                : 'bg-blue-200',
+                        ]"
+                    >
+                        {{ "CC: " + v.hlVersions.chaincodeVersion }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>

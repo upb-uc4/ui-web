@@ -49,9 +49,9 @@ export const actions: ActionTree<State, State> & Actions = {
 
         const certificate = handler.handleResponse(csrResponse);
 
-        commit(MutationTypes.SET_CERTIFICATE, certificate);
         if (certificate.certificate != "") {
             commit(MutationTypes.SET_HAS_CERTIFICATE, true);
+            commit(MutationTypes.SET_CERTIFICATE, certificate);
         }
         return certificate;
     },

@@ -19,7 +19,9 @@
                             <label class="text leading-5 font-medium text-blue-900 mr-2">{{ user.firstName }} {{ user.lastName }}</label>
                         </div>
                         <div v-if="!user.isActive" class="mb-1 truncate">
-                            <label v-if="isLecturer" class="text leading-5 font-medium text-blue-900 mr-2">{{ user.firstName }} {{ user.lastName }}</label>
+                            <label v-if="isLecturer" class="text leading-5 font-medium text-blue-900 mr-2">
+                                {{ user.firstName }} {{ user.lastName }}
+                            </label>
                             <label class="text-gray-600 italic">(inactive)</label>
                         </div>
                         <div class="hidden sm:flex text leading-5 text-gray-500 truncate">@{{ user.username }}</div>

@@ -96,6 +96,16 @@ describe("student", () => {
         cy.get("#nav_desktop_student_menu_courses_all").click();
         cy.url().should("contain", "courses");
     });
+
+    it("study", () => {
+        //open the menu
+        cy.get("#nav_desktop_student_menu_study").trigger("mouseover");
+
+        //all courses
+        cy.get("#nav_desktop_student_menu_study_immatriculation").click();
+        cy.url().should("contain", "immatriculation");
+    });
+
     checkProfile();
 });
 

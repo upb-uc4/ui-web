@@ -12,12 +12,14 @@ import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 
 export default class UserManagement extends Common {
+    protected static endpoint = "/user-management";
+
     constructor() {
-        super("/user-management");
+        super(UserManagement.endpoint);
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/user-management");
+        return super.getVersion();
     }
 
     async getUsers(
@@ -28,9 +30,9 @@ export default class UserManagement extends Common {
         const requestParameter = { params: {} as any };
         let endpoint = "/users";
 
-        if (usernames) requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
+        if (usernames !== undefined) requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
         if (is_active !== undefined) requestParameter.params.is_active = is_active;
-        if (role) endpoint = UserManagement._createEndpointByRole(role);
+        if (role !== undefined) endpoint = UserManagement._createEndpointByRole(role);
 
         return await this._axios
             .get(endpoint, requestParameter)
