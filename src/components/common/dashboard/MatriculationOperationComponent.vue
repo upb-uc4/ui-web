@@ -9,9 +9,16 @@
                 >
                     {{ operation.state }}
                 </span>
-                <div v-if="!isRejected" class="flex ml-6" title="Approvals">
-                    <i v-for="index in approvals" :key="index" class="text-sm text-green-400 far fa-check-circle"></i>
-                    <i v-for="index in neededApprovals - approvals" :key="index" class="text-sm text-green-400 far fa-circle"></i>
+                <div v-if="!isPending" class="w-full flex items-center">
+                    <div v-if="!isRejected" class="flex ml-6" title="Approvals">
+                        <i v-for="index in approvals" :key="index" class="text-sm text-green-400 far fa-check-circle"></i>
+                        <i v-for="index in neededApprovals - approvals" :key="index" class="text-sm text-green-400 far fa-circle"></i>
+                    </div>
+                    <div class="w-full flex justify-end">
+                        <button class="btn btn-icon-blue text-sm" title="Mark as read" @click="markRead">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -85,7 +92,8 @@
                 required: true,
             },
         },
-        setup(props: any) {
+        emits: ["marked-read"],
+        setup(props: any, { emit }: any) {
             const operation = ref(props.operation as Operation);
             const approvals = operation.value.existingApprovals.users.length + operation.value.existingApprovals.groups.length;
             const neededApprovals =
@@ -120,6 +128,10 @@
                 sentReject.value = true;
             }
 
+            function markRead() {
+                emit("marked-read", props.operation.operationId);
+            }
+
             return {
                 statusColor,
                 approvals,
@@ -131,6 +143,7 @@
                 reject,
                 sentApprove,
                 sentReject,
+                markRead,
             };
         },
     };

@@ -9,7 +9,13 @@
         </div>
         <div class="w-full mt-5 flex justify-between">
             <div class="w-1/2 rounded-lg bg-gray-500 mr-10 h-auto p-4 overflow-y-auto shadow-2xl">
-                <dashboard-component :username="username" :role="role" :operations="finishedOperations" title="Finished Operations" />
+                <dashboard-component
+                    :username="username"
+                    :role="role"
+                    :operations="finishedOperations"
+                    title="Finished Operations"
+                    @marked-read="markRead"
+                />
             </div>
             <div class="w-1/2 rounded-lg bg-gray-500 ml-10 h-auto p-4 overflow-y-auto shadow-2xl">
                 <dashboard-component :username="username" :role="role" :operations="actionNeededOperations" title="Action Required" />
@@ -163,6 +169,13 @@
                 role.value = "admin";
             }
 
+            async function markRead(operationId: string) {
+                //TODO API CALL
+                // If success:
+                operations.value = operations.value.filter((op) => op.operationId !== operationId);
+                console.log(operationId);
+            }
+
             return {
                 busy,
                 operations,
@@ -173,6 +186,7 @@
                 role,
                 message,
                 getOperations,
+                markRead,
             };
         },
     };

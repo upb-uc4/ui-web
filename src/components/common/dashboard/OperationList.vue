@@ -3,7 +3,7 @@
         <div v-if="operations.length">
             <div v-for="operation in operations" :key="operation.operationId">
                 <div class="mt-2">
-                    <matriculation-operation-component :username="username" :role="role" :operation="operation" />
+                    <matriculation-operation-component :username="username" :role="role" :operation="operation" @marked-read="markRead" />
                 </div>
             </div>
         </div>
@@ -36,7 +36,15 @@
                 required: true,
             },
         },
+        emits: ["marked-read"],
+        setup(props: any, { emit }: any) {
+            function markRead(id: string) {
+                emit("marked-read", id);
+            }
 
-        setup(props: any) {},
+            return {
+                markRead,
+            };
+        },
     };
 </script>
