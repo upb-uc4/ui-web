@@ -1,5 +1,5 @@
 <template>
-    <h1 class="text-2xl font-semibold text-gray-700">Dashboard</h1>
+    <h1 class="text-xl text-gray-700">In this dashboard, you find all your requested operations concerning your account.</h1>
     <div v-if="busy" class="mx-auto">
         <loading-spinner />
     </div>
