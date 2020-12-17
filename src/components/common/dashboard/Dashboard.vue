@@ -5,7 +5,7 @@
     </div>
     <div v-else class="flex flex-col w-full items-center mt-10">
         <div class="flex sm:flex-row flex-col-reverse w-full">
-            <seach-bar v-model:message="message" @refresh="getOperations" />
+            <seach-bar v-model:message="message" @refresh="refresh" />
         </div>
         <div class="w-full mt-5 flex justify-between">
             <div class="w-1/2 rounded-lg bg-gray-500 mr-10 h-auto p-4 overflow-y-auto shadow-2xl">
@@ -36,6 +36,7 @@
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import { useStore } from "@/use/store/store";
     import SeachBar from "@/components/common/SearchBar.vue";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "Dashboard",
@@ -132,10 +133,17 @@
             ];
 
             onBeforeMount(async () => {
-                await getOperations();
+                await refresh();
                 //username.value = (await store.getters.user).username;
                 //role.value = (await store.getters.user).role;
             });
+
+            async function refresh() {
+                busy.value = true;
+                store.commit(MutationTypes.CLEAR_TREATED_OPERATIONS);
+                await getOperations();
+                busy.value = false;
+            }
 
             const filteredOperations = computed(() => {
                 let filter = message.value.replace(/\s/g, "").toLowerCase();
@@ -173,7 +181,6 @@
                 //TODO API CALL
                 // If success:
                 operations.value = operations.value.filter((op) => op.operationId !== operationId);
-                console.log(operationId);
             }
 
             return {
@@ -187,6 +194,7 @@
                 message,
                 getOperations,
                 markRead,
+                refresh,
             };
         },
     };

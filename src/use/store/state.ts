@@ -13,6 +13,10 @@ export const state = {
     encryptPrivateKeyModal: {} as any,
     certificate: {} as Certificate,
     hasCertificate: false,
+    treatedOperations: {
+        approved: [] as string[],
+        rejected: [] as string[],
+    } as any,
 };
 
 export type State = typeof state;
@@ -27,4 +31,8 @@ export default {
     encryptPrivateKeyModal: {} as any,
     certificate: {} as Certificate,
     hasCertificate: false,
+    treatedOperations: {
+        approved: [] as string[],
+        rejected: [] as string[],
+    } as any,
 };

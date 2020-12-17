@@ -19,6 +19,7 @@ export type Getters = {
     privateKey(state: State): () => Promise<CryptoKey>;
     certificate(state: State): () => Promise<Certificate>;
     hasCertificate(state: State): Promise<boolean>;
+    treatedOperations(state: State): any;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -116,5 +117,8 @@ export const getters: GetterTree<State, State> & Getters = {
             store.commit(MutationTypes.SET_HAS_CERTIFICATE, true);
         }
         return state.hasCertificate;
+    },
+    treatedOperations: (state) => {
+        return state.treatedOperations;
     },
 };

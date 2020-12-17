@@ -74,6 +74,8 @@
     import Operation from "@/api/api_models/operations_management/Operation";
     import { computed, ref } from "vue";
     import { OperationStatus } from "@/api/api_models/operations_management/OperationState";
+    import { useStore } from "@/use/store/store";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "MatriculatioOperationComponent",
@@ -94,6 +96,7 @@
         },
         emits: ["marked-read"],
         setup(props: any, { emit }: any) {
+            const store = useStore();
             const operation = ref(props.operation as Operation);
             const approvals = operation.value.existingApprovals.users.length + operation.value.existingApprovals.groups.length;
             const neededApprovals =
@@ -104,8 +107,8 @@
             const actionRequired =
                 operation.value.missingApprovals.users.includes(props.username) ||
                 operation.value.missingApprovals.groups.includes(props.role);
-            const sentApprove = ref(false);
-            const sentReject = ref(false);
+            const sentApprove = ref(store.getters.treatedOperations.approved.includes(operation.value.operationId));
+            const sentReject = ref(store.getters.treatedOperations.rejected.includes(operation.value.operationId));
 
             const statusColor = computed(() => {
                 switch ((props.operation as Operation).state) {
@@ -119,12 +122,16 @@
             });
 
             async function approve() {
-                //TODO
+                //TODO API Call
+                //If success
+                store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                 sentApprove.value = true;
             }
 
             async function reject() {
-                //TODO
+                //TODO API Call
+                //If success
+                store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                 sentReject.value = true;
             }
 

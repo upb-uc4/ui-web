@@ -18,6 +18,9 @@ export type Mutations<S = State> = {
     [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S): void;
     [MutationTypes.SET_HAS_CERTIFICATE](state: S, payload: boolean): void;
     [MutationTypes.RESET_STATE](state: S, payload: void): void;
+    [MutationTypes.ADD_OPERATION_APPROVAL](state: S, payload: string): void;
+    [MutationTypes.ADD_OPERATION_REJECTION](state: S, payload: string): void;
+    [MutationTypes.CLEAR_TREATED_OPERATIONS](state: S, payload: void): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -53,5 +56,15 @@ export const mutations: MutationTree<State> & Mutations = {
     },
     [MutationTypes.RESET_STATE](state: State) {
         Object.assign(state, defaultState);
+    },
+    [MutationTypes.ADD_OPERATION_APPROVAL](state: State, payload: string) {
+        state.treatedOperations.approved.push(payload);
+    },
+    [MutationTypes.ADD_OPERATION_REJECTION](state: State, payload: string) {
+        state.treatedOperations.rejected.push(payload);
+    },
+    [MutationTypes.CLEAR_TREATED_OPERATIONS](state: State) {
+        state.treatedOperations.approved = [] as string[];
+        state.treatedOperations.rejected = [] as string[];
     },
 };
