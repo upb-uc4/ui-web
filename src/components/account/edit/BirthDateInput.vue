@@ -2,15 +2,15 @@
     <div id="birthdate" class="flex space-x-6">
         <div class="w-1/3">
             <label class="input-label-tmp">Day</label>
-            <selection v-model:selection="selectedDay" :disabled="true" :elements="days" />
+            <selection v-model:selection="selectedDay" :elements="days" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Month</label>
-            <selection v-model:selection="selectedMonth" :disabled="true" :elements="months" />
+            <selection v-model:selection="selectedMonth" :elements="months" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Year</label>
-            <selection v-model:selection="selectedYear" :disabled="true" :elements="years" />
+            <selection v-model:selection="selectedYear" :elements="years" />
         </div>
     </div>
 </template>
