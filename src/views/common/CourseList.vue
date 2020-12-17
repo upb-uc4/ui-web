@@ -24,9 +24,35 @@
             </div>
         </div>
         <hr class="my-4" />
-        <div></div>
+        <div v-show="isFiltering()" class="text-gray-800 text-sm">
+            <div class="flex justify-between">
+                <div>
+                    <div v-if="isFilteringType()">
+                        <span class="font-semibold">{{ matchingCoursesCount }}</span> results for
+                        <span class="font-semibold">{{ selectedType.toLowerCase() }}s</span>
+                        <span v-if="isFilteringBySearch()">
+                            matching
+                            <span class="font-semibold">{{ message }}.</span>
+                        </span>
+                        <span v-else>.</span>
+                    </div>
+                    <div v-else>
+                        <span class="font-semibold">{{ matchingCoursesCount }}</span> results matching
+                        <span class="font-semibold">{{ message }}.</span>
+                    </div>
+                </div>
+                <div class="btn-tertiary-tmp" @click="clearFilter()">Clear filter</div>
+            </div>
+            <hr class="mt-4 mb-8" />
+        </div>
         <div>
-            <course-list :key="refreshKey" :show-all-courses="showAllCourses" :selected-type="selectedType" :filter="message" />
+            <course-list
+                :key="refreshKey"
+                :show-all-courses="showAllCourses"
+                :selected-type="selectedType"
+                :filter="message"
+                @on-updated="matchingCoursesCount = $event"
+            />
         </div>
     </div>
 </template>
@@ -35,7 +61,6 @@
     import CourseList from "@/components/course/list/common/CourseList.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
     import { ref, watch } from "vue";
-    import { CourseType } from "@/entities/CourseType";
     import Select from "@/components/common/Select.vue";
     import { CourseTypeFilter } from "@/entities/CourseTypeFilter";
 
@@ -57,6 +82,7 @@
             },
         },
         setup(props: any) {
+            const matchingCoursesCount = ref(0);
             let message = ref("");
             let refreshKey = ref(false);
             let title = ref(props.showAllCourses ? "All Courses" : "My Courses");
@@ -68,18 +94,41 @@
             );
 
             let types = Object.values(CourseTypeFilter);
-            let selectedType = ref(types[0]);
+            const defaultType = types[0];
+            let selectedType = ref(defaultType);
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;
             }
 
+            function isFilteringBySearch() {
+                return message.value !== "";
+            }
+
+            function isFilteringType() {
+                return selectedType.value !== defaultType;
+            }
+
+            function isFiltering() {
+                return isFilteringBySearch() || isFilteringType();
+            }
+
+            function clearFilter() {
+                message.value = "";
+                selectedType.value = defaultType;
+            }
+
             return {
+                matchingCoursesCount,
                 types,
                 refreshKey,
                 refresh,
                 message,
                 selectedType,
+                isFilteringBySearch,
+                isFilteringType,
+                isFiltering,
+                clearFilter,
                 title,
             };
         },
