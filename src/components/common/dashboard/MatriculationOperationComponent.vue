@@ -49,11 +49,11 @@
                     </button>
                     <button
                         :id="'op_' + operation.operationId + '_approve'"
-                        :disabled="sentReject"
+                        :disabled="sentReject || provideReason"
                         :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
                         class="ml-2 w-10 h-10 btn btn-icon-red-filled"
                         title="Reject"
-                        @click="reject"
+                        @click="toogleReasonMenu"
                     >
                         <i class="fas fa-times"></i>
                     </button>
@@ -65,6 +65,13 @@
             </div>
             <div v-if="isRejected" class="mt-1">
                 <p class="text-red-500">Rejected: {{ operation.reason }}</p>
+            </div>
+            <div v-if="provideReason" class="mt-3 flex flex-col">
+                <input v-model="reason" class="form-input input-text" placeholder="Reason for rejection" />
+                <div class="flex justify-end mt-2">
+                    <button :disabled="reason == ''" class="btn btn-icon-red-filled text-sm h-12" @click="reject">Reject</button>
+                    <button class="ml-2 btn btn-icon-blue text-sm h-12" @click="toogleReasonMenu">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -109,6 +116,8 @@
                 operation.value.missingApprovals.groups.includes(props.role);
             const sentApprove = ref(store.getters.treatedOperations.approved.includes(operation.value.operationId));
             const sentReject = ref(store.getters.treatedOperations.rejected.includes(operation.value.operationId));
+            const provideReason = ref(false);
+            const reason = ref("");
 
             const statusColor = computed(() => {
                 switch ((props.operation as Operation).state) {
@@ -126,13 +135,19 @@
                 //If success
                 store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                 sentApprove.value = true;
+                provideReason.value = false;
+            }
+
+            function toogleReasonMenu() {
+                provideReason.value = !provideReason.value;
             }
 
             async function reject() {
-                //TODO API Call
+                //TODO API Call with reason
                 //If success
                 store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                 sentReject.value = true;
+                toogleReasonMenu();
             }
 
             function markRead() {
@@ -151,6 +166,9 @@
                 sentApprove,
                 sentReject,
                 markRead,
+                provideReason,
+                reason,
+                toogleReasonMenu,
             };
         },
     };
