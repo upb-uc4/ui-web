@@ -2,9 +2,14 @@
     <div class="w-full">
         <section-header title="Playground Profile" />
         <profile-picture-section class="w-full" />
-        <personal-section class="w-full" />
-        <contact-section class="w-full" />
-        <address-section v-model:address="myAddress" class="w-full" />
+        <personal-section
+            v-model:first-name="myUser.firstName"
+            v-model:last-name="myUser.lastName"
+            v-model:birth-date="myUser.birthDate"
+            class="w-full"
+        />
+        <contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" class="w-full" />
+        <address-section v-model:address="myUser.address" class="w-full" />
 
         <button-section>
             <template #left>
@@ -26,7 +31,9 @@
     import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
     import ContactSection from "@/components/common/dev/playground/ContactSection.vue";
     import { ref } from "vue";
+    import { Role } from "@/entities/Role";
     import Address from "@/api/api_models/user_management/Address";
+    import User from "@/api/api_models/user_management/User";
 
     export default {
         name: "Playground",
@@ -46,9 +53,23 @@
                 city: "NoCity",
                 country: "Germany",
             } as Address;
-            const myAddress = ref(address);
 
-            return { myAddress };
+            const user = {
+                username: "maxmustermann",
+                role: Role.STUDENT,
+                address: address,
+                firstName: "Max",
+                lastName: "Mustermann",
+                email: "example@cs.uc4.upb.de",
+                birthDate: "06-07-1993",
+                phoneNumber: "+0900666666",
+                enrollmentIdSecret: "asdklfjlk;sdjgkjasdlk;fj",
+                isActive: true,
+            } as User;
+
+            const myUser = ref(user);
+
+            return { myUser };
         },
     };
 </script>
