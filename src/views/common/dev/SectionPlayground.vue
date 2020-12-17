@@ -4,7 +4,7 @@
         <profile-picture-section class="w-full" />
         <personal-section class="w-full" />
         <contact-section class="w-full" />
-        <address-section class="w-full" />
+        <address-section v-model:address="myAddress" class="w-full" />
 
         <button-section>
             <template #left>
@@ -19,13 +19,14 @@
 </template>
 
 <script lang="ts">
-    import InputSection from "@/components/common/dev/playground/InputSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
     import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
     import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
     import ContactSection from "@/components/common/dev/playground/ContactSection.vue";
+    import { ref } from "vue";
+    import Address from "@/api/api_models/user_management/Address";
 
     export default {
         name: "Playground",
@@ -36,6 +37,18 @@
             AddressSection,
             ContactSection,
             ButtonSection,
+        },
+        setup() {
+            const address = {
+                street: "Some street",
+                houseNumber: "9",
+                zipCode: "947589",
+                city: "NoCity",
+                country: "Germany",
+            } as Address;
+            const myAddress = ref(address);
+
+            return { myAddress };
         },
     };
 </script>

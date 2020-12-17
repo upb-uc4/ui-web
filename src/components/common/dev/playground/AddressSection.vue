@@ -7,38 +7,39 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Country</label>
-                    <Select v-model:elements="countries" v-model:selection="selectedCountry" :disabled="true" />
+                    <Select v-model:elements="countries" v-model:selection="country" :disabled="false" />
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">City</label>
-                    <input type="text" class="w-full input-text-tmp" readonly value="Hamburg" />
+                    <input v-model="city" type="text" class="w-full input-text-tmp" />
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Postal Code</label>
-                    <input type="text" class="w-full input-text-tmp" readonly value="22041" />
+                    <input v-model="zipCode" type="text" class="w-full input-text-tmp" />
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Street</label>
-                    <input type="text" class="w-full input-text-tmp" readonly value="Bakerstreet" />
+                    <input v-model="street" type="text" class="w-full input-text-tmp" />
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">House Number</label>
-                    <input type="text" class="w-full input-text-tmp" readonly value="221b" />
+                    <input v-model="houseNumber" type="text" class="w-full input-text-tmp" />
                 </div>
             </div>
         </div>
     </BaseSection>
 </template>
 
-<script>
-    import BaseSection from "@/components/common/section/BaseSection";
-    import Select from "@/components/common/Select";
-    import { ref } from "vue";
+<script lang="ts">
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import Select from "@/components/common/Select.vue";
+    import { Country } from "@/entities/Country";
+    import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         name: "InputSection",
@@ -46,10 +47,24 @@
             BaseSection,
             Select,
         },
-        setup() {
-            const countries = ["Germany", "France", "United Kingdom"];
-            const selectedCountry = ref(countries[0]);
-            return { countries, selectedCountry };
+        props: {
+            address: {
+                type: Object,
+                required: true,
+            },
+        },
+        emits: ["update:address"],
+        setup(props: any, { emit }: any) {
+            const countries = Object.values(Country).filter((e) => e !== Country.NONE);
+
+            return {
+                countries,
+                country: useObjectModelWrapper(props, emit, "address", "country"),
+                city: useObjectModelWrapper(props, emit, "address", "city"),
+                street: useObjectModelWrapper(props, emit, "address", "street"),
+                houseNumber: useObjectModelWrapper(props, emit, "address", "houseNumber"),
+                zipCode: useObjectModelWrapper(props, emit, "address", "zipCode"),
+            };
         },
     };
 </script>
