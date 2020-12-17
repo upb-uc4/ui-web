@@ -7,16 +7,16 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">First Name</label>
-                    <input type="text" class="w-full input-text-tmp" readonly value="Max" />
+                    <input v-model="myFirstName" type="text" class="w-full input-text-tmp" />
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Last Name</label>
-                    <input type="text" class="w-full input-text-tmp" readonly value="Mustermann" />
+                    <input v-model="myLastName" type="text" class="w-full input-text-tmp" />
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <birth-date-input v-model:birth-date="birthdate" />
+                    <birth-date-input v-model:birth-date="myBirthDate" />
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
@@ -24,10 +24,10 @@
     </BaseSection>
 </template>
 
-<script>
-    import BaseSection from "@/components/common/section/BaseSection";
-    import { ref } from "vue";
-    import BirthDateInput from "@/components/account/edit/BirthDateInput";
+<script lang="ts">
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import BirthDateInput from "@/components/account/edit/BirthDateInput.vue";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         name: "InputSection",
@@ -35,10 +35,26 @@
             BaseSection,
             BirthDateInput,
         },
-        setup() {
-            const birthdate = ref("24-07-1993");
+        props: {
+            firstName: {
+                type: String,
+                required: true,
+            },
+            lastName: {
+                type: String,
+                required: true,
+            },
+            birthDate: {
+                type: String,
+                required: true,
+            },
+        },
+        emits: ["update:firstName", "update:lastName", "update:birthDate"],
+        setup(props: any, { emit }: any) {
             return {
-                birthdate,
+                myFirstName: useModelWrapper(props, emit, "firstName"),
+                myLastName: useModelWrapper(props, emit, "lastName"),
+                myBirthDate: useModelWrapper(props, emit, "birthDate"),
             };
         },
     };
