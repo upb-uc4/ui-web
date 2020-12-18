@@ -69,9 +69,10 @@
                     </div>
 
                     <h3 class="block text-gray-600 text-sm leading-relaxed">
-                        We try to provide you with the best user experience possible, however, it may be possible that you find something
-                        not working as you would expect it. In this case we kindly ask you to
-                        <a href="" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know about it.
+                        While we try to provide you with the best user experience possible, it may happen that you find something not
+                        working as you would expect it. In this case we kindly ask you to
+                        <a href="" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know about it so we
+                        can solve the problem in upcoming versions.
                     </h3>
                 </div>
                 <div>
