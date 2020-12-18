@@ -4,8 +4,9 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Participation Limit</label>
-                    <input v-model.number="myMaxParticipant" min="0" type="number" class="w-full input-text-tmp" />
+                    <input v-model.number="myMaxParticipant" min="0" type="number" class="lg:w-32 w-full input-text-tmp" />
                 </div>
+                <div class="lg:w-1/2 w-full invisible" />
             </div>
         </div>
     </BaseSection>
