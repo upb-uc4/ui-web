@@ -1,7 +1,7 @@
 <template>
-    <div class="w-full max-w-xs mx-auto">
+    <div class="w-full max-w-xs">
         <Listbox v-model="matches" as="div" class="space-y-1">
-            <ListboxLabel class="input-label-tmp">Awesome Quotes</ListboxLabel>
+            <ListboxLabel v-if="label" class="input-label-tmp">{{ label }} </ListboxLabel>
             <div class="relative">
                 <span class="inline-block w-full">
                     <input
@@ -72,6 +72,10 @@
             ListboxOption,
         },
         props: {
+            label: {
+                type: String,
+                default: "",
+            },
             elements: {
                 type: Array,
                 required: true,
