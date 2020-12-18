@@ -1,23 +1,28 @@
 <template>
     <BaseSection subtitle="Select a lecturer that will hold the course" title="Lecturer">
-        <searchableSelect :label="'Lecturer-ID'" :elements="myLecturers" @update:selected="updateLecturerId" />
-        <div :hidden="Object.keys(currentLecturer).length === 0" class="text-gray-700 text-md font-medium my-3">
-            <label v-if="currentLecturer.username">
-                <i class="text-green-400 fas fa-check mr-2"></i>
-                {{ currentLecturer.firstName }} {{ currentLecturer.lastName }} (
-                <router-link
-                    class="navigation-link cursor-pointer hover:underline"
-                    target="_blank"
-                    :to="{ name: 'profile.public', params: { username: currentLecturer.username } }"
-                >
-                    @{{ currentLecturer.username }}
-                </router-link>
-                )
-            </label>
-            <label v-else>
-                <i class="text-red-400 fas fa-times mr-2"></i>
-                Lecturer-ID not found!
-            </label>
+        <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+            <div class="lg:w-1/2 w-full">
+                <searchableSelect :label="'Lecturer-ID'" :elements="myLecturers" @update:selected="updateLecturerId" />
+                <div :hidden="Object.keys(currentLecturer).length === 0" class="text-gray-700 text-md font-medium my-3">
+                    <label v-if="currentLecturer.username">
+                        <i class="text-green-400 fas fa-check mr-2"></i>
+                        {{ currentLecturer.firstName }} {{ currentLecturer.lastName }} (
+                        <router-link
+                            class="navigation-link cursor-pointer hover:underline"
+                            target="_blank"
+                            :to="{ name: 'profile.public', params: { username: currentLecturer.username } }"
+                        >
+                            @{{ currentLecturer.username }}
+                        </router-link>
+                        )
+                    </label>
+                    <label v-else>
+                        <i class="text-red-400 fas fa-times mr-2"></i>
+                        Lecturer-ID not found!
+                    </label>
+                </div>
+            </div>
+            <div class="lg:w-1/2 w-full invisible" />
         </div>
     </BaseSection>
 </template>
