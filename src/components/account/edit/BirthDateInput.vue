@@ -46,7 +46,7 @@
 
             if (props.birthDate) {
                 let dates = props.birthDate.split("-");
-                let date = new Date(+dates[2], dates[1] - 1, +dates[0]);
+                let date = new Date(+dates[0], dates[1] - 1, +dates[2]);
                 selectedDay.value = date.getDay().toString();
                 selectedMonth.value = date.toLocaleString("en-GB", { month: "long" });
                 selectedYear.value = date.getFullYear().toString();
@@ -58,7 +58,7 @@
 
             function emitBirthdate() {
                 console.log(selectedDay.value, selectedMonthAsNumber.value, selectedYear.value);
-                emit("update:birthDate", `${selectedDay.value}-${selectedMonthAsNumber.value}-${selectedYear.value}`);
+                emit("update:birthDate", `${selectedYear.value}-${selectedMonthAsNumber.value}-${selectedDay.value}`);
             }
 
             return {

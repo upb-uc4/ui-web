@@ -1,5 +1,8 @@
 <template>
-    <div class="w-full">
+    <div v-if="busy">
+        <spinner />
+    </div>
+    <div v-else class="w-full">
         <section-header title="Playground Profile" />
         <profile-picture-section class="w-full" />
         <personal-section
@@ -30,10 +33,16 @@
     import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
     import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
     import ContactSection from "@/components/common/dev/playground/ContactSection.vue";
-    import { ref } from "vue";
+    import Spinner from "@/components/common/loading/Spinner.vue";
+    import { onBeforeMount, ref } from "vue";
     import { Role } from "@/entities/Role";
     import Address from "@/api/api_models/user_management/Address";
     import User from "@/api/api_models/user_management/User";
+    import Student from "@/api/api_models/user_management/Student";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import Admin from "@/api/api_models/user_management/Admin";
+    import UserManagement from "@/api/UserManagement";
+    import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
 
     export default {
         name: "Playground",
@@ -44,6 +53,7 @@
             AddressSection,
             ContactSection,
             ButtonSection,
+            Spinner,
         },
         setup() {
             const address = {
@@ -54,7 +64,7 @@
                 country: "Germany",
             } as Address;
 
-            const user = {
+            const oldUser = {
                 username: "maxmustermann",
                 role: Role.STUDENT,
                 address: address,
@@ -67,9 +77,29 @@
                 isActive: true,
             } as User;
 
-            const myUser = ref(user);
+            const myUser = ref({} as Student | Lecturer | Admin);
+            const busy = ref(true);
 
-            return { myUser };
+            onBeforeMount(async () => {
+                await getUser();
+            });
+
+            async function getUser() {
+                busy.value = true;
+                const auth: UserManagement = new UserManagement();
+                const responseHandler = new ProfileResponseHandler();
+                const response = await auth.getOwnUser();
+                const result = responseHandler.handleResponse(response);
+                if (result) {
+                    myUser.value = result;
+                }
+                busy.value = false;
+            }
+
+            return {
+                myUser,
+                busy,
+            };
         },
     };
 </script>
