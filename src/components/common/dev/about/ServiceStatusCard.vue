@@ -47,7 +47,7 @@
             onBeforeMount(() => {
                 props.getVersion
                     .then((versionResult) => {
-                        version.value = versionResult.version;
+                        version.value = versionResult.version.replace("v", "");
                         changelogURL.value = versionResult.changelogURL;
                     })
                     .catch(() => (isServiceUnreachable.value = true))
