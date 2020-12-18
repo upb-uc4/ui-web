@@ -4,6 +4,7 @@ import APIError from "./api_models/errors/APIError";
 import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class CourseManagement extends Common {
     protected static endpoint = "/course-management";
@@ -14,6 +15,13 @@ export default class CourseManagement extends Common {
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
+    }
+
+    static getServiceVersion(): Promise<ServiceVersion> {
+        return super.getServiceVersion().then(async (version: ServiceVersion) => {
+            version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/course-${version.version}/product_code/course_service/CHANGELOG.md`;
+            return version;
+        });
     }
 
     async getCourses(courseName?: string, lecturerId?: string, moduleIds?: string[]): Promise<APIResponse<Course[]>> {

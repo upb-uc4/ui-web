@@ -39,7 +39,7 @@
                         <h3 class="block text-gray-600 text-sm leading-relaxed">
                             University Credits 4.0 is an educational research project at the
                             <a
-                                class="text-blue-700 hover:text-blue-800 hover:underline"
+                                class="navigation-link-tmp"
                                 target="_blank"
                                 rel="noreferrer"
                                 href="https://cs.uni-paderborn.de/en/studies/degree-programs/computer-science/"
@@ -47,12 +47,7 @@
                                 Paderborn University</a>. This software is a work in progress prototype of an university management system. It is based on cutting edge
                             blockchain technology to securely ensure privacy and data persistence. If you wish to learn more about us, our
                             vision or the technology we use, pay us a visit at
-                            <a
-                                class="text-blue-700 hover:text-blue-800 hover:underline"
-                                target="_blank"
-                                rel="noreferrer"
-                                href="https://uc4.cs.uni-paderborn.de/"
-                            >
+                            <a class="navigation-link-tmp" target="_blank" rel="noreferrer" href="https://uc4.cs.uni-paderborn.de/">
                                 uc4.cs.uni-paderborn.de</a>. Starting from April 2020 onwards, continuous support for this project will be provided until Q2 2021.
                         </h3>
                     </div>
@@ -76,7 +71,7 @@
                     <h3 class="block text-gray-600 text-sm leading-relaxed">
                         We try to provide you with the best user experience possible, however, it may be possible that you find something
                         not working as you would expect it. In this case we kindly ask you to
-                        <a href="" class="navigation-link">create an issue on our GitHub repository</a> and let us know about it.
+                        <a href="" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know about it.
                     </h3>
                 </div>
                 <div>

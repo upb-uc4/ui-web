@@ -6,6 +6,7 @@ import EnrollmentId from "./api_models/certificate_management/EnrollmentId";
 import EncryptedPrivateKey from "./api_models/certificate_management/EncryptedPrivateKey";
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class CertificateManagement extends CommonHyperledger {
     protected static endpoint = "/certificate-management";
@@ -16,6 +17,14 @@ export default class CertificateManagement extends CommonHyperledger {
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
+    }
+
+    static getServiceVersion(): Promise<ServiceVersion> {
+        return super.getServiceVersion().then(async (version: ServiceVersion) => {
+            //todo inject the hyperledger version in the promise
+            version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/certificate-${version.version}/product_code/certificate_service/CHANGELOG.md`;
+            return version;
+        });
     }
 
     async getCertificate(username: string): Promise<APIResponse<Certificate>> {

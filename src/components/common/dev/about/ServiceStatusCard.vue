@@ -14,11 +14,11 @@
                     <div>Checking Version...</div>
                 </div>
                 <div v-else-if="isServiceUnreachable">
-                    <a href="" class="navigation-link">Version not available</a>
+                    <span class="navigation-link-tmp">Version not available</span>
                     <div>Unreachable</div>
                 </div>
                 <div v-else>
-                    <a href="" class="navigation-link">Version {{ version }}</a>
+                    <a :href="changelogURL" class="navigation-link-tmp">Version {{ version }}</a>
                     <div>Active</div>
                 </div>
             </div>
@@ -28,7 +28,6 @@
 
 <script lang="ts">
     import { onBeforeMount, ref } from "vue";
-
     export default {
         name: "ServiceStatusCard",
         props: {
@@ -45,18 +44,19 @@
             const isLoading = ref(true);
             const isServiceUnreachable = ref(false);
             const version = ref("0.0.0");
-
-            //todo link to read me
-            //todo change version promise api?
+            const changelogURL = ref("/");
 
             onBeforeMount(() => {
                 props.getVersion
-                    .then((versionResult) => (version.value = versionResult))
-                    .catch(() => (isServiceUnreachable.value = true)) //todo adjust getVersion and all corresponding tests or check in then for "unavailable"
+                    .then((versionResult) => {
+                        version.value = versionResult.version;
+                        changelogURL.value = versionResult.changelogURL;
+                    })
+                    .catch(() => (isServiceUnreachable.value = true))
                     .finally(() => (isLoading.value = false));
             });
 
-            return { isLoading, isServiceUnreachable, version };
+            return { isLoading, isServiceUnreachable, version, changelogURL };
         },
     };
 </script>
