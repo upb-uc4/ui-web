@@ -53,7 +53,6 @@ export default class Common {
                 return {
                     version: response.data.serviceVersion,
                 };
-                //return response.data.serviceVersion;
             } else {
                 throw new Error("Endpoint Broken");
             }
