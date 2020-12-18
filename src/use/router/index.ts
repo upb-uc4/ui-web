@@ -21,6 +21,7 @@ const Settings = () => import("@/views/common/Settings.vue");
 const StudentImmatricultaion = () => import("@/components/study/Immatriculation.vue");
 const Playground = () => import("@/views/common/dev/Playground.vue");
 const SectionPlayground = () => import("@/views/common/dev/SectionPlayground.vue");
+const EditCoursePlayground = () => import("@/views/common/dev/EditCoursePlayground.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -51,6 +52,14 @@ const router = createRouter({
             component: SectionPlayground,
             meta: {
                 title: "Section Playground" + suffix,
+            },
+        },
+        {
+            path: "/edit-course-playground",
+            name: "edit-course-playground",
+            component: EditCoursePlayground,
+            meta: {
+                title: "Edit Course Playground" + suffix,
             },
         },
         {
