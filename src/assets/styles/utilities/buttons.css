@@ -257,6 +257,6 @@
 
 .btn-base-tmp {
     @apply p-1.5 border-2 rounded-md leading-5 font-medium text-sm focus:outline-none tracking-wide
-    transition duration-150 ease-in-out cursor-pointer
+    transition duration-150 ease-in-out cursor-pointer text-center
     disabled:opacity-50 disabled:cursor-not-allowed
 }

@@ -242,7 +242,7 @@ const router = createRouter({
             name: "pageNotFound",
             component: PageNotFound,
             meta: {
-                title: "404" + suffix,
+                title: "Page not found" + suffix,
             },
         },
     ],
