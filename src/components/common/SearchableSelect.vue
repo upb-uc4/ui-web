@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full max-w-xs">
+    <div class="w-full">
         <Listbox v-model="matches" as="div" class="space-y-1">
             <ListboxLabel v-if="label" class="input-label-tmp">{{ label }} </ListboxLabel>
             <div class="relative">
@@ -8,7 +8,7 @@
                         v-model="input"
                         type="text"
                         autocomplete="off"
-                        class="w-64 input-text-tmp"
+                        class="w-full input-text-tmp"
                         @focusin="hidden = false"
                         @focusout="hidden = true"
                     />
