@@ -1,4 +1,4 @@
-# [WIP 0.14.1](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.14.1) (2020-12-XX)
+# [0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-12-18)
 ## Feature
 - add hyperledger versions [#754](https://github.com/upb-uc4/ui-web/pull/754)
 - add frontened signing for matriculation use case [#749](https://github.com/upb-uc4/ui-web/pull/749)
