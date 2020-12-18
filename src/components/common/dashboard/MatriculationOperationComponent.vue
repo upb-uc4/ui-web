@@ -67,9 +67,25 @@
                 <p class="text-red-500">Rejected: {{ operation.reason }}</p>
             </div>
             <div v-if="provideReason" class="mt-3 flex flex-col">
-                <input v-model="reason" class="form-input input-text" placeholder="Reason for rejection" />
+                <select v-model="selectedReason" class="form-select input-select">
+                    <option value="" disabled>Select a reason</option>
+                    <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
+                </select>
+                <input
+                    v-if="selectedReason == RejectionReasons.OTHER"
+                    v-model="writtenReason"
+                    class="form-input input-text mt-2"
+                    placeholder="Reason for rejection"
+                />
                 <div class="flex justify-end mt-2">
-                    <button :disabled="reason == ''" class="btn btn-icon-red-filled text-sm h-12" @click="reject">Reject</button>
+                    <button
+                        :title="writtenReason == '' ? 'Please provide a reason' : 'Reject'"
+                        :disabled="writtenReason == ''"
+                        class="btn btn-icon-red-filled text-sm h-12"
+                        @click="reject"
+                    >
+                        Reject
+                    </button>
                     <button class="ml-2 btn btn-icon-blue text-sm h-12" @click="toogleReasonMenu">Cancel</button>
                 </div>
             </div>
@@ -79,10 +95,11 @@
 
 <script lang="ts">
     import Operation from "@/api/api_models/operations_management/Operation";
-    import { computed, ref } from "vue";
+    import { computed, ref, watch } from "vue";
     import { OperationStatus } from "@/api/api_models/operations_management/OperationState";
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
+    import { RejectionReasons } from "./reasons";
 
     export default {
         name: "MatriculatioOperationComponent",
@@ -117,7 +134,8 @@
             const sentApprove = ref(store.getters.treatedOperations.approved.includes(operation.value.operationId));
             const sentReject = ref(store.getters.treatedOperations.rejected.includes(operation.value.operationId));
             const provideReason = ref(false);
-            const reason = ref("");
+            const selectedReason = ref("");
+            const writtenReason = ref("");
 
             const statusColor = computed(() => {
                 switch ((props.operation as Operation).state) {
@@ -130,6 +148,13 @@
                 }
             });
 
+            watch(selectedReason, () => {
+                writtenReason.value = selectedReason.value;
+                if (writtenReason.value == RejectionReasons.OTHER) {
+                    writtenReason.value = "";
+                }
+            });
+
             async function approve() {
                 //TODO API Call
                 //If success
@@ -139,6 +164,8 @@
             }
 
             function toogleReasonMenu() {
+                selectedReason.value = "";
+                writtenReason.value = "";
                 provideReason.value = !provideReason.value;
             }
 
@@ -167,8 +194,10 @@
                 sentReject,
                 markRead,
                 provideReason,
-                reason,
+                selectedReason,
+                writtenReason,
                 toogleReasonMenu,
+                RejectionReasons,
             };
         },
     };
