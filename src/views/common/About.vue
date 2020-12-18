@@ -1,8 +1,5 @@
 <template>
-    <div v-if="busy">
-        <loading-spinner />
-    </div>
-    <div v-else class="max-w-screen-lg mx-auto w-full space-y-8">
+    <div class="max-w-screen-lg mx-auto w-full space-y-8">
         <h1 class="text-4xl font-extrabold text-center">About Us</h1>
         <hr class="my-4" />
         <div class="lg:flex w-full space-y-8 lg:space-y-0">
@@ -47,9 +44,7 @@
                                 rel="noreferrer"
                                 href="https://cs.uni-paderborn.de/en/studies/degree-programs/computer-science/"
                             >
-                                Paderborn University.
-                            </a>
-                            This software is a work in progress prototype of an university management system. It is based on cutting edge
+                                Paderborn University</a>. This software is a work in progress prototype of an university management system. It is based on cutting edge
                             blockchain technology to securely ensure privacy and data persistence. If you wish to learn more about us, our
                             vision or the technology we use, pay us a visit at
                             <a
@@ -58,14 +53,12 @@
                                 rel="noreferrer"
                                 href="https://uc4.cs.uni-paderborn.de/"
                             >
-                                uc4.cs.uni-paderborn.de.
-                            </a>
-                            Starting from April 2020 onwards, continuous support for this project will be provided until Q2 2021.
+                                uc4.cs.uni-paderborn.de</a>. Starting from April 2020 onwards, continuous support for this project will be provided until Q2 2021.
                         </h3>
                     </div>
                 </div>
-                <div>
-                    <div class="w-full mb-6 text-justify">
+                <div class="space-y-6">
+                    <div class="w-full text-justify">
                         <h2 class="block text-gray-800 text-lg font-medium mb-1">Demo Login</h2>
                         <h3 class="block text-gray-600 text-sm leading-relaxed">
                             We encourage you to explore our product on your own. Feel free to use any of the following login combinations.
@@ -79,39 +72,34 @@
                         <credential-card title="Lecturer" emoji="👨‍🏫" username="lecturer" password="lecturer" />
                         <credential-card title="Student" emoji="👨‍🎓" username="student" password="student" />
                     </div>
+
+                    <h3 class="block text-gray-600 text-sm leading-relaxed">
+                        We try to provide you with the best user experience possible, however, it may be possible that you find something
+                        not working as you would expect it. In this case we kindly ask you to
+                        <a href="" class="navigation-link">create an issue on our GitHub repository</a> and let us know about it.
+                    </h3>
                 </div>
                 <div>
-                    <div class="w-full mb-6 text-justify">
-                        <h2 class="block text-gray-800 text-lg font-medium mb-1">Server Status</h2>
-                    </div>
+                    <service-status-section />
                 </div>
-            </div>
-        </div>
-
-        <div class="flex flex-col items-center justify-center w-full mt-20">
-            <div class="flex flex-col items-center w-full mt-5">
-                <versions @versions="updateVersions" />
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import Versions from "@/components/common/dev/about/Versions.vue";
     import CredentialCard from "@/components/common/dev/about/CredentialCard.vue";
+    import ServiceStatusSection from "@/components/common/dev/about/ServiceStatusSection.vue";
 
     import { reactive, computed, ref, onBeforeMount } from "vue";
     import axios, { AxiosResponse } from "axios";
-    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
         components: {
             CredentialCard,
-            Versions,
-            LoadingSpinner,
+            ServiceStatusSection,
         },
         setup() {
-            let busy = ref(false);
             let versions: { name: String; version: String }[] = reactive([]);
             let template: String = "";
             let bugReportURL = ref("");
@@ -124,7 +112,6 @@
             });
 
             async function createURL() {
-                busy.value = true;
                 const instance = axios.create({
                     baseURL: "https://raw.githubusercontent.com/upb-uc4/.github/master/.github/ISSUE_TEMPLATE/",
                     headers: {
@@ -139,7 +126,6 @@
                     template = template.replace(/ /g, "%20");
                     template = template.replace(/\n/g, "%0A");
                 });
-                busy.value = false;
             }
 
             function updateVersions(emittedVersions: { name: string; version: string }[]) {
@@ -156,7 +142,6 @@
                 window.open(bugReportURL.value, "_blank", "noreferrer");
             }
             return {
-                busy,
                 updateVersions,
                 reportProblem,
             };
