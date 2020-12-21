@@ -1,5 +1,5 @@
 <template>
-    <div :id="'course_' + course.courseId" class="w-full px-4 sm:px-8">
+    <div :id="'course_' + course.courseId" class="w-full">
         <div class="flex items-center justify-between sm:justify-start space-x-4">
             <div class="flex items-center space-x-2">
                 <span
@@ -25,35 +25,33 @@
             </div>
         </div>
 
-        <div class="flex mt-2">
-            <div class="items-start w-2/3 md:w-5/6">
-                <div id="courseName" class="text-lg navigation-link-tmp font-bold">
-                    {{ course.courseName }}
-                </div>
-                <router-link
-                    id="showLecturer"
-                    :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
-                    class="mt-1 font-medium text-sm navigation-link-tmp"
-                >
-                    {{ lecturerDisplayName }}
-                </router-link>
-
-                <div class="w-full sm:flex sm:items-center">
-                    <div class="mt-1 sm:w-5/6 sm:mr-4">
-                        <read-more
-                            v-if="course.courseDescription !== ''"
-                            more-str="Show more"
-                            :text="course.courseDescription"
-                            less-str="Show less"
-                            :max-chars="240"
-                        ></read-more>
-                        <div v-else class="text-gray-500 text-sm italic">No course description available.</div>
-                    </div>
-                </div>
+        <div class="mt-2">
+            <div id="courseName" class="text-lg navigation-link-tmp font-bold" @click="editCourse()">
+                {{ course.courseName }}
             </div>
-            <div class="w-full md:w-1/6 mt-6 sm:mt-1">
-                <button id="joinCourse" class="w-full btn btn-tmp" :disabled="isCourseFull">Join</button>
-                <p v-if="isCourseFull" class="input-label-error-tmp">Course is already full.</p>
+            <router-link
+                id="showLecturer"
+                :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
+                class="mt-1 font-medium text-sm navigation-link-tmp"
+            >
+                {{ lecturerDisplayName }}
+            </router-link>
+
+            <div class="w-full sm:flex sm:items-start sm:justify-between">
+                <div class="mt-1 w-2/3 sm:mr-4">
+                    <read-more
+                        v-if="course.courseDescription !== ''"
+                        more-str="Show more"
+                        :text="course.courseDescription"
+                        less-str="Show less"
+                        :max-chars="240"
+                    />
+                    <div v-else class="text-gray-500 text-sm italic">No course description available.</div>
+                </div>
+                <div class="w-full sm:w-1/3 mt-6 sm:mt-0 flex justify-end">
+                    <button v-if="!isCourseFull" id="joinCourse" class="w-full sm:w-24 btn-tmp">Join</button>
+                    <p v-else class="w-full sm:text-right input-label-error-tmp">Course is already full.</p>
+                </div>
             </div>
         </div>
     </div>

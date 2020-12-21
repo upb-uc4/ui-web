@@ -11,16 +11,18 @@
                         <filter-select v-model:selection="selectedType" label="Type" :elements="types" />
                     </div>
                 </div>
-                <router-link
-                    v-if="!isCourseCatalogue"
-                    id="addCourse"
-                    to="/createCourse"
-                    title="Add a new Course"
-                    class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2"
-                >
-                    <i class="fas fa-calendar-plus" />
-                    <span class="font-semibold">New</span>
-                </router-link>
+                <div>
+                    <router-link
+                        v-if="!isCourseCatalogue"
+                        id="addCourse"
+                        to="/createCourse"
+                        title="Add a new Course"
+                        class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2"
+                    >
+                        <i class="fas fa-calendar-plus" />
+                        <span class="font-semibold">New</span>
+                    </router-link>
+                </div>
             </div>
         </div>
         <hr class="my-4" />
