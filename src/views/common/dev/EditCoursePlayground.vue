@@ -2,7 +2,7 @@
     <div class="w-full">
         <section-header title="Edit Course" />
         <lecturer-section v-model:lecturerId="course.lecturerId" />
-        <course-info-section
+        <info-section
             v-model:name="course.courseName"
             v-model:type="course.courseType"
             v-model:language="course.courseLanguage"
@@ -27,7 +27,7 @@
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import { ref } from "vue";
     import LecturerSection from "@/components/common/dev/playground/course/LecturerSection.vue";
-    import CourseInfoSection from "@/components/common/dev/playground/course/CourseInfoSection.vue";
+    import InfoSection from "@/components/common/dev/playground/course/InfoSection.vue";
     import Course from "@/api/api_models/course_management/Course";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
@@ -36,7 +36,7 @@
     export default {
         name: "Playground",
         components: {
-            CourseInfoSection,
+            InfoSection,
             SectionHeader,
             ButtonSection,
             LecturerSection,
