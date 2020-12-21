@@ -71,8 +71,8 @@
                     <h3 class="block text-gray-600 text-sm leading-relaxed">
                         While we try to provide you with the best user experience possible, it may happen that you find something not
                         working as you would expect it. In this case we kindly ask you to
-                        <a href="" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know about it so we
-                        can solve the problem in upcoming versions.
+                        <a :href="githubIssueURL" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know
+                        about it so we can solve the problem in upcoming versions.
                     </h3>
                 </div>
                 <div>
@@ -86,9 +86,8 @@
 <script lang="ts">
     import CredentialCard from "@/components/common/dev/about/CredentialCard.vue";
     import ServiceStatusSection from "@/components/common/dev/about/ServiceStatusSection.vue";
-
-    import { reactive, computed, ref, onBeforeMount } from "vue";
-    import axios, { AxiosResponse } from "axios";
+    import { generatePrefilledGithubIssueURL } from "@/use/helpers/Versions.ts";
+    import { ref, onBeforeMount } from "vue";
 
     export default {
         components: {
@@ -96,50 +95,14 @@
             ServiceStatusSection,
         },
         setup() {
-            let versions: { name: String; version: String }[] = reactive([]);
-            let template: String = "";
-            let bugReportURL = ref("");
-            const base = "https://github.com/upb-uc4/ui-web/issues/new?";
-            const labels = "&labels=bug";
-            const bodyBase = "&body=";
+            const githubIssueURL = ref("https://github.com/upb-uc4/ui-web/issues/new?assignees=&labels=bug&template=bug_report.md&title=");
 
-            onBeforeMount(async () => {
-                await createURL();
+            onBeforeMount(() => {
+                generatePrefilledGithubIssueURL().then((url: string) => (githubIssueURL.value = url));
             });
 
-            async function createURL() {
-                const instance = axios.create({
-                    baseURL: "https://raw.githubusercontent.com/upb-uc4/.github/master/.github/ISSUE_TEMPLATE/",
-                    headers: {
-                        "Accept": "*/*",
-                        "Content-Type": "application/json;charset=UTF-8",
-                    },
-                });
-
-                await instance.get("/bug_report.md").then((response: AxiosResponse) => {
-                    template = response.data;
-                    template = template.substring(template.indexOf("**Describe the bug**"));
-                    template = template.replace(/ /g, "%20");
-                    template = template.replace(/\n/g, "%0A");
-                });
-            }
-
-            function updateVersions(emittedVersions: { name: string; version: string }[]) {
-                let versionsBody = `**Versions%20(Do%20not%20change)**%0A`;
-                emittedVersions.forEach((e) => {
-                    versionsBody += "-%20" + e.name + ":%20" + e.version + "%0A";
-                });
-                versionsBody += "%0A";
-                let body = bodyBase + versionsBody + template;
-                bugReportURL.value = base + labels + body;
-            }
-
-            function reportProblem() {
-                window.open(bugReportURL.value, "_blank", "noreferrer");
-            }
             return {
-                updateVersions,
-                reportProblem,
+                githubIssueURL,
             };
         },
     };
