@@ -11,7 +11,7 @@
                         <filter-select v-model:selection="selectedType" label="Type" :elements="types" />
                     </div>
                 </div>
-                <div>
+                <div class="w-full flex justify-end">
                     <router-link
                         v-if="!isCourseCatalogue"
                         id="addCourse"
