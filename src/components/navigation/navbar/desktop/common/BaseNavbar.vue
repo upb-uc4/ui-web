@@ -10,11 +10,6 @@
                     <ul class="justify-between pt-2 font-bold text-sm text-gray-200 md:flex">
                         <slot></slot>
                         <li>
-                            <router-link id="routeCourseCatalog" :to="{ name: 'courseCatalog' }" class="navbar-menu">
-                                Course Catalog
-                            </router-link>
-                        </li>
-                        <li>
                             <router-link id="routeAbout" :to="{ name: 'about' }" class="navbar-menu">About</router-link>
                         </li>
                     </ul>
