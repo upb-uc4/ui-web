@@ -12,10 +12,12 @@
                         <filter-select v-model:selection="selectedStatus" label="Status" :elements="status" />
                     </div>
                 </div>
-                <router-link to="/createAccount" class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2">
-                    <i class="fas fa-user-plus" />
-                    <span class="font-semibold">New</span>
-                </router-link>
+                <div class="w-full flex justify-end">
+                    <router-link to="/createAccount" class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2">
+                        <i class="fas fa-user-plus" />
+                        <span class="font-semibold">New</span>
+                    </router-link>
+                </div>
             </div>
             <hr class="my-4" />
             <div v-show="isFiltering()" class="text-gray-800 text-sm">
