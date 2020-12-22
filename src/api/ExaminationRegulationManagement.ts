@@ -3,12 +3,14 @@ import { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
 import Module from "./api_models/exam_reg_management/Module";
 import handleAuthenticationError from "./AuthenticationHelper";
-import Common from "./Common";
+import CommonHyperledger from "./CommonHyperledger";
 import APIResponse from "./helpers/models/APIResponse";
 
-export default class ExaminationRegulationManagement extends Common {
+export default class ExaminationRegulationManagement extends CommonHyperledger {
+    protected static endpoint = "/examreg-management";
+
     constructor() {
-        super("/examreg-management");
+        super(ExaminationRegulationManagement.endpoint);
     }
 
     async getModules(moduleIds?: string[]): Promise<APIResponse<Module[]>> {
@@ -222,6 +224,6 @@ export default class ExaminationRegulationManagement extends Common {
     }
 
     static async getVersion(): Promise<string> {
-        return super.getVersion("/examreg-management");
+        return super.getVersion();
     }
 }
