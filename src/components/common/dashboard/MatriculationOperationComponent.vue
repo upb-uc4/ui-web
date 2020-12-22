@@ -66,7 +66,8 @@
             <div v-if="isRejected" class="mt-1">
                 <p class="text-red-500">Rejected: {{ operation.reason }}</p>
             </div>
-            <div v-if="provideReason" class="mt-3 flex flex-col">
+            <div v-if="provideReason" class="mt-6 flex flex-col border-t border-red-700">
+                <p class="text-red-700 my-2 font-semibold">Please provide a reason for rejection</p>
                 <select v-model="selectedReason" class="form-select input-select">
                     <option value="" disabled>Select a reason</option>
                     <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
