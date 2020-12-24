@@ -50,9 +50,10 @@ export default class Common {
         //do not catch here but let caller handle errors
         return instance.get(`/version`).then((response: AxiosResponse) => {
             if (response.data.serviceVersion) {
-                return {
+                const serviceVersion: ServiceVersion = {
                     version: response.data.serviceVersion,
                 };
+                return serviceVersion;
             } else {
                 throw new Error("Endpoint Broken");
             }
