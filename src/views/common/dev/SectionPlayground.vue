@@ -13,6 +13,7 @@
         />
         <contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" class="w-full" />
         <address-section v-model:address="myUser.address" class="w-full" />
+        <security-section class="w-full" />
 
         <button-section>
             <template #left>
@@ -43,6 +44,7 @@
     import Admin from "@/api/api_models/user_management/Admin";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
+    import SecuritySection from "@/components/common/dev/playground/SecuritySection.vue";
 
     export default {
         name: "Playground",
@@ -52,6 +54,7 @@
             PersonalSection,
             AddressSection,
             ContactSection,
+            SecuritySection,
             ButtonSection,
             Spinner,
         },
