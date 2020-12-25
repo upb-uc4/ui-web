@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-screen-lg mx-auto w-full space-y-8">
-        <h1 class="text-2xl font-bold text-center">About Us</h1>
+        <h1 class="text-2xl font-medium text-gray-800 text-center">About Us</h1>
         <hr class="my-4" />
         <div class="lg:flex w-full space-y-8 lg:space-y-0">
             <div class="lg:w-1/5">
