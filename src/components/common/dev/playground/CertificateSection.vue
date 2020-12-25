@@ -16,7 +16,7 @@
                                 download="certificate.pem"
                             >Download</a>
                         </div>
-                        <textarea id="certificate" v-model="certificate" rows="19" readonly class="w-full input-text-tmp" />
+                        <textarea id="certificate" v-model="certificate" rows="19" readonly class="w-full input-text-tmp font-mono" />
                     </div>
                     <div v-else>
                         <span class="block text-sm text-gray-500"> There are currently no certificates associated with your account. </span>
