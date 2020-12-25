@@ -6,7 +6,7 @@
                     <label class="input-label-tmp">Old Password</label>
                     <i
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                        class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
+                        class="fas absolute mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                         @click="togglePassword"
                     />
                     <input
@@ -24,7 +24,7 @@
                     <label class="input-label-tmp">New Password</label>
                     <i
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                        class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
+                        class="fas absolute mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                         @click="togglePassword"
                     />
                     <input
@@ -45,7 +45,7 @@
                     <label class="input-label-tmp">Confirm New Password</label>
                     <i
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                        class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
+                        class="fas absolute mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                         @click="togglePassword"
                     />
                     <input

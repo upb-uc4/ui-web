@@ -3,7 +3,9 @@
         <div v-show="isVisible" class="fixed w-full h-full top-0 left-0 flex items-center justify-center">
             <div class="absolute w-full h-full bg-gray-900 opacity-25" />
 
-            <div class="bg-white w-full -mt-32 md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto rounded-lg shadow-xl z-50 overflow-y-auto">
+            <div
+                class="bg-white absolute z-50 w-full -mt-32 md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto rounded-lg shadow-xl overflow-y-auto"
+            >
                 <div class="py-8 px-10">
                     <div class="flex justify-between items-center">
                         <slot name="header"></slot>
@@ -21,7 +23,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="flex mt-4 mr-8 text-lg text-gray-600 leading-relaxed tracking-wide">
+                    <div class="flex mt-4 mr-8">
                         <slot></slot>
                     </div>
                 </div>
