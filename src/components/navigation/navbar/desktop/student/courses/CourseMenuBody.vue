@@ -5,7 +5,7 @@
                 <menu-item
                     id="nav_desktop_student_menu_courses_all"
                     title="All Courses"
-                    description="Complete overview of all courses"
+                    description="Overview of all courses"
                     icon-class="fas fa-list-alt"
                     target-route-name="student.courses"
                 />
