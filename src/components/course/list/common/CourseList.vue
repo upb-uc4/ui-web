@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="busy">
-            <loading-component />
+            <loading-component title="Loading Courses..." />
         </div>
         <div v-for="course in shownCourses" v-else :key="course.courseId" class="mt-6">
             <lecturer-course

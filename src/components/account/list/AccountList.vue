@@ -1,6 +1,6 @@
 <template>
     <div v-if="busy">
-        <loading-spinner />
+        <loading-spinner title="Loading Users..." />
     </div>
     <div v-else class="flex flex-col bg-white rounded-lg shadow">
         <div v-for="(user, index) in shownUsers" :key="user">

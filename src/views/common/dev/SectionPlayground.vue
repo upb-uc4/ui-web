@@ -1,5 +1,5 @@
 <template>
-    <div v-if="busy">
+    <div v-if="busy" class="flex justify-center items-center">
         <spinner />
     </div>
     <div v-else class="w-full">
