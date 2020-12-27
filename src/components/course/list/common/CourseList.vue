@@ -11,7 +11,7 @@
                 :lecturer="findLecturer(course)"
             />
             <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" />
-            <hr class="my-6" />
+            <hr class="my-6 dark:border-normalgray-700" />
         </div>
     </div>
 </template>

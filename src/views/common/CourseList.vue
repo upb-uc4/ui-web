@@ -25,8 +25,8 @@
                 </div>
             </div>
         </div>
-        <hr class="my-4" />
-        <div v-show="isFiltering()" class="text-gray-800 text-sm">
+        <hr class="my-4 dark:border-normalgray-700" />
+        <div v-show="isFiltering()" class="text-gray-800 dark:text-gray-300 text-sm">
             <div class="flex justify-between">
                 <div>
                     <div v-if="isFilteringType()">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="btn-tertiary-tmp" @click="clearFilter()">Clear filter</div>
             </div>
-            <hr class="mt-4 mb-8" />
+            <hr class="mt-4 mb-8 dark:border-normalgray-700" />
         </div>
         <div>
             <course-list
