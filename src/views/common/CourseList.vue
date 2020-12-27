@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-screen-lg mx-auto w-full">
-        <div class="text-2xl text-center font-medium text-gray-800 mb-4">{{ title }}</div>
+        <div class="text-2xl text-center font-medium text-gray-800 dark:text-gray-300 mb-4">{{ title }}</div>
         <div>
             <div class="flex flex-col-reverse md:flex-row items-center justify-between md:space-x-2 space-y-2 space-y-reverse md:space-y-0">
                 <div class="w-full md:flex items-center md:space-x-2 space-y-2 md:space-y-0">
