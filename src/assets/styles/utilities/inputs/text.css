@@ -25,17 +25,20 @@
 
 .input-text-tmp {
     @apply input-text-base-tmp
+    dark:border-normalgray-900
     focus:border-blue-600
 }
 
 .input-text-error-tmp {
     @apply input-text-base-tmp border-red-600
     focus:ring-red-300
+    dark:border-red-500 dark:focus:ring-red-600
 }
 
 .input-text-warning-tmp {
     @apply input-text-base-tmp border-yellow-500
     focus:ring-yellow-200
+    dark:border-yellow-400 dark:focus:ring-yellow-400
 }
 
 .input-text-base-tmp {
@@ -44,15 +47,19 @@
 
 .input-text-base-tmp:disabled  {
     @apply bg-gray-200 text-gray-400 border-gray-300
+    dark:bg-normalgray-600 dark:border-normalgray-900
 }
 
 .input-text-base-tmp:read-only {
-    @apply bg-gray-200 text-gray-400 border-gray-300 focus:border-gray-300
+    @apply bg-gray-200 text-gray-400 border-gray-300
+    focus:border-gray-300
+    dark:bg-normalgray-600 dark:border-normalgray-900
 }
 
 /* also used by selects */
 .input-base-tmp {
     @apply px-3 py-1.5 block border appearance-none text-gray-800 placeholder-gray-500 rounded-md bg-gray-50 text-sm
+    dark:bg-normalgray-800 dark:text-gray-300 dark:placeholder-gray-600
     focus:outline-none focus:ring
     sm:leading-5
 }

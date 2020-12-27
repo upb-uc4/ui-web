@@ -3,7 +3,7 @@
         <i class="text-xl fas fa-chevron-left" />
         <span class="ml-1 text-sm font-bold" @click="onBackButtonPressed">{{ backButtonText }}</span>
     </button>
-    <h1 class="mb-6 text-2xl font-medium text-gray-800">{{ title }}</h1>
+    <h1 class="mb-6 text-2xl font-medium text-gray-800 dark:text-gray-300">{{ title }}</h1>
 </template>
 
 <script lang="ts">

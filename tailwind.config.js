@@ -15,8 +15,19 @@ module.exports = {
             green: colors.green,
             lime: colors.lime,
             grayalt: "#24292e",
+            normalgray: colors.gray,
+            night: {
+                black: "#121212",
+                base: "#181818",
+                light: "#242424",
+            },
         },
         extend: {
+            colors: {
+                normalgray: {
+                    850: "#24242A",
+                },
+            },
             spacing: {
                 0.5: ".125rem",
                 9: "2.25rem",
@@ -42,6 +53,7 @@ module.exports = {
         backgroundColor: ["responsive", "hover", "focus", "disabled", "dark"],
         cursor: ["responsive", "disabled"],
         tableLayout: ["responsive", "hover", "focus"],
+        ringColor: ["responsive", "focus", "dark"],
     },
     plugins: [
         require("tailwind-heropatterns")({
