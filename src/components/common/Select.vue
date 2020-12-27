@@ -8,14 +8,14 @@
                     </div>
                     <ListboxButton
                         v-else
-                        class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
+                        class="relative input-base-tmp dark:border-normalgray-900 w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
                             <span v-if="label" class="text-gray-600 font-medium">
                                 {{ label }}:
-                                <span class="font-medium text-gray-900">{{ mySelection }}</span>
+                                <span class="font-medium text-gray-900 dark:text-gray-300">{{ mySelection }}</span>
                             </span>
-                            <span v-else>{{ mySelection }}</span>
+                            <span v-else class="dark:text-gray-300">{{ mySelection }}</span>
                         </span>
                     </ListboxButton>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
