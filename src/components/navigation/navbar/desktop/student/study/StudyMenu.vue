@@ -6,7 +6,7 @@
                 <!-- hack to keep the menu open even when hovering over the gap between hook and content-->
                 <aside class="absolute bg-transparent md:w-48 left-0 lg:w-64 h-8" />
                 <div
-                    class="absolute left-0 lg:-left-16 lg:w-64 mt-4 z-30 lg:z-10 shadow-md rounded-lg overflow-hidden dark:bg-normalgray-800"
+                    class="absolute left-0 lg:-left-16 lg:w-64 mt-4 z-30 lg:z-10 shadow-md rounded-lg overflow-hidden bg-white dark:bg-normalgray-800"
                 >
                     <menu-body />
                 </div>
