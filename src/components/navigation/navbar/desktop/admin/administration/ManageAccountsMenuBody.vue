@@ -1,5 +1,5 @@
 <template>
-    <section class="px-8 py-6 border-b -mx-4">
+    <section class="px-8 py-6 -mx-4">
         <ul class="w-full px-2 space-y-4">
             <div class="flex">
                 <li class="w-1/2">
