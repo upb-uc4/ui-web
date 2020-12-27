@@ -1,6 +1,6 @@
 <template>
     <div class="w-full mb-6 text-justify">
-        <h2 class="block text-gray-800 text-lg font-medium mb-1">Server Status</h2>
+        <h2 class="block text-gray-800 dark:text-gray-300 text-lg font-medium mb-1">Server Status</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <service-status-card title="Frontend" :get-version="getFrontendVersion" />
             <service-status-card title="Authentication" :get-version="AuthenticationManagement.getServiceVersion()" />
