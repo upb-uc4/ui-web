@@ -1,12 +1,12 @@
 <template>
     <div
         :id="'user_' + user.username"
-        class="py-4"
+        class="py-4 px-2 dark:border-normalgray-700"
         :class="{
             'rounded-t-md': isFirstRow,
             'rounded-b-md': isLastRow,
             'border-b': !isLastRow,
-            'cursor-pointer hover:bg-gray-200': user.isActive,
+            'cursor-pointer hover:bg-gray-200 dark:hover:bg-normalgray-700': user.isActive,
             'opacity-50': !user.isActive,
         }"
         @click="editAccount(user.username)"
@@ -16,8 +16,8 @@
                 <div class="flex items-center">
                     <img class="hidden sm:block w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
                     <div class="sm:ml-4">
-                        <div v-if="user.isActive" class="text-gray-800 truncate">
-                            <span class="text-gray-800">{{ user.firstName }} {{ user.lastName }}</span>
+                        <div v-if="user.isActive" class="text-gray-800 dark:text-gray-300 truncate">
+                            {{ user.firstName }} {{ user.lastName }}
                         </div>
                         <div v-if="!user.isActive" class="truncate">
                             <label v-if="isLecturer" class="text-gray-800"> {{ user.firstName }} {{ user.lastName }} </label>
@@ -27,9 +27,9 @@
                         <span
                             class="sm:hidden inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
                             :class="{
-                                'bg-blue-200 text-blue-800': isStudent,
-                                'bg-red-200 text-red-800': isAdmin,
-                                'bg-green-200 text-green-800': isLecturer,
+                                'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-gray-300': isStudent,
+                                'bg-red-200 text-red-800 dark:bg-red-800 dark:text-gray-300': isAdmin,
+                                'bg-green-200 text-green-800 dark:bg-lime-800 dark:text-gray-300': isLecturer,
                             }"
                         >
                             {{ user.role }}
@@ -37,18 +37,18 @@
                     </div>
                 </div>
 
-                <div class="flex items-center">
+                <div class="flex items-center space-x-20 lg:mr-20">
                     <div class="flex-col hidden sm:flex items-baseline" :class="[isStudent && user.isActive ? 'sm:flex' : 'sm:invisible']">
                         <div class="text-sm text-gray-500">Matriculation</div>
-                        <div class="font-medium text-sm text-gray-800">{{ student.matriculationId }}</div>
+                        <div class="font-medium text-sm text-gray-800 dark:text-gray-300">{{ student.matriculationId }}</div>
                     </div>
                     <div class="mx-8 hidden sm:flex w-18">
                         <span
-                            class="inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
+                            class="block w-18 text-xs py-0.5 rounded-md font-semibold tracking-wide text-center"
                             :class="{
-                                'bg-blue-200 text-blue-800': isStudent,
-                                'bg-red-200 text-red-800': isAdmin,
-                                'bg-green-200 text-green-800': isLecturer,
+                                'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-gray-300': isStudent,
+                                'bg-red-200 text-red-800 dark:bg-red-800 dark:text-gray-300': isAdmin,
+                                'bg-green-200 text-green-800 dark:bg-lime-800 dark:text-gray-300': isLecturer,
                             }"
                         >
                             {{ user.role }}
@@ -58,7 +58,7 @@
             </div>
 
             <div class="flex" :class="{ invisible: !user.isActive }">
-                <i class="fas fa-chevron-right text-gray-500 ml-8" />
+                <i class="fas fa-chevron-right text-gray-500" />
             </div>
         </div>
     </div>
