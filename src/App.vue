@@ -1,7 +1,7 @@
 <template>
     <div id="root" class="">
         <navbar />
-        <div class="">
+        <div>
             <router-view />
             <div id="modal-wrapper" />
         </div>
