@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-screen-lg mx-auto w-full">
+    <base-view class="max-w-screen-lg mx-auto w-full">
         <div class="text-2xl text-center font-medium text-gray-800 dark:text-gray-300 mb-4">User Management</div>
         <div>
             <div class="flex flex-col-reverse md:flex-row items-center justify-between md:space-x-2 space-y-2 space-y-reverse md:space-y-0">
@@ -70,7 +70,7 @@
                 />
             </div>
         </div>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -81,10 +81,12 @@
     import { Role } from "@/entities/Role";
     import Select from "@/components/common/Select.vue";
     import { StatusFilter } from "@/entities/UserStatusFilter";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         name: "AdminAccountList",
         components: {
+            BaseView,
             AccountList,
             SeachBar,
             FilterSelect: Select,
