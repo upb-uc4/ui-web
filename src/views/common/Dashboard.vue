@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-16">
-                        <div>
+                        <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
                             <div class="navigation-link-tmp">Prof. Dr. Mock</div>
                         </div>
@@ -111,7 +111,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="text-gray-500">6 days ago</div>
+                        <div class="hidden md:hidden lg:block sm:block text-gray-500">6 days ago</div>
                     </div>
                 </div>
                 <hr class="dark:border-normalgray-700" />
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-16">
-                        <div>
+                        <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
                             <div class="navigation-link-tmp">Prof. Dr. Mock</div>
                         </div>
@@ -156,7 +156,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="text-gray-500">6 days ago</div>
+                        <div class="hidden md:hidden lg:block sm:block text-gray-500">6 days ago</div>
                     </div>
                 </div>
                 <hr class="dark:border-normalgray-700" />
@@ -169,7 +169,7 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-16">
-                        <div>
+                        <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
                             <div class="navigation-link-tmp">Prof. Dr. Mock</div>
                         </div>
@@ -201,7 +201,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="text-gray-500">6 days ago</div>
+                        <div class="hidden md:hidden lg:block sm:block text-gray-500">6 days ago</div>
                     </div>
                 </div>
                 <hr class="dark:border-normalgray-700" />
@@ -214,7 +214,7 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-16">
-                        <div>
+                        <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
                             <div class="navigation-link-tmp">Prof. Dr. Mock</div>
                         </div>
@@ -246,7 +246,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="text-gray-500">6 days ago</div>
+                        <div class="hidden md:hidden lg:block sm:block text-gray-500">6 days ago</div>
                     </div>
                 </div>
                 <hr class="dark:border-normalgray-700" />
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-16">
-                        <div>
+                        <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
                             <div class="navigation-link-tmp">Prof. Dr. Mock</div>
                         </div>
@@ -291,7 +291,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="text-gray-500">6 days ago</div>
+                        <div class="hidden md:hidden lg:block sm:block text-gray-500">6 days ago</div>
                     </div>
                 </div>
                 <hr class="dark:border-normalgray-700" />
@@ -304,7 +304,7 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-16">
-                        <div>
+                        <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
                             <div class="navigation-link-tmp">Prof. Dr. Mock</div>
                         </div>
@@ -336,7 +336,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="text-gray-500">6 days ago</div>
+                        <div class="hidden md:hidden lg:block sm:block text-gray-500">6 days ago</div>
                     </div>
                 </div>
                 <hr class="dark:border-normalgray-700" />
@@ -349,7 +349,7 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-16">
-                        <div>
+                        <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
                             <div class="navigation-link-tmp">Prof. Dr. Mock</div>
                         </div>
@@ -381,7 +381,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="text-gray-500">6 days ago</div>
+                        <div class="hidden md:hidden lg:block sm:block text-gray-500">6 days ago</div>
                     </div>
                 </div>
             </div>
