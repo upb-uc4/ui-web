@@ -6,7 +6,7 @@
             'rounded-t-md': isFirstRow,
             'rounded-b-md': isLastRow,
             'border-b': !isLastRow,
-            'cursor-pointer hover:bg-gray-200 dark:hover:bg-normalgray-700': user.isActive,
+            'cursor-pointer hover:bg-gray-200 dark:hover:bg-normalgray-900': user.isActive,
             'opacity-50': !user.isActive,
         }"
         @click="editAccount(user.username)"
