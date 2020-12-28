@@ -1,16 +1,17 @@
 <template>
-    <div class="w-full">
+    <base-view>
         <section-header title="Settings" />
         <appearance-section />
         <security-section />
         <certificate-section />
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
     import Router from "@/use/router";
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
+    import BaseView from "@/views/common/BaseView.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import AppearanceSection from "@/components/settings/AppearanceSection.vue";
     import SecuritySection from "@/components/settings/SecuritySection.vue";
@@ -19,6 +20,7 @@
     export default {
         name: "Settings",
         components: {
+            BaseView,
             SectionHeader,
             SecuritySection,
             AppearanceSection,

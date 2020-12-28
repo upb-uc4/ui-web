@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full">
+    <base-view>
         <section-header title="Edit Course" />
         <lecturer-section v-model:lecturerId="course.lecturerId" />
         <course-info-section
@@ -19,7 +19,7 @@
                 <button class="sm:w-48 w-full btn-tmp">Save</button>
             </template>
         </button-section>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -32,10 +32,12 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import RestrictionsSection from "@/components/common/dev/playground/course/RestrictionsSection.vue";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         name: "Playground",
         components: {
+            BaseView,
             CourseInfoSection,
             SectionHeader,
             ButtonSection,

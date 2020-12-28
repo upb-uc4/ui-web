@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-screen-lg mx-auto w-full space-y-8">
+    <base-view class="max-w-screen-lg mx-auto space-y-8">
         <h1 class="text-2xl font-medium text-gray-800 dark:text-gray-300 text-center">About Us</h1>
         <hr class="my-4 dark:border-normalgray-700" />
         <div class="lg:flex w-full space-y-8 lg:space-y-0">
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -88,9 +88,11 @@
     import ServiceStatusSection from "@/components/common/dev/about/ServiceStatusSection.vue";
     import { generatePrefilledGithubIssueURL } from "@/use/helpers/Versions.ts";
     import { ref, onBeforeMount } from "vue";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         components: {
+            BaseView,
             CredentialCard,
             ServiceStatusSection,
         },

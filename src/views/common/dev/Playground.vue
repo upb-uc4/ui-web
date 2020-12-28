@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <base-view>
         <div class="p-10 mt-10 rounded-lg w-full sm:flex justify-between">
             <div>
                 <h1 class="font-medium text-2xl text-gray-600 dark:text-gray-300 mb-2">Inputs</h1>
@@ -232,7 +232,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -241,10 +241,12 @@
     import SearchableSelect from "@/components/common/SearchableSelect.vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import DarkModeToggle from "@/components/common/DarkModeToggle.vue";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         name: "Playground",
         components: {
+            BaseView,
             Select,
             DarkModeToggle,
             SearchableSelect,
