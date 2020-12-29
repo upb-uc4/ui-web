@@ -68,7 +68,7 @@
             <div class="w-full xl:w-1/2">
                 <search-bar v-model:message="searchText" placeholder="Search Notifications..." />
             </div>
-            <div class="mt-4 rounded-md border dark:border-normalgray-700 dark:bg-normalgray-900">
+            <div class="mt-4 rounded-md border dark:border-normalgray-700 bg-gray-50 dark:bg-normalgray-900">
                 <!-- no for loop as linter started crying about unused variable in for loop -->
                 <div class="flex justify-between items-center p-4">
                     <div class="flex items-center space-x-4">
@@ -85,21 +85,21 @@
                         </div>
                         <div class="flex space-x-2">
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -130,21 +130,21 @@
                         </div>
                         <div class="flex space-x-2">
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -175,21 +175,21 @@
                         </div>
                         <div class="flex space-x-2">
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -220,21 +220,21 @@
                         </div>
                         <div class="flex space-x-2">
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -265,21 +265,21 @@
                         </div>
                         <div class="flex space-x-2">
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -310,21 +310,21 @@
                         </div>
                         <div class="flex space-x-2">
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -355,21 +355,21 @@
                         </div>
                         <div class="flex space-x-2">
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
                             <div
-                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-100 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
+                                class="flex items-center justify-center rounded-md w-8 h-8 bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-blue-700 cursor-pointer"
                             >
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
