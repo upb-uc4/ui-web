@@ -1,8 +1,8 @@
 <template>
     <editable-section
+        v-slot="{ isEditing }"
         title="Address"
         subtitle="Please keep your address information as up to date as possible. This is the address where official mail will be sent to."
-        @edit="onEdit()"
         @cancel="onCancel()"
         @save="onSave()"
     >
@@ -59,31 +59,22 @@
         },
         emits: ["update:address"],
         setup(props: any, { emit }: any) {
-            const isEditing = ref(false);
             const countries = Object.values(Country).filter((e) => e !== Country.NONE);
             const addressCopy = ref(cloneDeep(props.address));
 
-            function onEdit() {
-                isEditing.value = true;
-            }
-
             function onCancel() {
-                isEditing.value = false;
                 addressCopy.value = cloneDeep(props.address);
             }
 
             function onSave() {
-                isEditing.value = false;
                 emit("update:address", addressCopy.value);
             }
 
             return {
                 countries,
                 addressCopy,
-                onEdit,
                 onCancel,
                 onSave,
-                isEditing,
             };
         },
     };

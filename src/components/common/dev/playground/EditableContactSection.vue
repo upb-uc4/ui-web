@@ -1,5 +1,5 @@
 <template>
-    <editable-section title="Contact" subtitle="How can we reach you?" @edit="onEdit()" @cancel="onCancel()" @save="onSave()">
+    <editable-section v-slot="{ isEditing }" title="Contact" subtitle="How can we reach you?" @cancel="onCancel()" @save="onSave()">
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4">
                 <div class="lg:w-1/2 w-full">
@@ -41,22 +41,15 @@
         },
         emits: ["update:email", "update:phoneNumber"],
         setup(props: any, { emit }: any) {
-            const isEditing = ref(false);
             const phoneNumberCopy = ref(cloneDeep(props.phoneNumber));
             const emailCopy = ref(cloneDeep(props.email));
 
-            function onEdit() {
-                isEditing.value = true;
-            }
-
             function onCancel() {
-                isEditing.value = false;
                 phoneNumberCopy.value = cloneDeep(props.phoneNumber);
                 emailCopy.value = cloneDeep(props.email);
             }
 
             function onSave() {
-                isEditing.value = false;
                 emit("update:email", emailCopy.value);
                 emit("update:phoneNumber", phoneNumberCopy.value);
             }
@@ -64,10 +57,8 @@
             return {
                 phoneNumberCopy,
                 emailCopy,
-                onEdit,
                 onCancel,
                 onSave,
-                isEditing,
             };
         },
     };

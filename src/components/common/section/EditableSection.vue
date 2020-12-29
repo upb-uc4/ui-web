@@ -11,7 +11,7 @@
                 <span class="block text-gray-500 text-sm">{{ subtitle }}</span>
             </div>
             <div class="w-full lg:w-2/3">
-                <slot />
+                <slot :isEditing="isEditing" />
             </div>
         </div>
     </section>
