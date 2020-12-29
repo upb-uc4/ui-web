@@ -57,8 +57,8 @@
 
             function onSave() {
                 isEditing.value = false;
-                emit("update:email", emailCopy);
-                emit("update:phoneNumber", phoneNumberCopy);
+                emit("update:email", emailCopy.value);
+                emit("update:phoneNumber", phoneNumberCopy.value);
             }
 
             return {
