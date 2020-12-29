@@ -2,15 +2,15 @@
     <div id="birthdate" class="flex space-x-6">
         <div class="w-1/3">
             <label class="input-label-tmp">Day</label>
-            <selection v-model:selection="selectedDay" :elements="days" />
+            <selection v-model:selection="selectedDay" :disabled="disabled" :elements="days" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Month</label>
-            <selection v-model:selection="selectedMonth" :elements="months" />
+            <selection v-model:selection="selectedMonth" :disabled="disabled" :elements="months" />
         </div>
         <div class="w-1/3">
             <label class="input-label-tmp">Year</label>
-            <selection v-model:selection="selectedYear" :elements="years" />
+            <selection v-model:selection="selectedYear" :disabled="disabled" :elements="years" />
         </div>
     </div>
 </template>
@@ -29,6 +29,10 @@
             birthDate: {
                 type: String,
                 required: true,
+            },
+            disabled: {
+                type: Boolean,
+                default: false,
             },
         },
         emits: ["update:birthDate"],

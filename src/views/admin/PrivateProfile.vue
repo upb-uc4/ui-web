@@ -1,42 +1,36 @@
 <template>
-    <div class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-16">
-        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back">
-            <i class="text-xl fas fa-chevron-left"></i>
-            <span class="ml-1 text-sm font-bold">Back</span>
-        </button>
-
-        <div class="flex items-end justify-between">
-            <h1 class="mb-8 text-2xl font-medium text-gray-700">{{ admin.firstName + " " + admin.lastName }} (@{{ admin.username }})</h1>
-        </div>
-
-        <div>
-            <profile-picture-section :username="admin.username" />
-            <personal-section :first-name="admin.firstName" :last-name="admin.lastName" :birth-date="admin.birthDate" />
-
-            <contact-section v-model:user="admin" />
-
-            <address-section v-model:user="admin" />
-        </div>
+    <div>
+        <section-header :title="title" />
+        <profile-picture-section />
+        <personal-section
+            v-model:first-name="admin.firstName"
+            v-model:last-name="admin.lastName"
+            v-model:birth-date="admin.birthDate"
+            :readonly="true"
+        />
+        <editable-contact-section v-model:email="admin.email" v-model:phone-number="admin.phoneNumber" />
+        <editable-address-section v-model:address="admin.address" />
     </div>
 </template>
 
 <script lang="ts">
-    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
-    import PersonalSection from "@/components/profile/PersonalSection.vue";
-    import ContactSection from "@/components/profile/ContactSection.vue";
-    import AddressSection from "@/components/profile/AddressSection.vue";
-    import { ref } from "vue";
-    import Router from "@/use/router";
-    import UserManagement from "@/api/UserManagement";
-    import Admin from "../../api/api_models/user_management/Admin";
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
+    import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
+    import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
+    import EditableContactSection from "@/components/common/dev/playground/EditableContactSection.vue";
+    import EditableAddressSection from "@/components/common/dev/playground/EditableAddressSection.vue";
+
+    import { computed, ref } from "vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import Admin from "@/api/api_models/user_management/Admin";
 
     export default {
         components: {
-            PersonalSection,
-            ContactSection,
-            AddressSection,
+            SectionHeader,
             ProfilePictureSection,
+            PersonalSection,
+            EditableAddressSection,
+            EditableContactSection,
         },
         props: {
             user: {
@@ -46,13 +40,16 @@
         },
         emits: ["update:user"],
         setup(props: any, { emit }: any) {
+            //todo move the components to the right location once the old components are deleted
+            //todo add save logic
+
             const admin = ref(props.user);
+            const title = computed(() => `${admin.value.firstName} ${admin.value.lastName} (@${admin.value.username})`);
 
-            function back() {
-                Router.back();
-            }
-
-            return { admin: useModelWrapper(props, emit, "user"), back };
+            return {
+                title,
+                admin: useModelWrapper(props, emit, "user"),
+            };
         },
     };
 </script>
