@@ -14,6 +14,7 @@
             />
             <contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" class="w-full" />
             <address-section v-model:address="myUser.address" class="w-full" />
+            <editable-contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" />
 
             <button-section>
                 <template #left>
@@ -46,6 +47,7 @@
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import BaseView from "@/views/common/BaseView.vue";
+    import EditableContactSection from "@/components/common/dev/playground/EditableContactSection.vue";
 
     export default {
         name: "Playground",
@@ -56,6 +58,7 @@
             PersonalSection,
             AddressSection,
             ContactSection,
+            EditableContactSection,
             ButtonSection,
             Spinner,
         },
