@@ -47,7 +47,6 @@
         emits: ["update:user", "save"],
         setup(props: any, { emit }: any) {
             //todo move the components to the right location once the old components are deleted
-
             const admin = reactive(props.user);
             const title = computed(() => `${admin.firstName} ${admin.lastName} (@${admin.username})`);
 

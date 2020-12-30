@@ -5,6 +5,11 @@
             <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" />
             <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" />
             <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" :error-bag="errorBag" @save="onSave()" />
+            <button-section>
+                <template #right>
+                    <button class="sm:w-48 w-full btn-tmp">Update</button>
+                </template>
+            </button-section>
         </div>
     </base-view>
 </template>
@@ -25,6 +30,7 @@
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { cloneDeep } from "lodash";
+    import ButtonSection from "@/components/common/section/ButtonSection.vue";
 
     export default {
         components: {
@@ -33,6 +39,7 @@
             PrivateLecturerProfile,
             PrivateAdminProfile,
             LoadingSpinner,
+            ButtonSection,
         },
         setup() {
             const userManagement = new UserManagement();
