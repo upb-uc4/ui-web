@@ -2,7 +2,7 @@
     <base-view>
         <loading-spinner v-if="isLoading" />
         <div v-else>
-            <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" />
+            <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" :error-bag="errorBag" />
             <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" :error-bag="errorBag" />
             <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" :error-bag="errorBag" />
             <button-section>
