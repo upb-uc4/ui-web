@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div v-if="selectedModules !== 'undefined' && selectedModules.length > 0" class="pb-4 pt-4">
-                <hr />
+                <hr class="border-gray-200 dark:border-normalgray-700" />
             </div>
             <div v-if="selectedModules !== 'undefined' && selectedModules.length > 0">
                 <label class="input-label-tmp">Selected Modules</label>
