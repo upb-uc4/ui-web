@@ -1,29 +1,33 @@
 <template>
-    <div v-if="busy">
-        <spinner />
-    </div>
-    <div v-else class="w-full">
-        <section-header title="Playground Profile" />
-        <profile-picture-section class="w-full" />
-        <personal-section
-            v-model:first-name="myUser.firstName"
-            v-model:last-name="myUser.lastName"
-            v-model:birth-date="myUser.birthDate"
-            class="w-full"
-        />
-        <contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" class="w-full" />
-        <address-section v-model:address="myUser.address" class="w-full" />
+    <base-view>
+        <div v-if="busy" class="flex justify-center items-center">
+            <spinner />
+        </div>
+        <div v-else class="w-full">
+            <section-header title="Playground Profile" />
+            <profile-picture-section class="w-full" />
+            <personal-section
+                v-model:first-name="myUser.firstName"
+                v-model:last-name="myUser.lastName"
+                v-model:birth-date="myUser.birthDate"
+                class="w-full"
+            />
+            <contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" class="w-full" />
+            <address-section v-model:address="myUser.address" />
+            <editable-address-section v-model:address="myUser.address" />
+            <editable-contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" />
 
-        <button-section>
-            <template #left>
-                <button type="button" class="sm:w-32 w-full btn-secondary-remove-tmp">Delete</button>
-            </template>
-            <template #right>
-                <button class="sm:w-32 w-full btn-secondary-tmp">Cancel</button>
-                <button class="sm:w-48 w-full btn-tmp">Create Account</button>
-            </template>
-        </button-section>
-    </div>
+            <button-section>
+                <template #left>
+                    <button type="button" class="sm:w-32 w-full btn-secondary-remove-tmp">Delete</button>
+                </template>
+                <template #right>
+                    <button class="sm:w-32 w-full btn-secondary-tmp">Cancel</button>
+                    <button class="sm:w-48 w-full btn-tmp">Create Account</button>
+                </template>
+            </button-section>
+        </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -43,15 +47,21 @@
     import Admin from "@/api/api_models/user_management/Admin";
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
+    import BaseView from "@/views/common/BaseView.vue";
+    import EditableContactSection from "@/components/common/dev/playground/EditableContactSection.vue";
+    import EditableAddressSection from "@/components/common/dev/playground/EditableAddressSection.vue";
 
     export default {
         name: "Playground",
         components: {
+            BaseView,
             SectionHeader,
             ProfilePictureSection,
             PersonalSection,
             AddressSection,
+            EditableAddressSection,
             ContactSection,
+            EditableContactSection,
             ButtonSection,
             Spinner,
         },

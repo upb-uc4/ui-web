@@ -1,92 +1,87 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <div class="flex mb-2 align-baseline">
-                    <label class="block text-gray-700 text-lg font-medium">Certificate</label>
-                </div>
-                <label class="block text-gray-600"> Here, you can see and download your personal UC4 security certificate. </label>
+    <BaseSection title="Certificates" subtitle="Download your personal University Credits 4.0 security certificate.">
+        <div class="space-y-6">
+            <div v-if="isLoading">
+                <img src="@/assets/loading-spinner-alt.svg" alt="loading" class="h-16 w-16" />
             </div>
-
-            <div v-if="!busy" class="w-full lg:w-2/3">
-                <div v-if="hasCertificate" class="w-full">
-                    <div class="lg:flex mb-6">
-                        <div class="lg:w-1/2 w-full mb-6 lg:mb-0 flex flex-col lg:mr-16">
-                            <div class="flex items-baseline w-full">
-                                <label class="text-gray-700 text-md font-medium mb-3">Certificate</label>
-                                <a
-                                    id="downloadCertificate"
-                                    class="ml-3 text-sm btn-blue-tertiary"
-                                    :href="certificateBlobURL"
-                                    download="certificate.pem"
-                                >
-                                    Download
-                                </a>
-                            </div>
-                            <textarea
-                                id="certificate"
-                                v-model="certificate"
-                                class="form-input input-text text-xs w-full"
-                                rows="15"
-                                readonly
-                            />
+            <div v-else class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="w-full">
+                    <div v-if="hasCertificate">
+                        <div class="flex space-x-4">
+                            <label class="input-label-tmp">Security Certificate</label>
+                            <a
+                                id="downloadCertificate"
+                                :href="certificateDownloadURL"
+                                class="text-sm navigation-link-tmp"
+                                download="certificate.pem"
+                            >Download</a>
                         </div>
+                        <textarea id="certificate" v-model="certificate" rows="19" readonly class="w-full input-text-tmp font-mono" />
+                    </div>
+                    <div v-else>
+                        <span class="block text-sm text-gray-500"> There are currently no certificates associated with your account. </span>
+                        <button id="createCertificate" class="mt-4 w-48 btn-tmp" @click="createCertificate()">Create Certificate</button>
                     </div>
                 </div>
-                <div v-else class="w-full flex flex-col">
-                    <label class="text-gray-700 mb-3">You do not have a UC4 certificate, yet.</label>
-                    <button id="createCertificate" class="btn btn-blue-primary w-48" @click="getCertificate()">Create certificate</button>
-                </div>
             </div>
-            <loading-spinner v-else />
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
+    import BaseSection from "@/components/common/section/BaseSection.vue";
     import { onBeforeMount, ref } from "vue";
     import { useStore } from "@/use/store/store";
-    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
         name: "CertificateSection",
-        components: { LoadingSpinner },
+        components: {
+            BaseSection,
+        },
         setup() {
-            const busy = ref(false);
-            const certificate = ref("");
-            let certificateBlobURL = ref("");
+            const store = useStore();
+            const isLoading = ref(true);
             const hasCertificate = ref(false);
+            const certificate = ref("");
+            const certificateDownloadURL = ref("");
 
-            onBeforeMount(async () => {
-                busy.value = true;
-                const store = useStore();
-                hasCertificate.value = await store.getters.hasCertificate;
-                if (hasCertificate.value) {
-                    await getCertificate();
-                }
-                busy.value = false;
+            onBeforeMount(() => {
+                store.getters.hasCertificate
+                    .then((alreadyHasCertificate) => (hasCertificate.value = alreadyHasCertificate))
+                    .then(() => {
+                        if (hasCertificate.value) {
+                            loadCertificate();
+                        }
+                    })
+                    .finally(() => (isLoading.value = false));
             });
 
-            async function getCertificate() {
-                busy.value = true;
-                const store = useStore();
-                certificate.value = (await store.getters.certificate()).certificate;
-                if (certificate.value == "") {
-                    hasCertificate.value = false;
-                } else {
-                    hasCertificate.value = true;
-                }
-                let blob = new Blob([certificate.value], { type: "pem" });
-                certificateBlobURL.value = URL.createObjectURL(blob);
-                busy.value = false;
+            async function loadCertificate() {
+                return store.getters
+                    .certificate()
+                    .then((certificateObject) => (certificate.value = certificateObject.certificate))
+                    .then(() => createCertificateDownloadURL(certificate.value));
+            }
+
+            function createCertificateDownloadURL(certificateContent: string) {
+                let certificateFile = new Blob([certificateContent], { type: "pem" });
+                certificateDownloadURL.value = URL.createObjectURL(certificateFile);
+            }
+
+            function createCertificate() {
+                //todo: when someone clicks and then aborts the key modal the promise won't reject/resolve resulting in indefinitely loading?!
+                isLoading.value = true;
+                loadCertificate().finally(() => {
+                    isLoading.value = false;
+                });
             }
 
             return {
-                busy,
-                certificate,
-                certificateBlobURL,
+                isLoading,
                 hasCertificate,
-                getCertificate,
+                createCertificate,
+                certificate,
+                certificateDownloadURL,
             };
         },
     };

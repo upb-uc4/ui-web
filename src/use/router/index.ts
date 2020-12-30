@@ -4,7 +4,6 @@ import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 import { MutationTypes } from "@/use/store/mutation-types";
 import { useStore } from "@/use/store/store";
 import AboutPage from "@/views/common/About.vue";
-import WelcomePage from "@/views/common/Welcome.vue";
 import Redirect from "@/views/errors/403.vue";
 import PageNotFound from "@/views/errors/404.vue";
 import { createRouter, createWebHistory } from "vue-router";
@@ -22,6 +21,7 @@ const StudentImmatricultaion = () => import("@/components/study/Immatriculation.
 const Playground = () => import("@/views/common/dev/Playground.vue");
 const SectionPlayground = () => import("@/views/common/dev/SectionPlayground.vue");
 const EditCoursePlayground = () => import("@/views/common/dev/EditCoursePlayground.vue");
+const Dashboard = () => import("@/views/common/Dashboard.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -32,9 +32,18 @@ const router = createRouter({
         {
             path: "/welcome",
             name: "welcome",
-            component: WelcomePage,
+            component: Dashboard,
             meta: {
-                title: "Welcome" + suffix,
+                title: "Notifications" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/notifications",
+            name: "notifications",
+            component: Dashboard,
+            meta: {
+                title: "Notifications" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
             },
         },

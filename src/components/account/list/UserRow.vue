@@ -1,12 +1,13 @@
 <template>
     <div
         :id="'user_' + user.username"
-        class="px-6 py-4 whitespace-no-wrap border-gray-200"
+        class="py-4 px-2 dark:border-normalgray-700"
         :class="{
-            'rounded-t-lg': isFirstRow,
-            'rounded-b-lg': isLastRow,
+            'rounded-t-md': isFirstRow,
+            'rounded-b-md': isLastRow,
             'border-b': !isLastRow,
-            'cursor-pointer hover:bg-gray-200': user.isActive,
+            'cursor-pointer hover:bg-gray-200 dark:hover:bg-normalgray-900': user.isActive,
+            'opacity-50': !user.isActive,
         }"
         @click="editAccount(user.username)"
     >
@@ -15,22 +16,20 @@
                 <div class="flex items-center">
                     <img class="hidden sm:block w-12 h-12 rounded-full" :src="profilePicture" alt="profile_picture" />
                     <div class="sm:ml-4">
-                        <div v-if="user.isActive" class="mb-1 truncate">
-                            <label class="text leading-5 font-medium text-blue-900 mr-2">{{ user.firstName }} {{ user.lastName }}</label>
+                        <div v-if="user.isActive" class="text-gray-800 dark:text-gray-300 truncate">
+                            {{ user.firstName }} {{ user.lastName }}
                         </div>
-                        <div v-if="!user.isActive" class="mb-1 truncate">
-                            <label v-if="isLecturer" class="text leading-5 font-medium text-blue-900 mr-2">
-                                {{ user.firstName }} {{ user.lastName }}
-                            </label>
-                            <label class="text-gray-600 italic">(inactive)</label>
+                        <div v-if="!user.isActive" class="truncate">
+                            <label v-if="isLecturer" class="text-gray-800"> {{ user.firstName }} {{ user.lastName }} </label>
+                            <label class="text-gray-500 italic">Inactive</label>
                         </div>
-                        <div class="hidden sm:flex text leading-5 text-gray-500 truncate">@{{ user.username }}</div>
+                        <div class="hidden sm:flex text-sm leading-5 text-gray-500 truncate">@{{ user.username }}</div>
                         <span
                             class="sm:hidden inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
                             :class="{
-                                'bg-blue-200 text-blue-800': isStudent,
-                                'bg-red-200 text-red-800': isAdmin,
-                                'bg-green-200 text-green-800': isLecturer,
+                                'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-gray-300': isStudent,
+                                'bg-red-200 text-red-800 dark:bg-red-800 dark:text-gray-300': isAdmin,
+                                'bg-green-200 text-green-800 dark:bg-lime-800 dark:text-gray-300': isLecturer,
                             }"
                         >
                             {{ user.role }}
@@ -38,38 +37,28 @@
                     </div>
                 </div>
 
-                <div class="flex items-center">
-                    <div class="mx-8 hidden sm:flex w-24">
+                <div class="flex items-center space-x-20 lg:mr-20">
+                    <div class="flex-col hidden sm:flex items-baseline" :class="[isStudent && user.isActive ? 'sm:flex' : 'sm:invisible']">
+                        <div class="text-sm text-gray-500">Matriculation</div>
+                        <div class="font-medium text-sm text-gray-800 dark:text-gray-300">{{ student.matriculationId }}</div>
+                    </div>
+                    <div class="mx-8 hidden sm:flex w-18">
                         <span
-                            class="inline-block text-xs px-2 rounded-lg font-semibold leading-5 tracking-wide mb-1 w-16 text-center"
+                            class="block w-18 text-xs py-0.5 rounded-md font-semibold tracking-wide text-center"
                             :class="{
-                                'bg-blue-200 text-blue-800': isStudent,
-                                'bg-red-200 text-red-800': isAdmin,
-                                'bg-green-200 text-green-800': isLecturer,
+                                'bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-gray-300': isStudent,
+                                'bg-red-200 text-red-800 dark:bg-red-800 dark:text-gray-300': isAdmin,
+                                'bg-green-200 text-green-800 dark:bg-lime-800 dark:text-gray-300': isLecturer,
                             }"
                         >
                             {{ user.role }}
                         </span>
-                    </div>
-
-                    <div class="flex-col hidden sm:flex items-baseline" :class="[isStudent && user.isActive ? 'sm:flex' : 'sm:invisible']">
-                        <div class="leading-5 text-blue-900 ml-1 mb-1">{{ student.matriculationId }}</div>
-                        <div class="hidden sm:flex items-center leading-5 text-gray-500">
-                            <span class="mr-2 fa-stack text-xs" style="font-size: 0.63em">
-                                <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
-                                <i class="fas fa-check fa-stack-1x fa-inverse"></i>
-                            </span>
-                            <div class="hidden sm:block">
-                                <!-- TODO when new API is active -->
-                                Immatriculated
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex">
-                <i class="fas fa-chevron-right text-gray-500 ml-8" />
+            <div class="flex" :class="{ invisible: !user.isActive }">
+                <i class="fas fa-chevron-right text-gray-500" />
             </div>
         </div>
     </div>
@@ -80,7 +69,7 @@
     import router from "@/use/router";
     import { Role } from "@/entities/Role";
     import Student from "@/api/api_models/user_management/Student";
-    import { onBeforeMount, ref } from "vue";
+    import { ref } from "vue";
 
     export default {
         name: "AccountRow",

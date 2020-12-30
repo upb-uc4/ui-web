@@ -1,30 +1,29 @@
 <template>
-    <div class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-16">
-        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back">
-            <i class="text-xl fas fa-chevron-left" />
-            <span class="ml-1 text-sm font-bold">Back</span>
-        </button>
-
-        <h1 class="mb-8 text-2xl font-medium text-gray-700">Settings</h1>
-
-        <div>
-            <security-section />
-            <certificate-section />
-        </div>
-    </div>
+    <base-view>
+        <section-header title="Settings" />
+        <appearance-section />
+        <security-section />
+        <certificate-section />
+    </base-view>
 </template>
 
 <script lang="ts">
-    import SecuritySection from "@/components/settings/SecuritySection.vue";
     import Router from "@/use/router";
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
+    import BaseView from "@/views/common/BaseView.vue";
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
+    import AppearanceSection from "@/components/settings/AppearanceSection.vue";
+    import SecuritySection from "@/components/settings/SecuritySection.vue";
     import CertificateSection from "@/components/settings/CertificateSection.vue";
 
     export default {
         name: "Settings",
         components: {
+            BaseView,
+            SectionHeader,
             SecuritySection,
+            AppearanceSection,
             CertificateSection,
         },
 

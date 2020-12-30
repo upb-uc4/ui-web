@@ -1,8 +1,8 @@
 <template>
-    <div class="flex flex-col justify-center">
+    <base-view class="flex flex-col justify-center">
         <div class="mt-2">
-            <img class="hidden sm:block mx-auto h-16 w-auto" src="../../assets/logo/logo_inverse.svg" alt="uc4_logo" />
-            <h2 class="mt-6 text-center text-2xl text-gray-700 tracking-tighter">Log in to University Credits 4.0</h2>
+            <img class="hidden sm:block mx-auto h-16 w-auto" src="@/assets/logo/logo_inverse.svg" alt="uc4_logo" />
+            <h2 class="mt-6 text-center text-2xl text-gray-700 dark:text-gray-300 tracking-tighter">Log in to University Credits 4.0</h2>
         </div>
         <div v-show="hasError" class="relative mt-4 flex justify-center items-center">
             <span
@@ -13,7 +13,7 @@
             </span>
         </div>
         <form class="flex justify-center" @submit.prevent="login">
-            <div class="max-w-sm w-full mt-6 bg-gray-50 sm:px-6 py-6 p-4 rounded-lg shadow-lg relative border border-gray-200">
+            <div class="max-w-sm w-full mt-6 bg-gray-800 dark:bg-night-base sm:px-6 py-6 p-4 rounded-lg shadow-lg relative">
                 <div class="rounded-md shadow-sm">
                     <div class="">
                         <label class="input-label-tmp">Email Address</label>
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </form>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -59,9 +59,12 @@
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
     import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
-        components: {},
+        components: {
+            BaseView,
+        },
         props: [],
         setup() {
             const email = ref("");

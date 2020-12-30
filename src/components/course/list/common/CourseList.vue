@@ -1,17 +1,17 @@
 <template>
     <div>
         <div v-if="busy">
-            <loading-component />
+            <loading-component title="Loading Courses..." />
         </div>
-        <div v-for="course in shownCourses" v-else :key="course.courseId">
+        <div v-for="course in shownCourses" v-else :key="course.courseId" class="mt-6">
             <lecturer-course
                 v-if="isLecturer || isAdmin"
                 :course="course"
                 :allow-edit="isAdmin || course.lecturerId == username"
                 :lecturer="findLecturer(course)"
-                class="mb-8"
             />
-            <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+            <student-course v-if="isStudent" :course="course" :lecturer="findLecturer(course)" />
+            <hr class="my-6 dark:border-normalgray-700" />
         </div>
     </div>
 </template>

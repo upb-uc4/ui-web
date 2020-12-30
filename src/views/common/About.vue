@@ -1,11 +1,11 @@
 <template>
-    <div class="max-w-screen-lg mx-auto w-full space-y-8">
-        <h1 class="text-4xl font-extrabold text-center">About Us</h1>
-        <hr class="my-4" />
+    <base-view class="max-w-screen-lg mx-auto space-y-8">
+        <h1 class="text-2xl font-medium text-gray-800 dark:text-gray-300 text-center">About Us</h1>
+        <hr class="my-4 dark:border-normalgray-700" />
         <div class="lg:flex w-full space-y-8 lg:space-y-0">
             <div class="lg:w-1/5">
                 <div class="mb-4">
-                    <div class="text-gray-800 text-sm font-medium">University Credits 4.0</div>
+                    <div class="text-gray-800 dark:text-gray-300 text-sm font-medium">University Credits 4.0</div>
                     <div class="text-gray-500 text-sm">Paderborn, Germany</div>
                 </div>
                 <div class="flex space-x-4">
@@ -35,8 +35,8 @@
             <div class="lg:w-4/5 space-y-8">
                 <div>
                     <div class="w-full mb-6 text-justify">
-                        <h2 class="block text-gray-800 text-lg font-medium mb-1">Research Project Group</h2>
-                        <h3 class="block text-gray-600 text-sm leading-relaxed">
+                        <h2 class="block text-gray-800 dark:text-gray-300 text-lg font-medium mb-1">Research Project Group</h2>
+                        <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
                             University Credits 4.0 is an educational research project at the
                             <a
                                 class="navigation-link-tmp"
@@ -54,8 +54,8 @@
                 </div>
                 <div class="space-y-6">
                     <div class="w-full text-justify">
-                        <h2 class="block text-gray-800 text-lg font-medium mb-1">Demo Login</h2>
-                        <h3 class="block text-gray-600 text-sm leading-relaxed">
+                        <h2 class="block text-gray-800 dark:text-gray-300 text-lg font-medium mb-1">Demo Login</h2>
+                        <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
                             We encourage you to explore our product on your own. Feel free to use any of the following login combinations.
                             However, please <span class="font-semibold">do not delete any of these accounts</span>. Each of the provided
                             accounts has a different access level which in turn unlocks certain features.
@@ -68,11 +68,11 @@
                         <credential-card title="Student" emoji="👨‍🎓" username="student" password="student" />
                     </div>
 
-                    <h3 class="block text-gray-600 text-sm leading-relaxed">
+                    <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
                         While we try to provide you with the best user experience possible, it may happen that you find something not
                         working as you would expect it. In this case we kindly ask you to
-                        <a href="" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know about it so we
-                        can solve the problem in upcoming versions.
+                        <a :href="githubIssueURL" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know
+                        about it so we can solve the problem in upcoming versions.
                     </h3>
                 </div>
                 <div>
@@ -80,66 +80,31 @@
                 </div>
             </div>
         </div>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
     import CredentialCard from "@/components/common/dev/about/CredentialCard.vue";
     import ServiceStatusSection from "@/components/common/dev/about/ServiceStatusSection.vue";
-
-    import { reactive, computed, ref, onBeforeMount } from "vue";
-    import axios, { AxiosResponse } from "axios";
+    import { generatePrefilledGithubIssueURL } from "@/use/helpers/Versions.ts";
+    import { ref, onBeforeMount } from "vue";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         components: {
+            BaseView,
             CredentialCard,
             ServiceStatusSection,
         },
         setup() {
-            let versions: { name: String; version: String }[] = reactive([]);
-            let template: String = "";
-            let bugReportURL = ref("");
-            const base = "https://github.com/upb-uc4/ui-web/issues/new?";
-            const labels = "&labels=bug";
-            const bodyBase = "&body=";
+            const githubIssueURL = ref("https://github.com/upb-uc4/ui-web/issues/new?assignees=&labels=bug&template=bug_report.md&title=");
 
-            onBeforeMount(async () => {
-                await createURL();
+            onBeforeMount(() => {
+                generatePrefilledGithubIssueURL().then((url: string) => (githubIssueURL.value = url));
             });
 
-            async function createURL() {
-                const instance = axios.create({
-                    baseURL: "https://raw.githubusercontent.com/upb-uc4/.github/master/.github/ISSUE_TEMPLATE/",
-                    headers: {
-                        "Accept": "*/*",
-                        "Content-Type": "application/json;charset=UTF-8",
-                    },
-                });
-
-                await instance.get("/bug_report.md").then((response: AxiosResponse) => {
-                    template = response.data;
-                    template = template.substring(template.indexOf("**Describe the bug**"));
-                    template = template.replace(/ /g, "%20");
-                    template = template.replace(/\n/g, "%0A");
-                });
-            }
-
-            function updateVersions(emittedVersions: { name: string; version: string }[]) {
-                let versionsBody = `**Versions%20(Do%20not%20change)**%0A`;
-                emittedVersions.forEach((e) => {
-                    versionsBody += "-%20" + e.name + ":%20" + e.version + "%0A";
-                });
-                versionsBody += "%0A";
-                let body = bodyBase + versionsBody + template;
-                bugReportURL.value = base + labels + body;
-            }
-
-            function reportProblem() {
-                window.open(bugReportURL.value, "_blank", "noreferrer");
-            }
             return {
-                updateVersions,
-                reportProblem,
+                githubIssueURL,
             };
         },
     };

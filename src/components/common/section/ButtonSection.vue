@@ -1,5 +1,5 @@
 <template>
-    <section class="py-8 border-t-2 border-gray-200">
+    <section class="py-8 border-t-2 border-gray-200 dark:border-night-light">
         <div class="flex flex-col-reverse sm:flex-row justify-between space-y-4 space-y-reverse sm:space-y-0">
             <div class="flex items-center justify-start">
                 <slot name="left" />

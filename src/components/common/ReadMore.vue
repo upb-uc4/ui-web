@@ -1,8 +1,10 @@
 <template>
     <div>
-        <div>
-            {{ formattedString }}
-            <span v-show="text.length > maxChars" class="ml-2 text-gray-700 uppercase text-xs font-semibold tracking-wide">
+        <div class="">
+            <span class="text-sm text-gray-500">
+                {{ formattedString }}
+            </span>
+            <span v-show="text.length > maxChars" class="ml-2 navigation-link-tmp uppercase text-xs font-medium tracking-wide">
                 <span v-show="!isReadMore" id="readMore" class="cursor-pointer" @click="triggerReadMore($event, true)">{{ moreStr }}</span>
                 <span v-show="isReadMore" id="readLess" class="cursor-pointer" @click="triggerReadMore($event, false)">{{ lessStr }}</span>
             </span>

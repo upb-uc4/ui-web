@@ -24,5 +24,8 @@
 */
 
 .navigation-link-tmp {
-    @apply cursor-pointer font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus:underline transition ease-in-out duration-150
+    @apply cursor-pointer font-medium text-blue-700 transition ease-in-out duration-150
+    hover:text-blue-800
+    focus:outline-none focus:underline
+    dark:text-blue-600
 }

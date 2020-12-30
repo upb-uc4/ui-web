@@ -8,14 +8,14 @@
                     </div>
                     <ListboxButton
                         v-else
-                        class="relative input-base-tmp w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
+                        class="relative input-base-tmp dark:border-normalgray-900 w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
                             <span v-if="label" class="text-gray-600 font-medium">
                                 {{ label }}:
-                                <span class="font-medium text-gray-900">{{ mySelection }}</span>
+                                <span class="font-medium text-gray-900 dark:text-gray-300">{{ mySelection }}</span>
                             </span>
-                            <span v-else>{{ mySelection }}</span>
+                            <span v-else class="dark:text-gray-300">{{ mySelection }}</span>
                         </span>
                     </ListboxButton>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -25,7 +25,7 @@
                     </span>
                 </span>
                 <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                    <div v-if="open" class="absolute z-30 mt-1 w-full rounded-md bg-white shadow-lg">
+                    <div v-if="open" class="absolute z-30 mt-1 w-full rounded-md bg-white dark:bg-normalgray-800 shadow-lg">
                         <ListboxOptions
                             static
                             class="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
@@ -33,7 +33,9 @@
                             <ListboxOption v-for="element in elements" :key="element" v-slot="{ selected, active }" :value="element">
                                 <div
                                     :class="`${
-                                        active ? 'text-white bg-blue-600' : 'text-gray-900'
+                                        active
+                                            ? 'text-white dark:text-gray-300 bg-blue-600 dark:bg-blue-700'
+                                            : 'text-gray-900 dark:text-gray-300'
                                     } cursor-default select-none relative py-2 pl-8 pr-4`"
                                 >
                                     <span :class="`${selected ? 'font-semibold' : 'font-normal'} block truncate`">
@@ -42,7 +44,7 @@
                                     <span
                                         v-if="selected"
                                         :class="`${
-                                            active ? 'text-white' : 'text-blue-600'
+                                            active ? 'text-white dark:text-gray-300' : 'text-blue-600 dark:text-blue-700'
                                         } absolute inset-y-0 left-0 flex items-center pl-1.5`"
                                     >
                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

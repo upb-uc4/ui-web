@@ -3,7 +3,7 @@
         <div class="w-32 h-32 relative text-center cursor-pointer">
             <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="openFileBrowser" />
             <div v-if="isLoading">
-                <img src="@/assets/loading-spinner.svg" alt="loading" />
+                <img src="@/assets/loading-spinner-alt.svg" alt="loading" />
             </div>
             <Menu v-else>
                 <MenuButton class="focus:outline-none" @mouseenter="isHovered = true" @mouseleave="isHovered = false">

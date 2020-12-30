@@ -7,16 +7,16 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">First Name</label>
-                    <input v-model="myFirstName" type="text" class="w-full input-text-tmp" />
+                    <input v-model="myFirstName" type="text" :readonly="readonly" class="w-full input-text-tmp" />
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Last Name</label>
-                    <input v-model="myLastName" type="text" class="w-full input-text-tmp" />
+                    <input v-model="myLastName" type="text" :readonly="readonly" class="w-full input-text-tmp" />
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <birth-date-input v-model:birth-date="myBirthDate" />
+                    <birth-date-input v-model:birth-date="myBirthDate" :disabled="readonly" />
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
@@ -47,6 +47,10 @@
             birthDate: {
                 type: String,
                 required: true,
+            },
+            readonly: {
+                type: Boolean,
+                default: false,
             },
         },
         emits: ["update:firstName", "update:lastName", "update:birthDate"],

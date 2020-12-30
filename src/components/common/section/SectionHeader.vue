@@ -1,12 +1,14 @@
 <template>
     <button class="flex items-center mb-4 navigation-link">
         <i class="text-xl fas fa-chevron-left" />
-        <span class="ml-1 text-sm font-bold">{{ backButtonText }}</span>
+        <span class="ml-1 text-sm font-bold" @click="onBackButtonPressed">{{ backButtonText }}</span>
     </button>
-    <h1 class="mb-6 text-2xl font-medium text-gray-800">{{ title }}</h1>
+    <h1 class="mb-6 text-2xl font-medium text-gray-800 dark:text-gray-300">{{ title }}</h1>
 </template>
 
-<script>
+<script lang="ts">
+    import Router from "@/use/router";
+
     export default {
         name: "SectionHeader",
         props: {
@@ -18,8 +20,13 @@
                 type: String,
                 default: "Back",
             },
+            onBackButtonPressed: {
+                type: Function,
+                default: () => {
+                    Router.back();
+                },
+            },
         },
-        //todo navigation target prop
         //todo option to make it sticky
     };
 </script>

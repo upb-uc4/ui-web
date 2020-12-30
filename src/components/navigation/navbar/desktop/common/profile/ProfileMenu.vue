@@ -14,7 +14,9 @@
         </template>
         <template #content>
             <aside class="absolute bg-transparent md:w-56 right-0 h-8" />
-            <div class="absolute top-auto right-0 mt-4 bg-white z-30 lg:z-10 shadow-md rounded-lg overflow-hidden border lg:w-56">
+            <div
+                class="absolute top-auto right-0 mt-4 z-30 lg:z-10 shadow-md rounded-lg overflow-hidden lg:w-56 bg-white bg-white dark:bg-normalgray-800"
+            >
                 <menu-body />
             </div>
         </template>

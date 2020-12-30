@@ -1,14 +1,14 @@
 <template>
-    <div class="w-56 rounded-md border-gray-200 border h-32 p-4 mx-auto md:mx-0">
+    <div class="w-56 rounded-md border-gray-200 dark:border-normalgray-700 border h-32 p-4 mx-auto md:mx-0">
         <div class="flex justify-between">
-            <div class="font-medium text-lg">{{ title }}</div>
+            <div class="font-medium text-lg dark:text-gray-300">{{ title }}</div>
             <div>
-                <img v-if="isLoading" src="../../../../assets/loading-spinner-alt.svg" class="w-6 h-6" />
+                <img v-if="isLoading" src="../../../../assets/loading-spinner-alt.svg" alt="loading-spinner" class="w-6 h-6" />
                 <i v-else-if="isServiceUnreachable" class="text-xl text-red-500 fas fa-times-circle" />
-                <i v-else class="text-xl text-green-500 fas fa-check-circle" />
+                <i v-else class="text-xl text-green-500 dark:text-green-600 fas fa-check-circle" />
             </div>
         </div>
-        <div class="text-sm text-gray-700">
+        <div class="text-sm text-gray-700 dark:text-gray-500">
             <div v-if="isLoading">
                 <div>Checking Version...</div>
             </div>
@@ -18,7 +18,7 @@
             </div>
             <div v-else>
                 <a :href="changelogURL" class="navigation-link-tmp">Version {{ version }}</a>
-                <div>Active</div>
+                <div class="dark:text-gray-500">Active</div>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
             onBeforeMount(() => {
                 props.getVersion
                     .then((versionResult) => {
-                        version.value = versionResult.version;
+                        version.value = versionResult.version.replace("v", "");
                         changelogURL.value = versionResult.changelogURL;
                     })
                     .catch(() => (isServiceUnreachable.value = true))

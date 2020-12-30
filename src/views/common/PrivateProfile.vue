@@ -1,12 +1,12 @@
 <template>
-    <div v-if="busy" class="mx-auto">
-        <loading-spinner />
-    </div>
-    <div v-else>
-        <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" />
-        <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" />
-        <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" />
-    </div>
+    <base-view>
+        <loading-spinner v-if="isLoading" />
+        <div v-else>
+            <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" />
+            <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" />
+            <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" />
+        </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -21,9 +21,11 @@
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import Admin from "@/api/api_models/user_management/Admin";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         components: {
+            BaseView,
             PrivateStudentProfile,
             PrivateLecturerProfile,
             PrivateAdminProfile,
@@ -31,24 +33,17 @@
         },
         setup() {
             const user = ref({} as Student | Lecturer | Admin);
-            const busy = ref(false);
+            const isLoading = ref(true);
 
-            onBeforeMount(async () => {
-                await getUser();
+            onBeforeMount(() => {
+                const auth: UserManagement = new UserManagement();
+                auth.getOwnUser()
+                    .then((userResponse) => new ProfileResponseHandler().handleResponse(userResponse))
+                    .then((userResult) => (user.value = userResult))
+                    .then((isLoading.value = false));
             });
 
-            async function getUser() {
-                busy.value = true;
-                const auth: UserManagement = new UserManagement();
-                const responseHandler = new ProfileResponseHandler();
-                const response = await auth.getOwnUser();
-                const result = responseHandler.handleResponse(response);
-                if (result) {
-                    user.value = result;
-                }
-                busy.value = false;
-            }
-            return { Role, user, busy };
+            return { Role, user, isLoading };
         },
     };
 </script>
