@@ -1,41 +1,32 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <label class="block text-gray-700 text-md font-medium mb-2"> Examination Regulation Information </label>
-                <label class="block text-gray-600"> Choose a unique name for the examination regulation </label>
-            </div>
-            <div class="w-full lg:w-2/3">
-                <div class="mb-4 w-full relative">
-                    <label for="examRegName" class="text-gray-700 text-md font-medium block mb-4"> Examination Regulation Name </label>
-                    <input
-                        id="examRegName"
-                        v-model.trim="newName"
-                        class="w-full form-input input-text"
-                        placeholder="Exam regulation name"
-                    />
-                    <div v-if="newName !== ''" id="examRegNameFeedback" class="text-gray-700 text-md font-medium my-3">
-                        <label v-if="valid" class="">
-                            <i class="text-green-400 fas fa-check mr-2"></i>
-                            {{ newName }} is available
-                        </label>
-                        <label v-else class="">
-                            <i class="text-red-400 fas fa-times mr-2"></i>
-                            Examination regulation {{ newName }} already exists!
-                        </label>
-                    </div>
-                </div>
+    <BaseSection title="Examination Regulation Information" subtitle="Choose a unique name for the examination regulation">
+        <div class="lg:w-1/2 w-full">
+            <label for="examRegName" class="input-label-tmp"> Examination Regulation Name </label>
+            <input
+                id="examRegName"
+                v-model.trim="newName"
+                class="w-full"
+                :class="valid ? 'input-text-tmp' : 'input-text-error-tmp'"
+                placeholder="Exam regulation name"
+            />
+            <div v-if="newName !== ''" id="examRegNameFeedback">
+                <label v-if="!valid" class="input-label-error-tmp"> '{{ newName }}' already exists! </label>
             </div>
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { watch } from "vue";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         name: "ExaminationRegulationInformation",
+        components: {
+            BaseSection,
+        },
         props: {
             existingNames: {
                 type: Array,
@@ -47,6 +38,10 @@
             },
             valid: {
                 type: Boolean,
+                required: true,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
                 required: true,
             },
         },
