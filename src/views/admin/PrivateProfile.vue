@@ -8,8 +8,6 @@
             v-model:birth-date="admin.birthDate"
             :readonly="true"
         />
-        <span class="text-xl text-gray-300">{{ admin.phoneNumber }}</span>
-        <span class="text-xl text-gray-300">{{ user.phoneNumber }}</span>
         <editable-contact-section v-model:email="admin.email" v-model:phone-number="admin.phoneNumber" @save="onSave()" />
         <editable-address-section v-model:address="admin.address" @save="onSave()" />
     </div>
