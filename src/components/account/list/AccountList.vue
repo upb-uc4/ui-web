@@ -1,7 +1,5 @@
 <template>
-    <div v-if="busy">
-        <loading-spinner title="Loading Users..." />
-    </div>
+    <loading-spinner v-if="busy" title="Loading Users..." />
     <div v-else>
         <div v-for="(user, index) in shownUsers" :key="user">
             <user-row :user="user" :is-first-row="index === 0" :is-last-row="index === shownUsers.length - 1" />
