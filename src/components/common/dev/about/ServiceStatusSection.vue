@@ -31,8 +31,8 @@
         setup() {
             const getFrontendVersion = new Promise<ServiceVersion>(function (resolve) {
                 //trivial promise which always instantly resolves
-                const version = {
-                    version: process.env.VUE_APP_VERSION,
+                const version: ServiceVersion = {
+                    version: process.env.VUE_APP_VERSION ? process.env.VUE_APP_VERSION : "not available",
                     changelogURL: `https://github.com/upb-uc4/ui-web/blob/v${process.env.VUE_APP_VERSION}/CHANGELOG.md`,
                 };
                 resolve(version);
