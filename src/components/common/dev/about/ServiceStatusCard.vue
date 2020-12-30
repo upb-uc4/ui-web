@@ -3,7 +3,7 @@
         <div class="flex justify-between">
             <div class="font-medium text-lg dark:text-gray-300">{{ title }}</div>
             <div>
-                <img v-if="isLoading" src="../../../../assets/loading-spinner-alt.svg" alt="loading-spinner" class="w-6 h-6" />
+                <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" alt="loading-spinner" class="w-6 h-6" />
                 <i v-else-if="isServiceUnreachable" class="text-xl text-red-500 fas fa-times-circle" />
                 <i v-else class="text-xl text-green-500 dark:text-green-600 fas fa-check-circle" />
             </div>
