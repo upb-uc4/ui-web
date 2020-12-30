@@ -4,7 +4,7 @@
         <div v-else>
             <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" />
             <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" />
-            <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" />
+            <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" @save="onSave()" />
         </div>
     </base-view>
 </template>
@@ -32,18 +32,23 @@
             LoadingSpinner,
         },
         setup() {
+            const userManagement = new UserManagement();
             const user = ref({} as Student | Lecturer | Admin);
             const isLoading = ref(true);
 
             onBeforeMount(() => {
-                const auth: UserManagement = new UserManagement();
-                auth.getOwnUser()
+                userManagement
+                    .getOwnUser()
                     .then((userResponse) => new ProfileResponseHandler().handleResponse(userResponse))
                     .then((userResult) => (user.value = userResult))
                     .then((isLoading.value = false));
             });
 
-            return { Role, user, isLoading };
+            function onSave() {
+                //todo call user management here to update
+            }
+
+            return { Role, user, isLoading, onSave };
         },
     };
 </script>
