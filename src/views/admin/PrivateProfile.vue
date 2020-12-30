@@ -20,8 +20,9 @@
     import EditableContactSection from "@/components/common/dev/playground/EditableContactSection.vue";
     import EditableAddressSection from "@/components/common/dev/playground/EditableAddressSection.vue";
 
-    import { computed, ref } from "vue";
+    import { computed, reactive, ref } from "vue";
     import Admin from "@/api/api_models/user_management/Admin";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         components: {
@@ -36,15 +37,20 @@
                 required: true,
                 type: Object as () => Admin,
             },
+            errorBag: {
+                required: true,
+                type: Object as () => ErrorBag,
+            },
         },
         emits: ["update:user", "save"],
         setup(props: any, { emit }: any) {
             //todo move the components to the right location once the old components are deleted
-            const admin = ref(props.user);
-            const title = computed(() => `${admin.value.firstName} ${admin.value.lastName} (@${admin.value.username})`);
+            //todo the v-model to the lower level is not correct?
+            const admin = reactive(props.user);
+            const title = computed(() => `${admin.firstName} ${admin.lastName} (@${admin.username})`);
 
             function onSave() {
-                emit("update:user", admin.value);
+                emit("update:user", admin);
                 emit("save");
             }
 

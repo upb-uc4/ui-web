@@ -4,7 +4,7 @@
         <div v-else>
             <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" />
             <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" />
-            <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" @save="onSave()" />
+            <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" :error-bag="errorBag" @save="onSave()" />
         </div>
     </base-view>
 </template>
@@ -22,6 +22,9 @@
     import Admin from "@/api/api_models/user_management/Admin";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import BaseView from "@/views/common/BaseView.vue";
+    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import { cloneDeep } from "lodash";
 
     export default {
         components: {
@@ -34,21 +37,38 @@
         setup() {
             const userManagement = new UserManagement();
             const user = ref({} as Student | Lecturer | Admin);
+            const userCopy = ref({} as Student | Lecturer | Admin);
             const isLoading = ref(true);
+            const errorBag = ref(new ErrorBag());
 
             onBeforeMount(() => {
                 userManagement
                     .getOwnUser()
                     .then((userResponse) => new ProfileResponseHandler().handleResponse(userResponse))
-                    .then((userResult) => (user.value = userResult))
+                    .then((userResult) => {
+                        user.value = cloneDeep(userResult);
+                        userCopy.value = cloneDeep(userResult);
+                    })
                     .then((isLoading.value = false));
             });
 
             function onSave() {
-                //todo call user management here to update
+                const handler = new ValidationResponseHandler("Profile");
+                userManagement
+                    .updateUser(user.value)
+                    .then((response) => handler.handleResponse(response))
+                    .then((validationResult) => {
+                        if (validationResult) {
+                            //success
+                            errorBag.value.clear();
+                        } else {
+                            user.value = userCopy.value;
+                            errorBag.value = new ErrorBag(handler.errorList);
+                        }
+                    });
             }
 
-            return { Role, user, isLoading, onSave };
+            return { Role, user, isLoading, onSave, errorBag, userCopy };
         },
     };
 </script>
