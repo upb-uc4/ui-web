@@ -11,7 +11,7 @@
                 <input id="moduleName" v-model.trim="moduleNameInput" class="w-full input-text-tmp" placeholder="Module Name" />
             </div>
             <div v-if="moduleID !== '' && moduleName !== '' && !moduleUsed">
-                <div class="w-full rounded-md border-gray-200 dark:border-normal gray-700 border h-24 p-4 mx-auto md:mx-0">
+                <div class="w-full rounded-md border-gray-200 dark:border-normalgray-700 border h-24 p-4 mx-auto md:mx-0">
                     <div class="relative">
                         <div class="font-medium text-lg dark:text-gray-300">{{ moduleID }}</div>
                         <div class="text-sm text-gray-700 dark:text-gray-500">{{ moduleName }}</div>
