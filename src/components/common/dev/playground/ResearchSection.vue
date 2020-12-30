@@ -1,29 +1,31 @@
 <template>
-    <BaseSection title="Contact" subtitle="How can we reach you?">
+    <BaseSection title="Research Area" subtitle="This section can be publicly seen.">
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Email</label>
-                    <input
-                        v-model="myEmail"
-                        type="text"
+                    <label class="input-label-tmp">Research Area</label>
+                    <textarea
+                        v-model="myResearchArea"
                         class="w-full"
-                        :class="errorBag.has('email') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        rows="3"
+                        :class="errorBag.hasNested('description') ? 'input-text-error-tmp' : 'input-text-tmp'"
                     />
-                    <label v-if="errorBag.has('email')" class="input-label-error-tmp">{{ errorBag.get("email") }}</label>
+                    <label v-if="errorBag.hasNested('description')" class="input-label-error-tmp">{{
+                        errorBag.getNested("description")
+                    }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Phone</label>
-                    <input
-                        v-model="myPhoneNumber"
-                        type="text"
+                    <label class="input-label-tmp">Description</label>
+                    <textarea
+                        v-model="myFreeText"
                         class="w-full"
-                        :class="errorBag.has('phoneNumber') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        rows="5"
+                        :class="errorBag.hasNested('freeTest') ? 'input-text-error-tmp' : 'input-text-tmp'"
                     />
-                    <label v-if="errorBag.has('phoneNumber')" class="input-label-error-tmp">{{ errorBag.get("phoneNumber") }}</label>
+                    <label v-if="errorBag.hasNested('freeText')" class="input-label-error-tmp">{{ errorBag.getNested("freeText") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
@@ -37,16 +39,16 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
-        name: "ContactSection",
+        name: "ResearchSection",
         components: {
             BaseSection,
         },
         props: {
-            phoneNumber: {
+            freeText: {
                 type: String,
                 required: true,
             },
-            email: {
+            researchArea: {
                 type: String,
                 required: true,
             },
@@ -55,11 +57,11 @@
                 required: true,
             },
         },
-        emits: ["update:email", "update:phoneNumber"],
+        emits: ["update:freeText", "update:researchArea"],
         setup(props: any, { emit }: any) {
             return {
-                myPhoneNumber: useModelWrapper(props, emit, "phoneNumber"),
-                myEmail: useModelWrapper(props, emit, "email"),
+                myFreeText: useModelWrapper(props, emit, "freeText"),
+                myResearchArea: useModelWrapper(props, emit, "researchArea"),
             };
         },
     };

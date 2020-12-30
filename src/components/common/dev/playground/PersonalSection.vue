@@ -30,7 +30,7 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
-        name: "InputSection",
+        name: "PersonalSection",
         components: {
             BaseSection,
             BirthDateInput,

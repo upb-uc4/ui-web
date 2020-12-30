@@ -67,7 +67,7 @@
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
 
     export default {
-        name: "InputSection",
+        name: "ProfilePictureSection",
         components: {
             Menu,
             MenuButton,

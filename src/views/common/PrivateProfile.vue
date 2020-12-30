@@ -2,12 +2,12 @@
     <base-view>
         <loading-spinner v-if="isLoading" />
         <div v-else>
-            <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" />
-            <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" />
-            <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" :error-bag="errorBag" @save="onSave()" />
+            <private-student-profile v-if="user.role === Role.STUDENT" v-model:user="user" :error-bag="errorBag" />
+            <private-lecturer-profile v-else-if="user.role === Role.LECTURER" v-model:user="user" :error-bag="errorBag" />
+            <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" :error-bag="errorBag" />
             <button-section>
                 <template #right>
-                    <button class="sm:w-48 w-full btn-tmp">Update</button>
+                    <button class="sm:w-48 w-full btn-tmp" @click="updateProfile()">Update</button>
                 </template>
             </button-section>
         </div>
@@ -29,7 +29,6 @@
     import BaseView from "@/views/common/BaseView.vue";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import { cloneDeep } from "lodash";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
 
     export default {
@@ -44,7 +43,6 @@
         setup() {
             const userManagement = new UserManagement();
             const user = ref({} as Student | Lecturer | Admin);
-            const userCopy = ref({} as Student | Lecturer | Admin);
             const isLoading = ref(true);
             const errorBag = ref(new ErrorBag());
 
@@ -52,15 +50,15 @@
                 userManagement
                     .getOwnUser()
                     .then((userResponse) => new ProfileResponseHandler().handleResponse(userResponse))
-                    .then((userResult) => {
-                        user.value = cloneDeep(userResult);
-                        userCopy.value = cloneDeep(userResult);
-                    })
+                    .then((userResult) => (user.value = userResult))
                     .then(() => (isLoading.value = false));
             });
 
-            function onSave() {
+            function updateProfile() {
+                console.log("update user");
+                console.log(user);
                 const handler = new ValidationResponseHandler("Profile");
+                isLoading.value = true;
                 userManagement
                     .updateUser(user.value)
                     .then((response) => handler.handleResponse(response))
@@ -69,13 +67,13 @@
                             //success
                             errorBag.value.clear();
                         } else {
-                            user.value = userCopy.value;
                             errorBag.value = new ErrorBag(handler.errorList);
                         }
-                    });
+                    })
+                    .then(() => (isLoading.value = false));
             }
 
-            return { Role, user, isLoading, onSave, errorBag, userCopy };
+            return { Role, user, isLoading, updateProfile, errorBag };
         },
     };
 </script>
