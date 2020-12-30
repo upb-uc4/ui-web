@@ -3,6 +3,9 @@
         <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
             <div class="lg:w-1/2 w-full">
                 <searchableSelect :label="'Lecturer-ID'" :elements="myLecturers" @update:selected="updateLecturerId" />
+                <label v-if="errorBag.has('lecturerId')" class="input-label-warning-tmp">
+                    {{ errorBag.get("lecturerId") }}
+                </label>
                 <div :hidden="Object.keys(currentLecturer).length === 0" class="text-gray-700 text-md font-medium my-3">
                     <label v-if="currentLecturer.username">
                         <i class="text-green-400 fas fa-check mr-2"></i>
@@ -36,6 +39,7 @@
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { Role } from "@/entities/Role";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         name: "Lecturer",
@@ -46,6 +50,10 @@
         props: {
             lecturerId: {
                 type: String,
+                required: true,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
                 required: true,
             },
         },

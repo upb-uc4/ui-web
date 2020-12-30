@@ -4,8 +4,17 @@
             <div class="space-y-6">
                 <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                     <div class="lg:w-1/2 w-full">
-                        <label class="input-label-tmp">Course Name</label>
-                        <input v-model="myName" type="text" class="w-full input-text-tmp" />
+                        <label for="courseName" class="input-label-tmp">Course Name</label>
+                        <input
+                            id="courseName"
+                            v-model="myName"
+                            type="text"
+                            class="w-full"
+                            :class="errorBag.has('courseName') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        />
+                        <label v-if="errorBag.has('courseName')" for="courseName" class="input-label-warning-tmp">
+                            {{ errorBag.get("courseName") }}
+                        </label>
                     </div>
                     <div class="lg:w-1/2 w-full invisible" />
                 </div>
@@ -13,24 +22,49 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Type</label>
-                    <Select v-model:selection="myType" :elements="availableTypes" />
+                    <Select id="courseType" v-model:selection="myType" :elements="availableTypes" />
+                    <label v-if="errorBag.has('courseType')" for="courseType" class="input-label-warning-tmp">
+                        {{ errorBag.get("courseType") }}
+                    </label>
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">ECTS</label>
-                    <input v-model.number="myEcts" min="0" type="number" class="lg:w-32 w-full input-text-tmp" />
+                    <input
+                        id="ects"
+                        v-model.number="myEcts"
+                        min="0"
+                        type="number"
+                        class="lg:w-32 w-full"
+                        :class="errorBag.has('ects') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('ects')" for="ects" class="input-label-warning-tmp">
+                        {{ errorBag.get("ects") }}
+                    </label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Language</label>
-                    <Select v-model:selection="myLanguage" :elements="availableLanguages" />
+                    <Select id="courseLanguage" v-model:selection="myLanguage" :elements="availableLanguages" />
+                    <label v-if="errorBag.has('courseLanguage')" for="courseLanguage" class="input-label-warning-tmp">
+                        {{ errorBag.get("courseLanguage") }}
+                    </label>
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="w-full">
-                    <label class="input-label-tmp">Course Description</label>
-                    <textarea v-model="myDescription" rows="5" class="w-full input-text-tmp" />
+                    <label for="courseDescription" class="input-label-tmp">Course Description</label>
+                    <textarea
+                        id="courseDescription"
+                        v-model="myDescription"
+                        rows="5"
+                        class="w-full"
+                        :class="errorBag.has('courseDescription') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('courseDescription')" for="courseDescription" class="input-label-warning-tmp">
+                        {{ errorBag.get("courseDescription") }}
+                    </label>
                 </div>
             </div>
         </div>
@@ -43,6 +77,7 @@
     import Select from "@/components/common/Select.vue";
     import { Language } from "@/entities/Language";
     import { CourseType } from "@/entities/CourseType";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         name: "CourseInfoSection",
@@ -69,6 +104,10 @@
             },
             description: {
                 type: String,
+                required: true,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
                 required: true,
             },
         },
