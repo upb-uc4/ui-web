@@ -20,8 +20,6 @@
     import Student from "@/api/api_models/user_management/Student";
     import { onBeforeMount, ref } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
-    import ErrorBag from "@/use/helpers/ErrorBag";
-    import { cloneDeep } from "lodash";
     import BaseView from "@/views/common/BaseView.vue";
 
     export default {
