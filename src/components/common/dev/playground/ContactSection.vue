@@ -4,14 +4,26 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Email</label>
-                    <input v-model="myEmail" type="text" class="w-full input-text-tmp" />
+                    <input
+                        v-model="myEmail"
+                        type="text"
+                        class="w-full"
+                        :class="errorBag.has('email') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('email')" class="input-label-error-tmp">{{ errorBag.get("email") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Phone</label>
-                    <input v-model="myPhoneNumber" type="text" class="w-full input-text-tmp" />
+                    <input
+                        v-model="myPhoneNumber"
+                        type="text"
+                        class="w-full"
+                        :class="errorBag.has('phoneNumber') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('phoneNumber')" class="input-label-error-tmp">{{ errorBag.get("phoneNumber") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
@@ -22,6 +34,7 @@
 <script lang="ts">
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         name: "ContactSection",
@@ -38,7 +51,7 @@
                 required: true,
             },
             errorBag: {
-                type: Object,
+                type: Object as () => ErrorBag,
                 required: true,
             },
         },
