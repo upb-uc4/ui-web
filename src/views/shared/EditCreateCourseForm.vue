@@ -1,92 +1,60 @@
 <template>
-    <div v-if="busy" class="flex h-screen">
-        <div class="m-auto">
-            <loading-component />
-        </div>
-    </div>
-    <div v-else class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button class="flex items-center mb-4 navigation-link" @click="back">
-            <i class="fas text-xl fa-chevron-left"></i>
-            <span class="font-bold text-sm ml-1">Back</span>
-        </button>
+    <base-view>
+        <loading-spinner v-if="busy" />
+        <div v-else>
+            <button class="flex items-center mb-4 navigation-link" @click="back">
+                <i class="fas text-xl fa-chevron-left"></i>
+                <span class="font-bold text-sm ml-1">Back</span>
+            </button>
 
-        <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
-        <div>
-            <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
-            <basics-section
-                v-model:name="course.courseName"
-                v-model:type="course.courseType"
-                v-model:language="course.courseLanguage"
-                v-model:ects="course.ects"
-                v-model:description="course.courseDescription"
-                :error-bag="errorBag"
-            />
-            <course-module-section
-                v-model:module-ids="course.moduleIds"
-                :error-bag="errorBag"
-                :edit-mode="editMode"
-                @toggle-module="toggleModule($event)"
-                @remove-modules="removeModules($event)"
-            />
-            <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
-            <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
+            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
 
-            <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
-                <div class="hidden sm:flex justify-between">
-                    <div class="flex justify-start items-center">
+            <div>
+                <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
+                <info-section
+                    v-model:name="course.courseName"
+                    v-model:type="course.courseType"
+                    v-model:language="course.courseLanguage"
+                    v-model:ects="course.ects"
+                    v-model:description="course.courseDescription"
+                    :error-bag="errorBag"
+                />
+                <course-module-section
+                    v-model:module-ids="course.moduleIds"
+                    :error-bag="errorBag"
+                    :edit-mode="editMode"
+                    @toggle-module="toggleModule($event)"
+                    @remove-modules="removeModules($event)"
+                />
+                <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
+                <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
+                <button-section>
+                    <template #left>
                         <button
                             v-if="editMode"
                             id="deleteCourse"
                             type="button"
-                            class="w-32 btn btn-red-secondary"
+                            class="btn-secondary-remove-tmp w-48"
                             @click="confirmDeleteCourse"
                         >
                             Delete
                         </button>
-                    </div>
-
-                    <div class="flex justify-end items-center">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
-                        <button
-                            v-if="editMode"
-                            id="saveChanges"
-                            :disabled="!hasInput"
-                            class="w-48 w-full btn btn-blue-primary"
-                            @click="updateCourse"
-                        >
+                    </template>
+                    <template #right>
+                        <button id="cancel" type="button" class="w-48 btn-secondary-tmp" @click="back">Cancel</button>
+                        <button v-if="editMode" id="saveChanges" :disabled="!hasInput" type="button" class="btn-tmp w-48" @click="back">
                             Save Changes
                         </button>
-                        <button v-else id="createCourse" :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createCourse">
+                        <button v-else id="createCourse" :disabled="!hasInput" class="btn-tmp w-48" @click="createCourse">
                             Create Course
                         </button>
-                    </div>
-                </div>
-
-                <!-- different button layout for mobile -->
-                <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
-                    <button
-                        v-if="editMode"
-                        id="mobileSaveChanges"
-                        :disabled="!hasInput"
-                        type="button"
-                        class="mb-4 w-full btn btn-blue-primary"
-                        @click="updateCourse"
-                    >
-                        Save Changes
-                    </button>
-                    <button v-else id="mobileCreateCourse" :disabled="!hasInput" class="w-full btn btn-blue-primary" @click="createCourse">
-                        Create Course
-                    </button>
-                    <button v-if="editMode" id="mobileDelete" class="w-full btn btn-red-secondary" @click="confirmDeleteCourse">
-                        Delete
-                    </button>
-                </div>
-            </section>
-            <delete-course-modal ref="deleteModal" />
-            <unsaved-changes-modal ref="unsavedChangesModal" />
+                    </template>
+                </button-section>
+                <delete-course-modal ref="deleteModal" />
+                <unsaved-changes-modal ref="unsavedChangesModal" />
+            </div>
         </div>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -96,36 +64,39 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
-    import { ref, reactive, computed, onBeforeMount, nextTick } from "vue";
+    import { ref, computed, onBeforeMount } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import BasicsSection from "@/components/course/edit/sections/BasicsSection.vue";
-    import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
-    import TimeSection from "@/components/course/edit/sections/TimeSection.vue";
-    import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
-    import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
+    import LecturerSection from "@/components/common/dev/playground/course/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
     import CourseModuleSection from "@/components/course/edit/sections/CourseModulesSection.vue";
     import { useToast } from "@/toast";
+    import BaseView from "@/views/common/BaseView.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import ButtonSection from "@/components/common/section/ButtonSection.vue";
+    import InfoSection from "@/components/common/dev/playground/course/InfoSection.vue";
+    import RestrictionsSection from "@/components/common/dev/playground/course/RestrictionsSection.vue";
+    import TimeSection from "@/components/common/dev/playground/course/TimeSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
+            BaseView,
             LecturerSection,
-            BasicsSection,
+            InfoSection,
             RestrictionsSection,
             TimeSection,
             DeleteCourseModal,
             UnsavedChangesModal,
-            LoadingComponent,
+            LoadingSpinner,
             CourseModuleSection,
+            ButtonSection,
         },
         props: {
             editMode: {
