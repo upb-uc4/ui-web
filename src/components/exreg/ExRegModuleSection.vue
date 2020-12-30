@@ -1,93 +1,55 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <label class="block text-gray-700 text-md font-medium mb-2"> Modules </label>
-                <label class="block text-gray-600"> Add modules to the examination regulation.</label>
+    <BaseSection title="Modules" subtitle="Add modules to the examination regulation.">
+        <div class="space-y-4">
+            <div class="lg:w-1/2 w-full">
+                <label for="moduleID" class="w-full input-label-tmp"> Choose Module ID </label>
+                <input id="moduleID" v-model.trim="moduleID" class="w-full input-text-tmp" placeholder="Module ID" />
+                <label v-if="moduleUsed" class="input-label-error-tmp"> Module '{{ moduleID }}' already selected! </label>
             </div>
-            <div class="w-full lg:w-2/3">
-                <div class="mb-8 w-full relative">
-                    <div class="mb-4">
-                        <label for="moduleID" class="text-gray-700 text-md font-medium block mb-3"> Choose Module ID </label>
-                        <input id="moduleID" v-model.trim="moduleID" class="w-full form-input input-text" placeholder="Module ID" />
-                    </div>
-                    <div v-if="moduleID !== '' && !moduleUsed && !moduleExists" class="mb-4">
-                        <label for="moduleName" class="text-gray-700 text-md font-medium block mb-3"> Choose Module Name </label>
-                        <input
-                            id="moduleName"
-                            v-model.trim="moduleNameInput"
-                            class="w-full form-input input-text"
-                            placeholder="Module Name"
-                        />
-                    </div>
-                    <div v-else-if="moduleUsed" class="mb-4">
-                        <label class="text-gray-700 text-md font-medium my-3">
-                            <i class="text-red-400 fas fa-times mr-2"></i>
-                            Module '{{ moduleID }}' already selected!
-                        </label>
-                    </div>
-                    <div v-if="moduleID !== '' && moduleName !== '' && !moduleUsed">
-                        <div class="mb-4 p-3 bg-gray-100 rounded">
-                            <div class="relative">
-                                <label class="block text-gray-700 text-md font-medium mb-1">
-                                    {{ moduleID }}
-                                </label>
-                                <label class="block text-gray-600">
-                                    {{ moduleName }}
-                                </label>
-                                <div class="absolute inset-y-0 right-0">
-                                    <div class="hidden sm:flex">
-                                        <button id="addModule" class="btn btn-green-secondary w-48" @click="addCurrentModule">
-                                            {{ moduleExists ? "Add Module" : "Create Module" }}
-                                        </button>
-                                    </div>
-                                    <div class="sm:hidden">
-                                        <button class="btn btn-icon-green ml-3 text-xl w-12 h-12" @click="addCurrentModule">
-                                            <i class="fas fa-plus text-md" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+            <div v-if="moduleID !== '' && !moduleUsed && !moduleExists" class="lg:w-1/2 w-full">
+                <label for="moduleName" class="w-full input-label-tmp"> Choose Module Name </label>
+                <input id="moduleName" v-model.trim="moduleNameInput" class="w-full input-text-tmp" placeholder="Module Name" />
+            </div>
+            <div v-if="moduleID !== '' && moduleName !== '' && !moduleUsed">
+                <div class="w-full rounded-md border-gray-200 dark:border-normal gray-700 border h-24 p-4 mx-auto md:mx-0">
+                    <div class="relative">
+                        <div class="font-medium text-lg dark:text-gray-300">{{ moduleID }}</div>
+                        <div class="text-sm text-gray-700 dark:text-gray-500">{{ moduleName }}</div>
+                        <div class="absolute inset-y-0 right-0">
+                            <button id="addModule" class="btn-secondary-add-tmp" @click="addCurrentModule">
+                                {{ moduleExists ? "Add Module" : "Create Module" }}
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="mb-4 w-full">
-                    <div v-for="(module, index) in selectedModules" :key="module.id">
-                        <div class="mb-4 p-3 bg-gray-100 rounded-lg shadow-sm flex w-full">
-                            <div class="w-full flex flex-col">
-                                <label class="block text-gray-700 text-md font-medium mb-1">
-                                    {{ module.id }}
-                                </label>
-                                <label class="block text-gray-600">
-                                    {{ module.name }}
-                                </label>
-                            </div>
-                            <div class="w-full flex justify-end">
-                                <div class="hidden sm:flex">
-                                    <button :id="'removeModule' + index" class="w-48 btn btn-red-secondary" @click="removeModule(index)">
-                                        Remove Module
-                                    </button>
-                                </div>
-                                <div class="sm:hidden">
-                                    <button class="btn btn-icon-red ml-3 text-xl w-12 h-12" @click="removeModule(index)">
-                                        <i class="fas fa-trash text-md" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+            <div v-if="selectedModules !== 'undefined' && selectedModules.length > 0" class="pb-4 pt-4">
+                <hr />
+            </div>
+            <div v-if="selectedModules !== 'undefined' && selectedModules.length > 0">
+                <label class="input-label-tmp">Selected Modules</label>
+                <div v-if="selectedModules !== 'undefined' && selectedModules.length > 0" class="mb-4 w-full flex flex-wrap">
+                    <div v-for="(module, index) in selectedModules" :key="module.id" class="pr-4 pb-4">
+                        <module-card :module-id="module.id" :module-name="module.name" @remove="removeModule(index)" />
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
     import { watch, ref, computed } from "vue";
     import Module from "@/api/api_models/exam_reg_management/Module";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import ModuleCard from "@/components/exreg/ModuleCard.vue";
 
     export default {
         name: "ExRegModuleSection",
+        components: {
+            BaseSection,
+            ModuleCard,
+        },
         props: {
             existingModules: {
                 type: Array,
