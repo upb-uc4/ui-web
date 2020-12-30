@@ -8,8 +8,8 @@
             v-model:birth-date="admin.birthDate"
             :readonly="true"
         />
-        <editable-contact-section v-model:email="admin.email" v-model:phone-number="admin.phoneNumber" />
-        <editable-address-section v-model:address="admin.address" />
+        <editable-contact-section v-model:email="admin.email" v-model:phone-number="admin.phoneNumber" @save="onSave()" />
+        <editable-address-section v-model:address="admin.address" @save="onSave()" />
     </div>
 </template>
 
@@ -20,9 +20,9 @@
     import EditableContactSection from "@/components/common/dev/playground/EditableContactSection.vue";
     import EditableAddressSection from "@/components/common/dev/playground/EditableAddressSection.vue";
 
-    import { computed, ref } from "vue";
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import { computed, reactive, ref } from "vue";
     import Admin from "@/api/api_models/user_management/Admin";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         components: {
@@ -37,18 +37,27 @@
                 required: true,
                 type: Object as () => Admin,
             },
+            errorBag: {
+                required: true,
+                type: Object as () => ErrorBag,
+            },
         },
-        emits: ["update:user"],
+        emits: ["update:user", "save"],
         setup(props: any, { emit }: any) {
             //todo move the components to the right location once the old components are deleted
-            //todo add save logic
+            //todo the v-model to the lower level is not correct?
+            const admin = reactive(props.user);
+            const title = computed(() => `${admin.firstName} ${admin.lastName} (@${admin.username})`);
 
-            const admin = ref(props.user);
-            const title = computed(() => `${admin.value.firstName} ${admin.value.lastName} (@${admin.value.username})`);
+            function onSave() {
+                emit("update:user", admin);
+                emit("save");
+            }
 
             return {
                 title,
-                admin: useModelWrapper(props, emit, "user"),
+                admin,
+                onSave,
             };
         },
     };
