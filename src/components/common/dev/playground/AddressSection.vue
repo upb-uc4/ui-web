@@ -42,13 +42,17 @@
     import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
-        name: "InputSection",
+        name: "AddressSection",
         components: {
             BaseSection,
             Select,
         },
         props: {
             address: {
+                type: Object,
+                required: true,
+            },
+            errorBag: {
                 type: Object,
                 required: true,
             },
