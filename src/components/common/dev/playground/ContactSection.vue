@@ -24,7 +24,7 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
-        name: "InputSection",
+        name: "ContactSection",
         components: {
             BaseSection,
         },
@@ -35,6 +35,10 @@
             },
             email: {
                 type: String,
+                required: true,
+            },
+            errorBag: {
+                type: Object,
                 required: true,
             },
         },
