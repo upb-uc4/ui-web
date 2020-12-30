@@ -46,7 +46,7 @@
 
             onBeforeMount(() => {
                 props.getVersion
-                    .then((versionResult) => {
+                    .then((versionResult: any) => {
                         version.value = versionResult.version.replace("v", "");
                         changelogURL.value = versionResult.changelogURL;
                     })

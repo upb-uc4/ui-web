@@ -49,7 +49,7 @@
                         user.value = cloneDeep(userResult);
                         userCopy.value = cloneDeep(userResult);
                     })
-                    .then((isLoading.value = false));
+                    .then(() => (isLoading.value = false));
             });
 
             function onSave() {
