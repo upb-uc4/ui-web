@@ -1,11 +1,11 @@
 <template>
-    <div v-if="busy" class="mx-auto">
-        <loading-spinner />
-    </div>
-    <div v-else>
-        <public-student-profile v-if="user.role === Role.STUDENT" :student="user" />
-        <public-lecturer-profile v-else-if="user.role === Role.LECTURER" :lecturer="user" />
-    </div>
+    <base-view>
+        <loading-spinner v-if="isLoading" />
+        <div v-else>
+            <public-student-profile v-if="user.role === Role.STUDENT" :student="user" />
+            <public-lecturer-profile v-else-if="user.role === Role.LECTURER" :lecturer="user" />
+        </div>
+    </base-view>
 </template>
 
 <script lang="ts">
@@ -20,32 +20,35 @@
     import Student from "@/api/api_models/user_management/Student";
     import { onBeforeMount, ref } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import { cloneDeep } from "lodash";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         components: {
+            BaseView,
             PublicStudentProfile,
             PublicLecturerProfile,
             LoadingSpinner,
         },
         setup() {
             const username: string = Router.currentRoute.value.params.username as string;
-            const user = ref({} as Lecturer | Admin | Student);
-            const busy = ref(false);
+            const user = ref({} as Student | Lecturer | Admin);
+            const isLoading = ref(true);
 
-            onBeforeMount(async () => {
-                await getUser();
+            onBeforeMount(() => {
+                const userManagement = new UserManagement();
+                userManagement
+                    .getSpecificUser(username)
+                    .then((response) => new ProfileResponseHandler().handleResponse(response))
+                    .then((result) => {
+                        user.value = result;
+                        window.document.title = user.value.firstName + " " + user.value.lastName + " (@" + username + ") | UC4";
+                    })
+                    .then(() => (isLoading.value = false));
             });
 
-            async function getUser() {
-                busy.value = true;
-                const auth: UserManagement = new UserManagement();
-                const responseHandler = new ProfileResponseHandler();
-                const response = await auth.getSpecificUser(username);
-                user.value = responseHandler.handleResponse(response);
-                window.document.title = user.value.firstName + " " + user.value.lastName + " (@" + username + ") | UC4";
-                busy.value = true;
-            }
-            return { Role, user };
+            return { Role, user, isLoading };
         },
     };
 </script>
