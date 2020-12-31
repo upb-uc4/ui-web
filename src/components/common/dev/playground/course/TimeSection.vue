@@ -1,15 +1,13 @@
 <template>
-    <base-section title="Time" subtitle="information about Start and End Dates of the Course as well as Slot Times.">
+    <base-section title="Time" subtitle="Manage dates as well as time slots.">
         <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
             <div class="lg:w-1/2 w-full">
                 <label class="input-label-tmp">Start Date</label>
-                <birth-date-input v-model:birth-date="startDate" :disabled="true" />
-                <label v-if="errorBag.has('startDate')" class="input-label-warning-tmp">{{ errorBag.get("startDate") }}</label>
+                <input class="input-text-tmp w-full" readonly type="text" :value="start" />
             </div>
             <div class="lg:w-1/2 w-full">
                 <label class="input-label-tmp">End Date</label>
-                <birth-date-input v-model:birth-date="endDate" :disabled="true" />
-                <label v-if="errorBag.has('endDate')" class="input-label-warning-tmp">{{ errorBag.get("endDate") }}</label>
+                <input class="input-text-tmp w-full" readonly type="text" :value="end" />
             </div>
         </div>
     </base-section>
@@ -19,13 +17,11 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import BaseSection from "@/components/common/section/BaseSection.vue";
-    import BirthDateInput from "@/components/account/edit/BirthDateInput.vue";
 
     export default {
-        name: "RestrictionsSection",
+        name: "TimeSection",
         components: {
             BaseSection,
-            BirthDateInput,
         },
         props: {
             errorBag: {
