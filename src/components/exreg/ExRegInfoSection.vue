@@ -1,13 +1,12 @@
 <template>
-    <BaseSection title="Examination Regulation Information" subtitle="Choose a unique name for the examination regulation">
+    <BaseSection title="Basics" subtitle="Choose a unique name for the examination regulation.">
         <div class="lg:w-1/2 w-full">
-            <label for="examRegName" class="input-label-tmp"> Examination Regulation Name </label>
+            <label for="examRegName" class="input-label-tmp">Examination Regulation Name</label>
             <input
                 id="examRegName"
                 v-model.trim="newName"
                 class="w-full"
                 :class="valid || !newName ? 'input-text-tmp' : 'input-text-error-tmp'"
-                placeholder="Exam regulation name"
             />
             <div v-if="newName !== ''" id="examRegNameFeedback">
                 <label v-if="!valid" class="input-label-error-tmp"> '{{ newName }}' already exists! </label>

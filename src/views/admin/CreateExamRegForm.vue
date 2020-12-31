@@ -1,6 +1,6 @@
 <template>
     <base-view>
-        <loading-spinner v-if="busy" />
+        <loading-spinner v-if="isLoading" />
         <div v-else>
             <section-header title="Create Examinination Regulation" />
             <ExRegInfoSection
@@ -12,7 +12,7 @@
             <ExRegModuleSection v-model:modules="selectedModules" :existing-modules="existingModules" :error-bag="errorBag" />
             <button-section>
                 <template #right>
-                    <button id="cancel" type="button" class="btn-secondary-tmp w-full sm:w-48" @click="back">Cancel</button>
+                    <button id="cancel" type="button" class="btn-secondary-tmp w-full sm:w-32" @click="back">Cancel</button>
                     <button id="createExamReg" :disabled="!canCreate" class="btn-tmp w-full sm:w-48" @click="createExamReg">Create</button>
                 </template>
             </button-section>
@@ -52,11 +52,10 @@
         },
         setup() {
             const errorBag = ref(new ErrorBag());
-            const heading = "Create Exam Regulation";
             const examRegName = ref("");
             const nameValid = ref(false);
 
-            const busy = ref(false); // for later use
+            const isLoading = ref(false); // for later use
             const examApi = new ExaminationRegulationManagement();
             const responseHandler = new GenericResponseHandler("Examination Regulation Data");
 
@@ -65,9 +64,9 @@
             const existingModules = ref([] as Module[]);
 
             onBeforeMount(async () => {
-                busy.value = true;
+                isLoading.value = true;
                 await Promise.all([getModules(), getExamRegNames()]);
-                busy.value = false;
+                isLoading.value = false;
             });
 
             async function getExamRegNames() {
@@ -96,7 +95,7 @@
                     active: true,
                     modules: selectedModules.value,
                 };
-                busy.value = true;
+                isLoading.value = true;
                 const response = await examApi.createExaminationRegulation(examReg);
                 const validationResponseHandler = new ValidationResponseHandler("examination regulation");
                 const handledResponse = validationResponseHandler.handleResponse(response);
@@ -110,15 +109,14 @@
                     selectedModules.value = [] as Module[];
                     examRegName.value = "";
                 }
-                busy.value = false;
+                isLoading.value = false;
             }
 
             return {
-                busy,
+                isLoading,
                 existingModules,
                 examRegName,
                 existingExamRegNames,
-                heading,
                 selectedModules,
                 canCreate,
                 nameValid,
