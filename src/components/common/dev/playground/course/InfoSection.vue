@@ -1,5 +1,5 @@
 <template>
-    <BaseSection subtitle="General Information about the Course" title="Basics">
+    <BaseSection subtitle="General information about the course." title="Basics">
         <div class="space-y-6">
             <div class="space-y-6">
                 <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">

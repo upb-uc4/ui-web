@@ -34,7 +34,7 @@
                     </button>
                 </template>
                 <template #right>
-                    <button id="cancel" type="button" class="w-48 btn-secondary-tmp" @click="back">Cancel</button>
+                    <button id="cancel" type="button" class="w-32 btn-secondary-tmp" @click="back">Cancel</button>
                     <button v-if="editMode" id="saveChanges" :disabled="!hasInput" type="button" class="btn-tmp w-48" @click="back">
                         Save Changes
                     </button>

@@ -1,5 +1,5 @@
 <template>
-    <BaseSection subtitle="Information of Participation Restrictions for the Course" title="Restrictions">
+    <BaseSection subtitle="Restrict participation for this course." title="Restrictions">
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">

@@ -1,5 +1,5 @@
 <template>
-    <BaseSection subtitle="Select a lecturer that will hold the course" title="Lecturer">
+    <BaseSection subtitle="Select the lecturer that will hold the course." title="Lecturer">
         <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
             <div class="lg:w-1/2 w-full">
                 <searchableSelect :label="'Lecturer-ID'" :elements="myLecturers" @update:selected="updateLecturerId" />
