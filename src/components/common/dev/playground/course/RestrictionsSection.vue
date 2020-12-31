@@ -2,7 +2,7 @@
     <BaseSection subtitle="Restrict participation for this course." title="Restrictions">
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
-                <div class="lg:w-1/2 w-full">
+                <div class="w-full">
                     <label for="maxParticipants" class="input-label-tmp">Participation Limit</label>
                     <input
                         id="maxParticipants"
@@ -16,7 +16,6 @@
                         {{ errorBag.get("maxParticipants") }}
                     </label>
                 </div>
-                <div class="lg:w-1/2 w-full invisible" />
             </div>
         </div>
     </BaseSection>
