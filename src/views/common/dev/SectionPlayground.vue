@@ -31,10 +31,10 @@
 <script lang="ts">
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
-    import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
-    import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
-    import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
-    import ContactSection from "@/components/common/dev/playground/ContactSection.vue";
+    import PersonalSection from "@/components/profile/PersonalSection.vue";
+    import AddressSection from "@/components/profile/AddressSection.vue";
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
+    import ContactSection from "@/components/profile/ContactSection.vue";
     import Spinner from "@/components/common/loading/Spinner.vue";
     import { onBeforeMount, ref } from "vue";
     import { Role } from "@/entities/Role";
