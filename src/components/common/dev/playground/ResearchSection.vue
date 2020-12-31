@@ -2,7 +2,7 @@
     <BaseSection title="Research Area" subtitle="This section can be publicly seen.">
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
-                <div class="lg:w-1/2 w-full">
+                <div class="w-full">
                     <label class="input-label-tmp">Research Area</label>
                     <textarea
                         v-model="myResearchArea"
@@ -14,20 +14,18 @@
                         errorBag.getNested("description")
                     }}</label>
                 </div>
-                <div class="lg:w-1/2 w-full" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
-                <div class="lg:w-1/2 w-full">
+                <div class="w-full">
                     <label class="input-label-tmp">Description</label>
                     <textarea
                         v-model="myFreeText"
                         class="w-full"
                         rows="5"
-                        :class="errorBag.hasNested('freeTest') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('freeText') ? 'input-text-error-tmp' : 'input-text-tmp'"
                     />
                     <label v-if="errorBag.hasNested('freeText')" class="input-label-error-tmp">{{ errorBag.getNested("freeText") }}</label>
                 </div>
-                <div class="lg:w-1/2 w-full" />
             </div>
         </div>
     </BaseSection>
