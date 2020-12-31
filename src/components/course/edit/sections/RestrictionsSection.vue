@@ -1,67 +1,50 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <label class="block text-gray-700 text-md font-medium mb-2">Restrictions</label>
-                <label class="block text-gray-600"> Information of Participation Restrictions for the Course </label>
-            </div>
-            <div class="w-full lg:w-2/3">
-                <div class="mb-4 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
+    <BaseSection subtitle="Restrict participation for this course." title="Restrictions">
+        <div class="space-y-6">
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="w-full">
+                    <label for="maxParticipants" class="input-label-tmp">Participation Limit</label>
                     <input
                         id="maxParticipants"
-                        v-model="maxParticipants"
-                        type="number"
+                        v-model.number="myMaxParticipant"
                         min="0"
-                        class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('maxParticipants') }"
-                        @input="updateLimit($event.target.value)"
+                        type="number"
+                        class="lg:w-32 w-full"
+                        :class="errorBag.has('maxParticipants') ? 'input-text-error-tmp' : 'input-text-tmp'"
                     />
-                    <p v-if="errorBag.has('maxParticipants')" class="error-message">
+                    <label v-if="errorBag.has('maxParticipants')" for="maxParticipants" class="input-label-warning-tmp">
                         {{ errorBag.get("maxParticipants") }}
-                    </p>
+                    </label>
                 </div>
             </div>
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
-    import ErrorBag from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import { ref } from "vue";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
-        name: "RestrictionsSection",
+        name: "RestrictionSection",
+        components: {
+            BaseSection,
+        },
         props: {
-            errorBag: {
-                required: true,
-                type: ErrorBag,
-            },
-            participantsLimit: {
-                required: true,
+            maxParticipants: {
                 type: Number,
+                required: true,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
+                required: true,
             },
         },
-        emits: ["update:participantsLimit"],
+        emits: ["update:maxParticipants"],
         setup(props: any, { emit }: any) {
-            let maxParticipants = ref(props.participantsLimit);
-
-            function isNumber(value: string) {
-                return /[0-9]/g.test(value);
-            }
-
-            function updateLimit(value: string) {
-                if (isNumber(value)) {
-                    emit("update:participantsLimit", parseInt(value));
-                } else {
-                    emit("update:participantsLimit", 0);
-                }
-            }
-
             return {
-                maxParticipants,
-                updateLimit,
+                myMaxParticipant: useModelWrapper(props, emit, "maxParticipants"),
             };
         },
     };

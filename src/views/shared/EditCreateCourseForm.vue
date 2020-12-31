@@ -63,16 +63,16 @@
     import { Role } from "@/entities/Role";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
-    import LecturerSection from "@/components/common/dev/playground/course/LecturerSection.vue";
+    import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
     import CourseModuleSection from "@/components/course/edit/sections/CourseModulesSection.vue";
     import { useToast } from "@/toast";
     import BaseView from "@/views/common/BaseView.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
-    import InfoSection from "@/components/common/dev/playground/course/InfoSection.vue";
-    import RestrictionsSection from "@/components/common/dev/playground/course/RestrictionsSection.vue";
-    import TimeSection from "@/components/common/dev/playground/course/TimeSection.vue";
+    import InfoSection from "@/components/course/edit/sections/InfoSection.vue";
+    import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
+    import TimeSection from "@/components/course/edit/sections/TimeSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
 
     export default {
