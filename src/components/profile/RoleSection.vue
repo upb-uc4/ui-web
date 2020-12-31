@@ -5,7 +5,7 @@
     >
         <div class="w-full">
             <div id="roleSelection" class="flex w-full">
-                <div v-for="vrole in roles" :key="vrole" class="mr-4">
+                <div v-for="vrole in roles" :key="vrole" class="mr-6">
                     <label class="flex items-center">
                         <input
                             :id="'role-' + vrole"
@@ -15,7 +15,7 @@
                             :disabled="editMode"
                             :value="vrole"
                         />
-                        <span class="ml-4 mt-1 input-label-tmp">{{ vrole }}</span>
+                        <span class="ml-2 mt-1 input-label-tmp">{{ vrole }}</span>
                     </label>
                 </div>
             </div>
