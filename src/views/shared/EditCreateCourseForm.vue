@@ -99,7 +99,7 @@
         emits: ["update:has-input", "update:success"],
 
         setup(props: any, { emit }: any) {
-            let isLoading = ref(true);
+            let isLoading = ref(false);
             let isAdmin = ref(false);
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
@@ -159,6 +159,7 @@
             }
 
             async function getCourse() {
+                isLoading.value = true;
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
                 const genericResponseHandler = new GenericResponseHandler("course");
                 const result = genericResponseHandler.handleResponse(response);
