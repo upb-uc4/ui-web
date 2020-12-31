@@ -12,7 +12,7 @@
                         class="lg:w-32 w-full"
                         :class="errorBag.has('maxParticipants') ? 'input-text-error-tmp' : 'input-text-tmp'"
                     />
-                    <label v-if="errorBag.has('maxParticipants')" for="maxParticipants" class="input-label-warning-tmp">
+                    <label v-if="errorBag.has('maxParticipants')" for="maxParticipants" class="input-label-error-tmp">
                         {{ errorBag.get("maxParticipants") }}
                     </label>
                 </div>

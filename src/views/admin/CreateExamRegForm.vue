@@ -2,6 +2,7 @@
     <base-view>
         <loading-spinner v-if="busy" />
         <div v-else>
+            <section-header title="Create Examinination Regulation" />
             <ExRegInfoSection
                 v-model:name="examRegName"
                 v-model:valid="nameValid"
@@ -36,6 +37,7 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
 
     export default {
         name: "CreateExamRegForm",
@@ -46,6 +48,7 @@
             BaseView,
             LoadingSpinner,
             ButtonSection,
+            SectionHeader,
         },
         setup() {
             const errorBag = ref(new ErrorBag());

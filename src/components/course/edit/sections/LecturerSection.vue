@@ -3,7 +3,7 @@
         <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
             <div class="lg:w-1/2 w-full">
                 <searchableSelect :label="'Lecturer-ID'" :elements="myLecturers" @update:selected="updateLecturerId" />
-                <label v-if="errorBag.has('lecturerId')" class="input-label-warning-tmp">
+                <label v-if="errorBag.has('lecturerId')" class="input-label-error-tmp">
                     {{ errorBag.get("lecturerId") }}
                 </label>
                 <div :hidden="Object.keys(currentLecturer).length === 0" class="text-gray-700 text-md font-medium my-3">
