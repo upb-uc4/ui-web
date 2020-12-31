@@ -1,161 +1,101 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <div class="flex mb-2 align-baseline">
-                    <label class="block text-gray-700 text-lg font-medium">Address</label>
-                    <button v-show="!isEditing" id="editAddress" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
-                    <button v-show="isEditing" id="saveAddress" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
-                    <button v-show="isEditing" id="cancelEditAddress" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
-                        Cancel
-                    </button>
+    <BaseSection
+        title="Address"
+        subtitle="Please keep your address information as up to date as possible. This is the address where official mail will be sent to."
+    >
+        <div class="space-y-6">
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label-tmp">Country</label>
+                    <Select v-model:elements="countries" v-model:selection="country" :disabled="false" />
+                    <label v-if="errorBag.has('country')" class="input-label-error-tmp">{{ errorBag.get("country") }}</label>
                 </div>
-                <label class="block text-gray-600"> Please keep your address information as up to date as possible. </label>
+                <div class="lg:w-1/2 w-full invisible" />
             </div>
-
-            <div class="w-full lg:w-2/3">
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Country</label>
-                    <select
-                        id="country"
-                        v-model="editedUser.address.country"
-                        :disabled="!isEditing"
-                        class="w-full form-select input-select"
-                    >
-                        <option v-for="country in countries" :key="country" :selected="country === editedUser.address.country">
-                            {{ country }}
-                        </option>
-                    </select>
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label-tmp">City</label>
+                    <input
+                        v-model="city"
+                        type="text"
+                        class="w-full"
+                        :class="errorBag.has('city') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('city')" class="input-label-error-tmp">{{ errorBag.get("city") }}</label>
                 </div>
-
-                <div class="lg:flex mb-6 justify-between">
-                    <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
-                        <label class="text-gray-700 text-md font-medium mb-3">City</label>
-                        <input
-                            id="city"
-                            v-model="editedUser.address.city"
-                            type="text"
-                            :readonly="!isEditing"
-                            class="w-full input-text form-input"
-                            :class="{ error: errorBag.hasNested('city') }"
-                        />
-                        <p v-if="errorBag.hasNested('city')" class="error-message">
-                            {{ errorBag.getNested("city") }}
-                        </p>
-                    </div>
-                    <div class="flex flex-col w-full lg:w-1/6">
-                        <label class="text-gray-700 text-md font-medium mb-3">Postal Code</label>
-                        <input
-                            id="zipCode"
-                            v-model="editedUser.address.zipCode"
-                            type="text"
-                            :readonly="!isEditing"
-                            class="w-full input-text form-input"
-                            :class="{ error: errorBag.hasNested('zipCode') }"
-                        />
-                        <p v-if="errorBag.hasNested('zipCode')" class="error-message">
-                            {{ errorBag.getNested("zipCode") }}
-                        </p>
-                    </div>
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label-tmp">Postal Code</label>
+                    <input
+                        v-model="zipCode"
+                        type="text"
+                        class="w-full"
+                        :class="errorBag.has('zipCode') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('zipCode')" class="input-label-error-tmp">{{ errorBag.get("zipCode") }}</label>
                 </div>
-                <div class="lg:flex flex-row justify-between mb-6">
-                    <div class="lg:mb-0 mb-6 flex flex-col w-full lg:w-5/6 mr-3">
-                        <label class="text-gray-700 text-md font-medium mb-3">Street</label>
-                        <input
-                            id="street"
-                            v-model="editedUser.address.street"
-                            type="text"
-                            :readonly="!isEditing"
-                            class="input-text form-input"
-                            :class="{ error: errorBag.hasNested('street') }"
-                        />
-                        <p v-if="errorBag.hasNested('street')" class="error-message">
-                            {{ errorBag.getNested("street") }}
-                        </p>
-                    </div>
-                    <div class="flex flex-col w-full lg:w-1/6">
-                        <label class="text-gray-700 text-md font-medium mb-3">Nr.</label>
-                        <input
-                            id="houseNumber"
-                            v-model="editedUser.address.houseNumber"
-                            type="text"
-                            :readonly="!isEditing"
-                            class="input-text form-input"
-                            :class="{ error: errorBag.hasNested('houseNumber') }"
-                        />
-                        <p v-if="errorBag.hasNested('houseNumber')" class="error-message">
-                            {{ errorBag.getNested("houseNumber") }}
-                        </p>
-                    </div>
+            </div>
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label-tmp">Street</label>
+                    <input
+                        v-model="street"
+                        type="text"
+                        class="w-full"
+                        :class="errorBag.has('street') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('street')" class="input-label-error-tmp">{{ errorBag.get("street") }}</label>
+                </div>
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label-tmp">House Number</label>
+                    <input
+                        v-model="houseNumber"
+                        type="text"
+                        class="w-full input-text-tmp"
+                        :class="errorBag.has('houseNumber') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('houseNumber')" class="input-label-error-tmp">{{ errorBag.get("houseNumber") }}</label>
                 </div>
             </div>
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
-    import { ref, watch } from "vue";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import Select from "@/components/common/Select.vue";
     import { Country } from "@/entities/Country";
-    import UserManagement from "@/api/UserManagement";
-    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
-    import { cloneDeep } from "lodash";
+    import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import Admin from "@/api/api_models/user_management/Admin";
+    import Address from "@/api/api_models/user_management/Address";
 
     export default {
+        name: "AddressSection",
+        components: {
+            BaseSection,
+            Select,
+        },
         props: {
-            user: {
+            address: {
+                type: Object as () => Address,
                 required: true,
-                type: Object,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
+                required: true,
             },
         },
-        emits: ["update:user"],
+        emits: ["update:address"],
         setup(props: any, { emit }: any) {
-            const countries = Object.values(Country).filter((e) => e != Country.NONE);
-            const editedUser = ref(cloneDeep(props.user));
-            const isEditing = ref(false);
-            const errorBag = ref(new ErrorBag());
+            const countries = Object.values(Country).filter((e) => e !== Country.NONE);
 
-            //react on saved changes from other components
-            watch(
-                () => props.user,
-                () => {
-                    let localAddressChanges = editedUser.value.address;
-                    //update user object
-                    editedUser.value = cloneDeep(props.user);
-                    // restore local changes
-                    editedUser.value.address = localAddressChanges;
-                }
-            );
-
-            function edit() {
-                isEditing.value = true;
-            }
-
-            function cancelEdit() {
-                resetInputs();
-                isEditing.value = false;
-            }
-
-            function resetInputs() {
-                editedUser.value = cloneDeep(props.user);
-                errorBag.value = new ErrorBag();
-            }
-
-            async function save() {
-                const auth: UserManagement = new UserManagement();
-                const response = await auth.updateUser(editedUser.value);
-                const handler = new ValidationResponseHandler("address");
-                if (handler.handleResponse(response)) {
-                    isEditing.value = false;
-                    emit("update:user", editedUser.value);
-                    errorBag.value = new ErrorBag();
-                } else {
-                    errorBag.value = new ErrorBag(handler.errorList);
-                }
-            }
-
-            return { isEditing, edit, cancelEdit, save, countries, editedUser, errorBag };
+            return {
+                countries,
+                country: useObjectModelWrapper(props, emit, "address", "country"),
+                city: useObjectModelWrapper(props, emit, "address", "city"),
+                street: useObjectModelWrapper(props, emit, "address", "street"),
+                houseNumber: useObjectModelWrapper(props, emit, "address", "houseNumber"),
+                zipCode: useObjectModelWrapper(props, emit, "address", "zipCode"),
+            };
         },
     };
 </script>

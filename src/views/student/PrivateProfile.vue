@@ -11,14 +11,14 @@
 
 <script lang="ts">
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
-    import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
-    import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
-    import ContactSection from "@/components/common/dev/playground/ContactSection.vue";
-    import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
+    import PersonalSection from "@/components/profile/PersonalSection.vue";
+    import ContactSection from "@/components/profile/ContactSection.vue";
+    import AddressSection from "@/components/profile/AddressSection.vue";
     import { computed } from "vue";
     import Student from "@/api/api_models/user_management/Student";
     import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
-    import CourseOfStudySection from "@/components/common/dev/playground/CourseOfStudySection.vue";
+    import CourseOfStudySection from "@/components/profile/student/CourseOfStudySection.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {

@@ -26,12 +26,12 @@
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import { ref } from "vue";
-    import LecturerSection from "@/components/common/dev/playground/course/LecturerSection.vue";
-    import InfoSection from "@/components/common/dev/playground/course/InfoSection.vue";
+    import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
+    import InfoSection from "@/components/course/edit/sections/InfoSection.vue";
     import Course from "@/api/api_models/course_management/Course";
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
-    import RestrictionsSection from "@/components/common/dev/playground/course/RestrictionsSection.vue";
+    import RestrictionsSection from "@/components/course/edit/sections/RestrictionsSection.vue";
     import BaseView from "@/views/common/BaseView.vue";
 
     export default {

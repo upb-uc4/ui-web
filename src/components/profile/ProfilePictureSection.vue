@@ -1,138 +1,120 @@
 <template>
-    <section class="py-8 border-t-2 border-gray-400">
-        <div class="lg:flex">
-            <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                <label class="block mb-2 text-lg font-medium text-gray-700">Profile Picture</label>
+    <BaseSection title="Public Picture" subtitle="Click on the image to either unset your current profile picture or to set a new one.">
+        <div class="w-32 h-32 relative text-center cursor-pointer">
+            <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="openFileBrowser" />
+            <div v-if="isLoading">
+                <img src="@/assets/loading-spinner-alt.svg" alt="loading" />
             </div>
-            <div class="flex flex-col">
-                <loading-spinner v-if="busy" class="object-cover mb-5 rounded-full" />
-                <div v-else class="w-full flex justify-center sm:justify-start">
-                    <img id="picture" class="h-48 w-48 object-cover mb-5 rounded-full border border-gray-500" :src="selectedPicture" />
-                </div>
-
-                <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="uploadPicture" />
-                <div class="flex justify-center sm:justify-start ml-12 sm:ml-0">
-                    <button id="uploadPicture" :disabled="busy" class="btn btn-blue-primary w-48" @click="triggerFileUpload">
-                        Select Image
-                    </button>
-                    <button
-                        v-if="!pictureChanged"
-                        id="deletePicture"
-                        :disabled="busy"
-                        title="Delete Profile Picture"
-                        class="btn btn-icon-red ml-3 text-xl w-10"
-                        @click="confirmDeletePicture"
-                    >
-                        <i class="far fa-trash-alt"></i>
-                    </button>
-                    <div v-else class="flex">
-                        <button
-                            v-if="pictureChanged"
-                            id="confirmPicture"
-                            :disabled="busy"
-                            title="Confirm Profile Picture"
-                            class="btn btn-icon-green ml-3 text-xl w-10"
-                            @click="confirmPicture"
-                        >
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <button
-                            v-if="pictureChanged"
-                            id="resetPicture"
-                            :disabled="busy"
-                            title="Reset Profile Picture"
-                            class="btn btn-icon-red ml-3 text-xl w-10"
-                            @click="resetPicture"
-                        >
-                            <i class="far fa-trash-alt"></i>
-                        </button>
+            <Menu v-else>
+                <MenuButton class="focus:outline-none" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                    <img class="w-32 h-32 object-cover rounded-full" :src="selectedPicture" />
+                    <div v-show="isHovered">
+                        <div class="absolute top-0 left-0 w-32 h-32 rounded-full bg-black opacity-50" />
+                        <div class="absolute top-24 left-0 w-full text-white text-sm font-medium tracking-wider">Change</div>
                     </div>
-                </div>
-                <p v-if="errorBag.hasNested('profilePicture')" class="error-message">
-                    {{ errorBag.getNested("profilePicture") }}
-                </p>
-            </div>
+                </MenuButton>
+
+                <transition
+                    enter-active-class="transition duration-100 ease-out"
+                    enter-from-class="transform scale-95 opacity-0"
+                    enter-to-class="transform scale-100 opacity-100"
+                    leave-active-class="transition duration-75 ease-out"
+                    leave-from-class="transform scale-100 opacity-100"
+                    leave-to-class="transform scale-95 opacity-0"
+                >
+                    <MenuItems
+                        class="absolute left-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                    >
+                        <div class="py-1">
+                            <MenuItem v-slot="{ active }">
+                                <span
+                                    id="uploadPicture"
+                                    :class="active ? 'text-white bg-blue-600 font-semibold' : 'text-gray-900 font-normal'"
+                                    class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
+                                    @click="triggerOpenFileBrowser"
+                                >
+                                    Upload a photo
+                                </span>
+                            </MenuItem>
+                            <MenuItem v-slot="{ active }">
+                                <span
+                                    id="deletePicture"
+                                    :class="active ? 'text-white bg-blue-600 font-semibold' : 'text-gray-900 font-normal'"
+                                    class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
+                                    @click="confirmDeletePicture"
+                                >
+                                    Remove photo
+                                </span>
+                            </MenuItem>
+                        </div>
+                    </MenuItems>
+                </transition>
+            </Menu>
         </div>
-    </section>
-    <delete-profile-picture-modal ref="deletePictureModal" />
+        <delete-profile-picture-modal ref="deletePictureModal" />
+    </BaseSection>
 </template>
 
 <script lang="ts">
-    import { Role } from "@/entities/Role";
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag from "@/use/helpers/ErrorBag";
-    import { computed, onBeforeMount, ref, watch } from "vue";
-    import { cloneDeep } from "lodash";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import { onBeforeMount, ref } from "vue";
+    import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+    import Router from "@/use/router";
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
-    import Router from "@/use/router/";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
-    import { useStore } from "vuex";
-    import { MutationTypes } from "@/use/store/mutation-types";
-    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
-    import { useToast } from "@/toast";
 
     export default {
         name: "ProfilePictureSection",
         components: {
+            Menu,
+            MenuButton,
+            MenuItems,
+            MenuItem,
             DeleteProfilePictureModal,
-            LoadingSpinner,
+            BaseSection,
         },
-
-        props: {
-            username: {
-                type: String,
-                required: true,
-            },
-        },
-
-        setup(props: any, { emit }: any) {
-            const store = useStore();
-
-            const username: string = cloneDeep(props.username);
+        setup() {
+            const username: string = "admin"; //todo //Router.currentRoute.value.params.username as string;
             const selectedPicture = ref();
-            let fileToUpload: File = {} as File;
             const fallbackPicture = ref();
-            const busy = ref(false);
+            const isHovered = ref(false);
+            const isLoading = ref(true);
             const errorBag = ref(new ErrorBag());
             const deletePictureModal = ref();
-            const toast = useToast();
+            let fileToUpload: File = {} as File;
 
             onBeforeMount(async () => {
                 await getProfilePicture();
             });
 
             async function getProfilePicture() {
-                busy.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.getProfilePicture(username);
                 const handler = new GenericResponseHandler("profile picture");
                 const result = handler.handleResponse(response);
 
-                if (result.arrayBuffer != undefined) {
+                //todo: no overlap between arrayBuffer and undefined. Really necessary?
+                if (result.arrayBuffer !== undefined) {
                     const reader = new FileReader();
                     reader.readAsDataURL(result);
                     reader.onload = (e) => {
                         selectedPicture.value = e.target?.result;
-                        fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
                     selectedPicture.value = "";
-                    fallbackPicture.value = selectedPicture.value;
                 }
-                busy.value = false;
+                fallbackPicture.value = selectedPicture.value;
+                isLoading.value = false;
             }
 
-            const pictureChanged = computed(() => {
-                return selectedPicture.value !== fallbackPicture.value;
-            });
-
-            function triggerFileUpload() {
+            function triggerOpenFileBrowser() {
                 (document.getElementById("uploadFile") as any).click();
             }
 
-            function uploadPicture(e: Event) {
+            function openFileBrowser(e: Event) {
                 const files: FileList | null = (e.target as HTMLInputElement)?.files;
                 if (files == null || files?.length == 0) return;
 
@@ -142,28 +124,23 @@
                 reader.readAsDataURL(file);
                 reader.onload = (e) => {
                     selectedPicture.value = e.target?.result;
+                    uploadPicture();
                 };
             }
 
-            async function confirmPicture() {
-                busy.value = true;
+            async function uploadPicture() {
+                isLoading.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.updateProfilePicture(username, fileToUpload);
                 const handler = new ProfilePictureUpdateResponseHandler();
                 const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture.value = selectedPicture.value;
-                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                     errorBag.value = new ErrorBag();
-                    toast.success("Profile picture updated.");
                 } else {
                     errorBag.value = new ErrorBag(handler.errorList);
                 }
-                busy.value = false;
-            }
-
-            function resetPicture() {
-                selectedPicture.value = fallbackPicture.value;
+                isLoading.value = false;
             }
 
             async function confirmDeletePicture() {
@@ -176,39 +153,34 @@
                             break;
                         }
                         case action.DELETE: {
-                            deleteProfilePicture();
-                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
+                            deletePicture();
                             break;
                         }
                     }
                 });
             }
 
-            async function deleteProfilePicture() {
-                busy.value = true;
+            async function deletePicture() {
+                isLoading.value = true;
                 const userManagement = new UserManagement();
                 const response = await userManagement.deleteProfilePicture(username);
                 const handler = new GenericResponseHandler("profile picture");
                 const result = await handler.handleResponse(response);
                 if (result) {
-                    toast.success("Profile picture deleted.");
-                    getProfilePicture();
+                    await getProfilePicture();
                 }
-                busy.value = false;
+                isLoading.value = false;
             }
 
             return {
-                busy,
-                uploadPicture,
                 selectedPicture,
-                triggerFileUpload,
-                resetPicture,
-                pictureChanged,
-                confirmPicture,
-                errorBag,
-                fileToUpload,
+                isLoading,
+                isHovered,
                 deletePictureModal,
                 confirmDeletePicture,
+                openFileBrowser,
+                triggerOpenFileBrowser,
+                uploadPicture,
             };
         },
     };

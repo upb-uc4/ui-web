@@ -14,8 +14,6 @@
             />
             <contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" class="w-full" />
             <address-section v-model:address="myUser.address" />
-            <editable-address-section v-model:address="myUser.address" />
-            <editable-contact-section v-model:email="myUser.email" v-model:phone-number="myUser.phoneNumber" />
 
             <button-section>
                 <template #left>
@@ -33,10 +31,10 @@
 <script lang="ts">
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
-    import PersonalSection from "@/components/common/dev/playground/PersonalSection.vue";
-    import AddressSection from "@/components/common/dev/playground/AddressSection.vue";
-    import ProfilePictureSection from "@/components/common/dev/playground/ProfilePictureSection.vue";
-    import ContactSection from "@/components/common/dev/playground/ContactSection.vue";
+    import PersonalSection from "@/components/profile/PersonalSection.vue";
+    import AddressSection from "@/components/profile/AddressSection.vue";
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
+    import ContactSection from "@/components/profile/ContactSection.vue";
     import Spinner from "@/components/common/loading/Spinner.vue";
     import { onBeforeMount, ref } from "vue";
     import { Role } from "@/entities/Role";
@@ -48,8 +46,6 @@
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import BaseView from "@/views/common/BaseView.vue";
-    import EditableContactSection from "@/components/common/dev/playground/EditableContactSection.vue";
-    import EditableAddressSection from "@/components/common/dev/playground/EditableAddressSection.vue";
 
     export default {
         name: "Playground",
@@ -59,9 +55,7 @@
             ProfilePictureSection,
             PersonalSection,
             AddressSection,
-            EditableAddressSection,
             ContactSection,
-            EditableContactSection,
             ButtonSection,
             Spinner,
         },
