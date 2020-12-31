@@ -57,8 +57,8 @@
                         <h2 class="block text-gray-800 dark:text-gray-300 text-lg font-medium mb-1">Demo Login</h2>
                         <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
                             We encourage you to explore our product on your own. Feel free to use any of the following login combinations.
-                            However, please <span class="font-semibold">do not delete any of these accounts</span>. Each of the provided
-                            accounts has a different access level which in turn unlocks certain features.
+                            However, please <span class="font-semibold dark:text-gray-400">do not delete any of these accounts</span>. Each
+                            of the provided accounts has a different access level which in turn unlocks certain features.
                         </h3>
                     </div>
 

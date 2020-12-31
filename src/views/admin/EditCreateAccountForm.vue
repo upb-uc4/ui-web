@@ -52,10 +52,10 @@
                 </template>
                 <template #right>
                     <button id="cancel" type="button" class="w-full sm:w-32 btn-secondary-tmp" @click="back">Cancel</button>
-                    <button v-if="editMode" id="saveChanges" :disabled="!hasInput" class="w-full sm:w-32 btn-tmp" @click="updateAccount">
+                    <button v-if="editMode" id="saveChanges" :disabled="!hasInput" class="w-full sm:w-48 btn-tmp" @click="updateAccount">
                         Save Changes
                     </button>
-                    <button v-else id="createAccount" :disabled="!hasInput" class="w-full sm:w-32 btn-tmp" @click="createAccount">
+                    <button v-else id="createAccount" :disabled="!hasInput" class="w-full sm:w-48 btn-tmp" @click="createAccount">
                         Create Account
                     </button>
                 </template>

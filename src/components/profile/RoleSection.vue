@@ -1,5 +1,8 @@
 <template>
-    <base-section title="Select a Role" subtitle="">
+    <base-section
+        title="Role"
+        subtitle="Select the appropriate role for this user. Each role has a different access level which in turn unlocks certain features."
+    >
         <div class="w-full">
             <div id="roleSelection" class="flex w-full">
                 <div v-for="vrole in roles" :key="vrole" class="mr-4">
