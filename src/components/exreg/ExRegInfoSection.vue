@@ -6,7 +6,7 @@
                 id="examRegName"
                 v-model.trim="newName"
                 class="w-full"
-                :class="valid ? 'input-text-tmp' : 'input-text-error-tmp'"
+                :class="valid || !newName ? 'input-text-tmp' : 'input-text-error-tmp'"
                 placeholder="Exam regulation name"
             />
             <div v-if="newName !== ''" id="examRegNameFeedback">
