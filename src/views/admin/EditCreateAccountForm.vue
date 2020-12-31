@@ -1,39 +1,28 @@
 <template>
-    <div v-if="busy" class="flex h-screen">
-        <div class="m-auto">
-            <loading-component />
-        </div>
-    </div>
-    <div v-else class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
-        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back()">
-            <i class="text-xl fas fa-chevron-left"></i>
-            <span class="ml-1 text-sm font-bold">Back</span>
-        </button>
-
-        <h1 class="mb-8 text-2xl font-medium text-gray-700">{{ title }}</h1>
-
-        <div>
-            <role-section v-model:role="account.user.role" :edit-mode="editMode" :error-bag="errorBag" />
-            <user-security-section
+    <base-view>
+        <loading-spinner v-if="busy" />
+        <div v-else>
+            <section-header :title="title" />
+            <profile-picture-section v-if="editMode" />
+            <role-section v-if="!editMode" v-model:role="account.user.role" :error-bag="errorBag" />
+            <security-section
                 v-model:username="account.user.username"
-                v-model:email="account.user.email"
-                v-model:phonenumber="account.user.phoneNumber"
+                v-model:government-id="account.governmentId"
                 v-model:password="account.authUser.password"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
             />
-            <personal-information-section
+            <personal-section
                 v-model:first-name="account.user.firstName"
                 v-model:last-name="account.user.lastName"
-                v-model:government-id="account.governmentId"
                 v-model:birth-date="account.user.birthDate"
-                :edit-mode="editMode"
                 :error-bag="errorBag"
             />
+            <contact-section v-model:email="account.user.email" v-model:phone-number="account.user.phoneNumber" :error-bag="errorBag" />
             <address-section v-model:address="account.user.address" :error-bag="errorBag" />
-            <lecturer-information-section
+            <research-section
                 v-if="isLecturer"
-                v-model:description="account.lecturer.freeText"
+                v-model:free-text="account.lecturer.freeText"
                 v-model:research-area="account.lecturer.researchArea"
                 :edit-mode="editMode"
                 :error-bag="errorBag"
@@ -46,72 +35,50 @@
                 :username="account.user.username"
                 :latest="account.student.latestImmatriculation"
             />
-            <profile-picture-section v-if="editMode" />
-            <section class="py-8 border-t-2 border-gray-400 lg:mt-8">
-                <div class="justify-between hidden sm:flex">
-                    <div class="flex items-center justify-start">
-                        <button
-                            v-if="editMode"
-                            id="deleteAccount"
-                            type="button"
-                            class="w-32 btn btn-red-secondary"
-                            @click="confirmDeleteAccount"
-                        >
-                            Delete
-                        </button>
-                    </div>
-
-                    <div class="flex items-center justify-end">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
-                        <button
-                            v-if="editMode"
-                            id="saveChanges"
-                            :disabled="!hasInput"
-                            class="w-full btn btn-blue-primary"
-                            @click="updateAccount"
-                        >
-                            Save Changes
-                        </button>
-                        <button v-else id="createAccount" :disabled="!hasInput" class="w-48 btn btn-blue-primary" @click="createAccount">
-                            Create Account
-                        </button>
-                    </div>
-                </div>
-
-                <!-- different button layout for mobile -->
-                <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="w-full mb-4 btn btn-blue-secondary" @click="back">Cancel</button>
-                    <button
-                        v-if="editMode"
-                        id="mobileSaveChanges"
-                        :disabled="!hasInput"
-                        type="button"
-                        class="w-full mb-4 btn btn-blue-primary"
-                        @click="updateAccount"
-                    >
-                        Save Changes
-                    </button>
-                    <button
-                        v-else
-                        id="mobileCreateAccount"
-                        :disabled="!hasInput"
-                        class="w-full btn btn-blue-primary"
-                        @click="createAccount"
-                    >
-                        Create Account
-                    </button>
-                    <button v-if="editMode" id="mobileDeleteAccount" class="w-full btn btn-red-secondary" @click="confirmDeleteAccount">
-                        Delete
-                    </button>
-                </div>
-            </section>
             <delete-account-modal ref="deleteModal" />
             <unsaved-changes-modal ref="unsavedChangesModal" />
+            <button-section>
+                <template #left>
+                    <button
+                        v-if="editMode"
+                        id="deleteAccount"
+                        type="button"
+                        class="w-full sm:w-32 btn-secondary-remove-tmp"
+                        @click="confirmDeleteAccount"
+                    >
+                        Delete
+                    </button>
+                </template>
+                <template #right>
+                    <button id="cancel" type="button" class="w-full sm:w-32 btn-secondary-tmp" @click="back">Cancel</button>
+                    <button v-if="editMode" id="saveChanges" :disabled="!hasInput" class="w-full sm:w-32 btn-tmp" @click="updateAccount">
+                        Save Changes
+                    </button>
+                    <button v-else id="createAccount" :disabled="!hasInput" class="w-full sm:w-32 btn-tmp" @click="createAccount">
+                        Create Account
+                    </button>
+                </template>
+            </button-section>
         </div>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
+    import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
+    import RoleSection from "@/components/profile/RoleSection.vue";
+    import StudentInformationSection from "@/components/profile/student/StudentInformationSection.vue";
+    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
+    import BaseView from "@/views/common/BaseView.vue";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import ButtonSection from "@/components/common/section/ButtonSection.vue";
+    import AddressSection from "@/components/profile/AddressSection.vue";
+    import PersonalSection from "@/components/profile/PersonalSection.vue";
+    import ContactSection from "@/components/profile/ContactSection.vue";
+    import SecuritySection from "@/components/profile/SecuritySection.vue";
+    import ResearchSection from "@/components/profile/lecturer/ResearchSection.vue";
+
     import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
     import { ref, reactive, computed, onBeforeMount } from "vue";
@@ -124,39 +91,31 @@
     import Admin from "@/api/api_models/user_management/Admin";
     import Student from "@/api/api_models/user_management/Student";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
-    import DeleteAccountModal from "@/components/modals/DeleteAccountModal.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import AccountValidationResponseHandler from "@/use/helpers/AccountValidationResponseHandler";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import RoleSection from "@/components/account/edit/sections/RoleSection.vue";
-    import UserSecuritySection from "@/components/account/edit/sections/UserSecuritySection.vue";
-    import PersonalInformationSection from "@/components/account/edit/sections/PersonalInformationSection.vue";
-    import AddressSection from "@/components/account/edit/sections/AddressSection.vue";
-    import LecturerInformationSection from "@/components/account/edit/sections/LecturerInformationSection.vue";
-    import StudentInformationSection from "@/components/account/edit/sections/StudentInformationSection.vue";
-    import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
     import scrollToTopError from "@/use/helpers/TopError";
-    import ProfilePictureSection from "@/components/account/edit/sections/ProfilePictureSection.vue";
-    import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
-    import Error from "@/api/api_models/errors/Error";
     import { useToast } from "@/toast";
 
     export default {
         name: "AdminCreateAccountForm",
         components: {
+            SecuritySection,
+            ContactSection,
+            LoadingSpinner,
+            ButtonSection,
+            SectionHeader,
+            BaseView,
             DeleteAccountModal,
             RoleSection,
-            UserSecuritySection,
-            PersonalInformationSection,
             AddressSection,
-            LecturerInformationSection,
             StudentInformationSection,
             ProfilePictureSection,
             UnsavedChangesModal,
-            LoadingComponent,
+            PersonalSection,
+            ResearchSection,
         },
         props: {
             editMode: {
