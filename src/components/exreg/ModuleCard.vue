@@ -1,5 +1,5 @@
 <template>
-    <div class="w-56 rounded-md border-gray-200 dark:border-normalgray-700 border h-32 p-4 mx-auto md:mx-0">
+    <div class="sm:w-56 w-full rounded-md border-gray-200 dark:border-normalgray-700 border p-4 sm:mr-4 mb-4">
         <div class="font-medium text-lg dark:text-gray-300">{{ moduleId }}</div>
         <div class="text-sm text-gray-700 dark:text-gray-500">{{ moduleName }}</div>
         <div>

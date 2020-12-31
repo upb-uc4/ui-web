@@ -11,8 +11,8 @@
             <ExRegModuleSection v-model:modules="selectedModules" :existing-modules="existingModules" :error-bag="errorBag" />
             <button-section>
                 <template #right>
-                    <button id="cancel" type="button" class="btn-secondary-tmp w-48" @click="back">Cancel</button>
-                    <button id="createExamReg" :disabled="!canCreate" class="btn-tmp w-48" @click="createExamReg">Create</button>
+                    <button id="cancel" type="button" class="btn-secondary-tmp w-full sm:w-48" @click="back">Cancel</button>
+                    <button id="createExamReg" :disabled="!canCreate" class="btn-tmp w-full sm:w-48" @click="createExamReg">Create</button>
                 </template>
             </button-section>
         </div>

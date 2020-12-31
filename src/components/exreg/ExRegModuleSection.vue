@@ -11,12 +11,14 @@
                 <input id="moduleName" v-model.trim="moduleNameInput" class="w-full input-text-tmp" placeholder="Module Name" />
             </div>
             <div v-if="moduleID !== '' && moduleName !== '' && !moduleUsed">
-                <div class="w-full rounded-md border-gray-200 dark:border-normalgray-700 border h-24 p-4 mx-auto md:mx-0">
-                    <div class="relative">
-                        <div class="font-medium text-lg dark:text-gray-300">{{ moduleID }}</div>
-                        <div class="text-sm text-gray-700 dark:text-gray-500">{{ moduleName }}</div>
-                        <div class="absolute inset-y-0 right-0">
-                            <button id="addModule" class="btn-secondary-add-tmp" @click="addCurrentModule">
+                <div class="w-full rounded-md border-gray-200 dark:border-normalgray-700 border p-4 mx-auto md:mx-0">
+                    <div class="flex flex-wrap justify-between">
+                        <div class="pb-4">
+                            <div class="font-medium text-lg dark:text-gray-300">{{ moduleID }}</div>
+                            <div class="text-sm text-gray-700 dark:text-gray-500">{{ moduleName }}</div>
+                        </div>
+                        <div>
+                            <button id="addModule" class="btn-add-tmp w-32" @click="addCurrentModule">
                                 {{ moduleExists ? "Add Module" : "Create Module" }}
                             </button>
                         </div>
@@ -27,11 +29,14 @@
                 <hr class="border-gray-200 dark:border-normalgray-700" />
             </div>
             <div v-if="selectedModules !== 'undefined' && selectedModules.length > 0">
-                <label class="input-label-tmp">Selected Modules</label>
                 <div v-if="selectedModules !== 'undefined' && selectedModules.length > 0" class="mb-4 w-full flex flex-wrap">
-                    <div v-for="(module, index) in selectedModules" :key="module.id" class="pr-4 pb-4">
-                        <module-card :module-id="module.id" :module-name="module.name" @remove="removeModule(index)" />
-                    </div>
+                    <module-card
+                        v-for="(module, index) in selectedModules"
+                        :key="module.id"
+                        :module-id="module.id"
+                        :module-name="module.name"
+                        @remove="removeModule(index)"
+                    />
                 </div>
             </div>
         </div>
