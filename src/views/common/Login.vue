@@ -13,7 +13,9 @@
             </span>
         </div>
         <form class="flex justify-center" @submit.prevent="login">
-            <div class="max-w-sm w-full mt-6 bg-gray-800 dark:bg-night-base sm:px-6 py-6 p-4 rounded-lg shadow-lg relative">
+            <div
+                class="max-w-sm w-full mt-6 bg-gray-50 dark:bg-night-base border border-gray-200 dark:border-night-base sm:px-6 py-6 p-4 rounded-lg shadow-lg relative"
+            >
                 <div class="rounded-md shadow-sm">
                     <div class="">
                         <label class="input-label-tmp">Email Address</label>
