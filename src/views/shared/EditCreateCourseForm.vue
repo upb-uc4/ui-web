@@ -1,6 +1,6 @@
 <template>
     <base-view>
-        <loading-spinner v-if="busy" />
+        <loading-spinner v-if="isLoading" />
         <div v-else>
             <section-header :title="heading" />
             <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
@@ -99,7 +99,7 @@
         emits: ["update:has-input", "update:success"],
 
         setup(props: any, { emit }: any) {
-            let busy = ref(false);
+            let isLoading = ref(true);
             let isAdmin = ref(false);
             let course = ref(new CourseEntity());
             let initialCourseState = new CourseEntity();
@@ -159,7 +159,6 @@
             }
 
             async function getCourse() {
-                busy.value = true;
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.id as string);
                 const genericResponseHandler = new GenericResponseHandler("course");
                 const result = genericResponseHandler.handleResponse(response);
@@ -171,7 +170,7 @@
                     course.value = new CourseEntity(result);
                     initialCourseState = JSON.parse(JSON.stringify(course.value));
                 }
-                busy.value = false;
+                isLoading.value = false;
             }
 
             let hasInput = computed(() => {
@@ -275,7 +274,7 @@
             }
 
             return {
-                busy,
+                isLoading,
                 isAdmin,
                 course,
                 initialCourseState,
