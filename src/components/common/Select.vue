@@ -15,7 +15,8 @@
                                 {{ label }}:
                                 <span class="font-medium text-gray-900 dark:text-gray-300">{{ mySelection }}</span>
                             </span>
-                            <span v-else class="dark:text-gray-300">{{ mySelection }}</span>
+                            <span v-else-if="mySelection" class="dark:text-gray-300">{{ mySelection }}</span>
+                            <span v-else class="dark:text-gray-300">{{ placeholder }}</span>
                         </span>
                     </ListboxButton>
                     <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -78,6 +79,10 @@
             ListboxOption,
         },
         props: {
+            placeholder: {
+                type: String,
+                default: "Click to select",
+            },
             label: {
                 type: String,
                 default: "",

@@ -112,8 +112,6 @@
             let unsavedChangesModal = ref();
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
-            course.value.courseType = CourseType.LECTURE;
-            course.value.courseLanguage = Language.ENGLISH;
 
             const errorBag = ref(new ErrorBag());
 

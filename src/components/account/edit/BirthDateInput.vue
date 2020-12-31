@@ -1,16 +1,14 @@
 <template>
+    <label class="block input-label-tmp">Date of Birth</label>
     <div id="birthdate" class="flex space-x-6">
         <div class="w-1/3">
-            <label class="input-label-tmp">Day</label>
-            <selection v-model:selection="selectedDay" :disabled="disabled" :elements="days" />
+            <selection v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
         </div>
         <div class="w-1/3">
-            <label class="input-label-tmp">Month</label>
-            <selection v-model:selection="selectedMonth" :disabled="disabled" :elements="months" />
+            <selection v-model:selection="selectedMonth" :disabled="disabled" :elements="months" placeholder="Month" />
         </div>
         <div class="w-1/3">
-            <label class="input-label-tmp">Year</label>
-            <selection v-model:selection="selectedYear" :disabled="disabled" :elements="years" />
+            <selection v-model:selection="selectedYear" :disabled="disabled" :elements="years" placeholder="Year" />
         </div>
     </div>
 </template>
