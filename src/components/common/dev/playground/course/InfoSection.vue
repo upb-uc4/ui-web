@@ -1,23 +1,21 @@
 <template>
     <BaseSection subtitle="General information about the course." title="Basics">
         <div class="space-y-6">
-            <div class="space-y-6">
-                <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
-                    <div class="lg:w-1/2 w-full">
-                        <label for="courseName" class="input-label-tmp">Course Name</label>
-                        <input
-                            id="courseName"
-                            v-model="myName"
-                            type="text"
-                            class="w-full"
-                            :class="errorBag.has('courseName') ? 'input-text-error-tmp' : 'input-text-tmp'"
-                        />
-                        <label v-if="errorBag.has('courseName')" for="courseName" class="input-label-warning-tmp">
-                            {{ errorBag.get("courseName") }}
-                        </label>
-                    </div>
-                    <div class="lg:w-1/2 w-full invisible" />
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label for="courseName" class="input-label-tmp">Course Name</label>
+                    <input
+                        id="courseName"
+                        v-model="myName"
+                        type="text"
+                        class="w-full"
+                        :class="errorBag.has('courseName') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.has('courseName')" for="courseName" class="input-label-warning-tmp">
+                        {{ errorBag.get("courseName") }}
+                    </label>
                 </div>
+                <div class="lg:w-1/2 w-full invisible" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">

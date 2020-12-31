@@ -3,7 +3,6 @@
         <loading-spinner v-if="isLoading" />
         <div v-else>
             <section-header :title="heading" />
-            <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
             <info-section
                 v-model:name="course.courseName"
                 v-model:type="course.courseType"
@@ -12,6 +11,7 @@
                 v-model:description="course.courseDescription"
                 :error-bag="errorBag"
             />
+            <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
             <course-module-section
                 v-model:module-ids="course.moduleIds"
                 :error-bag="errorBag"
@@ -54,7 +54,7 @@
     import { CourseType } from "@/entities/CourseType";
     import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
-    import { ref, computed, onBeforeMount } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
@@ -110,6 +110,8 @@
             let unsavedChangesModal = ref();
             course.value.startDate = "2020-06-01";
             course.value.endDate = "2020-08-31";
+            course.value.courseType = CourseType.LECTURE;
+            course.value.courseLanguage = Language.ENGLISH;
 
             const errorBag = ref(new ErrorBag());
 
