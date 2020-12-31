@@ -10,13 +10,27 @@
                         type="text"
                         class="w-full input-text-tmp"
                         :class="errorBag.hasNested('username') ? 'input-text-error-tmp' : 'input-text-tmp'"
-                        placeholder="Username"
                         :readonly="editMode"
                     />
                     <label v-if="errorBag.hasNested('username')" class="input-label-error-tmp">
                         {{ errorBag.getNested("username") }}
                     </label>
                 </div>
+                <div class="invisible lg:w-1/2 w-full" />
+            </div>
+            <div v-if="!editMode" class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label for="password" class="input-label-tmp">Password</label>
+                    <input
+                        id="password"
+                        v-model="accountPassword"
+                        type="text"
+                        class="w-full"
+                        :class="errorBag.hasNested('password') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                    />
+                    <label v-if="errorBag.hasNested('password')" class="input-label-error-tmp">{{ errorBag.getNested("password") }}</label>
+                </div>
+                <div class="invisible lg:w-1/2 w-full" />
             </div>
             <div v-if="!editMode" class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
@@ -27,24 +41,12 @@
                         type="text"
                         class="w-full"
                         :class="errorBag.hasNested('governmentId') ? 'input-text-error-tmp' : 'input-text-tmp'"
-                        placeholder="Government ID"
                     />
                     <label v-if="errorBag.hasNested('governmentId')" class="input-label-error-tmp">
                         {{ errorBag.getNested("governmentId") }}
                     </label>
                 </div>
-                <div v-if="!editMode" class="lg:w-1/2 w-full">
-                    <label for="password" class="input-label-tmp"> Password </label>
-                    <input
-                        id="password"
-                        v-model="accountPassword"
-                        type="text"
-                        class="w-full"
-                        :class="errorBag.hasNested('password') ? 'input-text-error-tmp' : 'input-text-tmp'"
-                        placeholder="Password"
-                    />
-                    <label v-if="errorBag.hasNested('password')" class="input-label-error-tmp">{{ errorBag.getNested("password") }}</label>
-                </div>
+                <div class="invisible lg:w-1/2 w-full" />
             </div>
         </div>
     </BaseSection>

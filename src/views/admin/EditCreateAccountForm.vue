@@ -3,19 +3,20 @@
         <loading-spinner v-if="busy" />
         <div v-else>
             <section-header :title="title" />
+            <!-- TODO: create different profile picture section as this one will only change the profile picture of the logged in user -->
             <profile-picture-section v-if="editMode" />
             <role-section v-if="!editMode" v-model:role="account.user.role" :error-bag="errorBag" />
+            <personal-section
+                v-model:first-name="account.user.firstName"
+                v-model:last-name="account.user.lastName"
+                v-model:birth-date="account.user.birthDate"
+                :error-bag="errorBag"
+            />
             <security-section
                 v-model:username="account.user.username"
                 v-model:government-id="account.governmentId"
                 v-model:password="account.authUser.password"
                 :edit-mode="editMode"
-                :error-bag="errorBag"
-            />
-            <personal-section
-                v-model:first-name="account.user.firstName"
-                v-model:last-name="account.user.lastName"
-                v-model:birth-date="account.user.birthDate"
                 :error-bag="errorBag"
             />
             <contact-section v-model:email="account.user.email" v-model:phone-number="account.user.phoneNumber" :error-bag="errorBag" />
