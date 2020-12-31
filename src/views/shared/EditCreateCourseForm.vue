@@ -2,57 +2,47 @@
     <base-view>
         <loading-spinner v-if="busy" />
         <div v-else>
-            <button class="flex items-center mb-4 navigation-link" @click="back">
-                <i class="fas text-xl fa-chevron-left"></i>
-                <span class="font-bold text-sm ml-1">Back</span>
-            </button>
-
-            <h1 class="text-2xl font-medium text-gray-700 mb-8">{{ heading }}</h1>
-
-            <div>
-                <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
-                <info-section
-                    v-model:name="course.courseName"
-                    v-model:type="course.courseType"
-                    v-model:language="course.courseLanguage"
-                    v-model:ects="course.ects"
-                    v-model:description="course.courseDescription"
-                    :error-bag="errorBag"
-                />
-                <course-module-section
-                    v-model:module-ids="course.moduleIds"
-                    :error-bag="errorBag"
-                    :edit-mode="editMode"
-                    @toggle-module="toggleModule($event)"
-                    @remove-modules="removeModules($event)"
-                />
-                <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
-                <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
-                <button-section>
-                    <template #left>
-                        <button
-                            v-if="editMode"
-                            id="deleteCourse"
-                            type="button"
-                            class="btn-secondary-remove-tmp w-48"
-                            @click="confirmDeleteCourse"
-                        >
-                            Delete
-                        </button>
-                    </template>
-                    <template #right>
-                        <button id="cancel" type="button" class="w-48 btn-secondary-tmp" @click="back">Cancel</button>
-                        <button v-if="editMode" id="saveChanges" :disabled="!hasInput" type="button" class="btn-tmp w-48" @click="back">
-                            Save Changes
-                        </button>
-                        <button v-else id="createCourse" :disabled="!hasInput" class="btn-tmp w-48" @click="createCourse">
-                            Create Course
-                        </button>
-                    </template>
-                </button-section>
-                <delete-course-modal ref="deleteModal" />
-                <unsaved-changes-modal ref="unsavedChangesModal" />
-            </div>
+            <section-header :title="heading" />
+            <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
+            <info-section
+                v-model:name="course.courseName"
+                v-model:type="course.courseType"
+                v-model:language="course.courseLanguage"
+                v-model:ects="course.ects"
+                v-model:description="course.courseDescription"
+                :error-bag="errorBag"
+            />
+            <course-module-section
+                v-model:module-ids="course.moduleIds"
+                :error-bag="errorBag"
+                :edit-mode="editMode"
+                @toggle-module="toggleModule($event)"
+                @remove-modules="removeModules($event)"
+            />
+            <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
+            <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
+            <button-section>
+                <template #left>
+                    <button
+                        v-if="editMode"
+                        id="deleteCourse"
+                        type="button"
+                        class="btn-secondary-remove-tmp w-48"
+                        @click="confirmDeleteCourse"
+                    >
+                        Delete
+                    </button>
+                </template>
+                <template #right>
+                    <button id="cancel" type="button" class="w-48 btn-secondary-tmp" @click="back">Cancel</button>
+                    <button v-if="editMode" id="saveChanges" :disabled="!hasInput" type="button" class="btn-tmp w-48" @click="back">
+                        Save Changes
+                    </button>
+                    <button v-else id="createCourse" :disabled="!hasInput" class="btn-tmp w-48" @click="createCourse">Create Course</button>
+                </template>
+            </button-section>
+            <delete-course-modal ref="deleteModal" />
+            <unsaved-changes-modal ref="unsavedChangesModal" />
         </div>
     </base-view>
 </template>
@@ -83,11 +73,13 @@
     import InfoSection from "@/components/common/dev/playground/course/InfoSection.vue";
     import RestrictionsSection from "@/components/common/dev/playground/course/RestrictionsSection.vue";
     import TimeSection from "@/components/common/dev/playground/course/TimeSection.vue";
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
             BaseView,
+            SectionHeader,
             LecturerSection,
             InfoSection,
             RestrictionsSection,
