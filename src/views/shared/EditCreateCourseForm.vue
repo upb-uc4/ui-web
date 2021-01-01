@@ -19,7 +19,7 @@
                 @toggle-module="toggleModule($event)"
                 @remove-modules="removeModules($event)"
             />
-            <restrictions-section v-model:participants-limit="course.maxParticipants" :error-bag="errorBag" />
+            <restrictions-section v-model:maxParticipants="course.maxParticipants" :error-bag="errorBag" />
             <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
             <button-section>
                 <template #left>
