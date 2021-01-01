@@ -77,7 +77,7 @@
             BaseSection,
         },
         setup() {
-            const username: string = "admin"; //todo //Router.currentRoute.value.params.username as string;
+            const username: string = Router.currentRoute.value.params.username as string;
             const selectedPicture = ref();
             const fallbackPicture = ref();
             const isHovered = ref(false);
@@ -180,7 +180,6 @@
                 confirmDeletePicture,
                 openFileBrowser,
                 triggerOpenFileBrowser,
-                uploadPicture,
             };
         },
     };
