@@ -1,7 +1,9 @@
 <template>
-    <div class="sm:w-56 w-full rounded-md border-gray-200 dark:border-normalgray-700 border p-4 sm:mr-4 mb-4">
-        <div class="font-medium text-lg dark:text-gray-300">{{ moduleId }}</div>
-        <div class="text-sm text-gray-700 dark:text-gray-500">{{ moduleName }}</div>
+    <div class="w-64 flex flex-col justify-between rounded-md border-gray-200 dark:border-normalgray-700 border h-32 p-4 md:mx-0">
+        <div class="">
+            <div class="font-medium text-lg dark:text-gray-300 truncate">{{ moduleName }}</div>
+            <div class="text-sm text-gray-500 truncate">{{ moduleIdentifier }}</div>
+        </div>
         <div>
             <button class="btn-tertiary-remove-tmp" @click="remove">Remove</button>
         </div>
@@ -12,7 +14,7 @@
     export default {
         name: "ModuleCard",
         props: {
-            moduleId: {
+            moduleIdentifier: {
                 type: String,
                 required: true,
             },
@@ -24,7 +26,7 @@
         emits: ["remove"],
         setup(props: any, { emit }: any) {
             function remove() {
-                emit("remove", props.moduleId);
+                emit("remove", props.moduleIdentifier);
             }
             return {
                 remove,

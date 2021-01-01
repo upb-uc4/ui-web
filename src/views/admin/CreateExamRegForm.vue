@@ -28,7 +28,6 @@
     import Module from "@/api/api_models/exam_reg_management/Module";
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
     import ExRegInfoSection from "@/components/exreg/ExRegInfoSection.vue";
-    import ExRegModuleSection from "@/components/exreg/ExRegModuleSection.vue";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
@@ -38,6 +37,7 @@
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
+    import ExRegModuleSection from "@/components/exreg/ExRegModuleSection.vue";
 
     export default {
         name: "CreateExamRegForm",
