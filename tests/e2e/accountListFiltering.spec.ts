@@ -42,35 +42,41 @@ describe("Account creation, edition and deletion", function () {
         cy.get("div").contains(`@${adminAuth.username}`);
     });
 
-    it("Role filter buttons exist", function () {
-        cy.get("button[id='role-All']").should("exist");
+    it("Role filter select exist", function () {
+        cy.get("button[id='selectFilterRole']").should("exist");
+        cy.get("button[id='selectFilterRole']").click();
         Object.values(Role)
             .filter((role) => role != Role.NONE)
             .forEach((role) => {
-                cy.get(`button[id='role-${role}']`).should("exist");
+                cy.get(`li[id='selectFilterRoleItem-${role}']`).should("exist");
             });
+        cy.get("button[id='selectFilterRole']").click();
     });
 
     it("Check if role filtering works", function () {
         // test admin role
-        cy.get("button[id='role-Admin']").click();
+        cy.get("button[id='selectFilterRole']").click();
+        cy.get("li[id='selectFilterRoleItem-Admin']").click();
         cy.get("div").contains(`@${adminAuth.username}`);
         cy.get("div").contains(`@${lecturerAuth.username}`).should("not.exist");
         cy.get("div").contains(`@${studentAuth.username}`).should("not.exist");
         // test lecturer role
-        cy.get("button[id='role-Lecturer']").click();
+        cy.get("button[id='selectFilterRole']").click();
+        cy.get("li[id='selectFilterRoleItem-Lecturer']").click();
         cy.get("div").contains(`@${lecturerAuth.username}`);
         cy.get("div").contains(`@${adminAuth.username}`).should("not.exist");
         cy.get("div").contains(`@${studentAuth.username}`).should("not.exist");
 
         // test student role
-        cy.get("button[id='role-Student']").click();
+        cy.get("button[id='selectFilterRole']").click();
+        cy.get("li[id='selectFilterRoleItem-Student']").click();
         cy.get("div").contains(`@${studentAuth.username}`);
         cy.get("div").contains(`@${adminAuth.username}`).should("not.exist");
         cy.get("div").contains(`@${lecturerAuth.username}`).should("not.exist");
 
         //test all roles
-        cy.get("button[id='role-All']").click();
+        cy.get("button[id='selectFilterRole']").click();
+        cy.get("li[id='selectFilterRoleItem-All']").click();
         cy.get("div").contains(`@${adminAuth.username}`).should("exist");
         cy.get("div").contains(`@${lecturerAuth.username}`).should("exist");
         cy.get("div").contains(`@${studentAuth.username}`).should("exist");

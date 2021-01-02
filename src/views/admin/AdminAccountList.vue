@@ -8,8 +8,8 @@
                         <search-bar v-model:message="message" placeholder="Find a user..." @refresh="refresh" />
                     </div>
                     <div class="flex space-x-2">
-                        <filter-select v-model:selection="selectedRole" label="Type" :elements="roles" />
-                        <filter-select v-model:selection="selectedStatus" label="Status" :elements="status" />
+                        <filter-select :id="'selectFilterRole'" v-model:selection="selectedRole" label="Type" :elements="roles" />
+                        <filter-select :id="'selectFilterStatus'" v-model:selection="selectedStatus" label="Status" :elements="status" />
                     </div>
                 </div>
                 <div class="w-full flex justify-end">
