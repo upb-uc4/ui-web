@@ -3,16 +3,27 @@
         <div class="space-y-12">
             <div class="space-y-4">
                 <div class="lg:w-1/2 w-full">
-                    <label for="moduleName" class="w-full input-label-tmp">Module Name</label>
-                    <input id="moduleName" v-model.trim="moduleName" class="w-full input-text-tmp" placeholder="e.g. Complexity Theory" />
+                    <label for="moduleID" class="w-full input-label-tmp">Unique Module Identifier</label>
+                    <input id="moduleID" v-model="moduleIdentifier" class="w-full input-text-tmp" placeholder="e.g. M.1275.78235" />
+                    <label v-if="moduleUsed" class="input-label-warning-tmp">
+                        Module '{{ moduleIdentifier.trim() }}' has already been added.
+                    </label>
                 </div>
                 <div class="lg:w-1/2 w-full">
-                    <label for="moduleID" class="w-full input-label-tmp">Unique Module Identifier</label>
-                    <input id="moduleID" v-model.trim="moduleIdentifier" class="w-full input-text-tmp" placeholder="e.g. M.1275.78235" />
-                    <label v-if="moduleUsed" class="input-label-error-tmp"> Module '{{ moduleIdentifier }}' has already been added. </label>
+                    <label for="moduleName" class="w-full input-label-tmp">Module Name</label>
+                    <input
+                        id="moduleName"
+                        :value="moduleName"
+                        :readonly="moduleExists"
+                        class="w-full input-text-tmp"
+                        placeholder="e.g. Complexity Theory"
+                        @input="moduleNameInput = $event.target.value"
+                    />
                 </div>
                 <div class="lg:w-1/2 w-full sm:flex space-y-4 sm:space-y-0 sm:justify-end">
-                    <button class="sm:w-32 w-full btn-secondary-add-tmp" :disabled="!canAddModule" @click="addModule()">Add Module</button>
+                    <button id="addModule" class="sm:w-32 w-full btn-secondary-add-tmp" :disabled="!canAddModule" @click="addModule()">
+                        Add Module
+                    </button>
                 </div>
             </div>
             <div v-if="hasSelectedModules" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -54,10 +65,14 @@
         setup: (props: { existingModules: Module[]; modules: Module[] }, { emit }: any) => {
             const selectedModules = ref(props.modules as Module[]);
             const moduleIdentifier = ref("");
-            const moduleName = ref("");
-            const moduleExists = computed(() => props.existingModules.map((m) => m.id).includes(moduleIdentifier.value));
-            const moduleUsed = computed(() => selectedModules.value.map((m) => m.id).includes(moduleIdentifier.value));
-            const canAddModule = computed(() => moduleIdentifier.value !== "" && moduleName.value !== "" && !moduleUsed.value);
+            const moduleNameInput = ref("");
+            const moduleName = computed(() => {
+                const m = props.existingModules.find((m) => m.id == moduleIdentifier.value.trim())?.name;
+                return m === undefined ? moduleNameInput.value : m;
+            });
+            const moduleExists = computed(() => props.existingModules.map((m) => m.id).includes(moduleIdentifier.value.trim()));
+            const moduleUsed = computed(() => selectedModules.value.map((m) => m.id).includes(moduleIdentifier.value.trim()));
+            const canAddModule = computed(() => moduleIdentifier.value.trim() !== "" && moduleName.value !== "" && !moduleUsed.value);
             const hasSelectedModules = computed(() => selectedModules.value !== undefined && selectedModules.value.length > 0);
 
             watch(props.modules, () => {
@@ -66,12 +81,13 @@
 
             function addModule() {
                 const module = {
-                    id: moduleIdentifier.value,
-                    name: moduleName.value,
+                    id: moduleIdentifier.value.trim(),
+                    name: moduleName.value.trim(),
                 } as Module;
+
                 selectedModules.value.push(module);
                 moduleIdentifier.value = "";
-                moduleName.value = "";
+                moduleNameInput.value = "";
                 emit("update:modules", selectedModules.value);
             }
 
@@ -87,6 +103,7 @@
                 moduleExists,
                 moduleUsed,
                 canAddModule,
+                moduleNameInput,
                 addModule,
                 removeModule,
             };
