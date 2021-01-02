@@ -1,10 +1,11 @@
 <template>
     <div class="w-full">
-        <Listbox v-model="matches" as="div" class="space-y-1">
+        <Listbox :model-value="selected" as="div" class="space-y-1">
             <ListboxLabel v-if="label" class="input-label-tmp">{{ label }} </ListboxLabel>
             <div class="relative">
                 <span class="inline-block w-full">
                     <input
+                        :id="id"
                         v-model="input"
                         type="text"
                         autocomplete="off"
@@ -14,7 +15,7 @@
                     />
                 </span>
                 <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-                    <div v-show="hasMatch && !hidden" class="absolute mt-1 w-full rounded-md bg-white shadow-lg">
+                    <div v-show="hasMatch && !hidden" :id="id + 'OptionDiv'" class="absolute mt-1 w-full rounded-md bg-white shadow-lg">
                         <ListboxOptions
                             static
                             class="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
@@ -84,11 +85,16 @@
                 type: String,
                 default: "Search for a Quote",
             },
+            id: {
+                type: String,
+                default: "searchSelectInput",
+            },
         },
         emits: ["update:selected"],
         setup(props: any, { emit }: any) {
             const input = ref("");
             const hidden = ref(true);
+            const selected = ref({} as SearchSelectOption);
 
             let matches = computed(() => {
                 const elements = props.elements as SearchSelectOption[];
@@ -104,6 +110,7 @@
             function select(element: SearchSelectOption) {
                 input.value = element.display;
                 hidden.value = true;
+                selected.value = element;
                 emit("update:selected", element);
             }
 
@@ -114,6 +121,7 @@
                 matches,
                 hasMatch,
                 hidden,
+                selected,
                 select,
             };
         },
