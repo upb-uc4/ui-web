@@ -8,7 +8,7 @@
                         <seach-bar v-model:message="message" placeholder="Find a course..." @refresh="refresh" />
                     </div>
                     <div class="flex space-x-2 w-56">
-                        <filter-select v-model:selection="selectedType" label="Type" :elements="types" />
+                        <filter-select :id="'selectFilterCourseType'" v-model:selection="selectedType" label="Type" :elements="types" />
                     </div>
                 </div>
                 <div class="w-full flex justify-end">
