@@ -8,6 +8,7 @@
                     </div>
                     <ListboxButton
                         v-else
+                        :id="id"
                         class="relative input-base-tmp dark:border-normalgray-900 w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
@@ -31,7 +32,13 @@
                             static
                             class="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
                         >
-                            <ListboxOption v-for="element in elements" :key="element" v-slot="{ selected, active }" :value="element">
+                            <ListboxOption
+                                v-for="element in elements"
+                                :id="id + 'Item-' + element"
+                                :key="element"
+                                v-slot="{ selected, active }"
+                                :value="element"
+                            >
                                 <div
                                     :class="`${
                                         active
@@ -98,6 +105,10 @@
             disabled: {
                 type: Boolean,
                 default: false,
+            },
+            id: {
+                type: String,
+                required: true,
             },
         },
         emits: ["update:selection"],
