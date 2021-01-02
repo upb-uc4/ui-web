@@ -58,7 +58,7 @@
             const moduleExists = computed(() => props.existingModules.map((m) => m.id).includes(moduleIdentifier.value));
             const moduleUsed = computed(() => selectedModules.value.map((m) => m.id).includes(moduleIdentifier.value));
             const canAddModule = computed(() => moduleIdentifier.value !== "" && moduleName.value !== "" && !moduleUsed.value);
-            const hasSelectedModules = computed(() => selectedModules.value !== "undefined" && selectedModules.value.length > 0);
+            const hasSelectedModules = computed(() => selectedModules.value !== undefined && selectedModules.value.length > 0);
 
             watch(props.modules, () => {
                 selectedModules.value = props.modules;
