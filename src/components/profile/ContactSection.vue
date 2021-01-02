@@ -5,12 +5,13 @@
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Email</label>
                     <input
+                        id="email"
                         v-model="myEmail"
                         type="text"
                         class="w-full"
-                        :class="errorBag.has('email') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('email') ? 'input-text-error-tmp' : 'input-text-tmp'"
                     />
-                    <label v-if="errorBag.has('email')" class="input-label-error-tmp">{{ errorBag.get("email") }}</label>
+                    <label v-if="errorBag.hasNested('email')" class="input-label-error-tmp">{{ errorBag.getNested("email") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
@@ -18,12 +19,15 @@
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Phone</label>
                     <input
+                        id="phoneNumber"
                         v-model="myPhoneNumber"
                         type="text"
                         class="w-full"
-                        :class="errorBag.has('phoneNumber') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('phoneNumber') ? 'input-text-error-tmp' : 'input-text-tmp'"
                     />
-                    <label v-if="errorBag.has('phoneNumber')" class="input-label-error-tmp">{{ errorBag.get("phoneNumber") }}</label>
+                    <label v-if="errorBag.hasNested('phoneNumber')" class="input-label-error-tmp">{{
+                        errorBag.getNested("phoneNumber")
+                    }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>

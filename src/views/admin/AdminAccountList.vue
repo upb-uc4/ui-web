@@ -13,7 +13,11 @@
                     </div>
                 </div>
                 <div class="w-full flex justify-end">
-                    <router-link to="/createAccount" class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2">
+                    <router-link
+                        id="addAccount"
+                        to="/createAccount"
+                        class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2"
+                    >
                         <i class="fas fa-user-plus" />
                         <span class="font-semibold">New</span>
                     </router-link>

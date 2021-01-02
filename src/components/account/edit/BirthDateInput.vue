@@ -2,13 +2,13 @@
     <label class="block input-label-tmp">Date of Birth</label>
     <div id="birthdate" class="flex space-x-6">
         <div class="w-1/3">
-            <selection v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
+            <selection :id="'day'" v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
         </div>
         <div class="w-1/3">
-            <selection v-model:selection="selectedMonth" :disabled="disabled" :elements="months" placeholder="Month" />
+            <selection :id="'month'" v-model:selection="selectedMonth" :disabled="disabled" :elements="months" placeholder="Month" />
         </div>
         <div class="w-1/3">
-            <selection v-model:selection="selectedYear" :disabled="disabled" :elements="years" placeholder="Year" />
+            <selection :id="'year'" v-model:selection="selectedYear" :disabled="disabled" :elements="years" placeholder="Year" />
         </div>
     </div>
 </template>

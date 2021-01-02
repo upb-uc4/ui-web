@@ -5,6 +5,7 @@
                 <div class="w-full">
                     <label class="input-label-tmp">Research Area</label>
                     <textarea
+                        id="researchArea"
                         v-model="myResearchArea"
                         class="w-full"
                         rows="3"
@@ -19,6 +20,7 @@
                 <div class="w-full">
                     <label class="input-label-tmp">Description</label>
                     <textarea
+                        id="freeText"
                         v-model="myFreeText"
                         class="w-full"
                         rows="5"
