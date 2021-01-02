@@ -5,7 +5,7 @@
             <div class="text-sm text-gray-500 truncate">{{ moduleIdentifier }}</div>
         </div>
         <div>
-            <button class="btn-tertiary-remove-tmp" @click="remove">Remove</button>
+            <button :id="'removeModule' + moduleIdentifier" class="btn-tertiary-remove-tmp" @click="remove">Remove</button>
         </div>
     </div>
 </template>
