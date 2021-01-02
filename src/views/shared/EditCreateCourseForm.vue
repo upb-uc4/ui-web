@@ -35,7 +35,14 @@
                 </template>
                 <template #right>
                     <button id="cancel" type="button" class="w-full sm:w-48 btn-secondary-tmp" @click="back">Cancel</button>
-                    <button v-if="editMode" id="saveChanges" :disabled="!hasInput" type="button" class="w-full w-48 btn-tmp" @click="back">
+                    <button
+                        v-if="editMode"
+                        id="saveChanges"
+                        :disabled="!hasInput"
+                        type="button"
+                        class="w-full w-48 btn-tmp"
+                        @click="updateCourse"
+                    >
                         Save Changes
                     </button>
                     <button v-else id="createCourse" :disabled="!hasInput" class="w-full w-48 btn-tmp" @click="createCourse">

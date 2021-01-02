@@ -2,20 +2,26 @@
     <BaseSection subtitle="Select the lecturer that will hold the course." title="Lecturer">
         <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
             <div class="lg:w-1/2 w-full">
-                <searchableSelect :label="'Lecturer-ID'" :elements="myLecturers" @update:selected="updateLecturerId" />
-                <label v-if="errorBag.has('lecturerId')" class="input-label-error-tmp">
+                <searchableSelect
+                    :id="'lecturerId'"
+                    :label="'Lecturer-ID'"
+                    :elements="myLecturers"
+                    :selected="currentSelection"
+                    @update:selected="updateLecturer"
+                />
+                <label v-if="errorBag.has('lecturerId')" id="lecturerIdLabel" class="input-label-error-tmp">
                     {{ errorBag.get("lecturerId") }}
                 </label>
-                <div :hidden="Object.keys(currentLecturer).length === 0" class="text-gray-700 text-md font-medium my-3">
-                    <label v-if="currentLecturer.username">
+                <div v-if="currentSelection.value !== undefined" class="text-gray-700 text-md font-medium my-3">
+                    <label v-if="currentSelection.value.username">
                         <i class="text-green-400 fas fa-check mr-2"></i>
-                        {{ currentLecturer.firstName }} {{ currentLecturer.lastName }} (
+                        {{ currentSelection.value.firstName }} {{ currentSelection.value.lastName }} (
                         <router-link
                             class="navigation-link cursor-pointer hover:underline"
                             target="_blank"
-                            :to="{ name: 'profile.public', params: { username: currentLecturer.username } }"
+                            :to="{ name: 'profile.public', params: { username: currentSelection.value.username } }"
                         >
-                            @{{ currentLecturer.username }}
+                            @{{ currentSelection.value.username }}
                         </router-link>
                         )
                     </label>
@@ -61,7 +67,7 @@
         setup(props: any, { emit }: any) {
             const lecturers = ref([] as Lecturer[]);
 
-            const currentLecturer = ref({} as Lecturer);
+            const currentSelection = ref({} as SearchSelectOption);
 
             const myLecturers = computed(() =>
                 lecturers.value.map((l: Lecturer) => {
@@ -86,15 +92,19 @@
                     if (props.lecturerId != "") {
                         const initialLecturer = lecturers.value.find((l) => l.username === props.lecturerId);
                         if (initialLecturer) {
-                            currentLecturer.value = initialLecturer;
+                            currentSelection.value = {
+                                display: createOptionString(initialLecturer),
+                                value: initialLecturer,
+                            } as SearchSelectOption;
                         }
                     }
                 }
             }
 
-            function updateLecturerId(element: any) {
-                currentLecturer.value = element.value as Lecturer;
-                emit("update:lecturerId", currentLecturer.value.username);
+            function updateLecturer(element: SearchSelectOption) {
+                currentSelection.value = element;
+                const lecturerId = (currentSelection.value.value as Lecturer).username;
+                emit("update:lecturerId", lecturerId);
             }
 
             function createOptionString(l: Lecturer): string {
@@ -102,9 +112,9 @@
             }
 
             return {
-                updateLecturerId,
+                updateLecturer,
                 myLecturers,
-                currentLecturer,
+                currentSelection,
             };
         },
     };

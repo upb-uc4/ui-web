@@ -20,8 +20,8 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Type</label>
-                    <Select id="courseType" v-model:selection="myType" :elements="availableTypes" />
-                    <label v-if="errorBag.has('courseType')" for="courseType" class="input-label-error-tmp">
+                    <Select :id="'courseType'" v-model:selection="myType" :elements="availableTypes" />
+                    <label v-if="errorBag.has('courseType')" class="input-label-error-tmp">
                         {{ errorBag.get("courseType") }}
                     </label>
                 </div>
@@ -43,8 +43,8 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Language</label>
-                    <Select id="courseLanguage" v-model:selection="myLanguage" :elements="availableLanguages" />
-                    <label v-if="errorBag.has('courseLanguage')" for="courseLanguage" class="input-label-error-tmp">
+                    <Select :id="'courseLanguage'" v-model:selection="myLanguage" :elements="availableLanguages" />
+                    <label v-if="errorBag.has('courseLanguage')" class="input-label-error-tmp">
                         {{ errorBag.get("courseLanguage") }}
                     </label>
                 </div>
