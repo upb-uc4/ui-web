@@ -23,7 +23,7 @@
                             <ListboxOption
                                 v-for="element in matches"
                                 :key="element"
-                                v-slot="{ selected, active }"
+                                v-slot="{ isSelected, active }"
                                 :value="element"
                                 @click="select(element)"
                             >
@@ -32,11 +32,11 @@
                                         active ? 'text-white bg-blue-600' : 'text-gray-900'
                                     } cursor-default select-none relative py-2 pl-8 pr-4`"
                                 >
-                                    <span :class="`${selected ? 'font-semibold' : 'font-normal'} block truncate`">
+                                    <span :class="`${isSelected ? 'font-semibold' : 'font-normal'} block truncate`">
                                         {{ element.display }}
                                     </span>
                                     <span
-                                        v-if="selected"
+                                        v-if="isSelected"
                                         :class="`${
                                             active ? 'text-white' : 'text-blue-600'
                                         } absolute inset-y-0 left-0 flex items-center pl-1.5`"
@@ -85,6 +85,10 @@
                 type: String,
                 default: "Search for a Quote",
             },
+            selected: {
+                type: Object as () => SearchSelectOption,
+                required: true,
+            },
             id: {
                 type: String,
                 default: "searchSelectInput",
@@ -94,7 +98,6 @@
         setup(props: any, { emit }: any) {
             const input = ref("");
             const hidden = ref(true);
-            const selected = ref({} as SearchSelectOption);
 
             let matches = computed(() => {
                 const elements = props.elements as SearchSelectOption[];
@@ -110,7 +113,6 @@
             function select(element: SearchSelectOption) {
                 input.value = element.display;
                 hidden.value = true;
-                selected.value = element;
                 emit("update:selected", element);
             }
 
@@ -121,7 +123,6 @@
                 matches,
                 hasMatch,
                 hidden,
-                selected,
                 select,
             };
         },
