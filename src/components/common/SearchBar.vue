@@ -13,7 +13,7 @@
     import { ref } from "vue";
 
     export default {
-        name: "SeachBar",
+        name: "SearchBar",
         props: {
             message: {
                 type: String,

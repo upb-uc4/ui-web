@@ -5,7 +5,7 @@
             <div class="flex flex-col-reverse md:flex-row items-center justify-between md:space-x-2 space-y-2 space-y-reverse md:space-y-0">
                 <div class="w-full md:flex items-center md:space-x-2 space-y-2 md:space-y-0">
                     <div class="md:max-w-md w-full">
-                        <seach-bar v-model:message="message" placeholder="Find a user..." @refresh="refresh" />
+                        <search-bar v-model:message="message" placeholder="Find a user..." @refresh="refresh" />
                     </div>
                     <div class="flex space-x-2">
                         <filter-select v-model:selection="selectedRole" label="Type" :elements="roles" />
@@ -76,7 +76,7 @@
 <script lang="ts">
     import AccountList from "@/components/account/list/AccountList.vue";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
-    import SeachBar from "@/components/common/SearchBar.vue";
+    import SearchBar from "@/components/common/SearchBar.vue";
     import { ref } from "vue";
     import { Role } from "@/entities/Role";
     import Select from "@/components/common/Select.vue";
@@ -88,7 +88,7 @@
         components: {
             BaseView,
             AccountList,
-            SeachBar,
+            SearchBar,
             FilterSelect: Select,
         },
         async beforeRouteEnter(_to: any, _from: any, next: any) {
