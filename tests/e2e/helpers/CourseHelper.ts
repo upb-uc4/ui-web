@@ -12,9 +12,11 @@ import {
 export function createCourse(course: Course) {
     navigateToCourseForm();
     cy.wait(750);
-    cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
+    cy.get("button[id='courseType']").click();
+    cy.get("li[id='courseTypeItem-" + course.courseType + "']").click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
+    cy.get("button[id='courseLanguage']").click();
+    cy.get("li[id='courseLanguageItem-" + course.courseLanguage + "']").click();
     cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
@@ -36,10 +38,12 @@ export function createCourseAdmin(course: Course) {
     cy.wait(750);
     cy.get("input[id='lecturerId']").clear();
     cy.get("input[id='lecturerId']").click();
-    cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
-    cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
+    cy.get("div[id='lecturerIdOptionDiv']").get("div").contains(`(@${course.lecturerId})`).click();
+    cy.get("button[id='courseType']").click();
+    cy.get("li[id='courseTypeItem-" + course.courseType + "']").click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
+    cy.get("button[id='courseLanguage']").click();
+    cy.get("li[id='courseLanguageItem-" + course.courseLanguage + "']").click();
     cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
