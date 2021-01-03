@@ -88,9 +88,9 @@ describe("Course Filtering", function () {
     it("Public profile is shown correctly", () => {
         cy.get("div").contains(course1.courseName).parent().parent().find("a[id='showLecturer']").click();
         cy.url().should("contain", `/user/${lecturer.username}`);
-        cy.get("label").contains("(inactive)").should("exist");
+        cy.get("div").contains("Inactive").should("exist");
         cy.get("div").contains(`${lecturer.firstName} ${lecturer.lastName}`).should("exist");
-        cy.get("div").contains(`(@${lecturer.username})`).should("exist");
+        cy.get("div").contains(`@${lecturer.username}`).should("exist");
         cy.get("div").contains("Research Area").should("not.exist");
         cy.get("div").contains("Description").should("not.exist");
     });
@@ -102,11 +102,17 @@ describe("Course Filtering", function () {
 
     it("Deleted lecturer is shown in account list after checking 'inactive'", () => {
         navigateToAccountList();
-        cy.get("input[id='toggleInactive']").should("not.be.checked");
-        cy.get(`div[id='user_${lecturer.username}']`).should("not.exist");
-        cy.get("input[id='toggleInactive']").check();
+
+        cy.get("button[id='selectFilterStatus']").click();
+        cy.get("li[id='selectFilterStatusItem-Active']").click();
+        cy.get("button[id='selectFilterStatus']").should("contain", "Active");
+
+        cy.get("button[id='selectFilterStatus']").click();
+        cy.get("li[id='selectFilterStatusItem-Inactive']").click();
+        cy.get("button[id='selectFilterStatus']").should("contain", "Inactive");
+
         cy.wait(1000);
         cy.get(`div[id='user_${lecturer.username}']`).should("exist");
-        cy.get(`div[id='user_${lecturer.username}']`).should("contain", "(inactive)");
+        cy.get(`div[id='user_${lecturer.username}']`).should("contain", "Inactive");
     });
 });
