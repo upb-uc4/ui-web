@@ -5,11 +5,13 @@
                 <div class="lg:w-1/2 w-full relative">
                     <label class="input-label-tmp">Old Password</label>
                     <i
+                        id="toggleOldPassword"
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                         class="fas absolute mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                         @click="togglePassword"
                     />
                     <input
+                        id="oldPassword"
                         v-model="oldPassword"
                         :type="passwordFieldType"
                         class="w-full"
@@ -23,6 +25,7 @@
                 <div class="lg:w-1/2 w-full relative">
                     <label class="input-label-tmp">New Password</label>
                     <i
+                        id="toggleNewPassword"
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                         class="fas absolute mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                         @click="togglePassword"
@@ -44,6 +47,7 @@
                 <div class="lg:w-1/2 w-full relative">
                     <label class="input-label-tmp">Confirm New Password</label>
                     <i
+                        id="toggleConfirmationPassword"
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                         class="fas absolute mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                         @click="togglePassword"
@@ -63,7 +67,9 @@
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 w-full">
                 <div class="lg:w-1/2 w-full flex items-center">
-                    <button class="w-48 btn-tmp" :disabled="isHandlingRequest" @click="tryUpdatePassword()">Update Password</button>
+                    <button id="updatePassword" class="w-48 btn-tmp" :disabled="isHandlingRequest" @click="tryUpdatePassword()">
+                        Update Password
+                    </button>
                     <img v-show="isHandlingRequest" src="@/assets/loading-spinner-alt.svg" alt="loading-spinner" class="ml-2 w-6 h-6" />
                 </div>
             </div>
