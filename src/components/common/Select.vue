@@ -4,7 +4,7 @@
             <div class="relative">
                 <span class="inline-block w-full relative">
                     <div v-if="disabled" class="relative">
-                        <input class="w-full input-text-tmp" :value="mySelection" readonly />
+                        <input :id="id" class="w-full input-text-tmp" :value="mySelection" readonly />
                     </div>
                     <ListboxButton
                         v-else

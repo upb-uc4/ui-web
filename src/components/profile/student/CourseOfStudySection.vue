@@ -4,7 +4,7 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label-tmp">Matriculation-ID</label>
-                    <input :value="matriculationId" type="text" readonly class="w-full input-text-tmp" />
+                    <input id="matriculationId" :value="matriculationId" type="text" readonly class="w-full input-text-tmp" />
                     <label v-if="!latest" class="input-label-warning-tmp">You have not yet been matriculated!</label>
                 </div>
             </div>
