@@ -1,8 +1,14 @@
 <template>
     <div>
         <section-header :title="title" />
-        <profile-picture-section />
-        <personal-section v-model:first-name="firstName" v-model:last-name="lastName" v-model:birth-date="birthDate" :readonly="true" />
+        <profile-picture-section :show-own-profile="true" />
+        <personal-section
+            v-model:first-name="firstName"
+            v-model:last-name="lastName"
+            v-model:birth-date="birthDate"
+            :readonly="true"
+            :error-bag="errorBag"
+        />
         <contact-section v-model:email="email" v-model:phone-number="phoneNumber" :error-bag="errorBag" />
         <address-section v-model:address="address" :error-bag="errorBag" />
         <research-section v-model:free-text="freeText" v-model:research-area="researchArea" :error-bag="errorBag" />
