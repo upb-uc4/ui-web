@@ -6,8 +6,8 @@
                 <img src="@/assets/loading-spinner-alt.svg" alt="loading" />
             </div>
             <Menu v-else>
-                <MenuButton class="focus:outline-none" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                    <img class="w-32 h-32 object-cover rounded-full" :src="selectedPicture" />
+                <MenuButton id="profilePicture" class="focus:outline-none" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                    <img id="picture" class="w-32 h-32 object-cover rounded-full" :src="selectedPicture" />
                     <div v-show="isHovered">
                         <div class="absolute top-0 left-0 w-32 h-32 rounded-full bg-black opacity-50" />
                         <div class="absolute top-24 left-0 w-full text-white text-sm font-medium tracking-wider">Change</div>
@@ -26,9 +26,8 @@
                         class="absolute left-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
                     >
                         <div class="py-1">
-                            <MenuItem v-slot="{ active }">
+                            <MenuItem id="uploadPicture" v-slot="{ active }">
                                 <span
-                                    id="uploadPicture"
                                     :class="active ? 'text-white bg-blue-600 font-semibold' : 'text-gray-900 font-normal'"
                                     class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
                                     @click="triggerOpenFileBrowser"
@@ -36,9 +35,8 @@
                                     Upload a photo
                                 </span>
                             </MenuItem>
-                            <MenuItem v-slot="{ active }">
+                            <MenuItem id="deletePicture" v-slot="{ active }">
                                 <span
-                                    id="deletePicture"
                                     :class="active ? 'text-white bg-blue-600 font-semibold' : 'text-gray-900 font-normal'"
                                     class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
                                     @click="confirmDeletePicture"

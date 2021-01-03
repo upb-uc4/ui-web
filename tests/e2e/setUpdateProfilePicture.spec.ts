@@ -91,35 +91,30 @@ describe("Account creation, edition and deletion", function () {
     it("Pick picture as admin", function () {
         cy.visit(`/editAccount/${student.username}`);
         cy.wait(3000);
-        cy.get("button[id='uploadPicture']").should("be.enabled");
-        cy.get("button[id='deletePicture']").should("be.enabled");
+        cy.get("#profilePicture").click();
         cy.get("input[id='uploadFile']").attachFile("pictures/darth_vader.jpg", { force: true });
-        cy.get("button[id='confirmPicture']").should("be.enabled");
-        cy.get("button[id='resetPicture']").should("be.enabled");
-        cy.get("button[id='deletePicture']").should("not.exist");
     });
 
-    it("Check if correct picture is shown", function () {
+    it("Check if updated picture is shown", function () {
         cy.get("img[id='picture']").should("have.attr", "src", vaderPic);
     });
 
     it("Updating picture works", function () {
-        cy.get("button[id='confirmPicture']").click();
+        cy.reload();
         cy.wait(500);
-        cy.get("button[id='uploadPicture']").should("be.enabled");
-        cy.get("button[id='deletePicture']").should("be.enabled");
-        cy.get("button[id='confirmPicture']").should("not.exist");
-        cy.get("button[id='resetPicture']").should("not.exist");
-        cy.get("img[id='picture']").should("have.attr", "src", vaderPic);
+        cy.get("img[id='picture']").should("have.attr", "src", vaderPicCropped);
     });
 
-    it("Resetting picture works", function () {
-        cy.get("input[id='uploadFile']").attachFile("pictures/luke.jpg", { force: true });
-        cy.get("img[id='picture']").should("have.attr", "src", lukePic);
-        cy.get("button[id='resetPicture']").click();
-        cy.get("button[id='confirmPicture']").should("not.exist");
-        cy.get("button[id='resetPicture']").should("not.exist");
-        cy.get("img[id='picture']").should("have.attr", "src", vaderPic);
+    it("Deleting picture works", function () {
+        cy.get("#profilePicture").click();
+        cy.get("#deletePicture").click();
+        cy.get("#deleteProfilePictureModalDelete").click();
+        cy.get("img[id='picture']").should("not.have.attr", "src", vaderPic);
+        cy.reload();
+        cy.wait(500);
+        cy.get("img[id='picture']").should("not.have.attr", "src", vaderPic);
+        // ReUpload image
+        cy.get("input[id='uploadFile']").attachFile("pictures/darth_vader.jpg", { force: true });
     });
 
     it("Logout as Admin", function () {
@@ -136,17 +131,9 @@ describe("Account creation, edition and deletion", function () {
         cy.get("img[id='picture']").should("have.attr", "src", vaderPicCropped);
     });
 
-    it("Resetting profile picture works for student", function () {
-        cy.get("input[id='uploadFile']").attachFile("pictures/luke.jpg", { force: true });
-        cy.get("img[id='picture']").should("have.attr", "src", lukePic);
-        cy.get("button[id='resetPicture']").click();
-        cy.get("button[id='confirmPicture']").should("not.exist");
-        cy.get("button[id='resetPicture']").should("not.exist");
-        cy.get("img[id='picture']").should("have.attr", "src", vaderPicCropped);
-    });
-
     it("Delete profile picture modal is shown", function () {
-        cy.get("button[id='deletePicture']").click();
+        cy.get("#profilePicture").click();
+        cy.get("#deletePicture").click();
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains("Are you sure you want to delete the profile picture?");
 
@@ -155,7 +142,8 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Deleting profile picture works", function () {
-        cy.get("button[id='deletePicture']").click();
+        cy.get("#profilePicture").click();
+        cy.get("#deletePicture").click();
         cy.get("button[id='deleteProfilePictureModalDelete']").click();
         cy.wait(1000);
         cy.get("img[id='picture']").should("not.have.attr", "src", lukePic);
@@ -164,10 +152,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Changing picture works for students", function () {
         cy.get("input[id='uploadFile']").attachFile("pictures/luke.jpg", { force: true });
-        cy.get("button[id='confirmPicture']").click();
         cy.wait(1000);
-        cy.get("button[id='confirmPicture']").should("not.exist");
-        cy.get("button[id='resetPicture']").should("not.exist");
         cy.get("img[id='picture']").should("have.attr", "src", lukePic);
     });
 
@@ -186,7 +171,8 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Delete profile picture modal is shown", function () {
-        cy.get("button[id='deletePicture']").click();
+        cy.get("#profilePicture").click();
+        cy.get("#deletePicture").click();
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains("Are you sure you want to delete the profile picture?");
 
@@ -195,7 +181,8 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Deleting profile picture works", function () {
-        cy.get("button[id='deletePicture']").click();
+        cy.get("#profilePicture").click();
+        cy.get("#deletePicture").click();
         cy.get("button[id='deleteProfilePictureModalDelete']").click();
         cy.wait(1000);
         cy.get("img[id='picture']").should("not.have.attr", "src", lukePic);
