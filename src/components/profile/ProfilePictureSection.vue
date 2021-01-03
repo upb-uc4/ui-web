@@ -65,6 +65,7 @@
     import ProfilePictureUpdateResponseHandler from "@/use/helpers/ProfilePictureUpdateResponseHandler";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
+    import { store, useStore } from "@/use/store/store";
 
     export default {
         name: "ProfilePictureSection",
@@ -76,8 +77,16 @@
             DeleteProfilePictureModal,
             BaseSection,
         },
-        setup() {
-            const username: string = Router.currentRoute.value.params.username as string;
+        props: {
+            showOwnProfile: {
+                type: Boolean,
+                default: false,
+            },
+        },
+        setup(props: any) {
+            const store = useStore();
+            let username: string = Router.currentRoute.value.params.username as string;
+
             const selectedPicture = ref();
             const fallbackPicture = ref();
             const isHovered = ref(false);
@@ -87,8 +96,15 @@
             let fileToUpload: File = {} as File;
 
             onBeforeMount(async () => {
+                await getUsername();
                 await getProfilePicture();
             });
+
+            async function getUsername() {
+                if (props.showOwnProfile) {
+                    username = (await store.getters.user).username;
+                }
+            }
 
             async function getProfilePicture() {
                 const userManagement = new UserManagement();
