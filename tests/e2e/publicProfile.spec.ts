@@ -11,7 +11,7 @@ describe("Show public profile correctly", () => {
     let studentAuth: Account;
     let lecturerAuth: Account;
     let course: Course;
-    let lecturerName: String = "Lect Urer";
+    let lecturerName: string = "Jane Doe";
 
     before(() => {
         cy.clearCookies();
@@ -75,7 +75,7 @@ describe("Show public profile correctly", () => {
     it("Public Profile contains correct information", () => {
         // TODO this could be changed, we should create our own lecturer and check against the values
         cy.get("div").contains(lecturerName).should("exist");
-        cy.get("div").contains("(@lecturer)").should("exist");
+        cy.get("div").contains("@lecturer").should("exist");
         cy.get("div").contains("Research Area").parent().parent().should("contain", "Mathematics");
         cy.get("div").contains("Description").parent().parent().should("contain", "Heute kommt der kleine Gauss dran.");
     });
