@@ -67,6 +67,12 @@ describe("admin", () => {
         //create account
         cy.get("#nav_mobile_admin_menu_manage_accounts_create").click();
         cy.url().should("contain", "createAccount");
+
+        cy.get(navbar_burger_menu).click();
+
+        // create exam regulation
+        cy.get("#nav_mobile_admin_menu_exreg_create").click();
+        cy.url().should("contain", "create-exam-reg");
     });
 
     it("courses", () => {
@@ -84,14 +90,6 @@ describe("admin", () => {
         cy.url().should("contain", "createCourse");
     });
 
-    it("exam-regs", () => {
-        cy.get(navbar_burger_menu).click();
-
-        // create exam regulation
-        cy.get("#nav_mobile_menu_exreg").click();
-        cy.get("#nav_mobile_admin_menu_exreg_create").click();
-        cy.url().should("contain", "create-exam-reg");
-    });
     checkProfile();
 });
 
