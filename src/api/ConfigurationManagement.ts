@@ -26,7 +26,7 @@ export default class ConfigurationManagement extends Common {
         });
 
         return await instance
-            .get(`/version/hyperledger`)
+            .get(`/version/hyperledger-network`)
             .then((response: AxiosResponse) => {
                 return response.data as HyperledgerNetworkVersion;
             })
