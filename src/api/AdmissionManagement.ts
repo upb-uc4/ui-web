@@ -34,7 +34,7 @@ export default class AdmissionManagement extends CommonHyperledger {
      */
     async submitSignedAdmissionsProposal(signedProposal: SignedProposalMessage): Promise<APIResponse<UnsignedTransactionMessage>> {
         return await this._axios
-            .post(`/admissions/proposal/submit`, signedProposal)
+            .post(`/admissions/signed_proposal`, signedProposal)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -163,7 +163,7 @@ export default class AdmissionManagement extends CommonHyperledger {
      */
     async getUnsignedCourseAdmissionAddProposal(courseAdmission: CourseAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/admissions/courses/proposal/add`, courseAdmission)
+            .post(`/admissions/courses/unsigned_add_proposal`, courseAdmission)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -207,7 +207,7 @@ export default class AdmissionManagement extends CommonHyperledger {
      */
     async getUnsignedCourseAdmissionDropProposal(admissionId: string): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/admissions/courses/proposal/drop`, { admissionId })
+            .post(`/admissions/courses/unsigned_drop_proposal`, { admissionId })
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,

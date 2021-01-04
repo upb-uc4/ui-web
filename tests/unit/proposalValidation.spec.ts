@@ -113,35 +113,51 @@ describe("Proposal Validation Tests", () => {
     });
 
     test("Test Admission Proposal Validation addCourseAdmission", async () => {
-        const addCourseAdmissionProposalB64 = "";
+        const addCourseAdmissionProposalB64 =
+            "CrcJCmsIAxABGgwIgdPj/gUQgKzPvAIiCW15Y2hhbm5lbCpAYjU2YzFkNGYzZTJlZTI3NzFmNDU3YjdmZjM5MTA3NThmZWJhYTEzZGMxZjk1YWE0Y2VjNDQ1Yjk4ZTVmNzZlODoKEggSBnVjNC1jYxLHCAqqCAoHb3JnMU1TUBKeCC0tLS0tQkVHSU4gQ0VSVElGSUNBVEUtLS0tLQpNSUlDM0RDQ0FvS2dBd0lCQWdJVUtlcXlXcXFaVWlnOG9jRklmbTk2cjgvTC9YMHdDZ1lJS29aSXpqMEVBd0l3ClhqRUxNQWtHQTFVRUJoTUNSRVV4RERBS0JnTlZCQWdNQTA1U1Z6RVNNQkFHQTFVRUJ3d0pVR0ZrWlhKaWIzSnUKTVF3d0NnWURWUVFLREFOVlF6UXhEREFLQmdOVkJBc01BMVZETkRFUk1BOEdBMVVFQXd3SWNtTmhMVzl5WnpFdwpIaGNOTWpBeE1qRTFNVFkwTmpBd1doY05NakV4TWpFMU1UWTFNVEF3V2pCRk1ROHdEUVlEVlFRTEV3WmpiR2xsCmJuUXhNakF3QmdOVkJBTVRLV1p5YjI1MFpXNWtMWE5wWjI1cGJtY3RkR1Z6ZEdWeUxXbHVabTh0WVdSa1FXUnQKYVhOemFXOXVNRmt3RXdZSEtvWkl6ajBDQVFZSUtvWkl6ajBEQVFjRFFnQUVJb3BmYzNHVmNxdCtHcVdmQ21SOApCZDVsY1ZRQXBOK25HOTVaK1FhZXRGNVJVRHllMnViZFB0V1VlT0s5TnFrSk1oVWJ5ZGtSTDVvL0RoRmFiYlZhCjY2T0NBVFV3Z2dFeE1BNEdBMVVkRHdFQi93UUVBd0lEcURBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUkKS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQWRCZ05WSFE0RUZnUVUzZTJLUzhodmRUM1FNSU1JQ0pRMwphK3htL1Nvd0h3WURWUjBqQkJnd0ZvQVVwU3JzY29PYzBTOWNrdHlhUE50elpZaEFkRVV3TkFZRFZSMFJCQzB3Cks0SXBabkp2Ym5SbGJtUXRjMmxuYm1sdVp5MTBaWE4wWlhJdGFXNW1ieTFoWkdSQlpHMXBjM05wYjI0d2ZBWUkKS2dNRUJRWUhDQUVFY0hzaVlYUjBjbk1pT25zaWFHWXVRV1ptYVd4cFlYUnBiMjRpT2lJaUxDSm9aaTVGYm5KdgpiR3h0Wlc1MFNVUWlPaUptY205dWRHVnVaQzF6YVdkdWFXNW5MWFJsYzNSbGNpMXBibVp2TFdGa1pFRmtiV2x6CmMybHZiaUlzSW1obUxsUjVjR1VpT2lKamJHbGxiblFpZlgwd0NnWUlLb1pJemowRUF3SURTQUF3UlFJaEFNanMKck85dTI2MXpKdFYxTzl6TDFyUmNLMHhjVFpZMW9yMkZaWTU0NkNYNUFpQnZtSW5LN3lsR1dvU21hTldTdVovSwpxTUtISE81SHM1QXR0TGpLTlRUL2NBPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQoSGI9/QOyOaL66/z6CIVh+vVeVHR5u0HA1IxLAAgq9Agq6AggBEggSBnVjNC1jYxqrAgofVUM0LkFwcHJvdmFsOmFwcHJvdmVUcmFuc2FjdGlvbgoNVUM0LkFkbWlzc2lvbgoMYWRkQWRtaXNzaW9uCuoBWyJ7XCJhZG1pc3Npb25JZFwiOlwiZnJvbnRlbmQtc2lnbmluZy10ZXN0ZXItaW5mby1hZGRBZG1pc3Npb246QzFcIixcImVucm9sbG1lbnRJZFwiOlwiZnJvbnRlbmQtc2lnbmluZy10ZXN0ZXItaW5mby1hZGRBZG1pc3Npb25cIixcImNvdXJzZUlkXCI6XCJDMVwiLFwibW9kdWxlSWRcIjpcIk1hdHJpY3VsYXRpb25UZXN0TW9kdWxlLjFcIixcInRpbWVzdGFtcFwiOlwiMjAyMC0xMi0zMVQyMzo1OTo1OVwifSJd";
 
         const addCourseAdmissionProposal = await decodeProposal(addCourseAdmissionProposalB64, protoURL);
 
         if (!addCourseAdmissionProposal) fail("Could not decode Add Course Admission Proposal");
 
         const addCourseAdmission: CourseAdmission = {
-            admissionId: "",
-            courseId: "",
-            enrollmentId: "",
-            moduleId: "",
-            timestamp: "",
+            admissionId: "frontend-signing-tester-info-addAdmission:C1",
+            courseId: "C1",
+            enrollmentId: "frontend-signing-tester-info-addAdmission",
+            moduleId: "MatriculationTestModule.1",
+            timestamp: "2020-12-31T23:59:59",
         };
 
-        expect(validateCourseAdmissionProposal(addCourseAdmissionProposal.payload, undefined, addCourseAdmission)).toBe(true);
+        expect(
+            validateCourseAdmissionProposal(
+                addCourseAdmissionProposal.payload,
+                undefined,
+                addCourseAdmission,
+                addCourseAdmission.enrollmentId
+            )
+        ).toBe(true);
 
         addCourseAdmission.courseId = "this is a different id";
 
-        expect(validateCourseAdmissionProposal(addCourseAdmissionProposal.payload, undefined, addCourseAdmission)).toBe(false);
+        expect(
+            validateCourseAdmissionProposal(
+                addCourseAdmissionProposal.payload,
+                undefined,
+                addCourseAdmission,
+                addCourseAdmission.enrollmentId
+            )
+        ).toBe(false);
     });
 
     test("Test Admission Proposal Validation dropCourseAdmission", async () => {
-        const dropCourseAdmissionProposalB64 = "";
+        const dropCourseAdmissionProposalB64 =
+            "CroJCmoIAxABGgsI4eLj/gUQgL/WBiIJbXljaGFubmVsKkAxMTUwMzEyNjMxNDI2ZmQxMTkyNDZjYmQwMjI0YjcyN2FhZGEwNDkzNDhhM2ZkYTUyNzNlNTA5YTQzMjQ0YzY2OgoSCBIGdWM0LWNjEssICq4ICgdvcmcxTVNQEqIILS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMzekNDQW9XZ0F3SUJBZ0lVZjJ5d3dwMnM4TFAzT1ExRE1uOTdEd1NONEhnd0NnWUlLb1pJemowRUF3SXcKWGpFTE1Ba0dBMVVFQmhNQ1JFVXhEREFLQmdOVkJBZ01BMDVTVnpFU01CQUdBMVVFQnd3SlVHRmtaWEppYjNKdQpNUXd3Q2dZRFZRUUtEQU5WUXpReEREQUtCZ05WQkFzTUExVkROREVSTUE4R0ExVUVBd3dJY21OaExXOXlaekV3CkhoY05NakF4TWpFMU1UY3hPVEF3V2hjTk1qRXhNakUxTVRjeU5EQXdXakJHTVE4d0RRWURWUVFMRXdaamJHbGwKYm5ReE16QXhCZ05WQkFNVEttWnliMjUwWlc1a0xYTnBaMjVwYm1jdGRHVnpkR1Z5TFdsdVptOHRaSEp2Y0VGawpiV2x6YzJsdmJqQlpNQk1HQnlxR1NNNDlBZ0VHQ0NxR1NNNDlBd0VIQTBJQUJHTitmRlBmWlhNdFJHLzlKTUdlCkduT1d5VTV1UkF0Wk9EdHl6MjJFRndDenR1Y2NpSnZZOTM0anZxblhRWmtZWEVnaDZEVFFZRGt6Y1NIU0UrMVUKTk5TamdnRTNNSUlCTXpBT0JnTlZIUThCQWY4RUJBTUNBNmd3SFFZRFZSMGxCQll3RkFZSUt3WUJCUVVIQXdFRwpDQ3NHQVFVRkJ3TUNNQXdHQTFVZEV3RUIvd1FDTUFBd0hRWURWUjBPQkJZRUZCNW9lZ3dnWmptYjRadERRWnA2CnE0Q0plRVF0TUI4R0ExVWRJd1FZTUJhQUZHRCtCbEYrTWRHR2d4STFXWk9NMkhXMDF6d2JNRFVHQTFVZEVRUXUKTUN5Q0ttWnliMjUwWlc1a0xYTnBaMjVwYm1jdGRHVnpkR1Z5TFdsdVptOHRaSEp2Y0VGa2JXbHpjMmx2YmpCOQpCZ2dxQXdRRkJnY0lBUVJ4ZXlKaGRIUnljeUk2ZXlKb1ppNUJabVpwYkdsaGRHbHZiaUk2SWlJc0ltaG1Ma1Z1CmNtOXNiRzFsYm5SSlJDSTZJbVp5YjI1MFpXNWtMWE5wWjI1cGJtY3RkR1Z6ZEdWeUxXbHVabTh0WkhKdmNFRmsKYldsemMybHZiaUlzSW1obUxsUjVjR1VpT2lKamJHbGxiblFpZlgwd0NnWUlLb1pJemowRUF3SURTQUF3UlFJaApBTThZbWo3SUFYYnNSbWh4UGR0U0JwTDY2UUU2ckZrRzQ4UTczOFpLZWJ2eUFpQXJHQVl1ZHVTR3ZqR0lZUDNNCnFCemtKSWZrSGpoT1BNRFBvcUdHMDJFSUR3PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQoSGPBqO1aiUSFuuwt8sb+ZEyQpvi7JM42dKhKGAQqDAQqAAQgBEggSBnVjNC1jYxpyCh9VQzQuQXBwcm92YWw6YXBwcm92ZVRyYW5zYWN0aW9uCg1VQzQuQWRtaXNzaW9uCg1kcm9wQWRtaXNzaW9uCjFbImZyb250ZW5kLXNpZ25pbmctdGVzdGVyLWluZm8tZHJvcEFkbWlzc2lvbjpDMSJd";
 
         const dropCourseAdmissionProposal = await decodeProposal(dropCourseAdmissionProposalB64, protoURL);
 
         if (!dropCourseAdmissionProposal) fail("Could not decode Drop Course Admission Proposal");
 
-        let admissionId = "";
+        let admissionId = "frontend-signing-tester-info-dropAdmission:C1";
 
         expect(validateCourseAdmissionProposal(dropCourseAdmissionProposal.payload, admissionId)).toBe(true);
 

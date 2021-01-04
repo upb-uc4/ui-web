@@ -54,11 +54,12 @@ export function validateMatriculationProposal(
     return false;
 }
 
-export async function validateCourseAdmissionProposal(
+export function validateCourseAdmissionProposal(
     proposalPayload: ProposalPayload,
     admissionId?: string,
-    courseAdmission?: CourseAdmission
-): Promise<boolean> {
+    courseAdmission?: CourseAdmission,
+    enrollmentId?: string
+): boolean {
     if (!admissionId && !courseAdmission) return false;
 
     const name = proposalPayload.input.input.args[0];
@@ -68,12 +69,8 @@ export async function validateCourseAdmissionProposal(
     if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_APPROVAL) return false;
     if (contractToApprove !== UC4Identifier.CONTRACT_ADMISSION) return false;
 
-    const certificateManagement = new CertificateManagement();
-    const response = await certificateManagement.getOwnEnrollmentId();
-    const enrollmentId = new GenericResponseHandler("enrollment id").handleResponse(response).id;
-
     if (transactionToApprove === UC4Identifier.TRANSACTION_ADD_ADMISSION) {
-        if (!courseAdmission) return false;
+        if (!courseAdmission || !enrollmentId) return false;
 
         const jsonString = proposalPayload.input.input.args[3];
         const paramsArray: string[] = JSON.parse(jsonString);

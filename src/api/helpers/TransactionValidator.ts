@@ -31,7 +31,8 @@ export function matriculationTransactionValidator(
 export function admissionsTransactionValidator(
     transaction: TransactionMessage,
     admissionId?: string,
-    courseAdmission?: CourseAdmission
+    courseAdmission?: CourseAdmission,
+    enrollmentId?: string
 ): boolean {
     if (!(transaction.data.actions.length === 1)) {
         return false;
@@ -39,7 +40,7 @@ export function admissionsTransactionValidator(
 
     const payload: ProposalPayload = transaction.data.actions[0].payload.chainCodeProposalPayload;
 
-    if (!validateCourseAdmissionProposal(payload, admissionId, courseAdmission)) {
+    if (!validateCourseAdmissionProposal(payload, admissionId, courseAdmission, enrollmentId)) {
         return false;
     }
 
