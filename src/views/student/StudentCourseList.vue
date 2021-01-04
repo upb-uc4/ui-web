@@ -66,7 +66,7 @@
             watch(
                 () => props.isMyCoursesPage,
                 () => {
-                    title.value = props.isMyCoursesPage ? "All Courses" : "My Courses";
+                    title.value = props.isMyCoursesPage ? "My Courses" : "Available Courses";
                     refresh();
                 }
             );
