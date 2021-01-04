@@ -5,14 +5,14 @@
                 <menu-item
                     id="nav_desktop_student_menu_courses_all"
                     title="All Courses"
-                    description="Complete overview of all courses"
+                    description="Complete overview of all courses in your exam regulation"
                     icon-class="fas fa-list-alt"
                     target-route-name="student.courses"
                 />
                 <menu-item
                     id="nav_desktop_student_menu_courses_admitted"
                     title="My Courses"
-                    description="Complete overview of admitted courses"
+                    description="Complete overview of your admitted courses"
                     icon-class="fas fa-list-alt"
                     target-route-name="student.my-courses"
                 />
