@@ -83,10 +83,6 @@
             let data = {} as File;
             let dataUrl = ref("");
 
-            onBeforeMount(async () => {
-                // TODO wait for a getStateOfArchive API call
-            });
-
             async function requestData() {
                 const username = (await useStore().getters.user).username;
                 const reportManagement = new ReportManagement();
