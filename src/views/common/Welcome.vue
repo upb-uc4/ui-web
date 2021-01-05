@@ -2,8 +2,8 @@
     <div v-if="busy">
         <loading-spinner />
     </div>
-    <div v-else class="flex flex-col items-center justify-center w-full mt-20">
-        <h1 class="text-5xl font-semibold text-blue-800 mb-20">Welcome back, {{ name }}!</h1>
+    <div v-else class="flex flex-col items-center justify-center w-full mt-12">
+        <h1 class="text-4xl font-semibold text-blue-800 mb-10">Welcome back, {{ name }}!</h1>
         <dashboard />
     </div>
 </template>
