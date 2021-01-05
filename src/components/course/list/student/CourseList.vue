@@ -55,7 +55,7 @@
                 {
                     admissionId: "123456:TestCourse Registered",
                     enrollmentId: "1234567",
-                    courseId: "20c84312-2fea-11eb-b10d-b546652c1263",
+                    courseId: "63dbfc60-4db6-11eb-8bcd-07817667ebb2",
                     moduleId: "M.1275.78235",
                     timestamp: "something",
                 },
@@ -73,13 +73,12 @@
                 const userManagement: UserManagement = new UserManagement();
                 if (props.onlyAdmittedCourses) {
                     let tmpCourses = [] as Course[];
-                    admittedCourses.value.forEach(async (m) => {
-                        //TODO Include API
-                        // let response: APIResponse<Course>;
-                        // response = await courseManagement.getCourse(m.courseId);
-                        // let result = genericResponseHandler.handleResponse(response);
-                        // if (result) tmpCourses.push(result);
-                    });
+                    for (const m of admittedCourses.value) {
+                        let response: APIResponse<Course>;
+                        response = await courseManagement.getCourse(m.courseId);
+                        let result = genericResponseHandler.handleResponse(response);
+                        if (result) tmpCourses.unshift(result);
+                    }
                     courses.value = tmpCourses;
                 } else {
                     let response: APIResponse<Course[]>;
@@ -92,7 +91,7 @@
             }
 
             async function getAdmittedCourses() {
-                //TODO API CALL
+                //TODO API CALL & REMOVE MOCKDATA
                 admittedCourses.value = mockAdmitted;
             }
 
