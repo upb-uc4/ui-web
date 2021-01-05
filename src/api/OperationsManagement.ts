@@ -16,14 +16,8 @@ export default class OperationsManagement extends CommonHyperledger {
         return super.getVersion();
     }
 
-    async getOperations(
-        username?: string,
-        onlyOwn?: boolean,
-        onlyWorkable?: boolean,
-        archived?: boolean
-    ): Promise<APIResponse<Operation[]>> {
+    async getOperations(onlyOwn?: boolean, onlyWorkable?: boolean, archived?: boolean): Promise<APIResponse<Operation[]>> {
         const requestParameter = { params: {} as any };
-        if (username) requestParameter.params.username = username;
         if (onlyOwn !== undefined) requestParameter.params.onlyOwn = onlyOwn;
         if (onlyWorkable !== undefined) requestParameter.params.onlyWorkable = onlyWorkable;
         if (archived !== undefined) requestParameter.params.archived = archived;
@@ -48,7 +42,7 @@ export default class OperationsManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getOperations(username);
+                        return await this.getOperations(onlyOwn, onlyWorkable, archived);
                     }
                     return {
                         statusCode: error.response.status,
