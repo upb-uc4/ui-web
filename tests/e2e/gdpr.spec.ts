@@ -79,6 +79,11 @@ describe("Account creation, edition and deletion", function () {
         cy.wait(80000);
     });
 
+    it("Refresh to obtain the data", () => {
+        cy.get("button[id='refreshData']").click();
+        cy.get("button[id='downloadData']").should("exist");
+    });
+
     it("Download data", () => {
         cy.get("a[id='downloadData']");
     });
