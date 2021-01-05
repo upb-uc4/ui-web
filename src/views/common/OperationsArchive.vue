@@ -1,5 +1,9 @@
 <template>
-    <div class="flex flex-col items-center justify-center w-full mt-12">
+    <button class="flex items-center mb-4 navigation-link mt-12" @click="back">
+        <i class="fas text-xl fa-chevron-left"></i>
+        <span class="font-bold text-sm ml-1">Back</span>
+    </button>
+    <div class="flex flex-col items-center justify-center w-full">
         <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations Archive</h1>
         <h2 class="text-xl text-gray-700">
             In this dashboard, you find all operations concerning your account. (Note: Fetching the archive can last several minutes!)
@@ -23,6 +27,7 @@
     import Operation, { ApprovalList } from "@/api/api_models/operations_management/Operation";
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
     import { OperationStatus } from "@/api/api_models/operations_management/OperationState";
+    import Router from "@/use/router/";
 
     export default {
         name: "OperationsArchivePage",
@@ -111,12 +116,17 @@
                 operations.value = mockedOps;
             }
 
+            function back() {
+                Router.go(-1);
+            }
+
             return {
                 username,
                 role,
                 operations,
                 requestData,
                 busy,
+                back,
                 gotArchive,
             };
         },
