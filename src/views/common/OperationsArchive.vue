@@ -4,11 +4,12 @@
         <h2 class="text-xl text-gray-700">
             In this dashboard, you find all operations concerning your account. (Note: Fetching the archive can last several minutes!)
         </h2>
+        <button v-if="!gotArchive" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
     </div>
     <div v-if="busy">
         <loading-spinner />
     </div>
-    <div v-else class="flex flex-col items-center justify-center w-full mt-10">
+    <div v-else-if="gotArchive" class="flex flex-col items-center justify-center w-full mt-10">
         <dashboard-component :operations="operations" :role="role" title="Archived Operations" :username="username" :is-archive="true" />
     </div>
 </template>
@@ -45,6 +46,7 @@
 
         setup() {
             const busy = ref(false);
+            const gotArchive = ref(false);
             const username = ref("");
             const role = ref("");
             const operations = ref([] as Operation[]);
@@ -90,12 +92,12 @@
                 } as Operation,
             ];
 
-            onBeforeMount(async () => {
+            async function requestData() {
                 busy.value = true;
                 await getUserInfo();
                 await getOperationsArchive();
                 busy.value = false;
-            });
+            }
 
             async function getUserInfo() {
                 let store = useStore();
@@ -105,6 +107,7 @@
 
             async function getOperationsArchive() {
                 //TODO API CALL
+                gotArchive.value = true;
                 operations.value = mockedOps;
             }
 
@@ -112,7 +115,9 @@
                 username,
                 role,
                 operations,
+                requestData,
                 busy,
+                gotArchive,
             };
         },
     };
