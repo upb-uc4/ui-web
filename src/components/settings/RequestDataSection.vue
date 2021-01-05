@@ -99,7 +99,7 @@
                     gotTimestamp.value = true;
                     isPending.value = true;
                     timestamp.value = new Date(value).toString();
-                } else if (typeof value === "object") {
+                } else if (typeof value === "object" && Object.keys(value).length != 0) {
                     isPending.value = true;
                     gotData.value = true;
                     gotTimestamp.value = false;
