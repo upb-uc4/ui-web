@@ -14,7 +14,14 @@
         <loading-spinner />
     </div>
     <div v-else-if="gotArchive" class="flex flex-col items-center justify-center w-full mt-10">
-        <dashboard-component :operations="operations" :role="role" title="Archived Operations" :username="username" :is-archive="true" />
+        <dashboard-component
+            class="w-full"
+            :operations="operations"
+            :role="role"
+            title="Archived Operations"
+            :username="username"
+            :is-archive="true"
+        />
     </div>
 </template>
 <script lang="ts">
