@@ -17,13 +17,18 @@
                     </div>
                     <div v-else class="w-full">
                         <div v-if="!isPending">
-                            <button class="btn btn-blue-primary w-48" @click="requestData">Request Data</button>
+                            <button id="requestData" class="btn btn-blue-primary w-48" @click="requestData">Request Data</button>
                         </div>
                         <div v-else>
                             <div v-if="gotTimestamp" class="flex flex-col w-full">
                                 <div class="flex w-full">
-                                    <input disabled class="form-input input-text w-1/4" :value="timestamp" />
-                                    <button class="btn btn-icon-blue ml-8" title="Refresh the requested data" @click="refresh">
+                                    <input id="timestamp" disabled class="form-input input-text w-1/2" :value="timestamp" />
+                                    <button
+                                        id="refreshData"
+                                        class="btn btn-icon-blue ml-8"
+                                        title="Refresh the requested data"
+                                        @click="refresh"
+                                    >
                                         <i class="inline fas fa-redo-alt p-2" />
                                     </button>
                                 </div>
@@ -37,17 +42,13 @@
                                     class="flex flex-col items-center border p-4 rounded-l-lg rounded-b-lg hover:bg-gray-400 cursor-pointer border-gray-500"
                                     title="Download your data"
                                 >
-                                    <a
-                                        id="downloadCertificate"
-                                        class="ml-3 text-sm btn-blue-tertiary"
-                                        :href="dataUrl"
-                                        download="archive.zip"
-                                    >
+                                    <a id="downloadData" class="ml-3 text-sm btn-blue-tertiary" :href="dataUrl" download="archive.zip">
                                         <i class="inline fas fa-file-alt p-2 text-gray-700 text-5xl" />
                                         <p class="text-gray-700">Your data</p>
                                     </a>
                                 </div>
                                 <div
+                                    id="deleteData"
                                     class="border-r border-t border-b border-gray-500 rounded-r-lg h-8 hover:bg-gray-400 cursor-pointer"
                                     title="Delete your requested data locally"
                                     @click="deleteData"
@@ -95,7 +96,6 @@
                 const value = handler.handleResponse(response);
 
                 if (typeof value === "string" && value != "") {
-                    console.log(value);
                     gotTimestamp.value = true;
                     isPending.value = true;
                     timestamp.value = new Date(value).toString();
