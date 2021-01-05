@@ -19,6 +19,7 @@ const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 const StudentImmatricultaion = () => import("@/components/study/Immatriculation.vue");
+const OperationsArchive = () => import("@/views/common/OperationsArchive.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -208,6 +209,15 @@ const router = createRouter({
             component: Settings,
             meta: {
                 title: "Settings" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/operations-archive",
+            name: "operations.archive",
+            component: OperationsArchive,
+            meta: {
+                title: "Operations Archive" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
             },
         },

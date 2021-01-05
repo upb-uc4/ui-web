@@ -1,8 +1,16 @@
 <template>
-    <div class="text-xl text-center font-semibold text-gray-800">{{ title }}</div>
-    <div class="sm:mt-8 flex justify-center">
-        <div class="w-full max-w-4xl">
-            <operation-list :username="username" :role="role" :operations="operations" @marked-read="markRead" />
+    <div class="w-1/2 rounded-lg bg-gray-500 p-10 shadow-2xl" :class="{ 'h-140 overflow-y-auto': !isArchive }">
+        <div class="text-xl text-center font-semibold text-gray-800">{{ title }}</div>
+        <div class="sm:mt-8 flex justify-center">
+            <div class="w-full max-w-4xl">
+                <operation-list
+                    :username="username"
+                    :role="role"
+                    :operations="operations"
+                    :is-archive="isArchive"
+                    @marked-read="markRead"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -31,6 +39,11 @@
             role: {
                 type: String,
                 required: true,
+            },
+            isArchive: {
+                type: Boolean,
+                required: false,
+                default: false,
             },
         },
         emits: ["marked-read"],

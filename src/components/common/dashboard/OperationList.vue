@@ -3,7 +3,13 @@
         <div v-if="operations.length">
             <div v-for="operation in operations" :key="operation.operationId">
                 <div class="mt-2">
-                    <matriculation-operation-component :username="username" :role="role" :operation="operation" @marked-read="markRead" />
+                    <matriculation-operation-component
+                        :username="username"
+                        :role="role"
+                        :operation="operation"
+                        :is-archive="isArchive"
+                        @marked-read="markRead"
+                    />
                 </div>
             </div>
         </div>
@@ -34,6 +40,11 @@
             role: {
                 type: String,
                 required: true,
+            },
+            isArchive: {
+                type: Boolean,
+                required: false,
+                default: false,
             },
         },
         emits: ["marked-read"],

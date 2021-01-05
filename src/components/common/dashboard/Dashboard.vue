@@ -7,23 +7,18 @@
         <div class="flex sm:flex-row flex-col-reverse w-full">
             <seach-bar v-model:message="message" @refresh="refresh" />
         </div>
-        <div class="w-full mt-5 flex justify-between">
-            <div class="w-1/2 rounded-lg bg-gray-500 mr-10 h-140 p-10 overflow-y-auto shadow-2xl">
-                <dashboard-component
-                    :username="username"
-                    :role="role"
-                    :operations="finishedOperations"
-                    title="Finished Operations"
-                    @marked-read="markRead"
-                />
-            </div>
-            <div class="w-1/2 rounded-lg bg-gray-500 ml-10 h-140 p-10 overflow-y-auto shadow-2xl">
-                <dashboard-component :username="username" :role="role" :operations="actionNeededOperations" title="Action Required" />
-            </div>
+        <div class="w-full my-5 flex justify-between">
+            <dashboard-component
+                class="mr-5"
+                :username="username"
+                :role="role"
+                :operations="finishedOperations"
+                title="Finished Operations"
+                @marked-read="markRead"
+            />
+            <dashboard-component :username="username" :role="role" :operations="actionNeededOperations" title="Action Required" />
         </div>
-        <div class="w-1/2 rounded-lg bg-gray-500 h-140 p-10 mt-10 mb-10 overflow-y-auto shadow-2xl">
-            <dashboard-component :username="username" :role="role" :operations="pendingOwnOperations" title="Pending Operations" />
-        </div>
+        <dashboard-component :username="username" :role="role" :operations="pendingOwnOperations" title="Pending Operations" />
     </div>
 </template>
 

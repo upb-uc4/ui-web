@@ -14,7 +14,7 @@
                         <i v-for="index in approvals" :key="index" class="text-sm text-green-400 far fa-check-circle"></i>
                         <i v-for="index in neededApprovals - approvals" :key="index" class="text-sm text-green-400 far fa-circle"></i>
                     </div>
-                    <div class="w-full flex justify-end">
+                    <div v-if="!isArchive" class="w-full flex justify-end">
                         <button class="btn btn-icon-blue text-sm" title="Mark as read" @click="markRead">
                             <i class="fas fa-check"></i>
                         </button>
@@ -117,6 +117,11 @@
             role: {
                 type: String,
                 required: true,
+            },
+            isArchive: {
+                type: Boolean,
+                required: false,
+                default: false,
             },
         },
         emits: ["marked-read"],
