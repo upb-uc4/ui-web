@@ -18,13 +18,13 @@ export default class ReportManagement extends Common {
 
     async getArchive(username: string): Promise<APIResponse<File | string>> {
         return await this._axios
-            .get(`/reports/${username}/result`, {
+            .get(`/reports/${username}/archive`, {
                 responseType: "arraybuffer",
             })
             .then((response: AxiosResponse) => {
                 if (response.status === 200) {
                     let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
-                    const file: File = new File([blob], "image.png", { type: response.headers["content-type"] });
+                    const file: File = new File([blob], "archive.zip", { type: response.headers["content-type"] });
                     return {
                         error: {} as APIError,
                         networkError: false,
@@ -36,7 +36,7 @@ export default class ReportManagement extends Common {
                         error: {} as APIError,
                         networkError: false,
                         statusCode: response.status,
-                        returnValue: response.headers["X-UC4-timestamp"],
+                        returnValue: response.headers["x-uc4-timestamp"],
                     };
                 } else {
                     return Promise.reject("Something went wrong in the archive request.");
@@ -73,7 +73,7 @@ export default class ReportManagement extends Common {
 
     async deleteArchive(username: string): Promise<APIResponse<boolean>> {
         return await this._axios
-            .delete(`/reports/${username}/result`)
+            .delete(`/reports/${username}/archive`)
             .then((response: AxiosResponse) => {
                 return {
                     error: {} as APIError,

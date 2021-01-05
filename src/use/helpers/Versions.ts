@@ -3,6 +3,7 @@ import CertificateManagement from "@/api/CertificateManagement";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
+import ReportManagement from "@/api/ReportManagement";
 import UserManagement from "@/api/UserManagement";
 
 export interface version {
@@ -34,6 +35,8 @@ export async function getVersions(): Promise<version[]> {
 
     const examinationRegulationManagementVersion = await ExaminationRegulationManagement.getVersion();
     const hlfExamRegVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
+
+    const reportManagementVersion = await ReportManagement.getVersion();
 
     versions.push({
         name: "Frontend",
@@ -96,6 +99,15 @@ export async function getVersions(): Promise<version[]> {
             examinationRegulationManagementVersion +
             "/product_code/examreg_service/CHANGELOG.md",
         hlVersions: hlfExamRegVersion,
+    });
+    versions.push({
+        name: "Report Management",
+        version: reportManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "report-" +
+            reportManagementVersion +
+            "/product_code/report_service/CHANGELOG.md",
     });
 
     return versions;
