@@ -76,7 +76,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='requestData']").click();
         cy.get("input[id='timestamp']").should("not.have.value", "");
         //wait for data
-        cy.wait(80000);
+        cy.wait(35000);
     });
 
     it("Refresh to obtain the data", () => {
