@@ -18,6 +18,9 @@ export function showAPIToast(code: number, msg?: string) {
         case 404:
             toast.error("Could not find " + msg + ".");
             break;
+        case 503:
+            toast.error("Service unavailable. Please consider reporting this.");
+            break;
         default:
             toast.error("Something went wrong. Please try again later.");
             break;
