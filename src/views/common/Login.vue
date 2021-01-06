@@ -115,7 +115,6 @@
                 isInputEmpty,
                 login,
                 resetError,
-                restorePassword,
             };
         },
     };
