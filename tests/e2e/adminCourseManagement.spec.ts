@@ -16,8 +16,8 @@ describe("Course creation, edition and deletion", () => {
     let adminAuth: Account;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
-    let newModule: String = "M.1275.01158";
-    let lecturerName = "Lect Urer";
+    let newModule: String = "M.1275.01159";
+    let lecturerName = "Jane Doe";
 
     before(function () {
         cy.clearCookies();

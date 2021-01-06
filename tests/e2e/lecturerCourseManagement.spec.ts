@@ -20,7 +20,7 @@ describe("Course creation, edition and deletion", () => {
 
     let course: Course;
     let lecturerAuth: Account;
-    let newModule: String = "M.1275.01158";
+    let newModule: String = "M.1275.01159";
 
     before(function () {
         cy.clearCookies();
