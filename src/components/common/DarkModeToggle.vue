@@ -40,7 +40,9 @@
             Switch,
         },
         setup() {
-            const isDarkModeEnabled = ref(localStorage.theme === "dark");
+            const isDarkModeEnabled = ref(
+                localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+            );
 
             watch(isDarkModeEnabled, (isDarkModeEnabled) => {
                 if (isDarkModeEnabled) {
