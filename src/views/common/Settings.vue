@@ -10,6 +10,7 @@
         <div>
             <security-section />
             <certificate-section />
+            <request-data-section />
         </div>
     </div>
 </template>
@@ -20,12 +21,14 @@
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import CertificateSection from "@/components/settings/CertificateSection.vue";
+    import RequestDataSection from "@/components/settings/RequestDataSection.vue";
 
     export default {
         name: "Settings",
         components: {
             SecuritySection,
             CertificateSection,
+            RequestDataSection,
         },
 
         async beforeRouteEnter(_from: any, _to: any, next: any) {
