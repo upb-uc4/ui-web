@@ -22,6 +22,7 @@
     import UserManagement from "@/api/UserManagement";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import User_List from "@/api/api_models/user_management/User_List";
 
     export default {
         name: "CourseList",
@@ -87,7 +88,7 @@
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
                 const resp = await userManagement.getUsers(undefined, Array.from(lecturerIds));
-                lecturers.value = genericResponseHandler.handleResponse(resp) as Lecturer[];
+                lecturers.value = (genericResponseHandler.handleResponse(resp) as User_List).lecturers;
             }
 
             async function getAdmittedCourses() {
