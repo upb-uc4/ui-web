@@ -71,12 +71,13 @@
                 let filteredUsers =
                     props.selectedRole == ("All" as Role) ? users.value : users.value.filter((e) => e.role == props.selectedRole);
                 if (props.filter != "") {
-                    let filter = props.filter.toLowerCase();
+                    let filter = props.filter.replace(/\s/g, "").toLowerCase();
                     filteredUsers = filteredUsers.filter(
                         (e) =>
                             e.firstName.toLowerCase().includes(filter) ||
                             e.lastName.toLowerCase().includes(filter) ||
-                            e.username.toLowerCase().includes(filter)
+                            e.username.toLowerCase().includes(filter) ||
+                            `${e.firstName.toLowerCase()}${e.lastName.toLowerCase()}`.includes(filter)
                     );
                 }
                 return filteredUsers;
