@@ -86,8 +86,8 @@
                     courses.value = genericResponseHandler.handleResponse(response);
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
-                const resp = await userManagement.getLecturers(...lecturerIds);
-                lecturers.value = genericResponseHandler.handleResponse(resp);
+                const resp = await userManagement.getUsers(undefined, Array.from(lecturerIds));
+                lecturers.value = genericResponseHandler.handleResponse(resp) as Lecturer[];
             }
 
             async function getAdmittedCourses() {

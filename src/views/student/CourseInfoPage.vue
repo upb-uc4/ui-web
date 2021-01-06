@@ -80,6 +80,7 @@
     import { CourseEntity } from "@/entities/CourseEntity";
     import UserManagement from "@/api/UserManagement";
     import { useStore } from "@/use/store/store";
+    import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -152,11 +153,11 @@
 
             async function getLecturerName() {
                 const userManagement = new UserManagement();
-                const response = await userManagement.getLecturers(course.value.lecturerId);
+                const response = await userManagement.getSpecificUser(course.value.lecturerId);
                 const genericResponseHandler = new GenericResponseHandler("lecturer");
                 const result = genericResponseHandler.handleResponse(response);
                 if (result) {
-                    lecturerName.value = `${result[0].firstName} ${result[0].lastName}`;
+                    lecturerName.value = `${result.firstName} ${result.lastName}`;
                 }
             }
 
