@@ -40,7 +40,7 @@
                                         <i class="inline fas fa-trash-alt p-2" />
                                     </button>
                                 </div>
-                                <p class="text-xs text-gray-600 w-1/4 mt-2">
+                                <p class="text-xs text-gray-600 w-1/2 mt-2">
                                     You have already requested your stored data. It can take up to 5 minutes until the data is ready. You
                                     can hit the refresh button to check if the data is prepared.
                                 </p>
@@ -92,6 +92,7 @@
             let dataUrl = ref("");
 
             async function requestData() {
+                busy.value = true;
                 const username = (await useStore().getters.user).username;
                 const reportManagement = new ReportManagement();
                 const response = await reportManagement.getArchive(username);
@@ -102,8 +103,8 @@
                 if (typeof value === "string" && value != "") {
                     gotTimestamp.value = true;
                     isPending.value = true;
-                    timestamp.value = new Date(value).toString();
-                } else if (typeof value === "object" && Object.keys(value).length != 0) {
+                    timestamp.value = new Date(value).toLocaleString();
+                } else if (typeof value === "object" && value.size != 0) {
                     isPending.value = true;
                     gotData.value = true;
                     gotTimestamp.value = false;
@@ -112,6 +113,7 @@
                     let blob = new Blob([data], { type: "pem" });
                     dataUrl.value = URL.createObjectURL(blob);
                 }
+                busy.value = false;
             }
 
             async function refresh() {
@@ -119,6 +121,7 @@
             }
 
             async function deleteData() {
+                busy.value = true;
                 const username = (await useStore().getters.user).username;
                 const reportManagement = new ReportManagement();
                 const response = await reportManagement.deleteArchive(username);
@@ -132,6 +135,7 @@
                     gotTimestamp.value = false;
                     data = {} as File;
                 }
+                busy.value = false;
             }
 
             return {
