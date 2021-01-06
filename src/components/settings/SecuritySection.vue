@@ -176,8 +176,6 @@
                 if (new GenericResponseHandler("password").handleResponse(response)) {
                     reset();
                     toast.success("Password updated.");
-                } else {
-                    toast.error("Password could not be updated.");
                 }
             }
 
