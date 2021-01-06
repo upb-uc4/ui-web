@@ -25,11 +25,19 @@
                                     <input id="timestamp" disabled class="form-input input-text w-1/2" :value="timestamp" />
                                     <button
                                         id="refreshData"
-                                        class="btn btn-icon-blue ml-8"
+                                        class="btn btn-icon-blue ml-8 w-12"
                                         title="Refresh the requested data"
                                         @click="refresh"
                                     >
                                         <i class="inline fas fa-redo-alt p-2" />
+                                    </button>
+                                    <button
+                                        id="deletePendingData"
+                                        class="btn btn-icon-red ml-2 w-12s"
+                                        title="Delete your request"
+                                        @click="deleteData"
+                                    >
+                                        <i class="inline fas fa-trash-alt p-2" />
                                     </button>
                                 </div>
                                 <p class="text-xs text-gray-600 w-1/4 mt-2">
