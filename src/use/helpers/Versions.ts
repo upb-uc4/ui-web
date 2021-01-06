@@ -1,3 +1,4 @@
+import AdmissionManagement from "@/api/AdmissionManagement";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import CourseManagement from "@/api/CourseManagement";
@@ -37,6 +38,9 @@ export async function getVersions(): Promise<version[]> {
     const hlfExamRegVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
 
     const reportManagementVersion = await ReportManagement.getVersion();
+
+    const admissionsManagementVersion = await AdmissionManagement.getVersion();
+    const hlfAdmissionVersion = await AdmissionManagement.getHyperledgerVersion();
 
     versions.push({
         name: "Frontend",
@@ -108,6 +112,17 @@ export async function getVersions(): Promise<version[]> {
             "report-" +
             reportManagementVersion +
             "/product_code/report_service/CHANGELOG.md",
+    });
+
+    versions.push({
+        name: "Admissions Management",
+        version: admissionsManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "admission-" +
+            admissionsManagementVersion +
+            "/product_code/admission_service/CHANGELOG.md",
+        hlVersions: hlfAdmissionVersion,
     });
 
     return versions;

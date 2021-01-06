@@ -4,6 +4,7 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import AdmissionManagement from "@/api/AdmissionManagement";
 import ReportManagement from "@/api/ReportManagement";
 
 jest.useFakeTimers();
@@ -61,4 +62,14 @@ test("report service version", async () => {
     const version = await ReportManagement.getVersion();
 
     expect(version).not.toEqual("unavailable");
+});
+
+test("admission service version", async () => {
+    const version = await AdmissionManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+
+    const hyperledgerVersion = await AdmissionManagement.getHyperledgerVersion();
+    expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
+    expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
 });
