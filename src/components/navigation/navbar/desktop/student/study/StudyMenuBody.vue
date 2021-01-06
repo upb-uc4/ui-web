@@ -4,7 +4,7 @@
             <li class="">
                 <menu-item
                     id="nav_desktop_student_menu_study_immatriculation"
-                    title="Immatrictulation"
+                    title="Immatriculation"
                     description="Detailed Status Report"
                     icon-class="fas fa-clipboard-list"
                     target-route-name="student.immatriculation"
