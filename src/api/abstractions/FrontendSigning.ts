@@ -75,7 +75,6 @@ async function abstractHandler(
     const privateKey = await useStore()
         .getters.privateKey()
         .catch(() => {
-            console.log("a");
             return undefined;
         });
 
@@ -84,7 +83,6 @@ async function abstractHandler(
     const certificate = await useStore()
         .getters.certificate()
         .catch(() => {
-            console.log("b");
             return undefined;
         });
 
