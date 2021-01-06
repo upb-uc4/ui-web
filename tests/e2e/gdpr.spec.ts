@@ -72,6 +72,14 @@ describe("Account creation, edition and deletion", function () {
         navigateToSettingsPage();
     });
 
+    it("Discarding data request works", () => {
+        cy.get("button[id='requestData']").click();
+        cy.get("button[id='refreshRequest']").should("exist");
+        cy.get("button[id='deletePendingRequest']").click();
+        cy.get("input[id='timestamp']").should("not.exist");
+        cy.get("button[id='refreshRequest']").should("not.exist");
+    });
+
     it("Request data", () => {
         cy.get("button[id='requestData']").click();
         cy.get("input[id='timestamp']").should("not.have.value", "");
@@ -80,12 +88,8 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Refresh to obtain the data", () => {
-        cy.get("button[id='refreshData']").click();
-        cy.get("button[id='downloadData']").should("exist");
-    });
-
-    it("Download data", () => {
-        cy.get("a[id='downloadData']");
+        cy.get("button[id='refreshRequest']").click();
+        cy.get("a[id='downloadData']").should("exist");
     });
 
     it("Delete the data", () => {
