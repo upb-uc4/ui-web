@@ -4,6 +4,7 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import ReportManagement from "@/api/ReportManagement";
 
 jest.useFakeTimers();
 jest.setTimeout(30000);
@@ -54,4 +55,10 @@ test("exam regulations service version", async () => {
     const hyperledgerVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
     expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
     expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
+});
+
+test("report service version", async () => {
+    const version = await ReportManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
 });
