@@ -56,7 +56,7 @@
 
             watch([selectedDay, selectedMonth, selectedYear], ([day, month, year]) => {
                 emit("update:birthDate", `${selectedYear.value}-${selectedMonthAsNumber.value}-${selectedDay.value}`);
-            }
+            });
 
             return {
                 days,
