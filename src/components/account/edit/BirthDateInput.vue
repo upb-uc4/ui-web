@@ -55,11 +55,6 @@
             }
 
             watch([selectedDay, selectedMonth, selectedYear], ([day, month, year]) => {
-                emitBirthdate();
-            });
-
-            function emitBirthdate() {
-                console.log(selectedDay.value, selectedMonthAsNumber.value, selectedYear.value);
                 emit("update:birthDate", `${selectedYear.value}-${selectedMonthAsNumber.value}-${selectedDay.value}`);
             }
 
