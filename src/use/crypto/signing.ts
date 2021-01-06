@@ -3,6 +3,7 @@ import { ec } from "elliptic";
 import BN from "bn.js";
 const Signature = require("elliptic/lib/elliptic/ec/signature.js");
 import * as asn1js from "asn1js";
+import { ProposalResponsePayload } from "@/api/api_models/common/Transaction";
 
 // map for easy lookup of the "N/2" and "N" value per elliptic curve
 const p256ec = new ec("p256");
@@ -85,9 +86,9 @@ export function _checkMalleability(signature: { r: Uint8Array; s: Uint8Array }, 
     return true;
 }
 
-export async function signProposal(base64Proposal: string, privateKey: CryptoKey) {
+export async function signProtobuf(base64Protobuf: string, privateKey: CryptoKey) {
     const crypto = window.crypto.subtle;
-    const proposal = base64ToArrayBuffer(base64Proposal);
+    const proposal = base64ToArrayBuffer(base64Protobuf);
 
     const signature = await crypto.sign(signingAlgorithm, privateKey, proposal);
 
@@ -102,13 +103,13 @@ export async function signProposal(base64Proposal: string, privateKey: CryptoKey
 }
 
 /**
- * Verify the proposal signature
- * @param proposal base64 encoded proposal protobuf
+ * Verify the protobuf signature
+ * @param proposal base64 encoded protobuf
  * @param signature base64 encoded DER representation of r and s parameter of signature
  */
-export async function verifyProposalSignature(proposal: string, signature: string, publicKey: CryptoKey) {
+export async function verifyProtobufSignature(protobuf: string, signature: string, publicKey: CryptoKey) {
     const crypto = window.crypto.subtle;
-    const digest = await crypto.digest("SHA-256", base64ToArrayBuffer(proposal));
+    const digest = await crypto.digest("SHA-256", base64ToArrayBuffer(protobuf));
     const exportedPublicKey = Buffer.from(await crypto.exportKey("raw", publicKey));
 
     const berObject = (asn1js.fromBER(base64ToArrayBuffer(signature)).result.toJSON() as any).valueBlock.value;
@@ -119,6 +120,31 @@ export async function verifyProposalSignature(proposal: string, signature: strin
     const sig = { r, s };
 
     return _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
+}
+
+export async function verifyProposalResponsePayloadSignature(
+    rawProposalResponsePayload: ArrayBuffer,
+    signature: string,
+    publicKey: CryptoKey
+) {
+    // TODO implement this as soon as
+    // (1) we can fetch the root ca certificate directly from our chain
+    // (2) we know what peers are doing exactly when signing
+
+    // const crypto = window.crypto.subtle;
+    // const digest = await crypto.digest("SHA-256", rawProposalResponsePayload);
+    // const exportedPublicKey = Buffer.from(await crypto.exportKey("raw", publicKey));
+
+    // const berObject = (asn1js.fromBER(base64ToArrayBuffer(signature)).result.toJSON() as any).valueBlock.value;
+
+    // const r = fromHexString(berObject[0].valueBlock.valueHex);
+    // const s = fromHexString(berObject[1].valueBlock.valueHex);
+
+    // const sig = { r, s };
+
+    // return _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
+
+    return true;
 }
 
 export function fromHexString(hexString: string) {

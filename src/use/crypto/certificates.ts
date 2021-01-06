@@ -1,6 +1,7 @@
 import * as asn1js from "asn1js";
 import Attribute from "pkijs/src/Attribute";
 import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
+import Certificate from "pkijs/src/Certificate";
 import CertificationRequest from "pkijs/src/CertificationRequest";
 import { getCrypto } from "pkijs/src/common";
 import Extension from "pkijs/src/Extension";
@@ -260,4 +261,19 @@ export function arrayBufferToBase64(buf: ArrayBuffer): string {
 
 export function base64ToArrayBuffer(str: string): ArrayBuffer {
     return stringToArrayBuffer(atob(str));
+}
+
+export async function getPublicKeyFromCertificate(certificate: string): Promise<CryptoKey> {
+    const beginString = "-----BEGIN CERTIFICATE-----";
+    const endString = "-----END CERTIFICATE-----";
+
+    let cert: string = certificate;
+    cert = cert.replace(beginString, "");
+    cert = cert.replace(endString, "");
+    cert = cert.replace(/(\r\n|\n|\r|\t)/gm, "").trim();
+
+    const asn1 = asn1js.fromBER(stringToArrayBuffer(fromBase64(cert)));
+
+    const pkijsCertificate = new Certificate({ schema: asn1.result });
+    return await pkijsCertificate.getPublicKey();
 }

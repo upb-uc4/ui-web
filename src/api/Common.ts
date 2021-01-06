@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 
 export default class Common {
+    protected static endpoint = "";
     _axios: AxiosInstance;
 
     constructor(endpoint: string) {
@@ -16,9 +17,9 @@ export default class Common {
         this._axios = instance;
     }
 
-    static async getVersion(endpoint: string): Promise<string> {
+    static async getVersion(): Promise<string> {
         const instance = axios.create({
-            baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
+            baseURL: process.env.VUE_APP_API_BASE_URL + this.endpoint,
             headers: {
                 "Accept": "*/*",
                 "Content-Type": "application/json;charset=UTF-8",
@@ -28,7 +29,7 @@ export default class Common {
         return await instance
             .get(`/version`)
             .then((response: AxiosResponse) => {
-                return response.data.versionNumber;
+                return response.data.serviceVersion ? response.data.serviceVersion : "endpoint broken";
             })
             .catch((error: AxiosError) => {
                 return "unavailable";

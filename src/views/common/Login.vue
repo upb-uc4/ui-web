@@ -18,7 +18,7 @@
                             id="email"
                             v-model="email"
                             type="text"
-                            :class="[hasError ? 'border-red-500' : 'border-gray-300']"
+                            :class="[hasError ? 'error' : 'border-gray-300']"
                             class="appearance-none rounded-lg block w-full px-3 py-3 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                             placeholder=""
                             @input="resetError"
@@ -35,7 +35,7 @@
                             id="password"
                             v-model="password"
                             :type="passwordFieldType"
-                            :class="[hasError ? 'border-red-500' : 'border-gray-300']"
+                            :class="[hasError ? 'error' : 'border-gray-300']"
                             class="appearance-none rounded-lg block w-full px-3 py-3 pr-12 border-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                             placeholder=""
                             @input="resetError"
@@ -43,27 +43,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input
-                            id="remember_me"
-                            type="checkbox"
-                            class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out"
-                        />
-                        <label for="remember_me" class="ml-2 block text-sm leading-5 text-gray-900"> Remember me </label>
-                    </div>
-
-                    <div class="text-sm leading-5">
-                        <a
-                            class="cursor-pointer font-medium text-blue-600 hover:text-blue-700 focus:outline-none focus:underline transition ease-in-out duration-150"
-                            @click="restorePassword"
-                        >
-                            Forgot your password?
-                        </a>
-                    </div>
-                </div>
-
-                <div class="mt-6">
+                <div class="mt-10">
                     <button
                         id="login"
                         :disabled="isInputEmpty"
@@ -83,8 +63,6 @@
     import { computed, ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
-    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
-
     export default {
         components: {},
         props: [],
@@ -124,10 +102,6 @@
                 hasError.value = false;
             }
 
-            function restorePassword() {
-                showNotYetImplementedToast();
-            }
-
             return {
                 email,
                 password,
@@ -139,7 +113,6 @@
                 isInputEmpty,
                 login,
                 resetError,
-                restorePassword,
             };
         },
     };

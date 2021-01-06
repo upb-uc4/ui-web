@@ -16,7 +16,6 @@
 
 <script lang="ts">
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
-    import { FieldOfStudy } from "@/api/api_models/user_management/FieldOfStudy";
 
     export default {
         name: "ImmatriculationHistoryEntry",

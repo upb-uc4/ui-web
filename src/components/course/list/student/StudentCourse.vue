@@ -17,8 +17,8 @@
                 </div>
             </div>
 
-            <div class="flex">
-                <div class="flex flex-col items-start w-2/3 lg:w-5/6">
+            <div class="flex flex-wrap mb-4">
+                <div class="flex flex-col items-start w-2/3 md:w-5/6">
                     <div id="courseName" class="mt-2 text-2xl font-semibold leading-tight text-gray-900">
                         {{ course.courseName }}
                     </div>
@@ -51,6 +51,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="w-full md:w-1/6 mt-6 sm:mt-1">
+                    <button id="joinCourse" class="w-full py-2 btn btn-blue-primary" :disabled="isCourseFull">Join</button>
+                    <p v-if="isCourseFull" class="font-semibold text-red-700">This course is already full.</p>
                 </div>
             </div>
         </div>

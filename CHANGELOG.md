@@ -1,10 +1,40 @@
-# [v0.13.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-XX-XX)
+# [WIP 0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.15.0...v0.15.1) (2021-XX-XX)
+## Feature
+- add ability to fetch all information according to gdpr [#776](https://github.com/upb-uc4/ui-web/pull/776)
+- add course admission API [#774](https://github.com/upb-uc4/ui-web/pull/774)
+- add possibility to delete the own account according to gdpr [#765](https://github.com/upb-uc4/ui-web/pull/765)
+
+
+# [0.15.0](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-12-18)
+## Feature
+- add hyperledger versions [#754](https://github.com/upb-uc4/ui-web/pull/754)
+- add frontened signing for matriculation use case [#749](https://github.com/upb-uc4/ui-web/pull/749)
+
+## Bugfix
+- enable searching for accounts/courses with whitespaces [#767](https://github.com/upb-uc4/ui-web/pull/767)
+
+
+# [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (2020-12-08)
+## Feature
+- matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
+- Add create exam regulation form [#690](https://github.com/upb-uc4/ui-web/pull/690)
+
+## Bugfix
+- refactor course list items [#715](https://github.com/upb-uc4/ui-web/pull/715)
+
+# [v0.13.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.1-hotfix.1) (2020-11-27)
+## Bugfix
+- hide create course button in course catalogue [#747](https://github.com/upb-uc4/ui-web/pull/747)
+
+# [v0.13.1](https://github.com/upb-uc4/ui-web/compare/v0.13.0...v0.13.1) (2020-11-26)
 
 ## Feature
 - added governmentId to user creation [#701](https://github.com/upb-uc4/ui-web/pull/701)
+- add soft deletion of users [#702](https://github.com/upb-uc4/ui-web/pull/702), [#704](https://github.com/upb-uc4/ui-web/pull/704)
 
 ## Refactoring
 - Merge endpoints for user creation [#700](https://github.com/upb-uc4/ui-web/pull/700)
+- Remove unused components [#739](https://github.com/upb-uc4/ui-web/pull/739)
 
 ## Bugfix
 - add ECTS field to course form [#738](https://github.com/upb-uc4/ui-web/pull/738)
@@ -22,6 +52,7 @@
 - add a message for the student if not immatriculated to any semester yet [#692](https://github.com/upb-uc4/ui-web/pull/692)
 - Replace deprecated suspense wrapper by onBeforeMount hooks and a "busy" variable [#714](https://github.com/upb-uc4/ui-web/pull/714)
 - restyle login page [#698](https://github.com/upb-uc4/ui-web/issues/698)
+
 
 ## Bugfix
 - fix mobile view of login page [#698](https://github.com/upb-uc4/ui-web/issues/698)

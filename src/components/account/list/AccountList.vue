@@ -34,6 +34,10 @@
                 type: String,
                 required: true,
             },
+            showInactive: {
+                type: Boolean,
+                required: true,
+            },
         },
         setup(props: any) {
             let busy = ref(false);
@@ -43,12 +47,21 @@
                 await getUsers();
             });
 
+            watch(
+                () => props.showInactive,
+                () => {
+                    getUsers();
+                }
+            );
+
             async function getUsers() {
                 busy.value = true;
                 const userManagement: UserManagement = new UserManagement();
 
                 const genericResponseHandler = new GenericResponseHandler("users");
-                const response = await userManagement.getAllUsers();
+                const response = props.showInactive
+                    ? await userManagement.getUsers()
+                    : await userManagement.getUsers(undefined, undefined, true);
                 const userLists = genericResponseHandler.handleResponse(response);
                 users.value = Object.values(userLists).flat();
                 busy.value = false;
@@ -58,12 +71,13 @@
                 let filteredUsers =
                     props.selectedRole == ("All" as Role) ? users.value : users.value.filter((e) => e.role == props.selectedRole);
                 if (props.filter != "") {
-                    let filter = props.filter.toLowerCase();
+                    let filter = props.filter.replace(/\s/g, "").toLowerCase();
                     filteredUsers = filteredUsers.filter(
                         (e) =>
                             e.firstName.toLowerCase().includes(filter) ||
                             e.lastName.toLowerCase().includes(filter) ||
-                            e.username.toLowerCase().includes(filter)
+                            e.username.toLowerCase().includes(filter) ||
+                            `${e.firstName.toLowerCase()}${e.lastName.toLowerCase()}`.includes(filter)
                     );
                 }
                 return filteredUsers;
