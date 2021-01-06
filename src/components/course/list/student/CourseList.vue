@@ -23,6 +23,7 @@
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import User_List from "@/api/api_models/user_management/User_List";
+    import AdmissionManagement from "@/api/AdmissionManagement";
 
     export default {
         name: "CourseList",
@@ -56,7 +57,7 @@
                 {
                     admissionId: "123456:TestCourse Registered",
                     enrollmentId: "1234567",
-                    courseId: "63dbfc60-4db6-11eb-8bcd-07817667ebb2",
+                    courseId: "d746ec56-502a-11eb-8074-f96ffb2ff151",
                     moduleId: "M.1275.78235",
                     timestamp: "something",
                 },
@@ -64,10 +65,16 @@
 
             onBeforeMount(async () => {
                 busy.value = true;
+                await getUsername();
                 await getAdmittedCourses();
                 await getCourses();
                 busy.value = false;
             });
+
+            async function getUsername() {
+                const store = useStore();
+                username.value = (await store.getters.user).username;
+            }
             async function getCourses() {
                 const genericResponseHandler = new GenericResponseHandler("courses");
                 const courseManagement: CourseManagement = new CourseManagement();
@@ -92,8 +99,13 @@
             }
 
             async function getAdmittedCourses() {
-                //TODO API CALL & REMOVE MOCKDATA
-                admittedCourses.value = mockAdmitted;
+                const admissionManagement = new AdmissionManagement();
+                const handler = new GenericResponseHandler("admitted courses");
+                const resp = await admissionManagement.getCourseAdmissions(username.value);
+                const result = handler.handleResponse(resp);
+                if (Object.keys(result).length > 0) {
+                    admittedCourses.value = result;
+                }
             }
 
             function findLecturer(course: Course) {

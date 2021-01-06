@@ -1,5 +1,5 @@
 <template>
-    <div v-if="busy" class="flex h-screen">
+    <div v-if="busy > 0" class="flex h-screen">
         <div class="m-auto">
             <loading-component />
         </div>
@@ -48,7 +48,7 @@
                 <div class="sm:hidden">
                     <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
                     <button
-                        v-if="!isRegistered"
+                        v-if="!admitted"
                         id="mobileJoinCourse"
                         :disabled="!valid"
                         type="button"
@@ -81,6 +81,10 @@
     import UserManagement from "@/api/UserManagement";
     import { useStore } from "@/use/store/store";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import AdmissionManagement from "@/api/AdmissionManagement";
+    import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
+    import { addCourseAdmission, dropCourseAdmission } from "@/api/abstractions/FrontendSigning";
+    import CertificateManagement from "@/api/CertificateManagement";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -100,7 +104,7 @@
         emits: [],
 
         setup(props: any, { emit }: any) {
-            let busy = ref(false);
+            let busy = ref(0);
             const errorBag = ref(new ErrorBag());
             const toast = useToast();
             const course = ref({} as Course);
@@ -108,22 +112,22 @@
             const selectedModule = ref("");
             const isFull = ref(false);
             const admission = ref();
+            const admitted = ref(props.isRegistered);
 
-            let mockAdmitted = {
-                admissionId: "123456:TestCourse Registered",
-                enrollmentId: "1234567",
-                courseId: "20c84312-2fea-11eb-b10d-b546652c1263",
-                moduleId: "M.1275.78235",
-                timestamp: "something",
-            };
+            const store = useStore();
+            const username = ref("");
+            const enrollmentId = ref("");
+
             onBeforeMount(async () => {
-                busy.value = true;
+                busy.value++;
+                username.value = (await store.getters.user).username;
+                await getEnrollmentID();
                 await getCourse();
                 await getLecturerName();
-                if (props.isRegistered) {
+                if (admitted.value) {
                     await getAdmission();
                 }
-                busy.value = false;
+                busy.value--;
             });
 
             let valid = computed(() => {
@@ -134,12 +138,20 @@
             });
 
             async function getAdmission() {
-                //TODO get Admission via courseID and username
-                admission.value = mockAdmitted;
-                selectedModule.value = admission.value.moduleId;
+                busy.value++;
+                const admissionManagement = new AdmissionManagement();
+                const handler = new GenericResponseHandler("admission");
+                const resp = await admissionManagement.getCourseAdmissions(username.value, course.value.courseId);
+                const result = handler.handleResponse(resp);
+                if (result) {
+                    admission.value = result[0];
+                    selectedModule.value = admission.value.moduleId;
+                }
+                busy.value--;
             }
 
             async function getCourse() {
+                busy.value++;
                 const courseManagement = new CourseManagement();
                 const response = await courseManagement.getCourse(Router.currentRoute.value.params.courseId as string);
                 const genericResponseHandler = new GenericResponseHandler("course");
@@ -149,9 +161,11 @@
                     course.value = new CourseEntity(result);
                     isFull.value = course.value.currentParticipants == course.value.maxParticipants;
                 }
+                busy.value--;
             }
 
             async function getLecturerName() {
+                busy.value++;
                 const userManagement = new UserManagement();
                 const response = await userManagement.getSpecificUser(course.value.lecturerId);
                 const genericResponseHandler = new GenericResponseHandler("lecturer");
@@ -159,18 +173,55 @@
                 if (result) {
                     lecturerName.value = `${result.firstName} ${result.lastName}`;
                 }
+                busy.value--;
+            }
+
+            async function getEnrollmentID() {
+                busy.value++;
+                const certificateManagement = new CertificateManagement();
+                const genericResponseHandler = new GenericResponseHandler("enrollment id");
+
+                const resp = await certificateManagement.getOwnEnrollmentId();
+                const result = genericResponseHandler.handleResponse(resp);
+                if (result) {
+                    enrollmentId.value = result.id;
+                }
+                busy.value--;
             }
 
             async function joinCourse() {
-                //TODO API CALL (INCLUDE MODULE
+                busy.value++;
+                const newAdmission: CourseAdmission = {
+                    admissionId: "",
+                    enrollmentId: "",
+                    courseId: course.value.courseId,
+                    moduleId: selectedModule.value,
+                    timestamp: "",
+                };
+                const result = await addCourseAdmission(enrollmentId.value, newAdmission);
+                if (result) {
+                    const toast = useToast();
+                    toast.success(`Successfully admitted for course ${course.value.courseName}`);
+                    Router.push({ name: "student.course.drop", params: { courseId: course.value.courseId } });
+                }
+                busy.value--;
             }
 
             async function dropCourse() {
-                //TODO API CALL
+                busy.value++;
+                const result = await dropCourseAdmission(admission.value.admissionId);
+                if (result) {
+                    admission.value = {} as CourseAdmission;
+                    admitted.value = false;
+                    const toast = useToast();
+                    toast.success(`Successfully dropped course ${course.value.courseName}`);
+                    back();
+                }
+                busy.value--;
             }
 
             function back() {
-                Router.go(-1);
+                Router.push("/courses");
             }
 
             return {
@@ -184,6 +235,7 @@
                 valid,
                 joinCourse,
                 dropCourse,
+                admitted,
             };
         },
     };
