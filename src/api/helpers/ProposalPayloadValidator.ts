@@ -6,8 +6,6 @@ import { ProposalPayload } from "../api_models/common/Proposal";
 import { isEqual } from "lodash";
 import { UC4Identifier } from "./UC4Identifier";
 import CourseAdmission from "../api_models/admission_management/CourseAdmission";
-import CertificateManagement from "../CertificateManagement";
-import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 
 export function validateMatriculationProposal(
     proposalPayload: ProposalPayload,
@@ -79,9 +77,8 @@ export function validateCourseAdmissionProposal(
         if (paramsArray.length > 1) return false;
 
         let result = proposalAdmission.courseId === courseAdmission.courseId;
-        result = result && proposalAdmission.moduleId === proposalAdmission.moduleId;
+        result = result && proposalAdmission.moduleId === courseAdmission.moduleId;
         result = result && proposalAdmission.enrollmentId === enrollmentId;
-
         return result;
     }
 

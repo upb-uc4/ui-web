@@ -63,7 +63,7 @@ export async function updateMatriculation(
     );
 }
 
-export async function addCourseAdmission(addAdmission: CourseAdmission, protoUrl?: string) {
+export async function addCourseAdmission(enrollmentId: string, addAdmission: CourseAdmission, protoUrl?: string) {
     const genericHandler = new GenericResponseHandler("add admission");
 
     const genericHandler2 = new GenericResponseHandler("transaction");
@@ -78,7 +78,7 @@ export async function addCourseAdmission(addAdmission: CourseAdmission, protoUrl
             return genericHandler.handleResponse(arg);
         },
         async (payload: ProposalPayload) => {
-            return await validateCourseAdmissionProposal(payload, undefined, addAdmission);
+            return validateCourseAdmissionProposal(payload, undefined, addAdmission, enrollmentId);
         },
         async (message: SignedProposalMessage) => {
             return await admissionManagement.submitSignedAdmissionsProposal(message);
@@ -87,7 +87,7 @@ export async function addCourseAdmission(addAdmission: CourseAdmission, protoUrl
             return genericHandler2.handleResponse(response);
         },
         (transaction: TransactionMessage) => {
-            return admissionsTransactionValidator(transaction, undefined, addAdmission);
+            return admissionsTransactionValidator(transaction, undefined, addAdmission, enrollmentId);
         },
         async (message: SignedTransactionMessage) => {
             return await admissionManagement.submitSignedAdmissionsTransaction(message);
@@ -149,7 +149,6 @@ async function abstractHandler(
     const privateKey = await useStore()
         .getters.privateKey()
         .catch(() => {
-            console.log("a");
             return undefined;
         });
 
@@ -158,7 +157,6 @@ async function abstractHandler(
     const certificate = await useStore()
         .getters.certificate()
         .catch(() => {
-            console.log("b");
             return undefined;
         });
 

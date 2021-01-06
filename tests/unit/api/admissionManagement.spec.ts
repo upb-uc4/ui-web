@@ -5,14 +5,24 @@ import AdmissionManagement from "@/api/AdmissionManagement";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
 import { readFileSync } from "fs";
-import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
-import { getRandomizedUserAndAuthUser } from "tests/helper/Users";
-import UnsignedProposalMessage from "@/api/api_models/common/UnsignedProposalMessage";
-import { arrayBufferToBase64, createCSR, createKeyPair, deriveKeyFromPassword, wrapKey } from "@/use/crypto/certificates";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
+import {
+    arrayBufferToBase64,
+    base64ToArrayBuffer,
+    createCSR,
+    createKeyPair,
+    deriveKeyFromPassword,
+    unwrapKey,
+    wrapKey,
+} from "@/use/crypto/certificates";
 import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 import CourseManagement from "@/api/CourseManagement";
-import { getRandomizedCourse } from "tests/helper/Courses";
+import { getRandomizedCourse } from "../../helper/Courses";
 import { addCourseAdmission, dropCourseAdmission, updateMatriculation } from "@/api/abstractions/FrontendSigning";
+import { useStore } from "@/use/store/store";
+import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
+import { MutationTypes } from "@/use/store/mutation-types";
 
 let userManagement: UserManagement;
 let certManagement: CertificateManagement;
@@ -32,12 +42,17 @@ const course = getRandomizedCourse();
 const protoURL = "public/hlf-proto.json";
 const EXAM_REG_1 = "Bachelor Computer Science v3";
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("Admissions management", () => {
     beforeAll(async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         userManagement = new UserManagement();
+
+        useStore().commit(MutationTypes.SET_DECRYPT_PRIVATE_KEY_MODAL, async (encKey: EncryptedPrivateKey) => {
+            const wrappingKey = await deriveKeyFromPassword(encryptionPassword, encKey.salt);
+            return await unwrapKey(base64ToArrayBuffer(encKey.key), wrappingKey.key, base64ToArrayBuffer(encKey.iv));
+        });
 
         expect(success.returnValue.login).not.toEqual("");
     });
@@ -57,6 +72,7 @@ describe("Admissions management", () => {
     });
 
     test("Fetch course id of course", async () => {
+        await new Promise((r) => setTimeout(r, 3000));
         const courseManagement = new CourseManagement();
         const response = await courseManagement.getCourses(course.courseName);
         expect(response.statusCode).toBe(200);
@@ -111,12 +127,12 @@ describe("Admissions management", () => {
         const admission: CourseAdmission = {
             admissionId: "",
             courseId,
-            enrollmentId,
+            enrollmentId: "",
             moduleId,
             timestamp: "",
         };
 
-        const result = await addCourseAdmission(admission, protoURL);
+        const result = await addCourseAdmission(enrollmentId, admission, protoURL);
 
         expect(result).toBe(true);
     });
@@ -126,9 +142,9 @@ describe("Admissions management", () => {
         expect(response.statusCode).toBe(200);
         expect(response.returnValue.length).toEqual(1);
 
-        expect(response.returnValue[0].courseId).toEqual(courseAdmission.courseId);
-        expect(response.returnValue[0].enrollmentId).toEqual(courseAdmission.enrollmentId);
-        expect(response.returnValue[0].moduleId).toEqual(courseAdmission.moduleId);
+        expect(response.returnValue[0].courseId).toEqual(courseId);
+        expect(response.returnValue[0].enrollmentId).toEqual(enrollmentId);
+        expect(response.returnValue[0].moduleId).toEqual(moduleId);
 
         courseAdmission = response.returnValue[0];
     });
@@ -151,8 +167,8 @@ describe("Admissions management", () => {
         userManagement = new UserManagement();
         const courseManagement = new CourseManagement();
 
-        const success = await userManagement.deleteUser(student.username);
-        const success2 = await courseManagement.deleteCourse(course.courseId);
+        const success = await userManagement.forceDeleteUser(student.username);
+        const success2 = await courseManagement.deleteCourse(courseId);
 
         expect(success.returnValue).toBe(true);
         expect(success2.returnValue).toBe(true);
