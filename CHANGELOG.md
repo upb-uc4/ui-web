@@ -1,4 +1,17 @@
-# [v0.13.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.13.2) (2020-XX-XX)
+# [WIP 0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.15.0...v0.15.1) (2021-XX-XX)
+## Feature
+- add ability to fetch all information according to gdpr [#776](https://github.com/upb-uc4/ui-web/pull/776)
+- add course admission API [#774](https://github.com/upb-uc4/ui-web/pull/774)
+# [0.15.0](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-12-18)
+## Feature
+- add hyperledger versions [#754](https://github.com/upb-uc4/ui-web/pull/754)
+- add frontened signing for matriculation use case [#749](https://github.com/upb-uc4/ui-web/pull/749)
+
+## Bugfix
+- enable searching for accounts/courses with whitespaces [#767](https://github.com/upb-uc4/ui-web/pull/767)
+
+
+# [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (2020-12-08)
 ## Feature
 - matriculation using examination regulations [#745](https://github.com/upb-uc4/ui-web/pull/745)
 - Add create exam regulation form [#690](https://github.com/upb-uc4/ui-web/pull/690)

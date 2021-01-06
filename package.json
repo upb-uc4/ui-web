@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.13.1-hotfix.1",
+    "version": "0.15.0",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -82,7 +82,7 @@
         "babel-eslint": "^10.1.0",
         "babel-plugin-istanbul": "^6.0.0",
         "cross-conf-env": "^1.2.1",
-        "cypress": "^5.6.0",
+        "cypress": "^6.0.0",
         "cypress-file-upload": "^4.1.1",
         "cypress-plugin-snapshots": "^1.4.4",
         "dotenv": "^8.2.0",

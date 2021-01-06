@@ -16,7 +16,9 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
             return response.returnValue;
         }
         switch (response.statusCode) {
-            case 400: {
+            case 400:
+            case 500:
+            case 503: {
                 showAPIToast(response.statusCode);
                 return response.returnValue;
             }
@@ -30,10 +32,6 @@ export default class GenericResponseHandler implements ResponseHandler<boolean> 
             }
             case 404: {
                 showAPIToast(response.statusCode, this.dataType);
-                return response.returnValue;
-            }
-            case 500: {
-                showAPIToast(response.statusCode);
                 return response.returnValue;
             }
             case 200: {

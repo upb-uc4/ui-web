@@ -45,3 +45,7 @@ export function navigateToPrivateProfile() {
 export function navigateToAboutPage() {
     cy.visit("about");
 }
+
+export function navigateToImmatriculationPage() {
+    cy.visit("immatriculation");
+}
