@@ -1,5 +1,5 @@
 <template>
-    <section class="border-t-2 py-8 mt-5 border-red-700">
+    <section class="border-t-2 py-8 border-red-700">
         <div class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <div class="flex mb-2 align-baseline">

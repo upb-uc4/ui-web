@@ -10,7 +10,9 @@
         <div>
             <security-section />
             <certificate-section />
-            <delete-account-section />
+            <div class="mt-48">
+                <delete-account-section />
+            </div>
         </div>
     </div>
 </template>
