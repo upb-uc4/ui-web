@@ -49,6 +49,7 @@ describe("Account creation, edition and deletion", function () {
             })
             .then(async () => {
                 await createUsers(usersWithAuth);
+                await new Promise((r) => setTimeout(r, 6000));
             })
             .then(() => {
                 console.log("Setup finished");
@@ -84,7 +85,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='requestData']").click();
         cy.get("input[id='timestamp']").should("not.have.value", "");
         //wait for data
-        cy.wait(35000);
+        cy.wait(60000);
     });
 
     it("Refresh to obtain the data", () => {
