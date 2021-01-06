@@ -4,7 +4,6 @@ import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import UserManagement from "@/api/UserManagement";
-import { onBeforeMount } from "vue";
 import axios, { AxiosResponse } from "axios";
 
 export interface version {
