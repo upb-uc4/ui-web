@@ -1,9 +1,11 @@
+import AdmissionManagement from "@/api/AdmissionManagement";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import ConfigurationManagement from "@/api/ConfigurationManagement";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
+import ReportManagement from "@/api/ReportManagement";
 import UserManagement from "@/api/UserManagement";
 
 export interface version {
@@ -38,6 +40,11 @@ export async function getVersions(): Promise<version[]> {
 
     const examinationRegulationManagementVersion = await ExaminationRegulationManagement.getVersion();
     const hlfExamRegVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
+
+    const reportManagementVersion = await ReportManagement.getVersion();
+
+    const admissionsManagementVersion = await AdmissionManagement.getVersion();
+    const hlfAdmissionVersion = await AdmissionManagement.getHyperledgerVersion();
 
     versions.push({
         name: "Frontend",
@@ -107,6 +114,15 @@ export async function getVersions(): Promise<version[]> {
         hlVersions: hlfExamRegVersion,
     });
     versions.push({
+        name: "Report Management",
+        version: reportManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "report-" +
+            reportManagementVersion +
+            "/product_code/report_service/CHANGELOG.md",
+    });
+    versions.push({
         name: "Configuration Management",
         version: configurationManagementVersion,
         link:
@@ -114,6 +130,17 @@ export async function getVersions(): Promise<version[]> {
             "configuration-" +
             configurationManagementVersion +
             "/product_code/configuration_service/CHANGELOG.md",
+    });
+
+    versions.push({
+        name: "Admissions Management",
+        version: admissionsManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "admission-" +
+            admissionsManagementVersion +
+            "/product_code/admission_service/CHANGELOG.md",
+        hlVersions: hlfAdmissionVersion,
     });
 
     return versions;
