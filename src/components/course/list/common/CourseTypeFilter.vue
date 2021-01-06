@@ -38,11 +38,12 @@
                 const store = useStore();
                 await store.getters.configuration
                     .then((config) => {
-                        types.value = config.courseTypes;
+                        types.value = [...config.courseTypes];
                         types.value.unshift("All");
                     })
                     .catch((reason) => {
                         const toast = useToast();
+
                         toast.error(reason);
                     });
             });
