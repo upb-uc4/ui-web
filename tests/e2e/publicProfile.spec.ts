@@ -11,7 +11,7 @@ describe("Show public profile correctly", () => {
     let studentAuth: Account;
     let lecturerAuth: Account;
     let course: Course;
-    let lecturerName: String = "Lect Urer";
+    let lecturerName: String = "Jane Doe";
 
     before(() => {
         cy.clearCookies();

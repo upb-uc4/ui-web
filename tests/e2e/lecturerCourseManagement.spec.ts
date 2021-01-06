@@ -20,7 +20,7 @@ describe("Course creation, edition and deletion", () => {
 
     let course: Course;
     let lecturerAuth: Account;
-    let newModule: String = "M.1275.01158";
+    let newModule: String = "M.1275.01159";
 
     before(function () {
         cy.clearCookies();
@@ -82,11 +82,11 @@ describe("Course creation, edition and deletion", () => {
         cy.get("input[id='courseType']").siblings().get("p").should("have.class", "error-message");
         cy.get("select[id='courseLanguage']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[id='ects']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='maxParticipants']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='maxParticipants']").siblings().get("div").should("have.class", "error-message");
         cy.get("input[id='courseName']").clear();
         cy.get("input[type='radio']").eq(0).click();
         cy.get('button[id="createCourse"]').click();
-        cy.get("input[id='courseName']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='courseName']").siblings().get("div").should("have.class", "error-message");
     });
 
     it("Show unsaved changes modal", () => {

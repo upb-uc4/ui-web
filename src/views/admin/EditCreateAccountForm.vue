@@ -114,7 +114,7 @@
 <script lang="ts">
     import Router from "@/use/router/";
     import { Role } from "@/entities/Role";
-    import { ref, reactive, computed, onBeforeMount } from "vue";
+    import { ref, reactive, computed, onBeforeMount, nextTick } from "vue";
     import UserManagement from "@/api/UserManagement";
     import StudentEntity from "@/entities/StudentEntity";
     import UserEntity from "@/entities/UserEntity";

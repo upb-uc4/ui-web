@@ -1,4 +1,3 @@
-import { getRandomizedCourse } from "@/../tests/helper/Courses";
 import Course from "@/api/api_models/course_management/Course";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";

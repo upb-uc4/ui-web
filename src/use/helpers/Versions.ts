@@ -1,6 +1,7 @@
 import AdmissionManagement from "@/api/AdmissionManagement";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
+import ConfigurationManagement from "@/api/ConfigurationManagement";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
@@ -28,6 +29,9 @@ export async function getVersions(): Promise<version[]> {
 
     const userManagementVersion = await UserManagement.getVersion();
 
+    const configurationManagementVersion = await ConfigurationManagement.getVersion();
+    const hyperledgerNetworkVersion = (await ConfigurationManagement.getHyperledgerNetworkVersion()).networkVersion;
+
     const matriculationManagementVersion = await MatriculationManagement.getVersion();
     const hlfMatriculationVersion = await MatriculationManagement.getHyperledgerVersion();
 
@@ -46,6 +50,11 @@ export async function getVersions(): Promise<version[]> {
         name: "Frontend",
         version: frontEndVersion,
         link: "https://github.com/upb-uc4/ui-web/blob/" + frontEndVersion + "/CHANGELOG.md",
+    });
+    versions.push({
+        name: "Hyperledger Network",
+        version: hyperledgerNetworkVersion,
+        link: "https://github.com/upb-uc4/hlf-network/blob/" + hyperledgerNetworkVersion + "/CHANGELOG.md",
     });
     versions.push({
         name: "Authentication Management",
@@ -112,6 +121,15 @@ export async function getVersions(): Promise<version[]> {
             "report-" +
             reportManagementVersion +
             "/product_code/report_service/CHANGELOG.md",
+    });
+    versions.push({
+        name: "Configuration Management",
+        version: configurationManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "configuration-" +
+            configurationManagementVersion +
+            "/product_code/configuration_service/CHANGELOG.md",
     });
 
     versions.push({
