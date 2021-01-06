@@ -1,5 +1,5 @@
 import { decodeProposal } from "@/api/helpers/ProtobuffDecoding";
-import { validateMatriculationProposal } from "@/api/helpers/ProposalValidator";
+import { validateMatriculationProposal } from "@/api/helpers/ProposalPayloadValidator";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 
 describe("Proposal Validation Tests", () => {
@@ -24,13 +24,21 @@ describe("Proposal Validation Tests", () => {
         const addMatriculationDataEnrollmentId = "500";
 
         expect(
-            validateMatriculationProposal(addMatriculationDataEnrollmentId, addMatriculationDataMatriculation, addMatriculationDataProposal)
+            validateMatriculationProposal(
+                addMatriculationDataProposal.payload,
+                addMatriculationDataEnrollmentId,
+                addMatriculationDataMatriculation
+            )
         ).toBe(true);
 
         addMatriculationDataMatriculation.push({ fieldOfStudy: "Some Studies", semesters: ["Some Semester"] });
 
         expect(
-            validateMatriculationProposal(addMatriculationDataEnrollmentId, addMatriculationDataMatriculation, addMatriculationDataProposal)
+            validateMatriculationProposal(
+                addMatriculationDataProposal.payload,
+                addMatriculationDataEnrollmentId,
+                addMatriculationDataMatriculation
+            )
         ).toBe(false);
     });
 
@@ -54,9 +62,9 @@ describe("Proposal Validation Tests", () => {
 
         expect(
             validateMatriculationProposal(
+                updateMatriculationDataProposal.payload,
                 updateMatriculationDataEnrollmentId,
-                updateMatriculationDataMatriculation,
-                updateMatriculationDataProposal
+                updateMatriculationDataMatriculation
             )
         ).toBe(true);
 
@@ -64,9 +72,9 @@ describe("Proposal Validation Tests", () => {
 
         expect(
             validateMatriculationProposal(
+                updateMatriculationDataProposal.payload,
                 updateMatriculationDataEnrollmentId,
-                updateMatriculationDataMatriculation,
-                updateMatriculationDataProposal
+                updateMatriculationDataMatriculation
             )
         ).toBe(false);
     });
@@ -86,9 +94,9 @@ describe("Proposal Validation Tests", () => {
 
         expect(
             validateMatriculationProposal(
+                addEntriesToMatriculationDataProposal.payload,
                 addEntriesToMatriculationEnrollmentId,
-                addEntriesToMatriculationDataMatriculation,
-                addEntriesToMatriculationDataProposal
+                addEntriesToMatriculationDataMatriculation
             )
         ).toBe(true);
 
@@ -96,9 +104,9 @@ describe("Proposal Validation Tests", () => {
 
         expect(
             validateMatriculationProposal(
+                addEntriesToMatriculationDataProposal.payload,
                 addEntriesToMatriculationEnrollmentId,
-                addEntriesToMatriculationDataMatriculation,
-                addEntriesToMatriculationDataProposal
+                addEntriesToMatriculationDataMatriculation
             )
         ).toBe(false);
     });

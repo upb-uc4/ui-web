@@ -1,11 +1,11 @@
 // Incomplete representations of HLF proposals
 
 export default interface Proposal {
-    header: ProposalHeader;
+    header: Header;
     payload: ProposalPayload;
 }
 
-export interface ProposalHeader {
+export interface Header {
     signatureHeader: SignatureHeader;
     channelHeader: ChannelHeader;
 }

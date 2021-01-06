@@ -19,7 +19,7 @@
 
 <script lang="ts">
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
-    import { reactive, ref, onBeforeMount } from "vue";
+    import { reactive, ref, onBeforeMount, watch } from "vue";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import ImmatriculationHistoryEntry from "./ImmatriculationHistoryEntry.vue";
@@ -35,7 +35,7 @@
                 required: true,
             },
             busy: {
-                type: Boolean,
+                type: Number,
                 required: true,
             },
         },
@@ -44,19 +44,26 @@
             let history: MatriculationData = reactive({} as MatriculationData);
             let chronologicalList = ref({});
 
+            watch(
+                () => props.username,
+                () => getHistory()
+            );
+
             onBeforeMount(async () => {
                 await getHistory();
             });
 
             async function getHistory() {
-                emit("update:busy", true);
+                if (!props.username) return;
+
+                emit("update:busy", props.busy + 1);
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
                 const responseHandler = new ImmatriculationResponseHandler();
                 const result = responseHandler.handleResponse(response);
                 history = result;
                 chronologicalList.value = historyToSortedList(history);
-                emit("update:busy", false);
+                emit("update:busy", props.busy - 1);
             }
 
             return {

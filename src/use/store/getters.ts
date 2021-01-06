@@ -7,6 +7,7 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import ConfigurationManagement from "@/api/ConfigurationManagement";
 import { Role } from "@/entities/Role";
+import { useToast } from "@/toast";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import lodash from "lodash";
 import { GetterTree } from "vuex";
@@ -22,7 +23,7 @@ export type Getters = {
     role(state: State): Promise<Role>;
     validation(state: State): Promise<any>;
     configuration(state: State): Promise<Configuration>;
-    privateKey(state: State): Promise<CryptoKey>;
+    privateKey(state: State): () => Promise<CryptoKey>;
     certificate(state: State): () => Promise<Certificate>;
     hasCertificate(state: State): Promise<boolean>;
 };
@@ -74,12 +75,13 @@ export const getters: GetterTree<State, State> & Getters = {
         }
         return state.configuration;
     },
-    privateKey: async (state) => {
+    privateKey: (state) => async () => {
         if (!("type" in state.privateKey)) {
             const store = useStore();
             const certManagement = new CertificateManagement();
 
             const keyResponse = await certManagement.getEncryptedPrivateKey((await store.getters.user).username);
+
             const handler = new GenericResponseHandler("certificate");
             const encryptedPrivateKey = handler.handleResponse(keyResponse);
 
@@ -88,10 +90,32 @@ export const getters: GetterTree<State, State> & Getters = {
                 const privateKey: CryptoKey = await state.decryptPrivateKeyModal(encryptedPrivateKey);
 
                 if (privateKey.type == undefined) {
-                    Promise.reject("Could not decrypt private key");
+                    return Promise.reject("Could not decrypt private key");
                 }
 
                 store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
+            } else {
+                // no key saved at lagom
+                if (state.certificate.certificate) {
+                    const toast = useToast();
+                    toast.error(
+                        "Something went wrong. this user does not have an encrypted private key saved but has a certificate. Please report this."
+                    );
+                } else {
+                    // create certificate
+                    const certificate = await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
+                        store.commit(MutationTypes.SET_HAS_CERTIFICATE, false);
+                        return undefined;
+                    });
+
+                    if (!certificate) return Promise.reject("Could not create certificate.");
+
+                    const keyResponse = await certManagement.getEncryptedPrivateKey((await store.getters.user).username);
+                    const encryptedPrivateKey = handler.handleResponse(keyResponse);
+                    const privateKey: CryptoKey = await state.decryptPrivateKeyModal(encryptedPrivateKey);
+
+                    store.commit(MutationTypes.SET_PRIVATE_KEY, privateKey);
+                }
             }
         }
         return state.privateKey;
@@ -105,7 +129,7 @@ export const getters: GetterTree<State, State> & Getters = {
             if (certificateResponse.statusCode == 404) {
                 return await store.dispatch(ActionTypes.CREATE_CERTIFICATE, undefined).catch((reason) => {
                     store.commit(MutationTypes.SET_HAS_CERTIFICATE, false);
-                    return { certificate: "" };
+                    return Promise.reject("Could not create certificate.");
                 });
             } else {
                 store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);

@@ -113,8 +113,8 @@
                     let filter = props.filter.toLowerCase();
                     filteredCourses = filteredCourses.filter(
                         (e) =>
-                            e.courseName.toLowerCase().includes(filter) ||
-                            e.courseDescription.toLowerCase().includes(filter) ||
+                            e.courseName.toLowerCase().replace(/\s/g, "").includes(filter.replace(/\s/g, "")) ||
+                            e.courseDescription.toLowerCase().replace(/\s/g, "").includes(filter.replace(/\s/g, "")) ||
                             e.courseId.toLowerCase().includes(filter) ||
                             e.lecturerId.toLowerCase().includes(filter)
                     );
