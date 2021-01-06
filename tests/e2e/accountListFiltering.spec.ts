@@ -43,7 +43,6 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Role filter select exist", function () {
-        cy.get("button[id='selectFilterRole']").should("exist");
         cy.get("button[id='selectFilterRole']").click();
         Object.values(Role)
             .filter((role) => role != Role.NONE)
