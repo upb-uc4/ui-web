@@ -1,7 +1,7 @@
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
+import { getMachineUserAuth, loginAsUser } from "./helpers/AuthHelper";
 import { navigateToSettingsPage } from "./helpers/NavigationHelper";
 import { createUsers, deleteUsers, getRandomizedGovernmentId, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
@@ -61,7 +61,6 @@ describe("Account creation, edition and deletion", function () {
 
     after(() => {
         deleteUsers([studentAuthUser], adminAuth);
-        logout();
     });
 
     it("Login as student", () => {
@@ -98,7 +97,7 @@ describe("Account creation, edition and deletion", function () {
     it("Entering correct password works", () => {
         cy.get("input[id='enterPasswordForAccountDeletion']").clear().type(studentAuthUser.password);
         cy.get("button[id='deleteOwnAccountModalConfirm']").click();
-        cy.wait(5000);
+        cy.wait(2000);
         cy.url().should("contain", "/login");
     });
 
