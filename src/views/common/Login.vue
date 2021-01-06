@@ -104,10 +104,6 @@
                 hasError.value = false;
             }
 
-            function restorePassword() {
-                showNotYetImplementedToast();
-            }
-
             return {
                 email,
                 password,
