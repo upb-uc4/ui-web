@@ -1,3 +1,7 @@
+# [0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-XX-XX)
+## Feature
+- add frontend validation using backend regex [#755](https://github.com/upb-uc4/ui-web/pull/755)
+
 # [0.15.0](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-12-18)
 ## Feature
 - add hyperledger versions [#754](https://github.com/upb-uc4/ui-web/pull/754)
