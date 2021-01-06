@@ -55,8 +55,6 @@
             });
 
             function updateProfile() {
-                console.log("update user");
-                console.log(user);
                 const handler = new ValidationResponseHandler("Profile");
                 isLoading.value = true;
                 userManagement
