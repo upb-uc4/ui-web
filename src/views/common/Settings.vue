@@ -11,6 +11,9 @@
             <security-section />
             <certificate-section />
             <request-data-section />
+            <div class="mt-48">
+                <delete-account-section />
+            </div>
         </div>
     </div>
 </template>
@@ -21,6 +24,7 @@
     import { Role } from "@/entities/Role";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import CertificateSection from "@/components/settings/CertificateSection.vue";
+    import DeleteAccountSection from "@/components/settings/DeleteAccountSection.vue";
     import RequestDataSection from "@/components/settings/RequestDataSection.vue";
 
     export default {
@@ -28,6 +32,7 @@
         components: {
             SecuritySection,
             CertificateSection,
+            DeleteAccountSection,
             RequestDataSection,
         },
 
