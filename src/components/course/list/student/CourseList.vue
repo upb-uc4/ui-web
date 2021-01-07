@@ -18,7 +18,6 @@
     import Course from "@/api/api_models/course_management/Course";
     import APIResponse from "@/api/helpers/models/APIResponse";
     import { computed, ref, onBeforeMount, watch } from "vue";
-    import { CourseType } from "@/entities/CourseType";
     import UserManagement from "@/api/UserManagement";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
@@ -52,7 +51,6 @@
             let courses = ref([] as Course[]);
             let admittedCourses = ref([] as any[]);
             let username = ref("");
-
 
             onBeforeMount(async () => {
                 busy.value = true;
@@ -105,9 +103,7 @@
 
             let shownCourses = computed(() => {
                 let filteredCourses =
-                    props.selectedType == ("All" as CourseType)
-                        ? courses.value
-                        : courses.value.filter((e) => e.courseType == props.selectedType);
+                    props.selectedType == "All" ? courses.value : courses.value.filter((e) => e.courseType == props.selectedType);
                 if (props.filter != "") {
                     let filter = props.filter.toLowerCase();
                     filteredCourses = filteredCourses.filter(
