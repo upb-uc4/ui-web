@@ -11,14 +11,16 @@
                 }"
                 @click="select(type)"
             >
-                <span class="sm:hidden">{{ shortNameFor(type) }}</span>
+                <span class="sm:hidden">{{ type }}</span>
                 <span class="hidden sm:flex justify-center">{{ type }}</span>
             </button>
         </div>
     </div>
 </template>
 <script lang="ts">
-    import { CourseType } from "@/entities/CourseType";
+    import Vue, { onMounted, ref } from "vue";
+    import { useStore } from "@/use/store/store";
+    import { useToast } from "@/toast";
 
     export default {
         name: "CourseTypeFilter",
@@ -30,28 +32,29 @@
         },
         emits: ["update:selectedType"],
         setup(props: any, { emit }: any) {
-            let types = Object.values(CourseType).filter((e) => e != CourseType.NONE);
-            types.unshift("All" as CourseType);
+            const types = ref([] as string[]);
+
+            onMounted(async () => {
+                const store = useStore();
+                await store.getters.configuration
+                    .then((config) => {
+                        types.value = [...config.courseTypes];
+                        types.value.unshift("All");
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+
+                        toast.error(reason);
+                    });
+            });
 
             function select(type: string) {
                 emit("update:selectedType", type);
             }
 
-            function shortNameFor(type: CourseType) {
-                switch (type) {
-                    case CourseType.PG: {
-                        return "PG";
-                    }
-                    default: {
-                        return type;
-                    }
-                }
-            }
-
             return {
                 types,
                 select,
-                shortNameFor,
             };
         },
     };

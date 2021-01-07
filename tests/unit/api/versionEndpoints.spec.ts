@@ -4,6 +4,7 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import ConfigurationManagement from "@/api/ConfigurationManagement";
 import AdmissionManagement from "@/api/AdmissionManagement";
 import ReportManagement from "@/api/ReportManagement";
 
@@ -56,6 +57,15 @@ test("exam regulations service version", async () => {
     const hyperledgerVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
     expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
     expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
+});
+
+test("configuration management and hyperledger network version", async () => {
+    const version = await ConfigurationManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+
+    const hyperledgerNetworkVersion = await ConfigurationManagement.getHyperledgerNetworkVersion();
+    expect(hyperledgerNetworkVersion.networkVersion).not.toBe(undefined);
 });
 
 test("report service version", async () => {

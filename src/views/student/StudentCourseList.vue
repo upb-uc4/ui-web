@@ -26,7 +26,6 @@
     import SeachBar from "@/components/common/SearchBar.vue";
     import { ref, watch } from "vue";
     import CourseTypeFilter from "@/components/course/list/common/CourseTypeFilter.vue";
-    import { CourseType } from "@/entities/CourseType";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
 
@@ -61,7 +60,7 @@
             let message = ref("");
             let refreshKey = ref(false);
 
-            let selectedType = ref("All" as CourseType);
+            let selectedType = ref("All");
 
             watch(
                 () => props.isMyCoursesPage,

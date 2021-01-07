@@ -64,7 +64,6 @@
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
     export default {
-        components: {},
         props: [],
         setup() {
             const email = ref("");

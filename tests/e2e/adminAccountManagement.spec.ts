@@ -24,8 +24,8 @@ import {
     createNewStudent,
     deleteUser,
     deleteUsers,
-    getRandomMatriculationId,
     getRandomizedGovernmentId,
+    getRandomMatriculationId,
 } from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);
@@ -180,19 +180,18 @@ describe("Account creation, edition and deletion", function () {
         cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
         cy.get("input[id='userName']").clear();
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='userName']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='phoneNumber']").siblings().get("p").should("have.class", "error-message");
-        //TODO include when password is not optional
-        //cy.get("input[id='password']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='firstName']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='lastName']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='userName']").siblings().get("div").should("have.class", "error-message");
+        cy.get("input[id='email']").siblings().get("div").should("have.class", "error-message");
+        cy.get("input[id='phoneNumber']").siblings().get("div").should("have.class", "error-message");
+        cy.get("input[id='password']").siblings().get("div").should("have.class", "error-message");
+        cy.get("input[id='firstName']").siblings().get("div").should("have.class", "error-message");
+        cy.get("input[id='lastName']").siblings().get("div").should("have.class", "error-message");
         cy.get("div[id='birthdate']").siblings().get("p").should("have.class", "error-message");
         cy.get("select[id='country']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='street']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='houseNumber']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='street']").siblings().get("div").should("have.class", "error-message");
+        cy.get("input[id='houseNumber']").siblings().get("div").should("have.class", "error-message");
         cy.get("input[id='zipCode']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='city']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='city']").siblings().get("div").should("have.class", "error-message");
         cy.get("textarea[id='researchArea']").siblings().get("p").should("have.class", "error-message");
         cy.get("textarea[id='freeText']").siblings().get("p").should("have.class", "error-message");
         cy.get("input[type='radio']").eq(2).click();
