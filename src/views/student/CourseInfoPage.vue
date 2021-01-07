@@ -30,7 +30,7 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex w-full">
                     <div class="flex justify-between items-center w-full">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Cancel</button>
+                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Back</button>
                         <button
                             v-if="!isRegistered"
                             id="joinCourse"
@@ -46,7 +46,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Cancel</button>
+                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Back</button>
                     <button
                         v-if="!admitted"
                         id="mobileJoinCourse"
