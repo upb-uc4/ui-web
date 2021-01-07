@@ -21,9 +21,9 @@
 }
 
 .modal-headline {
-    @apply text-gray-800 text-lg font-medium
+    @apply text-gray-800 dark:text-gray-300 text-lg font-medium
 }
 
 .modal-description {
-    @apply text-gray-500 text-sm
+    @apply text-gray-500 dark:text-gray-500 text-sm
 }

@@ -1,51 +1,45 @@
 <template>
     <modal-no-teleport ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
-            <p class="text-2xl text-gray-900">Login</p>
+            <p class="modal-headline">Login</p>
         </template>
         <div class="flex flex-col">
-            <p>Please enter your authentication credentials.</p>
-            <div class="mb-4 mt-4">
-                <i class="mt-4 m-3 ml-4 fas fa-envelope absolute text-gray-500"></i>
+            <div class="modal-description">Please enter your authentication credentials.</div>
+
+            <div class="my-4">
+                <label class="input-label-tmp">Email Address</label>
                 <input
                     id="loginModalEmail"
                     v-model="email"
-                    class="lg:w-5/6 font-semibold pl-10 form-input input-text"
                     type="text"
-                    placeholder="Email"
-                    :class="{ error: error }"
-                    @change="hideErrors()"
+                    :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                    class="w-full"
+                    @input="resetError"
                     @keypress.enter="login"
                 />
             </div>
 
-            <div class="mb-2">
-                <i class="mt-4 m-3 ml-4 fas fa-lock absolute text-gray-500"></i>
+            <div class="mb-2 relative">
+                <label class="input-label-tmp">Password</label>
+                <i
+                    :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
+                    class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
+                    @click="togglePassword"
+                />
                 <input
                     id="loginModalPassword"
                     v-model="password"
                     :type="passwordFieldType"
-                    class="lg:w-5/6 font-semibold pl-10 form-input input-text"
-                    placeholder="Password"
-                    :class="{ error: error }"
-                    @change="hideErrors()"
-                    @keypress.enter="login"
+                    :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                    class="w-full"
+                    @input="resetError"
                 />
-                <button
-                    id="togglePassword"
-                    type="button"
-                    tabIndex="-1"
-                    class="absolute ml-3 mt-1 text-gray-500 text-lg hover:text-gray-600 focus:outline-none"
-                    @click="togglePassword"
-                >
-                    <i :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']" class="absolute mt-3 ml-1 fas mr-1"></i>
-                </button>
-                <p v-if="error" class="lg:w-3/4 mt-2 error-message">Wrong username or password!</p>
+                <label v-if="hasError" class="input-label-error-tmp">Wrong username or password!</label>
             </div>
         </div>
         <template #footer>
-            <button id="loginModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="loginModalConfirm" class="w-24 py-2 px-2 btn btn-blue-primary" @click="login">Login</button>
+            <button id="loginModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
+            <button id="loginModalConfirm" class="w-24 py-2 px-2 btn-tmp" @click="login">Login</button>
         </template>
     </modal-no-teleport>
 </template>
@@ -66,7 +60,7 @@
             const baseModal = ref();
             let email = ref("");
             let password = ref("");
-            let error = ref(false);
+            let hasError = ref(false);
             let passwordFieldType = ref("password");
             let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
 
@@ -79,8 +73,8 @@
                 return passwordFieldType.value === "text";
             }
 
-            function hideErrors() {
-                error.value = false;
+            function resetError() {
+                hasError.value = false;
             }
 
             function togglePassword() {
@@ -96,13 +90,13 @@
                 if (loginResponseHandler.handleResponse(response)) {
                     close(action.LOGIN);
                 } else {
-                    error.value = true;
+                    hasError.value = true;
                 }
             }
 
             function close(action: action) {
                 password.value = "";
-                error.value = false;
+                hasError.value = false;
                 baseModal.value.close(action);
             }
 
@@ -110,13 +104,13 @@
                 email,
                 login,
                 baseModal,
-                error,
+                hasError,
                 password,
                 show,
                 close,
                 action,
                 isPasswordVisible,
-                hideErrors,
+                resetError,
                 togglePassword,
                 passwordFieldType,
             };

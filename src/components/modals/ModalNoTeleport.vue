@@ -4,14 +4,14 @@
             <div class="absolute w-full h-full bg-gray-900 opacity-25" />
 
             <div
-                class="bg-white absolute z-50 w-full -mt-32 md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto rounded-lg shadow-xl overflow-y-auto"
+                class="bg-white dark:bg-night-light absolute z-50 w-full -mt-32 md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto rounded-lg shadow-xl overflow-y-auto"
             >
                 <div class="py-8 px-10">
                     <div class="flex justify-between items-center">
                         <slot name="header"></slot>
                         <button id="baseModalCancel" class="cursor-pointer z-50 focus:outline-none" @click="$emit('cancel')">
                             <svg
-                                class="fill-current text-gray-600 hover:text-gray-700"
+                                class="fill-current text-gray-600 hover:text-gray-700 dark:text-gray-300 hover:text-gray-400"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="28"
                                 height="28"
@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="bg-gray-200 h-20 flex items-center justify-end">
+                <div class="bg-gray-200 dark:bg-night-base h-20 flex items-center justify-end">
                     <div class="flex justify-end mr-10">
                         <slot name="footer"></slot>
                     </div>
