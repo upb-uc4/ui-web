@@ -202,7 +202,7 @@
                 if (result) {
                     const toast = useToast();
                     toast.success(`Successfully admitted for course ${course.value.courseName}`);
-                    Router.push({ name: "student.course.drop", params: { courseId: course.value.courseId } });
+                    back();
                 }
                 busy.value--;
             }
@@ -211,8 +211,6 @@
                 busy.value++;
                 const result = await dropCourseAdmission(admission.value.admissionId);
                 if (result) {
-                    admission.value = {} as CourseAdmission;
-                    admitted.value = false;
                     const toast = useToast();
                     toast.success(`Successfully dropped course ${course.value.courseName}`);
                     back();
