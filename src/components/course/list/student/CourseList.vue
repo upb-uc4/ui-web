@@ -53,15 +53,6 @@
             let admittedCourses = ref([] as any[]);
             let username = ref("");
 
-            let mockAdmitted = [
-                {
-                    admissionId: "123456:TestCourse Registered",
-                    enrollmentId: "1234567",
-                    courseId: "d746ec56-502a-11eb-8074-f96ffb2ff151",
-                    moduleId: "M.1275.78235",
-                    timestamp: "something",
-                },
-            ];
 
             onBeforeMount(async () => {
                 busy.value = true;
