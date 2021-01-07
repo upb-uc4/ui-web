@@ -5,7 +5,7 @@
         </div>
     </div>
     <div v-else class="w-full lg:mt-20 mt-8 bg-gray-300 mx-auto h-screen">
-        <button class="flex items-center mb-4 navigation-link" @click="back">
+        <button id="back" class="flex items-center mb-4 navigation-link" @click="back">
             <i class="fas text-xl fa-chevron-left"></i>
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
@@ -30,7 +30,7 @@
             <section class="border-t-2 py-8 border-gray-400 lg:mt-8">
                 <div class="hidden sm:flex w-full">
                     <div class="flex justify-between items-center w-full">
-                        <button id="cancel" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Back</button>
+                        <button id="backButton" type="button" class="w-32 mr-6 btn btn-blue-secondary" @click="back">Back</button>
                         <button
                             v-if="!isRegistered"
                             id="joinCourse"
@@ -46,7 +46,7 @@
 
                 <!-- different button layout for mobile -->
                 <div class="sm:hidden">
-                    <button id="mobileCancel" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Back</button>
+                    <button id="mobileBackButton" type="button" class="mb-4 w-full btn btn-blue-secondary" @click="back">Back</button>
                     <button
                         v-if="!admitted"
                         id="mobileJoinCourse"
