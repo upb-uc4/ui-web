@@ -2,7 +2,9 @@
 ## Feature
 - add ability to fetch all information according to gdpr [#776](https://github.com/upb-uc4/ui-web/pull/776)
 - add course admission API [#774](https://github.com/upb-uc4/ui-web/pull/774)
+- add course admission UI [#749](https://github.com/upb-uc4/ui-web/pull/769)
 - add possibility to delete the own account according to gdpr [#765](https://github.com/upb-uc4/ui-web/pull/765)
+
 
 
 # [0.15.0](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-12-18)
