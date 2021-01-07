@@ -66,8 +66,8 @@ describe("Show public profile correctly", () => {
 
     it("Navigate to 'lecturer's public profile via created course", () => {
         navigateToCourseListStudent();
+        cy.wait(20000);
         cy.url().should("contain", "/courses");
-        cy.wait(2000);
         cy.get("div").contains(course.courseName).parent().parent().find("a[id='showLecturer']").click();
         cy.url().should("contain", "/user/lecturer");
     });

@@ -219,7 +219,7 @@
             }
 
             function back() {
-                Router.push("/courses");
+                Router.go(-1);
             }
 
             return {

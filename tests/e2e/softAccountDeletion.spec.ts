@@ -73,6 +73,7 @@ describe("Course Filtering", function () {
     it("Login as student and navigate to course list", () => {
         loginAsDefaultStudent();
         navigateToCourseListStudent();
+        cy.wait(20000);
     });
 
     it("Course of deleted lecturer is shown", () => {
