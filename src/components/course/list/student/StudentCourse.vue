@@ -37,10 +37,6 @@
                         </div>
 
                         <div class="w-full sm:w-1/6 mt-6 sm:mt-0">
-                            <!--
-                            <button id="joinCourse" class="w-full py-2 btn btn-blue-primary" :disabled="isCourseFull">Join</-button>
-                            <p v-if="isCourseFull" class="font-semibold text-red-700">This course is already full.</p>
-                            -->
                             <div v-if="isAdmitted" class="text-green-500 flex items-baseline">
                                 <i class="inline text-lg fas fa-check-circle mr-2" />
                                 Registered

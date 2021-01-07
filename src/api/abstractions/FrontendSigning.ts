@@ -167,7 +167,6 @@ async function abstractHandler(
     if (!unsignedProposal.unsignedProposal) return false;
 
     const proposal = await decodeProposal(unsignedProposal.unsignedProposal, protoUrl).catch((reason: any) => {
-        console.log(reason);
         useToast().error("Could not decode proposal. This is a bug on our side, please consider reporting this.");
     });
 
