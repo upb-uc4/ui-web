@@ -18,9 +18,6 @@ const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 const StudentImmatricultaion = () => import("@/components/study/Immatriculation.vue");
-const Playground = () => import("@/views/common/dev/Playground.vue");
-const SectionPlayground = () => import("@/views/common/dev/SectionPlayground.vue");
-const EditCoursePlayground = () => import("@/views/common/dev/EditCoursePlayground.vue");
 const Dashboard = () => import("@/views/common/Dashboard.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -45,30 +42,6 @@ const router = createRouter({
             meta: {
                 title: "Notifications" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
-            },
-        },
-        {
-            path: "/playground",
-            name: "playground",
-            component: Playground,
-            meta: {
-                title: "Playground" + suffix,
-            },
-        },
-        {
-            path: "/section-playground",
-            name: "section-playground",
-            component: SectionPlayground,
-            meta: {
-                title: "Section Playground" + suffix,
-            },
-        },
-        {
-            path: "/edit-course-playground",
-            name: "edit-course-playground",
-            component: EditCoursePlayground,
-            meta: {
-                title: "Edit Course Playground" + suffix,
             },
         },
         {
