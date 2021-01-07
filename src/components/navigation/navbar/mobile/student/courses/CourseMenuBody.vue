@@ -8,6 +8,12 @@
                     icon-class="fas fa-list-alt"
                     target-route-name="student.courses"
                 />
+                <menu-item
+                    id="nav_mobile_student_menu_courses_admitted"
+                    title="My Courses"
+                    icon-class="fas fa-list-alt"
+                    target-route-name="student.my-courses"
+                />
             </li>
         </ul>
     </section>

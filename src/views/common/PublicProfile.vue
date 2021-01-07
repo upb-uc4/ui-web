@@ -43,9 +43,9 @@
                 const response = await auth.getSpecificUser(username);
                 user.value = responseHandler.handleResponse(response);
                 window.document.title = user.value.firstName + " " + user.value.lastName + " (@" + username + ") | UC4";
-                busy.value = true;
+                busy.value = false;
             }
-            return { Role, user };
+            return { Role, user, busy };
         },
     };
 </script>

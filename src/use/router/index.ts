@@ -10,6 +10,7 @@ import PageNotFound from "@/views/errors/404.vue";
 import { createRouter, createWebHistory } from "vue-router";
 const LoginView = () => import("@/views/common/Login.vue");
 const StudentCourseView = () => import("@/views/student/StudentCourseList.vue");
+const StudentCourseInfoPage = () => import("@/views/student/CourseInfoPage.vue");
 const AllCourseView = () => import("@/views/common/CourseList.vue");
 const AdminAccountListView = () => import("@/views/admin/AdminAccountList.vue");
 const CourseForm = () => import("@/views/shared/EditCreateCourseForm.vue");
@@ -80,6 +81,36 @@ const router = createRouter({
             },
         },
 
+        {
+            path: "/courses/my-courses",
+            name: "student.my-courses",
+            component: StudentCourseView,
+            props: { isMyCoursesPage: true },
+            meta: {
+                title: "My Courses" + suffix,
+                roles: ["Student"],
+            },
+        },
+        {
+            path: "/courses/:courseId/drop",
+            name: "student.course.drop",
+            component: StudentCourseInfoPage,
+            props: { isRegistered: true },
+            meta: {
+                title: "Course" + suffix,
+                roles: ["Student"],
+            },
+        },
+        {
+            path: "/courses/:courseId/join",
+            name: "student.course.join",
+            component: StudentCourseInfoPage,
+            props: { isRegistered: false },
+            meta: {
+                title: "Course" + suffix,
+                roles: ["Student"],
+            },
+        },
         {
             path: "/course-management",
             name: "lecturer.myCourses",

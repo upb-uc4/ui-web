@@ -3,7 +3,6 @@ import { getPublicKeyFromCertificate } from "@/use/crypto/certificates";
 import { signProtobuf, verifyProtobufSignature } from "@/use/crypto/signing";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
-
 import { useStore } from "@/use/store/store";
 import AdmissionManagement from "../AdmissionManagement";
 import CourseAdmission from "../api_models/admission_management/CourseAdmission";
@@ -14,10 +13,8 @@ import TransactionMessage from "../api_models/common/Transaction";
 import UnsignedProposalMessage from "../api_models/common/UnsignedProposalMessage";
 import UnsignedTransactionMessage from "../api_models/common/UnsignedTransactionMessage";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
-
 import APIResponse from "../helpers/models/APIResponse";
 import { validateCourseAdmissionProposal, validateMatriculationProposal } from "../helpers/ProposalPayloadValidator";
-
 import { decodeProposal } from "../helpers/ProtobuffDecoding";
 import { decodeTransaction } from "../helpers/TransactionDecoding";
 import { admissionsTransactionValidator, matriculationTransactionValidator } from "../helpers/TransactionValidator";
@@ -64,7 +61,7 @@ export async function updateMatriculation(
 }
 
 export async function addCourseAdmission(enrollmentId: string, addAdmission: CourseAdmission, protoUrl?: string) {
-    const genericHandler = new GenericResponseHandler("add admission");
+    const genericHandler = new GenericResponseHandler("admission");
 
     const genericHandler2 = new GenericResponseHandler("transaction");
 
