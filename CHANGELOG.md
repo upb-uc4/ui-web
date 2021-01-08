@@ -1,4 +1,4 @@
-# [0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-XX-XX)
+# [0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.15.0...v0.15.1) (2021-01-07)
 ## Feature
 - add frontend validation using backend regex [#755](https://github.com/upb-uc4/ui-web/pull/755)
 - add ability to fetch all information according to gdpr [#776](https://github.com/upb-uc4/ui-web/pull/776)
