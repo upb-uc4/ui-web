@@ -4,6 +4,9 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import ConfigurationManagement from "@/api/ConfigurationManagement";
+import AdmissionManagement from "@/api/AdmissionManagement";
+import ReportManagement from "@/api/ReportManagement";
 
 jest.useFakeTimers();
 jest.setTimeout(30000);
@@ -52,6 +55,31 @@ test("exam regulations service version", async () => {
     expect(version).not.toEqual("unavailable");
 
     const hyperledgerVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
+    expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
+    expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
+});
+
+test("configuration management and hyperledger network version", async () => {
+    const version = await ConfigurationManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+
+    const hyperledgerNetworkVersion = await ConfigurationManagement.getHyperledgerNetworkVersion();
+    expect(hyperledgerNetworkVersion.networkVersion).not.toBe(undefined);
+});
+
+test("report service version", async () => {
+    const version = await ReportManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+});
+
+test("admission service version", async () => {
+    const version = await AdmissionManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+
+    const hyperledgerVersion = await AdmissionManagement.getHyperledgerVersion();
     expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
     expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
 });

@@ -8,18 +8,15 @@
             <div class="w-full lg:w-2/3">
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Participation Limit</label>
-                    <input
-                        id="maxParticipants"
-                        v-model="maxParticipants"
+                    <base-input
+                        v-model:value="maxParticipants"
+                        identifier="maxParticipants"
                         type="number"
-                        min="0"
-                        class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('maxParticipants') }"
+                        class="w-full"
+                        :error-message="getErrorMessage(errorBag, 'maxParticipants')"
+                        validation-query="course.maxParticipants"
                         @input="updateLimit($event.target.value)"
                     />
-                    <p v-if="errorBag.has('maxParticipants')" class="error-message">
-                        {{ errorBag.get("maxParticipants") }}
-                    </p>
                 </div>
             </div>
         </div>
@@ -27,12 +24,16 @@
 </template>
 
 <script lang="ts">
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { ref } from "vue";
+    import BaseInput from "@/components/common/BaseInput.vue";
 
     export default {
         name: "RestrictionsSection",
+        components: {
+            BaseInput,
+        },
         props: {
             errorBag: {
                 required: true,
@@ -45,7 +46,7 @@
         },
         emits: ["update:participantsLimit"],
         setup(props: any, { emit }: any) {
-            let maxParticipants = ref(props.participantsLimit);
+            let maxParticipants = ref(props.participantsLimit.toString());
 
             function isNumber(value: string) {
                 return /[0-9]/g.test(value);
@@ -62,6 +63,7 @@
             return {
                 maxParticipants,
                 updateLimit,
+                getErrorMessage,
             };
         },
     };

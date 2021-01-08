@@ -53,10 +53,10 @@ describe("Student course view", () => {
 
     it("Navigate to course list", () => {
         navigateToCourseListStudent();
+        cy.wait(20000);
     });
 
     it("Course exists", () => {
-        cy.wait(2000);
         cy.get("button[title='Refresh']").click();
         cy.get("div").contains(course.courseName);
     });

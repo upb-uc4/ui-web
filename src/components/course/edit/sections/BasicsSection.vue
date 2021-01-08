@@ -22,17 +22,15 @@
                 </div>
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Name</label>
-                    <input
-                        id="courseName"
-                        v-model="courseName"
+                    <base-input
+                        v-model:value="courseName"
+                        identifier="courseName"
+                        :error-message="getErrorMessage(errorBag, 'courseName')"
                         type="text"
-                        class="w-full form-input input-text"
-                        :class="{ error: errorBag.has('courseName') }"
+                        class="w-full"
                         placeholder="Course Name"
+                        validation-query="course.courseName"
                     />
-                    <p v-if="errorBag.has('courseName')" class="error-message">
-                        {{ errorBag.get("courseName") }}
-                    </p>
                 </div>
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Language</label>
@@ -91,14 +89,18 @@
 </template>
 
 <script lang="ts">
-    import ErrorBag from "@/use/helpers/ErrorBag";
-    import { CourseType } from "@/entities/CourseType";
-    import { Language } from "@/entities/Language";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import { ref } from "vue";
+    import { onMounted, ref } from "vue";
+    import { useStore } from "@/use/store/store";
+    import BaseInput from "@/components/common/BaseInput.vue";
+    import { useToast } from "@/toast";
 
     export default {
         name: "BasicsSection",
+        components: {
+            BaseInput,
+        },
         props: {
             errorBag: {
                 required: true,
@@ -127,8 +129,8 @@
         },
         emits: ["update:type", "update:name", "update:language", "update:description", "update:ects"],
         setup(props: any, { emit }: any) {
-            const availableCourseLanguages = Object.values(Language).filter((e) => e != Language.NONE);
-            const availableCourseTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
+            const availableCourseLanguages = ref([] as string[]);
+            const availableCourseTypes = ref([] as string[]);
             const courseEcts = ref(props.ects);
 
             function isNumber(value: string) {
@@ -142,11 +144,26 @@
                     emit("update:ects", 0);
                 }
             }
+
+            onMounted(async () => {
+                const store = useStore();
+                await store.getters.configuration
+                    .then((config) => {
+                        availableCourseLanguages.value = config.languages;
+                        availableCourseTypes.value = config.courseTypes;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
+            });
+
             return {
                 availableCourseLanguages,
                 availableCourseTypes,
                 courseEcts,
                 updateEcts,
+                getErrorMessage,
                 courseType: useModelWrapper(props, emit, "type"),
                 courseName: useModelWrapper(props, emit, "name"),
                 courseLanguage: useModelWrapper(props, emit, "language"),

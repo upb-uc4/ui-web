@@ -1,7 +1,6 @@
-import { load } from "protobufjs";
 import { arrayBufferToBase64, base64ToArrayBuffer } from "@/use/crypto/certificates";
-
-import { ChaincodeHeaderExtension, ChannelHeader, Header, ProposalPayload, SignatureHeader } from "../api_models/common/Proposal";
+import { load } from "protobufjs";
+import { ChaincodeHeaderExtension, ChannelHeader, ProposalPayload, SignatureHeader } from "../api_models/common/Proposal";
 import TransactionMessage, {
     ChaincodeActionPayload,
     ChaincodeEndorsedAction,
@@ -10,7 +9,7 @@ import TransactionMessage, {
 } from "../api_models/common/Transaction";
 
 export async function decodeTransaction(base64Proposal: string, protoURL?: string): Promise<TransactionMessage | undefined> {
-    if (protoURL === undefined) protoURL = "hlf-proto.json";
+    if (protoURL === undefined) protoURL = "/hlf-proto.json";
 
     const buf = base64ToArrayBuffer(base64Proposal);
 

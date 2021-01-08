@@ -1,8 +1,5 @@
-import { CourseType } from "@/entities/CourseType";
-import { Language } from "@/entities/Language";
-
 export default interface Course {
-    courseType: CourseType;
+    courseType: string;
     moduleIds: string[];
     courseId: string;
     courseName: string;
@@ -11,7 +8,7 @@ export default interface Course {
     maxParticipants: number;
     currentParticipants: number;
     courseDescription: string;
-    courseLanguage: Language;
+    courseLanguage: string;
     startDate: string;
     endDate: string;
 }
