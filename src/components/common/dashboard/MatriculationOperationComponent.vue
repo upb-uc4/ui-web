@@ -1,49 +1,51 @@
 <template>
-    <div :id="'op_' + operation.operationId" class="flex shadow-xl">
-        <div class="flex flex-col w-full p-4 sm:px-8 bg-white rounded-lg">
-            <div class="flex items-center justify-between sm:justify-start">
-                <div class="text-xs font-semibold tracking-wide text-gray-600 uppercase">Matriculation</div>
+    <div
+        :id="'op_' + operation.operationId"
+        class="flex flex-col shadow-xl bg-white hover:bg-gray-200 rounded-lg items-start p-2 sm:p-4"
+        @click="toggleDetails"
+    >
+        <div class="flex w-full items-center justify-between sm:justify-start mb-4">
+            <div class="w-full flex">
+                <div class="text-xs font-semiboldtext-gray-600 uppercase">{{ type }}</div>
                 <span
                     class="ml-4 inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase rounded-full"
                     :class="statusColor"
                 >
                     {{ operation.state }}
                 </span>
-                <div v-if="!isPending" class="w-full flex items-center">
+                <div v-if="!isPending" class="flex items-center">
                     <div v-if="!isRejected" class="flex ml-6" title="Approvals">
                         <i v-for="index in approvals" :key="index" class="text-sm text-green-400 far fa-check-circle"></i>
                         <i v-for="index in neededApprovals - approvals" :key="index" class="text-sm text-green-400 far fa-circle"></i>
                     </div>
-                    <div v-if="!isArchive" class="w-full flex justify-end">
-                        <button class="btn btn-icon-blue text-sm" title="Mark as read" @click="markRead">
-                            <i class="fas fa-check"></i>
-                        </button>
-                    </div>
                 </div>
             </div>
-
-            <div class="flex flex-wrap mb-4">
-                <div class="flex flex-col items-start w-2/3">
-                    <div id="opName" class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{ operation.operationId }}</div>
-                    <div class="flex mt-1">
-                        <p class="mr-2">Initiator:</p>
-                        <router-link
-                            id="showLecturer"
-                            :to="{ name: 'profile.public', params: { username: operation.initiator } }"
-                            class="navigation-link hover:cursor-pointer hover:underline"
-                        >
-                            {{ operation.initiator }}
-                        </router-link>
-                    </div>
-                </div>
-                <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end">
+            <div v-if="!isArchive && isFinished" class="pr-2">
+                <button class="btn btn-icon-blue text-xs h-6 w-6" title="Mark as read" @click="markRead">
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
+            <button class="text-sm text-gray-700 pt-1 pr-2" :title="showDetails ? 'Hide Details' : 'Show Details'">
+                <i
+                    v-if="showDetails"
+                    :disabled="provideReason"
+                    class="fas fa-chevron-up"
+                    :class="{ 'cursor-not-allowed': provideReason }"
+                ></i>
+                <i v-else class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        <div class="flex flex-col w-full">
+            <div class="flex flex-auto w-full">
+                <label id="opName" class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{ operation.operationId }}</label>
+                <div v-if="actionRequired && isPending" class="w-full flex justify-end items-baseline">
                     <button
                         :id="'op_' + operation.operationId + '_approve'"
                         :disabled="sentApprove"
                         :class="{ 'bg-green-700': sentApprove, 'invisible': sentReject }"
-                        class="w-10 h-10 btn btn-icon-green"
+                        class="w-8 h-8 btn btn-icon-green text-xs"
                         title="Approve"
-                        @click="approve"
+                        @click.stop="approve"
                     >
                         <i class="fas fa-check"></i>
                     </button>
@@ -51,43 +53,59 @@
                         :id="'op_' + operation.operationId + '_approve'"
                         :disabled="sentReject || provideReason"
                         :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
-                        class="ml-2 w-10 h-10 btn btn-icon-red-filled"
+                        class="ml-2 w-8 h-8 btn btn-icon-red-filled text-xs"
                         title="Reject"
-                        @click="toogleReasonMenu"
+                        @click.stop="toogleReasonMenu"
                     >
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
             </div>
-            <div class="flex flex-row text-sm">
-                <p class="mr-1">Desired Matriculation:</p>
-                <p v-for="param in operation.transactionInfo.parameters" :key="param" class="ml-4">{{ param }}</p>
-            </div>
-            <div v-if="isRejected" class="mt-1">
-                <p class="text-red-500">Rejected: {{ operation.reason }}</p>
-            </div>
-            <div v-if="provideReason" class="mt-6 flex flex-col border-t border-red-700">
-                <p class="text-red-700 my-2 font-semibold">Please provide a reason for rejection</p>
-                <select v-model="selectedReason" class="form-select input-select">
-                    <option value="" disabled>Select a reason</option>
-                    <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
-                </select>
-                <input
-                    v-if="selectedReason == RejectionReasons.OTHER"
-                    v-model="writtenReason"
-                    class="form-input input-text mt-2"
-                    placeholder="Reason for rejection"
-                />
-                <div class="flex justify-end mt-2">
-                    <button
-                        :title="writtenReason == '' ? 'Please provide a reason' : 'Reject'"
-                        :disabled="writtenReason == ''"
-                        class="btn btn-icon-red-filled text-sm h-12"
-                        @click="reject"
-                    >
-                        Reject
-                    </button>
-                    <button class="ml-2 btn btn-icon-blue text-sm h-12" @click="toogleReasonMenu">Cancel</button>
+            <div v-if="showDetails" class="flex flex-col w-full mt-4">
+                <div class="flex flex-wrap mb-4">
+                    <div class="flex flex-col items-start">
+                        <div class="flex mt-1">
+                            <p class="mr-2">Initiator:</p>
+                            <button
+                                id="showLecturer"
+                                :to="{ name: 'profile.public', params: { username: operation.initiator } }"
+                                class="navigation-link hover:cursor-pointer hover:underline"
+                            >
+                                {{ operation.initiator }}
+                            </button>
+                        </div>
+                        <div class="flex flex-row text-sm">
+                            <p class="mr-1">Desired Matriculation:</p>
+                            <p v-for="param in operation.transactionInfo.parameters" :key="param" class="ml-4">{{ param }}</p>
+                        </div>
+                        <div v-if="isRejected" class="mt-1">
+                            <p class="text-red-500">Rejected: {{ operation.reason }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="provideReason" class="mt-6 flex flex-col border-t border-red-700">
+                    <p class="text-red-700 my-2 font-semibold">Please provide a reason for rejection</p>
+                    <select v-model="selectedReason" class="form-select input-select">
+                        <option value="" disabled>Select a reason</option>
+                        <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
+                    </select>
+                    <input
+                        v-if="selectedReason == RejectionReasons.OTHER"
+                        v-model="writtenReason"
+                        class="form-input input-text mt-2"
+                        placeholder="Reason for rejection"
+                    />
+                    <div class="flex justify-end mt-2">
+                        <button
+                            :title="writtenReason == '' ? 'Please provide a reason' : 'Reject'"
+                            :disabled="writtenReason == ''"
+                            class="btn btn-icon-red-filled text-sm h-12"
+                            @click.stop="reject"
+                        >
+                            Reject
+                        </button>
+                        <button class="ml-2 btn btn-icon-blue text-sm h-12" @click.stop="toogleReasonMenu">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,6 +119,7 @@
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";
+    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 
     export default {
         name: "MatriculatioOperationComponent",
@@ -134,6 +153,7 @@
 
             const isRejected = operation.value.state === OperationStatus.REJECTED;
             const isPending = operation.value.state === OperationStatus.PENDING;
+            const isFinished = operation.value.state === OperationStatus.FINISHED || isRejected;
             const actionRequired =
                 operation.value.missingApprovals.users.includes(props.username) ||
                 operation.value.missingApprovals.groups.includes(props.role);
@@ -142,6 +162,15 @@
             const provideReason = ref(false);
             const selectedReason = ref("");
             const writtenReason = ref("");
+
+            const showDetails = ref(false);
+
+            const type = computed(() => {
+                if (operation.value.transactionInfo.contractName == UC4Identifier.CONTRACT_MATRICULATION) {
+                    return "Matriculation";
+                }
+                return "";
+            });
 
             const statusColor = computed(() => {
                 switch ((props.operation as Operation).state) {
@@ -170,6 +199,9 @@
             }
 
             function toogleReasonMenu() {
+                if (!showDetails.value) {
+                    toggleDetails();
+                }
                 selectedReason.value = "";
                 writtenReason.value = "";
                 provideReason.value = !provideReason.value;
@@ -187,11 +219,19 @@
                 emit("marked-read", props.operation.operationId);
             }
 
+            function toggleDetails() {
+                if (!provideReason.value) {
+                    showDetails.value = !showDetails.value;
+                }
+            }
+
             return {
                 statusColor,
+                type,
                 approvals,
                 neededApprovals,
                 isRejected,
+                isFinished,
                 actionRequired,
                 isPending,
                 approve,
@@ -204,6 +244,8 @@
                 writtenReason,
                 toogleReasonMenu,
                 RejectionReasons,
+                showDetails,
+                toggleDetails,
             };
         },
     };
