@@ -1,6 +1,6 @@
 <template>
     <base-view>
-        <loading-spinner v-if="busy" />
+        <loading-spinner v-if="isLoading" />
         <div v-else>
             <section-header :title="title" />
             <profile-picture-section v-if="editMode" />
@@ -125,7 +125,7 @@
         },
         emits: ["update:has-input", "update:success"],
         setup(props: any, { emit, root }: any) {
-            let busy = ref(false);
+            let isLoading = ref(false);
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
@@ -192,7 +192,7 @@
             });
 
             async function getUser() {
-                busy.value = true;
+                isLoading.value = true;
                 const userManagement: UserManagement = new UserManagement();
 
                 const response = await userManagement.getSpecificUser(Router.currentRoute.value.params.username as string);
@@ -216,7 +216,7 @@
                         initialAccount.admin = JSON.parse(JSON.stringify(account.admin));
                     }
                 }
-                busy.value = false;
+                isLoading.value = false;
             }
 
             let hasInput = computed(() => {
@@ -362,7 +362,7 @@
             }
 
             return {
-                busy,
+                isLoading,
                 title,
                 account,
                 success,
