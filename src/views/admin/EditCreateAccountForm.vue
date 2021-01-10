@@ -3,7 +3,6 @@
         <loading-spinner v-if="busy" />
         <div v-else>
             <section-header :title="title" />
-            <!-- TODO: create different profile picture section as this one will only change the profile picture of the logged in user -->
             <profile-picture-section v-if="editMode" />
             <role-section v-if="!editMode" v-model:role="account.user.role" :error-bag="errorBag" />
             <personal-section
