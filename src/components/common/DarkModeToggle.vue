@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center space-x-4">
         <svg
-            class="h-10 w-10"
+            class="h-8 w-8"
             :class="isDarkModeEnabled ? 'text-gray-400' : 'text-yellow-500'"
             fill="none"
             viewBox="0 0 24 24"
@@ -18,15 +18,15 @@
             v-slot="{ checked }"
             v-model="isDarkModeEnabled"
             as="button"
-            class="relative inline-flex flex-shrink-0 items-center px-0.5 w-18 h-9 transition-colors duration-200 ease-in-out rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
+            class="relative inline-flex flex-shrink-0 items-center px-0.5 w-12 h-6 transition-colors duration-200 ease-in-out rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
             :class="isDarkModeEnabled ? 'bg-yellow-500' : 'bg-gray-600'"
         >
             <span
-                class="inline-block w-8 h-8 transition duration-200 ease-in-out transform bg-white rounded-full"
-                :class="{ 'translate-x-9': checked, 'translate-x-0': !checked }"
+                class="inline-block w-5 h-5 transition duration-200 ease-in-out transform bg-white rounded-full"
+                :class="{ 'translate-x-6': checked, 'translate-x-0': !checked }"
             />
         </Switch>
-        <i class="fa fa-moon text-3xl" :class="isDarkModeEnabled ? 'text-yellow-500' : 'text-gray-500'" />
+        <i class="fa fa-moon text-2xl" :class="isDarkModeEnabled ? 'text-yellow-500' : 'text-gray-500'" />
     </div>
 </template>
 
