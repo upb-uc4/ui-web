@@ -57,7 +57,7 @@
 
             const isLoading = ref(false); // for later use
             const examApi = new ExaminationRegulationManagement();
-            const responseHandler = new GenericResponseHandler("Examination Regulation Data");
+            const responseHandler = new GenericResponseHandler("examination regulation data");
 
             const existingExamRegNames = ref([] as string[]);
             const selectedModules = ref([] as Module[]);
