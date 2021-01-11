@@ -1,5 +1,5 @@
 <template>
-    <div class="flex">
+    <div class="flex flex-wrap gap-y-2">
         <div v-for="(element, index) in elements" :key="index">
             <tag :title="element" @on-remove="onRemove(index)" />
         </div>
