@@ -63,7 +63,7 @@
     import { useStore } from "@/use/store/store";
     import CertificateManagement from "@/api/CertificateManagement";
     import { useToast } from "@/toast";
-    import { showAPIToast } from "@/use/helpers/Toasts";
+    import { showOperationCreatedToast } from "@/use/helpers/Toasts";
     import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
@@ -165,7 +165,9 @@
                 const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
-                await updateMatriculation(enrollmentId.id, username.value, matriculationEntries);
+                if (await updateMatriculation(enrollmentId.id, username.value, matriculationEntries)) {
+                    showOperationCreatedToast("immatriculation");
+                }
 
                 busy.value--;
                 refreshKey.value = !refreshKey.value;
