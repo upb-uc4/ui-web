@@ -7,16 +7,22 @@
         <div class="flex sm:flex-row flex-col-reverse w-full">
             <seach-bar v-model:message="message" @refresh="refresh" />
         </div>
-        <div class="w-full my-5 flex justify-between">
+        <div class="w-full my-5 lg:flex lg:justify-between">
             <dashboard-component
-                class="mr-5"
+                class="lg:mr-5 lg:w-1/2"
                 :username="username"
                 :role="role"
                 :operations="finishedOperations"
                 title="Finished Operations"
                 @marked-read="markRead"
             />
-            <dashboard-component :username="username" :role="role" :operations="actionNeededOperations" title="Action Required" />
+            <dashboard-component
+                class="mt-5 lg:mt-0 lg:w-1/2"
+                :username="username"
+                :role="role"
+                :operations="actionNeededOperations"
+                title="Action Required"
+            />
         </div>
         <dashboard-component :username="username" :role="role" :operations="pendingOwnOperations" title="Pending Operations" />
     </div>
