@@ -9,7 +9,7 @@
                 lose this password as it <span class="text-blue-800 font-medium">cannot be restored</span>.
             </div>
             <div class="mt-6 relative">
-                <label class="input-label-tmp">Encryption Password</label>
+                <label class="input-label">Encryption Password</label>
                 <i
                     :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                     class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
@@ -19,14 +19,14 @@
                     id="enterEncryptionPassword"
                     v-model="password"
                     :type="passwordFieldType"
-                    class="w-full input-text-tmp"
-                    :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                    class="w-full input-text"
+                    :class="[hasError ? 'input-text-error' : 'input-text']"
                     @keypress.enter="checkPassword"
                 />
             </div>
 
             <div class="mt-6 relative">
-                <label class="input-label-tmp">Confirm Encryption Password</label>
+                <label class="input-label">Confirm Encryption Password</label>
                 <i
                     :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                     class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
@@ -36,16 +36,16 @@
                     id="confirmEncryptionPassword"
                     v-model="passwordConfirmation"
                     :type="passwordFieldType"
-                    class="w-full input-text-tmp"
-                    :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                    class="w-full input-text"
+                    :class="[hasError ? 'input-text-error' : 'input-text']"
                     @keypress.enter="checkPassword"
                 />
             </div>
-            <p v-if="hasError" class="input-label-error-tmp">Please make sure password and confirmation match.</p>
+            <p v-if="hasError" class="input-label-error">Please make sure password and confirmation match.</p>
         </div>
         <template #footer>
             <button id="encryptPrivateKeyModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
-            <button id="encryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn-tmp" @click="close(action.CONFIRM)">Confirm</button>
+            <button id="encryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn" @click="close(action.CONFIRM)">Confirm</button>
         </template>
     </modal-no-teleport>
 </template>

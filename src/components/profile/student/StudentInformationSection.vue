@@ -3,17 +3,17 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="w-full lg:w-1/2">
-                    <label class="input-label-tmp">Matriculation-ID</label>
+                    <label class="input-label">Matriculation-ID</label>
                     <input
                         id="matriculationId"
                         v-model="studentMatriculationId"
                         :disabled="editMode"
                         type="text"
                         class="w-full"
-                        :class="errorBag.has('matriculationId') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.has('matriculationId') ? 'input-text-error' : 'input-text'"
                         placeholder="Matriculation-ID"
                     />
-                    <label v-if="errorBag.hasNested('matriculationId')" class="input-label-error-tmp">
+                    <label v-if="errorBag.hasNested('matriculationId')" class="input-label-error">
                         {{ errorBag.getNested("matriculationId") }}
                     </label>
                 </div>
@@ -21,8 +21,8 @@
             </div>
             <div v-if="editMode && latest != ''" class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="w-full lg:w-1/2">
-                    <label class="input-label-tmp">Latest Immatriculation</label>
-                    <input id="latestImmatriculation" disabled class="input-text-tmp" :value="latest" />
+                    <label class="input-label">Latest Immatriculation</label>
+                    <input id="latestImmatriculation" disabled class="input-text" :value="latest" />
                 </div>
                 <div class="w-full lg:w-1/2 invisible"></div>
             </div>

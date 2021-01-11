@@ -31,7 +31,7 @@
                         <span class="font-semibold">{{ message }}.</span>
                     </div>
                 </div>
-                <div class="btn-tertiary-tmp" @click="clearFilter()">Clear filter</div>
+                <div class="btn-tertiary" @click="clearFilter()">Clear filter</div>
             </div>
             <hr class="mt-4 mb-8 dark:border-normalgray-700" />
         </div>

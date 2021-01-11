@@ -8,7 +8,7 @@
             <div class="flex flex-col justify-center">
                 <div class="text-5xl font-semibold dark:text-gray-300">Page not found</div>
                 <div class="mt-2 text-xl font-medium dark:text-gray-300">Unfortunately, this page does not exist 😕</div>
-                <router-link id="takeMeHome" class="mt-6 flex items-center navigation-link-tmp" :to="{ name: 'home' }">
+                <router-link id="takeMeHome" class="mt-6 flex items-center navigation-link" :to="{ name: 'home' }">
                     <span class="mr-2 text-sm font-bold">Take me home</span>
                     <i class="fas text-sm fa-chevron-right" />
                 </router-link>

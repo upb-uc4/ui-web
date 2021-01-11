@@ -3,16 +3,16 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label for="maxParticipants" class="input-label-tmp">Participation Limit</label>
+                    <label for="maxParticipants" class="input-label">Participation Limit</label>
                     <input
                         id="maxParticipants"
                         v-model.number="myMaxParticipant"
                         min="0"
                         type="number"
                         class="w-full"
-                        :class="errorBag.has('maxParticipants') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.has('maxParticipants') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.has('maxParticipants')" for="maxParticipants" class="input-label-error-tmp">
+                    <label v-if="errorBag.has('maxParticipants')" for="maxParticipants" class="input-label-error">
                         {{ errorBag.get("maxParticipants") }}
                     </label>
                 </div>

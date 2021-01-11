@@ -105,16 +105,16 @@ describe("Course creation, edition and deletion", () => {
     it("Show validation errors", () => {
         cy.get("input[id='courseName']").type("test");
         cy.get('button[id="createCourse"]').click();
-        cy.get("label[id='lecturerIdLabel']").should("have.class", "input-label-error-tmp");
-        cy.get("button[id='courseType']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("button[id='courseLanguage']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='ects']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='maxParticipants']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("label[id='lecturerIdLabel']").should("have.class", "input-label-error");
+        cy.get("button[id='courseType']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("button[id='courseLanguage']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='ects']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='maxParticipants']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='courseName']").clear();
         cy.get("button[id='courseType']").click();
         cy.get("li[id='courseTypeItem-Lecture']").click();
         cy.get('button[id="createCourse"]').click();
-        cy.get("input[id='courseName']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("input[id='courseName']").siblings().get("label").should("have.class", "input-label-error");
     });
 
     it("Show unsaved changes modal", () => {

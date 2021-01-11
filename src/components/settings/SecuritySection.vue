@@ -3,7 +3,7 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full relative">
-                    <label class="input-label-tmp">Old Password</label>
+                    <label class="input-label">Old Password</label>
                     <i
                         id="toggleOldPassword"
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
@@ -15,15 +15,15 @@
                         v-model="oldPassword"
                         :type="passwordFieldType"
                         class="w-full"
-                        :class="[hasErrorOldPassword ? 'input-text-error-tmp' : 'input-text-tmp']"
+                        :class="[hasErrorOldPassword ? 'input-text-error' : 'input-text']"
                         @input="resetOldPasswordError()"
                     />
-                    <label class="input-label-error-tmp" :class="{ hidden: !hasErrorOldPassword }"> Old password is not valid. </label>
+                    <label class="input-label-error" :class="{ hidden: !hasErrorOldPassword }"> Old password is not valid. </label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full relative">
-                    <label class="input-label-tmp">New Password</label>
+                    <label class="input-label">New Password</label>
                     <i
                         id="toggleNewPassword"
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
@@ -35,17 +35,17 @@
                         v-model="newPassword"
                         :type="passwordFieldType"
                         class="w-full"
-                        :class="[hasErrorNewPassword ? 'input-text-error-tmp' : 'input-text-tmp']"
+                        :class="[hasErrorNewPassword ? 'input-text-error' : 'input-text']"
                         @input="resetNewPasswordErrors()"
                     />
-                    <label class="input-label-error-tmp" :class="{ hidden: !hasErrorNewPassword }">
+                    <label class="input-label-error" :class="{ hidden: !hasErrorNewPassword }">
                         {{ errorTextNewPassword }}
                     </label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full relative">
-                    <label class="input-label-tmp">Confirm New Password</label>
+                    <label class="input-label">Confirm New Password</label>
                     <i
                         id="toggleConfirmationPassword"
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
@@ -57,17 +57,17 @@
                         v-model="newPasswordConfirmation"
                         :type="passwordFieldType"
                         class="w-full"
-                        :class="[hasErrorNewPassword ? 'input-text-error-tmp' : 'input-text-tmp']"
+                        :class="[hasErrorNewPassword ? 'input-text-error' : 'input-text']"
                         @input="resetNewPasswordErrors()"
                     />
-                    <label class="input-label-error-tmp" :class="{ hidden: !hasErrorNewPassword }">
+                    <label class="input-label-error" :class="{ hidden: !hasErrorNewPassword }">
                         {{ errorTextNewPassword }}
                     </label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 w-full">
                 <div class="lg:w-1/2 w-full flex items-center">
-                    <button id="updatePassword" class="w-48 btn-tmp" :disabled="isHandlingRequest" @click="tryUpdatePassword()">
+                    <button id="updatePassword" class="w-48 btn" :disabled="isHandlingRequest" @click="tryUpdatePassword()">
                         Update Password
                     </button>
                     <img v-show="isHandlingRequest" src="@/assets/loading-spinner-alt.svg" alt="loading-spinner" class="ml-2 w-6 h-6" />

@@ -3,25 +3,25 @@
         <div class="space-y-12">
             <div class="space-y-4">
                 <div class="lg:w-1/2 w-full">
-                    <label for="moduleID" class="w-full input-label-tmp">Unique Module Identifier</label>
-                    <input id="moduleID" v-model="moduleIdentifier" class="w-full input-text-tmp" placeholder="e.g. M.1275.78235" />
-                    <label v-if="moduleUsed" class="input-label-warning-tmp">
+                    <label for="moduleID" class="w-full input-label">Unique Module Identifier</label>
+                    <input id="moduleID" v-model="moduleIdentifier" class="w-full input-text" placeholder="e.g. M.1275.78235" />
+                    <label v-if="moduleUsed" class="input-label-warning">
                         Module '{{ moduleIdentifier.trim() }}' has already been added.
                     </label>
                 </div>
                 <div class="lg:w-1/2 w-full">
-                    <label for="moduleName" class="w-full input-label-tmp">Module Name</label>
+                    <label for="moduleName" class="w-full input-label">Module Name</label>
                     <input
                         id="moduleName"
                         :value="moduleName"
                         :readonly="moduleExists"
-                        class="w-full input-text-tmp"
+                        class="w-full input-text"
                         placeholder="e.g. Complexity Theory"
                         @input="moduleNameInput = $event.target.value"
                     />
                 </div>
                 <div class="lg:w-1/2 w-full sm:flex space-y-4 sm:space-y-0 sm:justify-end">
-                    <button id="addModule" class="sm:w-32 w-full btn-secondary-add-tmp" :disabled="!canAddModule" @click="addModule()">
+                    <button id="addModule" class="sm:w-32 w-full btn-secondary-add" :disabled="!canAddModule" @click="addModule()">
                         Add Module
                     </button>
                 </div>

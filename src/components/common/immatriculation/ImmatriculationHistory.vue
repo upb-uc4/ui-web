@@ -11,7 +11,7 @@
             </div>
         </div>
         <div v-else>
-            <label class="input-label-warning-tmp">There is no matriculation data, yet!</label>
+            <label class="input-label-warning">There is no matriculation data, yet!</label>
         </div>
     </div>
 </template>

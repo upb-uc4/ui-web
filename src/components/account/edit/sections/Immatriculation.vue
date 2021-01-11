@@ -1,6 +1,6 @@
 <template>
     <div class="w-full">
-        <label class="input-label-tmp">Immatriculation History</label>
+        <label class="input-label">Immatriculation History</label>
         <div class="w-full">
             <immatriculation-history :key="refreshKey" v-model:busy="busy" :username="username" />
         </div>

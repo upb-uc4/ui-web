@@ -17,7 +17,7 @@
                         id="addCourse"
                         to="/createCourse"
                         title="Add a new Course"
-                        class="btn-add-tmp md:w-24 w-full flex items-center justify-center space-x-2"
+                        class="btn-add md:w-24 w-full flex items-center justify-center space-x-2"
                     >
                         <i class="fas fa-calendar-plus" />
                         <span class="font-semibold">New</span>
@@ -43,7 +43,7 @@
                         <span class="font-semibold">{{ message }}.</span>
                     </div>
                 </div>
-                <div class="btn-tertiary-tmp" @click="clearFilter()">Clear filter</div>
+                <div class="btn-tertiary" @click="clearFilter()">Clear filter</div>
             </div>
             <hr class="mt-4 mb-8 dark:border-normalgray-700" />
         </div>

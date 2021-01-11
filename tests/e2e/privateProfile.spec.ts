@@ -99,8 +99,8 @@ describe("Change Profile Information", () => {
         cy.get("input[id='email']").clear().type("test");
         cy.get("input[id='phoneNumber']").clear().type("test");
         cy.get("#updateProfile").click();
-        cy.get("input[id='email']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='phoneNumber']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("input[id='email']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='phoneNumber']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='email']").clear();
         cy.get("input[id='phoneNumber']").clear();
     });
@@ -122,10 +122,10 @@ describe("Change Profile Information", () => {
         cy.get("input[id='street']").clear().type("/");
         cy.get("input[id='houseNumber']").clear().type("/");
         cy.get("button[id='updateProfile']").click();
-        cy.get("input[id='city']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='zipCode']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='street']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='houseNumber']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("input[id='city']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='zipCode']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='street']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='houseNumber']").siblings().get("label").should("have.class", "input-label-error");
     });
 
     it("Refresh", () => {
@@ -186,8 +186,8 @@ describe("Change Profile Information", () => {
         cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
         cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
         cy.get("#updateProfile").click();
-        cy.get("textarea[id='researchArea']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("textarea[id='freeText']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("textarea[id='researchArea']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("textarea[id='freeText']").siblings().get("label").should("have.class", "input-label-error");
     });
 
     it("Refresh", () => {

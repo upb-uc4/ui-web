@@ -34,25 +34,25 @@
                         v-if="editMode"
                         id="deleteCourse"
                         type="button"
-                        class="btn-secondary-remove-tmp w-full sm:w-32"
+                        class="btn-secondary-remove w-full sm:w-32"
                         @click="confirmDeleteCourse"
                     >
                         Delete
                     </button>
                 </template>
                 <template #right>
-                    <button id="cancel" type="button" class="w-full sm:w-48 btn-secondary-tmp" @click="back">Cancel</button>
+                    <button id="cancel" type="button" class="w-full sm:w-48 btn-secondary" @click="back">Cancel</button>
                     <button
                         v-if="editMode"
                         id="saveChanges"
                         :disabled="!hasInput"
                         type="button"
-                        class="w-full w-48 btn-tmp"
+                        class="w-full w-48 btn"
                         @click="updateCourse"
                     >
                         Save Changes
                     </button>
-                    <button v-else id="createCourse" :disabled="!hasInput" class="w-full w-48 btn-tmp" @click="createCourse">
+                    <button v-else id="createCourse" :disabled="!hasInput" class="w-full w-48 btn" @click="createCourse">
                         Create Course
                     </button>
                 </template>

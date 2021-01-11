@@ -9,7 +9,7 @@
                     :selected="currentSelection"
                     @update:selected="updateLecturer"
                 />
-                <label v-if="errorBag.has('lecturerId')" id="lecturerIdLabel" class="input-label-error-tmp">
+                <label v-if="errorBag.has('lecturerId')" id="lecturerIdLabel" class="input-label-error">
                     {{ errorBag.get("lecturerId") }}
                 </label>
                 <div v-if="currentSelection.value !== undefined" class="text-gray-700 text-md font-medium my-3">

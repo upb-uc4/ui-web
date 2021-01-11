@@ -7,7 +7,7 @@
             <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" :error-bag="errorBag" />
             <button-section>
                 <template #right>
-                    <button id="updateProfile" class="sm:w-48 w-full btn-tmp" @click="updateProfile()">Update</button>
+                    <button id="updateProfile" class="sm:w-48 w-full btn" @click="updateProfile()">Update</button>
                 </template>
             </button-section>
         </div>

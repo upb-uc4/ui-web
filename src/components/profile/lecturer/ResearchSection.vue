@@ -3,30 +3,30 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="w-full">
-                    <label class="input-label-tmp">Research Area</label>
+                    <label class="input-label">Research Area</label>
                     <textarea
                         id="researchArea"
                         v-model="myResearchArea"
                         class="w-full"
                         rows="3"
-                        :class="errorBag.hasNested('description') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('description') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('description')" class="input-label-error-tmp">{{
+                    <label v-if="errorBag.hasNested('description')" class="input-label-error">{{
                         errorBag.getNested("description")
                     }}</label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="w-full">
-                    <label class="input-label-tmp">Description</label>
+                    <label class="input-label">Description</label>
                     <textarea
                         id="freeText"
                         v-model="myFreeText"
                         class="w-full"
                         rows="5"
-                        :class="errorBag.hasNested('freeText') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('freeText') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('freeText')" class="input-label-error-tmp">{{ errorBag.getNested("freeText") }}</label>
+                    <label v-if="errorBag.hasNested('freeText')" class="input-label-error">{{ errorBag.getNested("freeText") }}</label>
                 </div>
             </div>
         </div>

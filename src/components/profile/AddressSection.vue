@@ -6,58 +6,58 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Country</label>
+                    <label class="input-label">Country</label>
                     <Select :id="'country'" v-model:elements="countries" v-model:selection="country" :disabled="false" />
-                    <label v-if="errorBag.hasNested('country')" class="input-label-error-tmp">{{ errorBag.getNested("country") }}</label>
+                    <label v-if="errorBag.hasNested('country')" class="input-label-error">{{ errorBag.getNested("country") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">City</label>
+                    <label class="input-label">City</label>
                     <input
                         id="city"
                         v-model="city"
                         type="text"
                         class="w-full"
-                        :class="errorBag.hasNested('city') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('city') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('city')" class="input-label-error-tmp">{{ errorBag.getNested("city") }}</label>
+                    <label v-if="errorBag.hasNested('city')" class="input-label-error">{{ errorBag.getNested("city") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Postal Code</label>
+                    <label class="input-label">Postal Code</label>
                     <input
                         id="zipCode"
                         v-model="zipCode"
                         type="text"
                         class="w-full"
-                        :class="errorBag.hasNested('zipCode') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('zipCode') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('zipCode')" class="input-label-error-tmp">{{ errorBag.getNested("zipCode") }}</label>
+                    <label v-if="errorBag.hasNested('zipCode')" class="input-label-error">{{ errorBag.getNested("zipCode") }}</label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Street</label>
+                    <label class="input-label">Street</label>
                     <input
                         id="street"
                         v-model="street"
                         type="text"
                         class="w-full"
-                        :class="errorBag.hasNested('street') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.hasNested('street') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('street')" class="input-label-error-tmp">{{ errorBag.getNested("street") }}</label>
+                    <label v-if="errorBag.hasNested('street')" class="input-label-error">{{ errorBag.getNested("street") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">House Number</label>
+                    <label class="input-label">House Number</label>
                     <input
                         id="houseNumber"
                         v-model="houseNumber"
                         type="text"
-                        class="w-full input-text-tmp"
-                        :class="errorBag.hasNested('houseNumber') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        class="w-full input-text"
+                        :class="errorBag.hasNested('houseNumber') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('houseNumber')" class="input-label-error-tmp">{{
+                    <label v-if="errorBag.hasNested('houseNumber')" class="input-label-error">{{
                         errorBag.getNested("houseNumber")
                     }}</label>
                 </div>

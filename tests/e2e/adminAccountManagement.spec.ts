@@ -174,37 +174,37 @@ describe("Account creation, edition and deletion", function () {
     it("Show validation errors", () => {
         cy.get("input[id='userName']").type(student.username);
         cy.get("button[id='createAccount']").click();
-        cy.get("div[id='roleSelection']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("div[id='roleSelection']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[type='radio']").eq(1).click();
         cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
         cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
         cy.get("input[id='userName']").clear();
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='userName']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='email']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='phoneNumber']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("input[id='userName']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='email']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='phoneNumber']").siblings().get("label").should("have.class", "input-label-error");
         //TODO include when password is not optional
-        //cy.get("input[id='password']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='firstName']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='lastName']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("div[id='birthdate']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("button[id='country']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='street']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='houseNumber']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='zipCode']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='city']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("textarea[id='researchArea']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("textarea[id='freeText']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        //cy.get("input[id='password']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='firstName']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='lastName']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("div[id='birthdate']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("button[id='country']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='street']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='houseNumber']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='zipCode']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='city']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("textarea[id='researchArea']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("textarea[id='freeText']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[type='radio']").eq(2).click();
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='matriculationId']").siblings().get("label").should("have.class", "input-label-error-tmp");
-        cy.get("input[id='governmentId']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("input[id='matriculationId']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='governmentId']").siblings().get("label").should("have.class", "input-label-error");
     });
 
     it("Duplicate username detected", () => {
         cy.get("input[id='userName']").type("student");
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='userName']").siblings().get("label").should("have.class", "input-label-error-tmp");
+        cy.get("input[id='userName']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='userName']").clear();
     });
     // create student account

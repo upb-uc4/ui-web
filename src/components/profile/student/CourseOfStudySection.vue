@@ -3,19 +3,19 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Matriculation-ID</label>
-                    <input id="matriculationId" :value="matriculationId" type="text" readonly class="w-full input-text-tmp" />
-                    <label v-if="!latest" class="input-label-warning-tmp">You have not yet been matriculated!</label>
+                    <label class="input-label">Matriculation-ID</label>
+                    <input id="matriculationId" :value="matriculationId" type="text" readonly class="w-full input-text" />
+                    <label v-if="!latest" class="input-label-warning">You have not yet been matriculated!</label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div v-if="latest" class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">
+                    <label class="input-label">
                         Latest Immatriculation (
-                        <button id="showHistoryButton" class="btn-tertiary-tmp" @click="showHistory">View History</button>
+                        <button id="showHistoryButton" class="btn-tertiary" @click="showHistory">View History</button>
                         )
                     </label>
-                    <input id="latestImmatriculation" readonly class="w-full input-text-tmp" :value="latest" />
+                    <input id="latestImmatriculation" readonly class="w-full input-text" :value="latest" />
                 </div>
             </div>
         </div>

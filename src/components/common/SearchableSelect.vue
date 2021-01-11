@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <Listbox :model-value="selected" as="div" class="space-y-1">
-            <ListboxLabel v-if="label" class="input-label-tmp">{{ label }} </ListboxLabel>
+            <ListboxLabel v-if="label" class="input-label">{{ label }} </ListboxLabel>
             <div class="relative">
                 <span class="inline-block w-full">
                     <input
@@ -9,7 +9,7 @@
                         v-model="input"
                         type="text"
                         autocomplete="off"
-                        class="w-full input-text-tmp"
+                        class="w-full input-text"
                         @focusin="hidden = false"
                         @focusout="hidden = true"
                     />

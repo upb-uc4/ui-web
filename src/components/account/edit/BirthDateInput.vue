@@ -1,5 +1,5 @@
 <template>
-    <label class="block input-label-tmp">Date of Birth</label>
+    <label class="block input-label">Date of Birth</label>
     <div id="birthdate" class="flex space-x-6">
         <div class="w-1/3">
             <selection :id="'day'" v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />

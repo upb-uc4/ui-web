@@ -1,5 +1,5 @@
 <template>
-    <button id="navigateBack" class="flex items-center mb-4 navigation-link-tmp">
+    <button id="navigateBack" class="flex items-center mb-4 navigation-link">
         <i class="text-xl fas fa-chevron-left" />
         <span class="ml-1 text-sm font-bold" @click="onBackButtonPressed">{{ backButtonText }}</span>
     </button>

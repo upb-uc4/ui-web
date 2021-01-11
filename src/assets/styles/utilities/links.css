@@ -11,7 +11,7 @@
     ReDesign
 */
 
-.navigation-link-tmp {
+.navigation-link {
     @apply cursor-pointer font-medium text-blue-700 transition ease-in-out duration-150
     hover:text-blue-800
     focus:outline-none focus:underline

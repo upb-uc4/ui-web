@@ -8,19 +8,19 @@
                 <div class="w-full">
                     <div v-if="hasCertificate">
                         <div class="flex space-x-4">
-                            <label class="input-label-tmp">Security Certificate</label>
+                            <label class="input-label">Security Certificate</label>
                             <a
                                 id="downloadCertificate"
                                 :href="certificateDownloadURL"
-                                class="text-sm navigation-link-tmp"
+                                class="text-sm navigation-link"
                                 download="certificate.pem"
                             >Download</a>
                         </div>
-                        <textarea id="certificate" v-model="certificate" rows="19" readonly class="w-full input-text-tmp font-mono" />
+                        <textarea id="certificate" v-model="certificate" rows="19" readonly class="w-full input-text font-mono" />
                     </div>
                     <div v-else>
                         <span class="block text-sm text-gray-500"> There are currently no certificates associated with your account. </span>
-                        <button id="createCertificate" class="mt-4 w-48 btn-tmp" @click="createCertificate()">Create Certificate</button>
+                        <button id="createCertificate" class="mt-4 w-48 btn" @click="createCertificate()">Create Certificate</button>
                     </div>
                 </div>
             </div>

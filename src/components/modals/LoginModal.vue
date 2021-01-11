@@ -7,12 +7,12 @@
             <div class="modal-description">Please enter your authentication credentials.</div>
 
             <div class="my-4">
-                <label class="input-label-tmp">Email Address</label>
+                <label class="input-label">Email Address</label>
                 <input
                     id="loginModalEmail"
                     v-model="email"
                     type="text"
-                    :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                    :class="[hasError ? 'input-text-error' : 'input-text']"
                     class="w-full"
                     @input="resetError"
                     @keypress.enter="login"
@@ -20,7 +20,7 @@
             </div>
 
             <div class="mb-2 relative">
-                <label class="input-label-tmp">Password</label>
+                <label class="input-label">Password</label>
                 <i
                     :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                     class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
@@ -30,16 +30,16 @@
                     id="loginModalPassword"
                     v-model="password"
                     :type="passwordFieldType"
-                    :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                    :class="[hasError ? 'input-text-error' : 'input-text']"
                     class="w-full"
                     @input="resetError"
                 />
-                <label v-if="hasError" class="input-label-error-tmp">Wrong username or password!</label>
+                <label v-if="hasError" class="input-label-error">Wrong username or password!</label>
             </div>
         </div>
         <template #footer>
             <button id="loginModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
-            <button id="loginModalConfirm" class="w-24 py-2 px-2 btn-tmp" @click="login">Login</button>
+            <button id="loginModalConfirm" class="w-24 py-2 px-2 btn" @click="login">Login</button>
         </template>
     </modal-no-teleport>
 </template>

@@ -12,7 +12,7 @@
                     You will be automatically redirected back in
                     <span class="text-blue-700 dark:text-blue-600 font-medium">{{ countdown }}s</span>.
                 </div>
-                <button id="redirect" class="mt-6 flex items-center navigation-link-tmp" @click="redirect">
+                <button id="redirect" class="mt-6 flex items-center navigation-link" @click="redirect">
                     <span class="mr-2 text-sm font-bold">Take me back immediately</span>
                     <i class="fas text-sm fa-chevron-right" />
                 </button>

@@ -13,11 +13,11 @@
                 <div>Checking Version...</div>
             </div>
             <div v-else-if="isServiceUnreachable">
-                <span class="navigation-link-tmp">Version not available</span>
+                <span class="navigation-link">Version not available</span>
                 <div>Unreachable</div>
             </div>
             <div v-else>
-                <a :href="changelogURL" class="navigation-link-tmp">Version {{ version }}</a>
+                <a :href="changelogURL" class="navigation-link">Version {{ version }}</a>
                 <div class="dark:text-gray-500">Active</div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="w-full relative flex items-center">
         <i class="absolute left-3 fas fa-search text-gray-600" />
-        <input id="message" v-model="filterMessage" class="w-full px-10 input-text-tmp" type="search" :placeholder="placeholder" />
+        <input id="message" v-model="filterMessage" class="w-full px-10 input-text" type="search" :placeholder="placeholder" />
         <button id="refresh" class="-ml-8 my-1 focus:outline-none" title="Refresh" @click="refresh">
             <i class="inline fas fa-redo-alt text-gray-600 hover:text-gray-700" />
         </button>

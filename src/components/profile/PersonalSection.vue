@@ -6,38 +6,34 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">First Name</label>
+                    <label class="input-label">First Name</label>
                     <input
                         id="firstName"
                         v-model="myFirstName"
                         type="text"
                         :readonly="readonly"
-                        class="w-full input-text-tmp"
-                        :class="errorBag.hasNested('firstName') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        class="w-full input-text"
+                        :class="errorBag.hasNested('firstName') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('firstName')" class="input-label-error-tmp">{{
-                        errorBag.getNested("firstName")
-                    }}</label>
+                    <label v-if="errorBag.hasNested('firstName')" class="input-label-error">{{ errorBag.getNested("firstName") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Last Name</label>
+                    <label class="input-label">Last Name</label>
                     <input
                         id="lastName"
                         v-model="myLastName"
                         type="text"
                         :readonly="readonly"
-                        class="w-full input-text-tmp"
-                        :class="errorBag.hasNested('lastName') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        class="w-full input-text"
+                        :class="errorBag.hasNested('lastName') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('lastName')" class="input-label-error-tmp">{{ errorBag.getNested("lastName") }}</label>
+                    <label v-if="errorBag.hasNested('lastName')" class="input-label-error">{{ errorBag.getNested("lastName") }}</label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <birth-date-input v-model:birth-date="myBirthDate" :disabled="readonly" />
-                    <label v-if="errorBag.hasNested('birthDate')" class="input-label-error-tmp">{{
-                        errorBag.getNested("birthDate")
-                    }}</label>
+                    <label v-if="errorBag.hasNested('birthDate')" class="input-label-error">{{ errorBag.getNested("birthDate") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>

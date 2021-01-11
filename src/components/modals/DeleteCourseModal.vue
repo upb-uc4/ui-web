@@ -11,7 +11,7 @@
 
         <template #footer>
             <button id="deleteCourseModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
-            <button id="deleteCourseModalDelete" class="w-24 py-2 px-2 btn-remove-tmp" @click="close(action.DELETE)">Delete</button>
+            <button id="deleteCourseModalDelete" class="w-24 py-2 px-2 btn-remove" @click="close(action.DELETE)">Delete</button>
         </template>
     </modal>
 </template>

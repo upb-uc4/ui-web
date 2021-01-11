@@ -1,22 +1,22 @@
 
-.input-label-tmp {
-    @apply input-label-base-tmp mb-1 text-gray-800
+.input-label {
+    @apply input-label-base mb-1 text-gray-800
     dark:text-gray-300
 }
 
-.input-label-error-tmp {
-    @apply input-label-feedback-tmp text-red-600
+.input-label-error {
+    @apply input-label-feedback text-red-600
 }
 
-.input-label-warning-tmp {
-    @apply input-label-feedback-tmp text-yellow-500
+.input-label-warning {
+    @apply input-label-feedback text-yellow-500
 }
 
-.input-label-feedback-tmp {
-    @apply input-label-base-tmp mt-1
+.input-label-feedback {
+    @apply input-label-base mt-1
 }
 
-.input-label-base-tmp {
+.input-label-base {
     @apply block text-sm font-medium tracking-wide
 }
 

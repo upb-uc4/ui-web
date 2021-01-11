@@ -39,7 +39,7 @@
                         <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
                             University Credits 4.0 is an educational research project at the
                             <a
-                                class="navigation-link-tmp"
+                                class="navigation-link"
                                 target="_blank"
                                 rel="noreferrer"
                                 href="https://cs.uni-paderborn.de/en/studies/degree-programs/computer-science/"
@@ -47,7 +47,7 @@
                                 Paderborn University</a>. This software is a work in progress prototype of an university management system. It is based on cutting edge
                             blockchain technology to securely ensure privacy and data persistence. If you wish to learn more about us, our
                             vision or the technology we use, pay us a visit at
-                            <a class="navigation-link-tmp" target="_blank" rel="noreferrer" href="https://uc4.cs.uni-paderborn.de/">
+                            <a class="navigation-link" target="_blank" rel="noreferrer" href="https://uc4.cs.uni-paderborn.de/">
                                 uc4.cs.uni-paderborn.de</a>. Starting from April 2020 onwards, continuous support for this project will be provided until Q2 2021.
                         </h3>
                     </div>
@@ -71,8 +71,8 @@
                     <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
                         While we try to provide you with the best user experience possible, it may happen that you find something not
                         working as you would expect it. In this case we kindly ask you to
-                        <a :href="githubIssueURL" class="navigation-link-tmp">create an issue on our GitHub repository</a> and let us know
-                        about it so we can solve the problem in upcoming versions.
+                        <a :href="githubIssueURL" class="navigation-link">create an issue on our GitHub repository</a> and let us know about
+                        it so we can solve the problem in upcoming versions.
                     </h3>
                 </div>
                 <div>

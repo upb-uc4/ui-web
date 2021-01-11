@@ -15,11 +15,11 @@
                             :disabled="editMode"
                             :value="vrole"
                         />
-                        <span class="ml-2 mt-1 input-label-tmp">{{ vrole }}</span>
+                        <span class="ml-2 mt-1 input-label">{{ vrole }}</span>
                     </label>
                 </div>
             </div>
-            <label v-if="errorBag.hasNested('role')" class="input-label-error-tmp">{{ errorBag.getNested("role") }}</label>
+            <label v-if="errorBag.hasNested('role')" class="input-label-error">{{ errorBag.getNested("role") }}</label>
         </div>
     </base-section>
 </template>

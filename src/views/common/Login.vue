@@ -18,19 +18,19 @@
             >
                 <div class="rounded-md shadow-sm">
                     <div class="">
-                        <label class="input-label-tmp">Email Address</label>
+                        <label class="input-label">Email Address</label>
                         <input
                             id="email"
                             v-model="email"
                             autofocus
                             type="text"
-                            :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                            :class="[hasError ? 'input-text-error' : 'input-text']"
                             class="w-full bg-white"
                             @input="resetError"
                         />
                     </div>
                     <div class="mt-6 relative">
-                        <label class="input-label-tmp">Password</label>
+                        <label class="input-label">Password</label>
                         <i
                             :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
                             class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
@@ -40,7 +40,7 @@
                             id="password"
                             v-model="password"
                             :type="passwordFieldType"
-                            :class="[hasError ? 'input-text-error-tmp' : 'input-text-tmp']"
+                            :class="[hasError ? 'input-text-error' : 'input-text']"
                             class="w-full bg-white"
                             @input="resetError"
                         />
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="mt-8">
-                    <button id="login" class="w-full btn-add-tmp" @click="login">Login</button>
+                    <button id="login" class="w-full btn-add" @click="login">Login</button>
                 </div>
             </div>
         </form>

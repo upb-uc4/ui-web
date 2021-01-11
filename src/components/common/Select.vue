@@ -4,12 +4,12 @@
             <div class="relative">
                 <span class="inline-block w-full relative">
                     <div v-if="disabled" class="relative">
-                        <input :id="id" class="w-full input-text-tmp" :value="mySelection" readonly />
+                        <input :id="id" class="w-full input-text" :value="mySelection" readonly />
                     </div>
                     <ListboxButton
                         v-else
                         :id="id"
-                        class="relative input-base-tmp dark:border-normalgray-900 w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
+                        class="relative input-base dark:border-normalgray-900 w-full pr-10 text-left focus:outline-none focus:border-blue-600 transition ease-in-out duration-150"
                     >
                         <span class="block truncate">
                             <span v-if="label" class="text-gray-600 font-medium">

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full rounded-md p-4 whitespace-no-wrap input-text-tmp">
+    <div class="w-full rounded-md p-4 whitespace-no-wrap input-text">
         <div class="flex items-start justify-between">
             <div class="font-medium truncate">{{ semester }}</div>
             <div>

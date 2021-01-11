@@ -26,13 +26,13 @@
         </div>
 
         <div class="mt-2">
-            <div id="courseName" class="text-lg navigation-link-tmp font-bold" @click="editCourse()">
+            <div id="courseName" class="text-lg navigation-link font-bold" @click="editCourse()">
                 {{ course.courseName }}
             </div>
             <router-link
                 id="showLecturer"
                 :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
-                class="mt-1 font-medium text-sm navigation-link-tmp"
+                class="mt-1 font-medium text-sm navigation-link"
             >
                 {{ lecturerDisplayName }}
             </router-link>
@@ -49,7 +49,7 @@
                     <div v-else class="text-gray-500 text-sm italic">No course description available.</div>
                 </div>
                 <div class="w-full sm:w-1/3 flex justify-end">
-                    <button v-if="allowEdit" id="editCourse" class="w-full sm:w-24 mt-6 sm:mt-0 btn-tmp" @click="editCourse()">Edit</button>
+                    <button v-if="allowEdit" id="editCourse" class="w-full sm:w-24 mt-6 sm:mt-0 btn" @click="editCourse()">Edit</button>
                 </div>
             </div>
         </div>

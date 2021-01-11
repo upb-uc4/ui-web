@@ -4,7 +4,7 @@
             <span class="text-sm text-gray-500">
                 {{ formattedString }}
             </span>
-            <span v-show="text.length > maxChars" class="ml-2 navigation-link-tmp uppercase text-xs font-medium tracking-wide">
+            <span v-show="text.length > maxChars" class="ml-2 navigation-link uppercase text-xs font-medium tracking-wide">
                 <span v-show="!isReadMore" id="readMore" class="cursor-pointer" @click="triggerReadMore($event, true)">{{ moreStr }}</span>
                 <span v-show="isReadMore" id="readLess" class="cursor-pointer" @click="triggerReadMore($event, false)">{{ lessStr }}</span>
             </span>

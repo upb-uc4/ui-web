@@ -81,7 +81,7 @@
                     <div class="flex items-center space-x-16">
                         <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
-                            <div class="navigation-link-tmp">Prof. Dr. Mock</div>
+                            <div class="navigation-link">Prof. Dr. Mock</div>
                         </div>
                         <div class="flex space-x-2">
                             <div
@@ -126,7 +126,7 @@
                     <div class="flex items-center space-x-16">
                         <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
-                            <div class="navigation-link-tmp">Prof. Dr. Mock</div>
+                            <div class="navigation-link">Prof. Dr. Mock</div>
                         </div>
                         <div class="flex space-x-2">
                             <div
@@ -171,7 +171,7 @@
                     <div class="flex items-center space-x-16">
                         <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
-                            <div class="navigation-link-tmp">Prof. Dr. Mock</div>
+                            <div class="navigation-link">Prof. Dr. Mock</div>
                         </div>
                         <div class="flex space-x-2">
                             <div
@@ -216,7 +216,7 @@
                     <div class="flex items-center space-x-16">
                         <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
-                            <div class="navigation-link-tmp">Prof. Dr. Mock</div>
+                            <div class="navigation-link">Prof. Dr. Mock</div>
                         </div>
                         <div class="flex space-x-2">
                             <div
@@ -261,7 +261,7 @@
                     <div class="flex items-center space-x-16">
                         <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
-                            <div class="navigation-link-tmp">Prof. Dr. Mock</div>
+                            <div class="navigation-link">Prof. Dr. Mock</div>
                         </div>
                         <div class="flex space-x-2">
                             <div
@@ -306,7 +306,7 @@
                     <div class="flex items-center space-x-16">
                         <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
-                            <div class="navigation-link-tmp">Prof. Dr. Mock</div>
+                            <div class="navigation-link">Prof. Dr. Mock</div>
                         </div>
                         <div class="flex space-x-2">
                             <div
@@ -351,7 +351,7 @@
                     <div class="flex items-center space-x-16">
                         <div class="hidden lg:block">
                             <div class="text-xs text-gray-500">created by</div>
-                            <div class="navigation-link-tmp">Prof. Dr. Mock</div>
+                            <div class="navigation-link">Prof. Dr. Mock</div>
                         </div>
                         <div class="flex space-x-2">
                             <div

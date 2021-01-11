@@ -3,7 +3,7 @@
         <loading-spinner v-if="isLoading" title="Loading Modules..." />
         <div v-else class="space-y-6">
             <div class="w-full">
-                <label class="input-label-tmp">Examination Regulation</label>
+                <label class="input-label">Examination Regulation</label>
                 <selection
                     :id="'exReg'"
                     v-model:selection="selectedExaminationRegulation"

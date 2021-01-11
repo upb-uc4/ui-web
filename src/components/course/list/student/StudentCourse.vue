@@ -26,13 +26,13 @@
         </div>
 
         <div class="mt-2">
-            <div id="courseName" class="text-lg navigation-link-tmp font-bold" @click="editCourse()">
+            <div id="courseName" class="text-lg navigation-link font-bold" @click="editCourse()">
                 {{ course.courseName }}
             </div>
             <router-link
                 id="showLecturer"
                 :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
-                class="mt-1 font-medium text-sm navigation-link-tmp"
+                class="mt-1 font-medium text-sm navigation-link"
             >
                 {{ lecturerDisplayName }}
             </router-link>
@@ -49,8 +49,8 @@
                     <div v-else class="text-gray-500 text-sm italic">No course description available.</div>
                 </div>
                 <div class="w-full sm:w-1/3 mt-6 sm:mt-0 flex justify-end">
-                    <button v-if="!isCourseFull" id="joinCourse" class="w-full sm:w-24 btn-tmp">Join</button>
-                    <p v-else class="w-full sm:text-right input-label-error-tmp">Course is already full.</p>
+                    <button v-if="!isCourseFull" id="joinCourse" class="w-full sm:w-24 btn">Join</button>
+                    <p v-else class="w-full sm:text-right input-label-error">Course is already full.</p>
                 </div>
             </div>
         </div>

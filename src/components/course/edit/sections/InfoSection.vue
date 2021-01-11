@@ -3,15 +3,15 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label for="courseName" class="input-label-tmp">Course Name</label>
+                    <label for="courseName" class="input-label">Course Name</label>
                     <input
                         id="courseName"
                         v-model="myName"
                         type="text"
                         class="w-full"
-                        :class="errorBag.has('courseName') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.has('courseName') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.has('courseName')" for="courseName" class="input-label-error-tmp">
+                    <label v-if="errorBag.has('courseName')" for="courseName" class="input-label-error">
                         {{ errorBag.get("courseName") }}
                     </label>
                 </div>
@@ -19,32 +19,32 @@
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Type</label>
+                    <label class="input-label">Type</label>
                     <Select :id="'courseType'" v-model:selection="myType" :elements="availableTypes" />
-                    <label v-if="errorBag.has('courseType')" class="input-label-error-tmp">
+                    <label v-if="errorBag.has('courseType')" class="input-label-error">
                         {{ errorBag.get("courseType") }}
                     </label>
                 </div>
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">ECTS</label>
+                    <label class="input-label">ECTS</label>
                     <input
                         id="ects"
                         v-model.number="myEcts"
                         min="0"
                         type="number"
                         class="lg:w-32 w-full"
-                        :class="errorBag.has('ects') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.has('ects') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.has('ects')" for="ects" class="input-label-error-tmp">
+                    <label v-if="errorBag.has('ects')" for="ects" class="input-label-error">
                         {{ errorBag.get("ects") }}
                     </label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label-tmp">Language</label>
+                    <label class="input-label">Language</label>
                     <Select :id="'courseLanguage'" v-model:selection="myLanguage" :elements="availableLanguages" />
-                    <label v-if="errorBag.has('courseLanguage')" class="input-label-error-tmp">
+                    <label v-if="errorBag.has('courseLanguage')" class="input-label-error">
                         {{ errorBag.get("courseLanguage") }}
                     </label>
                 </div>
@@ -52,15 +52,15 @@
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="w-full">
-                    <label for="courseDescription" class="input-label-tmp">Course Description</label>
+                    <label for="courseDescription" class="input-label">Course Description</label>
                     <textarea
                         id="courseDescription"
                         v-model="myDescription"
                         rows="5"
                         class="w-full"
-                        :class="errorBag.has('courseDescription') ? 'input-text-error-tmp' : 'input-text-tmp'"
+                        :class="errorBag.has('courseDescription') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.has('courseDescription')" for="courseDescription" class="input-label-error-tmp">
+                    <label v-if="errorBag.has('courseDescription')" for="courseDescription" class="input-label-error">
                         {{ errorBag.get("courseDescription") }}
                     </label>
                 </div>
