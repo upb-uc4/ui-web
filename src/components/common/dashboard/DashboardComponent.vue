@@ -4,7 +4,7 @@
         <div class="sm:mt-8 flex justify-center">
             <div class="w-full max-w-4xl">
                 <operation-list
-                    :username="username"
+                    :enrollment-id="enrollmentId"
                     :role="role"
                     :operations="operations"
                     :is-archive="isArchive"
@@ -32,7 +32,7 @@
                 type: Array,
                 required: true,
             },
-            username: {
+            enrollmentId: {
                 type: String,
                 required: true,
             },

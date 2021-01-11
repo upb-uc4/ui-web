@@ -4,7 +4,7 @@
             <div v-for="operation in operations" :key="operation.operationId">
                 <div class="mt-2">
                     <operation-component
-                        :username="username"
+                        :enrollment-id="enrollmentId"
                         :role="role"
                         :operation="operation"
                         :is-archive="isArchive"
@@ -33,7 +33,7 @@
                 type: Array as () => Operation[],
                 required: true,
             },
-            username: {
+            enrollmentId: {
                 type: String,
                 required: true,
             },

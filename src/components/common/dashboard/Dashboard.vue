@@ -10,7 +10,7 @@
         <div class="w-full my-5 lg:flex lg:justify-between">
             <dashboard-component
                 class="lg:mr-5 lg:w-1/2"
-                :username="username"
+                :enrollment-id="enrollmentId"
                 :role="role"
                 :operations="finishedOperations"
                 title="Finished Operations"
@@ -18,13 +18,13 @@
             />
             <dashboard-component
                 class="mt-5 lg:mt-0 lg:w-1/2"
-                :username="username"
+                :enrollment-id="enrollmentId"
                 :role="role"
                 :operations="actionNeededOperations"
                 title="Action Required"
             />
         </div>
-        <dashboard-component :username="username" :role="role" :operations="pendingOwnOperations" title="Pending Operations" />
+        <dashboard-component :enrollment-id="enrollmentId" :role="role" :operations="pendingOwnOperations" title="Pending Operations" />
     </div>
 </template>
 
@@ -51,8 +51,8 @@
             const message = ref("");
             const operations = ref([] as Operation[]);
             const store = useStore();
-            const username = ref("");
             const role = ref("");
+            const enrollmentId = ref("");
 
             let mockedOps = [
                 {
@@ -73,7 +73,7 @@
                     } as ApprovalList,
                     missingApprovals: {
                         users: [],
-                        groups: ["admin"],
+                        groups: ["Admin"],
                     } as ApprovalList,
                 } as Operation,
                 {
@@ -90,16 +90,16 @@
                     reason: "",
                     existingApprovals: {
                         users: [],
-                        groups: ["lecturer"],
+                        groups: ["Lecturer"],
                     } as ApprovalList,
                     missingApprovals: {
                         users: [],
-                        groups: ["admin"],
+                        groups: ["Admin"],
                     } as ApprovalList,
                 } as Operation,
                 {
                     operationId: "RejectedMatriculation1",
-                    initiator: "MockUser3",
+                    initiator: "MockUser5",
                     initiatedTimestamp: "2011-10-05T14:48:00.000Z",
                     lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
                     transactionInfo: {
@@ -115,7 +115,7 @@
                     } as ApprovalList,
                     missingApprovals: {
                         users: [],
-                        groups: ["admin"],
+                        groups: ["Admin"],
                     } as ApprovalList,
                 } as Operation,
                 {
@@ -132,7 +132,7 @@
                     reason: "",
                     existingApprovals: {
                         users: [],
-                        groups: ["admin"],
+                        groups: ["Admin"],
                     } as ApprovalList,
                     missingApprovals: {
                         users: [],
@@ -143,8 +143,9 @@
 
             onBeforeMount(async () => {
                 await refresh();
-                //username.value = (await store.getters.user).username;
-                //role.value = (await store.getters.user).role;
+                enrollmentId.value = "MockUser5";
+                //enrollmentId.value = await something from store
+                await getRole();
             });
 
             async function refresh() {
@@ -154,6 +155,11 @@
                 busy.value = false;
             }
 
+            async function getRole() {
+                busy.value = true;
+                role.value = (await store.getters.user).role;
+                busy.value = false;
+            }
             const filteredOperations = computed(() => {
                 let filter = message.value.replace(/\s/g, "").toLowerCase();
                 if (filter != "") {
@@ -167,7 +173,7 @@
             });
 
             const pendingOwnOperations = computed(() =>
-                filteredOperations.value.filter((op) => op.state == OperationStatus.PENDING && op.initiator == username.value)
+                filteredOperations.value.filter((op) => op.state == OperationStatus.PENDING && op.initiator == enrollmentId.value)
             );
             const finishedOperations = computed(() =>
                 filteredOperations.value.filter((op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED)
@@ -176,14 +182,12 @@
                 filteredOperations.value.filter(
                     (op) =>
                         op.state == OperationStatus.PENDING &&
-                        (op.missingApprovals.users.includes(username.value) || op.missingApprovals.groups.includes(role.value))
+                        (op.missingApprovals.users.includes(enrollmentId.value) || op.missingApprovals.groups.includes(role.value))
                 )
             );
             async function getOperations() {
                 //TODO API
                 operations.value = mockedOps;
-                username.value = "MockUser5";
-                role.value = "admin";
             }
 
             async function markRead(operationId: string) {
@@ -198,7 +202,7 @@
                 pendingOwnOperations,
                 finishedOperations,
                 actionNeededOperations,
-                username,
+                enrollmentId,
                 role,
                 message,
                 getOperations,

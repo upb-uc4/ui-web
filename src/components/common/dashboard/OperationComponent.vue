@@ -6,8 +6,15 @@
     >
         <div class="flex w-full items-center justify-between sm:justify-start mb-4">
             <div class="w-full sm:flex sm:items-center">
-                <div class="flex">
-                    <div class="text-xs font-semiboldtext-gray-600 uppercase">{{ type }}</div>
+                <div class="flex items-center">
+                    <i
+                        v-if="!isMyOperation"
+                        class="text-md text-blue-500 far fa-bookmark cursor-pointer"
+                        :class="{ 'fas fa-bookmark': isWatched }"
+                        :title="isWatched ? 'Unwatch' : 'Watch'"
+                        @click.stop="toggleWatch"
+                    ></i>
+                    <div class="ml-1 text-xs font-semiboldtext-gray-600 uppercase">{{ type }}</div>
                     <span
                         class="ml-4 inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase rounded-full"
                         :class="statusColor"
@@ -70,19 +77,12 @@
             <div v-if="showDetails" class="flex flex-col w-full mt-4">
                 <div class="flex flex-wrap mb-4">
                     <div class="flex flex-col items-start">
-                        <div class="flex mt-1">
-                            <p class="mr-2">Initiator:</p>
-                            <router-link
-                                id="showLecturer"
-                                :to="{ name: 'profile.public', params: { username: operation.initiator } }"
-                                class="navigation-link hover:cursor-pointer hover:underline"
-                            >
-                                {{ operation.initiator }}
-                            </router-link>
-                        </div>
+                        <p v-if="!isMyOperation" class="mt-1">Initiator-ID: {{ operation.initiator }}</p>
                         <div class="flex flex-row text-sm">
                             <p class="mr-1">Desired {{ type }}:</p>
-                            <p v-for="param in operation.transactionInfo.parameters" :key="param" class="ml-4">{{ param }}</p>
+                            <div class="lg:flex">
+                                <p v-for="param in operation.transactionInfo.parameters" :key="param" class="ml-4">{{ param }}</p>
+                            </div>
                         </div>
                         <div v-if="isRejected" class="mt-1">
                             <p class="text-red-500">Rejected: {{ operation.reason }}</p>
@@ -135,7 +135,7 @@
                 type: Object as () => Operation,
                 required: true,
             },
-            username: {
+            enrollmentId: {
                 type: String,
                 required: true,
             },
@@ -162,13 +162,18 @@
             const isPending = operation.value.state === OperationStatus.PENDING;
             const isFinished = operation.value.state === OperationStatus.FINISHED || isRejected;
             const actionRequired =
-                operation.value.missingApprovals.users.includes(props.username) ||
-                operation.value.missingApprovals.groups.includes(props.role);
+                (operation.value.missingApprovals.users.includes(props.enrollmentID) ||
+                    operation.value.missingApprovals.groups.includes(props.role)) &&
+                !isRejected;
+
             const sentApprove = ref(store.getters.treatedOperations.approved.includes(operation.value.operationId));
             const sentReject = ref(store.getters.treatedOperations.rejected.includes(operation.value.operationId));
             const provideReason = ref(false);
             const selectedReason = ref("");
             const writtenReason = ref("");
+            const isMyOperation = operation.value.initiator === props.enrollmentId;
+
+            const isWatched = ref(!isMyOperation && !actionRequired);
 
             const dateFormatOptions = {
                 weekday: "short",
@@ -211,6 +216,7 @@
 
             async function approve() {
                 //TODO API Call
+                //TODO Set watch
                 //If success
                 store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                 sentApprove.value = true;
@@ -228,6 +234,7 @@
 
             async function reject() {
                 //TODO API Call with reason
+                //TODO Set watch
                 //If success
                 store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                 sentReject.value = true;
@@ -246,6 +253,11 @@
                 if (!provideReason.value) {
                     showDetails.value = !showDetails.value;
                 }
+            }
+
+            function toggleWatch() {
+                //TODO Set watch
+                isWatched.value = !isWatched.value;
             }
 
             return {
@@ -272,6 +284,9 @@
                 RejectionReasons,
                 showDetails,
                 toggleDetails,
+                toggleWatch,
+                isWatched,
+                isMyOperation,
             };
         },
     };
