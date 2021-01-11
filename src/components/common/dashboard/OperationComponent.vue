@@ -28,7 +28,7 @@
                     <i class="fas fa-check"></i>
                 </button>
             </div>
-            <button class="text-sm text-gray-700 pt-1 pr-2" :title="showDetails ? 'Hide Details' : 'Show Details'">
+            <button class="text-sm text-gray-700 pt-1 pr-2" :title="showDetails ? 'Collapse' : 'Expand'">
                 <i
                     v-if="showDetails"
                     :disabled="provideReason"
@@ -239,6 +239,10 @@
             }
 
             function toggleDetails() {
+                //do not expand/collapse if user selects text from the operation
+                if (window.getSelection()?.toString() != "") {
+                    return;
+                }
                 if (!provideReason.value) {
                     showDetails.value = !showDetails.value;
                 }
