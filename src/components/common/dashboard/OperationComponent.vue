@@ -72,13 +72,13 @@
                     <div class="flex flex-col items-start">
                         <div class="flex mt-1">
                             <p class="mr-2">Initiator:</p>
-                            <button
+                            <router-link
                                 id="showLecturer"
                                 :to="{ name: 'profile.public', params: { username: operation.initiator } }"
                                 class="navigation-link hover:cursor-pointer hover:underline"
                             >
                                 {{ operation.initiator }}
-                            </button>
+                            </router-link>
                         </div>
                         <div class="flex flex-row text-sm">
                             <p class="mr-1">Desired {{ type }}:</p>
