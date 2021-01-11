@@ -13,10 +13,10 @@
                 >
                     {{ operation.state }}
                 </span>
-                <div v-if="!isPending" class="flex items-center">
-                    <div v-if="!isRejected" class="flex ml-6" title="Approvals">
+                <div class="flex items-center">
+                    <div v-if="!isRejected" class="flex ml-6" :title="'Approvals (' + missingApprovals + ' missing)'">
                         <i v-for="index in approvals" :key="index" class="text-sm text-green-400 far fa-check-circle"></i>
-                        <i v-for="index in neededApprovals - approvals" :key="index" class="text-sm text-green-400 far fa-circle"></i>
+                        <i v-for="index in missingApprovals" :key="index" class="text-sm text-green-400 far fa-circle"></i>
                     </div>
                 </div>
             </div>
@@ -150,6 +150,7 @@
             const approvals = operation.value.existingApprovals.users.length + operation.value.existingApprovals.groups.length;
             const neededApprovals =
                 approvals + operation.value.missingApprovals.users.length + operation.value.missingApprovals.groups.length;
+            const missingApprovals = neededApprovals - approvals;
 
             const isRejected = operation.value.state === OperationStatus.REJECTED;
             const isPending = operation.value.state === OperationStatus.PENDING;
@@ -230,6 +231,7 @@
                 type,
                 approvals,
                 neededApprovals,
+                missingApprovals,
                 isRejected,
                 isFinished,
                 actionRequired,
