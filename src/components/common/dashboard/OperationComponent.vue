@@ -5,19 +5,22 @@
         @click="toggleDetails"
     >
         <div class="flex w-full items-center justify-between sm:justify-start mb-4">
-            <div class="w-full flex">
-                <div class="text-xs font-semiboldtext-gray-600 uppercase">{{ type }}</div>
-                <span
-                    class="ml-4 inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase rounded-full"
-                    :class="statusColor"
-                >
-                    {{ operation.state }}
-                </span>
-                <div class="flex items-center">
-                    <div v-if="!isRejected" class="flex ml-6" :title="'Approvals (' + missingApprovals + ' missing)'">
+            <div class="w-full sm:flex sm:items-center">
+                <div class="flex">
+                    <div class="text-xs font-semiboldtext-gray-600 uppercase">{{ type }}</div>
+                    <span
+                        class="ml-4 inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase rounded-full"
+                        :class="statusColor"
+                    >
+                        {{ operation.state }}
+                    </span>
+                </div>
+                <div class="flex items-center sm:ml-6">
+                    <div v-if="!isRejected" class="flex mr-1" :title="'Approvals (' + missingApprovals + ' missing)'">
                         <i v-for="index in approvals" :key="index" class="text-sm text-green-400 far fa-check-circle"></i>
                         <i v-for="index in missingApprovals" :key="index" class="text-sm text-green-400 far fa-circle"></i>
                     </div>
+                    <label class="text-xs text-gray-600">(updated: {{ lastUpdateTimestamp }})</label>
                 </div>
             </div>
             <div v-if="!isArchive && isFinished" class="pr-2">
@@ -37,7 +40,10 @@
         </div>
         <div class="flex flex-col w-full">
             <div class="flex flex-auto w-full">
-                <label id="opName" class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{ operation.operationId }}</label>
+                <div class="flex flex-col">
+                    <label id="opName" class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{ operation.operationId }}</label>
+                    <label class="mt-1 text-xs text-gray-600">Initiated: {{ initiatedTimestamp }}</label>
+                </div>
                 <div v-if="actionRequired && isPending" class="w-full flex justify-end items-baseline">
                     <button
                         :id="'op_' + operation.operationId + '_approve'"
@@ -164,6 +170,18 @@
             const selectedReason = ref("");
             const writtenReason = ref("");
 
+            const dateFormatOptions = {
+                weekday: "short",
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            };
+
+            const initiatedTimestamp = new Date(operation.value.initiatedTimestamp).toLocaleString("en-US", dateFormatOptions);
+            const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-US", dateFormatOptions);
+
             const showDetails = ref(false);
 
             const type = computed(() => {
@@ -230,6 +248,8 @@
                 statusColor,
                 type,
                 approvals,
+                initiatedTimestamp,
+                lastUpdateTimestamp,
                 neededApprovals,
                 missingApprovals,
                 isRejected,

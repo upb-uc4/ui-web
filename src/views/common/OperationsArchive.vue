@@ -67,6 +67,8 @@
                 {
                     operationId: "RejectedMatriculation1",
                     initiator: "MockUser3",
+                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
+                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
                     transactionInfo: {
                         contractName: UC4Identifier.CONTRACT_MATRICULATION,
                         transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
@@ -86,6 +88,8 @@
                 {
                     operationId: "FinishedMatriculation1",
                     initiator: "MockUser4",
+                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
+                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
                     transactionInfo: {
                         contractName: UC4Identifier.CONTRACT_MATRICULATION,
                         transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
