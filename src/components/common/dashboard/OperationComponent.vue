@@ -75,7 +75,7 @@
                             </button>
                         </div>
                         <div class="flex flex-row text-sm">
-                            <p class="mr-1">Desired Matriculation:</p>
+                            <p class="mr-1">Desired {{ type }}:</p>
                             <p v-for="param in operation.transactionInfo.parameters" :key="param" class="ml-4">{{ param }}</p>
                         </div>
                         <div v-if="isRejected" class="mt-1">
@@ -122,7 +122,7 @@
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 
     export default {
-        name: "MatriculatioOperationComponent",
+        name: "OperationComponent",
         components: {},
         props: {
             operation: {

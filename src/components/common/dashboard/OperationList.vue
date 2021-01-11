@@ -3,7 +3,7 @@
         <div v-if="operations.length">
             <div v-for="operation in operations" :key="operation.operationId">
                 <div class="mt-2">
-                    <matriculation-operation-component
+                    <operation-component
                         :username="username"
                         :role="role"
                         :operation="operation"
@@ -21,12 +21,12 @@
 
 <script lang="ts">
     import Operation from "@/api/api_models/operations_management/Operation";
-    import MatriculationOperationComponent from "@/components/common/dashboard/MatriculationOperationComponent.vue";
+    import OperationComponent from "@/components/common/dashboard/OperationComponent.vue";
 
     export default {
         name: "OperationList",
         components: {
-            MatriculationOperationComponent,
+            OperationComponent,
         },
         props: {
             operations: {
