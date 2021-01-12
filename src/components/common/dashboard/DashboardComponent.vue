@@ -8,6 +8,7 @@
                     :role="role"
                     :operations="operations"
                     :is-archive="isArchive"
+                    :watched-operations="watchedOperations"
                     @marked-read="markRead"
                 />
             </div>
@@ -44,6 +45,11 @@
                 type: Boolean,
                 required: false,
                 default: false,
+            },
+            watchedOperations: {
+                type: Array,
+                required: false,
+                default: () => [],
             },
         },
         emits: ["marked-read"],

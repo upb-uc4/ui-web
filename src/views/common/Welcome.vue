@@ -8,7 +8,7 @@
         <div class="w-full flex items-start mt-10">
             <label class="text-sm text-gray-700">Note: You can find a complete archive of your operations
                 <router-link
-                    id="showLecturer"
+                    id="showOperationsArchive"
                     :to="{ name: 'operations.archive' }"
                     class="navigation-link hover:cursor-pointer hover:underline"
                 >

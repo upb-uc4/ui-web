@@ -8,6 +8,7 @@
                         :role="role"
                         :operation="operation"
                         :is-archive="isArchive"
+                        :watched="isWatched(operation)"
                         @marked-read="markRead"
                     />
                 </div>
@@ -46,6 +47,11 @@
                 required: false,
                 default: false,
             },
+            watchedOperations: {
+                type: Array,
+                required: false,
+                default: () => [],
+            },
         },
         emits: ["marked-read"],
         setup(props: any, { emit }: any) {
@@ -53,8 +59,13 @@
                 emit("marked-read", id);
             }
 
+            function isWatched(operation: Operation) {
+                return (props.watchedOperations as Operation[]).find((op) => op.operationId === operation.operationId) != undefined;
+            }
+
             return {
                 markRead,
+                isWatched,
             };
         },
     };

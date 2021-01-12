@@ -13,6 +13,7 @@
                 :enrollment-id="enrollmentId"
                 :role="role"
                 :operations="finishedOperations"
+                :watched-operations="watchedOperations"
                 title="Finished Operations"
                 @marked-read="markRead"
             />
@@ -24,7 +25,14 @@
                 title="Action Required"
             />
         </div>
-        <dashboard-component :enrollment-id="enrollmentId" :role="role" :operations="pendingOwnOperations" title="Pending Operations" />
+        <dashboard-component
+            :watched-operations="watchedOperations"
+            :enrollment-id="enrollmentId"
+            :role="role"
+            :operations="pendingOwnOperations"
+            title="Pending Operations"
+        />
+        <button v-if="isAdmin" class="btn btn-blue-primary mt-8 p-2" @click="routeAllOperationsPage">Show all operations</button>
     </div>
 </template>
 
@@ -38,6 +46,8 @@
     import { useStore } from "@/use/store/store";
     import SeachBar from "@/components/common/SearchBar.vue";
     import { MutationTypes } from "@/use/store/mutation-types";
+    import { Role } from "@/entities/Role";
+    import Router from "@/use/router";
 
     export default {
         name: "Dashboard",
@@ -50,6 +60,7 @@
             const busy = ref(false);
             const message = ref("");
             const operations = ref([] as Operation[]);
+            const watchedOperations = ref([] as Operation[]);
             const store = useStore();
             const role = ref("");
             const enrollmentId = ref("");
@@ -141,11 +152,39 @@
                 } as Operation,
             ];
 
+            let mockedWatchedOps = [
+                {
+                    operationId: "FinishedMatriculation1",
+                    initiator: "MockUser4",
+                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
+                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
+                    transactionInfo: {
+                        contractName: UC4Identifier.CONTRACT_MATRICULATION,
+                        transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
+                        parameters: ["SS2020", "Computer Science v3"],
+                    },
+                    state: OperationStatus.FINISHED,
+                    reason: "",
+                    existingApprovals: {
+                        users: [],
+                        groups: ["Admin"],
+                    } as ApprovalList,
+                    missingApprovals: {
+                        users: [],
+                        groups: [],
+                    } as ApprovalList,
+                } as Operation,
+            ];
+
             onBeforeMount(async () => {
                 await refresh();
                 enrollmentId.value = "MockUser5";
                 //enrollmentId.value = await something from store
                 await getRole();
+            });
+
+            const isAdmin = computed(() => {
+                return role.value == Role.ADMIN;
             });
 
             async function refresh() {
@@ -187,6 +226,7 @@
             );
             async function getOperations() {
                 //TODO API
+                watchedOperations.value = mockedWatchedOps;
                 operations.value = mockedOps;
             }
 
@@ -196,9 +236,14 @@
                 operations.value = operations.value.filter((op) => op.operationId !== operationId);
             }
 
+            function routeAllOperationsPage() {
+                Router.push({ name: "operations.all" });
+            }
+
             return {
                 busy,
                 operations,
+                watchedOperations,
                 pendingOwnOperations,
                 finishedOperations,
                 actionNeededOperations,
@@ -208,6 +253,8 @@
                 getOperations,
                 markRead,
                 refresh,
+                isAdmin,
+                routeAllOperationsPage,
             };
         },
     };

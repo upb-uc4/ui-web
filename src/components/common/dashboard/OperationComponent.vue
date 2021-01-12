@@ -8,7 +8,7 @@
             <div class="w-full sm:flex sm:items-center">
                 <div class="flex items-center">
                     <i
-                        v-if="!isMyOperation"
+                        v-if="showWatchOption"
                         class="text-md text-blue-500 far fa-bookmark cursor-pointer"
                         :class="{ 'fas fa-bookmark': isWatched }"
                         :title="isWatched ? 'Unwatch' : 'Watch'"
@@ -148,6 +148,10 @@
                 required: false,
                 default: false,
             },
+            watched: {
+                type: Boolean,
+                required: false,
+            },
         },
         emits: ["marked-read"],
         setup(props: any, { emit }: any) {
@@ -171,9 +175,10 @@
             const provideReason = ref(false);
             const selectedReason = ref("");
             const writtenReason = ref("");
-            const isMyOperation = operation.value.initiator === props.enrollmentId;
+            const isMyOperation = operation.value.initiator == props.enrollmentId;
+            const showWatchOption = !isMyOperation && !props.isArchive;
 
-            const isWatched = ref(!isMyOperation && !actionRequired);
+            const isWatched = ref(props.watched);
 
             const dateFormatOptions = {
                 weekday: "short",
@@ -286,6 +291,7 @@
                 toggleDetails,
                 toggleWatch,
                 isWatched,
+                showWatchOption,
                 isMyOperation,
             };
         },
