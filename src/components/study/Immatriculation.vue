@@ -165,7 +165,7 @@
                 const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
-                await updateMatriculation(enrollmentId.id, username.value, matriculationEntries);
+                await updateMatriculation(enrollmentId.id, matriculationEntries);
 
                 busy.value--;
                 refreshKey.value = !refreshKey.value;

@@ -23,14 +23,11 @@ export default class MatriculationManagement extends CommonHyperledger {
      * @param username username of student to matriculate
      * @param matriculation matriculation data
      */
-    async getUnsignedMatriculationProposal(
-        username: string,
-        matriculation: SubjectMatriculation[]
-    ): Promise<APIResponse<UnsignedProposalMessage>> {
+    async getUnsignedMatriculationProposal(matriculation: SubjectMatriculation[]): Promise<APIResponse<UnsignedProposalMessage>> {
         let payload = { matriculation: matriculation };
 
         return await this._axios
-            .post(`/matriculation/${username}/unsigned_proposal`, payload)
+            .post(`/matriculation/unsigned_proposal`, payload)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -49,7 +46,7 @@ export default class MatriculationManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUnsignedMatriculationProposal(username, matriculation);
+                        return await this.getUnsignedMatriculationProposal(matriculation);
                     }
                     return {
                         statusCode: error.response.status,
@@ -68,12 +65,9 @@ export default class MatriculationManagement extends CommonHyperledger {
             });
     }
 
-    async submitSignedMatriculationProposal(
-        username: string,
-        message: SignedProposalMessage
-    ): Promise<APIResponse<UnsignedTransactionMessage>> {
+    async submitSignedMatriculationProposal(message: SignedProposalMessage): Promise<APIResponse<UnsignedTransactionMessage>> {
         return await this._axios
-            .post(`/matriculation/${username}/signed_proposal`, message)
+            .post(`/matriculation/signed_proposal`, message)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -92,7 +86,7 @@ export default class MatriculationManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedMatriculationProposal(username, message);
+                        return await this.submitSignedMatriculationProposal(message);
                     }
                     return {
                         statusCode: error.response.status,
@@ -111,9 +105,9 @@ export default class MatriculationManagement extends CommonHyperledger {
             });
     }
 
-    async submitSignedMatriculationTransaction(username: string, message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
+    async submitSignedMatriculationTransaction(message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
         return await this._axios
-            .post(`/matriculation/${username}/signed_transaction`, message)
+            .post(`/matriculation/signed_transaction`, message)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -132,7 +126,7 @@ export default class MatriculationManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedMatriculationTransaction(username, message);
+                        return await this.submitSignedMatriculationTransaction(message);
                     }
                     return {
                         statusCode: error.response.status,
@@ -153,7 +147,7 @@ export default class MatriculationManagement extends CommonHyperledger {
 
     async getMatriculationHistory(username: string): Promise<APIResponse<MatriculationData>> {
         return await this._axios
-            .get(`/history/${username}`)
+            .get(`/matriculation/${username}`)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data as MatriculationData,

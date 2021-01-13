@@ -8,6 +8,9 @@ export default interface Operation {
         transactionName: UC4Identifier;
         parameters: string[];
     };
+    initiator: string;
+    initiatedTimestamp: string;
+    lastModifiedTimestamp: string;
     state: OperationStatus;
     reason: string;
     existingApprovals: ApprovalList;

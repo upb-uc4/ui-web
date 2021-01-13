@@ -4,6 +4,8 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import OperationManagement from "@/api/OperationManagement";
+import GroupManagement from "@/api/GroupManagement";
 
 jest.useFakeTimers();
 jest.setTimeout(30000);
@@ -52,6 +54,26 @@ test("exam regulations service version", async () => {
     expect(version).not.toEqual("unavailable");
 
     const hyperledgerVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
+    expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
+    expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
+});
+
+test("operation service version", async () => {
+    const version = await OperationManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+
+    const hyperledgerVersion = await OperationManagement.getHyperledgerVersion();
+    expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
+    expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
+});
+
+test("group service version", async () => {
+    const version = await GroupManagement.getVersion();
+
+    expect(version).not.toEqual("unavailable");
+
+    const hyperledgerVersion = await GroupManagement.getHyperledgerVersion();
     expect(hyperledgerVersion.chaincodeVersion).not.toBe(undefined);
     expect(hyperledgerVersion.hlfApiVersion).not.toBe(undefined);
 });

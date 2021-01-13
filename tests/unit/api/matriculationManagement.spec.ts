@@ -107,7 +107,7 @@ describe("Matriculation management", () => {
     test("Update matriculation", async () => {
         matriculation = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
-        const result = await updateMatriculation(enrollmentId, authUser.username, matriculation, protoURL);
+        const result = await updateMatriculation(enrollmentId, matriculation, protoURL);
 
         expect(result).toBe(true);
     });

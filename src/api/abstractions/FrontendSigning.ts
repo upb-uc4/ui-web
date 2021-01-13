@@ -20,10 +20,10 @@ import { decodeProposal } from "../helpers/ProtobuffDecoding";
 import { decodeTransaction } from "../helpers/TransactionDecoding";
 import { matriculationTransactionValidator } from "../helpers/TransactionValidator";
 import MatriculationManagement from "../MatriculationManagement";
+import OperationManagement from "../OperationManagement";
 
 export async function updateMatriculation(
     enrollmentId: string,
-    username: string,
     matriculation: SubjectMatriculation[],
     protoUrl?: string
 ): Promise<boolean> {
@@ -34,7 +34,7 @@ export async function updateMatriculation(
 
     return await abstractHandler(
         async () => {
-            return await matriculationManagement.getUnsignedMatriculationProposal(username, matriculation);
+            return await matriculationManagement.getUnsignedMatriculationProposal(matriculation);
         },
         (arg: APIResponse<UnsignedProposalMessage>) => {
             return handler.handleResponse(arg);
@@ -43,7 +43,7 @@ export async function updateMatriculation(
             return validateMatriculationProposal(payload, enrollmentId, matriculation);
         },
         async (message: SignedProposalMessage) => {
-            return await matriculationManagement.submitSignedMatriculationProposal(username, message);
+            return await matriculationManagement.submitSignedMatriculationProposal(message);
         },
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler.handleResponse(response);
@@ -52,13 +52,38 @@ export async function updateMatriculation(
             return matriculationTransactionValidator(enrollmentId, matriculation, transaction);
         },
         async (message: SignedTransactionMessage) => {
-            return await matriculationManagement.submitSignedMatriculationTransaction(username, message);
+            return await matriculationManagement.submitSignedMatriculationTransaction(message);
         },
         (response: APIResponse<boolean>) => {
             return genericHandler.handleResponse(response);
         },
         protoUrl
     );
+}
+
+export async function approveMatriculation(operationId: string): Promise<boolean> {
+    const operationManagement = new OperationManagement();
+
+    const response = await operationManagement.getOperation(operationId);
+    const handler = new GenericResponseHandler("operation");
+
+    const operationToApprove = handler.handleResponse(response);
+
+    const params = operationToApprove.transactionInfo.parameters[3];
+    const paramsArray: string[] = JSON.parse(params);
+    const operationEnrollmentId = paramsArray[0];
+    const operationMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
+
+    return await updateMatriculation(operationEnrollmentId, operationMatriculation);
+}
+
+export async function rejectOperation(operationId: string, rejectMessage: string): Promise<boolean> {
+    const operationManagement = new OperationManagement();
+    const response = await operationManagement.getUnsignedRejectionProposal(operationId, rejectMessage);
+
+    const handler = new GenericResponseHandler("rejection");
+
+    return handler.handleResponse(response).unsignedProposal !== "";
 }
 
 async function abstractHandler(

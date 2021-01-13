@@ -2,7 +2,9 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import GroupManagement from "@/api/GroupManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
+import OperationsManagement from "@/api/OperationManagement";
 import UserManagement from "@/api/UserManagement";
 
 export interface version {
@@ -34,6 +36,12 @@ export async function getVersions(): Promise<version[]> {
 
     const examinationRegulationManagementVersion = await ExaminationRegulationManagement.getVersion();
     const hlfExamRegVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
+
+    const operationsManagementVersion = await OperationsManagement.getVersion();
+    const hlfoperationsManagementVersion = await OperationsManagement.getHyperledgerVersion();
+
+    const groupManagementVersion = await GroupManagement.getVersion();
+    const hlfGroupManagementVersion = await GroupManagement.getHyperledgerVersion();
 
     versions.push({
         name: "Frontend",
@@ -96,6 +104,26 @@ export async function getVersions(): Promise<version[]> {
             examinationRegulationManagementVersion +
             "/product_code/examreg_service/CHANGELOG.md",
         hlVersions: hlfExamRegVersion,
+    });
+    versions.push({
+        name: "Operation Management",
+        version: operationsManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "examreg-" +
+            operationsManagementVersion +
+            "/product_code/operation_service/CHANGELOG.md",
+        hlVersions: hlfoperationsManagementVersion,
+    });
+    versions.push({
+        name: "Group Management",
+        version: groupManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "examreg-" +
+            groupManagementVersion +
+            "/product_code/group_service/CHANGELOG.md",
+        hlVersions: hlfGroupManagementVersion,
     });
 
     return versions;
