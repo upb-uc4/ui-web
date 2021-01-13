@@ -22,17 +22,10 @@
                     </div>
                 </div>
 
-                <div
+                <module-selection
                     v-if="selectedExaminationRegulations[index - 1]"
-                    class="p-4 rounded-md border-2 border-gray-200 dark:border-normalgray-700"
-                >
-                    <!-- TODO: extract module in own component -->
-                    <div class="space-y-4">
-                        <tag-list :elements="['Module A', 'Module B']" />
-                        <span class="hidden input-label-warning">Please select at least one module.</span>
-                        <searchable-select placeholder="Search modules" :elements="temps" :selected="temp" />
-                    </div>
-                </div>
+                    :examination-regulation="selectedExaminationRegulations[index - 1]"
+                />
             </div>
         </div>
     </BaseSection>
@@ -43,23 +36,19 @@
     import Selection from "@/components/common/ObjectSelect.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import { computed, onBeforeMount, ref, watch, reactive } from "vue";
+    import { onBeforeMount, ref, watch, reactive } from "vue";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
-    import TagList from "@/components/common/TagList.vue";
-    import SearchableSelect from "@/components/common/SearchableSelect.vue";
-    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
-    import Module from "@/api/api_models/exam_reg_management/Module";
     import __ from "lodash";
+    import ModuleSelection from "@/components/course/edit/sections/ModuleSelection.vue";
 
     export default {
         name: "CourseModulesSection",
         components: {
             BaseSection,
             Selection,
-            TagList,
-            SearchableSelect,
+            ModuleSelection,
             LoadingSpinner,
         },
         props: {
@@ -133,118 +122,14 @@
 
             function removeSelectedExaminationRegulation(index: number) {
                 //emit("remove-modules", selectedExRegs.value[index].modules);
-                //selectedExRegNames.value.splice(index, 1);
                 selectedExaminationRegulations.splice(index, 1);
             }
-
-            const selectedModules = ref([] as { ids: String[]; displayStrings: String[] }[]);
-            const selectedExRegNames = ref([""]);
-            const selectedOption = ref({} as SearchSelectOption);
-
-            const availableExRegs = computed(() => {
-                return availableExaminationRegulations.value.filter(
-                    (f: ExaminationRegulation) => !selectedExRegNames.value.includes(f.name)
-                );
-            });
-
-            const selectedExRegs = computed(() => {
-                let tmp = [] as ExaminationRegulation[];
-                selectedExRegNames.value.forEach((selectedName) => {
-                    tmp.push(availableExaminationRegulations.value.find((e) => e.name == selectedName) as ExaminationRegulation);
-                    if (tmp.length > 0) {
-                        // Fill the selectedModules array (input for the search-selects and taglists) with the modules that are selected accourding to the prop
-                        let selected: { ids: String[]; displayStrings: String[] } = { ids: [], displayStrings: [] };
-                        tmp[tmp.length - 1]?.modules.forEach((m) => {
-                            if ((props.moduleIds as String[]).find((x) => x == m.id)) {
-                                selected.ids.push(m.id);
-                                selected.displayStrings.push(`${m.id}: ${m.name}`);
-                            }
-                        });
-                        selectedModules.value[tmp.length - 1] = selected;
-                    }
-                });
-                return tmp;
-            });
-
-            watch(selectedOption.value, () => {
-                // Toggle the module and erase the input of the search-select
-                toggleModule((selectedOption.value.value as Module).id);
-                selectedOption.value = {} as SearchSelectOption;
-            });
-
-            function checkIfLastExReg(index: number) {
-                // push an empty ExRegNam if the last element of selectedExRegNames was filled (for showing the next select)
-                if (selectedExRegNames.value.length - 1 == index && !(availableExRegs.value.length == 0)) {
-                    selectedExRegNames.value.push("");
-                }
-            }
-
-            function removeExReg(index: number) {
-                emit("remove-modules", selectedExRegs.value[index].modules);
-                selectedExRegNames.value.splice(index, 1);
-            }
-
-            function hasSelectedModule(exReg: ExaminationRegulation): Boolean {
-                if (exReg == undefined) return false;
-                for (let index = 0; index < props.moduleIds.length; index++) {
-                    if (exReg.modules.find((m) => m.id == props.moduleIds[index]) != undefined) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            function getExRegsFromModules() {
-                (props.moduleIds as String[]).forEach((m) => {
-                    availableExaminationRegulations.value.forEach((exReg) => {
-                        if (exReg.modules.find((e) => e.id == m) != undefined && !selectedExRegNames.value.includes(exReg.name)) {
-                            selectedExRegNames.value.splice(selectedExRegNames.value.length - 1, 0, exReg.name);
-                        }
-                    });
-                });
-            }
-
-            function toggleModule(id: String) {
-                emit("toggle-module", id);
-                getExRegsFromModules();
-            }
-
-            function removeModule(exRegIndex: number, moduleIndex: number) {
-                toggleModule(selectedModules.value[exRegIndex].ids[moduleIndex]);
-            }
-
-            function createSearchSelectInput(index: number): SearchSelectOption[] {
-                let value: SearchSelectOption[] = [];
-                selectedExRegs.value[index].modules.forEach((m) => {
-                    if (!(props.moduleIds as String[]).includes(m.id))
-                        value.push({ value: m, display: `${m.id}: ${m.name}` } as SearchSelectOption);
-                });
-                return value;
-            }
-
-            const temps = ref([
-                {
-                    value: {},
-                    display: "Module A",
-                },
-                {
-                    value: {},
-                    display: "Module B",
-                },
-                {
-                    value: {},
-                    display: "Module C",
-                },
-            ]);
-            const temp = ref({ value: {}, display: "Module C" } as SearchSelectOption);
 
             return {
                 isLoading,
                 availableExaminationRegulations,
                 selectedExaminationRegulations,
                 removeSelectedExaminationRegulation,
-                temp,
-                temps,
             };
         },
     };
