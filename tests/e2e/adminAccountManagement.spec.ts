@@ -24,8 +24,8 @@ import {
     createNewStudent,
     deleteUser,
     deleteUsers,
-    getRandomMatriculationId,
     getRandomizedGovernmentId,
+    getRandomMatriculationId,
 } from "./helpers/UserHelper";
 
 const random = Math.floor(Math.random() * 9999);

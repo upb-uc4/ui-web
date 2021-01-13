@@ -4,30 +4,30 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Email</label>
-                    <input
-                        id="email"
-                        v-model="myEmail"
+                    <base-input
+                        v-model:value="myEmail"
+                        :error-message="getErrorMessage(errorBag, 'email', true)"
+                        identifier="email"
                         type="text"
                         class="w-full"
-                        :class="errorBag.hasNested('email') ? 'input-text-error' : 'input-text'"
+                        placeholder="example@mail.com"
+                        validation-query="user.email"
                     />
-                    <label v-if="errorBag.hasNested('email')" class="input-label-error">{{ errorBag.getNested("email") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label class="input-label">Phone</label>
-                    <input
-                        id="phoneNumber"
-                        v-model="myPhoneNumber"
+                    <label class="input-label">Phone Number</label>
+                    <base-input
+                        v-model:value="myPhoneNumber"
+                        :error-message="getErrorMessage(errorBag, 'phoneNumber', true)"
+                        identifier="phoneNumber"
                         type="text"
                         class="w-full"
-                        :class="errorBag.hasNested('phoneNumber') ? 'input-text-error' : 'input-text'"
+                        placeholder="+49123456789"
+                        validation-query="user.phoneNumber"
                     />
-                    <label v-if="errorBag.hasNested('phoneNumber')" class="input-label-error">{{
-                        errorBag.getNested("phoneNumber")
-                    }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
@@ -36,13 +36,15 @@
 </template>
 
 <script lang="ts">
+    import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
 
     export default {
         name: "ContactSection",
         components: {
+            BaseInput,
             BaseSection,
         },
         props: {
@@ -64,6 +66,7 @@
             return {
                 myPhoneNumber: useModelWrapper(props, emit, "phoneNumber"),
                 myEmail: useModelWrapper(props, emit, "email"),
+                getErrorMessage,
             };
         },
     };

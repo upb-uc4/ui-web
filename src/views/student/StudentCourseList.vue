@@ -1,14 +1,14 @@
 <template>
     <base-view class="max-w-screen-lg mx-auto">
-        <div class="text-2xl text-center font-medium text-gray-800 dark:text-gray-300 mb-4">All Courses</div>
+        <div class="text-2xl text-center font-medium text-gray-800 dark:text-gray-300 mb-4">{{ title }}</div>
         <div>
             <div class="flex flex-col-reverse md:flex-row items-center justify-between md:space-x-2 space-y-2 space-y-reverse md:space-y-0">
                 <div class="w-full md:flex items-center md:space-x-2 space-y-2 md:space-y-0">
                     <div class="md:max-w-md w-full">
-                        <seach-bar v-model:message="message" placeholder="Find a course..." @refresh="refresh" />
+                        <search-bar v-model:message="message" placeholder="Find a course..." @refresh="refresh" />
                     </div>
                     <div class="flex space-x-2 w-56">
-                        <filter-select v-model:selection="selectedType" label="Type" :elements="types" />
+                        <filter-select id="studentCourseTypeFilter" v-model:selection="selectedType" label="Type" :elements="types" />
                     </div>
                 </div>
             </div>
@@ -49,21 +49,22 @@
 
 <!-- TODO: remove this and just use the common course list? -->
 <script lang="ts">
-    import CourseList from "@/components/course/list/common/CourseList.vue";
-    import SeachBar from "@/components/common/SearchBar.vue";
-    import { ref, watch } from "vue";
+    import CourseList from "@/components/course/list/student/CourseList.vue";
+    import SearchBar from "@/components/common/SearchBar.vue";
+    import { onMounted, ref, watch } from "vue";
     import Select from "@/components/common/Select.vue";
-    import { CourseTypeFilter } from "@/entities/CourseTypeFilter";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
     import BaseView from "@/views/common/BaseView.vue";
+    import { useStore } from "@/use/store/store";
+    import { useToast } from "@/toast";
 
     export default {
         name: "LecturerCourseList",
         components: {
             BaseView,
             CourseList,
-            SeachBar,
+            SearchBar,
             FilterSelect: Select,
         },
         async beforeRouteEnter(_to: any, _from: any, next: any) {
@@ -76,14 +77,43 @@
             }
             return next("/redirect");
         },
-        setup() {
+        props: {
+            isMyCoursesPage: {
+                type: Boolean,
+                default: false,
+            },
+        },
+        setup(props: any) {
             const matchingCoursesCount = ref(0);
+            let title = ref(props.isMyCoursesPage ? "My Courses" : "Available Courses");
             let message = ref("");
             let refreshKey = ref(false);
 
-            let types = Object.values(CourseTypeFilter);
-            const defaultType = types[0];
+            const defaultType = "All";
             let selectedType = ref(defaultType);
+            const types = ref([] as string[]);
+
+            onMounted(async () => {
+                const store = useStore();
+                await store.getters.configuration
+                    .then((config) => {
+                        types.value = [...config.courseTypes];
+                        types.value.unshift("All");
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+
+                        toast.error(reason);
+                    });
+            });
+
+            watch(
+                () => props.isMyCoursesPage,
+                () => {
+                    title.value = props.isMyCoursesPage ? "My Courses" : "Available Courses";
+                    refresh();
+                }
+            );
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;
@@ -117,6 +147,7 @@
                 isFilteringType,
                 isFiltering,
                 clearFilter,
+                title,
             };
         },
     };

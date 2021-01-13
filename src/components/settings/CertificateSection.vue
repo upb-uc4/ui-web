@@ -14,7 +14,9 @@
                                 :href="certificateDownloadURL"
                                 class="text-sm navigation-link"
                                 download="certificate.pem"
-                            >Download</a>
+                            >
+                                Download
+                            </a>
                         </div>
                         <textarea id="certificate" v-model="certificate" rows="19" readonly class="w-full input-text font-mono" />
                     </div>

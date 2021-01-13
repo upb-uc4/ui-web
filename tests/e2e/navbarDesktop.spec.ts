@@ -94,6 +94,10 @@ describe("student", () => {
         //all courses
         cy.get("#nav_desktop_student_menu_courses_all").click();
         cy.url().should("contain", "courses");
+
+        //admitted courses
+        cy.get("#nav_desktop_student_menu_courses_admitted").click();
+        cy.url().should("contain", "/my-courses");
     });
 
     it("study", () => {

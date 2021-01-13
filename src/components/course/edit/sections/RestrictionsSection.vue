@@ -1,20 +1,18 @@
 <template>
-    <BaseSection subtitle="Restrict participation for this course." title="Restrictions">
+    <BaseSection subtitle="Information of Participation Restrictions for the Course" title="Restrictions">
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label for="maxParticipants" class="input-label">Participation Limit</label>
-                    <input
-                        id="maxParticipants"
-                        v-model.number="myMaxParticipant"
-                        min="0"
+                    <label class="input-label">Participation Limit</label>
+                    <base-input
+                        v-model:value="myMaxParticipants"
+                        identifier="maxParticipants"
                         type="number"
                         class="w-full"
-                        :class="errorBag.has('maxParticipants') ? 'input-text-error' : 'input-text'"
+                        :error-message="getErrorMessage(errorBag, 'maxParticipants')"
+                        validation-query="course.maxParticipants"
+                        @input="updateLimit($event.target.value)"
                     />
-                    <label v-if="errorBag.has('maxParticipants')" for="maxParticipants" class="input-label-error">
-                        {{ errorBag.get("maxParticipants") }}
-                    </label>
                 </div>
                 <div class="lg:w-1/2 w-full" />
             </div>
@@ -23,14 +21,16 @@
 </template>
 
 <script lang="ts">
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import { ref } from "vue";
 
     export default {
         name: "RestrictionSection",
         components: {
             BaseSection,
+            BaseInput,
         },
         props: {
             maxParticipants: {
@@ -44,8 +44,24 @@
         },
         emits: ["update:maxParticipants"],
         setup(props: any, { emit }: any) {
+            let myMaxParticipants = ref(props.maxParticipants.toString());
+
+            function isNumber(value: string) {
+                return /[0-9]/g.test(value);
+            }
+
+            function updateLimit(value: string) {
+                if (isNumber(value)) {
+                    emit("update:maxParticipants", parseInt(value));
+                } else {
+                    emit("update:maxParticipants", 0);
+                }
+            }
+
             return {
-                myMaxParticipant: useModelWrapper(props, emit, "maxParticipants"),
+                myMaxParticipants,
+                updateLimit,
+                getErrorMessage,
             };
         },
     };

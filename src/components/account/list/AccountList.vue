@@ -2,7 +2,12 @@
     <loading-spinner v-if="busy" title="Loading Users..." />
     <div v-else>
         <div v-for="(user, index) in shownUsers" :key="user">
-            <user-row :user="user" :is-first-row="index === 0" :is-last-row="index === shownUsers.length - 1" />
+            <user-row
+                :user="user"
+                :is-first-row="index === 0"
+                :is-last-row="index === shownUsers.length - 1"
+                :current-semester="currentSemester"
+            />
         </div>
     </div>
 </template>
@@ -16,6 +21,7 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import User from "@/api/api_models/user_management/User";
     import { StatusFilter } from "@/entities/UserStatusFilter";
+    import ConfigurationManagement from "@/api/ConfigurationManagement";
 
     export default {
         name: "AccountList",
@@ -41,8 +47,10 @@
         setup(props: any, { emit }: any) {
             let busy = ref(false);
             let users = ref([] as User[]);
+            const currentSemester = ref("");
 
             onBeforeMount(async () => {
+                await getCurrentSemester();
                 await getUsers();
             });
 
@@ -74,6 +82,13 @@
                 busy.value = false;
             }
 
+            async function getCurrentSemester() {
+                const configurationManagement = new ConfigurationManagement();
+                const response = await configurationManagement.getCurrentSemester();
+                const responseHandler = new GenericResponseHandler("semester");
+                currentSemester.value = responseHandler.handleResponse(response);
+            }
+
             let shownUsers = computed(() => {
                 let filteredUsers =
                     props.selectedRole == ("All" as Role) ? users.value : users.value.filter((e) => e.role == props.selectedRole);
@@ -94,6 +109,7 @@
             return {
                 shownUsers,
                 busy,
+                currentSemester,
             };
         },
     };

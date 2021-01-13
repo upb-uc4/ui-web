@@ -15,6 +15,7 @@ const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "u
 const pair = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
 const student = pair.student;
 const authUser = pair.authUser;
+const student2 = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; student: Student; authUser: Account };
 const governmentId = pair.governmentId;
 
 beforeAll(async () => {
@@ -63,5 +64,22 @@ test("Login as admin", async () => {
 test("Delete user", async () => {
     const success = await userManagement.forceDeleteUser(student.username);
     expect(success.returnValue).toBe(true);
+});
+
+test("Create user", async () => {
+    const success = await userManagement.createUser(student2.governmentId, student2.authUser, student2.student);
+    expect(success.returnValue).toBe(true);
     await new Promise((r) => setTimeout(r, 5000));
+});
+
+test("Login with new user", async () => {
+    const auth = { username: student2.authUser.username, password: student2.authUser.password };
+    const success = await MachineUserAuthenticationManagement._getRefreshToken(auth);
+    userManagement = new UserManagement();
+    expect(success.returnValue.login).not.toEqual("");
+});
+
+test("Delete own user", async () => {
+    const success = await userManagement.forceDeleteUser(student2.authUser.username);
+    expect(success.returnValue).toBe(true);
 });

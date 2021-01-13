@@ -7,6 +7,7 @@ import EncryptedPrivateKey from "./api_models/certificate_management/EncryptedPr
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
 import ServiceVersion from "@/api/helpers/models/ServiceVersion";
+import { useStore } from "@/use/store/store";
 
 export default class CertificateManagement extends CommonHyperledger {
     protected static endpoint = "/certificate-management";
@@ -65,6 +66,11 @@ export default class CertificateManagement extends CommonHyperledger {
                     };
                 }
             });
+    }
+
+    async getOwnEnrollmentId(): Promise<APIResponse<EnrollmentId>> {
+        const username = (await useStore().getters.user).username;
+        return this.getEnrollmentId(username);
     }
 
     async getEnrollmentId(username: string): Promise<APIResponse<EnrollmentId>> {

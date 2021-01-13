@@ -67,8 +67,6 @@
     import Router from "@/use/router/";
     import { useStore } from "@/use/store/store";
     import { CourseEntity } from "@/entities/CourseEntity";
-    import { CourseType } from "@/entities/CourseType";
-    import { Language } from "@/entities/Language";
     import CourseManagement from "@/api/CourseManagement";
     import { computed, onBeforeMount, ref } from "vue";
     import DeleteCourseModal from "@/components/modals/DeleteCourseModal.vue";
@@ -201,8 +199,8 @@
             let isValid = computed(() => {
                 if (
                     course.value.courseName == "" ||
-                    course.value.courseLanguage == Language.NONE ||
-                    course.value.courseType == CourseType.NONE ||
+                    course.value.courseLanguage == "" ||
+                    course.value.courseType == "" ||
                     course.value.maxParticipants == 0
                 ) {
                     return false;

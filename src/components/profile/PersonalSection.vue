@@ -7,27 +7,28 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">First Name</label>
-                    <input
-                        id="firstName"
-                        v-model="myFirstName"
+                    <base-input
+                        v-model:value="myFirstName"
+                        :error-message="getErrorMessage(errorBag, 'firstName', true)"
+                        identifier="firstName"
                         type="text"
                         :readonly="readonly"
-                        class="w-full input-text"
-                        :class="errorBag.hasNested('firstName') ? 'input-text-error' : 'input-text'"
+                        placeholder="Firstname"
+                        class="w-full"
+                        validation-query="user.firstName"
                     />
-                    <label v-if="errorBag.hasNested('firstName')" class="input-label-error">{{ errorBag.getNested("firstName") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Last Name</label>
-                    <input
-                        id="lastName"
-                        v-model="myLastName"
+                    <base-input
+                        v-model:value="myLastName"
+                        :error-message="getErrorMessage(errorBag, 'lastName', true)"
+                        identifier="lastName"
                         type="text"
                         :readonly="readonly"
-                        class="w-full input-text"
-                        :class="errorBag.hasNested('lastName') ? 'input-text-error' : 'input-text'"
+                        class="w-full"
+                        validation-query="user.lastName"
                     />
-                    <label v-if="errorBag.hasNested('lastName')" class="input-label-error">{{ errorBag.getNested("lastName") }}</label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
@@ -42,14 +43,16 @@
 </template>
 
 <script lang="ts">
+    import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import BirthDateInput from "@/components/account/edit/BirthDateInput.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
 
     export default {
         name: "PersonalSection",
         components: {
+            BaseInput,
             BaseSection,
             BirthDateInput,
         },
@@ -81,6 +84,7 @@
                 myFirstName: useModelWrapper(props, emit, "firstName"),
                 myLastName: useModelWrapper(props, emit, "lastName"),
                 myBirthDate: useModelWrapper(props, emit, "birthDate"),
+                getErrorMessage,
             };
         },
     };

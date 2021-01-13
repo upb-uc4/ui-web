@@ -15,51 +15,53 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">City</label>
-                    <input
-                        id="city"
+                    <base-input
                         v-model="city"
+                        identifier="city"
+                        :error-message="getErrorMessage(errorBag, 'city', true)"
                         type="text"
+                        placeholder="City"
+                        validation-query="address.city"
                         class="w-full"
-                        :class="errorBag.hasNested('city') ? 'input-text-error' : 'input-text'"
                     />
-                    <label v-if="errorBag.hasNested('city')" class="input-label-error">{{ errorBag.getNested("city") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Postal Code</label>
-                    <input
-                        id="zipCode"
+                    <base-input
                         v-model="zipCode"
+                        identifier="zipCode"
+                        :error-message="getErrorMessage(errorBag, 'zipCode', true)"
                         type="text"
                         class="w-full"
-                        :class="errorBag.hasNested('zipCode') ? 'input-text-error' : 'input-text'"
+                        validation-query="address.zipCode"
+                        placeholder="Zip Code"
                     />
-                    <label v-if="errorBag.hasNested('zipCode')" class="input-label-error">{{ errorBag.getNested("zipCode") }}</label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Street</label>
-                    <input
-                        id="street"
+                    <base-input
                         v-model="street"
+                        identifier="street"
+                        :error-message="getErrorMessage(errorBag, 'street', true)"
                         type="text"
+                        placeholder="Street"
                         class="w-full"
-                        :class="errorBag.hasNested('street') ? 'input-text-error' : 'input-text'"
+                        validation-query="address.street"
                     />
-                    <label v-if="errorBag.hasNested('street')" class="input-label-error">{{ errorBag.getNested("street") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">House Number</label>
-                    <input
-                        id="houseNumber"
+                    <base-input
                         v-model="houseNumber"
+                        identifier="houseNumber"
+                        :error-message="getErrorMessage(errorBag, 'houseNumber', true)"
                         type="text"
-                        class="w-full input-text"
-                        :class="errorBag.hasNested('houseNumber') ? 'input-text-error' : 'input-text'"
+                        placeholder="House Number"
+                        class="w-full"
+                        validation-query="address.houseNumber"
                     />
-                    <label v-if="errorBag.hasNested('houseNumber')" class="input-label-error">{{
-                        errorBag.getNested("houseNumber")
-                    }}</label>
                 </div>
             </div>
         </div>
@@ -67,16 +69,20 @@
 </template>
 
 <script lang="ts">
+    import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import Select from "@/components/common/Select.vue";
-    import { Country } from "@/entities/Country";
     import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import { onMounted, ref } from "vue";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import Address from "@/api/api_models/user_management/Address";
+    import { useStore } from "@/use/store/store";
+    import { useToast } from "@/toast";
 
     export default {
         name: "AddressSection",
         components: {
+            BaseInput,
             BaseSection,
             Select,
         },
@@ -92,7 +98,19 @@
         },
         emits: ["update:address"],
         setup(props: any, { emit }: any) {
-            const countries = Object.values(Country).filter((e) => e !== Country.NONE);
+            const countries = ref([] as string[]);
+
+            onMounted(async () => {
+                const store = useStore();
+                await store.getters.configuration
+                    .then((config) => {
+                        countries.value = config.countries;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
+            });
 
             return {
                 countries,
@@ -101,6 +119,7 @@
                 street: useObjectModelWrapper(props, emit, "address", "street"),
                 houseNumber: useObjectModelWrapper(props, emit, "address", "houseNumber"),
                 zipCode: useObjectModelWrapper(props, emit, "address", "zipCode"),
+                getErrorMessage,
             };
         },
     };

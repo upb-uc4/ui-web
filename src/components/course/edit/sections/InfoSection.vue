@@ -3,17 +3,16 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <label for="courseName" class="input-label">Course Name</label>
-                    <input
-                        id="courseName"
-                        v-model="myName"
+                    <label class="input-label">Course Name</label>
+                    <base-input
+                        v-model:value="myName"
+                        identifier="courseName"
+                        :error-message="getErrorMessage(errorBag, 'courseName')"
                         type="text"
                         class="w-full"
-                        :class="errorBag.has('courseName') ? 'input-text-error' : 'input-text'"
+                        placeholder="Course Name"
+                        validation-query="course.courseName"
                     />
-                    <label v-if="errorBag.has('courseName')" for="courseName" class="input-label-error">
-                        {{ errorBag.get("courseName") }}
-                    </label>
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
             </div>
@@ -70,16 +69,19 @@
 </template>
 
 <script lang="ts">
+    import BaseInput from "@/components/common/BaseInput.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import Select from "@/components/common/Select.vue";
-    import { Language } from "@/entities/Language";
-    import { CourseType } from "@/entities/CourseType";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import { onMounted, ref } from "vue";
+    import { useStore } from "@/use/store/store";
+    import { useToast } from "@/toast";
 
     export default {
         name: "CourseInfoSection",
         components: {
+            BaseInput,
             BaseSection,
             Select,
         },
@@ -111,8 +113,21 @@
         },
         emits: ["update:name", "update:type", "update:language", "update:ects", "update:description"],
         setup(props: any, { emit }: any) {
-            const availableLanguages = Object.values(Language).filter((e) => e != Language.NONE);
-            const availableTypes = Object.values(CourseType).filter((e) => e != CourseType.NONE);
+            const availableLanguages = ref([] as string[]);
+            const availableTypes = ref([] as string[]);
+
+            onMounted(async () => {
+                const store = useStore();
+                await store.getters.configuration
+                    .then((config) => {
+                        availableLanguages.value = config.languages;
+                        availableTypes.value = config.courseTypes;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.error(reason);
+                    });
+            });
 
             return {
                 availableLanguages,
@@ -122,6 +137,7 @@
                 myLanguage: useModelWrapper(props, emit, "language"),
                 myType: useModelWrapper(props, emit, "type"),
                 myDescription: useModelWrapper(props, emit, "description"),
+                getErrorMessage,
             };
         },
     };
