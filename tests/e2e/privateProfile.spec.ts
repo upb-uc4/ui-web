@@ -1,10 +1,10 @@
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import { Account } from "@/entities/Account";
-import { Country } from "@/entities/Country";
-import { getRandomMatriculationId, deleteUsers, createUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
+import { Country } from "../fixtures/Country";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToPrivateProfile } from "./helpers/NavigationHelper";
+import { createUsers, deleteUsers, getRandomizedGovernmentId, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Change Profile Information", () => {

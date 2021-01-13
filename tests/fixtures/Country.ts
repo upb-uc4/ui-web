@@ -11,5 +11,4 @@ export enum Country {
     AUSTRIA = "Austria",
     SWITZERLAND = "Switzerland",
     POLAND = "Poland",
-    //TODO more to come
 }

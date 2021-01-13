@@ -60,7 +60,6 @@
     import { computed, ref } from "vue";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
-    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
     import BaseView from "@/views/common/BaseView.vue";
 
     export default {

@@ -4,7 +4,7 @@ import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { createCourseAdmin, deleteCourseAdmin, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListAdmin, navigateToMyCoursesLecturer } from "./helpers/NavigationHelper";
-import { createNewLecturer, createUsers, deleteUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
+import { createUsers, deleteUsers, getRandomizedGovernmentId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
 describe("Course creation, edition and deletion", () => {
@@ -16,7 +16,7 @@ describe("Course creation, edition and deletion", () => {
     let adminAuth: Account;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
-    let newModule: String = "M.1275.01158";
+    let newModule: String = "M.1275.01159";
     let lecturerName = "Jane Doe";
 
     before(function () {

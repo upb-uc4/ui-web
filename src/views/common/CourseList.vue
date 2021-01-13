@@ -62,10 +62,11 @@
 <script lang="ts">
     import CourseList from "@/components/course/list/common/CourseList.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
-    import { ref, watch } from "vue";
+    import { onMounted, ref, watch } from "vue";
     import Select from "@/components/common/Select.vue";
-    import { CourseTypeFilter } from "@/entities/CourseTypeFilter";
     import BaseView from "@/views/common/BaseView.vue";
+    import { useStore } from "@/use/store/store";
+    import { useToast } from "@/toast";
 
     export default {
         name: "LecturerCourseList",
@@ -90,16 +91,30 @@
             let message = ref("");
             let refreshKey = ref(false);
             let title = ref(props.showAllCourses ? "All Courses" : "My Courses");
+            const types = ref([] as string[]);
+            const defaultType = "All";
+            let selectedType = ref(defaultType);
+
+            onMounted(async () => {
+                const store = useStore();
+                await store.getters.configuration
+                    .then((config) => {
+                        types.value = [...config.courseTypes];
+                        types.value.unshift("All");
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+
+                        toast.error(reason);
+                    });
+            });
+
             watch(
                 () => props.showAllCourses,
                 () => {
                     title.value = props.showAllCourses ? "All Courses" : "My Courses";
                 }
             );
-
-            let types = Object.values(CourseTypeFilter);
-            const defaultType = types[0];
-            let selectedType = ref(defaultType);
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;

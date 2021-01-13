@@ -5,6 +5,7 @@ import Student from "@/api/api_models/user_management/Student";
 import { MutationTree } from "vuex";
 import { MutationTypes } from "./mutation-types";
 import defaultState, { State } from "./state";
+import Configuration from "@/api/api_models/configuration_management/Configuration";
 
 export type Mutations<S = State> = {
     [MutationTypes.SET_USER](state: S, payload: Student | Lecturer | Admin): void;
@@ -18,6 +19,8 @@ export type Mutations<S = State> = {
     [MutationTypes.FORCE_UPDATE_PROFILE_PICTURE](state: S): void;
     [MutationTypes.SET_HAS_CERTIFICATE](state: S, payload: boolean): void;
     [MutationTypes.RESET_STATE](state: S, payload: void): void;
+    [MutationTypes.SET_CONFIGURATION](state: S, payload: Configuration): void;
+    [MutationTypes.SET_VALIDATION](state: S, payload: any): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -53,5 +56,11 @@ export const mutations: MutationTree<State> & Mutations = {
     },
     [MutationTypes.RESET_STATE](state: State) {
         Object.assign(state, defaultState);
+    },
+    [MutationTypes.SET_CONFIGURATION](state: State, payload: Configuration) {
+        state.configuration = payload;
+    },
+    [MutationTypes.SET_VALIDATION](state: State, payload: any) {
+        state.validation = payload;
     },
 };

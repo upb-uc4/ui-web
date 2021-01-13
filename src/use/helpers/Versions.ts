@@ -1,8 +1,11 @@
+import AdmissionManagement from "@/api/AdmissionManagement";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
 import CertificateManagement from "@/api/CertificateManagement";
+import ConfigurationManagement from "@/api/ConfigurationManagement";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
+import ReportManagement from "@/api/ReportManagement";
 import UserManagement from "@/api/UserManagement";
 import axios, { AxiosResponse } from "axios";
 
@@ -27,6 +30,9 @@ export async function getVersions(): Promise<version[]> {
 
     const userManagementVersion = await UserManagement.getVersion();
 
+    const configurationManagementVersion = await ConfigurationManagement.getVersion();
+    const hyperledgerNetworkVersion = (await ConfigurationManagement.getHyperledgerNetworkVersion()).networkVersion;
+
     const matriculationManagementVersion = await MatriculationManagement.getVersion();
     const hlfMatriculationVersion = await MatriculationManagement.getHyperledgerVersion();
 
@@ -36,10 +42,20 @@ export async function getVersions(): Promise<version[]> {
     const examinationRegulationManagementVersion = await ExaminationRegulationManagement.getVersion();
     const hlfExamRegVersion = await ExaminationRegulationManagement.getHyperledgerVersion();
 
+    const reportManagementVersion = await ReportManagement.getVersion();
+
+    const admissionsManagementVersion = await AdmissionManagement.getVersion();
+    const hlfAdmissionVersion = await AdmissionManagement.getHyperledgerVersion();
+
     versions.push({
         name: "Frontend",
         version: frontEndVersion,
         link: "https://github.com/upb-uc4/ui-web/blob/" + frontEndVersion + "/CHANGELOG.md",
+    });
+    versions.push({
+        name: "Hyperledger Network",
+        version: hyperledgerNetworkVersion,
+        link: "https://github.com/upb-uc4/hlf-network/blob/" + hyperledgerNetworkVersion + "/CHANGELOG.md",
     });
     versions.push({
         name: "Authentication Management",
@@ -97,6 +113,35 @@ export async function getVersions(): Promise<version[]> {
             examinationRegulationManagementVersion +
             "/product_code/examreg_service/CHANGELOG.md",
         hlVersions: hlfExamRegVersion,
+    });
+    versions.push({
+        name: "Report Management",
+        version: reportManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "report-" +
+            reportManagementVersion +
+            "/product_code/report_service/CHANGELOG.md",
+    });
+    versions.push({
+        name: "Configuration Management",
+        version: configurationManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "configuration-" +
+            configurationManagementVersion +
+            "/product_code/configuration_service/CHANGELOG.md",
+    });
+
+    versions.push({
+        name: "Admissions Management",
+        version: admissionsManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "admission-" +
+            admissionsManagementVersion +
+            "/product_code/admission_service/CHANGELOG.md",
+        hlVersions: hlfAdmissionVersion,
     });
 
     return versions;
