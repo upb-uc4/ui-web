@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-12 sm:mt-32 text-4xl text-center font-semibold text-gray-900">Available Courses</div>
+    <div class="mt-12 sm:mt-32 text-4xl text-center font-semibold text-gray-900">{{ title }}</div>
     <div class="sm:mt-8 flex justify-center">
         <div class="w-full max-w-4xl">
             <div class="flex flex-col">
@@ -10,17 +10,22 @@
                 <course-type-filter v-model:selected-type="selectedType" class="w-full my-4" />
             </div>
 
-            <courseList :key="refreshKey" :show-all-courses="true" :selected-type="selectedType" :filter="message" />
+            <courseList
+                :key="refreshKey"
+                :only-admitted-courses="isMyCoursesPage"
+                :show-all-courses="true"
+                :selected-type="selectedType"
+                :filter="message"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import CourseList from "@/components/course/list/common/CourseList.vue";
+    import CourseList from "@/components/course/list/student/CourseList.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
-    import { ref } from "vue";
+    import { ref, watch } from "vue";
     import CourseTypeFilter from "@/components/course/list/common/CourseTypeFilter.vue";
-    import { CourseType } from "@/entities/CourseType";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
 
@@ -31,7 +36,6 @@
             SeachBar,
             CourseTypeFilter,
         },
-
         async beforeRouteEnter(_to: any, _from: any, next: any) {
             const response = await checkPrivilege(Role.STUDENT);
 
@@ -44,11 +48,27 @@
 
             return next("/redirect");
         },
-        setup() {
+
+        props: {
+            isMyCoursesPage: {
+                type: Boolean,
+                default: false,
+            },
+        },
+        setup(props: any) {
+            let title = ref(props.isMyCoursesPage ? "My Courses" : "Available Courses");
             let message = ref("");
             let refreshKey = ref(false);
 
-            let selectedType = ref("All" as CourseType);
+            let selectedType = ref("All");
+
+            watch(
+                () => props.isMyCoursesPage,
+                () => {
+                    title.value = props.isMyCoursesPage ? "My Courses" : "Available Courses";
+                    refresh();
+                }
+            );
 
             function refresh() {
                 refreshKey.value = !refreshKey.value;
@@ -58,6 +78,7 @@
                 refresh,
                 message,
                 selectedType,
+                title,
             };
         },
     };

@@ -41,7 +41,7 @@ export function logout() {
     cy.get("div[id='menu_profile']").trigger("mouseover");
     cy.get("div[id='menu_profile']").children().eq(1).get("span").contains("Sign out").should("be.visible");
     cy.get("#nav_desktop_logout").click();
-    cy.url().should("eq", Cypress.config().baseUrl);
+    cy.url().should("eq", `${Cypress.config().baseUrl}/login`);
 }
 
 export function logoutMobile() {

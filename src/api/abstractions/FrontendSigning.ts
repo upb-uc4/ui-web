@@ -3,8 +3,9 @@ import { getPublicKeyFromCertificate } from "@/use/crypto/certificates";
 import { signProtobuf, verifyProtobufSignature } from "@/use/crypto/signing";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import { MatriculationValidationResponseHandler } from "@/use/helpers/ImmatriculationResponseHandler";
-
 import { useStore } from "@/use/store/store";
+import AdmissionManagement from "../AdmissionManagement";
+import CourseAdmission from "../api_models/admission_management/CourseAdmission";
 import { ProposalPayload } from "../api_models/common/Proposal";
 import SignedProposalMessage from "../api_models/common/SignedProposalMessage";
 import SignedTransactionMessage from "../api_models/common/SignedTransactionMessage";
@@ -12,13 +13,11 @@ import TransactionMessage from "../api_models/common/Transaction";
 import UnsignedProposalMessage from "../api_models/common/UnsignedProposalMessage";
 import UnsignedTransactionMessage from "../api_models/common/UnsignedTransactionMessage";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
-
 import APIResponse from "../helpers/models/APIResponse";
-import { validateMatriculationProposal } from "../helpers/ProposalPayloadValidator";
-
+import { validateCourseAdmissionProposal, validateMatriculationProposal } from "../helpers/ProposalPayloadValidator";
 import { decodeProposal } from "../helpers/ProtobuffDecoding";
 import { decodeTransaction } from "../helpers/TransactionDecoding";
-import { matriculationTransactionValidator } from "../helpers/TransactionValidator";
+import { admissionsTransactionValidator, matriculationTransactionValidator } from "../helpers/TransactionValidator";
 import MatriculationManagement from "../MatriculationManagement";
 import OperationManagement from "../OperationManagement";
 
@@ -39,7 +38,7 @@ export async function updateMatriculation(
         (arg: APIResponse<UnsignedProposalMessage>) => {
             return handler.handleResponse(arg);
         },
-        (payload: ProposalPayload) => {
+        async (payload: ProposalPayload) => {
             return validateMatriculationProposal(payload, enrollmentId, matriculation);
         },
         async (message: SignedProposalMessage) => {
@@ -53,6 +52,78 @@ export async function updateMatriculation(
         },
         async (message: SignedTransactionMessage) => {
             return await matriculationManagement.submitSignedMatriculationTransaction(message);
+        },
+        (response: APIResponse<boolean>) => {
+            return genericHandler.handleResponse(response);
+        },
+        protoUrl
+    );
+}
+
+export async function addCourseAdmission(enrollmentId: string, addAdmission: CourseAdmission, protoUrl?: string) {
+    const genericHandler = new GenericResponseHandler("admission");
+
+    const genericHandler2 = new GenericResponseHandler("transaction");
+
+    const admissionManagement = new AdmissionManagement();
+
+    return await abstractHandler(
+        async () => {
+            return await admissionManagement.getUnsignedCourseAdmissionAddProposal(addAdmission);
+        },
+        (arg: APIResponse<UnsignedProposalMessage>) => {
+            return genericHandler.handleResponse(arg);
+        },
+        async (payload: ProposalPayload) => {
+            return validateCourseAdmissionProposal(payload, undefined, addAdmission, enrollmentId);
+        },
+        async (message: SignedProposalMessage) => {
+            return await admissionManagement.submitSignedAdmissionsProposal(message);
+        },
+        (response: APIResponse<UnsignedTransactionMessage>) => {
+            return genericHandler2.handleResponse(response);
+        },
+        (transaction: TransactionMessage) => {
+            return admissionsTransactionValidator(transaction, undefined, addAdmission, enrollmentId);
+        },
+        async (message: SignedTransactionMessage) => {
+            return await admissionManagement.submitSignedAdmissionsTransaction(message);
+        },
+        (response: APIResponse<boolean>) => {
+            return genericHandler.handleResponse(response);
+        },
+        protoUrl
+    );
+}
+
+export async function dropCourseAdmission(admissionId: string, protoUrl?: string) {
+    const genericHandler = new GenericResponseHandler("drop admission");
+
+    const genericHandler2 = new GenericResponseHandler("transaction");
+
+    const admissionManagement = new AdmissionManagement();
+
+    return await abstractHandler(
+        async () => {
+            return await admissionManagement.getUnsignedCourseAdmissionDropProposal(admissionId);
+        },
+        (arg: APIResponse<UnsignedProposalMessage>) => {
+            return genericHandler.handleResponse(arg);
+        },
+        async (payload: ProposalPayload) => {
+            return await validateCourseAdmissionProposal(payload, admissionId);
+        },
+        async (message: SignedProposalMessage) => {
+            return await admissionManagement.submitSignedAdmissionsProposal(message);
+        },
+        (response: APIResponse<UnsignedTransactionMessage>) => {
+            return genericHandler2.handleResponse(response);
+        },
+        (transaction: TransactionMessage) => {
+            return admissionsTransactionValidator(transaction, admissionId);
+        },
+        async (message: SignedTransactionMessage) => {
+            return await admissionManagement.submitSignedAdmissionsTransaction(message);
         },
         (response: APIResponse<boolean>) => {
             return genericHandler.handleResponse(response);
@@ -89,7 +160,7 @@ export async function rejectOperation(operationId: string, rejectMessage: string
 async function abstractHandler(
     getUnsignedProposal: (...args: any[]) => Promise<APIResponse<UnsignedProposalMessage>>,
     proposalValidationHandler: (...args: any[]) => UnsignedProposalMessage,
-    proposalValidator: (...args: any[]) => boolean,
+    proposalValidator: (...args: any[]) => Promise<boolean>,
     submitProposal: (...args: any[]) => Promise<APIResponse<UnsignedTransactionMessage>>,
     transactionValidationHandler: (...args: any[]) => UnsignedTransactionMessage,
     transactionValidator: (...args: any[]) => boolean,
@@ -100,7 +171,6 @@ async function abstractHandler(
     const privateKey = await useStore()
         .getters.privateKey()
         .catch(() => {
-            console.log("a");
             return undefined;
         });
 
@@ -109,7 +179,6 @@ async function abstractHandler(
     const certificate = await useStore()
         .getters.certificate()
         .catch(() => {
-            console.log("b");
             return undefined;
         });
 
