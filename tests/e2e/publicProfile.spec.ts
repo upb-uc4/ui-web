@@ -68,7 +68,7 @@ describe("Show public profile correctly", () => {
         navigateToCourseListStudent();
         cy.wait(20000);
         cy.url().should("contain", "/courses");
-        cy.get("div").contains(course.courseName).parent().parent().find("a[id='showLecturer']").click();
+        cy.get("div").contains(course.courseName).parent().find("#showLecturer").click();
         cy.url().should("contain", "/user/lecturer");
     });
 
