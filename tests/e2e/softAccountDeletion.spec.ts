@@ -82,12 +82,12 @@ describe("Course Filtering", function () {
             .contains(course1.courseName)
             .parent()
             .parent()
-            .find("a[id='showLecturer']")
+            .find("label[id='showLecturer']")
             .should("contain", `${lecturer.firstName} ${lecturer.lastName}`);
     });
 
     it("Public profile is shown correctly", () => {
-        cy.get("div").contains(course1.courseName).parent().parent().find("a[id='showLecturer']").click();
+        cy.get("div").contains(course1.courseName).parent().parent().find("label[id='showLecturer']").click();
         cy.url().should("contain", `/user/${lecturer.username}`);
         cy.get("div").contains("Inactive").should("exist");
         cy.get("div").contains(`${lecturer.firstName} ${lecturer.lastName}`).should("exist");

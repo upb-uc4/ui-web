@@ -101,8 +101,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Updating picture works", function () {
         cy.reload();
-        cy.wait(500);
-        cy.get("img[id='picture']").should("have.attr", "src", vaderPicCropped);
+        cy.get("img[id='picture']", { timeout: 10000 }).should("have.attr", "src", vaderPicCropped);
     });
 
     it("Deleting picture works", function () {
