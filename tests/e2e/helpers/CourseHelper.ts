@@ -29,7 +29,8 @@ export function createCourse(course: Course) {
     navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
     cy.wait(3000);
-    cy.get("button[title='Refresh']").click();
+    cy.get("button[id='refresh']").click();
+    cy.wait(3000);
     cy.get("div[id='courseName']").contains(course.courseName).should("exist");
 }
 
@@ -56,7 +57,8 @@ export function createCourseAdmin(course: Course) {
     navigateToCourseListAdmin();
     cy.url().should("contain", "all-courses");
     cy.wait(3000);
-    cy.get("button[title='Refresh']").click();
+    cy.get("button[id='refresh']").click();
+    cy.wait(3000);
     cy.get("div[id='courseName']").contains(course.courseName).should("exist");
 }
 
