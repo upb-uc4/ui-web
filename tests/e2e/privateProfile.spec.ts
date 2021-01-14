@@ -99,7 +99,7 @@ describe("Change Profile Information", () => {
         cy.get("input[id='email']").clear().type("test");
         cy.get("input[id='phoneNumber']").clear().type("test");
         cy.get("#updateProfile").click();
-        cy.get("input[id='email']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='email']", { timeout: 60000 }).siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='phoneNumber']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='email']").clear();
         cy.get("input[id='phoneNumber']").clear();
@@ -112,7 +112,7 @@ describe("Change Profile Information", () => {
         student.phoneNumber += "1";
         cy.get("input[id='phoneNumber']").clear().type(student.phoneNumber);
         cy.get("button[id='updateProfile']").click();
-        cy.get("input[id='email']").should("have.value", student.email);
+        cy.get("input[id='email']", { timeout: 60000 }).should("have.value", student.email);
         cy.get("input[id='phoneNumber']").should("have.value", student.phoneNumber);
     });
 
@@ -122,7 +122,7 @@ describe("Change Profile Information", () => {
         cy.get("input[id='street']").clear().type("/");
         cy.get("input[id='houseNumber']").clear().type("/");
         cy.get("button[id='updateProfile']").click();
-        cy.get("input[id='city']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='city']", { timeout: 60000 }).siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='zipCode']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='street']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='houseNumber']").siblings().get("label").should("have.class", "input-label-error");
@@ -153,7 +153,7 @@ describe("Change Profile Information", () => {
     });
 
     it("Check course of study information section", () => {
-        cy.get("input[id='matriculationId']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='matriculationId']", { timeout: 60000 }).invoke("attr", "readonly").should("exist");
     });
 
     it("Refresh", () => {
@@ -162,7 +162,7 @@ describe("Change Profile Information", () => {
     });
 
     it("Check changed information", () => {
-        cy.get("input[id='email']").should("have.value", student.email);
+        cy.get("input[id='email']", { timeout: 60000 }).should("have.value", student.email);
         cy.get("input[id='phoneNumber']").should("have.value", student.phoneNumber);
         cy.get("button[id='country']").should("contain.text", student.address.country);
         cy.get("input[id='city']").should("have.value", student.address.city);
@@ -186,7 +186,7 @@ describe("Change Profile Information", () => {
         cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
         cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
         cy.get("#updateProfile").click();
-        cy.get("textarea[id='researchArea']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("textarea[id='researchArea']", { timeout: 60000 }).siblings().get("label").should("have.class", "input-label-error");
         cy.get("textarea[id='freeText']").siblings().get("label").should("have.class", "input-label-error");
     });
 
@@ -214,7 +214,7 @@ describe("Change Profile Information", () => {
     });
 
     it("Check changed information", () => {
-        cy.get("textarea[id='researchArea']").should("have.value", lecturer.researchArea);
+        cy.get("textarea[id='researchArea']", { timeout: 60000 }).should("have.value", lecturer.researchArea);
         cy.get("textarea[id='freeText']").should("have.value", lecturer.freeText);
     });
 });

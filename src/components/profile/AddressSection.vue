@@ -35,7 +35,7 @@
                         :class="errorBag.hasNested('zipCode') ? 'input-text-error' : ''"
                         placeholder="Zip Code"
                     />
-                    <label v-if="errorBag.hasNested('zipCode')">
+                    <label v-if="errorBag.hasNested('zipCode')" class="input-label-error">
                         {{ errorBag.getNested("zipCode") }}
                     </label>
                 </div>
