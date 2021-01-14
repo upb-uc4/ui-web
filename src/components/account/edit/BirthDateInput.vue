@@ -46,6 +46,8 @@
             const selectedMonthAsNumber = computed(() => new Date(Date.parse(selectedMonth.value + " 1, 2020")).getMonth() + 1);
             const selectedYear = ref();
 
+            const zeroPad = (num: number, places: number) => String(num).padStart(places, "0");
+
             if (props.birthDate) {
                 let dates = props.birthDate.split("-");
                 let date = new Date(+dates[0], dates[1] - 1, +dates[2]);
@@ -55,7 +57,10 @@
             }
 
             watch([selectedDay, selectedMonth, selectedYear], ([day, month, year]) => {
-                emit("update:birthDate", `${selectedYear.value}-${selectedMonthAsNumber.value}-${selectedDay.value}`);
+                emit(
+                    "update:birthDate",
+                    `${selectedYear.value}-${zeroPad(selectedMonthAsNumber.value, 2)}-${zeroPad(selectedDay.value, 2)}`
+                );
             });
 
             return {
