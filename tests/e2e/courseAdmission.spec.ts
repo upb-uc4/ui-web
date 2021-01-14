@@ -161,7 +161,7 @@ describe("Course Admission", () => {
 
     it("Course is flagged with admitted", () => {
         cy.url().should("contain", "courses");
-        cy.get("div").contains(course.courseName).parent().should("contain", "Registered");
+        cy.get("div").contains(course.courseName).parent().should("contain", "registered");
     });
 
     it("Admitted courses list contains course", () => {
