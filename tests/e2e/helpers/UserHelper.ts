@@ -40,7 +40,7 @@ export function createNewLecturer(governmentId: string, lecturer: Lecturer, lect
     cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
     cy.wait(3000);
-    cy.get("button[title='Refresh']").click();
+    cy.get("button[id='refresh']").click();
     cy.get(`div[id='user_${lecturer.username}']`).should("exist");
 }
 
@@ -72,7 +72,7 @@ export function createNewStudent(governmentId: string, student: Student, student
     cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
     cy.wait(3000);
-    cy.get("button[title='Refresh']").click();
+    cy.get("button[id='refresh']").click();
     cy.get(`div[id='user_${student.username}']`).should("exist");
 }
 
@@ -103,7 +103,7 @@ export function createNewAdmin(governmentId: string, admin: Admin, adminAuthUser
     cy.url().should("not.eq", Cypress.config().baseUrl + "createAccount");
     navigateToAccountList();
     cy.wait(3000);
-    cy.get("button[title='Refresh']").click();
+    cy.get("button[id='refresh']").click();
     cy.get(`div[id='user_${admin.username}']`).should("exist");
 }
 

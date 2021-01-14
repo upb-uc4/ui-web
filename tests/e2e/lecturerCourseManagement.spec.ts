@@ -136,7 +136,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Edit worked", () => {
         cy.wait(3000);
-        cy.get("button[title='Refresh']").click();
+        cy.get("button[id='refresh']").click();
         cy.wait(1000);
         cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
         cy.wait(3000);
