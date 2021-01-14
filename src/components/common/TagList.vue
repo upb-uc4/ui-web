@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-wrap gap-y-2">
         <div v-for="(element, index) in elements" :key="index">
-            <tag :title="element" @on-remove="onRemove(index)" />
+            <tag :title="propertyToDisplay ? element[propertyToDisplay] : element" @on-remove="onRemove(index)" />
         </div>
     </div>
 </template>
@@ -19,7 +19,12 @@
                 type: Array,
                 default: () => [] as any[],
             },
+            propertyToDisplay: {
+                type: String,
+                default: null,
+            },
         },
+        //todo: rename on-remove to remove. also in Tag
         emits: ["on-remove"],
         setup(props: any, { emit }: any) {
             function onRemove(index: Number) {

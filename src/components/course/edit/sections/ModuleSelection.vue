@@ -1,9 +1,14 @@
 <template>
     <div class="p-4 rounded-md border-2 border-gray-200 dark:border-normalgray-700">
         <div class="space-y-4">
-            <tag-list :elements="['Module A', 'Module B']" />
+            <tag-list :elements="selectedModules" property-to-display="display" @on-remove="removeModule" />
             <span class="hidden input-label-warning">Please select at least one module.</span>
-            <searchable-select placeholder="Search modules" :elements="temps" :selected="temp" />
+            <searchable-select
+                v-model:selected="selectedModule"
+                placeholder="Search modules"
+                :elements="availableModules"
+                @update:selected="addModule"
+            />
         </div>
     </div>
 </template>
@@ -12,8 +17,10 @@
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import TagList from "@/components/common/TagList.vue";
-    import { reactive, ref } from "vue";
+    import { computed, ref } from "vue";
     import SearchableSelect from "@/components/common/SearchableSelect.vue";
+    import Module from "@/api/api_models/exam_reg_management/Module";
+    import __ from "lodash";
 
     export default {
         name: "ModuleSelection",
@@ -28,23 +35,32 @@
             SearchableSelect,
         },
         setup(props: any) {
-            const temps = reactive([
-                {
-                    value: {},
-                    display: "Module A",
-                },
-                {
-                    value: {},
-                    display: "Module B",
-                },
-                {
-                    value: {},
-                    display: "Module C",
-                },
-            ]);
+            const modules = computed(() => {
+                let selectableModules: SearchSelectOption[] = [];
+                props.examinationRegulation.modules.forEach((module: Module) => {
+                    const option = {
+                        value: module,
+                        display: module.name,
+                    };
+                    selectableModules.push(option);
+                });
+                return selectableModules;
+            });
+            const availableModules = ref(__.cloneDeep(modules.value)); //use modules initially
+            const selectedModules = ref([] as SearchSelectOption[]);
+            const selectedModule = ref({} as SearchSelectOption);
 
-            const temp = ref({ value: {}, display: "Module C" } as SearchSelectOption);
-            return { temps, temp };
+            function removeModule(index: number) {
+                selectedModules.value.splice(index, 1);
+            }
+
+            function addModule(module: SearchSelectOption) {
+                selectedModules.value.push(module);
+                selectedModule.value = {} as SearchSelectOption;
+                //todo: aus den availableSelectableModules rauswerfen
+            }
+
+            return { availableModules, selectedModule, selectedModules, removeModule, addModule };
         },
     };
 </script>
