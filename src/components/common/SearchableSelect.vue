@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-    import { computed, ref } from "vue";
+    import { computed, ref, watch } from "vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import { Listbox, ListboxLabel, ListboxOption, ListboxOptions } from "@headlessui/vue";
 
@@ -99,6 +99,10 @@
                 type: String,
                 default: "searchSelectInput",
             },
+            clearInputOnSelect: {
+                type: Boolean,
+                default: false,
+            },
         },
         emits: ["update:selected"],
         setup(props: any, { emit }: any) {
@@ -117,7 +121,11 @@
             let hasMatch = computed(() => matches.value.length > 0);
 
             function select(element: SearchSelectOption) {
-                input.value = element.display;
+                if (props.clearInputOnSelect) {
+                    input.value = "";
+                } else {
+                    input.value = element.display;
+                }
                 hidden.value = true;
                 emit("update:selected", element);
             }

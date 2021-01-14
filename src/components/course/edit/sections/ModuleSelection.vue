@@ -7,6 +7,7 @@
                 v-model:selected="selectedModule"
                 placeholder="Search modules"
                 :elements="availableModules"
+                :clear-input-on-select="true"
                 @update:selected="addModule"
             />
         </div>
@@ -62,7 +63,6 @@
                     return module.value !== selectedModule.value.value;
                 });
                 selectedModules.value.push(module);
-                selectedModule.value = {} as SearchSelectOption;
             }
 
             return { availableModules, selectedModule, selectedModules, removeModule, addModule };
