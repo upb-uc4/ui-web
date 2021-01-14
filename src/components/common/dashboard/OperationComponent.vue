@@ -9,7 +9,7 @@
                 <div class="flex items-center">
                     <i
                         v-if="showWatchOption"
-                        class="text-md text-blue-500 far fa-bookmark cursor-pointer"
+                        class="text-md hover:text-blue-600 text-blue-500 far fa-bookmark cursor-pointer"
                         :class="{ 'fas fa-bookmark': isWatched }"
                         :title="isWatched ? 'Unwatch' : 'Watch'"
                         @click.stop="toggleWatch"
@@ -126,6 +126,7 @@
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
+    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
 
     export default {
         name: "OperationComponent",
@@ -262,7 +263,8 @@
 
             function toggleWatch() {
                 //TODO Set watch
-                isWatched.value = !isWatched.value;
+                //isWatched.value = !isWatched.value;
+                showNotYetImplementedToast();
             }
 
             return {
