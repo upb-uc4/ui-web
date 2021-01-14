@@ -167,6 +167,9 @@
             }
 
             function getExRegsFromModules() {
+                //todo neue ids -> gucken, ob wir alle ExReg, die das Modul enthalten schon ausgewahlt haben
+                // wenn nicht -> hinzufugen
+
                 (props.moduleIds as String[]).forEach((m) => {
                     examinationRegs.value.forEach((exReg) => {
                         if (exReg.modules.find((e) => e.id == m) != undefined && !selectedExRegNames.value.includes(exReg.name)) {
