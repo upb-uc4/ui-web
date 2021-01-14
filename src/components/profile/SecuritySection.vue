@@ -10,6 +10,7 @@
                         identifier="userName"
                         type="text"
                         class="w-full"
+                        placeholder="Username"
                         :readonly="editMode"
                         validation-query="user.username"
                     />
@@ -39,15 +40,17 @@
             <div v-if="!editMode" class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Government issued ID</label>
-                    <base-input
-                        v-model:value="accountGovernmentId"
-                        :error-message="getErrorMessage(errorBag, 'governmentId', true)"
-                        identifier="governmentId"
+                    <input
+                        id="governmentId"
+                        v-model="accountGovernmentId"
                         type="text"
-                        class="w-full"
+                        class="w-full input-text"
+                        :class="errorBag.hasNested('governmentId') ? 'input-text-error' : ''"
                         placeholder="Government ID"
-                        validation-query="authenticationUser.governmentId"
                     />
+                    <label v-if="errorBag.hasNested('governmentId')" class="input-label-error">
+                        {{ errorBag.getNested("governmentId") }}
+                    </label>
                 </div>
                 <div class="invisible lg:w-1/2 w-full" />
             </div>

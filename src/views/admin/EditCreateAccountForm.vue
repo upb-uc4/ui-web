@@ -326,7 +326,7 @@
 
             async function updateAccount() {
                 const userManagement: UserManagement = new UserManagement();
-                var adaptedUser: Student | Lecturer | Admin = assembleAccount();
+                let adaptedUser: Student | Lecturer | Admin = assembleAccount();
 
                 const response = await userManagement.updateUser(adaptedUser);
                 const handler = new ValidationResponseHandler("user");

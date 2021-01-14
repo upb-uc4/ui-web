@@ -41,12 +41,12 @@
                 years.push(String(year));
             }
 
-            const selectedDay = ref();
-            const selectedMonth = ref();
+            const selectedDay = ref("");
+            const selectedMonth = ref("");
             const selectedMonthAsNumber = computed(() => new Date(Date.parse(selectedMonth.value + " 1, 2020")).getMonth() + 1);
-            const selectedYear = ref();
+            const selectedYear = ref("");
 
-            const zeroPad = (num: number, places: number) => String(num).padStart(places, "0");
+            const zeroPad = (text: any, places: number) => String(text).padStart(places, "0");
 
             if (props.birthDate) {
                 let dates = props.birthDate.split("-");

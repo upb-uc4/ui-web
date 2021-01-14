@@ -16,7 +16,7 @@
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">City</label>
                     <base-input
-                        v-model="city"
+                        v-model:value="city"
                         identifier="city"
                         :error-message="getErrorMessage(errorBag, 'city', true)"
                         type="text"
@@ -27,22 +27,24 @@
                 </div>
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Postal Code</label>
-                    <base-input
+                    <input
+                        id="zipCode"
                         v-model="zipCode"
-                        identifier="zipCode"
-                        :error-message="getErrorMessage(errorBag, 'zipCode', true)"
                         type="text"
-                        class="w-full"
-                        validation-query="address.zipCode"
+                        class="w-full input-text"
+                        :class="errorBag.hasNested('zipCode') ? 'input-text-error' : ''"
                         placeholder="Zip Code"
                     />
+                    <label v-if="errorBag.hasNested('zipCode')">
+                        {{ errorBag.getNested("zipCode") }}
+                    </label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Street</label>
                     <base-input
-                        v-model="street"
+                        v-model:value="street"
                         identifier="street"
                         :error-message="getErrorMessage(errorBag, 'street', true)"
                         type="text"
@@ -54,7 +56,7 @@
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">House Number</label>
                     <base-input
-                        v-model="houseNumber"
+                        v-model:value="houseNumber"
                         identifier="houseNumber"
                         :error-message="getErrorMessage(errorBag, 'houseNumber', true)"
                         type="text"

@@ -26,6 +26,7 @@
                         identifier="lastName"
                         type="text"
                         :readonly="readonly"
+                        placeholder="Lastname"
                         class="w-full"
                         validation-query="user.lastName"
                     />
