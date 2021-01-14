@@ -76,8 +76,7 @@ describe("Account creation, edition and deletion", function () {
     it("Check matriculation history empty in student's account", () => {
         cy.visit(`editAccount/${student.username}`);
         //Timeout needed for waiting for the data
-        cy.wait(20000);
-        cy.get("div").contains("There is no matriculation data, yet!").should("exist");
+        cy.get("div").contains("There is no matriculation data, yet!").should("exist", { timeout: 60000 });
         logout();
     });
 
@@ -88,11 +87,10 @@ describe("Account creation, edition and deletion", function () {
     it("Navigate to settings page", () => {
         navigateToImmatriculationPage();
         //Timeout needed for waiting for the data
-        cy.wait(20000);
     });
 
     it("Check matriculation history is empty", function () {
-        cy.get("div").contains("There is no matriculation data, yet!").should("exist");
+        cy.get("div").contains("There is no matriculation data, yet!").should("exist", { timeout: 60000 });
     });
 
     it("Valid FoS selection can be resetted ", function () {
@@ -112,8 +110,8 @@ describe("Account creation, edition and deletion", function () {
         cy.get("select[id='semesterYear']").select("2011");
         cy.get("select[id='fieldsOfStudy-1']").select(fieldOfStudy[0].fos[0]);
         cy.get("button[id='addImmatriculationData']").click();
-        cy.wait(4000);
-        cy.get("div[id='immatriculationOptions']").siblings().get("p").should("have.class", "error-message");
+
+        cy.get("div[id='immatriculationOptions']").siblings().get("p").should("have.class", "error-message", { timeout: 30000 });
         cy.get("button[id='removeFieldOfStudy-1']").click();
     });
 
@@ -123,11 +121,10 @@ describe("Account creation, edition and deletion", function () {
         cy.get("select[id=fieldsOfStudy-1]").select(fieldOfStudy[0].fos[0]);
         cy.get("select[id=fieldsOfStudy-2]").select(fieldOfStudy[0].fos[1]);
         cy.get("button[id=addImmatriculationData]").click();
-        cy.wait(5000);
     });
 
     it("Encryption modal should be shown", () => {
-        cy.get("#modal-wrapper").should("exist");
+        cy.get("#modal-wrapper").should("exist", { timeout: 30000 });
         cy.get("div").contains(
             "Please choose a password to encrypt your private key, so it can be securely stored on our servers. Ensure that you do not lose this password as it cannot be restored."
         );
@@ -145,16 +142,16 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[id='confirmEncryptionPassword']").clear().type(encryptionPassword);
         cy.get("button[id='encryptPrivateKeyModalConfirm']").click();
         // wait for certificate to be created and the immatriculation data to be written
-        cy.wait(40000);
     });
 
     //TODO What happens if we cancel here?
     it("Decryption modal shown", () => {
-        cy.get("input[id='enterDecryptionPassword']").type(studentAuthUser.password);
+        cy.get("input[id='enterDecryptionPassword']").type(studentAuthUser.password, { timeout: 120000 });
         cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
     });
 
     it("Correct immatriculation entries are shown", () => {
+        cy.wait(120000);
         cy.get("div").contains("Immatriculation History");
         cy.get("div").should("contain", fieldOfStudy[0].year).and("contain", fieldOfStudy[0].fos[0]).and("contain", fieldOfStudy[0].fos[1]);
     });
@@ -164,11 +161,11 @@ describe("Account creation, edition and deletion", function () {
         cy.get("select[id=semesterYear]").select(fieldOfStudy[1].year);
         cy.get("select[id=fieldsOfStudy-1]").select(fieldOfStudy[1].fos[0]);
         cy.get("button[id=addImmatriculationData]").click();
-        cy.wait(40000);
     });
 
     it("Correct immatriculation entries are shown", () => {
         //No modal should be shown
+        cy.wait(60000);
         cy.get("div").should("contain", fieldOfStudy[1].year).and("contain", fieldOfStudy[1].fos[0]);
     });
 
@@ -202,8 +199,7 @@ describe("Account creation, edition and deletion", function () {
         loginAsDefaultAdmin();
         cy.visit(`editAccount/${student.username}`);
         //Timeout needed for waiting for the data
-        cy.wait(20000);
-        cy.get("div").contains("Immatriculation History");
+        cy.get("div").contains("Immatriculation History", { timeout: 60000 });
         cy.get("div")
             .should("contain", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`)
             .and("contain", fieldOfStudy[0].fos[0])
