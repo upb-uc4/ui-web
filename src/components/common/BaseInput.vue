@@ -10,15 +10,15 @@
             v-model="model"
             class="w-full input-text form-input"
             :type="type"
-            :class="{ error: !isValid }"
+            :class="{ error: !isValid || hasExternalErrorMessage }"
             :placeholder="placeholder || label"
             :disabled="disabled"
             :readonly="readonly"
             @blur="validate"
         />
-        <div v-if="!isValid && !disabled" class="error error-message text-sm">
+        <label v-if="(hasExternalErrorMessage || !isValid) && !disabled" class="input-label-error">
             {{ errorMessage || errMessage || getDefaultErrorsMessage }}
-        </div>
+        </label>
     </div>
 </template>
 
@@ -80,7 +80,7 @@
         },
         setup(props: any, { emit }: any) {
             let isValid = ref(true);
-            let errClass = props.validClass + " " + props.errorClass;
+            let errClass = props.validClass + " +49123456789" + props.errorClass;
             let validation = ref("");
             const errMessage = ref("");
             const hasLabel = props.label !== "";
@@ -118,12 +118,7 @@
                 }
             });
 
-            watch(
-                () => props.errorMessage,
-                () => {
-                    if (props.errorMessage != "") isValid.value = false;
-                }
-            );
+            const hasExternalErrorMessage = computed(() => props.errorMessage != "");
 
             function validate() {
                 let val = true;
@@ -145,6 +140,7 @@
             return {
                 isValid,
                 hasLabel,
+                hasExternalErrorMessage,
                 model,
                 getDefaultErrorsMessage,
                 validate,
