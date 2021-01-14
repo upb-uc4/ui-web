@@ -46,18 +46,23 @@
                 });
                 return selectableModules;
             });
-            const availableModules = ref(__.cloneDeep(modules.value)); //use modules initially
+            const availableModules = ref(__.cloneDeep(modules.value) as SearchSelectOption[]); //use modules initially
             const selectedModules = ref([] as SearchSelectOption[]);
             const selectedModule = ref({} as SearchSelectOption);
 
             function removeModule(index: number) {
+                const module = selectedModules.value[index]; //cannot get this from splice as we use splice on proxy.
+                availableModules.value.push(module);
                 selectedModules.value.splice(index, 1);
             }
 
             function addModule(module: SearchSelectOption) {
+                availableModules.value = availableModules.value.filter((module) => {
+                    //first ".value" for ref, second ".value" for SearchableSelectOption.value
+                    return module.value !== selectedModule.value.value;
+                });
                 selectedModules.value.push(module);
                 selectedModule.value = {} as SearchSelectOption;
-                //todo: aus den availableSelectableModules rauswerfen
             }
 
             return { availableModules, selectedModule, selectedModules, removeModule, addModule };
