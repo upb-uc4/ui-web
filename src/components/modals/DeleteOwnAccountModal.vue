@@ -35,7 +35,7 @@
                     v-model="password"
                     :type="passwordFieldType"
                     class="w-full form-input input-text"
-                    :class="{ error: hasError }"
+                    :class="hasError ? 'input-text-error' : ''"
                     placeholder="Enter Password"
                     @keypress.enter="checkPassword"
                 />
