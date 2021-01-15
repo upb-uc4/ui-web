@@ -57,7 +57,7 @@
                     </div>
                     <div class="flex flex-col w-full">
                         <label class="mb-3 text-gray-700 text-lg">
-                            Did we spark your interest in our project? Let's get in touch! You can reach our to us on various channels.
+                            Did we spark your interest in our project? Let's get in touch! You can reach out to us on various channels.
                         </label>
 
                         <div class="flex flex-col md:flex-row md:justify-start justify-between">
