@@ -117,7 +117,7 @@
                     <div class="flex flex-col w-full">
                         <label class="mb-3 text-gray-700 text-lg">
                             You can see out data protection agreement
-                            <router-link class="navigation-link cursor-pointer hover:underline" :to="{ name: 'dpa' }"> here </router-link>
+                            <router-link class="navigation-link cursor-pointer hover:underline" :to="{ name: 'dpa' }">here</router-link>
                             .
                         </label>
                     </div>
