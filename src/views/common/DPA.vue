@@ -10,9 +10,9 @@
                 rel="noreferrer"
                 href="https://cs.uni-paderborn.de/en/studies/degree-programs/computer-science/"
             >
-                Paderborn University
+                Paderborn University.
             </a>
-            . Please refer to the legal notice of the university.
+            Please refer to the legal notice of the university.
         </p>
     </div>
 </template>
