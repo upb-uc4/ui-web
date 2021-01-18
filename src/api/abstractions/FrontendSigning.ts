@@ -13,7 +13,9 @@ import TransactionMessage from "../api_models/common/Transaction";
 import UnsignedProposalMessage from "../api_models/common/UnsignedProposalMessage";
 import UnsignedTransactionMessage from "../api_models/common/UnsignedTransactionMessage";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
+import Operation from "../api_models/operation_management/Operation";
 import APIResponse from "../helpers/models/APIResponse";
+import { validateOperationId } from "../helpers/OperationValidator";
 import { validateCourseAdmissionProposal, validateMatriculationProposal } from "../helpers/ProposalPayloadValidator";
 import { decodeProposal } from "../helpers/ProtobuffDecoding";
 import { decodeTransaction } from "../helpers/TransactionDecoding";
@@ -132,10 +134,11 @@ export async function dropCourseAdmission(admissionId: string, protoUrl?: string
     );
 }
 
-export async function approveMatriculation(operationId: string): Promise<boolean> {
+export async function approveMatriculation(operation: Operation): Promise<boolean> {
+    if (!validateOperationId(operation)) return Promise.reject("OperationId does not fit to transactionInfo");
     const operationManagement = new OperationManagement();
 
-    const response = await operationManagement.getOperation(operationId);
+    const response = await operationManagement.getOperation(operation.operationId);
     const handler = new GenericResponseHandler("operation");
 
     const operationToApprove = handler.handleResponse(response);
@@ -148,9 +151,11 @@ export async function approveMatriculation(operationId: string): Promise<boolean
     return await updateMatriculation(operationEnrollmentId, operationMatriculation);
 }
 
-export async function rejectOperation(operationId: string, rejectMessage: string): Promise<boolean> {
+export async function rejectOperation(operation: Operation, rejectMessage: string): Promise<boolean> {
+    if (!validateOperationId(operation)) return Promise.reject("OperationId does not fit to transactionInfo");
+
     const operationManagement = new OperationManagement();
-    const response = await operationManagement.getUnsignedRejectionProposal(operationId, rejectMessage);
+    const response = await operationManagement.getUnsignedRejectionProposal(operation.operationId, rejectMessage);
 
     const handler = new GenericResponseHandler("rejection");
 
