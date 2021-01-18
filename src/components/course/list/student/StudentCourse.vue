@@ -45,8 +45,8 @@
                     <div v-else class="text-gray-500 text-sm italic">No course description available.</div>
                 </div>
                 <div class="w-full sm:w-1/3 mt-6 sm:mt-0 flex justify-end">
-                    <button v-if="!isCourseFull && !isAdmitted" id="joinCourse" class="w-full sm:w-24 btn">Join</button>
-                    <p v-else-if="isAdmitted" class="w-full sm:text-right input-label-error">You are already registered.</p>
+                    <button v-if="!isCourseFull && !admitted" id="joinCourse" class="w-full sm:w-24 btn">Join</button>
+                    <p v-else-if="admitted" class="w-full sm:text-right input-label-error">You are already registered.</p>
                     <p v-else class="w-full sm:text-right input-label-error">Course is already full.</p>
                 </div>
             </div>
@@ -74,16 +74,15 @@
                 type: Object as () => Lecturer,
                 required: true,
             },
-            admittedCourses: {
-                type: Array,
-                required: true,
+            admitted: {
+                type: Boolean,
+                default: false,
             },
         },
         setup(props: any) {
             //todo this might not be a lecturer in the future
             const lecturerDisplayName = props.lecturer.firstName + " " + props.lecturer.lastName;
             const isCourseFull = props.course.currentParticipants >= props.course.maxParticipants;
-            const isAdmitted = (props.admittedCourses as any[]).find((m) => m.courseId == props.course.courseId) as any[];
             const isFull = props.course.maxParticipants == props.course.currentParticipants;
             const flagSrc: string =
                 props.course.courseLanguage == "English"
@@ -91,7 +90,7 @@
                     : "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/de.svg";
 
             function showCourseInfo() {
-                let routeName = isAdmitted ? "student.course.drop" : "student.course.join";
+                let routeName = props.admitted ? "student.course.drop" : "student.course.join";
                 Router.push({ name: routeName, params: { courseId: props.course.courseId } });
             }
 
@@ -105,7 +104,6 @@
                 flagSrc,
                 showCourseInfo,
                 showLecturer,
-                isAdmitted,
                 isFull,
             };
         },

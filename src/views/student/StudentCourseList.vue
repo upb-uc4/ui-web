@@ -47,7 +47,6 @@
     </base-view>
 </template>
 
-<!-- TODO: remove this and just use the common course list? -->
 <script lang="ts">
     import CourseList from "@/components/course/list/student/CourseList.vue";
     import SearchBar from "@/components/common/SearchBar.vue";
@@ -60,7 +59,7 @@
     import { useToast } from "@/toast";
 
     export default {
-        name: "LecturerCourseList",
+        name: "StudentCourseList",
         components: {
             BaseView,
             CourseList,

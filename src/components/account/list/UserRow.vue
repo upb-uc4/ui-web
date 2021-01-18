@@ -1,7 +1,7 @@
 <template>
     <div
         :id="'user_' + user.username"
-        class="px-6 py-4 whitespace-no-wrap border-gray-200"
+        class="px-2 py-4 border-gray-200 dark:border-normalgray-700"
         :class="{
             'rounded-t-md': isFirstRow,
             'rounded-b-md': isLastRow,
@@ -41,21 +41,6 @@
                     <div class="flex-col hidden sm:flex items-baseline" :class="[isStudent && user.isActive ? 'sm:flex' : 'sm:invisible']">
                         <div class="text-sm text-gray-500">Matriculation</div>
                         <div class="font-medium text-sm text-gray-800 dark:text-gray-300">{{ student.matriculationId }}</div>
-                        <div class="hidden sm:flex items-center leading-5 text-gray-500">
-                            <span v-if="isImmatriculated" class="mr-2 fa-stack text-xs" style="font-size: 0.63em">
-                                <i class="fas fa-circle text-green-500 fa-stack-2x"></i>
-                                <i class="fas fa-check fa-stack-1x fa-inverse"></i>
-                            </span>
-                            <span v-else class="mr-2 fa-stack text-xs" style="font-size: 0.63em">
-                                <i class="fas fa-circle text-red-500 fa-stack-2x"></i>
-                                <i class="fas fa-times fa-stack-1x fa-inverse"></i>
-                            </span>
-                            <div class="hidden sm:block">
-                                <label v-if="isImmatriculated">Immatriculated</label>
-                                <label v-else-if="student.latestImmatriculation != ''">Last: {{ student.latestImmatriculation }}</label>
-                                <label v-else>Not Immatriculated</label>
-                            </div>
-                        </div>
                     </div>
                     <div class="mx-8 hidden sm:flex w-18">
                         <span

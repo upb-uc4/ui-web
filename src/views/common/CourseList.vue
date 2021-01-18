@@ -69,7 +69,7 @@
     import { useToast } from "@/toast";
 
     export default {
-        name: "LecturerCourseList",
+        name: "CommonCourseList",
         components: {
             BaseView,
             CourseList,

@@ -1,10 +1,9 @@
 <template>
     <div>
-        <div v-if="busy">
-            <loading-component title="Loading Courses..." />
-        </div>
+        <loading-component v-if="isLoading" title="Loading Courses..." />
         <div v-for="course in shownCourses" v-else :key="course.courseId" class="mt-6">
             <lecturer-course :course="course" :allow-edit="isAdmin || course.lecturerId === username" :lecturer="findLecturer(course)" />
+            <hr class="my-6 dark:border-normalgray-700" />
         </div>
     </div>
 </template>
@@ -44,7 +43,7 @@
         },
         emits: ["on-updated"],
         setup(props: any, { emit }: any) {
-            let busy = ref(false);
+            let isLoading = ref(false);
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
             let lecturers = ref([] as Lecturer[]);
             let role = ref("");
@@ -56,7 +55,7 @@
                 await getCourses();
             });
             async function getCourses() {
-                busy.value = true;
+                isLoading.value = true;
                 const store = useStore();
                 role.value = (await store.getters.user).role;
                 isAdmin.value = role.value == Role.ADMIN;
@@ -74,7 +73,7 @@
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
                 const resp = await userManagement.getUsers(Role.LECTURER, [...lecturerIds]);
                 lecturers.value = genericResponseHandler.handleResponse(resp) as Lecturer[];
-                busy.value = false;
+                isLoading.value = false;
             }
 
             function findLecturer(course: Course) {
@@ -106,7 +105,7 @@
             });
 
             return {
-                busy,
+                isLoading,
                 role,
                 roles,
                 shownCourses,
