@@ -2,6 +2,7 @@ process.env.VUE_APP_VERSION = require("./package.json").version;
 const fs = require("fs");
 
 let endpoint = "https://uc4.cs.uni-paderborn.de/api/development/";
+process.env.VUE_APP_PUBLIC_PATH = "/deploy/";
 
 // do not add trailing forward slash
 switch (process.env.NODE_ENV) {
@@ -30,7 +31,7 @@ module.exports = {
         config.plugins.delete("prefetch");
     },
     //publicPath: process.env.NODE_ENV === "production" ? "/deploy/" : "",
-    publicPath: "/deploy/",
+    publicPath: process.env.VUE_APP_PUBLIC_PATH,
 
     devServer:
         process.env.NODE_ENV != "production"
