@@ -1,4 +1,4 @@
-import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
+import { approveMatriculation, rejectOperation, updateMatriculation } from "@/api/abstractions/FrontendSigning";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
 import Admin from "@/api/api_models/user_management/Admin";
@@ -12,8 +12,10 @@ import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
 import { arrayBufferToBase64, createCSR, createKeyPair, deriveKeyFromPassword, wrapKey } from "@/use/crypto/certificates";
 import { readFileSync } from "fs";
-import MachineUserAuthenticationManagement from "tests/helper/MachineUserAuthenticationManagement";
-import { getRandomizedUserAndAuthUser } from "tests/helper/Users";
+import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
+import { getRandomizedUserAndAuthUser } from "../../helper/Users";
+
+jest.setTimeout(60000);
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as {
     username: string;
@@ -97,7 +99,7 @@ describe("Operation Management tests", () => {
     test("Update matriculation", async () => {
         matriculationToApprove = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
-        const result = await updateMatriculation(enrollmentIdStudent, matriculationToApprove, protoURL);
+        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToApprove, protoURL);
 
         expect(result).toBe(true);
     });
@@ -202,6 +204,7 @@ describe("Operation Management tests", () => {
         expect(response.statusCode).toEqual(200);
         expect(response.returnValue.length).toEqual(1);
         expect(response.returnValue[0].operationId).toEqual(operationIdToApprove);
+        console.log(response.returnValue[0]);
 
         const response2 = await operationManagement.getOperations(false, false, [OperationStatus.PENDING]);
         expect(response2.statusCode).toEqual(200);
@@ -216,7 +219,7 @@ describe("Operation Management tests", () => {
     test("Update matriculation for rejection", async () => {
         matriculationToReject = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2021"] }];
 
-        const result = await updateMatriculation(enrollmentIdStudent, matriculationToReject, protoURL);
+        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToReject, protoURL);
 
         expect(result).toBe(true);
 
@@ -233,7 +236,12 @@ describe("Operation Management tests", () => {
     test("Update matriculation for approvalByDifferentStudent", async () => {
         matriculationToApproveWithDifferentStudent = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2019"] }];
 
-        const result = await updateMatriculation(enrollmentIdStudent, matriculationToApproveWithDifferentStudent, protoURL);
+        const result = await updateMatriculation(
+            student.authUser.username,
+            enrollmentIdStudent,
+            matriculationToApproveWithDifferentStudent,
+            protoURL
+        );
 
         expect(result).toBe(true);
 
@@ -285,7 +293,9 @@ describe("Operation Management tests", () => {
         const response = await operationManagement.getOperations(false, true);
         expect(response.returnValue.length).toBeGreaterThan(3);
         const operationToApprove = response.returnValue.find((e) => e.operationId == operationIdToApprove);
+        console.log(operationToApprove);
         const operationToReject = response.returnValue.find((e) => e.operationId == operationIdToReject);
+        console.log(operationIdToReject);
 
         expect(operationToApprove !== undefined);
         expect(operationToReject !== undefined);
@@ -300,12 +310,7 @@ describe("Operation Management tests", () => {
 
         if (!operationToApprove) fail();
 
-        const params = operationToApprove.transactionInfo.parameters[3];
-        const paramsArray: string[] = JSON.parse(params);
-        const operationEnrollmentId = paramsArray[0];
-        const operationMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
-
-        const success = await updateMatriculation(operationEnrollmentId, operationMatriculation, protoURL);
+        const success = await approveMatriculation(operationToApprove, protoURL);
 
         expect(success).toBe(true);
     });
@@ -317,9 +322,9 @@ describe("Operation Management tests", () => {
         expect(response.returnValue.length).toBeGreaterThan(3);
         const operationToReject = response.returnValue.find((e) => e.operationId == operationIdToReject);
 
-        if (!operationIdToReject) fail();
+        if (!operationToReject) fail();
 
-        const success = await operationManagement.getUnsignedRejectionProposal(operationIdToReject, rejectionReason);
+        const success = await rejectOperation(operationToReject, rejectionReason);
 
         expect(success).toBe(true);
     });
@@ -445,9 +450,30 @@ describe("Operation Management tests", () => {
     });
 
     test("Approve operation as other student", async () => {
-        const success = await updateMatriculation(enrollmentIdStudent, matriculationToApproveWithDifferentStudent, protoURL);
+        const success = await updateMatriculation(
+            student.authUser.username,
+            enrollmentIdStudent,
+            matriculationToApproveWithDifferentStudent,
+            protoURL
+        );
 
         expect(success).toBe(true);
+    });
+
+    test("Login as student", async () => {
+        const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
+        expect(success.returnValue.login).not.toEqual("");
+    });
+
+    test("Fetch pending operation", async () => {
+        const operationManagement = new OperationManagement();
+
+        const response = await operationManagement.getOperation(operationIdToApproveWithDifferentStudent);
+
+        expect(response.statusCode).toEqual(200);
+        expect(response.returnValue.state).toEqual(OperationStatus.PENDING);
+        expect(response.returnValue.existingApprovals.users.length).toEqual(3);
+        expect(response.returnValue.reason).toEqual("");
     });
 
     afterAll(async () => {

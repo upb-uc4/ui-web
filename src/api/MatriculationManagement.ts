@@ -23,11 +23,14 @@ export default class MatriculationManagement extends CommonHyperledger {
      * @param username username of student to matriculate
      * @param matriculation matriculation data
      */
-    async getUnsignedMatriculationProposal(matriculation: SubjectMatriculation[]): Promise<APIResponse<UnsignedProposalMessage>> {
+    async getUnsignedMatriculationProposal(
+        username: string,
+        matriculation: SubjectMatriculation[]
+    ): Promise<APIResponse<UnsignedProposalMessage>> {
         let payload = { matriculation: matriculation };
 
         return await this._axios
-            .post(`/matriculation/unsigned_proposal`, payload)
+            .post(`/matriculation/${username}/unsigned_proposal`, payload)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -46,7 +49,7 @@ export default class MatriculationManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUnsignedMatriculationProposal(matriculation);
+                        return await this.getUnsignedMatriculationProposal(username, matriculation);
                     }
                     return {
                         statusCode: error.response.status,

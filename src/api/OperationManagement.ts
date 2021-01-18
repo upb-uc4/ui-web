@@ -7,7 +7,7 @@ import CommonHyperledger from "./CommonHyperledger";
 import APIResponse from "./helpers/models/APIResponse";
 
 export default class OperationManagement extends CommonHyperledger {
-    protected static endpoint = "/operations-management";
+    protected static endpoint = "/operation-management";
 
     constructor() {
         super(OperationManagement.endpoint);

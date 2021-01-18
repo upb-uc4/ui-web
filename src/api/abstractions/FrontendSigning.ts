@@ -13,6 +13,7 @@ import TransactionMessage from "../api_models/common/Transaction";
 import UnsignedProposalMessage from "../api_models/common/UnsignedProposalMessage";
 import UnsignedTransactionMessage from "../api_models/common/UnsignedTransactionMessage";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
+import CertificateManagement from "../CertificateManagement";
 import Operation from "../api_models/operation_management/Operation";
 import APIResponse from "../helpers/models/APIResponse";
 import { validateOperationId } from "../helpers/OperationValidator";
@@ -24,6 +25,7 @@ import MatriculationManagement from "../MatriculationManagement";
 import OperationManagement from "../OperationManagement";
 
 export async function updateMatriculation(
+    username: string,
     enrollmentId: string,
     matriculation: SubjectMatriculation[],
     protoUrl?: string
@@ -35,7 +37,7 @@ export async function updateMatriculation(
 
     return await abstractHandler(
         async () => {
-            return await matriculationManagement.getUnsignedMatriculationProposal(matriculation);
+            return await matriculationManagement.getUnsignedMatriculationProposal(username, matriculation);
         },
         (arg: APIResponse<UnsignedProposalMessage>) => {
             return handler.handleResponse(arg);
@@ -134,8 +136,7 @@ export async function dropCourseAdmission(admissionId: string, protoUrl?: string
     );
 }
 
-export async function approveMatriculation(operation: Operation): Promise<boolean> {
-    if (!validateOperationId(operation)) return Promise.reject("OperationId does not fit to transactionInfo");
+export async function approveMatriculation(operation: Operation, protoUrl?: string): Promise<boolean> {
     const operationManagement = new OperationManagement();
 
     const response = await operationManagement.getOperation(operation.operationId);
@@ -148,7 +149,10 @@ export async function approveMatriculation(operation: Operation): Promise<boolea
     const operationEnrollmentId = paramsArray[0];
     const operationMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
 
-    return await updateMatriculation(operationEnrollmentId, operationMatriculation);
+    const handler2 = new GenericResponseHandler("enrollmentId");
+    const username = handler2.handleResponse(await new CertificateManagement().getUsername(operationEnrollmentId));
+
+    return await updateMatriculation(username, operationEnrollmentId, operationMatriculation, protoUrl);
 }
 
 export async function rejectOperation(operation: Operation, rejectMessage: string): Promise<boolean> {
