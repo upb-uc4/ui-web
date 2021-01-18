@@ -1,5 +1,5 @@
 <template>
-    <div :id="'course_' + course.courseId" class="w-full" @click.stop="showCourseInfo()">
+    <div :id="'course_' + course.courseId" class="w-full">
         <div class="flex items-center justify-between sm:justify-start space-x-4">
             <div class="flex items-center space-x-2">
                 <span
@@ -26,7 +26,7 @@
         </div>
 
         <div class="mt-2">
-            <div id="courseName" class="text-lg navigation-link font-bold">
+            <div id="courseName" class="text-lg navigation-link font-bold" @click="showCourseInfo()">
                 {{ course.courseName }}
             </div>
             <label id="showLecturer" class="mt-1 font-semibold navigation-link cursor-pointer" @click.stop="showLecturer()">
@@ -59,6 +59,7 @@
     import Course from "@/api/api_models/course_management/Course";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import Router from "@/use/router/index";
+    import { computed } from "vue";
 
     export default {
         name: "StudentCourse",
