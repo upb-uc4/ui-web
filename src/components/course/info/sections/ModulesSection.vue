@@ -1,6 +1,9 @@
 <template>
     <section id="moduleSection" class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
+        <div v-if="busy" class="mx-auto">
+            <loading-spinner />
+        </div>
+        <div v-else class="lg:flex">
             <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
                 <label class="block text-gray-700 text-lg font-medium mb-2">Module Information</label>
                 <label class="block text-gray-600"> The module that the course should count to. </label>
@@ -27,11 +30,14 @@
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import Module from "@/api/api_models/exam_reg_management/Module";
     import { watch } from "vue";
-
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     export default {
         name: "CourseModulesSection",
         components: {
             SearchSelect,
+            LoadingSpinner,
         },
         props: {
             moduleIds: {
@@ -49,6 +55,7 @@
         },
         emits: ["update:selected"],
         setup(props: any, { emit }: any) {
+            let busy = ref(false);
             let optionsArray = ref([] as SearchSelectOption[]);
             let selectedModuleString = ref(props.selected);
             let selectedModuleOption = ref({} as SearchSelectOption);
@@ -66,13 +73,21 @@
             );
 
             async function getModules() {
-                (props.moduleIds as String[]).forEach((s) => {
-                    //TODO get module names via API
-                    optionsArray.value.push({ value: { id: s, name: s } as Module, display: s });
-                });
+                busy.value = true;
+                const exRegManagement = new ExaminationRegulationManagement();
+                const handler = new GenericResponseHandler("module");
+                const response = await exRegManagement.getModules(props.moduleIds as string[]);
+                let result = handler.handleResponse(response);
+                if (Object.keys(result).length > 0) {
+                    result.forEach((module) => {
+                        optionsArray.value.push({ value: module, display: `${module.id}: ${module.name}` });
+                    });
+                }
+                busy.value = false;
             }
 
             return {
+                busy,
                 selectedModuleString,
                 selectedModuleOption,
                 optionsArray,
