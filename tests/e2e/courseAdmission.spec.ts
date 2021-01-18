@@ -148,6 +148,7 @@ describe("Course Admission", () => {
 
     it("Select a module and join the course", () => {
         cy.get("input[id='selectModule']").clear().type(course.moduleIds[0]);
+        cy.get("div[id='selectModule_options']").click();
         cy.get("button[id='joinCourse']").click();
     });
 
