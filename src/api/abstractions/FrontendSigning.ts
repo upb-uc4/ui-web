@@ -137,6 +137,8 @@ export async function dropCourseAdmission(admissionId: string, protoUrl?: string
 }
 
 export async function approveMatriculation(operation: Operation, protoUrl?: string): Promise<boolean> {
+    if (!(await validateOperationId(operation))) return Promise.reject("OperationId does not fit to transactionInfo");
+
     const operationManagement = new OperationManagement();
 
     const response = await operationManagement.getOperation(operation.operationId);
@@ -156,7 +158,7 @@ export async function approveMatriculation(operation: Operation, protoUrl?: stri
 }
 
 export async function rejectOperation(operation: Operation, rejectMessage: string): Promise<boolean> {
-    if (!validateOperationId(operation)) return Promise.reject("OperationId does not fit to transactionInfo");
+    if (!(await validateOperationId(operation))) return Promise.reject("OperationId does not fit to transactionInfo");
 
     const operationManagement = new OperationManagement();
     const response = await operationManagement.getUnsignedRejectionProposal(operation.operationId, rejectMessage);
