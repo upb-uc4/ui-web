@@ -229,49 +229,6 @@ describe("Operation Management tests", () => {
         expect(response3.returnValue.length).toEqual(0);
     });
 
-    test("Update matriculation for rejection", async () => {
-        matriculationToReject = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2021"] }];
-
-        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToReject, protoURL);
-
-        expect(result).toBe(true);
-
-        const operationManagement = new OperationManagement();
-        const response = await operationManagement.getOperations(true, false, [OperationStatus.PENDING]);
-
-        expect(response.statusCode).toEqual(200);
-        expect(response.returnValue.length).toEqual(2);
-
-        expect(response.returnValue.filter((e) => e.operationId != operationIdToApprove).length).toEqual(1);
-        operationIdToReject = response.returnValue.filter((e) => e.operationId != operationIdToApprove)[0].operationId;
-    });
-
-    test("Update matriculation for approvalByDifferentStudent", async () => {
-        matriculationToApproveWithDifferentStudent = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2019"] }];
-
-        const result = await updateMatriculation(
-            student.authUser.username,
-            enrollmentIdStudent,
-            matriculationToApproveWithDifferentStudent,
-            protoURL
-        );
-
-        expect(result).toBe(true);
-
-        const operationManagement = new OperationManagement();
-        const response = await operationManagement.getOperations(true, false, [OperationStatus.PENDING]);
-
-        expect(response.statusCode).toEqual(200);
-        expect(response.returnValue.length).toEqual(3);
-
-        expect(
-            response.returnValue.filter((e) => e.operationId != operationIdToApprove && e.operationId != operationIdToReject).length
-        ).toEqual(1);
-        operationIdToApproveWithDifferentStudent = response.returnValue.filter(
-            (e) => e.operationId != operationIdToApprove && e.operationId != operationIdToReject
-        )[0].operationId;
-    });
-
     test("Login as admin", async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(admin.authUser);
         expect(success.returnValue.login).not.toEqual("");
@@ -318,7 +275,7 @@ describe("Operation Management tests", () => {
         const operationManagement = new OperationManagement();
 
         const response = await operationManagement.getOperations(false, true);
-        expect(response.returnValue.length).toBeGreaterThan(3);
+        expect(response.returnValue.length).toBeGreaterThanOrEqual(1);
         const operationToApprove = response.returnValue.find((e) => e.operationId == operationIdToApprove);
 
         if (!operationToApprove) fail();
@@ -328,11 +285,54 @@ describe("Operation Management tests", () => {
         expect(success).toBe(true);
     });
 
+    test("Update matriculation for rejection", async () => {
+        matriculationToReject = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2021"] }];
+
+        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToReject, protoURL);
+
+        expect(result).toBe(true);
+
+        const operationManagement = new OperationManagement();
+        const response = await operationManagement.getOperations(true, false, [OperationStatus.PENDING]);
+
+        expect(response.statusCode).toEqual(200);
+        expect(response.returnValue.length).toEqual(2);
+
+        expect(response.returnValue.filter((e) => e.operationId != operationIdToApprove).length).toEqual(1);
+        operationIdToReject = response.returnValue.filter((e) => e.operationId != operationIdToApprove)[0].operationId;
+    });
+
+    test("Update matriculation for approvalByDifferentStudent", async () => {
+        matriculationToApproveWithDifferentStudent = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2019"] }];
+
+        const result = await updateMatriculation(
+            student.authUser.username,
+            enrollmentIdStudent,
+            matriculationToApproveWithDifferentStudent,
+            protoURL
+        );
+
+        expect(result).toBe(true);
+
+        const operationManagement = new OperationManagement();
+        const response = await operationManagement.getOperations(true, false, [OperationStatus.PENDING]);
+
+        expect(response.statusCode).toEqual(200);
+        expect(response.returnValue.length).toEqual(3);
+
+        expect(
+            response.returnValue.filter((e) => e.operationId != operationIdToApprove && e.operationId != operationIdToReject).length
+        ).toEqual(1);
+        operationIdToApproveWithDifferentStudent = response.returnValue.filter(
+            (e) => e.operationId != operationIdToApprove && e.operationId != operationIdToReject
+        )[0].operationId;
+    });
+
     test("Reject operation as admin", async () => {
         const operationManagement = new OperationManagement();
 
         const response = await operationManagement.getOperations(false, true);
-        expect(response.returnValue.length).toBeGreaterThan(3);
+        expect(response.returnValue.length).toBeGreaterThanOrEqual(2);
         const operationToReject = response.returnValue.find((e) => e.operationId == operationIdToReject);
 
         if (!operationToReject) fail();
