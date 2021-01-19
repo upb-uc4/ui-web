@@ -1,7 +1,25 @@
-# [WIP 0.14.1](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.14.1) (2020-12-XX)
+# [0.15.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.15.1...v0.15.2) (2021-01-XX)
+## Feature
+- add a simple data protection agreement page with a placeholder text referring to the university [#792](https://github.com/upb-uc4/ui-web/pull/792)
+
+## Bugfix
+- fix bug where proto for decoding could not be found [793](https://github.com/upb-uc4/ui-web/pull/793)
+# [0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.15.0...v0.15.1) (2021-01-07)
+## Feature
+- add frontend validation using backend regex [#755](https://github.com/upb-uc4/ui-web/pull/755)
+- add ability to fetch all information according to gdpr [#776](https://github.com/upb-uc4/ui-web/pull/776)
+- add course admission API [#774](https://github.com/upb-uc4/ui-web/pull/774)
+- add course admission UI [#749](https://github.com/upb-uc4/ui-web/pull/769)
+- add possibility to delete the own account according to gdpr [#765](https://github.com/upb-uc4/ui-web/pull/765)
+
+# [0.15.0](https://github.com/upb-uc4/ui-web/compare/v0.14.0...v0.15.0) (2020-12-18)
 ## Feature
 - add hyperledger versions [#754](https://github.com/upb-uc4/ui-web/pull/754)
 - add frontened signing for matriculation use case [#749](https://github.com/upb-uc4/ui-web/pull/749)
+
+## Bugfix
+- enable searching for accounts/courses with whitespaces [#767](https://github.com/upb-uc4/ui-web/pull/767)
+
 
 # [v0.14.0](https://github.com/upb-uc4/ui-web/compare/v0.13.1...v0.14.0) (2020-12-08)
 ## Feature

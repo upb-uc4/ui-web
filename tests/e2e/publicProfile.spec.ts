@@ -11,7 +11,7 @@ describe("Show public profile correctly", () => {
     let studentAuth: Account;
     let lecturerAuth: Account;
     let course: Course;
-    let lecturerName: String = "Lect Urer";
+    let lecturerName: String = "Jane Doe";
 
     before(() => {
         cy.clearCookies();
@@ -66,8 +66,8 @@ describe("Show public profile correctly", () => {
 
     it("Navigate to 'lecturer's public profile via created course", () => {
         navigateToCourseListStudent();
+        cy.wait(20000);
         cy.url().should("contain", "/courses");
-        cy.wait(2000);
         cy.get("div").contains(course.courseName).parent().parent().find("a[id='showLecturer']").click();
         cy.url().should("contain", "/user/lecturer");
     });

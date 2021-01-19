@@ -1,10 +1,8 @@
 import Course from "@/api/api_models/course_management/Course";
 import compareArrays from "@/use/helpers/CompareArrayValues";
-import { CourseType } from "./CourseType";
-import { Language } from "./Language";
 
 export class CourseEntity implements Course {
-    courseType: CourseType = CourseType.NONE;
+    courseType = "";
     courseId: string = "";
     courseName: string = "";
     lecturerId: string = "";
@@ -12,7 +10,7 @@ export class CourseEntity implements Course {
     maxParticipants: number = 0;
     currentParticipants: number = 0;
     courseDescription: string = "";
-    courseLanguage: Language = Language.NONE;
+    courseLanguage = "";
     startDate: string = "";
     endDate: string = "";
     moduleIds: string[] = [];

@@ -1,6 +1,6 @@
 import Course from "@/api/api_models/course_management/Course";
 import { Account } from "@/entities/Account";
-import { CourseType } from "@/entities/CourseType";
+import { CourseType } from "../fixtures/CourseType";
 import { getMachineUserAuth, loginAsDefaultLecturer, logout } from "./helpers/AuthHelper";
 import { createCourses, deleteCourses } from "./helpers/CourseHelper";
 import { navigateToCourseListLecturer } from "./helpers/NavigationHelper";

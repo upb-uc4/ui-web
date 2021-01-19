@@ -1,9 +1,9 @@
-import { load } from "protobufjs";
 import { base64ToArrayBuffer } from "@/use/crypto/certificates";
+import { load } from "protobufjs";
 import Proposal, { ChaincodeHeaderExtension, ChannelHeader, ProposalPayload, SignatureHeader } from "../api_models/common/Proposal";
 
 export async function decodeProposal(base64Proposal: string, protoURL?: string): Promise<Proposal | undefined> {
-    if (protoURL === undefined) protoURL = "hlf-proto.json";
+    if (protoURL === undefined) protoURL = process.env.VUE_APP_PUBLIC_PATH + "hlf-proto.json";
 
     const buf = base64ToArrayBuffer(base64Proposal);
 

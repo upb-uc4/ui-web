@@ -9,31 +9,23 @@
                 <div class="mb-6 lg:flex">
                     <div class="flex flex-col mb-6 lg:w-1/2 lg:mb-0 lg:mr-16">
                         <label class="mb-3 font-medium text-gray-700 text-md">First Name</label>
-                        <input
-                            id="firstName"
-                            v-model="accountFirstName"
-                            type="text"
-                            class="w-full form-input input-text"
-                            :class="{ error: errorBag.hasNested('firstName') }"
+                        <base-input
+                            v-model:value="accountFirstName"
+                            identifier="firstName"
+                            :error-message="getErrorMessage(errorBag, 'firstName', true)"
                             placeholder="Firstname"
+                            validation-query="user.firstName"
                         />
-                        <p v-if="errorBag.hasNested('firstName')" class="error-message">
-                            {{ errorBag.getNested("firstName") }}
-                        </p>
                     </div>
                     <div class="flex flex-col mb-6 lg:w-1/2 lg:mb-0">
                         <label class="mb-3 font-medium text-gray-700 text-md">Last Name</label>
-                        <input
-                            id="lastName"
-                            v-model="accountLastName"
-                            type="text"
-                            class="w-full form-input input-text"
-                            :class="{ error: errorBag.hasNested('lastName') }"
+                        <base-input
+                            v-model:value="accountLastName"
+                            identifier="lastName"
+                            :error-message="getErrorMessage(errorBag, 'lastName', true)"
                             placeholder="Lastname"
+                            validation-query="user.lastName"
                         />
-                        <p v-if="errorBag.hasNested('lastName')" class="error-message">
-                            {{ errorBag.getNested("lastName") }}
-                        </p>
                     </div>
                 </div>
                 <div v-if="!editMode" class="lg:flex md:flex-col mb-6">
@@ -62,14 +54,16 @@
 
 <script lang="ts">
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag from "@/use/helpers/ErrorBag";
+    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
     import BirthDatePicker from "../BirthDatePicker.vue";
     import { ref } from "vue";
+    import BaseInput from "@/components/common/BaseInput.vue";
 
     export default {
         name: "RoleSection",
         components: {
             BirthDatePicker,
+            BaseInput,
         },
         props: {
             errorBag: {
@@ -103,6 +97,7 @@
             let accountBirthdate = ref(props.birthDate);
 
             return {
+                getErrorMessage,
                 accountFirstName: useModelWrapper(props, emit, "firstName"),
                 accountLastName: useModelWrapper(props, emit, "lastName"),
                 accountBirthdate: useModelWrapper(props, emit, "birthDate"),
