@@ -81,7 +81,7 @@
                         <div class="flex flex-row text-sm">
                             <p class="mr-1">Desired {{ type }}:</p>
                             <div class="lg:flex">
-                                <p v-for="param in operation.transactionInfo.parameters" :key="param" class="ml-4">{{ param }}</p>
+                                <p class="ml-4">{{ operation.transactionInfo.parameters }}</p>
                             </div>
                         </div>
                         <div v-if="isRejected" class="mt-1">

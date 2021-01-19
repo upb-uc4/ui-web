@@ -9,7 +9,7 @@ export default interface Operation {
     transactionInfo: {
         contractName: UC4Identifier;
         transactionName: UC4Identifier;
-        parameters: string[];
+        parameters: string;
     };
     state: OperationStatus;
     reason: string;

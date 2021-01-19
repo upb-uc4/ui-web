@@ -72,7 +72,7 @@
                     transactionInfo: {
                         contractName: UC4Identifier.CONTRACT_MATRICULATION,
                         transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: ["SS2020", "Computer Science v3"],
+                        parameters: "SS2020 Computer Science v3",
                     },
                     state: OperationStatus.REJECTED,
                     reason: "Mocked Reason",
@@ -93,7 +93,7 @@
                     transactionInfo: {
                         contractName: UC4Identifier.CONTRACT_MATRICULATION,
                         transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: ["SS2020", "Computer Science v3"],
+                        parameters: "SS2020 Computer Science v3",
                     },
                     state: OperationStatus.FINISHED,
                     reason: "",
