@@ -91,6 +91,15 @@
             let data = {} as File;
             let dataUrl = ref("");
 
+            const dateFormatOptions = {
+                weekday: "short",
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            };
+
             async function requestData() {
                 busy.value = true;
                 const username = (await useStore().getters.user).username;
@@ -103,7 +112,7 @@
                 if (typeof value === "string" && value != "") {
                     gotTimestamp.value = true;
                     isPending.value = true;
-                    timestamp.value = new Date(value).toLocaleString();
+                    timestamp.value = new Date(value).toLocaleString("en-GB", dateFormatOptions);
                 } else if (typeof value === "object" && value.size != 0) {
                     isPending.value = true;
                     gotData.value = true;
