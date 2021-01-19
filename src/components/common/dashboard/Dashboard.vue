@@ -15,6 +15,7 @@
                 :operations="finishedOperations"
                 :watched-operations="watchedOperations"
                 title="Finished Operations"
+                description="Operations which are completed. Marking them as read will remove them from the list."
                 @marked-read="markRead"
             />
             <dashboard-component
@@ -23,6 +24,7 @@
                 :role="role"
                 :operations="actionNeededOperations"
                 title="Action Required"
+                description="Operations that require your approval for completion."
             />
         </div>
         <dashboard-component
@@ -31,6 +33,7 @@
             :role="role"
             :operations="pendingOwnOperations"
             title="Pending Operations"
+            description="Your pending operations that wait for approval."
         />
         <button v-if="isAdmin" class="btn btn-blue-primary mt-8 p-2" @click="routeAllOperationsPage">Show all operations</button>
     </div>

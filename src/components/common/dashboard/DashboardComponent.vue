@@ -1,6 +1,7 @@
 <template>
     <div class="w-full rounded-lg bg-gray-500 p-10 shadow-2xl" :class="{ 'h-140 overflow-y-auto': !isArchive }">
         <div class="text-xl text-center font-semibold text-gray-800">{{ title }}</div>
+        <div v-if="description != ''" class="text-sm text-center text-gray-800 mt-4">{{ description }}</div>
         <div class="sm:mt-8 flex justify-center">
             <div class="w-full max-w-4xl">
                 <operation-list
@@ -28,6 +29,11 @@
             title: {
                 type: String,
                 required: true,
+            },
+            description: {
+                type: String,
+                required: false,
+                default: "",
             },
             operations: {
                 type: Array,
