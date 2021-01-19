@@ -24,7 +24,6 @@
             :operations="operations"
             :role="role"
             title="All Operations"
-            :enrollment-id="''"
         />
     </div>
 </template>
