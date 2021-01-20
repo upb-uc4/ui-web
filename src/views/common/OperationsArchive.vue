@@ -35,6 +35,7 @@
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import Router from "@/use/router/";
+    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
 
     export default {
         name: "OperationsArchivePage",
@@ -110,8 +111,9 @@
 
             async function requestData() {
                 busy.value = true;
-                await getUserInfo();
-                await getOperationsArchive();
+                showNotYetImplementedToast();
+                //await getUserInfo();
+                //await getOperationsArchive();
                 busy.value = false;
             }
 
