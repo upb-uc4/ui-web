@@ -1,16 +1,63 @@
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import AdmissionManagement from "../AdmissionManagement";
+import CourseAdmission from "../api_models/admission_management/CourseAdmission";
 import MatriculationData from "../api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
 import Operation from "../api_models/operation_management/Operation";
-import CertificateManagement from "../CertificateManagement";
+import ExaminationRegulationManagement from "../ExaminationRegulationManagement";
 import { UC4Identifier } from "../helpers/UC4Identifier";
-import { updateMatriculation } from "./FrontendSigning";
 
-export function printOperation(operation: Operation): string[] {
+export async function printOperation(operation: Operation): Promise<string[]> {
     const contractName = operation.transactionInfo.contractName;
 
-    if (contractName == UC4Identifier.CONTRACT_MATRICULATION) {
-        return printMatriculationOperation(operation);
+    switch (contractName) {
+        case UC4Identifier.CONTRACT_MATRICULATION:
+            return printMatriculationOperation(operation);
+        case UC4Identifier.CONTRACT_ADMISSION:
+            return await printAdmissionOperation(operation);
+        default:
+            return [];
+    }
+}
+
+async function printAdmissionOperation(operation: Operation): Promise<string[]> {
+    const transactionName = operation.transactionInfo.transactionName;
+
+    if (transactionName === UC4Identifier.TRANSACTION_ADD_ADMISSION) {
+        const paramsArray: string[] = JSON.parse(operation.transactionInfo.parameters);
+        const admission: CourseAdmission = <CourseAdmission>JSON.parse(paramsArray[0]);
+
+        const examregManagement = new ExaminationRegulationManagement();
+
+        const response = await examregManagement.getModules([admission.moduleId]);
+        const handler = new GenericResponseHandler("module");
+        const moduleName = handler.handleResponse(response);
+        const str = admission.courseId + " " + admission.moduleId + ": " + moduleName;
+
+        return [str];
+    } else if (transactionName === UC4Identifier.TRANSACTION_DROP_ADMISSION) {
+        const paramsArray: string[] = JSON.parse(operation.transactionInfo.parameters);
+        const admissionId = paramsArray[0];
+
+        const admissionManagement = new AdmissionManagement();
+
+        const response = await admissionManagement.getCourseAdmissions();
+        const handler = new GenericResponseHandler("admissions");
+        const admissions = handler.handleResponse(response);
+
+        const admission = admissions.find((e) => e.admissionId === admissionId);
+
+        if (!admission) return [admissionId];
+
+        const examregManagement = new ExaminationRegulationManagement();
+
+        const response2 = await examregManagement.getModules([admission.moduleId]);
+        const handler2 = new GenericResponseHandler("module");
+        const moduleName = handler2.handleResponse(response2);
+
+        const str = admission.courseId.substring(0, 4) + " " + admission.moduleId + ": " + moduleName;
+
+        return [str];
     }
 
     return [];
@@ -44,4 +91,19 @@ function printSubjectMatriculation(data: SubjectMatriculation[]): string[] {
     });
 
     return result;
+}
+
+export function printOperationTitle(operation: Operation): string {
+    switch (operation.transactionInfo.transactionName) {
+        case UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION:
+        case UC4Identifier.TRANSACTION_ADD_MATRICULATION:
+        case UC4Identifier.TRANSACTION_UPDATE_MATRICULATION:
+            return "Update Matriculation";
+        case UC4Identifier.TRANSACTION_DROP_ADMISSION:
+            return "Drop Course";
+        case UC4Identifier.TRANSACTION_ADD_ADMISSION:
+            return "Course Admission";
+        default:
+            return "";
+    }
 }
