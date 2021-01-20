@@ -1,6 +1,6 @@
 <template>
     <h1 class="text-xl text-gray-700">In this dashboard, you find all your requested operations concerning your account.</h1>
-    <div v-if="busy" class="mx-auto">
+    <div v-if="busy > 0" class="mx-auto">
         <loading-spinner />
     </div>
     <div v-else class="flex flex-col w-full items-center mt-10">
@@ -51,6 +51,8 @@
     import { MutationTypes } from "@/use/store/mutation-types";
     import { Role } from "@/entities/Role";
     import Router from "@/use/router";
+    import CertificateManagement from "@/api/CertificateManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 
     export default {
         name: "Dashboard",
@@ -60,7 +62,7 @@
             SeachBar,
         },
         setup() {
-            const busy = ref(false);
+            const busy = ref(0);
             const message = ref("");
             const operations = ref([] as Operation[]);
             const watchedOperations = ref([] as Operation[]);
@@ -181,8 +183,7 @@
 
             onBeforeMount(async () => {
                 await refresh();
-                enrollmentId.value = "MockUser5";
-                //enrollmentId.value = await something from store
+                await getEnrollmentID();
                 await getRole();
             });
 
@@ -191,17 +192,30 @@
             });
 
             async function refresh() {
-                busy.value = true;
+                busy.value++;
                 store.commit(MutationTypes.CLEAR_TREATED_OPERATIONS);
                 await getOperations();
-                busy.value = false;
+                busy.value--;
             }
 
             async function getRole() {
-                busy.value = true;
+                busy.value++;
                 role.value = (await store.getters.user).role;
-                busy.value = false;
+                busy.value--;
             }
+
+            async function getEnrollmentID() {
+                busy.value++;
+                const certificateManagement = new CertificateManagement();
+                const handler = new GenericResponseHandler("enrollment-id");
+                const response = await certificateManagement.getOwnEnrollmentId();
+                const result = handler.handleResponse(response);
+                if (result) {
+                    enrollmentId.value = result.id;
+                }
+                busy.value--;
+            }
+
             const filteredOperations = computed(() => {
                 let filter = message.value.replace(/\s/g, "").toLowerCase();
                 if (filter != "") {
