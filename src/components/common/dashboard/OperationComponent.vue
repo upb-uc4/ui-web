@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div v-if="!isArchive && isFinished" class="pr-2">
-                <button class="btn btn-icon-blue text-xs h-6 w-6" title="Mark as read" @click="markRead">
+                <button class="btn btn-icon-blue text-xs h-6 w-6" title="Mark as read" @click.stop="markRead">
                     <i class="fas fa-check"></i>
                 </button>
             </div>
@@ -47,11 +47,27 @@
         </div>
         <div class="flex flex-col w-full">
             <div class="flex flex-auto w-full">
-                <div class="flex flex-col">
-                    <label id="opName" class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{ operation.operationId }}</label>
+                <div class="flex flex-col w-full md:w-2/3">
+                    <label id="opName" class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{
+                        operation.transactionInfo.contractName
+                    }}</label>
                     <label class="mt-1 text-xs text-gray-600">Initiated: {{ initiatedTimestamp }}</label>
+                    <label v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between">
+                        <p>Initiator-ID:</p>
+                        <div class="ml-4">
+                            <router-link
+                                v-if="username != '' && username != 'not active'"
+                                class="navigation-link cursor-pointer hover:underline"
+                                target="_blank"
+                                :to="{ name: 'profile.public', params: { username: username } }"
+                            >
+                                @{{ username }}
+                            </router-link>
+                            <p v-else>not found</p>
+                        </div>
+                    </label>
                 </div>
-                <div v-if="actionRequired && isPending" class="w-full flex justify-end items-baseline">
+                <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
                     <button
                         :id="'op_' + operation.operationId + '_approve'"
                         :disabled="sentApprove"
@@ -77,7 +93,6 @@
             <div v-if="showDetails" class="flex flex-col w-full mt-4">
                 <div class="flex flex-wrap mb-4">
                     <div class="flex flex-col items-start">
-                        <p v-if="!isMyOperation" class="mt-1">Initiator-ID: {{ operation.initiator }}</p>
                         <div class="flex flex-row text-sm">
                             <p class="mr-1">Desired {{ type }}:</p>
                             <div class="lg:flex">
@@ -120,13 +135,18 @@
 
 <script lang="ts">
     import Operation from "@/api/api_models/operation_management/Operation";
-    import { computed, ref, watch } from "vue";
+    import { computed, onBeforeMount, ref, watch } from "vue";
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
     import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
+    import { Role } from "@/entities/Role";
+    import CertificateManagement from "@/api/CertificateManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import Router from "@/use/router";
+    import { approveMatriculation } from "@/api/abstractions/FrontendSigning";
 
     export default {
         name: "OperationComponent",
@@ -179,6 +199,9 @@
             const isMyOperation = operation.value.initiator == props.enrollmentId;
             const showWatchOption = !isMyOperation && !props.isArchive;
 
+            const isAdmin = props.role == Role.ADMIN;
+            const username = ref("");
+
             const isWatched = ref(props.watched);
 
             const dateFormatOptions = {
@@ -194,6 +217,12 @@
             const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-US", dateFormatOptions);
 
             const showDetails = ref(false);
+
+            onBeforeMount(() => {
+                if (isAdmin) {
+                    getNameByEnrollmentId();
+                }
+            });
 
             const type = computed(() => {
                 if (operation.value.transactionInfo.contractName == UC4Identifier.CONTRACT_MATRICULATION) {
@@ -221,12 +250,13 @@
             });
 
             async function approve() {
-                //TODO API Call
-                //TODO Set watch
-                //If success
-                store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
-                sentApprove.value = true;
-                provideReason.value = false;
+                if (await approveMatriculation(operation.value)) {
+                    //TODO Set watch
+                    //If success
+                    store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
+                    sentApprove.value = true;
+                    provideReason.value = false;
+                }
             }
 
             function toogleReasonMenu() {
@@ -267,6 +297,18 @@
                 showNotYetImplementedToast();
             }
 
+            async function getNameByEnrollmentId() {
+                const certificateManagement = new CertificateManagement();
+                const handler = new GenericResponseHandler(`user-id ${operation.value.initiator}`);
+                const response = await certificateManagement.getUsername(operation.value.initiator);
+                const result = handler.handleResponse(response);
+                if (result != "") {
+                    username.value = result;
+                } else {
+                    username.value = "not active";
+                }
+            }
+
             return {
                 statusColor,
                 type,
@@ -295,6 +337,8 @@
                 isWatched,
                 showWatchOption,
                 isMyOperation,
+                isAdmin,
+                username,
             };
         },
     };

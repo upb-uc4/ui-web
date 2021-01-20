@@ -53,6 +53,7 @@
     import Router from "@/use/router";
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import OperationManagement from "@/api/OperationManagement";
 
     export default {
         name: "Dashboard",
@@ -183,7 +184,7 @@
 
             onBeforeMount(async () => {
                 await refresh();
-                await getEnrollmentID();
+                await getEnrollmentId();
                 await getRole();
             });
 
@@ -204,7 +205,7 @@
                 busy.value--;
             }
 
-            async function getEnrollmentID() {
+            async function getEnrollmentId() {
                 busy.value++;
                 const certificateManagement = new CertificateManagement();
                 const handler = new GenericResponseHandler("enrollment-id");
@@ -241,16 +242,30 @@
                         (op.missingApprovals.users.includes(enrollmentId.value) || op.missingApprovals.groups.includes(role.value))
                 )
             );
+
             async function getOperations() {
-                //TODO API
-                watchedOperations.value = mockedWatchedOps;
-                operations.value = mockedOps;
+                busy.value++;
+                const operationManagement = new OperationManagement();
+                const handler = new GenericResponseHandler("operations");
+                const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
+                console.log(response);
+                const result = handler.handleResponse(response);
+                if (Object.keys(result).length > 0) {
+                    operations.value = result;
+                }
+                //watchedOperations.value = mockedWatchedOps;
+                //operations.value = mockedOps;
+                busy.value--;
             }
 
             async function markRead(operationId: string) {
                 //TODO API CALL
-                // If success:
-                operations.value = operations.value.filter((op) => op.operationId !== operationId);
+                const operationManagement = new OperationManagement();
+                const handler = new GenericResponseHandler("unwatch operation");
+                const result = handler.handleResponse(await operationManagement.unwatchOperation(operationId));
+                if (result) {
+                    operations.value = operations.value.filter((op) => op.operationId !== operationId);
+                }
             }
 
             function routeAllOperationsPage() {
