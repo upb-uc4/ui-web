@@ -23,6 +23,8 @@ import { decodeTransaction } from "../helpers/TransactionDecoding";
 import { admissionsTransactionValidator, matriculationTransactionValidator } from "../helpers/TransactionValidator";
 import MatriculationManagement from "../MatriculationManagement";
 import OperationManagement from "../OperationManagement";
+import { UC4Identifier } from "../helpers/UC4Identifier";
+import MatriculationData from "../api_models/matriculation_management/MatriculationData";
 
 export async function updateMatriculation(
     username: string,
@@ -146,15 +148,34 @@ export async function approveMatriculation(operation: Operation, protoUrl?: stri
 
     const operationToApprove = handler.handleResponse(response);
 
-    const params = operationToApprove.transactionInfo.parameters[3];
-    const paramsArray: string[] = JSON.parse(params);
-    const operationEnrollmentId = paramsArray[0];
-    const operationMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
+    if (operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION) {
+        const paramsArray: string[] = JSON.parse(operationToApprove.transactionInfo.parameters);
+        const proposalEnrollmentId = paramsArray[0];
+        const proposalMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
 
-    const handler2 = new GenericResponseHandler("enrollmentId");
-    const username = handler2.handleResponse(await new CertificateManagement().getUsername(operationEnrollmentId));
+        const handler2 = new GenericResponseHandler("enrollmentId");
+        const username = handler2.handleResponse(await new CertificateManagement().getUsername(proposalEnrollmentId));
 
-    return await updateMatriculation(username, operationEnrollmentId, operationMatriculation, protoUrl);
+        return await updateMatriculation(username, proposalEnrollmentId, proposalMatriculation, protoUrl);
+    } else if (
+        operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_ADD_MATRICULATION ||
+        operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_UPDATE_MATRICULATION
+    ) {
+        const paramsArray: string[] = JSON.parse(operationToApprove.transactionInfo.parameters);
+        const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
+
+        const handler2 = new GenericResponseHandler("enrollmentId");
+        const username = handler2.handleResponse(await new CertificateManagement().getUsername(proposalMatriculationData.enrollmentId));
+
+        return await updateMatriculation(
+            username,
+            proposalMatriculationData.enrollmentId,
+            proposalMatriculationData.matriculationStatus,
+            protoUrl
+        );
+    }
+
+    return false;
 }
 
 export async function rejectOperation(operation: Operation, rejectMessage: string): Promise<boolean> {
@@ -164,8 +185,7 @@ export async function rejectOperation(operation: Operation, rejectMessage: strin
     const response = await operationManagement.getUnsignedRejectionProposal(operation.operationId, rejectMessage);
 
     const handler = new GenericResponseHandler("rejection");
-
-    return handler.handleResponse(response).unsignedProposal !== "";
+    return handler.handleResponse(response).unsignedProposal === "";
 }
 
 async function abstractHandler(

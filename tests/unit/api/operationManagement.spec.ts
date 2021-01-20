@@ -26,6 +26,8 @@ import { readFileSync } from "fs";
 import { isEqual } from "lodash";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
+import resetState from "../../helper/ResetState";
+import MatriculationManagement from "@/api/MatriculationManagement";
 
 jest.setTimeout(60000);
 
@@ -56,10 +58,7 @@ const rejectionReason = "Some reason";
 
 describe("Operation Management tests", () => {
     beforeAll(async () => {
-        useStore().commit(MutationTypes.SET_DECRYPT_PRIVATE_KEY_MODAL, async (encKey: EncryptedPrivateKey) => {
-            const wrappingKey = await deriveKeyFromPassword(encryptionPassword, encKey.salt);
-            return await unwrapKey(base64ToArrayBuffer(encKey.key), wrappingKey.key, base64ToArrayBuffer(encKey.iv));
-        });
+        resetState(encryptionPassword);
 
         const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         keypair = await createKeyPair();
@@ -79,6 +78,7 @@ describe("Operation Management tests", () => {
     });
 
     test("Login as student", async () => {
+        resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
@@ -111,6 +111,7 @@ describe("Operation Management tests", () => {
         expect(response.statusCode).toBe(201);
         expect(response.returnValue.certificate).not.toBe(undefined);
         expect(response.returnValue.certificate).not.toEqual("");
+        await new Promise((r) => setTimeout(r, 3000));
     });
 
     test("Update matriculation", async () => {
@@ -148,8 +149,9 @@ describe("Operation Management tests", () => {
         expect(operation.existingApprovals.users[0]).toEqual("scala-admin-org1");
         expect(operation.existingApprovals.users[1]).toEqual(enrollmentIdStudent);
 
-        expect(operation.existingApprovals.groups.length).toEqual(1);
+        expect(operation.existingApprovals.groups.length).toEqual(2);
         expect(operation.existingApprovals.groups[0]).toEqual("System");
+        expect(operation.existingApprovals.groups[1]).toEqual("Student");
 
         expect(operation.operationId).not.toEqual("");
 
@@ -217,7 +219,6 @@ describe("Operation Management tests", () => {
         expect(response.statusCode).toEqual(200);
         expect(response.returnValue.length).toEqual(1);
         expect(response.returnValue[0].operationId).toEqual(operationIdToApprove);
-        console.log(response.returnValue[0]);
 
         const response2 = await operationManagement.getOperations(false, false, [OperationStatus.PENDING]);
         expect(response2.statusCode).toEqual(200);
@@ -230,6 +231,7 @@ describe("Operation Management tests", () => {
     });
 
     test("Login as admin", async () => {
+        resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(admin.authUser);
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
@@ -255,20 +257,17 @@ describe("Operation Management tests", () => {
         expect(response.statusCode).toBe(201);
         expect(response.returnValue.certificate).not.toBe(undefined);
         expect(response.returnValue.certificate).not.toEqual("");
+        await new Promise((r) => setTimeout(r, 3000));
     });
 
     test("Fetch open operations as admin", async () => {
         const operationManagement = new OperationManagement();
 
         const response = await operationManagement.getOperations(false, true);
-        expect(response.returnValue.length).toBeGreaterThan(3);
+        expect(response.returnValue.length).toBeGreaterThanOrEqual(1);
         const operationToApprove = response.returnValue.find((e) => e.operationId == operationIdToApprove);
-        console.log(operationToApprove);
-        const operationToReject = response.returnValue.find((e) => e.operationId == operationIdToReject);
-        console.log(operationIdToReject);
 
         expect(operationToApprove !== undefined);
-        expect(operationToReject !== undefined);
     });
 
     test("Approve operation as admin", async () => {
@@ -285,6 +284,13 @@ describe("Operation Management tests", () => {
         expect(success).toBe(true);
     });
 
+    test("Login as student", async () => {
+        resetState(encryptionPassword);
+        const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
+        expect(success.returnValue.login).not.toEqual("");
+        certManagement = new CertificateManagement();
+    });
+
     test("Update matriculation for rejection", async () => {
         matriculationToReject = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2021"] }];
 
@@ -296,7 +302,7 @@ describe("Operation Management tests", () => {
         const response = await operationManagement.getOperations(true, false, [OperationStatus.PENDING]);
 
         expect(response.statusCode).toEqual(200);
-        expect(response.returnValue.length).toEqual(2);
+        expect(response.returnValue.length).toEqual(1);
 
         expect(response.returnValue.filter((e) => e.operationId != operationIdToApprove).length).toEqual(1);
         operationIdToReject = response.returnValue.filter((e) => e.operationId != operationIdToApprove)[0].operationId;
@@ -318,7 +324,7 @@ describe("Operation Management tests", () => {
         const response = await operationManagement.getOperations(true, false, [OperationStatus.PENDING]);
 
         expect(response.statusCode).toEqual(200);
-        expect(response.returnValue.length).toEqual(3);
+        expect(response.returnValue.length).toEqual(2);
 
         expect(
             response.returnValue.filter((e) => e.operationId != operationIdToApprove && e.operationId != operationIdToReject).length
@@ -326,6 +332,15 @@ describe("Operation Management tests", () => {
         operationIdToApproveWithDifferentStudent = response.returnValue.filter(
             (e) => e.operationId != operationIdToApprove && e.operationId != operationIdToReject
         )[0].operationId;
+    });
+
+    test("Login as admin", async () => {
+        resetState(encryptionPassword);
+        const success = await MachineUserAuthenticationManagement._getRefreshToken(admin.authUser);
+        expect(success.returnValue.login).not.toEqual("");
+        certManagement = new CertificateManagement();
+
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
     });
 
     test("Reject operation as admin", async () => {
@@ -343,6 +358,7 @@ describe("Operation Management tests", () => {
     });
 
     test("Login as student", async () => {
+        resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
         expect(success.returnValue.login).not.toEqual("");
     });
@@ -380,7 +396,6 @@ describe("Operation Management tests", () => {
 
         const response = await operationManagement.getOperations(true, false, undefined, true);
         expect(response.statusCode).toEqual(200);
-        expect(response.returnValue.length).not.toEqual(0);
 
         expect(response.returnValue.find((e) => e.operationId == operationIdToApprove)).toBe(undefined);
     });
@@ -407,6 +422,7 @@ describe("Operation Management tests", () => {
     });
 
     test("Login as other student", async () => {
+        resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student2.authUser);
         expect(success.returnValue.login).not.toEqual("");
 
@@ -433,6 +449,7 @@ describe("Operation Management tests", () => {
         expect(response.statusCode).toBe(201);
         expect(response.returnValue.certificate).not.toBe(undefined);
         expect(response.returnValue.certificate).not.toEqual("");
+        await new Promise((r) => setTimeout(r, 3000));
     });
 
     test("Fetch operations of other student", async () => {
@@ -476,6 +493,7 @@ describe("Operation Management tests", () => {
     });
 
     test("Login as student", async () => {
+        resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
         expect(success.returnValue.login).not.toEqual("");
     });
@@ -491,7 +509,19 @@ describe("Operation Management tests", () => {
         expect(response.returnValue.reason).toEqual("");
     });
 
+    test("Validate matriculation", async () => {
+        const matriculationManagement = new MatriculationManagement();
+        const response = await matriculationManagement.getMatriculationHistory(student.authUser.username);
+        expect(response.statusCode).toEqual(200);
+        expect(response.returnValue.matriculationStatus.length).toEqual(1);
+
+        expect(response.returnValue.matriculationStatus[0].fieldOfStudy).toEqual(matriculationToApprove[0].fieldOfStudy);
+        expect(response.returnValue.matriculationStatus[0].semesters.length).toEqual(1);
+        expect(response.returnValue.matriculationStatus[0].semesters[0]).toEqual(matriculationToApprove[0].semesters[0]);
+    });
+
     afterAll(async () => {
+        resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(adminAuth);
         expect(success).toEqual(true);
 

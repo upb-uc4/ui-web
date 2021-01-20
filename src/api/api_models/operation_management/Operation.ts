@@ -4,14 +4,14 @@ import { OperationStatus } from "./OperationState";
 export default interface Operation {
     operationId: string;
     transactionInfo: {
-        contractName: UC4Identifier;
-        transactionName: UC4Identifier;
+        contractName: string;
+        transactionName: string;
         parameters: string;
     };
     initiator: string;
     initiatedTimestamp: string;
     lastModifiedTimestamp: string;
-    state: OperationStatus;
+    state: string;
     reason: string;
     existingApprovals: ApprovalList;
     missingApprovals: ApprovalList;
