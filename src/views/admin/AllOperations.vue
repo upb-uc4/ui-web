@@ -12,17 +12,19 @@
             </router-link>
             .
         </h2>
-        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
     </div>
-    <div v-if="busy">
+    <div v-if="busy" class="mx-auto">
         <loading-spinner />
     </div>
-    <div v-else-if="gotOps" class="flex flex-col items-center justify-center w-full mt-10">
+    <div v-else class="flex flex-col items-center justify-center w-full mt-10">
+        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
         <dashboard-component
+            v-else
             class="w-full"
             :watched-operations="watchedOperations"
             :operations="operations"
             :role="role"
+            :is-archive="true"
             title="All Operations"
         />
     </div>
@@ -38,6 +40,8 @@
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import Router from "@/use/router/";
+    import OperationManagement from "@/api/OperationManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 
     export default {
         name: "AllOperationsPage",
@@ -148,10 +152,17 @@
             }
 
             async function getOperations() {
-                //TODO API CALL
+                const operationManagement = new OperationManagement();
+                const handler = new GenericResponseHandler("operations");
+                const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
+                const result = handler.handleResponse(response);
+                if (Object.keys(result).length > 0) {
+                    operations.value = result;
+                    gotOps.value = true;
+                }
+                //watchedOperations.value = mockedWatchedOps;
+                //operations.value = mockedOps;
                 getWatchedOperations();
-                gotOps.value = true;
-                operations.value = mockedOps;
             }
 
             async function getWatchedOperations() {

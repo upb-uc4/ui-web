@@ -15,7 +15,7 @@
                 :operations="finishedOperations"
                 :watched-operations="watchedOperations"
                 title="Finished Operations"
-                description="Operations which are completed. Marking them as read will remove them from the list."
+                description="Completed Operations. Marking them as read will remove them from the list."
                 @marked-read="markRead"
             />
             <dashboard-component
@@ -221,8 +221,11 @@
                 let filter = message.value.replace(/\s/g, "").toLowerCase();
                 if (filter != "") {
                     //TODO more filtering
-                    let filteredOperations = operations.value.filter((op) =>
-                        op.operationId.replace(/\s/g, "").toLowerCase().includes(filter)
+                    let filteredOperations = operations.value.filter(
+                        (op) =>
+                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
                     );
                     return filteredOperations;
                 }
@@ -248,7 +251,6 @@
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
                 const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
-                console.log(response);
                 const result = handler.handleResponse(response);
                 if (Object.keys(result).length > 0) {
                     operations.value = result;

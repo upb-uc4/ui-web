@@ -1,14 +1,15 @@
 <template>
     <div
-        :id="'op_' + operation.operationId"
+        :id="'op_' + shownOpId"
         class="flex flex-col shadow-xl bg-white hover:bg-gray-200 rounded-lg items-start p-2 sm:p-4"
         @click="toggleDetails"
     >
-        <div class="flex w-full items-center justify-between sm:justify-start mb-4">
+        <div class="flex w-full items-center justify-between sm:justify-start mb-2">
             <div class="w-full sm:flex sm:items-center">
                 <div class="flex items-center">
                     <i
                         v-if="showWatchOption"
+                        :id="'toggleWatch_op_' + shownOpId"
                         class="text-md hover:text-blue-600 text-blue-500 far fa-bookmark cursor-pointer"
                         :class="{ 'fas fa-bookmark': isWatched }"
                         :title="isWatched ? 'Unwatch' : 'Watch'"
@@ -31,11 +32,20 @@
                 </div>
             </div>
             <div v-if="!isArchive && isFinished" class="pr-2">
-                <button class="btn btn-icon-blue text-xs h-6 w-6" title="Mark as read" @click.stop="markRead">
+                <button
+                    :id="'markRead_op_' + shownOpId"
+                    class="btn btn-icon-blue text-xs h-6 w-6"
+                    title="Mark as read"
+                    @click.stop="markRead"
+                >
                     <i class="fas fa-check"></i>
                 </button>
             </div>
-            <button class="text-sm text-gray-700 pt-1 pr-2" :title="showDetails ? 'Collapse' : 'Expand'">
+            <button
+                :id="'toggleDetails_op_' + shownOpId"
+                class="text-sm text-gray-700 pt-1 pr-2"
+                :title="showDetails ? 'Collapse' : 'Expand'"
+            >
                 <i
                     v-if="showDetails"
                     :disabled="provideReason"
@@ -48,15 +58,19 @@
         <div class="flex flex-col w-full">
             <div class="flex flex-auto w-full">
                 <div class="flex flex-col w-full md:w-2/3">
-                    <label id="opName" class="mt-2 text-xl font-semibold leading-tight text-gray-900">{{
-                        operation.transactionInfo.contractName
-                    }}</label>
-                    <label class="mt-1 text-xs text-gray-600">Initiated: {{ initiatedTimestamp }}</label>
+                    <label id="opName" class="text-xl font-semibold leading-tight text-gray-900 flex items-center">
+                        {{ title }}
+                    </label>
+                    <label class="mt-1 text-xs text-gray-600 flex items-center">
+                        Initiated: {{ initiatedTimestamp }}
+                        <p class="text-gray-500 ml-2 font-mono" :title="operation.operationId">(ID: {{ shownOpId }})</p>
+                    </label>
                     <label v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between">
                         <p>Initiator-ID:</p>
                         <div class="ml-4">
                             <router-link
                                 v-if="username != '' && username != 'not active'"
+                                :id="'routeProfile_op_' + shownOpId"
                                 class="navigation-link cursor-pointer hover:underline"
                                 target="_blank"
                                 :to="{ name: 'profile.public', params: { username: username } }"
@@ -69,7 +83,7 @@
                 </div>
                 <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
                     <button
-                        :id="'op_' + operation.operationId + '_approve'"
+                        :id="'approve_op_' + operation.operationId"
                         :disabled="sentApprove"
                         :class="{ 'bg-green-700': sentApprove, 'invisible': sentReject }"
                         class="w-8 h-8 btn btn-icon-green text-xs"
@@ -79,7 +93,7 @@
                         <i class="fas fa-check"></i>
                     </button>
                     <button
-                        :id="'op_' + operation.operationId + '_approve'"
+                        :id="'startRejection_op_' + operation.operationId"
                         :disabled="sentReject || provideReason"
                         :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
                         class="ml-2 w-8 h-8 btn btn-icon-red-filled text-xs"
@@ -95,8 +109,8 @@
                     <div class="flex flex-col items-start">
                         <div class="flex flex-row text-sm">
                             <p class="mr-1">Desired {{ type }}:</p>
-                            <div class="lg:flex">
-                                <p class="ml-4">{{ operation.transactionInfo.parameters }}</p>
+                            <div class="lg:flex ml-4 flex flex-col">
+                                <p v-for="param in params" :key="param">{{ param }}</p>
                             </div>
                         </div>
                         <div v-if="isRejected" class="mt-1">
@@ -118,6 +132,7 @@
                     />
                     <div class="flex justify-end mt-2">
                         <button
+                            :id="'reject_op_' + shownOpId"
                             :title="writtenReason == '' ? 'Please provide a reason' : 'Reject'"
                             :disabled="writtenReason == ''"
                             class="btn btn-icon-red-filled text-sm h-12"
@@ -125,7 +140,13 @@
                         >
                             Reject
                         </button>
-                        <button class="ml-2 btn btn-icon-blue text-sm h-12" @click.stop="toogleReasonMenu">Cancel</button>
+                        <button
+                            :id="'cancelRejection_op_' + shownOpId"
+                            class="ml-2 btn btn-icon-blue text-sm h-12"
+                            @click.stop="toogleReasonMenu"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -146,7 +167,8 @@
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Router from "@/use/router";
-    import { approveMatriculation } from "@/api/abstractions/FrontendSigning";
+    import { approveMatriculation, rejectOperation } from "@/api/abstractions/FrontendSigning";
+    import { printOperation, printOperationTitle } from "@/api/abstractions/OperationPrinter";
 
     export default {
         name: "OperationComponent",
@@ -197,10 +219,10 @@
             const selectedReason = ref("");
             const writtenReason = ref("");
             const isMyOperation = operation.value.initiator == props.enrollmentId;
-            const showWatchOption = !isMyOperation && !props.isArchive;
+            const showWatchOption = !isMyOperation && isPending;
 
             const isAdmin = props.role == Role.ADMIN;
-            const username = ref("");
+            const username = ref("...");
 
             const isWatched = ref(props.watched);
 
@@ -213,22 +235,31 @@
                 minute: "2-digit",
             };
 
+            const params = ref([] as string[]);
+            const title = ref("");
+            const shownOpId = operation.value.operationId.substring(0, 4);
+
             const initiatedTimestamp = new Date(operation.value.initiatedTimestamp).toLocaleString("en-US", dateFormatOptions);
             const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-US", dateFormatOptions);
 
             const showDetails = ref(false);
 
-            onBeforeMount(() => {
+            onBeforeMount(async () => {
                 if (isAdmin) {
                     getNameByEnrollmentId();
                 }
+                createDisplayObjects();
             });
 
             const type = computed(() => {
-                if (operation.value.transactionInfo.contractName == UC4Identifier.CONTRACT_MATRICULATION) {
-                    return "Matriculation";
+                switch (operation.value.transactionInfo.contractName) {
+                    case UC4Identifier.CONTRACT_MATRICULATION:
+                        return "Matriculation";
+                    case UC4Identifier.CONTRACT_ADMISSION:
+                        return "Course Admission";
+                    default:
+                        return "";
                 }
-                return "";
             });
 
             const statusColor = computed(() => {
@@ -252,7 +283,6 @@
             async function approve() {
                 if (await approveMatriculation(operation.value)) {
                     //TODO Set watch
-                    //If success
                     store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                     sentApprove.value = true;
                     provideReason.value = false;
@@ -269,12 +299,13 @@
             }
 
             async function reject() {
-                //TODO API Call with reason
-                //TODO Set watch
-                //If success
-                store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
-                sentReject.value = true;
-                toogleReasonMenu();
+                if (await rejectOperation(operation.value, writtenReason.value)) {
+                    //TODO Set watch
+                    //If success
+                    store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
+                    sentReject.value = true;
+                    toogleReasonMenu();
+                }
             }
 
             function markRead() {
@@ -309,6 +340,11 @@
                 }
             }
 
+            async function createDisplayObjects() {
+                title.value = printOperationTitle(operation.value);
+                params.value = await printOperation(operation.value);
+            }
+
             return {
                 statusColor,
                 type,
@@ -339,6 +375,9 @@
                 isMyOperation,
                 isAdmin,
                 username,
+                params,
+                title,
+                shownOpId,
             };
         },
     };

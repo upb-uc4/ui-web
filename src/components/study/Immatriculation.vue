@@ -166,11 +166,18 @@
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
                 if (await updateMatriculation(username.value, enrollmentId.id, matriculationEntries)) {
+                    resetEntries();
                     showOperationCreatedToast("immatriculation");
                 }
 
                 busy.value--;
                 refreshKey.value = !refreshKey.value;
+            }
+
+            function resetEntries() {
+                resetYear();
+                selectedFieldsOfStudy.value = [] as string[];
+                semesterType.value = "";
             }
 
             return {
