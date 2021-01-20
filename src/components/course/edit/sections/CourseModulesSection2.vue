@@ -25,6 +25,9 @@
                 <module-selection
                     v-if="selectedExaminationRegulations[index - 1]"
                     :examination-regulation="selectedExaminationRegulations[index - 1]"
+                    :selected-module-ids="selectedModuleIDs"
+                    @add-module="onModuleAdded"
+                    @remove-module="onModuleRemoved"
                 />
             </div>
         </div>
@@ -42,6 +45,7 @@
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
     import __ from "lodash";
     import ModuleSelection from "@/components/course/edit/sections/ModuleSelection.vue";
+    import Module from "@/api/api_models/exam_reg_management/Module";
 
     export default {
         name: "CourseModulesSection",
@@ -70,6 +74,7 @@
             const isLoading = ref(true);
             const availableExaminationRegulations = ref([] as ExaminationRegulation[]);
             const selectedExaminationRegulations = reactive([] as ExaminationRegulation[]);
+            const selectedModuleIDs = ref(new Set<String>());
 
             onBeforeMount(async () => {
                 await loadExaminationRegulations();
@@ -121,8 +126,41 @@
             }
 
             function removeSelectedExaminationRegulation(index: number) {
+                const removedExaminationRegulation = selectedExaminationRegulations.splice(index, 1);
+                removeModuleIDUnlessUsedBySomeExaminationRegulation(removedExaminationRegulation[0]);
+                //todo emit list of selectedModuleIDs
                 //emit("remove-modules", selectedExRegs.value[index].modules);
-                selectedExaminationRegulations.splice(index, 1);
+            }
+
+            function removeModuleIDUnlessUsedBySomeExaminationRegulation(removedExaminationRegulation: ExaminationRegulation) {
+                removedExaminationRegulation.modules.forEach((module: Module) => {
+                    let toBeRemoved = true;
+                    selectedExaminationRegulations.forEach((examinationRegulation: ExaminationRegulation) => {
+                        if (examinationRegulation.modules.some((moduleInExamReg: Module) => moduleInExamReg.id === module.id)) {
+                            toBeRemoved = false;
+                        }
+                    });
+                    if (toBeRemoved) {
+                        selectedModuleIDs.value.delete(module.id);
+                    }
+                });
+            }
+
+            function onModuleAdded(module: Module) {
+                selectedModuleIDs.value.add(module.id);
+                const examinationRegulationsToAdd = availableExaminationRegulations.value.filter((examReg: ExaminationRegulation) => {
+                    return examReg.modules.some((moduleInExamReg: Module) => moduleInExamReg.id === module.id);
+                });
+                examinationRegulationsToAdd.forEach((examReg: ExaminationRegulation) => selectedExaminationRegulations.push(examReg));
+
+                //todo emit list of selectedModuleIDs
+            }
+
+            function onModuleRemoved(module: Module) {
+                selectedModuleIDs.value.delete(module.id);
+                //todo remove exam regulations that only had this module
+
+                //todo emit list of selectedModuleIDs
             }
 
             return {
@@ -130,6 +168,9 @@
                 availableExaminationRegulations,
                 selectedExaminationRegulations,
                 removeSelectedExaminationRegulation,
+                onModuleAdded,
+                onModuleRemoved,
+                selectedModuleIDs,
             };
         },
     };
