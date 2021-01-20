@@ -49,6 +49,21 @@ describe("Certificate management tests", () => {
         await new Promise((r) => setTimeout(r, 25000));
     });
 
+    test("Fetch username by enrollmentId", async () => {
+        certManagement = new CertificateManagement();
+        const adminEnrollmentId = (await certManagement.getEnrollmentId(adminAuth.username)).returnValue.id;
+        const adminUsername = (await certManagement.getUsername(adminEnrollmentId)).returnValue;
+        expect(adminUsername).toEqual(adminAuth.username);
+
+        const studentEnrollmentId = (await certManagement.getEnrollmentId(student.authUser.username)).returnValue.id;
+        const studentUsername = (await certManagement.getUsername(studentEnrollmentId)).returnValue;
+        expect(studentUsername).toEqual(student.authUser.username);
+
+        const student2EnrollmentId = (await certManagement.getEnrollmentId(student2.authUser.username)).returnValue.id;
+        const student2Username = (await certManagement.getUsername(student2EnrollmentId)).returnValue;
+        expect(student2Username).toEqual(student2.authUser.username);
+    });
+
     test("Login as student", async () => {
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
         expect(success.returnValue.login).not.toEqual("");

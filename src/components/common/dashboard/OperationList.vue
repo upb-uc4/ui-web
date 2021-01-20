@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-    import Operation from "@/api/api_models/operations_management/Operation";
+    import Operation from "@/api/api_models/operation_management/Operation";
     import OperationComponent from "@/components/common/dashboard/OperationComponent.vue";
 
     export default {

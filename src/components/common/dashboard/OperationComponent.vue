@@ -119,9 +119,9 @@
 </template>
 
 <script lang="ts">
-    import Operation from "@/api/api_models/operations_management/Operation";
+    import Operation from "@/api/api_models/operation_management/Operation";
     import { computed, ref, watch } from "vue";
-    import { OperationStatus } from "@/api/api_models/operations_management/OperationState";
+    import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";

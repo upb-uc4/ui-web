@@ -1,7 +1,7 @@
 export enum UC4Identifier {
     SEPERATOR = ":",
     /* CONTRACTS */
-    CONTRACT_APPROVAL = "UC4.Approval",
+    CONTRACT_APPROVAL = "UC4.OperationData",
     CONTRACT_MATRICULATION = "UC4.MatriculationData",
     CONTRACT_ADMISSION = "UC4.Admission",
 

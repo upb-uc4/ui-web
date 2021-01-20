@@ -80,6 +80,6 @@ test("Login with new user", async () => {
 });
 
 test("Delete own user", async () => {
-    const success = await userManagement.forceDeleteUser(student2.authUser.username);
+    const success = await userManagement.deleteUser(student2.authUser.username);
     expect(success.returnValue).toBe(true);
 });

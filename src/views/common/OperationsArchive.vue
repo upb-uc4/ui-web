@@ -31,9 +31,9 @@
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
-    import Operation, { ApprovalList } from "@/api/api_models/operations_management/Operation";
+    import Operation, { ApprovalList } from "@/api/api_models/operation_management/Operation";
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
-    import { OperationStatus } from "@/api/api_models/operations_management/OperationState";
+    import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import Router from "@/use/router/";
 
     export default {

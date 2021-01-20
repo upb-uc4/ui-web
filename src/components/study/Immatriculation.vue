@@ -165,7 +165,7 @@
                 const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
-                if (await updateMatriculation(enrollmentId.id, username.value, matriculationEntries)) {
+                if (await updateMatriculation(username.value, enrollmentId.id, matriculationEntries)) {
                     showOperationCreatedToast("immatriculation");
                 }
 

@@ -68,12 +68,9 @@ export default class MatriculationManagement extends CommonHyperledger {
             });
     }
 
-    async submitSignedMatriculationProposal(
-        username: string,
-        message: SignedProposalMessage
-    ): Promise<APIResponse<UnsignedTransactionMessage>> {
+    async submitSignedMatriculationProposal(message: SignedProposalMessage): Promise<APIResponse<UnsignedTransactionMessage>> {
         return await this._axios
-            .post(`/matriculation/${username}/signed_proposal`, message)
+            .post(`/matriculation/signed_proposal`, message)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -92,7 +89,7 @@ export default class MatriculationManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedMatriculationProposal(username, message);
+                        return await this.submitSignedMatriculationProposal(message);
                     }
                     return {
                         statusCode: error.response.status,
@@ -111,9 +108,9 @@ export default class MatriculationManagement extends CommonHyperledger {
             });
     }
 
-    async submitSignedMatriculationTransaction(username: string, message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
+    async submitSignedMatriculationTransaction(message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
         return await this._axios
-            .post(`/matriculation/${username}/signed_transaction`, message)
+            .post(`/matriculation/signed_transaction`, message)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -132,7 +129,7 @@ export default class MatriculationManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedMatriculationTransaction(username, message);
+                        return await this.submitSignedMatriculationTransaction(message);
                     }
                     return {
                         statusCode: error.response.status,
@@ -153,7 +150,7 @@ export default class MatriculationManagement extends CommonHyperledger {
 
     async getMatriculationHistory(username: string): Promise<APIResponse<MatriculationData>> {
         return await this._axios
-            .get(`/history/${username}`)
+            .get(`/matriculation/${username}`)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data as MatriculationData,
