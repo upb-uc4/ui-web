@@ -74,15 +74,14 @@
 
             async function getModules() {
                 busy.value = true;
+                if ((props.moduleIds as String[]).length == 0) return;
                 const exRegManagement = new ExaminationRegulationManagement();
                 const handler = new GenericResponseHandler("module");
                 const response = await exRegManagement.getModules(props.moduleIds as string[]);
                 let result = handler.handleResponse(response);
-                if (Object.keys(result).length > 0) {
-                    result.forEach((module) => {
-                        optionsArray.value.push({ value: module, display: `${module.id}: ${module.name}` });
-                    });
-                }
+                result.forEach((module) => {
+                    optionsArray.value.push({ value: module, display: `${module.id}: ${module.name}` });
+                });
                 busy.value = false;
             }
 
