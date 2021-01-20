@@ -383,6 +383,16 @@ describe("Operation Management tests", () => {
         expect((await operationManagement.getOperations(true, undefined, [OperationStatus.PENDING])).returnValue.length).toEqual(1);
     });
 
+    test("See operation is watched", async () => {
+        const operationManagement = new OperationManagement();
+
+        const response = await operationManagement.getOperations(true, false, undefined, true);
+        expect(response.statusCode).toEqual(200);
+        console.log(response.returnValue);
+
+        expect(response.returnValue.find((e) => e.operationId == operationIdToApprove)).not.toBe(undefined);
+    });
+
     test("Unwatch finished operation", async () => {
         const operationManagement = new OperationManagement();
 
