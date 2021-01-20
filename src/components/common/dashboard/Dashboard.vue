@@ -22,7 +22,7 @@
                 class="mt-5 lg:mt-0 lg:w-1/2"
                 :enrollment-id="enrollmentId"
                 :role="role"
-                :operations="actionNeededOperations"
+                :operations="shownActionRequiredOperations"
                 title="Action Required"
                 description="Operations that require your approval for completion."
             />
@@ -66,6 +66,7 @@
             const busy = ref(0);
             const message = ref("");
             const operations = ref([] as Operation[]);
+            const actionRequiredOperations = ref([] as Operation[]);
             const watchedOperations = ref([] as Operation[]);
             const store = useStore();
             const role = ref("");
@@ -217,6 +218,19 @@
                 busy.value--;
             }
 
+            function filterOperations(ops: Operation[], filter: string): Operation[] {
+                if (filter != "") {
+                    //TODO more filtering
+                    let filteredOperations = ops.filter(
+                        (op) =>
+                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
+                    );
+                    return filteredOperations;
+                }
+                return ops;
+            }
             const filteredOperations = computed(() => {
                 let filter = message.value.replace(/\s/g, "").toLowerCase();
                 if (filter != "") {
@@ -232,28 +246,40 @@
                 return operations.value;
             });
 
-            const pendingOwnOperations = computed(() =>
-                filteredOperations.value.filter((op) => op.state == OperationStatus.PENDING && op.initiator == enrollmentId.value)
-            );
-            const finishedOperations = computed(() =>
-                filteredOperations.value.filter((op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED)
-            );
-            const actionNeededOperations = computed(() =>
-                filteredOperations.value.filter(
+            const pendingOwnOperations = computed(() => {
+                let filter = message.value.replace(/\s/g, "").toLowerCase();
+                return filterOperations(operations.value, filter).filter(
+                    (op) => op.state == OperationStatus.PENDING && op.initiator == enrollmentId.value
+                );
+            });
+            const finishedOperations = computed(() => {
+                let filter = message.value.replace(/\s/g, "").toLowerCase();
+                return filterOperations(operations.value, filter).filter(
+                    (op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED
+                );
+            });
+            const shownActionRequiredOperations = computed(() => {
+                let filter = message.value.replace(/\s/g, "").toLowerCase();
+                return filterOperations(actionRequiredOperations.value, filter).filter(
                     (op) =>
                         op.state == OperationStatus.PENDING &&
                         (op.missingApprovals.users.includes(enrollmentId.value) || op.missingApprovals.groups.includes(role.value))
-                )
-            );
+                );
+            });
 
             async function getOperations() {
                 busy.value++;
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
-                const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
-                const result = handler.handleResponse(response);
+                let response = await operationManagement.getOperations(undefined, undefined, undefined, true);
+                let result = handler.handleResponse(response);
                 if (Object.keys(result).length > 0) {
                     operations.value = result;
+                }
+                response = await operationManagement.getOperations(undefined, true, undefined, undefined);
+                result = handler.handleResponse(response);
+                if (Object.keys(result).length > 0) {
+                    actionRequiredOperations.value = result;
                 }
                 //watchedOperations.value = mockedWatchedOps;
                 //operations.value = mockedOps;
@@ -280,7 +306,7 @@
                 watchedOperations,
                 pendingOwnOperations,
                 finishedOperations,
-                actionNeededOperations,
+                shownActionRequiredOperations,
                 enrollmentId,
                 role,
                 message,
