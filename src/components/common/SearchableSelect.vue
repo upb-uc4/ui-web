@@ -18,7 +18,7 @@
                     <div
                         v-show="hasMatch && !hidden"
                         :id="id + 'OptionDiv'"
-                        class="absolute mt-1 w-full rounded-md bg-white dark:bg-normalgray-800 shadow-lg"
+                        class="absolute z-50 mt-1 w-full rounded-md bg-white dark:bg-normalgray-800 shadow-lg"
                     >
                         <ListboxOptions
                             static
@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-    import { computed, ref, watch } from "vue";
+    import { computed, ref } from "vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import { Listbox, ListboxLabel, ListboxOption, ListboxOptions } from "@headlessui/vue";
 
