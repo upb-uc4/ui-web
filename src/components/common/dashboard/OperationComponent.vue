@@ -17,6 +17,7 @@
                     ></i>
                     <div class="ml-1 text-xs font-semiboldtext-gray-600 uppercase">{{ type }}</div>
                     <span
+                        :id="'op_state_' + shownOpId"
                         class="ml-4 inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase rounded-full"
                         :class="statusColor"
                     >
@@ -33,7 +34,7 @@
             </div>
             <div v-if="!isArchive && isFinished" class="pr-2">
                 <button
-                    :id="'markRead_op_' + shownOpId"
+                    :id="'op_markRead_' + shownOpId"
                     class="btn btn-icon-blue text-xs h-6 w-6"
                     title="Mark as read"
                     @click.stop="markRead"
@@ -83,7 +84,7 @@
                 </div>
                 <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
                     <button
-                        :id="'approve_op_' + operation.operationId"
+                        :id="'op_approve_' + shownOpId"
                         :disabled="sentApprove"
                         :class="{ 'bg-green-700': sentApprove, 'invisible': sentReject }"
                         class="w-8 h-8 btn btn-icon-green text-xs"
@@ -93,7 +94,7 @@
                         <i class="fas fa-check"></i>
                     </button>
                     <button
-                        :id="'startRejection_op_' + operation.operationId"
+                        :id="'op_startRejection_' + shownOpId"
                         :disabled="sentReject || provideReason"
                         :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
                         class="ml-2 w-8 h-8 btn btn-icon-red-filled text-xs"
@@ -113,26 +114,27 @@
                                 <p v-for="param in params" :key="param">{{ param }}</p>
                             </div>
                         </div>
-                        <div v-if="isRejected" class="mt-1">
+                        <div v-if="isRejected" :id="'op_rejection_reason_' + shownOpId" class="mt-1">
                             <p class="text-red-500">Rejected: {{ operation.reason }}</p>
                         </div>
                     </div>
                 </div>
                 <div v-if="provideReason" class="mt-6 flex flex-col border-t border-red-700">
                     <p class="text-red-700 my-2 font-semibold">Please provide a reason for rejection</p>
-                    <select v-model="selectedReason" class="form-select input-select">
+                    <select :id="'op_select_reject_reason_' + shownOpId" v-model="selectedReason" class="form-select input-select">
                         <option value="" disabled>Select a reason</option>
                         <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
                     </select>
                     <input
                         v-if="selectedReason == RejectionReasons.OTHER"
+                        :id="'op_written_reject_reason_' + shownOpId"
                         v-model="writtenReason"
                         class="form-input input-text mt-2"
                         placeholder="Reason for rejection"
                     />
                     <div class="flex justify-end mt-2">
                         <button
-                            :id="'reject_op_' + shownOpId"
+                            :id="'op_reject_' + shownOpId"
                             :title="writtenReason == '' ? 'Please provide a reason' : 'Reject'"
                             :disabled="writtenReason == ''"
                             class="btn btn-icon-red-filled text-sm h-12"
@@ -141,7 +143,7 @@
                             Reject
                         </button>
                         <button
-                            :id="'cancelRejection_op_' + shownOpId"
+                            :id="'op_cancelRejection_' + shownOpId"
                             class="ml-2 btn btn-icon-blue text-sm h-12"
                             @click.stop="toogleReasonMenu"
                         >

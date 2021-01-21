@@ -20,6 +20,7 @@
         <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
         <dashboard-component
             v-else
+            identifier="all"
             class="w-full"
             :watched-operations="watchedOperations"
             :operations="operations"

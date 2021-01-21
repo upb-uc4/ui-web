@@ -10,6 +10,7 @@
         <div class="w-full my-5 lg:flex lg:justify-between">
             <dashboard-component
                 class="lg:mr-5 lg:w-1/2"
+                identifier="finished"
                 :enrollment-id="enrollmentId"
                 :role="role"
                 :operations="finishedOperations"
@@ -20,6 +21,7 @@
             />
             <dashboard-component
                 class="mt-5 lg:mt-0 lg:w-1/2"
+                identifier="actionRequired"
                 :enrollment-id="enrollmentId"
                 :role="role"
                 :operations="shownActionRequiredOperations"
@@ -28,6 +30,7 @@
             />
         </div>
         <dashboard-component
+            identifier="pending"
             :watched-operations="watchedOperations"
             :enrollment-id="enrollmentId"
             :role="role"

@@ -15,6 +15,7 @@
     </div>
     <div v-else-if="gotArchive" class="flex flex-col items-center justify-center w-full mt-10">
         <dashboard-component
+            identifier="archive"
             class="w-full"
             :operations="operations"
             :role="role"
