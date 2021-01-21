@@ -13,8 +13,8 @@
                     {{ errorBag.get("lecturerId") }}
                 </label>
                 <div v-if="currentSelection.value !== undefined" class="text-gray-700 text-md font-medium my-3">
-                    <label v-if="currentSelection.value.username">
-                        <i class="text-green-400 fas fa-check mr-2"></i>
+                    <label v-if="currentSelection.value.username" class="input-label">
+                        <i class="text-green-400 dark:text-lime-500 fas fa-check mr-2"></i>
                         {{ currentSelection.value.firstName }} {{ currentSelection.value.lastName }} (
                         <router-link
                             class="navigation-link cursor-pointer hover:underline"
@@ -25,7 +25,7 @@
                         </router-link>
                         )
                     </label>
-                    <label v-else>
+                    <label v-else class="input-label-error">
                         <i class="text-red-400 fas fa-times mr-2"></i>
                         Lecturer-ID not found!
                     </label>
