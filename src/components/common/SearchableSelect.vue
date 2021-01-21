@@ -7,6 +7,7 @@
                     <input
                         :id="id"
                         v-model="input"
+                        :placeholder="placeholder"
                         type="text"
                         autocomplete="off"
                         class="w-full input-text"
