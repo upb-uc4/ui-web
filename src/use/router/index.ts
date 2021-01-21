@@ -18,7 +18,7 @@ const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
 const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
-const StudentImmatricultaion = () => import("@/components/study/Immatriculation.vue");
+const StudentImmatricultaion = () => import("@/views/student/Immatriculation.vue");
 const Dashboard = () => import("@/views/common/Dashboard.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);

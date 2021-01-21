@@ -1,77 +1,73 @@
 <template>
-    <section class="w-full h-screen mx-auto mt-8 bg-gray-300 lg:mt-20">
-        <div class="lg:flex">
-            <div class="flex flex-col w-full mb-4 mr-12 lg:w-1/3 lg:block">
-                <label class="block mb-2 text-lg font-medium text-gray-700">Immatriculation Status</label>
-                <label class="block text-gray-600">Lookup and update your immatriculation data.</label>
-            </div>
-            <div class="flex flex-col">
-                <div class="flex flex-col pl-2 mt-5">
-                    <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
-                    <immatriculation-history :key="refreshKey" v-model:busy="busy" :username="username" />
-                    <div v-if="busy">
-                        <loading-spinner />
-                    </div>
-                    <div v-else id="immatriculationOptions" class="w-full flex flex-wrap mt-5">
-                        <div class="flex flex-wrap items-start">
-                            <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
-                                <option disabled :value="''">Semester</option>
-                                <option>SS</option>
-                                <option>WS</option>
-                            </select>
-                            <select id="semesterYear" v-model="year" class="form-select input-select xl:mx-2">
-                                <option disabled :value="''">Year</option>
-                                <option v-for="year in selectableYears" :key="year">{{ year }}</option>
-                            </select>
-                            <multi-select
-                                :input-list="fieldsOfStudy"
-                                :placeholder="'Select a Field of Study'"
-                                :pre-selection="selectedFieldsOfStudy"
-                                @changed="updateSelectedFieldsOfStudy"
-                            />
-                        </div>
-                        <div class="flex-none">
-                            <button
-                                id="addImmatriculationData"
-                                :disabled="!validSelection"
-                                class="btn btn-green-primary-500 px-3 py-3"
-                                @click="updateImmatriculation"
-                            >
-                                Add
-                            </button>
-                        </div>
-                    </div>
-                    <p v-if="errorBag.hasNested('matriculation')" class="error-message">{{ errorBag.getNested("matriculation") }}</p>
+    <base-view>
+        <section-header title="Immatriculation" />
+        <base-section title="Immatriculation Status" subtitle="Lookup and update your immatriculation data.">
+            <div class="w-full">
+                <label class="input-label">Immatriculation History</label>
+                <immatriculation-history :key="refreshKey" v-model:busy="busy" :username="username" />
+                <div v-if="busy">
+                    <loading-spinner />
                 </div>
+                <div v-else id="immatriculationOptions" class="w-full flex flex-wrap mt-5">
+                    <div class="flex flex-wrap items-start">
+                        <select id="semesterType" v-model="semesterType" class="form-select input-select" @change="resetYear">
+                            <option disabled :value="''">Semester</option>
+                            <option>SS</option>
+                            <option>WS</option>
+                        </select>
+                        <select id="semesterYear" v-model="year" class="form-select input-select xl:mx-2">
+                            <option disabled :value="''">Year</option>
+                            <option v-for="year in selectableYears" :key="year">{{ year }}</option>
+                        </select>
+                        <multi-select
+                            :input-list="fieldsOfStudy"
+                            :placeholder="'Select a Field of Study'"
+                            :pre-selection="selectedFieldsOfStudy"
+                            @changed="updateSelectedFieldsOfStudy"
+                        />
+                    </div>
+                    <div class="flex-none">
+                        <button
+                            id="addImmatriculationData"
+                            :disabled="!validSelection"
+                            class="btn btn-green-primary-500 px-3 py-3"
+                            @click="updateImmatriculation"
+                        >
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <p v-if="errorBag.hasNested('matriculation')" class="error-message">{{ errorBag.getNested("matriculation") }}</p>
             </div>
-        </div>
-    </section>
+        </base-section>
+    </base-view>
 </template>
 
 <script lang="ts">
     import MultiSelect from "@/components/common/MultiSelect.vue";
-    import MatriculationManagement from "@/api/MatriculationManagement";
-    import { onBeforeMount, ref, computed, reactive, watch, onMounted } from "vue";
-    import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
-    import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
+    import { onBeforeMount, ref, computed } from "vue";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import ImmatriculationHistoryEntry from "@/components/common/immatriculation/ImmatriculationHistoryEntry.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { useStore } from "@/use/store/store";
     import CertificateManagement from "@/api/CertificateManagement";
     import { useToast } from "@/toast";
-    import { showAPIToast } from "@/use/helpers/Toasts";
     import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import BaseView from "@/views/common/BaseView.vue";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
 
     export default {
         components: {
+            SectionHeader,
             MultiSelect,
             LoadingSpinner,
             ImmatriculationHistory,
+            BaseView,
+            BaseSection,
         },
         setup(props: any, { emit }: any) {
             let refreshKey = ref(false);
