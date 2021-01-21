@@ -105,7 +105,7 @@
             let year = ref("");
             let selectedFieldsOfStudy = ref([] as string[]);
             const username = ref("");
-            const searchSelection = ref(null as SearchSelectOption);
+            const searchSelection = ref();
 
             let currentYear = new Date().getFullYear();
 
@@ -200,12 +200,12 @@
                 refreshKey.value = !refreshKey.value;
             }
 
-            function removeFieldOfStudy(index: Number) {
+            function removeFieldOfStudy(index: number) {
                 selectedFieldsOfStudy.value.splice(index, 1);
             }
 
             function addFieldOfStudy(field: SearchSelectOption) {
-                selectedFieldsOfStudy.value.push(field.value);
+                selectedFieldsOfStudy.value.push(field.value as string);
             }
 
             return {
