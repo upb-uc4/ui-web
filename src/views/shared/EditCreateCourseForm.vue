@@ -12,7 +12,7 @@
                 :error-bag="errorBag"
             />
             <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
-            <course-modules-section2
+            <course-modules-section
                 :module-ids="course.moduleIds"
                 :error-bag="errorBag"
                 :edit-mode="editMode"
@@ -71,8 +71,7 @@
     import { onBeforeRouteLeave } from "vue-router";
     import LecturerSection from "@/components/course/edit/sections/LecturerSection.vue";
     import scrollToTopError from "@/use/helpers/TopError";
-    import CourseModuleSection from "@/components/course/edit/sections/CourseModulesSection.vue";
-    import CourseModulesSection2 from "@/components/course/edit/sections/CourseModulesSection2.vue";
+    import CourseModulesSection from "@/components/course/edit/sections/CourseModulesSection.vue";
     import { useToast } from "@/toast";
     import BaseView from "@/views/common/BaseView.vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
@@ -94,7 +93,7 @@
             DeleteCourseModal,
             UnsavedChangesModal,
             LoadingSpinner,
-            CourseModulesSection2,
+            CourseModulesSection,
             ButtonSection,
         },
         props: {
