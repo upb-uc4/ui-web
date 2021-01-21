@@ -119,9 +119,14 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="provideReason" class="mt-6 flex flex-col border-t border-red-700">
-                    <p class="text-red-700 my-2 font-semibold">Please provide a reason for rejection</p>
-                    <select :id="'op_select_reject_reason_' + shownOpId" v-model="selectedReason" class="form-select input-select">
+                <div v-if="provideReason || sentReject" class="mt-6 flex flex-col border-t border-red-700">
+                    <p class="text-red-700 my-2 font-semibold">{{ sentReject ? "Reason" : "Please provide a reason for rejection" }}</p>
+                    <select
+                        :id="'op_select_reject_reason_' + shownOpId"
+                        v-model="selectedReason"
+                        :disabled="sentReject"
+                        class="form-select input-select"
+                    >
                         <option value="" disabled>Select a reason</option>
                         <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
                     </select>
@@ -129,10 +134,11 @@
                         v-if="selectedReason == RejectionReasons.OTHER"
                         :id="'op_written_reject_reason_' + shownOpId"
                         v-model="writtenReason"
+                        :disabled="sentReject"
                         class="form-input input-text mt-2"
                         placeholder="Reason for rejection"
                     />
-                    <div class="flex justify-end mt-2">
+                    <div v-if="!sentReject" class="flex justify-end mt-2">
                         <button
                             :id="'op_reject_' + shownOpId"
                             :title="writtenReason == '' ? 'Please provide a reason' : 'Reject'"
@@ -306,7 +312,8 @@
                     //If success
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
-                    toogleReasonMenu();
+                    provideReason.value = !provideReason.value;
+                    toggleDetails();
                 }
             }
 
