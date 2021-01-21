@@ -1,9 +1,12 @@
 <template>
-    <div class="w-full rounded-md p-4 whitespace-no-wrap input-text">
-        <div class="flex items-start justify-between">
-            <div class="font-medium truncate">{{ semester }}</div>
-            <div>
-                <div v-for="fieldOfStudy in fieldsOfStudy" :key="fieldOfStudy">{{ fieldOfStudy }}</div>
+    <div class="space-y-1.5">
+        <div class="flex items-center space-x-6">
+            <div class="bg-blue-700 rounded-full h-8 w-8" />
+            <div class="text-base input-label">{{ semester }}</div>
+        </div>
+        <div class="ml-14 space-y-0.5">
+            <div v-for="fieldOfStudy in fieldsOfStudy" :key="fieldOfStudy" class="text-sm text-gray-500">
+                {{ fieldOfStudy }}
             </div>
         </div>
     </div>
