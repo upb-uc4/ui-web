@@ -61,7 +61,7 @@
                 type: ErrorBag,
             },
             moduleIds: {
-                type: Array,
+                type: Array as () => String[],
                 required: true,
             },
             editMode: {
@@ -69,7 +69,7 @@
                 required: true,
             },
         },
-        emits: ["toggle-module", "remove-modules"],
+        emits: ["update-module-ids"],
         setup(props: any, { emit }: any) {
             const isLoading = ref(true);
             const availableExaminationRegulations = ref([] as ExaminationRegulation[]);
@@ -78,9 +78,10 @@
 
             onBeforeMount(async () => {
                 await loadExaminationRegulations();
-                // if (props.editMode) {
-                //     getExRegsFromModules();
-                // }
+                if (props.editMode) {
+                    selectedModuleIDs.value = new Set<String>(props.moduleIds);
+                    loadExaminationRegulationsFromModuleIDs();
+                }
             });
 
             async function loadExaminationRegulations() {
@@ -128,8 +129,7 @@
             function removeSelectedExaminationRegulation(index: number) {
                 const removedExaminationRegulation = selectedExaminationRegulations.splice(index, 1);
                 removeModuleIDUnlessUsedBySomeExaminationRegulation(removedExaminationRegulation[0]);
-                //todo emit list of selectedModuleIDs
-                //emit("remove-modules", selectedExRegs.value[index].modules);
+                emitModuleIDs();
             }
 
             function removeModuleIDUnlessUsedBySomeExaminationRegulation(removedExaminationRegulation: ExaminationRegulation) {
@@ -152,15 +152,24 @@
                     return examReg.modules.some((moduleInExamReg: Module) => moduleInExamReg.id === module.id);
                 });
                 examinationRegulationsToAdd.forEach((examReg: ExaminationRegulation) => selectedExaminationRegulations.push(examReg));
-
-                //todo emit list of selectedModuleIDs
+                emitModuleIDs();
             }
 
             function onModuleRemoved(module: Module) {
                 selectedModuleIDs.value.delete(module.id);
-                //todo remove exam regulations that only had this module
+                emitModuleIDs();
+            }
 
-                //todo emit list of selectedModuleIDs
+            function loadExaminationRegulationsFromModuleIDs() {
+                const examinationRegulationsToAdd = availableExaminationRegulations.value.filter((examReg: ExaminationRegulation) => {
+                    return examReg.modules.some((moduleInExamReg: Module) => selectedModuleIDs.value.has(moduleInExamReg.id));
+                });
+                examinationRegulationsToAdd.forEach((examReg: ExaminationRegulation) => selectedExaminationRegulations.push(examReg));
+            }
+
+            function emitModuleIDs() {
+                const moduleIds = Array.from(selectedModuleIDs.value);
+                emit("update-module-ids", moduleIds);
             }
 
             return {

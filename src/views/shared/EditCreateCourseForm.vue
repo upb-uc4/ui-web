@@ -13,18 +13,10 @@
             />
             <lecturer-section v-if="isAdmin" v-model:lecturerId="course.lecturerId" :error-bag="errorBag" />
             <course-modules-section2
-                v-model:module-ids="course.moduleIds"
+                :module-ids="course.moduleIds"
                 :error-bag="errorBag"
                 :edit-mode="editMode"
-                @toggle-module="toggleModule($event)"
-                @remove-modules="removeModules($event)"
-            />
-            <course-module-section
-                v-model:module-ids="course.moduleIds"
-                :error-bag="errorBag"
-                :edit-mode="editMode"
-                @toggle-module="toggleModule($event)"
-                @remove-modules="removeModules($event)"
+                @update-modules-ids="updateModuleIds"
             />
             <restrictions-section v-model:maxParticipants="course.maxParticipants" :error-bag="errorBag" />
             <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
@@ -102,7 +94,6 @@
             DeleteCourseModal,
             UnsavedChangesModal,
             LoadingSpinner,
-            CourseModuleSection,
             CourseModulesSection2,
             ButtonSection,
         },
@@ -275,19 +266,8 @@
                 Router.push("/all-courses");
             }
 
-            function toggleModule(value: any) {
-                if (course.value.moduleIds.includes(value)) {
-                    course.value.moduleIds = course.value.moduleIds.filter((e) => e != value);
-                } else {
-                    course.value.moduleIds.push(value);
-                    course.value.moduleIds.sort((one, two) => (one > two ? -1 : 1));
-                }
-            }
-
-            function removeModules(value: any[]) {
-                value.forEach((e) => {
-                    course.value.moduleIds = course.value.moduleIds.filter((m) => m != e.id);
-                });
+            function updateModuleIds(moduleIds: string[]) {
+                course.value.moduleIds = moduleIds;
             }
 
             return {
@@ -307,8 +287,7 @@
                 deleteModal,
                 unsavedChangesModal,
                 errorBag,
-                toggleModule,
-                removeModules,
+                updateModuleIds,
             };
         },
     };
