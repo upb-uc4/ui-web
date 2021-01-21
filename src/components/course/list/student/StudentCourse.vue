@@ -26,8 +26,8 @@
         </div>
 
         <div class="mt-2">
-            <div id="courseName" class="text-lg navigation-link font-bold" @click="showCourseInfo()">
-                {{ course.courseName }}
+            <div>
+                <label id="courseName" class="text-lg navigation-link font-bold" @click="showCourseInfo()"> {{ course.courseName }}</label>
             </div>
             <label id="showLecturer" class="mt-1 font-semibold navigation-link cursor-pointer" @click.stop="showLecturer()">
                 {{ lecturerDisplayName }}

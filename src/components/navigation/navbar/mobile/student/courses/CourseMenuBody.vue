@@ -4,7 +4,7 @@
             <li>
                 <menu-item
                     id="nav_mobile_student_menu_courses_all"
-                    title="All Courses"
+                    title="Enroll in courses"
                     icon-class="fas fa-list-alt"
                     target-route-name="student.courses"
                 />
@@ -13,6 +13,12 @@
                     title="My Courses"
                     icon-class="fas fa-list-alt"
                     target-route-name="student.my-courses"
+                />
+                <menu-item
+                    id="nav_desktop_student_menu_course_catalog"
+                    title="Course Catalog"
+                    icon-class="fas fa-list-alt"
+                    target-route-name="courseCatalog"
                 />
             </li>
         </ul>

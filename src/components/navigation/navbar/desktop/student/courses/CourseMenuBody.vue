@@ -4,17 +4,24 @@
             <li class="">
                 <menu-item
                     id="nav_desktop_student_menu_courses_all"
-                    title="All Courses"
-                    description="Complete overview of all courses in your exam regulation"
-                    icon-class="fas fa-list-alt"
+                    title="Enroll in courses"
+                    description="Courses you can enroll in"
+                    icon-class="fas fa-mouse-pointer"
                     target-route-name="student.courses"
                 />
                 <menu-item
                     id="nav_desktop_student_menu_courses_admitted"
                     title="My Courses"
-                    description="Complete overview of your admitted courses"
-                    icon-class="fas fa-list-alt"
+                    description="Courses you are enrolled in"
+                    icon-class="fas fa-bookmark"
                     target-route-name="student.my-courses"
+                />
+                <menu-item
+                    id="nav_desktop_student_menu_course_catalog"
+                    title="Course Catalog"
+                    description="All courses at your university"
+                    icon-class="fas fa-list-alt"
+                    target-route-name="courseCatalog"
                 />
             </li>
         </ul>
