@@ -17,22 +17,23 @@
         <loading-spinner />
     </div>
     <div v-else class="flex flex-col items-center justify-center w-full mt-10">
-        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
-        <dashboard-component
-            v-else
-            identifier="all"
-            class="w-full"
-            :watched-operations="watchedOperations"
-            :operations="operations"
-            :role="role"
-            :is-archive="true"
-            title="All Operations"
-        />
+        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
+        <div v-else class="w-full flex flex-col">
+            <search-bar v-model:message="message" @refresh="refresh" />
+            <dashboard-component
+                identifier="archive"
+                class="w-full mt-5"
+                :operations="filteredOperations"
+                :role="role"
+                title="Archived Operations"
+                :is-archive="true"
+            />
+        </div>
     </div>
 </template>
 <script lang="ts">
     import { useStore } from "@/use/store/store";
-    import { ref, onBeforeMount } from "vue";
+    import { ref, onBeforeMount, computed } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
@@ -43,12 +44,15 @@
     import Router from "@/use/router/";
     import OperationManagement from "@/api/OperationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import SearchBar from "@/components/common/SearchBar.vue";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         name: "AllOperationsPage",
         components: {
             LoadingSpinner,
             DashboardComponent,
+            SearchBar,
         },
 
         async beforeRouteEnter(_from: any, _to: any, next: any) {
@@ -70,6 +74,7 @@
             const role = ref("");
             const operations = ref([] as Operation[]);
             const watchedOperations = ref([] as Operation[]);
+            const message = ref("");
 
             let mockedOps = [
                 {
@@ -140,6 +145,21 @@
                 } as Operation,
             ];
 
+            const filteredOperations = computed(() => {
+                let filter = message.value.replace(/\s/g, "").toLowerCase();
+                if (message.value != "") {
+                    //TODO more filtering
+                    let filteredOperations = operations.value.filter(
+                        (op) =>
+                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
+                    );
+                    return filteredOperations;
+                }
+                return operations.value;
+            });
+
             async function requestData() {
                 busy.value = true;
                 await getUserInfo();
@@ -175,14 +195,24 @@
                 Router.go(-1);
             }
 
+            async function refresh() {
+                busy.value = true;
+                let store = useStore();
+                store.commit(MutationTypes.CLEAR_TREATED_OPERATIONS);
+                await getOperations();
+                busy.value = false;
+            }
+
             return {
                 role,
-                operations,
+                filteredOperations,
                 requestData,
                 busy,
                 back,
                 gotOps,
                 watchedOperations,
+                refresh,
+                message,
             };
         },
     };

@@ -5,29 +5,29 @@
     </button>
     <div class="flex flex-col items-center justify-center w-full">
         <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations Archive</h1>
-        <h2 class="text-xl text-gray-700">
-            In this dashboard, you find all operations concerning your account. (Note: Fetching the archive can last several minutes!)
-        </h2>
-        <button v-if="!gotArchive" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
+        <h2 class="text-xl text-gray-700">In this dashboard, you find all operations concerning your account.</h2>
     </div>
     <div v-if="busy">
         <loading-spinner />
     </div>
-    <div v-else-if="gotArchive" class="flex flex-col items-center justify-center w-full mt-10">
-        <dashboard-component
-            identifier="archive"
-            class="w-full"
-            :operations="operations"
-            :role="role"
-            title="Archived Operations"
-            :enrollment-id="enrollmentId"
-            :is-archive="true"
-        />
+    <div v-else class="flex flex-col items-center justify-center w-full mt-10">
+        <button v-if="!gotArchive" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
+        <div v-else class="w-full flex flex-col">
+            <search-bar v-model:message="message" @refresh="refresh" />
+            <dashboard-component
+                identifier="archive"
+                class="w-full mt-5"
+                :operations="filteredOperations"
+                :role="role"
+                title="Archived Operations"
+                :is-archive="true"
+            />
+        </div>
     </div>
 </template>
 <script lang="ts">
     import { useStore } from "@/use/store/store";
-    import { ref, onBeforeMount } from "vue";
+    import { ref, onBeforeMount, computed } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
@@ -37,12 +37,17 @@
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import Router from "@/use/router/";
     import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
+    import OperationManagement from "@/api/OperationManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import { MutationTypes } from "@/use/store/mutation-types";
+    import SearchBar from "@/components/common/SearchBar.vue";
 
     export default {
         name: "OperationsArchivePage",
         components: {
             LoadingSpinner,
             DashboardComponent,
+            SearchBar,
         },
 
         async beforeRouteEnter(_from: any, _to: any, next: any) {
@@ -61,9 +66,9 @@
         setup() {
             const busy = ref(false);
             const gotArchive = ref(false);
-            const enrollmentId = ref("");
             const role = ref("");
             const operations = ref([] as Operation[]);
+            const message = ref("");
 
             let mockedOps = [
                 {
@@ -110,38 +115,69 @@
                 } as Operation,
             ];
 
+            const filteredOperations = computed(() => {
+                let filter = message.value.replace(/\s/g, "").toLowerCase();
+                if (message.value != "") {
+                    //TODO more filtering
+                    let filteredOperations = operations.value.filter(
+                        (op) =>
+                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
+                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
+                    );
+                    return filteredOperations;
+                }
+                return operations.value;
+            });
+
             async function requestData() {
                 busy.value = true;
-                showNotYetImplementedToast();
-                //await getUserInfo();
-                //await getOperationsArchive();
+                await getUserInfo();
+                await getOperationsArchive();
                 busy.value = false;
             }
 
             async function getUserInfo() {
                 let store = useStore();
-                enrollmentId.value = "MockUser5";
                 role.value = (await store.getters.user).role;
             }
 
             async function getOperationsArchive() {
-                //TODO API CALL
-                gotArchive.value = true;
-                operations.value = mockedOps;
+                const operationManagement = new OperationManagement();
+                const handler = new GenericResponseHandler("operations");
+                let response = await operationManagement.getOperations(
+                    true,
+                    undefined,
+                    [OperationStatus.FINISHED, OperationStatus.REJECTED],
+                    false
+                );
+                let result = handler.handleResponse(response);
+                if (Object.keys(result).length > 0) {
+                    operations.value = result;
+                    gotArchive.value = true;
+                }
             }
-
             function back() {
                 Router.go(-1);
             }
 
+            async function refresh() {
+                busy.value = true;
+                let store = useStore();
+                store.commit(MutationTypes.CLEAR_TREATED_OPERATIONS);
+                await getOperationsArchive();
+                busy.value = false;
+            }
+
             return {
-                enrollmentId,
                 role,
-                operations,
                 requestData,
                 busy,
                 back,
                 gotArchive,
+                refresh,
+                message,
+                filteredOperations,
             };
         },
     };

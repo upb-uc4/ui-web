@@ -5,7 +5,7 @@
     </div>
     <div v-else class="flex flex-col w-full items-center mt-10">
         <div class="flex sm:flex-row flex-col-reverse w-full">
-            <seach-bar v-model:message="message" @refresh="refresh" />
+            <search-bar v-model:message="message" @refresh="refresh" />
         </div>
         <div class="w-full my-5 lg:flex lg:justify-between">
             <dashboard-component
@@ -50,7 +50,7 @@
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import { useStore } from "@/use/store/store";
-    import SeachBar from "@/components/common/SearchBar.vue";
+    import SearchBar from "@/components/common/SearchBar.vue";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { Role } from "@/entities/Role";
     import Router from "@/use/router";
@@ -63,7 +63,7 @@
         components: {
             LoadingSpinner,
             DashboardComponent,
-            SeachBar,
+            SearchBar,
         },
         setup() {
             const busy = ref(0);
