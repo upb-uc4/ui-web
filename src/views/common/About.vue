@@ -78,6 +78,14 @@
                 <div>
                     <service-status-section />
                 </div>
+                <div class="w-full text-justify pb-8">
+                    <h2 class="block text-gray-800 dark:text-gray-300 text-lg font-medium mb-1">Data Protection</h2>
+                    <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
+                        You can see our data protection agreement
+                        <router-link class="navigation-link cursor-pointer hover:underline" :to="{ name: 'dpa' }">here</router-link>
+                        .
+                    </h3>
+                </div>
             </div>
         </div>
     </base-view>

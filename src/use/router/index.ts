@@ -20,6 +20,7 @@ const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 const StudentImmatricultaion = () => import("@/views/student/Immatriculation.vue");
 const Dashboard = () => import("@/views/common/Dashboard.vue");
+const DPA = () => import("@/views/common/DPA.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -248,6 +249,14 @@ const router = createRouter({
             meta: {
                 title: "Settings" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/data-protection-agreement",
+            name: "dpa",
+            component: DPA,
+            meta: {
+                title: "Data Protection Agreement" + suffix,
             },
         },
         {
