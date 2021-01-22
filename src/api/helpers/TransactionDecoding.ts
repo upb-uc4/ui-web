@@ -9,7 +9,7 @@ import TransactionMessage, {
 } from "../api_models/common/Transaction";
 
 export async function decodeTransaction(base64Proposal: string, protoURL?: string): Promise<TransactionMessage | undefined> {
-    if (protoURL === undefined) protoURL = "/hlf-proto.json";
+    if (protoURL === undefined) protoURL = process.env.VUE_APP_PUBLIC_PATH + "hlf-proto.json";
 
     const buf = base64ToArrayBuffer(base64Proposal);
 
