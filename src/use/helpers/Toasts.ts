@@ -1,18 +1,18 @@
 //import ReportBug from "@/components/common/ReportBug.vue";
 //import { markRaw } from "vue";
+//import Router from "@/use/router";
 import { useToast } from "@/toast";
-import Router from "@/use/router";
 
 const toast = useToast();
 
-function routeToDashboard() {
-    Router.push({ name: "welcome" });
-}
+// function routeToDashboard() {
+//     Router.push({ name: "welcome" });
+// }
 
 export function showOperationCreatedToast(operationType: String) {
     toast.info(
-        `Successfully created ${operationType} request. You can check its current state in your dashboard. Click here to go there immediately.`,
-        { onClick: routeToDashboard }
+        `Successfully created ${operationType} request. You can check its current state in your dashboard on the welcome page.`
+        //, { onClick: routeToDashboard }
     );
 }
 
