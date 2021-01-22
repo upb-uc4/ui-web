@@ -76,29 +76,6 @@
             const enrollmentId = ref("");
 
 
-            let mockedWatchedOps = [
-                {
-                    operationId: "FinishedMatriculation1",
-                    initiator: "MockUser4",
-                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
-                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
-                    transactionInfo: {
-                        contractName: UC4Identifier.CONTRACT_MATRICULATION,
-                        transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: "SS2020 Computer Science v3",
-                    },
-                    state: OperationStatus.FINISHED,
-                    reason: "",
-                    existingApprovals: {
-                        users: [],
-                        groups: ["Admin"],
-                    } as ApprovalList,
-                    missingApprovals: {
-                        users: [],
-                        groups: [],
-                    } as ApprovalList,
-                } as Operation,
-            ];
 
             onBeforeMount(async () => {
                 await refresh();
