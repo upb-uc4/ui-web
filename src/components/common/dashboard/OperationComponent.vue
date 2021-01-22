@@ -210,20 +210,14 @@
                 approvals + operation.value.missingApprovals.users.length + operation.value.missingApprovals.groups.length;
             const missingApprovals = requiredApprovals - approvals;
 
-            const isRejected = computed(() => {
-                return operation.value.state === OperationStatus.REJECTED;
-            });
-            const isPending = computed(() => {
-                return operation.value.state === OperationStatus.PENDING;
-            });
-            const isFinished = computed(() => {
-                return operation.value.state === OperationStatus.FINISHED || isRejected;
-            });
+            const isRejected = operation.value.state === OperationStatus.REJECTED;
+            const isPending = operation.value.state === OperationStatus.PENDING;
+            const isFinished = operation.value.state === OperationStatus.FINISHED || isRejected;
             const actionRequired = computed(() => {
                 return (
                     (operation.value.missingApprovals.users.includes(props.enrollmentID) ||
                         operation.value.missingApprovals.groups.includes(role.value)) &&
-                    !isRejected.value
+                    !isRejected
                 );
             });
 
