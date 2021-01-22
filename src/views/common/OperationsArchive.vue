@@ -35,7 +35,6 @@
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import Router from "@/use/router/";
-    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
     import OperationManagement from "@/api/OperationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { MutationTypes } from "@/use/store/mutation-types";
@@ -48,19 +47,6 @@
             LoadingSpinner,
             DashboardComponent,
             SearchBar,
-        },
-
-        async beforeRouteEnter(_from: any, _to: any, next: any) {
-            const response = await checkPrivilege(Role.LECTURER, Role.STUDENT, Role.ADMIN);
-
-            if (response.allowed) {
-                return next();
-            }
-            if (!response.authenticated) {
-                return next("/login");
-            }
-
-            return next("/redirect");
         },
 
         setup() {
