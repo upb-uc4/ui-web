@@ -176,7 +176,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Router from "@/use/router";
     import { approveMatriculation, rejectOperation } from "@/api/abstractions/FrontendSigning";
-    import { printOperation, printOperationTitle } from "@/api/abstractions/OperationPrinter";
+    import { getOperationBadgeIdentifier, printOperation, printOperationTitle } from "@/api/abstractions/OperationPrinter";
 
     export default {
         name: "OperationComponent",
@@ -268,16 +268,7 @@
                 createDisplayObjects();
             });
 
-            const type = computed(() => {
-                switch (operation.value.transactionInfo.contractName) {
-                    case UC4Identifier.CONTRACT_MATRICULATION:
-                        return "Matriculation";
-                    case UC4Identifier.CONTRACT_ADMISSION:
-                        return "Course Admission";
-                    default:
-                        return "";
-                }
-            });
+            const type = getOperationBadgeIdentifier(operation.value);
 
             const statusColor = computed(() => {
                 switch ((props.operation as Operation).state) {

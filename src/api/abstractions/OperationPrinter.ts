@@ -107,3 +107,14 @@ export function printOperationTitle(operation: Operation): string {
             return "";
     }
 }
+
+export function getOperationBadgeIdentifier(operation: Operation): string {
+    switch (operation.transactionInfo.contractName) {
+        case UC4Identifier.CONTRACT_MATRICULATION:
+            return "Matriculation";
+        case UC4Identifier.CONTRACT_ADMISSION:
+            return "Course Admission";
+        default:
+            return "";
+    }
+}
