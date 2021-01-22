@@ -13,7 +13,6 @@
                 identifier="finished"
                 :enrollment-id="enrollmentId"
                 :operations="finishedOperations"
-                :watched-operations="watchedOperations"
                 title="Finished Operations"
                 description="Completed Operations. Marking them as read will remove them from the list."
                 @marked-read="markRead"
@@ -29,7 +28,6 @@
         </div>
         <dashboard-component
             identifier="pending"
-            :watched-operations="watchedOperations"
             :enrollment-id="enrollmentId"
             :operations="pendingOwnOperations"
             title="Pending Operations"
@@ -66,15 +64,14 @@
         setup() {
             const busy = ref(0);
             const message = ref("");
-            const operations = ref([] as Operation[]);
+            const watchlistOperations = ref([] as Operation[]);
             const actionRequiredOperations = ref([] as Operation[]);
-            const watchedOperations = ref([] as Operation[]);
             const store = useStore();
             const role = ref("");
             const enrollmentId = ref("");
 
             onBeforeMount(async () => {
-                const promises = []
+                const promises = [];
                 promises.push(refresh());
                 promises.push(getEnrollmentId());
                 promises.push(getRole());
@@ -111,12 +108,12 @@
             }
 
             const pendingOwnOperations = computed(() => {
-                return filterOperations(operations.value, message.value).filter(
+                return filterOperations(watchlistOperations.value, message.value).filter(
                     (op) => op.state == OperationStatus.PENDING && op.initiator == enrollmentId.value
                 );
             });
             const finishedOperations = computed(() => {
-                return filterOperations(operations.value, message.value).filter(
+                return filterOperations(watchlistOperations.value, message.value).filter(
                     (op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED
                 );
             });
@@ -135,7 +132,7 @@
                 let response = await operationManagement.getOperations(undefined, undefined, undefined, true);
                 let result = handler.handleResponse(response);
                 if (Object.keys(result).length > 0) {
-                    operations.value = result;
+                    watchlistOperations.value = result;
                 }
                 response = await operationManagement.getOperations(undefined, true, undefined, undefined);
                 result = handler.handleResponse(response);
@@ -151,7 +148,7 @@
                 const handler = new GenericResponseHandler("unwatch operation");
                 const result = handler.handleResponse(await operationManagement.unwatchOperation(operationId));
                 if (result) {
-                    operations.value = operations.value.filter((op) => op.operationId !== operationId);
+                    watchlistOperations.value = watchlistOperations.value.filter((op) => op.operationId !== operationId);
                 }
             }
 
@@ -161,8 +158,6 @@
 
             return {
                 busy,
-                operations,
-                watchedOperations,
                 pendingOwnOperations,
                 finishedOperations,
                 shownActionRequiredOperations,
