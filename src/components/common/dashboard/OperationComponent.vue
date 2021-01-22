@@ -206,9 +206,9 @@
             const role = ref(Role.NONE);
             const operation = ref(props.operation as Operation);
             const approvals = operation.value.existingApprovals.users.length + operation.value.existingApprovals.groups.length;
-            const neededApprovals =
+            const requiredApprovals =
                 approvals + operation.value.missingApprovals.users.length + operation.value.missingApprovals.groups.length;
-            const missingApprovals = neededApprovals - approvals;
+            const missingApprovals = requiredApprovals - approvals;
 
             const isRejected = operation.value.state === OperationStatus.REJECTED;
             const isPending = operation.value.state === OperationStatus.PENDING;
@@ -367,7 +367,6 @@
                 approvals,
                 initiatedTimestamp,
                 lastUpdateTimestamp,
-                neededApprovals,
                 missingApprovals,
                 isRejected,
                 isFinished,
