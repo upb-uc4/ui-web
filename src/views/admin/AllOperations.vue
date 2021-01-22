@@ -61,74 +61,6 @@
             const watchedOperations = ref([] as Operation[]);
             const message = ref("");
 
-            let mockedOps = [
-                {
-                    operationId: "PendingMatriculation2",
-                    initiator: "MockUser3",
-                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
-                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
-                    transactionInfo: {
-                        contractName: UC4Identifier.CONTRACT_MATRICULATION,
-                        transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: "SS2020 Computer Science v3",
-                    },
-                    state: OperationStatus.PENDING,
-                    reason: "Mocked Reason",
-                    existingApprovals: {
-                        users: [],
-                        groups: [],
-                    } as ApprovalList,
-                    missingApprovals: {
-                        users: [],
-                        groups: ["admin"],
-                    } as ApprovalList,
-                } as Operation,
-                {
-                    operationId: "PendingMatriculation1",
-                    initiator: "MockUser4",
-                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
-                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
-                    transactionInfo: {
-                        contractName: UC4Identifier.CONTRACT_MATRICULATION,
-                        transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: "SS2020 Computer Science v3",
-                    },
-                    state: OperationStatus.PENDING,
-                    reason: "",
-                    existingApprovals: {
-                        users: [],
-                        groups: ["admin"],
-                    } as ApprovalList,
-                    missingApprovals: {
-                        users: [],
-                        groups: [],
-                    } as ApprovalList,
-                } as Operation,
-            ];
-
-            let mockedWatchedOps = [
-                {
-                    operationId: "PendingMatriculation1",
-                    initiator: "MockUser4",
-                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
-                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
-                    transactionInfo: {
-                        contractName: UC4Identifier.CONTRACT_MATRICULATION,
-                        transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: "SS2020 Computer Science v3",
-                    },
-                    state: OperationStatus.PENDING,
-                    reason: "",
-                    existingApprovals: {
-                        users: [],
-                        groups: ["admin"],
-                    } as ApprovalList,
-                    missingApprovals: {
-                        users: [],
-                        groups: [],
-                    } as ApprovalList,
-                } as Operation,
-            ];
 
             const filteredOperations = computed(() => {
                 return filterOperations(operations.value, message.value);
@@ -145,7 +77,7 @@
                 const handler = new GenericResponseHandler("operations");
                 const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
                 const result = handler.handleResponse(response);
-                if (Object.keys(result).length > 0) {
+                if (result.length > 0) {
                     operations.value = result;
                     gotOps.value = true;
                 }

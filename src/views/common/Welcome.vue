@@ -14,7 +14,7 @@
                 >
                     here
                 </router-link>
-                . (Warning: Fetching the complete archive can take several minutes)
+                . 
             </label>
         </div>
     </div>
