@@ -40,6 +40,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { MutationTypes } from "@/use/store/mutation-types";
     import SearchBar from "@/components/common/SearchBar.vue";
+    import filterOperations from "@/use/helpers/filterOperations";
 
     export default {
         name: "OperationsArchivePage",
@@ -114,18 +115,7 @@
             ];
 
             const filteredOperations = computed(() => {
-                let filter = message.value.replace(/\s/g, "").toLowerCase();
-                if (message.value != "") {
-                    //TODO more filtering
-                    let filteredOperations = operations.value.filter(
-                        (op) =>
-                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
-                    );
-                    return filteredOperations;
-                }
-                return operations.value;
+                return filterOperations(operations.value, message.value);
             });
 
             async function requestData() {

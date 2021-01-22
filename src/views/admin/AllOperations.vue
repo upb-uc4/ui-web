@@ -17,7 +17,7 @@
         <loading-spinner />
     </div>
     <div v-else class="flex flex-col items-center justify-center w-full mt-10">
-        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
+        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
         <div v-else class="w-full flex flex-col">
             <search-bar v-model:message="message" @refresh="refresh" />
             <dashboard-component
@@ -44,6 +44,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import SearchBar from "@/components/common/SearchBar.vue";
     import { MutationTypes } from "@/use/store/mutation-types";
+    import filterOperations from "@/use/helpers/filterOperations";
 
     export default {
         name: "AllOperationsPage",
@@ -130,18 +131,7 @@
             ];
 
             const filteredOperations = computed(() => {
-                let filter = message.value.replace(/\s/g, "").toLowerCase();
-                if (message.value != "") {
-                    //TODO more filtering
-                    let filteredOperations = operations.value.filter(
-                        (op) =>
-                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
-                    );
-                    return filteredOperations;
-                }
-                return operations.value;
+                return filterOperations(operations.value, message.value);
             });
 
             async function requestData() {

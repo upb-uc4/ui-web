@@ -54,6 +54,7 @@
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import OperationManagement from "@/api/OperationManagement";
+    import filterOperations from "@/use/helpers/filterOperations";
 
     export default {
         name: "Dashboard",
@@ -107,49 +108,18 @@
                 busy.value--;
             }
 
-            function filterOperations(ops: Operation[], filter: string): Operation[] {
-                if (filter != "") {
-                    //TODO more filtering
-                    let filteredOperations = ops.filter(
-                        (op) =>
-                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
-                    );
-                    return filteredOperations;
-                }
-                return ops;
-            }
-            const filteredOperations = computed(() => {
-                let filter = message.value.replace(/\s/g, "").toLowerCase();
-                if (filter != "") {
-                    //TODO more filtering
-                    let filteredOperations = operations.value.filter(
-                        (op) =>
-                            op.operationId.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.initiator.replace(/\s/g, "").toLowerCase().includes(filter) ||
-                            op.transactionInfo.parameters.toString().replace(/\s/g, "").toLowerCase().includes(filter)
-                    );
-                    return filteredOperations;
-                }
-                return operations.value;
-            });
-
             const pendingOwnOperations = computed(() => {
-                let filter = message.value.replace(/\s/g, "").toLowerCase();
-                return filterOperations(operations.value, filter).filter(
+                return filterOperations(operations.value, message.value).filter(
                     (op) => op.state == OperationStatus.PENDING && op.initiator == enrollmentId.value
                 );
             });
             const finishedOperations = computed(() => {
-                let filter = message.value.replace(/\s/g, "").toLowerCase();
-                return filterOperations(operations.value, filter).filter(
+                return filterOperations(operations.value, message.value).filter(
                     (op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED
                 );
             });
             const shownActionRequiredOperations = computed(() => {
-                let filter = message.value.replace(/\s/g, "").toLowerCase();
-                return filterOperations(actionRequiredOperations.value, filter).filter(
+                return filterOperations(actionRequiredOperations.value, message.value).filter(
                     (op) =>
                         op.state == OperationStatus.PENDING &&
                         (op.missingApprovals.users.includes(enrollmentId.value) || op.missingApprovals.groups.includes(role.value))
