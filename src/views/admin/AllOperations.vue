@@ -76,10 +76,10 @@
                 const handler = new GenericResponseHandler("operations");
                 const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
                 const result = handler.handleResponse(response);
-                if (result.length > 0) {
-                    operations.value = result;
-                    gotOps.value = true;
-                }
+
+                //Show empty list if no results given
+                operations.value = result;
+                gotOps.value = true;
                 getWatchedOperations();
             }
 

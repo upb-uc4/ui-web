@@ -134,11 +134,12 @@
                     false
                 );
                 let result = handler.handleResponse(response);
-                if (Object.keys(result).length > 0) {
-                    operations.value = result;
-                    gotArchive.value = true;
-                }
+
+                //Show empty archive if no results given
+                operations.value = result;
+                gotArchive.value = true;
             }
+
             function back() {
                 Router.go(-1);
             }
