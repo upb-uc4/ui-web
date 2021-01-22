@@ -4,36 +4,55 @@
         <loading-spinner />
     </div>
     <div v-else class="flex flex-col w-full items-center mt-10">
-        <div class="flex sm:flex-row flex-col-reverse w-full">
-            <search-bar v-model:message="message" @refresh="refresh" />
+        <div v-if="!hasCertificate" class="w-full flex flex-col items-center">
+            <label class="text-md text-gray-700">Before you can view your dashboard, you have to create your personal certificate.</label>
+            <button id="createCertificate" class="btn btn-blue-primary w-32 p-2 mt-6" @click="createCertificate">Create Certificate</button>
         </div>
-        <div class="w-full my-5 lg:flex lg:justify-between">
+        <div v-else class="w-full flex flex-col">
+            <div class="flex sm:flex-row flex-col-reverse w-full">
+                <search-bar v-model:message="message" @refresh="refresh" />
+            </div>
+            <div class="w-full my-5 lg:flex lg:justify-between">
+                <dashboard-component
+                    class="lg:mr-5 lg:w-1/2"
+                    identifier="finished"
+                    :enrollment-id="enrollmentId"
+                    :operations="finishedOperations"
+                    title="Finished Operations"
+                    description="Completed Operations. Marking them as read will remove them from the list."
+                    @marked-read="markRead"
+                />
+                <dashboard-component
+                    class="mt-5 lg:mt-0 lg:w-1/2"
+                    identifier="actionRequired"
+                    :enrollment-id="enrollmentId"
+                    :operations="shownActionRequiredOperations"
+                    title="Action Required"
+                    description="Operations that require your approval for completion."
+                />
+            </div>
             <dashboard-component
-                class="lg:mr-5 lg:w-1/2"
-                identifier="finished"
+                identifier="pending"
                 :enrollment-id="enrollmentId"
-                :operations="finishedOperations"
-                title="Finished Operations"
-                description="Completed Operations. Marking them as read will remove them from the list."
-                @marked-read="markRead"
+                :operations="pendingOwnOperations"
+                title="Pending Operations"
+                description="Your pending operations that wait for approval."
             />
-            <dashboard-component
-                class="mt-5 lg:mt-0 lg:w-1/2"
-                identifier="actionRequired"
-                :enrollment-id="enrollmentId"
-                :operations="shownActionRequiredOperations"
-                title="Action Required"
-                description="Operations that require your approval for completion."
-            />
+            <button v-if="isAdmin" class="btn btn-blue-primary mt-8 p-2" @click="routeAllOperationsPage">Show all operations</button>
+            <div class="w-full flex items-start mt-10">
+                <label class="text-sm text-gray-700">
+                    Note: You can find a complete archive of your operations
+                    <router-link
+                        id="showOperationsArchive"
+                        :to="{ name: 'operations.archive' }"
+                        class="navigation-link hover:cursor-pointer hover:underline"
+                    >
+                        here
+                    </router-link>
+                    .
+                </label>
+            </div>
         </div>
-        <dashboard-component
-            identifier="pending"
-            :enrollment-id="enrollmentId"
-            :operations="pendingOwnOperations"
-            title="Pending Operations"
-            description="Your pending operations that wait for approval."
-        />
-        <button v-if="isAdmin" class="btn btn-blue-primary mt-8 p-2" @click="routeAllOperationsPage">Show all operations</button>
     </div>
 </template>
 
@@ -68,16 +87,26 @@
             const watchlistCompletedOperations = ref([] as Operation[]);
             const actionRequiredOperations = ref([] as Operation[]);
             const store = useStore();
+            const hasCertificate = ref(false);
             const role = ref("");
             const enrollmentId = ref("");
 
             onBeforeMount(async () => {
+                busy.value++;
+                hasCertificate.value = await store.getters.hasCertificate;
+                if (hasCertificate.value) {
+                    loadDashboard();
+                }
+                busy.value--;
+            });
+
+            async function loadDashboard() {
                 const promises = [];
                 promises.push(refresh());
                 promises.push(getEnrollmentId());
                 promises.push(getRole());
                 await Promise.all(promises);
-            });
+            }
 
             const isAdmin = computed(() => {
                 return role.value == Role.ADMIN;
@@ -163,8 +192,19 @@
                 Router.push({ name: "operations.all" });
             }
 
+            async function createCertificate() {
+                busy.value++;
+                let certificate = (await store.getters.certificate()).certificate;
+                if (certificate != "") {
+                    hasCertificate.value = true;
+                    loadDashboard();
+                }
+                busy.value--;
+            }
+
             return {
                 busy,
+                hasCertificate,
                 pendingOwnOperations,
                 finishedOperations,
                 shownActionRequiredOperations,
@@ -176,6 +216,7 @@
                 refresh,
                 isAdmin,
                 routeAllOperationsPage,
+                createCertificate,
             };
         },
     };

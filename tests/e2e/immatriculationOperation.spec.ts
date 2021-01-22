@@ -1,5 +1,6 @@
 import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
+import OperationManagement from "@/api/OperationManagement";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
 import { navigateToImmatriculationPage, navigateToPrivateProfile, navigateToWelcomePage } from "./helpers/NavigationHelper";
@@ -8,6 +9,7 @@ import { UserWithAuth } from "./helpers/UserWithAuth";
 
 const random = Math.floor(Math.random() * 9999);
 let admin: Admin;
+let adminAuthUser: Account;
 let student: Student;
 let studentAuthUser: Account;
 let adminAuth: Account;
@@ -33,16 +35,26 @@ describe("Account creation, edition and deletion", function () {
             preserve: ["refresh", "login"],
         });
 
-        cy.fixture("admin.json").then((a) => {
-            (a as Admin).username += random;
-            admin = a as Admin;
-        });
         cy.fixture("logins/admin.json")
             .then((ad) => {
                 adminAuth = ad;
             })
             .then(async () => {
                 await getMachineUserAuth(adminAuth);
+            })
+            .then(() => {
+                cy.fixture("admin.json").then((a) => {
+                    (a as Admin).username += random;
+                    admin = a as Admin;
+                });
+            })
+            .then(() => {
+                cy.fixture("adminAuthUser.json").then((a) => {
+                    (a as Admin).username += random;
+                    adminAuthUser = a as Account;
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: admin, auth: adminAuthUser });
+                });
             })
             .then(() => {
                 cy.fixture("student.json").then((s) => {
@@ -65,14 +77,12 @@ describe("Account creation, edition and deletion", function () {
             .then(() => {
                 console.log("Setup finished");
             });
-
-        cy.fixture("logins/student.json").then((st) => {
-            studentAuth = st;
-        });
     });
 
     after(() => {
-        deleteUsers([studentAuthUser], adminAuth);
+        getMachineUserAuth(adminAuth).then(() => {
+            deleteUsers([studentAuthUser], adminAuth);
+        });
         logout();
     });
 
@@ -153,6 +163,7 @@ describe("Account creation, edition and deletion", function () {
     it("Decryption modal shown", () => {
         cy.get("input[id='enterDecryptionPassword']").type(studentAuthUser.password);
         cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
+        cy.wait(5000);
     });
 
     it("Add a field of study for one winter semester", function () {
@@ -160,12 +171,37 @@ describe("Account creation, edition and deletion", function () {
         cy.get("select[id=semesterYear]").select(fieldOfStudy[1].year);
         cy.get("select[id=fieldsOfStudy-1]").select(fieldOfStudy[1].fos[0]);
         cy.get("button[id=addImmatriculationData]").click();
+        cy.wait(5000);
     });
 
     // TODO GET OPERATION IDS FROM API
+    it("Get operation-IDs", () => {
+        cy.wait(15000).then(async () => {
+            await getMachineUserAuth(studentAuthUser);
+
+            const operationManagement = new OperationManagement();
+            let response = await operationManagement.getOperations(true, undefined, undefined, true);
+
+            let ops = response.returnValue;
+            console.log(ops);
+            for (var op of ops) {
+                console.log(op.operationId);
+                if (op.transactionInfo.parameters.includes(fieldOfStudy[0].year)) {
+                    op1Id = op.operationId;
+                    op1IdShort = op1Id.substring(0, 4);
+                } else if (op.transactionInfo.parameters.includes(fieldOfStudy[1].year)) {
+                    op2Id = op.operationId;
+                    op2IdShort = op2Id.substring(0, 4);
+                }
+            }
+            expect(op1IdShort).to.not.equal("");
+            expect(op2IdShort).to.not.equal("");
+        });
+    });
 
     it("Operations correctly shown in student's dashboard", () => {
         navigateToWelcomePage();
+        cy.wait(15000);
         cy.get("div[id='dashboard_pending']").get(`div[id='op_${op1IdShort}']`).click();
         cy.get("div[id='dashboard_pending']")
             .get(`div[id='op_${op1IdShort}']`)
@@ -180,8 +216,19 @@ describe("Account creation, edition and deletion", function () {
         logout();
     });
 
+    it("Create certificate for admin", () => {
+        loginAsUser(adminAuthUser);
+        cy.wait(2000);
+        cy.get("button[id='createCertificate']").click();
+        cy.wait(2000);
+        const encryptionPassword = adminAuthUser.password;
+        cy.get("input[id='enterEncryptionPassword']").clear().type(encryptionPassword);
+        cy.get("input[id='confirmEncryptionPassword']").clear().type(encryptionPassword);
+        cy.get("button[id='encryptPrivateKeyModalConfirm']").click();
+        cy.wait(15000);
+    });
+
     it("Operations correctly shown in admin's dashboard", () => {
-        loginAsDefaultAdmin();
         cy.get("div[id='dashboard_actionRequired']").get(`div[id='op_${op1IdShort}']`).click();
         cy.get("div[id='dashboard_actionRequired']").get(`div[id='op_${op1IdShort}']`).should("contain", student.username);
         cy.get("div[id='dashboard_actionRequired']")
@@ -199,7 +246,11 @@ describe("Account creation, edition and deletion", function () {
 
     it("Approve first operation", () => {
         cy.get("div[id='dashboard_actionRequired']").get(`div[id='op_${op1IdShort}']`).get(`button[id='op_approve_${op1IdShort}']`).click();
-        cy.wait(500);
+
+        cy.get("input[id='enterDecryptionPassword']").type(adminAuthUser.password);
+        cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
+        cy.wait(8000);
+
         cy.get("div[id='dashboard_actionRequired']")
             .get(`div[id='op_${op1IdShort}']`)
             .get(`button[id='op_approve_${op1IdShort}']`)
@@ -207,7 +258,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("div[id='dashboard_actionRequired']")
             .get(`div[id='op_${op1IdShort}']`)
             .get(`button[id='op_startRejection_${op1IdShort}']`)
-            .should("not.exist");
+            .should("not.be.visible");
     });
 
     it("Reject second operation", () => {
@@ -252,11 +303,11 @@ describe("Account creation, edition and deletion", function () {
             .get(`input[id='op_written_reject_reason_${op2IdShort}']`)
             .type(rejectReason);
         cy.get("div[id='dashboard_actionRequired']").get(`div[id='op_${op2IdShort}']`).get(`button[id='op_reject_${op2IdShort}']`).click();
-        cy.wait(500);
+        cy.wait(8000);
         cy.get("div[id='dashboard_actionRequired']")
             .get(`div[id='op_${op2IdShort}']`)
             .get(`button[id='op_approve_${op2IdShort}']`)
-            .should("not.exist");
+            .should("not.be.visible");
         cy.get("div[id='dashboard_actionRequired']")
             .get(`div[id='op_${op2IdShort}']`)
             .get(`button[id='op_startRejection_${op2IdShort}']`)
@@ -267,14 +318,15 @@ describe("Account creation, edition and deletion", function () {
 
     it("Operations correctly shown in student's dashboard", () => {
         loginAsUser(studentAuthUser);
+        cy.wait(15000);
 
         cy.get("div[id='dashboard_finished']")
             .get(`div[id='op_${op1IdShort}']`)
-            .get(`div[id='op_state_${op1IdShort}']`)
+            .get(`span[id='op_state_${op1IdShort}']`)
             .should("contain", "FINISHED");
         cy.get("div[id='dashboard_finished']")
             .get(`div[id='op_${op2IdShort}']`)
-            .get(`div[id='op_state_${op2IdShort}']`)
+            .get(`span[id='op_state_${op2IdShort}']`)
             .should("contain", "REJECTED");
         cy.get("div[id='dashboard_finished']").get(`div[id='op_${op2IdShort}']`).click();
         cy.get("div[id='dashboard_finished']")
@@ -284,18 +336,10 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Unwatching finished operations as student works", () => {
-        cy.get("div[id='dashboard_finished']")
-            .get(`div[id='op_${op1IdShort}']`)
-            .get(`div[id='op_state_${op1IdShort}']`)
-            .get(`op_markRead_${op1IdShort}`)
-            .click();
-        cy.wait(500);
-        cy.get("div[id='dashboard_finished']")
-            .get(`div[id='op_${op2IdShort}']`)
-            .get(`div[id='op_state_${op2IdShort}']`)
-            .get(`op_markRead_${op2IdShort}`)
-            .click();
-        cy.wait(500);
+        cy.get("div[id='dashboard_finished']").get(`div[id='op_${op1IdShort}']`).get(`button[id=op_markRead_${op1IdShort}]`).click();
+        cy.wait(2000);
+        cy.get("div[id='dashboard_finished']").get(`div[id='op_${op2IdShort}']`).get(`button[id=op_markRead_${op2IdShort}]`).click();
+        cy.wait(2000);
 
         cy.get("div[id='dashboard_finished']").get(`div[id='op_${op1IdShort}']`).should("not.exist");
         cy.get("div[id='dashboard_finished']").get(`div[id='op_${op2IdShort}']`).should("not.exist");
@@ -318,7 +362,7 @@ describe("Account creation, edition and deletion", function () {
 
     it.skip("Check matriculation modal is filled correctly in privateprofile", function () {
         //Timeout needed for waiting for the data
-        cy.wait(20000);
+        cy.wait(8000);
         cy.get("#modal-wrapper").should("exist");
         cy.get("div").contains("Immatriculation History");
         cy.get("div")
@@ -337,7 +381,7 @@ describe("Account creation, edition and deletion", function () {
         loginAsDefaultAdmin();
         cy.visit(`editAccount/${student.username}`);
         //Timeout needed for waiting for the data
-        cy.wait(20000);
+        cy.wait(8000);
         cy.get("div").contains("Immatriculation History");
         cy.get("div")
             .should("contain", `${fieldOfStudy[0].semesterType}${fieldOfStudy[0].year}`)

@@ -5,18 +5,6 @@
     <div v-else class="flex flex-col items-center justify-center w-full mt-12">
         <h1 class="text-4xl font-semibold text-blue-800 mb-10">Welcome back, {{ name }}!</h1>
         <dashboard />
-        <div class="w-full flex items-start mt-10">
-            <label class="text-sm text-gray-700">Note: You can find a complete archive of your operations
-                <router-link
-                    id="showOperationsArchive"
-                    :to="{ name: 'operations.archive' }"
-                    class="navigation-link hover:cursor-pointer hover:underline"
-                >
-                    here
-                </router-link>
-                . 
-            </label>
-        </div>
     </div>
 </template>
 <script lang="ts">
