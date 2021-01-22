@@ -5,7 +5,6 @@
                 <div class="mt-2">
                     <operation-component
                         :enrollment-id="enrollmentId"
-                        :role="role"
                         :operation="operation"
                         :is-archive="isArchive"
                         :watched="isWatched(operation)"
@@ -35,10 +34,6 @@
                 required: true,
             },
             enrollmentId: {
-                type: String,
-                required: true,
-            },
-            role: {
                 type: String,
                 required: true,
             },

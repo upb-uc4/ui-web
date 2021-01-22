@@ -10,7 +10,6 @@
             <div class="w-full max-w-4xl">
                 <operation-list
                     :enrollment-id="enrollmentId"
-                    :role="role"
                     :operations="operations"
                     :is-archive="isArchive"
                     :watched-operations="watchedOperations"
@@ -51,10 +50,6 @@
                 type: String,
                 required: false,
                 default: "",
-            },
-            role: {
-                type: String,
-                required: true,
             },
             isArchive: {
                 type: Boolean,

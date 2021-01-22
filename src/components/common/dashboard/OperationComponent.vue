@@ -190,10 +190,6 @@
                 type: String,
                 required: true,
             },
-            role: {
-                type: String,
-                required: true,
-            },
             isArchive: {
                 type: Boolean,
                 required: false,
@@ -207,6 +203,7 @@
         emits: ["marked-read"],
         setup(props: any, { emit }: any) {
             const store = useStore();
+            const role = ref(Role.NONE);
             const operation = ref(props.operation as Operation);
             const approvals = operation.value.existingApprovals.users.length + operation.value.existingApprovals.groups.length;
             const neededApprovals =
@@ -216,10 +213,13 @@
             const isRejected = operation.value.state === OperationStatus.REJECTED;
             const isPending = operation.value.state === OperationStatus.PENDING;
             const isFinished = operation.value.state === OperationStatus.FINISHED || isRejected;
-            const actionRequired =
-                (operation.value.missingApprovals.users.includes(props.enrollmentID) ||
-                    operation.value.missingApprovals.groups.includes(props.role)) &&
-                !isRejected;
+            const actionRequired = computed(() => {
+                return (
+                    (operation.value.missingApprovals.users.includes(props.enrollmentID) ||
+                        operation.value.missingApprovals.groups.includes(role.value)) &&
+                    !isRejected
+                );
+            });
 
             const sentApprove = ref(store.getters.processedOperations.approved.includes(operation.value.operationId));
             const sentReject = ref(store.getters.processedOperations.rejected.includes(operation.value.operationId));
@@ -229,8 +229,10 @@
             const isMyOperation = operation.value.initiator == props.enrollmentId;
             const showWatchOption = !isMyOperation && isPending;
 
-            const isAdmin = props.role == Role.ADMIN;
             const username = ref("...");
+            const isAdmin = computed(() => {
+                return role.value == Role.ADMIN;
+            });
 
             const isWatched = ref(props.watched);
 
@@ -253,7 +255,8 @@
             const showDetails = ref(false);
 
             onBeforeMount(async () => {
-                if (isAdmin) {
+                await getRole();
+                if (isAdmin.value) {
                     getNameByEnrollmentId();
                 }
                 createDisplayObjects();
@@ -287,6 +290,10 @@
                     writtenReason.value = "";
                 }
             });
+
+            async function getRole() {
+                role.value = await store.getters.role;
+            }
 
             async function approve() {
                 if (await approveMatriculation(operation.value)) {

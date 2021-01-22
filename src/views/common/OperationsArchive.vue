@@ -18,7 +18,6 @@
                 identifier="archive"
                 class="w-full mt-5"
                 :operations="filteredOperations"
-                :role="role"
                 title="Archived Operations"
                 :is-archive="true"
             />
@@ -66,7 +65,6 @@
         setup() {
             const busy = ref(false);
             const gotArchive = ref(false);
-            const role = ref("");
             const operations = ref([] as Operation[]);
             const message = ref("");
 
@@ -132,14 +130,8 @@
 
             async function requestData() {
                 busy.value = true;
-                await getUserInfo();
                 await getOperationsArchive();
                 busy.value = false;
-            }
-
-            async function getUserInfo() {
-                let store = useStore();
-                role.value = (await store.getters.user).role;
             }
 
             async function getOperationsArchive() {
@@ -170,7 +162,6 @@
             }
 
             return {
-                role,
                 requestData,
                 busy,
                 back,
