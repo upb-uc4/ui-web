@@ -35,7 +35,6 @@
     import { ref, onBeforeMount, computed } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
-    import { Role } from "@/entities/Role";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import Operation, { ApprovalList } from "@/api/api_models/operation_management/Operation";
     import { UC4Identifier } from "@/api/helpers/UC4Identifier";
@@ -52,19 +51,6 @@
             LoadingSpinner,
             DashboardComponent,
             SearchBar,
-        },
-
-        async beforeRouteEnter(_from: any, _to: any, next: any) {
-            const response = await checkPrivilege(Role.ADMIN);
-
-            if (response.allowed) {
-                return next();
-            }
-            if (!response.authenticated) {
-                return next("/login");
-            }
-
-            return next("/redirect");
         },
 
         setup() {
