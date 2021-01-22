@@ -133,7 +133,7 @@
                     <input
                         v-if="selectedReason == RejectionReasons.OTHER"
                         :id="'op_written_reject_reason_' + shownOpId"
-                        v-model="writtenReason"
+                        v-model="finalReason"
                         :disabled="sentReject"
                         class="form-input input-text mt-2"
                         placeholder="Reason for rejection"
@@ -141,8 +141,8 @@
                     <div v-if="!sentReject" class="flex justify-end mt-2">
                         <button
                             :id="'op_reject_' + shownOpId"
-                            :title="writtenReason == '' ? 'Please provide a reason' : 'Reject'"
-                            :disabled="writtenReason == ''"
+                            :title="finalReason == '' ? 'Please provide a reason' : 'Reject'"
+                            :disabled="finalReason == ''"
                             class="btn btn-icon-red-filled text-sm h-12"
                             @click.stop="reject"
                         >
@@ -231,7 +231,7 @@
             const sentReject = ref(store.getters.processedOperations.rejected.includes(operation.value.operationId));
             const provideReason = ref(false);
             const selectedReason = ref("");
-            const writtenReason = ref("");
+            const finalReason = ref("");
             const isMyOperation = operation.value.initiator == props.enrollmentId;
             const showWatchOption = !isMyOperation && isPending;
 
@@ -282,9 +282,9 @@
             });
 
             watch(selectedReason, () => {
-                writtenReason.value = selectedReason.value;
-                if (writtenReason.value == RejectionReasons.OTHER) {
-                    writtenReason.value = "";
+                finalReason.value = selectedReason.value;
+                if (finalReason.value == RejectionReasons.OTHER) {
+                    finalReason.value = "";
                 }
             });
 
@@ -306,12 +306,12 @@
                     toggleDetails();
                 }
                 selectedReason.value = "";
-                writtenReason.value = "";
+                finalReason.value = "";
                 provideReason.value = !provideReason.value;
             }
 
             async function reject() {
-                if (await rejectOperation(operation.value, writtenReason.value)) {
+                if (await rejectOperation(operation.value, finalReason.value)) {
                     //TODO Set watch
                     //If success
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
@@ -376,7 +376,7 @@
                 markRead,
                 provideReason,
                 selectedReason,
-                writtenReason,
+                finalReason,
                 toogleReasonMenu,
                 RejectionReasons,
                 showDetails,
