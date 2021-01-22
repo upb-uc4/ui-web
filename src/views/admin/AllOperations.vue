@@ -155,7 +155,7 @@
                 const handler = new GenericResponseHandler("operations");
                 const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
                 const result = handler.handleResponse(response);
-                if (Object.keys(result).length > 0) {
+                if (result.length > 0) {
                     operations.value = result;
                     gotOps.value = true;
                 }
