@@ -74,9 +74,11 @@
             const enrollmentId = ref("");
 
             onBeforeMount(async () => {
-                await refresh();
-                await getEnrollmentId();
-                await getRole();
+                const promises = []
+                promises.push(refresh());
+                promises.push(getEnrollmentId());
+                promises.push(getRole());
+                await Promise.all(promises);
             });
 
             const isAdmin = computed(() => {
