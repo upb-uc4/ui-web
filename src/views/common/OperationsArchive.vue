@@ -69,51 +69,6 @@
             const operations = ref([] as Operation[]);
             const message = ref("");
 
-            let mockedOps = [
-                {
-                    operationId: "RejectedMatriculation1",
-                    initiator: "MockUser3",
-                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
-                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
-                    transactionInfo: {
-                        contractName: UC4Identifier.CONTRACT_MATRICULATION,
-                        transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: "SS2020 Computer Science v3",
-                    },
-                    state: OperationStatus.REJECTED,
-                    reason: "Mocked Reason",
-                    existingApprovals: {
-                        users: [],
-                        groups: [],
-                    } as ApprovalList,
-                    missingApprovals: {
-                        users: [],
-                        groups: ["admin"],
-                    } as ApprovalList,
-                } as Operation,
-                {
-                    operationId: "FinishedMatriculation1",
-                    initiator: "MockUser4",
-                    initiatedTimestamp: "2011-10-05T14:48:00.000Z",
-                    lastModifiedTimestamp: "2020-10-05T16:48:00.000Z",
-                    transactionInfo: {
-                        contractName: UC4Identifier.CONTRACT_MATRICULATION,
-                        transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
-                        parameters: "SS2020 Computer Science v3",
-                    },
-                    state: OperationStatus.FINISHED,
-                    reason: "",
-                    existingApprovals: {
-                        users: [],
-                        groups: ["admin"],
-                    } as ApprovalList,
-                    missingApprovals: {
-                        users: [],
-                        groups: [],
-                    } as ApprovalList,
-                } as Operation,
-            ];
-
             const filteredOperations = computed(() => {
                 return filterOperations(operations.value, message.value);
             });
