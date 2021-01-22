@@ -19,10 +19,15 @@ export const state = {
     processedOperations: {
         approved: [] as string[],
         rejected: [] as string[],
-    } as any,
+    } as processedOperations,
 };
 
 export type State = typeof state;
+
+export interface processedOperations {
+    approved: string[];
+    rejected: string[];
+}
 
 export default {
     apiUrl: "",
