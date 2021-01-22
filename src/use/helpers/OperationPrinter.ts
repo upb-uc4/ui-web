@@ -1,11 +1,11 @@
+import AdmissionManagement from "@/api/AdmissionManagement";
+import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
+import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
+import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
+import Operation from "@/api/api_models/operation_management/Operation";
+import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-import AdmissionManagement from "../AdmissionManagement";
-import CourseAdmission from "../api_models/admission_management/CourseAdmission";
-import MatriculationData from "../api_models/matriculation_management/MatriculationData";
-import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
-import Operation from "../api_models/operation_management/Operation";
-import ExaminationRegulationManagement from "../ExaminationRegulationManagement";
-import { UC4Identifier } from "../helpers/UC4Identifier";
 
 export async function printOperation(operation: Operation): Promise<string[]> {
     const contractName = operation.transactionInfo.contractName;

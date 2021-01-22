@@ -1,7 +1,7 @@
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import Operation from "@/api/api_models/operation_management/Operation";
 import { UC4Identifier } from "@/api/helpers/UC4Identifier";
-import { printOperation } from "@/api/abstractions/OperationPrinter";
+import { printOperation } from "@/use/helpers/OperationPrinter";
 
 describe("Operation Printer Tests", () => {
     test("Test add matriculation", () => {
