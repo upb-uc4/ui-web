@@ -142,8 +142,6 @@
                 if (Object.keys(result).length > 0) {
                     actionRequiredOperations.value = result;
                 }
-                //watchedOperations.value = mockedWatchedOps;
-                //operations.value = mockedOps;
                 busy.value--;
             }
 
