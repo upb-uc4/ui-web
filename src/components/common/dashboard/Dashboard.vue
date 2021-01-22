@@ -143,7 +143,6 @@
             }
 
             async function markRead(operationId: string) {
-                //TODO API CALL
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("unwatch operation");
                 const result = handler.handleResponse(await operationManagement.unwatchOperation(operationId));
