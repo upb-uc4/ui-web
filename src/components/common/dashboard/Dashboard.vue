@@ -64,7 +64,8 @@
         setup() {
             const busy = ref(0);
             const message = ref("");
-            const watchlistOperations = ref([] as Operation[]);
+            const watchlistPendingOperations = ref([] as Operation[]);
+            const watchlistCompletedOperations = ref([] as Operation[]);
             const actionRequiredOperations = ref([] as Operation[]);
             const store = useStore();
             const role = ref("");
@@ -108,14 +109,10 @@
             }
 
             const pendingOwnOperations = computed(() => {
-                return filterOperations(watchlistOperations.value, message.value).filter(
-                    (op) => op.state == OperationStatus.PENDING && op.initiator == enrollmentId.value
-                );
+                return filterOperations(watchlistPendingOperations.value, message.value);
             });
             const finishedOperations = computed(() => {
-                return filterOperations(watchlistOperations.value, message.value).filter(
-                    (op) => op.state == OperationStatus.REJECTED || op.state == OperationStatus.FINISHED
-                );
+                return filterOperations(watchlistCompletedOperations.value, message.value);
             });
             const shownActionRequiredOperations = computed(() => {
                 return filterOperations(actionRequiredOperations.value, message.value).filter(
@@ -129,16 +126,27 @@
                 busy.value++;
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
-                let response = await operationManagement.getOperations(undefined, undefined, undefined, true);
+
+                //Get pending operations from watchlist
+                let response = await operationManagement.getOperations(undefined, undefined, [OperationStatus.PENDING], true);
                 let result = handler.handleResponse(response);
-                if (Object.keys(result).length > 0) {
-                    watchlistOperations.value = result;
-                }
+                watchlistPendingOperations.value = result;
+
+                // Get completed operations
+                response = await operationManagement.getOperations(
+                    undefined,
+                    undefined,
+                    [OperationStatus.FINISHED, OperationStatus.REJECTED],
+                    true
+                );
+                result = handler.handleResponse(response);
+                watchlistCompletedOperations.value = result;
+
+                //Get action required operations
                 response = await operationManagement.getOperations(undefined, true, undefined, undefined);
                 result = handler.handleResponse(response);
-                if (Object.keys(result).length > 0) {
-                    actionRequiredOperations.value = result;
-                }
+                actionRequiredOperations.value = result;
+
                 busy.value--;
             }
 
@@ -147,7 +155,7 @@
                 const handler = new GenericResponseHandler("unwatch operation");
                 const result = handler.handleResponse(await operationManagement.unwatchOperation(operationId));
                 if (result) {
-                    watchlistOperations.value = watchlistOperations.value.filter((op) => op.operationId !== operationId);
+                    watchlistCompletedOperations.value = watchlistCompletedOperations.value.filter((op) => op.operationId !== operationId);
                 }
             }
 
