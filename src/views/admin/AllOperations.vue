@@ -61,7 +61,6 @@
             const watchedOperations = ref([] as Operation[]);
             const message = ref("");
 
-
             const filteredOperations = computed(() => {
                 return filterOperations(operations.value, message.value);
             });
@@ -81,14 +80,11 @@
                     operations.value = result;
                     gotOps.value = true;
                 }
-                //watchedOperations.value = mockedWatchedOps;
-                //operations.value = mockedOps;
                 getWatchedOperations();
             }
 
             async function getWatchedOperations() {
                 //TODO API CALL
-                watchedOperations.value = mockedWatchedOps;
             }
 
             function back() {
