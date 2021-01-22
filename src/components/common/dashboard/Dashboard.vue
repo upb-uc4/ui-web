@@ -75,8 +75,6 @@
             const role = ref("");
             const enrollmentId = ref("");
 
-
-
             onBeforeMount(async () => {
                 await refresh();
                 await getEnrollmentId();
@@ -89,7 +87,7 @@
 
             async function refresh() {
                 busy.value++;
-                store.commit(MutationTypes.CLEAR_TREATED_OPERATIONS);
+                store.commit(MutationTypes.CLEAR_PROCESSED_OPERATIONS);
                 await getOperations();
                 busy.value--;
             }

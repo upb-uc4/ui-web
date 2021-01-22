@@ -221,8 +221,8 @@
                     operation.value.missingApprovals.groups.includes(props.role)) &&
                 !isRejected;
 
-            const sentApprove = ref(store.getters.treatedOperations.approved.includes(operation.value.operationId));
-            const sentReject = ref(store.getters.treatedOperations.rejected.includes(operation.value.operationId));
+            const sentApprove = ref(store.getters.processedOperations.approved.includes(operation.value.operationId));
+            const sentReject = ref(store.getters.processedOperations.rejected.includes(operation.value.operationId));
             const provideReason = ref(false);
             const selectedReason = ref("");
             const writtenReason = ref("");

@@ -198,7 +198,7 @@
             async function refresh() {
                 busy.value = true;
                 let store = useStore();
-                store.commit(MutationTypes.CLEAR_TREATED_OPERATIONS);
+                store.commit(MutationTypes.CLEAR_PROCESSED_OPERATIONS);
                 await getOperations();
                 busy.value = false;
             }
