@@ -14,11 +14,11 @@
                 </div>
             </div>
             <div class="flex flex-col">
-                <p class="flex font-semibold">
+                <p class="flex font-semibold input-label">
                     <span class="text-red-700 mr-2 mb-4 font-bold">Warning!</span>
                     You are about to delete your UC4 account.
                 </p>
-                <p class="text-sm font-semibold">
+                <p class="text-sm font-semibold input-label">
                     If you continue, all your saved personal data will be permanently deleted and you will no will no longer be able to use
                     the system. Stored study data remains, but you may only access it by requesting it using your secret used for
                     enrollment.
