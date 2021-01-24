@@ -5,13 +5,13 @@
                 <menu-item
                     id="nav_mobile_student_menu_courses_all"
                     title="Enroll in courses"
-                    icon-class="fas fa-list-alt"
+                    icon-class="fas fa-mouse-pointer"
                     target-route-name="student.courses"
                 />
                 <menu-item
                     id="nav_mobile_student_menu_courses_admitted"
                     title="My Courses"
-                    icon-class="fas fa-list-alt"
+                    icon-class="fas fa-bookmark"
                     target-route-name="student.my-courses"
                 />
                 <menu-item
