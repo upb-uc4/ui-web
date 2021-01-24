@@ -23,12 +23,16 @@
                     leave-to-class="transform scale-95 opacity-0"
                 >
                     <MenuItems
-                        class="absolute left-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                        class="absolute left-0 w-56 mt-2 origin-top-right input-base dark:border-normalgray-800 focus:border-blue-600 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
                     >
                         <div class="py-1">
                             <MenuItem id="uploadPicture" v-slot="{ active }">
                                 <span
-                                    :class="active ? 'text-white bg-blue-600 font-semibold' : 'text-gray-900 font-normal'"
+                                    :class="
+                                        active
+                                            ? 'text-white bg-blue-600 font-semibold dark:text-gray-200'
+                                            : 'text-gray-900 font-normal dark:text-gray-200'
+                                    "
                                     class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
                                     @click="triggerOpenFileBrowser"
                                 >
@@ -37,7 +41,11 @@
                             </MenuItem>
                             <MenuItem id="deletePicture" v-slot="{ active }">
                                 <span
-                                    :class="active ? 'text-white bg-blue-600 font-semibold' : 'text-gray-900 font-normal'"
+                                    :class="
+                                        active
+                                            ? 'text-white bg-blue-600 font-semibold dark:text-gray-200'
+                                            : 'text-gray-900 font-normal dark:text-gray-200'
+                                    "
                                     class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
                                     @click="confirmDeletePicture"
                                 >
