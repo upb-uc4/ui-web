@@ -6,7 +6,7 @@
                 <searchable-select
                     v-else
                     v-model:selected="selectedModuleOption"
-                    placeholder="Search the module that this course should count to."
+                    placeholder="Type to search."
                     :elements="optionsArray"
                     @update:selected="selectModule"
                 />
