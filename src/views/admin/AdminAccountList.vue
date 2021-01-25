@@ -113,7 +113,7 @@
             let selectedRole = ref(defaultRole);
 
             let status = Object.values(StatusFilter);
-            const defaultStatus = status[0];
+            const defaultStatus = StatusFilter.ACTIVE;
             let selectedStatus = ref(defaultStatus);
 
             let message = ref("");
