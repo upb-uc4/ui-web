@@ -3,7 +3,7 @@
         <div class="space-y-6">
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full relative">
-                    <label class="input-label">Old Password</label>
+                    <label class="input-label">Current Password</label>
                     <i
                         id="toggleOldPassword"
                         :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
