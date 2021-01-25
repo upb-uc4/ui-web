@@ -24,6 +24,7 @@
                 identifier="archive"
                 class="w-full mt-5"
                 :operations="filteredOperations"
+                :watched-operations="watchedOperations"
                 title="Archived Operations"
                 :is-archive="true"
             />
@@ -45,6 +46,7 @@
     import SearchBar from "@/components/common/SearchBar.vue";
     import { MutationTypes } from "@/use/store/mutation-types";
     import filterOperations from "@/use/helpers/filterOperations";
+    import CertificateManagement from "@/api/CertificateManagement";
 
     export default {
         name: "AllOperationsPage",
@@ -80,11 +82,24 @@
                 //Show empty list if no results given
                 operations.value = result;
                 gotOps.value = true;
-                getWatchedOperations();
+                await getWatchedOperations();
             }
 
             async function getWatchedOperations() {
-                //TODO API CALL
+                const operationManagement = new OperationManagement();
+                const handler = new GenericResponseHandler("operations");
+                const response = await operationManagement.getOperations(undefined, undefined, undefined, true);
+                const result = handler.handleResponse(response);
+                const ownId = await getOwnEnrollmentId();
+                watchedOperations.value = result.filter((op) => op.initiator != ownId);
+            }
+
+            async function getOwnEnrollmentId(): Promise<string> {
+                const certificateManagement = new CertificateManagement();
+                const handler = new GenericResponseHandler("enrollment-id");
+                const response = await certificateManagement.getOwnEnrollmentId();
+                const result = handler.handleResponse(response);
+                return result.id;
             }
 
             function back() {
