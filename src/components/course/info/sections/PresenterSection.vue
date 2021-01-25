@@ -27,7 +27,7 @@
         },
         props: {
             lecturer: {
-                type: LecturerEntity,
+                type: Object as () => LecturerEntity,
                 required: true,
             },
         },
