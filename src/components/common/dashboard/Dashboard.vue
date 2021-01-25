@@ -94,7 +94,7 @@
                 busy.value++;
                 hasCertificate.value = await store.getters.hasCertificate;
                 if (hasCertificate.value) {
-                    loadDashboard();
+                    await loadDashboard();
                 }
                 busy.value--;
             });
