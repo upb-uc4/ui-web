@@ -7,7 +7,7 @@
             <private-admin-profile v-else-if="user.role === Role.ADMIN" v-model:user="user" :error-bag="errorBag" />
             <button-section>
                 <template #right>
-                    <button id="updateProfile" class="sm:w-48 w-full btn" @click="updateProfile()">Update</button>
+                    <button id="updateProfile" :disabled="!isChanged" class="sm:w-48 w-full btn" @click="updateProfile()">Update</button>
                 </template>
             </button-section>
         </div>
@@ -21,7 +21,7 @@
     import UserManagement from "@/api/UserManagement";
     import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import { Role } from "@/entities/Role";
-    import { onBeforeMount, ref } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
     import Student from "@/api/api_models/user_management/Student";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import Admin from "@/api/api_models/user_management/Admin";
@@ -30,6 +30,7 @@
     import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
+    import __ from "lodash";
 
     export default {
         components: {
@@ -43,14 +44,20 @@
         setup() {
             const userManagement = new UserManagement();
             const user = ref({} as Student | Lecturer | Admin);
+            const oldUser = ref({} as Student | Lecturer | Admin); // Used to see if changes present
             const isLoading = ref(true);
             const errorBag = ref(new ErrorBag());
+
+            const isChanged = computed(() => !__.isEqual(user.value, oldUser.value));
 
             onBeforeMount(() => {
                 userManagement
                     .getOwnUser()
                     .then((userResponse) => new ProfileResponseHandler().handleResponse(userResponse))
-                    .then((userResult) => (user.value = userResult))
+                    .then((userResult) => {
+                        user.value = userResult;
+                        oldUser.value = userResult;
+                    })
                     .then(() => (isLoading.value = false));
             });
 
@@ -71,7 +78,7 @@
                     .then(() => (isLoading.value = false));
             }
 
-            return { Role, user, isLoading, updateProfile, errorBag };
+            return { Role, user, isLoading, updateProfile, errorBag, isChanged };
         },
     };
 </script>
