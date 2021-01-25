@@ -9,7 +9,7 @@
                     <label class="input-label">First Name</label>
                     <base-input
                         v-model:value="myFirstName"
-                        :error-message="getErrorMessage(errorBag, 'firstName', true)"
+                        :error-message="errorBag.getNested('firstName')"
                         identifier="firstName"
                         type="text"
                         :readonly="readonly"
@@ -22,7 +22,7 @@
                     <label class="input-label">Last Name</label>
                     <base-input
                         v-model:value="myLastName"
-                        :error-message="getErrorMessage(errorBag, 'lastName', true)"
+                        :error-message="errorBag.getNested('lastName')"
                         identifier="lastName"
                         type="text"
                         :readonly="readonly"
@@ -48,7 +48,7 @@
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import BirthDateInput from "@/components/account/edit/BirthDateInput.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         name: "PersonalSection",
@@ -85,7 +85,6 @@
                 myFirstName: useModelWrapper(props, emit, "firstName"),
                 myLastName: useModelWrapper(props, emit, "lastName"),
                 myBirthDate: useModelWrapper(props, emit, "birthDate"),
-                getErrorMessage,
             };
         },
     };

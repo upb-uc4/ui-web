@@ -6,7 +6,7 @@
                     <label class="input-label">Username</label>
                     <base-input
                         v-model:value="accountUsername"
-                        :error-message="getErrorMessage(errorBag, 'username', true)"
+                        :error-message="errorBag.getNested('username')"
                         identifier="userName"
                         type="text"
                         class="w-full"
@@ -27,7 +27,7 @@
                     />
                     <base-input
                         v-model:value="accountPassword"
-                        :error-message="getErrorMessage(errorBag, 'password', true)"
+                        :error-message="errorBag.getNested('password')"
                         identifier="password"
                         :type="passwordFieldType"
                         class="w-full"
@@ -62,7 +62,7 @@
     import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import { ref } from "vue";
 
     export default {
@@ -111,7 +111,6 @@
                 accountUsername: useModelWrapper(props, emit, "username"),
                 accountPassword: useModelWrapper(props, emit, "password"),
                 accountGovernmentId: useModelWrapper(props, emit, "governmentId"),
-                getErrorMessage,
             };
         },
     };

@@ -9,7 +9,7 @@
                         identifier="maxParticipants"
                         type="number"
                         class="w-full"
-                        :error-message="getErrorMessage(errorBag, 'maxParticipants')"
+                        :error-message="errorBag.getNested('maxParticipants')"
                         validation-query="course.maxParticipants"
                         @input="updateLimit($event.target.value)"
                     />
@@ -23,7 +23,7 @@
 <script lang="ts">
     import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
-    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import { ref } from "vue";
 
     export default {
@@ -61,7 +61,6 @@
             return {
                 myMaxParticipants,
                 updateLimit,
-                getErrorMessage,
             };
         },
     };

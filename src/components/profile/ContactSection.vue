@@ -6,7 +6,7 @@
                     <label class="input-label">Email</label>
                     <base-input
                         v-model:value="myEmail"
-                        :error-message="getErrorMessage(errorBag, 'email', true)"
+                        :error-message="errorBag.getNested('email')"
                         identifier="email"
                         type="text"
                         class="w-full"
@@ -21,7 +21,7 @@
                     <label class="input-label">Phone Number</label>
                     <base-input
                         v-model:value="myPhoneNumber"
-                        :error-message="getErrorMessage(errorBag, 'phoneNumber', true)"
+                        :error-message="errorBag.getNested('phoneNumber')"
                         identifier="phoneNumber"
                         type="text"
                         class="w-full"
@@ -39,7 +39,7 @@
     import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         name: "ContactSection",
@@ -66,7 +66,6 @@
             return {
                 myPhoneNumber: useModelWrapper(props, emit, "phoneNumber"),
                 myEmail: useModelWrapper(props, emit, "email"),
-                getErrorMessage,
             };
         },
     };

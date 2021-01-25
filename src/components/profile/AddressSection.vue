@@ -18,7 +18,7 @@
                     <base-input
                         v-model:value="city"
                         identifier="city"
-                        :error-message="getErrorMessage(errorBag, 'city', true)"
+                        :error-message="errorBag.getNested('city')"
                         type="text"
                         placeholder="City"
                         validation-query="address.city"
@@ -46,7 +46,7 @@
                     <base-input
                         v-model:value="street"
                         identifier="street"
-                        :error-message="getErrorMessage(errorBag, 'street', true)"
+                        :error-message="errorBag.getNested('street')"
                         type="text"
                         placeholder="Street"
                         class="w-full"
@@ -58,7 +58,7 @@
                     <base-input
                         v-model:value="houseNumber"
                         identifier="houseNumber"
-                        :error-message="getErrorMessage(errorBag, 'houseNumber', true)"
+                        :error-message="errorBag.getNested('houseNumber')"
                         type="text"
                         placeholder="House Number"
                         class="w-full"
@@ -76,7 +76,7 @@
     import Select from "@/components/common/Select.vue";
     import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
     import { onMounted, ref } from "vue";
-    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import Address from "@/api/api_models/user_management/Address";
     import { useStore } from "@/use/store/store";
     import { useToast } from "@/toast";
@@ -121,7 +121,6 @@
                 street: useObjectModelWrapper(props, emit, "address", "street"),
                 houseNumber: useObjectModelWrapper(props, emit, "address", "houseNumber"),
                 zipCode: useObjectModelWrapper(props, emit, "address", "zipCode"),
-                getErrorMessage,
             };
         },
     };

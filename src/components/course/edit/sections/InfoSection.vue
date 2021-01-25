@@ -7,7 +7,7 @@
                     <base-input
                         v-model:value="myName"
                         identifier="courseName"
-                        :error-message="getErrorMessage(errorBag, 'courseName')"
+                        :error-message="errorBag.getNested('courseName')"
                         type="text"
                         class="w-full"
                         placeholder="Course Name"
@@ -73,7 +73,7 @@
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import Select from "@/components/common/Select.vue";
-    import ErrorBag, { getErrorMessage } from "@/use/helpers/ErrorBag";
+    import ErrorBag from "@/use/helpers/ErrorBag";
     import { onMounted, ref } from "vue";
     import { useStore } from "@/use/store/store";
     import { useToast } from "@/toast";
@@ -137,7 +137,6 @@
                 myLanguage: useModelWrapper(props, emit, "language"),
                 myType: useModelWrapper(props, emit, "type"),
                 myDescription: useModelWrapper(props, emit, "description"),
-                getErrorMessage,
             };
         },
     };
