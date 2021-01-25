@@ -33,13 +33,10 @@
 </template>
 <script lang="ts">
     import { useStore } from "@/use/store/store";
-    import { ref, onBeforeMount, computed } from "vue";
+    import { ref, computed } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
-    import Operation, { ApprovalList } from "@/api/api_models/operation_management/Operation";
-    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
-    import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
+    import Operation from "@/api/api_models/operation_management/Operation";
     import Router from "@/use/router/";
     import OperationManagement from "@/api/OperationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
