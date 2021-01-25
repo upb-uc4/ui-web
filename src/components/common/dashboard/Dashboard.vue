@@ -59,8 +59,7 @@
 <script lang="ts">
     import { computed, onBeforeMount, ref } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
-    import Operation, { ApprovalList } from "@/api/api_models/operation_management/Operation";
-    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
+    import Operation from "@/api/api_models/operation_management/Operation";
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import { useStore } from "@/use/store/store";
@@ -95,7 +94,7 @@
                 busy.value++;
                 hasCertificate.value = await store.getters.hasCertificate;
                 if (hasCertificate.value) {
-                    loadDashboard();
+                    await loadDashboard();
                 }
                 busy.value--;
             });
@@ -197,7 +196,7 @@
                 let certificate = (await store.getters.certificate()).certificate;
                 if (certificate != "") {
                     hasCertificate.value = true;
-                    loadDashboard();
+                    await loadDashboard();
                 }
                 busy.value--;
             }
