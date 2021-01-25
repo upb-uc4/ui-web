@@ -4,7 +4,8 @@
             <div class="lg:w-1/2 w-full">
                 <searchableSelect
                     :id="'lecturerId'"
-                    :label="'Lecturer-ID'"
+                    label="Lecturer-ID"
+                    :placeholder="currentSelection.display"
                     :elements="myLecturers"
                     :selected="currentSelection"
                     @update:selected="updateLecturer"
