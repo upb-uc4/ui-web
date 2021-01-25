@@ -41,7 +41,7 @@
                 required: true,
             },
         },
-        emits: ["on-updated"],
+        emits: ["updated"],
         setup(props: any, { emit }: any) {
             let isLoading = ref(false);
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
@@ -100,7 +100,7 @@
                             e.lecturerId.toLowerCase().includes(filter)
                     );
                 }
-                emit("on-updated", filteredCourses.length);
+                emit("updated", filteredCourses.length);
                 return filteredCourses;
             });
 

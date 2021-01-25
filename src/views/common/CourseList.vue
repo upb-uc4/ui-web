@@ -52,7 +52,7 @@
                 :show-all-courses="showAllCourses"
                 :selected-type="selectedType"
                 :filter="message"
-                @on-updated="matchingCoursesCount = $event"
+                @updated="matchingCoursesCount = $event"
             />
         </div>
     </base-view>
