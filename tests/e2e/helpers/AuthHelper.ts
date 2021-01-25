@@ -49,5 +49,5 @@ export function logoutMobile() {
     cy.get("nav").should("be.visible");
     cy.get("div[id='nav_mobile_menu_profile mobile-navbar-menu']").click();
     cy.get("#nav_mobile_logout").click();
-    cy.url().should("eq", Cypress.config().baseUrl);
+    cy.url().should("eq", `${Cypress.config().baseUrl}login`);
 }
