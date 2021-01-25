@@ -137,7 +137,7 @@
             }
 
             let selectableYears = computed(() => {
-                let array: String[] = [];
+                const array: String[] = [];
                 for (let index = currentYear; index >= currentYear - 10; index--) {
                     if (semesterType.value == "WS") {
                         array.push(
