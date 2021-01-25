@@ -125,7 +125,7 @@
         },
         emits: ["update:has-input", "update:success"],
         setup(props: any, { emit, root }: any) {
-            let isLoading = ref(false);
+            const isLoading = ref(false);
             let account = reactive({
                 authUser: new Account(),
                 user: new UserEntity(),
