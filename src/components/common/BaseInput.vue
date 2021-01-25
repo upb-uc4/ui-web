@@ -80,7 +80,7 @@
         },
         setup(props: any, { emit }: any) {
             let isValid = ref(true);
-            let errClass = props.validClass + " +49123456789" + props.errorClass;
+            let errClass = props.validClass + " " + props.errorClass;
             let validation = ref("");
             const errMessage = ref("");
             const hasLabel = props.label !== "";
