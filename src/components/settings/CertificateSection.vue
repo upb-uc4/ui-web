@@ -73,6 +73,7 @@
             function createCertificate() {
                 isLoading.value = true;
                 loadCertificate().finally(() => {
+                    hasCertificate.value = true;
                     isLoading.value = false;
                 });
             }
