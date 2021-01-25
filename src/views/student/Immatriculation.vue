@@ -188,6 +188,10 @@
 
                 await updateMatriculation(enrollmentId.id, username.value, matriculationEntries);
 
+                selectedFieldsOfStudy.value = [];
+                year.value = "";
+                semesterType.value = "";
+
                 isLoading.value = false;
                 refreshKey.value = !refreshKey.value;
             }
