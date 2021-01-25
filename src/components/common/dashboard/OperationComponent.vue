@@ -99,7 +99,7 @@
                         :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
                         class="ml-2 w-8 h-8 btn btn-icon-red-filled text-xs"
                         title="Reject"
-                        @click.stop="toogleReasonMenu"
+                        @click.stop="toggleReasonMenu"
                     >
                         <i class="fas fa-times"></i>
                     </button>
@@ -151,7 +151,7 @@
                         <button
                             :id="'op_cancelRejection_' + shownOpId"
                             class="ml-2 btn btn-icon-blue text-sm h-12"
-                            @click.stop="toogleReasonMenu"
+                            @click.stop="toggleReasonMenu"
                         >
                             Cancel
                         </button>
@@ -295,7 +295,7 @@
                 }
             }
 
-            function toogleReasonMenu() {
+            function toggleReasonMenu() {
                 if (!showDetails.value) {
                     toggleDetails();
                 }
@@ -371,7 +371,7 @@
                 provideReason,
                 selectedReason,
                 finalReason,
-                toogleReasonMenu,
+                toggleReasonMenu,
                 RejectionReasons,
                 showDetails,
                 toggleDetails,
