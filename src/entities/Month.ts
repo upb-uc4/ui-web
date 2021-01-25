@@ -13,7 +13,7 @@ export enum Month {
     DECEMBER = "December",
 }
 
-export let months = [
+export const months = [
     "January",
     "February",
     "March",
@@ -28,4 +28,4 @@ export let months = [
     "December",
 ];
 
-export let days = Array.from({ length: 31 }, (_, i) => String(i + 1));
+export const days = Array.from({ length: 31 }, (_, i) => String(i + 1));
