@@ -1,5 +1,5 @@
 <template>
-    <BaseSection title="Public Picture" subtitle="Click on the image to either unset your current profile picture or to set a new one.">
+    <BaseSection title="Public Picture" subtitle="Click on the image to either delete your current profile picture or to set a new one.">
         <div class="w-32 h-32 relative text-center cursor-pointer">
             <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="openFileBrowser" />
             <div v-if="isLoading">
