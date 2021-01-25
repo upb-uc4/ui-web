@@ -156,7 +156,7 @@
                 return semesterType.value + year.value;
             });
 
-            let validSelection = computed(() => {
+            const validSelection = computed(() => {
                 return (
                     semesterType.value != "" &&
                     year.value != "" &&
