@@ -17,7 +17,6 @@
             <div class="hidden sm:flex ml-4 text-xs font-medium tracking-wide text-gray-500">
                 {{ course.courseLanguage }}
             </div>
-            <!-- todo replace with flag component -->
             <img :src="flagSrc" class="sm:hidden inline rounded ml-4 w-6 h-4 opacity-90" alt="language=-flag" />
             <div class="text-xs font-medium tracking-wide text-gray-500 flex items-center space-x-1">
                 <i class="block fas fa-users" style="font-size: 1.25em" />
