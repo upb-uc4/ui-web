@@ -19,7 +19,6 @@
     import PrivateLecturerProfile from "@/views/lecturer/PrivateProfile.vue";
     import PrivateAdminProfile from "@/views/admin/PrivateProfile.vue";
     import UserManagement from "@/api/UserManagement";
-    import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import { Role } from "@/entities/Role";
     import { computed, onBeforeMount, ref } from "vue";
     import Student from "@/api/api_models/user_management/Student";
@@ -31,6 +30,8 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import __ from "lodash";
+    import { useStore } from "@/use/store/store";
+    import { MutationTypes } from "@/use/store/mutation-types";
 
     export default {
         components: {
@@ -47,13 +48,12 @@
             const oldUser = ref({} as Student | Lecturer | Admin); // Used to see if changes present
             const isLoading = ref(true);
             const errorBag = ref(new ErrorBag());
+            const store = useStore();
 
             const isChanged = computed(() => !__.isEqual(user.value, oldUser.value));
 
             onBeforeMount(() => {
-                userManagement
-                    .getOwnUser()
-                    .then((userResponse) => new ProfileResponseHandler().handleResponse(userResponse))
+                store.getters.user
                     .then((userResult) => {
                         user.value = userResult;
                         oldUser.value = userResult;
@@ -71,6 +71,7 @@
                         if (validationResult) {
                             //success
                             errorBag.value.clear();
+                            store.commit(MutationTypes.SET_USER, user.value);
                         } else {
                             errorBag.value = new ErrorBag(handler.errorList);
                         }
