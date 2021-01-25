@@ -152,29 +152,37 @@
 
             async function getOperations() {
                 busy.value++;
+                const promises = [];
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
 
                 //Get pending operations from watchlist
-                let response = await operationManagement.getOperations(undefined, undefined, [OperationStatus.PENDING], true);
-                let result = handler.handleResponse(response);
-                watchlistPendingOperations.value = result;
+                promises.push(
+                    operationManagement.getOperations(undefined, undefined, [OperationStatus.PENDING], true).then((response) => {
+                        let result = handler.handleResponse(response);
+                        watchlistPendingOperations.value = result;
+                    })
+                );
 
                 // Get completed operations
-                response = await operationManagement.getOperations(
-                    undefined,
-                    undefined,
-                    [OperationStatus.FINISHED, OperationStatus.REJECTED],
-                    true
+                promises.push(
+                    operationManagement
+                        .getOperations(undefined, undefined, [OperationStatus.FINISHED, OperationStatus.REJECTED], true)
+                        .then((response) => {
+                            let result = handler.handleResponse(response);
+                            watchlistCompletedOperations.value = result;
+                        })
                 );
-                result = handler.handleResponse(response);
-                watchlistCompletedOperations.value = result;
 
                 //Get action required operations
-                response = await operationManagement.getOperations(undefined, true, undefined, undefined);
-                result = handler.handleResponse(response);
-                actionRequiredOperations.value = result;
+                promises.push(
+                    operationManagement.getOperations(undefined, true, undefined, undefined).then((response) => {
+                        let result = handler.handleResponse(response);
+                        actionRequiredOperations.value = result;
+                    })
+                );
 
+                await Promise.all(promises);
                 busy.value--;
             }
 
