@@ -6,7 +6,7 @@
                     id="nav_desktop_student_menu_courses_all"
                     title="Enroll in courses"
                     description="Courses you can enroll in"
-                    icon-class="fas fa-mouse-pointer"
+                    icon-class="fas fa-vote-yea"
                     target-route-name="student.courses"
                 />
                 <menu-item

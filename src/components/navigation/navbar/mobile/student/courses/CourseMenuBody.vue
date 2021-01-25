@@ -5,7 +5,7 @@
                 <menu-item
                     id="nav_mobile_student_menu_courses_all"
                     title="Enroll in courses"
-                    icon-class="fas fa-mouse-pointer"
+                    icon-class="fas fa-vote-yea"
                     target-route-name="student.courses"
                 />
                 <menu-item
