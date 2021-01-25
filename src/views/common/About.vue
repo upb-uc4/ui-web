@@ -37,7 +37,7 @@
                     <div class="w-full mb-6 text-justify">
                         <h2 class="block text-gray-800 dark:text-gray-300 text-lg font-medium mb-1">Research Project Group</h2>
                         <h3 class="block text-gray-600 dark:text-gray-500 text-sm leading-relaxed">
-                            University Credits 4.0 is an educational research project at the
+                            University Credits 4.0 is an educational research project at
                             <a
                                 class="navigation-link"
                                 target="_blank"
