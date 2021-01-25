@@ -50,7 +50,7 @@
 <script lang="ts">
     import CourseList from "@/components/course/list/student/CourseList.vue";
     import SearchBar from "@/components/common/SearchBar.vue";
-    import { onMounted, ref, watch } from "vue";
+    import { onBeforeMount, ref, watch } from "vue";
     import Select from "@/components/common/Select.vue";
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
@@ -92,7 +92,7 @@
             const selectedType = ref(defaultType);
             const types = ref([] as string[]);
 
-            onMounted(async () => {
+            onBeforeMount(async () => {
                 const store = useStore();
                 await store.getters.configuration
                     .then((config) => {
