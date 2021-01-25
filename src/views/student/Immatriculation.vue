@@ -175,7 +175,7 @@
 
             async function updateImmatriculation() {
                 isLoading.value = true;
-                let matriculationEntries: SubjectMatriculation[] = [];
+                const matriculationEntries: SubjectMatriculation[] = [];
                 selectedFieldsOfStudy.value
                     .filter((s) => s != "")
                     .forEach((entry) => {
