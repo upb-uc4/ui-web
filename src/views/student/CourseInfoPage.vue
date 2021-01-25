@@ -76,7 +76,7 @@
         emits: [],
 
         setup(props: any, { emit }: any) {
-            let isLoading = ref(true);
+            const isLoading = ref(true);
             const toast = useToast();
             const course = ref({} as Course);
             const lecturerName = ref("");
