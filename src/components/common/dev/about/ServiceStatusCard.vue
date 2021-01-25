@@ -1,5 +1,5 @@
 <template>
-    <div class="w-56 rounded-md border-gray-200 dark:border-normalgray-700 border h-32 p-4 mx-auto md:mx-0">
+    <div class="w-full sm:w-56 rounded-md border-gray-200 dark:border-normalgray-700 border h-32 p-4 mx-auto md:mx-0">
         <div class="flex justify-between">
             <div class="font-medium text-lg dark:text-gray-300">{{ title }}</div>
             <div>
