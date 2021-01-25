@@ -9,7 +9,7 @@ export async function validateOperationId(operation: Operation) {
         ":" +
         operation.transactionInfo.transactionName +
         ":" +
-        operation.transactionInfo.parameters;
+        operation.transactionInfo.parameters.replace(/\s/g, "");
 
     const operationHash = await crypto.digest("SHA-256", new Uint8Array(toUTF8Array(toHash)));
 
