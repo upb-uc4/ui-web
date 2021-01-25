@@ -69,7 +69,7 @@
 
             const currentSelection = ref({} as SearchSelectOption);
 
-            const myLecturers = computed(() =>
+            const selectableLecturers = computed(() =>
                 lecturers.value.map((l: Lecturer) => {
                     return {
                         value: l,
@@ -113,7 +113,7 @@
 
             return {
                 updateLecturer,
-                myLecturers,
+                myLecturers: selectableLecturers,
                 currentSelection,
             };
         },
