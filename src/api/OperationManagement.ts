@@ -1,76 +1,36 @@
-import { useStore } from "@/use/store/store";
 import { AxiosError, AxiosResponse } from "axios";
+import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
 import APIError from "./api_models/errors/APIError";
-import MatriculationData from "./api_models/matriculation_management/MatriculationData";
-import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
+import Operation from "./api_models/operation_management/Operation";
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
 import APIResponse from "./helpers/models/APIResponse";
-import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
-import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
-import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
-import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
 
-export default class MatriculationManagement extends CommonHyperledger {
-    protected static endpoint = "/matriculation-management";
+export default class OperationManagement extends CommonHyperledger {
+    protected static endpoint = "/operation-management";
 
     constructor() {
-        super(MatriculationManagement.endpoint);
+        super(OperationManagement.endpoint);
     }
 
-    /**
-     * Fetch an unsigned proposal for matriculation
-     * @param username username of student to matriculate
-     * @param matriculation matriculation data
-     */
-    async getUnsignedMatriculationProposal(
-        username: string,
-        matriculation: SubjectMatriculation[]
-    ): Promise<APIResponse<UnsignedProposalMessage>> {
-        let payload = { matriculation: matriculation };
-
-        return await this._axios
-            .post(`/matriculation/${username}/unsigned_proposal`, payload)
-            .then((response: AxiosResponse) => {
-                return {
-                    statusCode: response.status,
-                    returnValue: response.data as UnsignedProposalMessage,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as UnsignedProposalMessage,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getUnsignedMatriculationProposal(username, matriculation);
-                    }
-                    return {
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        returnValue: {} as UnsignedProposalMessage,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        error: {} as APIError,
-                        returnValue: {} as UnsignedProposalMessage,
-                        networkError: true,
-                    };
-                }
-            });
+    static async getVersion(): Promise<string> {
+        return super.getVersion();
     }
 
-    async submitSignedMatriculationProposal(message: SignedProposalMessage): Promise<APIResponse<UnsignedTransactionMessage>> {
+    async getOperations(
+        selfInitiated?: boolean,
+        selfActionRequired?: boolean,
+        states?: String[],
+        watchlistOnly?: boolean
+    ): Promise<APIResponse<Operation[]>> {
+        const requestParameter = { params: {} as any };
+        if (selfInitiated !== undefined) requestParameter.params.selfInitiated = selfInitiated;
+        if (selfActionRequired !== undefined) requestParameter.params.selfActionRequired = selfActionRequired;
+        if (states !== undefined) requestParameter.params.states = states.reduce((a, b) => a + "," + b, "");
+        if (watchlistOnly !== undefined) requestParameter.params.watchlistOnly = watchlistOnly;
+
         return await this._axios
-            .post(`/matriculation/signed_proposal`, message)
+            .get(`/operations`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -85,32 +45,72 @@ export default class MatriculationManagement extends CommonHyperledger {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: {} as UnsignedTransactionMessage,
+                            returnValue: [] as Operation[],
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedMatriculationProposal(message);
+                        return await this.getOperations(selfInitiated, selfActionRequired, states, watchlistOnly);
                     }
                     return {
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
-                        returnValue: {} as UnsignedTransactionMessage,
+                        returnValue: [] as Operation[],
                         networkError: false,
                     };
                 } else {
                     return {
                         statusCode: 0,
                         error: {} as APIError,
-                        returnValue: {} as UnsignedTransactionMessage,
+                        returnValue: [] as Operation[],
                         networkError: true,
                     };
                 }
             });
     }
 
-    async submitSignedMatriculationTransaction(message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
+    async getOperation(operationId: string): Promise<APIResponse<Operation>> {
         return await this._axios
-            .post(`/matriculation/signed_transaction`, message)
+            .get(`/operations/${operationId}`)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as Operation,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getOperation(operationId);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: {} as Operation,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: {} as Operation,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async unwatchOperation(operationId: string): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .delete(`/operations/${operationId}`)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -129,7 +129,7 @@ export default class MatriculationManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.submitSignedMatriculationTransaction(message);
+                        return await this.unwatchOperation(operationId);
                     }
                     return {
                         statusCode: error.response.status,
@@ -148,15 +148,15 @@ export default class MatriculationManagement extends CommonHyperledger {
             });
     }
 
-    async getMatriculationHistory(username: string): Promise<APIResponse<MatriculationData>> {
+    async getUnsignedRejectionProposal(operationId: string, rejectMessage: string): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .get(`/matriculation/${username}`)
+            .post(`/operations/${operationId}/unsigned_proposal_reject`, { rejectMessage })
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data as MatriculationData,
                     statusCode: response.status,
-                    error: {} as APIError,
+                    returnValue: response.data,
                     networkError: false,
+                    error: {} as APIError,
                 };
             })
             .catch(async (error: AxiosError) => {
@@ -165,36 +165,26 @@ export default class MatriculationManagement extends CommonHyperledger {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: false,
+                            returnValue: {} as UnsignedProposalMessage,
                             networkError: false,
                         })
                     ) {
-                        return await this.getMatriculationHistory(username);
+                        return await this.getUnsignedRejectionProposal(operationId, rejectMessage);
                     }
                     return {
-                        returnValue: {} as MatriculationData,
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: {} as MatriculationData,
                         statusCode: 0,
                         error: {} as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
                         networkError: true,
                     };
                 }
             });
-    }
-
-    async getOwnMatriculationHistory(): Promise<APIResponse<MatriculationData>> {
-        const store = useStore();
-        const username = (await store.getters.user).username;
-        return this.getMatriculationHistory(username);
-    }
-
-    static async getVersion(): Promise<string> {
-        return super.getVersion();
     }
 }

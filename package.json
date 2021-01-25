@@ -54,7 +54,7 @@
         "protobufjs": "^6.10.2",
         "random-bigint": "0.0.1",
         "tailwindcss": "^1.9.6",
-        "vue": "^3.0.2",
+        "vue": "^3.0.4",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-rc.5",
         "vuex": "^4.0.0-rc.1",
