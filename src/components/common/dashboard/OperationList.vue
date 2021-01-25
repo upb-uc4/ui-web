@@ -55,7 +55,7 @@
             }
 
             function isWatched(operation: Operation) {
-                return (props.watchedOperations as Operation[]).find((op) => op.operationId === operation.operationId) != undefined;
+                return (props.watchedOperations as Operation[]).some((op) => op.operationId === operation.operationId);
             }
 
             return {
