@@ -44,7 +44,7 @@
             const hasEntries = computed(() => chronologicalList.value.length > 0);
 
             let history: MatriculationData = reactive({} as MatriculationData);
-            let chronologicalList = ref({} as any);
+            let chronologicalList = ref([] as { semester: String; fieldsOfStudy: String[] }[]);
 
             watch(
                 () => props.username,
