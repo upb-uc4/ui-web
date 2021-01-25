@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="mt-8">
-                    <button id="login" class="w-full btn-add" @click="login">Login</button>
+                    <button id="login" class="w-full btn-add" :disabled="hasNoInputEntered" @click="login">Login</button>
                 </div>
             </div>
         </form>
@@ -73,6 +73,7 @@
             const passwordFieldType = ref("password");
             const hasError = ref(false);
             const errorText = ref("Incorrect username or password.");
+            const hasNoInputEntered = computed(() => email.value === "" || password.value === "");
 
             function togglePassword() {
                 passwordFieldType.value = isPasswordVisible() ? "password" : "text";
@@ -114,6 +115,7 @@
                 isInputEmpty,
                 login,
                 resetError,
+                hasNoInputEntered,
             };
         },
     };
