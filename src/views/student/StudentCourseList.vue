@@ -41,7 +41,7 @@
                 :show-all-courses="true"
                 :selected-type="selectedType"
                 :filter="message"
-                @on-updated="matchingCoursesCount = $event"
+                @updated="matchingCoursesCount = $event"
             />
         </div>
     </base-view>
@@ -56,7 +56,6 @@
     import { Role } from "@/entities/Role";
     import BaseView from "@/views/common/BaseView.vue";
     import { useStore } from "@/use/store/store";
-    import { useToast } from "@/toast";
 
     export default {
         name: "StudentCourseList",

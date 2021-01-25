@@ -42,7 +42,7 @@
                 default: false,
             },
         },
-        emits: ["on-updated"],
+        emits: ["updated"],
         setup(props: any, { emit }: any) {
             let isLoading = ref(false);
             let lecturers = ref([] as Lecturer[]);
@@ -112,7 +112,7 @@
                             e.lecturerId.toLowerCase().includes(filter)
                     );
                 }
-                emit("on-updated", filteredCourses.length);
+                emit("updated", filteredCourses.length);
                 return filteredCourses;
             });
 
