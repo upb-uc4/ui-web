@@ -152,7 +152,7 @@
 
             let errorBag = ref(new ErrorBag());
 
-            let selectedSemester = computed(() => {
+            const selectedSemester = computed(() => {
                 return semesterType.value + year.value;
             });
 
