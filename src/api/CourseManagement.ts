@@ -16,7 +16,12 @@ export default class CourseManagement extends Common {
         return super.getVersion();
     }
 
-    async getCourses(courseName?: string, lecturerId?: string, moduleIds?: string[]): Promise<APIResponse<Course[]>> {
+    async getCourses(
+        courseName?: string,
+        lecturerId?: string,
+        moduleIds?: string[],
+        examregNames?: string[]
+    ): Promise<APIResponse<Course[]>> {
         const requestParameter = { params: {} as any };
         //optional name to search by
         if (courseName != undefined) {
@@ -27,6 +32,9 @@ export default class CourseManagement extends Common {
         }
         if (moduleIds != undefined) {
             requestParameter.params.moduleIds = moduleIds.reduce((a, b) => a + "," + b, "");
+        }
+        if (examregNames != undefined) {
+            requestParameter.params.examregNames = examregNames.reduce((a, b) => a + "," + b, "");
         }
 
         return await this._axios

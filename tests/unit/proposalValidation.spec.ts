@@ -1,5 +1,9 @@
 import { decodeProposal } from "@/api/helpers/ProtobuffDecoding";
-import { validateCourseAdmissionProposal, validateMatriculationProposal } from "@/api/helpers/ProposalPayloadValidator";
+import {
+    validateCourseAdmissionProposal,
+    validateMatriculationProposal,
+    validateRejectionProposal,
+} from "@/api/helpers/ProposalPayloadValidator";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 
@@ -164,5 +168,23 @@ describe("Proposal Validation Tests", () => {
         admissionId = "this is a different id";
 
         expect(validateCourseAdmissionProposal(dropCourseAdmissionProposal.payload, admissionId)).toBe(false);
+    });
+
+    test.skip("Test rejection proposal validation", async () => {
+        const rejectionProposalB64 =
+            "CuMJCmoIAxABGgsI7POggAYQwOGCMyIJbXljaGFubmVsKkBjZGQ4ZTJhY2U4OWZmMjViNmNjOWEyMDhiNWMzODcyMWMyNGY1NzkxZGRiZjM4YmViYjEzNzExY2I1MGU0YTMyOgoSCBIGdWM0LWNjEvQICtcICgdvcmcxTVNQEssILS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQXFTZ0F3SUJBZ0lVRXRoOEU2cGxBRWo5WUF3NFU2NFlydTJ1TEt3d0NnWUlLb1pJemowRUF3SXcKWGpFTE1Ba0dBMVVFQmhNQ1JFVXhEREFLQmdOVkJBZ01BMDVTVnpFU01CQUdBMVVFQnd3SlVHRmtaWEppYjNKdQpNUXd3Q2dZRFZRUUtEQU5WUXpReEREQUtCZ05WQkFzTUExVkROREVSTUE4R0ExVUVBd3dJY21OaExXOXlaekV3CkhoY05NakV3TVRJd01UUXdOakF3V2hjTk1qSXdNVEl3TVRReE1UQXdXakJRTVE4d0RRWURWUVFMRXdaamJHbGwKYm5ReFBUQTdCZ05WQkFNVE5HWnliMjUwWlc1a0xYTnBaMjVwYm1jdGRHVnpkR1Z5TFdsdVptOHRkWEJrWVhSbApUV0YwY21samRXeGhkR2x2YmtSaGRHRXdXVEFUQmdjcWhrak9QUUlCQmdncWhrak9QUU1CQndOQ0FBUzFlNVlRCk11TVVoazhSbzNNWVQrN0NIS0VIdWZrWjNFTXp4Vjd4eW1idzBVQlBCV2IxbjhSV3VQd1RTNXNXSkkxc0xGVFgKQVFWVlNud2cwbW1FZTN1eW80SUJURENDQVVnd0RnWURWUjBQQVFIL0JBUURBZ09vTUIwR0ExVWRKUVFXTUJRRwpDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0RBakFNQmdOVkhSTUJBZjhFQWpBQU1CMEdBMVVkRGdRV0JCVFowUHl4Ck4wUEt4WUhIYndKWnhhVU5uTlpxK2pBZkJnTlZIU01FR0RBV2dCUllyZmlDclJSUW04VXRUODhLNGxoYjhWWUQKSmpBL0JnTlZIUkVFT0RBMmdqUm1jbTl1ZEdWdVpDMXphV2R1YVc1bkxYUmxjM1JsY2kxcGJtWnZMWFZ3WkdGMApaVTFoZEhKcFkzVnNZWFJwYjI1RVlYUmhNSUdIQmdncUF3UUZCZ2NJQVFSN2V5SmhkSFJ5Y3lJNmV5Sm9aaTVCClptWnBiR2xoZEdsdmJpSTZJaUlzSW1obUxrVnVjbTlzYkcxbGJuUkpSQ0k2SW1aeWIyNTBaVzVrTFhOcFoyNXAKYm1jdGRHVnpkR1Z5TFdsdVptOHRkWEJrWVhSbFRXRjBjbWxqZFd4aGRHbHZia1JoZEdFaUxDSm9aaTVVZVhCbApJam9pWTJ4cFpXNTBJbjE5TUFvR0NDcUdTTTQ5QkFNQ0EwZ0FNRVVDSVFERm9CSmVRbGw4MTdHZ3BmdEVZVnJCCk1nVlVqb3lJK3JvUERQdGh1ZkhlQWdJZ0xUaTdOWm4rbVV2bE8vbmJNY3ZFdldscWV1SnhwcXZmNmRiTWJIQTEKbFZBPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tChIY/6mfb2p8XUe4K/Y+I32lQDMU7KdTTDgEEnsKeQp3CAESCBIGdWM0LWNjGmkKI1VDNC5PcGVyYXRpb25EYXRhOnJlamVjdFRyYW5zYWN0aW9uCiw4a2hidTVJY2pvVmtaeGJ6cVgyQjk5YjMwTTFoUjBNOEZtX2FNS3owRXhvPQoURXhhbXBsZVJlamVjdE1lc3NhZ2U=";
+
+        const rejectionProposal = await decodeProposal(rejectionProposalB64, protoURL);
+
+        if (!rejectionProposal) fail("Could not decode Drop Course Admission Proposal");
+
+        let operationId = "8khbu5IcjoVkZxbzqX2B99b30M1hR0M8Fm_aMKz0Exo=";
+        const rejectionReason = "ExampleRejectMessage";
+
+        expect(validateRejectionProposal(rejectionProposal?.payload, operationId, rejectionReason)).toBe(true);
+
+        operationId = "someOther";
+
+        expect(validateRejectionProposal(rejectionProposal?.payload, operationId, rejectionReason)).toBe(false);
     });
 });

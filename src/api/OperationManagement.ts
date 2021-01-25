@@ -1,5 +1,8 @@
 import { AxiosError, AxiosResponse } from "axios";
+import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
+import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
 import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
+import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
 import APIError from "./api_models/errors/APIError";
 import Operation from "./api_models/operation_management/Operation";
 import handleAuthenticationError from "./AuthenticationHelper";
@@ -148,6 +151,46 @@ export default class OperationManagement extends CommonHyperledger {
             });
     }
 
+    async getUnsignedApprovalProposal(operationId: string): Promise<APIResponse<UnsignedProposalMessage>> {
+        return await this._axios
+            .post(`/operations/${operationId}/unsigned_proposal_approve`)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as UnsignedProposalMessage,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getUnsignedApprovalProposal(operationId);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
     async getUnsignedRejectionProposal(operationId: string, rejectMessage: string): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
             .post(`/operations/${operationId}/unsigned_proposal_reject`, { rejectMessage })
@@ -182,6 +225,86 @@ export default class OperationManagement extends CommonHyperledger {
                         statusCode: 0,
                         error: {} as APIError,
                         returnValue: {} as UnsignedProposalMessage,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async submitSignedProposal(message: SignedProposalMessage): Promise<APIResponse<UnsignedTransactionMessage>> {
+        return await this._axios
+            .post(`/operations/signed_proposal`, message)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as UnsignedTransactionMessage,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.submitSignedProposal(message);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: {} as UnsignedTransactionMessage,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: {} as UnsignedTransactionMessage,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async submitSignedTransaction(message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
+        return await this._axios
+            .post(`/operations/signed_transaction`, message)
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: true,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.submitSignedTransaction(message);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: false,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: false,
                         networkError: true,
                     };
                 }

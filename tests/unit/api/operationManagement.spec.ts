@@ -1,4 +1,4 @@
-import { approveMatriculation, rejectOperation, updateMatriculation } from "@/api/abstractions/FrontendSigning";
+import { approveOperation, rejectOperation, updateMatriculation } from "@/api/abstractions/FrontendSigning";
 import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
@@ -279,7 +279,7 @@ describe("Operation Management tests", () => {
 
         if (!operationToApprove) fail();
 
-        const success = await approveMatriculation(operationToApprove, protoURL);
+        const success = await approveOperation(operationToApprove, protoURL);
 
         expect(success).toBe(true);
     });
@@ -479,27 +479,6 @@ describe("Operation Management tests", () => {
         expect(response.statusCode).toEqual(403);
 
         expect(response.returnValue.operationId).toBe(undefined);
-    });
-
-    test.skip("Reject operation as other student", async () => {
-        const operationManagement = new OperationManagement();
-
-        const response = await operationManagement.getUnsignedRejectionProposal(operationIdToApproveWithDifferentStudent, rejectionReason);
-
-        expect(response.statusCode).not.toEqual(200);
-        expect(response.statusCode).toEqual(403);
-    });
-
-    // owner mismatch for now
-    test.skip("Approve operation as other student", async () => {
-        const success = await updateMatriculation(
-            student.authUser.username,
-            enrollmentIdStudent,
-            matriculationToApproveWithDifferentStudent,
-            protoURL
-        );
-
-        expect(success).toBe(true);
     });
 
     test("Login as student", async () => {

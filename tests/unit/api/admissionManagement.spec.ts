@@ -19,7 +19,7 @@ import {
 import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 import CourseManagement from "@/api/CourseManagement";
 import { getRandomizedCourse } from "../../helper/Courses";
-import { addCourseAdmission, approveMatriculation, dropCourseAdmission, updateMatriculation } from "@/api/abstractions/FrontendSigning";
+import { addCourseAdmission, approveOperation, dropCourseAdmission, updateMatriculation } from "@/api/abstractions/FrontendSigning";
 import { useStore } from "@/use/store/store";
 import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 import { MutationTypes } from "@/use/store/mutation-types";
@@ -176,7 +176,7 @@ describe("Admissions management", () => {
     test("Approve operation as admin", async () => {
         const operationManagement = new OperationManagement();
 
-        const success = await approveMatriculation(operationToApprove, protoURL);
+        const success = await approveOperation(operationToApprove, protoURL);
 
         expect(success).toBe(true);
     });

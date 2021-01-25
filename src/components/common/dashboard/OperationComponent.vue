@@ -175,7 +175,7 @@
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Router from "@/use/router";
-    import { approveMatriculation, rejectOperation } from "@/api/abstractions/FrontendSigning";
+    import { approveOperation, rejectOperation } from "@/api/abstractions/FrontendSigning";
     import { getOperationBadgeIdentifier, printOperation, printOperationTitle } from "@/use/helpers/OperationPrinter";
 
     export default {
@@ -287,7 +287,7 @@
             }
 
             async function approve() {
-                if (await approveMatriculation(operation.value)) {
+                if (await approveOperation(operation.value)) {
                     //TODO Set watch
                     store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                     sentApprove.value = true;

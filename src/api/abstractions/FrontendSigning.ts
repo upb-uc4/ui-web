@@ -17,10 +17,20 @@ import CertificateManagement from "../CertificateManagement";
 import Operation from "../api_models/operation_management/Operation";
 import APIResponse from "../helpers/models/APIResponse";
 import { validateOperationId } from "../helpers/OperationValidator";
-import { validateCourseAdmissionProposal, validateMatriculationProposal } from "../helpers/ProposalPayloadValidator";
+import {
+    validateApprovalProposal,
+    validateCourseAdmissionProposal,
+    validateMatriculationProposal,
+    validateRejectionProposal,
+} from "../helpers/ProposalPayloadValidator";
 import { decodeProposal } from "../helpers/ProtobuffDecoding";
 import { decodeTransaction } from "../helpers/TransactionDecoding";
-import { admissionsTransactionValidator, matriculationTransactionValidator } from "../helpers/TransactionValidator";
+import {
+    admissionsTransactionValidator,
+    approveTransactionValidator,
+    matriculationTransactionValidator,
+    rejectionTransactionValidator,
+} from "../helpers/TransactionValidator";
 import MatriculationManagement from "../MatriculationManagement";
 import OperationManagement from "../OperationManagement";
 import { UC4Identifier } from "../helpers/UC4Identifier";
@@ -47,17 +57,11 @@ export async function updateMatriculation(
         async (payload: ProposalPayload) => {
             return validateMatriculationProposal(payload, enrollmentId, matriculation);
         },
-        async (message: SignedProposalMessage) => {
-            return await matriculationManagement.submitSignedMatriculationProposal(message);
-        },
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler.handleResponse(response);
         },
         (transaction: TransactionMessage) => {
             return matriculationTransactionValidator(enrollmentId, matriculation, transaction);
-        },
-        async (message: SignedTransactionMessage) => {
-            return await matriculationManagement.submitSignedMatriculationTransaction(message);
         },
         (response: APIResponse<boolean>) => {
             return genericHandler.handleResponse(response);
@@ -83,17 +87,11 @@ export async function addCourseAdmission(enrollmentId: string, addAdmission: Cou
         async (payload: ProposalPayload) => {
             return validateCourseAdmissionProposal(payload, undefined, addAdmission, enrollmentId);
         },
-        async (message: SignedProposalMessage) => {
-            return await admissionManagement.submitSignedAdmissionsProposal(message);
-        },
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler2.handleResponse(response);
         },
         (transaction: TransactionMessage) => {
             return admissionsTransactionValidator(transaction, undefined, addAdmission, enrollmentId);
-        },
-        async (message: SignedTransactionMessage) => {
-            return await admissionManagement.submitSignedAdmissionsTransaction(message);
         },
         (response: APIResponse<boolean>) => {
             return genericHandler.handleResponse(response);
@@ -117,19 +115,13 @@ export async function dropCourseAdmission(admissionId: string, protoUrl?: string
             return genericHandler.handleResponse(arg);
         },
         async (payload: ProposalPayload) => {
-            return await validateCourseAdmissionProposal(payload, admissionId);
-        },
-        async (message: SignedProposalMessage) => {
-            return await admissionManagement.submitSignedAdmissionsProposal(message);
+            return validateCourseAdmissionProposal(payload, admissionId);
         },
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler2.handleResponse(response);
         },
         (transaction: TransactionMessage) => {
             return admissionsTransactionValidator(transaction, admissionId);
-        },
-        async (message: SignedTransactionMessage) => {
-            return await admissionManagement.submitSignedAdmissionsTransaction(message);
         },
         (response: APIResponse<boolean>) => {
             return genericHandler.handleResponse(response);
@@ -138,64 +130,76 @@ export async function dropCourseAdmission(admissionId: string, protoUrl?: string
     );
 }
 
-export async function approveMatriculation(operation: Operation, protoUrl?: string): Promise<boolean> {
+export async function approveOperation(operation: Operation, protoUrl?: string): Promise<boolean> {
     if (!(await validateOperationId(operation))) return Promise.reject("OperationId does not fit to transactionInfo");
+
+    const genericHandler = new GenericResponseHandler("approve operation");
+
+    const genericHandler2 = new GenericResponseHandler("transaction");
 
     const operationManagement = new OperationManagement();
 
-    const response = await operationManagement.getOperation(operation.operationId);
-    const handler = new GenericResponseHandler("operation");
-
-    const operationToApprove = handler.handleResponse(response);
-
-    if (operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION) {
-        const paramsArray: string[] = JSON.parse(operationToApprove.transactionInfo.parameters);
-        const proposalEnrollmentId = paramsArray[0];
-        const proposalMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
-
-        const handler2 = new GenericResponseHandler("enrollmentId");
-        const username = handler2.handleResponse(await new CertificateManagement().getUsername(proposalEnrollmentId));
-
-        return await updateMatriculation(username, proposalEnrollmentId, proposalMatriculation, protoUrl);
-    } else if (
-        operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_ADD_MATRICULATION ||
-        operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_UPDATE_MATRICULATION
-    ) {
-        const paramsArray: string[] = JSON.parse(operationToApprove.transactionInfo.parameters);
-        const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
-
-        const handler2 = new GenericResponseHandler("enrollmentId");
-        const username = handler2.handleResponse(await new CertificateManagement().getUsername(proposalMatriculationData.enrollmentId));
-
-        return await updateMatriculation(
-            username,
-            proposalMatriculationData.enrollmentId,
-            proposalMatriculationData.matriculationStatus,
-            protoUrl
-        );
-    }
-
-    return false;
+    return await abstractHandler(
+        async () => {
+            return await operationManagement.getUnsignedApprovalProposal(operation.operationId);
+        },
+        (arg: APIResponse<UnsignedProposalMessage>) => {
+            return genericHandler.handleResponse(arg);
+        },
+        async (payload: ProposalPayload) => {
+            return validateApprovalProposal(payload, operation.operationId);
+        },
+        (response: APIResponse<UnsignedTransactionMessage>) => {
+            return genericHandler2.handleResponse(response);
+        },
+        (transaction: TransactionMessage) => {
+            return approveTransactionValidator(transaction, operation.operationId);
+        },
+        (response: APIResponse<boolean>) => {
+            return genericHandler.handleResponse(response);
+        },
+        protoUrl
+    );
 }
 
-export async function rejectOperation(operation: Operation, rejectMessage: string): Promise<boolean> {
+export async function rejectOperation(operation: Operation, rejectMessage: string, protoUrl?: string): Promise<boolean> {
     if (!(await validateOperationId(operation))) return Promise.reject("OperationId does not fit to transactionInfo");
 
-    const operationManagement = new OperationManagement();
-    const response = await operationManagement.getUnsignedRejectionProposal(operation.operationId, rejectMessage);
+    const genericHandler = new GenericResponseHandler("reject operation");
 
-    const handler = new GenericResponseHandler("rejection");
-    return handler.handleResponse(response).unsignedProposal === "";
+    const genericHandler2 = new GenericResponseHandler("transaction");
+
+    const operationManagement = new OperationManagement();
+
+    return await abstractHandler(
+        async () => {
+            return await operationManagement.getUnsignedRejectionProposal(operation.operationId, rejectMessage);
+        },
+        (arg: APIResponse<UnsignedProposalMessage>) => {
+            return genericHandler.handleResponse(arg);
+        },
+        async (payload: ProposalPayload) => {
+            return validateRejectionProposal(payload, operation.operationId, rejectMessage);
+        },
+        (response: APIResponse<UnsignedTransactionMessage>) => {
+            return genericHandler2.handleResponse(response);
+        },
+        (transaction: TransactionMessage) => {
+            return rejectionTransactionValidator(transaction, operation.operationId, rejectMessage);
+        },
+        (response: APIResponse<boolean>) => {
+            return genericHandler.handleResponse(response);
+        },
+        protoUrl
+    );
 }
 
 async function abstractHandler(
     getUnsignedProposal: (...args: any[]) => Promise<APIResponse<UnsignedProposalMessage>>,
     proposalValidationHandler: (...args: any[]) => UnsignedProposalMessage,
     proposalValidator: (...args: any[]) => Promise<boolean>,
-    submitProposal: (...args: any[]) => Promise<APIResponse<UnsignedTransactionMessage>>,
     transactionValidationHandler: (...args: any[]) => UnsignedTransactionMessage,
     transactionValidator: (...args: any[]) => boolean,
-    submitTransaction: (...args: any[]) => Promise<APIResponse<boolean>>,
     submitHandler: (...args: any[]) => boolean,
     protoUrl?: string
 ) {
@@ -251,7 +255,10 @@ async function abstractHandler(
         signature: proposalSignature,
         unsignedProposal: unsignedProposal.unsignedProposal,
     };
-    const response = await submitProposal(signedProposalMessage);
+
+    const operationManagement = new OperationManagement();
+
+    const response = await operationManagement.submitSignedProposal(signedProposalMessage);
 
     const unsignedTransaction = transactionValidationHandler(response);
 
@@ -290,7 +297,7 @@ async function abstractHandler(
         unsignedTransaction: unsignedTransaction.unsignedTransaction,
     };
 
-    const submitResponse = await submitTransaction(signedTransactionMessage);
+    const submitResponse = await operationManagement.submitSignedTransaction(signedTransactionMessage);
 
     return submitHandler(submitResponse);
 }

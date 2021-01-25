@@ -98,3 +98,26 @@ export function validateCourseAdmissionProposal(
 
     return false;
 }
+
+export function validateRejectionProposal(proposalPayload: ProposalPayload, operationId: string, rejectionReason: string): boolean {
+    const name = proposalPayload.input.input.args[0];
+    const proposalOperationId = proposalPayload.input.input.args[1];
+    const proposalRejectionReason = proposalPayload.input.input.args[2];
+
+    if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_REJECTION) return false;
+
+    let result = proposalOperationId === operationId;
+
+    result = result && proposalRejectionReason === rejectionReason;
+    return result;
+}
+
+export function validateApprovalProposal(proposalPayload: ProposalPayload, operationId: string): boolean {
+    const name = proposalPayload.input.input.args[0];
+    const proposalOperationId = proposalPayload.input.input.args[1];
+
+    if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_REJECTION) return false;
+
+    let result = proposalOperationId === operationId;
+    return result;
+}

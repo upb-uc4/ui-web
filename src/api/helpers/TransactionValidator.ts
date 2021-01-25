@@ -4,7 +4,12 @@ import CourseAdmission from "../api_models/admission_management/CourseAdmission"
 import { ProposalPayload } from "../api_models/common/Proposal";
 import TransactionMessage from "../api_models/common/Transaction";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
-import { validateCourseAdmissionProposal, validateMatriculationProposal } from "./ProposalPayloadValidator";
+import {
+    validateApprovalProposal,
+    validateCourseAdmissionProposal,
+    validateMatriculationProposal,
+    validateRejectionProposal,
+} from "./ProposalPayloadValidator";
 
 export function matriculationTransactionValidator(
     enrollmentId: string,
@@ -41,6 +46,42 @@ export function admissionsTransactionValidator(
     const payload: ProposalPayload = transaction.data.actions[0].payload.chainCodeProposalPayload;
 
     if (!validateCourseAdmissionProposal(payload, admissionId, courseAdmission, enrollmentId)) {
+        return false;
+    }
+
+    if (!verifyPeerSignatures(transaction)) {
+        return false;
+    }
+
+    return true;
+}
+
+export function rejectionTransactionValidator(transaction: TransactionMessage, operationId: string, rejectionReason: string): boolean {
+    if (!(transaction.data.actions.length === 1)) {
+        return false;
+    }
+
+    const payload: ProposalPayload = transaction.data.actions[0].payload.chainCodeProposalPayload;
+
+    if (!validateRejectionProposal(payload, operationId, rejectionReason)) {
+        return false;
+    }
+
+    if (!verifyPeerSignatures(transaction)) {
+        return false;
+    }
+
+    return true;
+}
+
+export function approveTransactionValidator(transaction: TransactionMessage, operationId: string): boolean {
+    if (!(transaction.data.actions.length === 1)) {
+        return false;
+    }
+
+    const payload: ProposalPayload = transaction.data.actions[0].payload.chainCodeProposalPayload;
+
+    if (!validateApprovalProposal(payload, operationId)) {
         return false;
     }
 
