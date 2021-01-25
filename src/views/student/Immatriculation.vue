@@ -136,7 +136,7 @@
                 username.value = (await store.getters.user).username;
             }
 
-            let selectableYears = computed(() => {
+            const selectableYears = computed(() => {
                 const array: String[] = [];
                 for (let index = currentYear; index >= currentYear - 10; index--) {
                     if (semesterType.value == "WS") {
@@ -150,7 +150,7 @@
                 return array;
             });
 
-            let errorBag = ref(new ErrorBag());
+            const errorBag = ref(new ErrorBag());
 
             const selectedSemester = computed(() => {
                 return semesterType.value + year.value;
