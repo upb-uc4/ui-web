@@ -61,7 +61,7 @@
 <script lang="ts">
     import CourseList from "@/components/course/list/common/CourseList.vue";
     import SeachBar from "@/components/common/SearchBar.vue";
-    import { onMounted, ref, watch } from "vue";
+    import { onBeforeMount, ref, watch } from "vue";
     import Select from "@/components/common/Select.vue";
     import BaseView from "@/views/common/BaseView.vue";
     import { useStore } from "@/use/store/store";
@@ -94,7 +94,7 @@
             const defaultType = "All";
             let selectedType = ref(defaultType);
 
-            onMounted(async () => {
+            onBeforeMount(async () => {
                 const store = useStore();
                 await store.getters.configuration
                     .then((config) => {
