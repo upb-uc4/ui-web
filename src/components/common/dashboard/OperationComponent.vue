@@ -257,7 +257,7 @@
                 if (isAdmin.value) {
                     await getNameByEnrollmentId();
                 }
-                createDisplayObjects();
+                await createDisplayObjects();
             });
 
             const type = getOperationBadgeIdentifier(operation.value);
