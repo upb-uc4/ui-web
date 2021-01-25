@@ -3,7 +3,7 @@
     <div v-if="busy > 0" class="mx-auto">
         <loading-spinner />
     </div>
-    <div v-else class="flex flex-col w-full items-center mt-10">
+    <div v-else class="flex flex-col w-full items-center mt-10 mb-10">
         <div v-if="!hasCertificate" class="w-full flex flex-col items-center">
             <label class="text-md text-gray-700">Before you can view your dashboard, you have to create your personal certificate.</label>
             <button id="createCertificate" class="btn btn-blue-primary w-32 p-2 mt-6" @click="createCertificate">Create Certificate</button>
