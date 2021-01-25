@@ -169,12 +169,10 @@
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";
-    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
     import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
     import { Role } from "@/entities/Role";
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import Router from "@/use/router";
     import { approveMatriculation, rejectOperation } from "@/api/abstractions/FrontendSigning";
     import { getOperationBadgeIdentifier, printOperation, printOperationTitle } from "@/use/helpers/OperationPrinter";
 
@@ -257,9 +255,9 @@
             onBeforeMount(async () => {
                 await getRole();
                 if (isAdmin.value) {
-                    getNameByEnrollmentId();
+                    await getNameByEnrollmentId();
                 }
-                createDisplayObjects();
+                await createDisplayObjects();
             });
 
             const type = getOperationBadgeIdentifier(operation.value);
