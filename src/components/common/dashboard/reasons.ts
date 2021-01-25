@@ -1,5 +1,5 @@
 export enum RejectionReasons {
-    FEE_NOT_TRANSFERRED = "Semester fees not transferred",
+    FEE_NOT_TRANSFERRED = "Tuition not paid",
     INVALID_MATRICULATION = "Matriculation invalid",
     OTHER = "Other",
 }
