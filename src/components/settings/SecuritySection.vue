@@ -67,7 +67,12 @@
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 w-full">
                 <div class="lg:w-1/2 w-full flex items-center">
-                    <button id="updatePassword" class="w-48 btn" :disabled="isHandlingRequest" @click="tryUpdatePassword()">
+                    <button
+                        id="updatePassword"
+                        class="w-48 btn"
+                        :disabled="isHandlingRequest || isUpdatePasswordDisabled"
+                        @click="tryUpdatePassword()"
+                    >
                         Update Password
                     </button>
                     <img v-show="isHandlingRequest" src="@/assets/loading-spinner-alt.svg" alt="loading-spinner" class="ml-2 w-6 h-6" />
@@ -179,7 +184,12 @@
                 }
             }
 
+            const isUpdatePasswordDisabled = computed(
+                () => newPassword.value === "" || oldPassword.value === "" || newPasswordConfirmation.value === ""
+            );
+
             return {
+                isUpdatePasswordDisabled,
                 oldPassword,
                 newPassword,
                 newPasswordConfirmation,
