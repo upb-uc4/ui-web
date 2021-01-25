@@ -89,7 +89,7 @@
             let refreshKey = ref(false);
 
             const defaultType = "All";
-            let selectedType = ref(defaultType);
+            const selectedType = ref(defaultType);
             const types = ref([] as string[]);
 
             onMounted(async () => {

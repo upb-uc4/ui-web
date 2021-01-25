@@ -156,7 +156,7 @@
                 return semesterType.value + year.value;
             });
 
-            let validSelection = computed(() => {
+            const validSelection = computed(() => {
                 return (
                     semesterType.value != "" &&
                     year.value != "" &&
@@ -175,7 +175,7 @@
 
             async function updateImmatriculation() {
                 isLoading.value = true;
-                let matriculationEntries: SubjectMatriculation[] = [];
+                const matriculationEntries: SubjectMatriculation[] = [];
                 selectedFieldsOfStudy.value
                     .filter((s) => s != "")
                     .forEach((entry) => {

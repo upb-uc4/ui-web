@@ -86,7 +86,6 @@
     import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from "@headlessui/vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
-    //todo: @theo @paul merge this into Select.vue?
     export default {
         name: "ObjectSelect",
         components: {

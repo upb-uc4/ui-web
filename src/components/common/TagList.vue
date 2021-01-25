@@ -24,7 +24,6 @@
                 default: null,
             },
         },
-        //todo: rename on-remove to remove. also in Tag
         emits: ["on-remove"],
         setup(props: any, { emit }: any) {
             function onRemove(index: Number) {

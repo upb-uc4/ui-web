@@ -90,7 +90,7 @@
             },
             placeholder: {
                 type: String,
-                default: "Search for a Quote",
+                default: "Type to search",
             },
             selected: {
                 type: Object as () => SearchSelectOption,
