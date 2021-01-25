@@ -196,7 +196,7 @@
                 let certificate = (await store.getters.certificate()).certificate;
                 if (certificate != "") {
                     hasCertificate.value = true;
-                    loadDashboard();
+                    await loadDashboard();
                 }
                 busy.value--;
             }
