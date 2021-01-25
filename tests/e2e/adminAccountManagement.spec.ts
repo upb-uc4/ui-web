@@ -123,7 +123,7 @@ describe("Account creation, edition and deletion", function () {
 
         cy.get("input[id='userName']").should("exist");
         cy.get("input[id='email']").should("exist");
-        cy.get("input[id='password']").should("exist");
+        cy.get("input[id='securitySectionPassword']").should("exist");
         cy.get("input[id='phoneNumber']").should("exist");
         cy.get("input[id='firstName']").should("exist");
         cy.get("input[id='lastName']").should("exist");
@@ -234,7 +234,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can not edit password", function () {
-        cy.get("input[id='password']").should("not.exist");
+        cy.get("input[id='securitySectionPassword']").should("not.exist");
     });
 
     it("Can change email address", () => {
@@ -286,7 +286,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can not edit password", function () {
-        cy.get("input[id='password']").should("not.exist");
+        cy.get("input[id='securitySectionPassword']").should("not.exist");
     });
 
     it("Can change email address", () => {
@@ -350,7 +350,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can not edit password", function () {
-        cy.get("input[id='password']").should("not.exist");
+        cy.get("input[id='securitySectionPassword']").should("not.exist");
     });
 
     it("Can change email address", () => {

@@ -28,7 +28,7 @@
                     <base-input
                         v-model:value="accountPassword"
                         :error-message="errorBag.getNested('password')"
-                        identifier="password"
+                        identifier="securitySectionPassword"
                         :type="passwordFieldType"
                         class="w-full"
                         placeholder="Password"
