@@ -12,9 +12,9 @@
             <div class="flex sm:flex-row flex-col-reverse w-full">
                 <search-bar v-model:message="message" @refresh="refresh" />
             </div>
-            <div class="w-full my-5 lg:flex lg:justify-between">
+            <div class="w-full my-5 xl:flex lg:justify-between">
                 <dashboard-component
-                    class="lg:mr-5 lg:w-1/2"
+                    class="lg:mr-5 xl:w-1/2"
                     identifier="finished"
                     :enrollment-id="enrollmentId"
                     :operations="finishedOperations"
@@ -23,7 +23,7 @@
                     @marked-read="markRead"
                 />
                 <dashboard-component
-                    class="mt-5 lg:mt-0 lg:w-1/2"
+                    class="mt-5 xl:mt-0 xl:w-1/2"
                     identifier="actionRequired"
                     :enrollment-id="enrollmentId"
                     :operations="shownActionRequiredOperations"
