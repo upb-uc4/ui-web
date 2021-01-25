@@ -144,7 +144,7 @@ export async function approveMatriculation(operation: Operation, protoUrl?: stri
     const operationManagement = new OperationManagement();
 
     const response = await operationManagement.getOperation(operation.operationId);
-    const handler = new GenericResponseHandler("operation");
+    let handler = new GenericResponseHandler("operation");
 
     const operationToApprove = handler.handleResponse(response);
 
@@ -153,8 +153,8 @@ export async function approveMatriculation(operation: Operation, protoUrl?: stri
         const proposalEnrollmentId = paramsArray[0];
         const proposalMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
 
-        const handler2 = new GenericResponseHandler("enrollmentId");
-        const username = handler2.handleResponse(await new CertificateManagement().getUsername(proposalEnrollmentId));
+        handler = new GenericResponseHandler("enrollmentId");
+        const username = handler.handleResponse(await new CertificateManagement().getUsername(proposalEnrollmentId));
 
         return await updateMatriculation(username, proposalEnrollmentId, proposalMatriculation, protoUrl);
     } else if (
@@ -164,8 +164,8 @@ export async function approveMatriculation(operation: Operation, protoUrl?: stri
         const paramsArray: string[] = JSON.parse(operationToApprove.transactionInfo.parameters);
         const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
 
-        const handler2 = new GenericResponseHandler("enrollmentId");
-        const username = handler2.handleResponse(await new CertificateManagement().getUsername(proposalMatriculationData.enrollmentId));
+        handler = new GenericResponseHandler("enrollmentId");
+        const username = handler.handleResponse(await new CertificateManagement().getUsername(proposalMatriculationData.enrollmentId));
 
         return await updateMatriculation(
             username,
