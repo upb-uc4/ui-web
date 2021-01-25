@@ -29,6 +29,10 @@
 
     export default {
         name: "ModuleSelection",
+        components: {
+            TagList,
+            SearchableSelect,
+        },
         props: {
             examinationRegulation: {
                 type: Object as () => ExaminationRegulation,
@@ -38,10 +42,6 @@
                 type: Object as () => Set<String>,
                 required: true,
             },
-        },
-        components: {
-            TagList,
-            SearchableSelect,
         },
         emits: ["add-module", "remove-module"],
         setup(props: any, { emit }: any) {
