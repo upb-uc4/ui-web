@@ -17,7 +17,7 @@
 
 <script lang="ts">
     import BaseNavbar from "@/components/navigation/navbar/mobile/common/BaseNavbar.vue";
-    import ManageAccountsMenu from "./administration/ManageAccountsMenu.vue";
+    import ManageAccountsMenu from "./administration/ManagementMenu.vue";
     import CourseMenu from "./courses/CourseMenu.vue";
     import ProfileMenu from "@/components/navigation/navbar/mobile/common/profile/ProfileMenu.vue";
 

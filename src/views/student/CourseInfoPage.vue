@@ -11,7 +11,7 @@
                 :ects="course.ects"
                 :description="course.courseDescription"
             />
-            <module-section :selected="selectedModule" :module-ids="course.moduleIds" :registered="isRegistered" />
+            <module-section v-model:selected="selectedModule" :module-ids="course.moduleIds" :registered="isRegistered" />
             <participants-section
                 :full="isFull"
                 :participants-limit="course.maxParticipants"
@@ -75,9 +75,8 @@
         },
         emits: [],
 
-        setup(props: any, { emit }: any) {
+        setup(props: any) {
             const isLoading = ref(true);
-            const toast = useToast();
             const course = ref({} as Course);
             const lecturerName = ref("");
 
@@ -104,10 +103,7 @@
             });
 
             let valid = computed(() => {
-                if (!props.isRegistered && selectedModule.value !== "" && selectedModule.value !== undefined) {
-                    return true;
-                }
-                return false;
+                return !props.isRegistered && selectedModule.value !== "" && selectedModule.value !== undefined;
             });
 
             async function getAdmission() {
