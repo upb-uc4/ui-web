@@ -66,7 +66,7 @@
                         Initiated: {{ initiatedTimestamp }}
                         <p class="text-gray-500 ml-2 font-mono" :title="operation.operationId">(ID: {{ shownOpId }})</p>
                     </label>
-                    <label v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between">
+                    <div v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between">
                         <p>Initiator-ID:</p>
                         <div class="ml-4">
                             <router-link
@@ -80,7 +80,7 @@
                             </router-link>
                             <p v-else>not found</p>
                         </div>
-                    </label>
+                    </div>
                 </div>
                 <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
                     <button
