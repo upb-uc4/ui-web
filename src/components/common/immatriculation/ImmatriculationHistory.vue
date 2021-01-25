@@ -9,7 +9,7 @@
             <div class="border-r-4 border-blue-700 dark:border-lime-500 absolute h-full top-0" style="left: 15px" />
             <div class="m-0 p-0 space-y-6">
                 <immatriculation-history-entry
-                    v-for="entry in chronologicalList"
+                    v-for="entry in chronologicalList.reverse()"
                     :key="entry"
                     :fields-of-study="entry.fieldsOfStudy"
                     :semester="entry.semester"
