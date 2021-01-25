@@ -1,3 +1,8 @@
+# [0.16.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.15.1...v0.16.0) (2021-XX-XX)
+
+# Refactor
+- show module names as well in course info page [#795](https://github.com/upb-uc4/ui-web/pull/795)
+
 # [0.16.0](https://github.com/upb-uc4/ui-web/compare/v0.15.1...v0.16.0) (2021-01-18)
 ## Feature
 - add a simple data protection agreement page with a placeholder text referring to the university [#792](https://github.com/upb-uc4/ui-web/pull/792)
