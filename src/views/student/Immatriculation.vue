@@ -35,32 +35,29 @@
                         <div class="w-full">
                             <label class="input-label"> Select Fields of Study </label>
                             <searchable-select
-                                v-model:selected="searchSelection"
+                                :selected="searchSelection"
                                 placeholder="Search fields of studies"
                                 :elements="availableFieldsOfStudy"
                                 :clear-input-on-select="true"
                                 @update:selected="addFieldOfStudy"
                             />
-                            <tag-list
-                                v-if="selectedFieldsOfStudy.length > 0"
-                                class="mt-4"
-                                :elements="selectedFieldsOfStudy"
-                                @on-remove="removeFieldOfStudy"
-                            />
-                            <span v-else class="input-label-warning">Please select at least one field of study.</span>
+                            <tag-list class="mt-4" :elements="selectedFieldsOfStudy" @on-remove="removeFieldOfStudy" />
                         </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button
+                            id="addImmatriculationData"
+                            :disabled="!validSelection"
+                            class="btn w-full lg:w-64"
+                            @click="updateImmatriculation"
+                        >
+                            Update
+                        </button>
                     </div>
                 </div>
                 <p v-if="errorBag.hasNested('matriculation')" class="error-message">{{ errorBag.getNested("matriculation") }}</p>
             </div>
         </base-section>
-        <button-section>
-            <template #right>
-                <button id="addImmatriculationData" :disabled="!validSelection" class="btn w-full lg:w-64" @click="updateImmatriculation">
-                    Update
-                </button>
-            </template>
-        </button-section>
     </base-view>
 </template>
 
@@ -73,13 +70,11 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { useStore } from "@/use/store/store";
     import CertificateManagement from "@/api/CertificateManagement";
-    import { useToast } from "@/toast";
     import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
     import BaseView from "@/views/common/BaseView.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import Select from "@/components/common/Select.vue";
-    import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import SearchableSelect from "@/components/common/SearchableSelect.vue";
     import TagList from "@/components/common/TagList.vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
@@ -87,7 +82,6 @@
 
     export default {
         components: {
-            ButtonSection,
             Select,
             SectionHeader,
             LoadingSpinner,
@@ -105,7 +99,7 @@
             let year = ref("");
             let selectedFieldsOfStudy = ref([] as string[]);
             const username = ref("");
-            const searchSelection = ref();
+            const searchSelection = ref({});
 
             let currentYear = new Date().getFullYear();
 
