@@ -92,12 +92,12 @@
             SearchableSelect,
         },
         setup() {
-            let refreshKey = ref(false);
-            let isLoading = ref(true);
-            let fieldsOfStudy = ref(["Computer Science", "Physics", "Mechanical Engineering"] as string[]);
-            let semesterType = ref("");
-            let year = ref("");
-            let selectedFieldsOfStudy = ref([] as string[]);
+            const refreshKey = ref(false);
+            const isLoading = ref(true);
+            const fieldsOfStudy = ref([] as string[]);
+            const semesterType = ref("");
+            const year = ref("");
+            const selectedFieldsOfStudy = ref([] as string[]);
             const username = ref("");
             const searchSelection = ref({});
 
