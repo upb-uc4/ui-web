@@ -18,7 +18,7 @@
                         :class="[hasErrorOldPassword ? 'input-text-error' : 'input-text']"
                         @input="resetOldPasswordError()"
                     />
-                    <label class="input-label-error" :class="{ hidden: !hasErrorOldPassword }"> Old password is not valid. </label>
+                    <label class="input-label-error" :class="{ hidden: !hasErrorOldPassword }"> Current password is not valid. </label>
                 </div>
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
