@@ -231,7 +231,6 @@ export default class ExaminationRegulationManagement extends CommonHyperledger {
     static getServiceVersion(): Promise<ServiceVersion> {
         return super.getServiceVersion().then(async (version: ServiceVersion) => {
             version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/examreg-${version.version}/product_code/examreg_service/CHANGELOG.md`;
-            //todo inject the hyperledger version in the promise
             return version;
         });
     }

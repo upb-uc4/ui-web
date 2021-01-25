@@ -27,6 +27,5 @@
                 },
             },
         },
-        //todo option to make it sticky
     };
 </script>

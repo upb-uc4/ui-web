@@ -118,7 +118,6 @@
                 const handler = new GenericResponseHandler("profile picture");
                 const result = handler.handleResponse(response);
 
-                //todo: no overlap between arrayBuffer and undefined. Really necessary?
                 if (result.arrayBuffer !== undefined) {
                     const reader = new FileReader();
                     reader.readAsDataURL(result);

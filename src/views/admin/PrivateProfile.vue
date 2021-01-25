@@ -46,7 +46,6 @@
         },
         emits: ["update:user"],
         setup(props: any, { emit }: any) {
-            //todo move the components to the right location once the old components are deleted
             const title = computed(() => `${props.user.firstName} ${props.user.lastName} (@${props.user.username})`);
 
             return {

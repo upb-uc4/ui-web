@@ -22,7 +22,6 @@ export default class CertificateManagement extends CommonHyperledger {
 
     static getServiceVersion(): Promise<ServiceVersion> {
         return super.getServiceVersion().then(async (version: ServiceVersion) => {
-            //todo inject the hyperledger version in the promise
             version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/certificate-${version.version}/product_code/certificate_service/CHANGELOG.md`;
             return version;
         });

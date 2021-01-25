@@ -60,7 +60,6 @@
 
             async function getModules() {
                 (props.moduleIds as string[]).forEach((s) => {
-                    //TODO get module names via API
                     optionsArray.value.push({ value: { id: s, name: s } as Module, display: s });
                 });
             }

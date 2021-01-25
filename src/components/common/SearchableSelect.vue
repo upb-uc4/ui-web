@@ -131,8 +131,6 @@
                 emit("update:selected", element);
             }
 
-            //todo key listener (enter, up, down)
-
             return {
                 input,
                 matches,

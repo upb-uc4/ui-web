@@ -223,7 +223,6 @@ export async function getVersionsWithoutHyperledger(): Promise<version[]> {
 }
 
 export async function generatePrefilledGithubIssueURL(): Promise<string> {
-    //todo integrate this with the new service status or store versions in store instead of querying them AGAIN.
     let versions = await getVersionsWithoutHyperledger();
     let issueTemplate = await getIssueTemplate();
     const baseURL = "https://github.com/upb-uc4/ui-web/issues/new?&labels=bug&body=";

@@ -71,7 +71,6 @@
             }
 
             function createCertificate() {
-                //todo: when someone clicks and then aborts the key modal the promise won't reject/resolve resulting in indefinitely loading?!
                 isLoading.value = true;
                 loadCertificate().finally(() => {
                     isLoading.value = false;
