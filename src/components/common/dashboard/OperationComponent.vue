@@ -255,7 +255,7 @@
             onBeforeMount(async () => {
                 await getRole();
                 if (isAdmin.value) {
-                    getNameByEnrollmentId();
+                    await getNameByEnrollmentId();
                 }
                 createDisplayObjects();
             });
