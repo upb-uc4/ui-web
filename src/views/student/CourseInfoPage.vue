@@ -11,7 +11,7 @@
                 :ects="course.ects"
                 :description="course.courseDescription"
             />
-            <module-section :selected="selectedModule" :module-ids="course.moduleIds" :registered="isRegistered" />
+            <module-section v-model:selected="selectedModule" :module-ids="course.moduleIds" :registered="isRegistered" />
             <participants-section
                 :full="isFull"
                 :participants-limit="course.maxParticipants"
