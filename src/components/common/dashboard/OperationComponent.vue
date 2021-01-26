@@ -286,7 +286,6 @@
 
             async function approve() {
                 if (await approveMatriculation(operation.value)) {
-                    //TODO Set watch
                     store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                     sentApprove.value = true;
                     provideReason.value = false;
@@ -304,8 +303,6 @@
 
             async function reject() {
                 if (await rejectOperation(operation.value, finalReason.value)) {
-                    //TODO Set watch
-                    //If success
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
                     provideReason.value = !provideReason.value;
@@ -328,8 +325,6 @@
             }
 
             function toggleWatch() {
-                //TODO Set watch
-                //isWatched.value = !isWatched.value;
                 showNotYetImplementedToast();
             }
 
