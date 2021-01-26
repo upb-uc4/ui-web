@@ -60,7 +60,6 @@
     import Course from "@/api/api_models/course_management/Course";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import Router from "@/use/router/index";
-    import { computed } from "vue";
 
     export default {
         name: "StudentCourse",
