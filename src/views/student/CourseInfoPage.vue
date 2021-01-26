@@ -152,6 +152,7 @@
             }
 
             async function joinCourse() {
+                isLoading.value = true;
                 const newAdmission: CourseAdmission = {
                     admissionId: "",
                     enrollmentId: "",
@@ -165,6 +166,7 @@
                     toast.success(`Successfully admitted for course ${course.value.courseName}`);
                     back();
                 }
+                isLoading.value = false;
             }
 
             async function dropCourse() {
