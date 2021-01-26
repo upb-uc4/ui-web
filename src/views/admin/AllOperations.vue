@@ -17,7 +17,9 @@
         <loading-spinner />
     </div>
     <div v-else class="flex flex-col items-center justify-center w-full mt-10">
-        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
+        <button v-if="!gotOps" id="requestOperations" class="btn btn-blue-primary p-4 mt-10" @click="requestData">
+            Request Operations
+        </button>
         <div v-else class="w-full flex flex-col">
             <search-bar v-model:message="message" @refresh="refresh" />
             <dashboard-component
