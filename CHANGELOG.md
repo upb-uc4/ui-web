@@ -1,3 +1,10 @@
+# [0.16.1](https://github.com/upb-uc4/ui-web/compare/v0.16.0...v0.16.1) (2021-26-01)
+## Feature
+- Add multi user signing dashboard + API on the welcome page + operations archive + all operations page for admin [#785](https://github.com/upb-uc4/ui-web/pull/785)
+
+# Refactor
+- show module names as well in course info page [#795](https://github.com/upb-uc4/ui-web/pull/795)
+
 # [0.16.0](https://github.com/upb-uc4/ui-web/compare/v0.15.1...v0.16.0) (2021-01-18)
 ## Feature
 - add a simple data protection agreement page with a placeholder text referring to the university [#792](https://github.com/upb-uc4/ui-web/pull/792)

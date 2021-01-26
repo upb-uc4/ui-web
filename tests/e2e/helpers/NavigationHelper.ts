@@ -53,3 +53,6 @@ export function navigateToImmatriculationPage() {
 export function navigateToAdmittedCourses() {
     cy.visit("courses/my-courses");
 }
+export function navigateToWelcomePage() {
+    cy.visit("welcome");
+}

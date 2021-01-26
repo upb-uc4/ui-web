@@ -19,10 +19,15 @@ import {
 import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 import CourseManagement from "@/api/CourseManagement";
 import { getRandomizedCourse } from "../../helper/Courses";
-import { addCourseAdmission, dropCourseAdmission, updateMatriculation } from "@/api/abstractions/FrontendSigning";
+import { addCourseAdmission, approveMatriculation, dropCourseAdmission, updateMatriculation } from "@/api/abstractions/FrontendSigning";
 import { useStore } from "@/use/store/store";
 import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 import { MutationTypes } from "@/use/store/mutation-types";
+import Admin from "@/api/api_models/user_management/Admin";
+import resetState from "../../helper/ResetState";
+import OperationManagement from "@/api/OperationManagement";
+import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
+import Operation from "@/api/api_models/operation_management/Operation";
 
 let userManagement: UserManagement;
 let certManagement: CertificateManagement;
@@ -41,6 +46,9 @@ const authUser = pair.authUser;
 const course = getRandomizedCourse();
 const protoURL = "public/hlf-proto.json";
 const EXAM_REG_1 = "Bachelor Computer Science v3";
+const admin = getRandomizedUserAndAuthUser(Role.ADMIN) as { governmentId: string; authUser: Account; admin: Admin };
+let enrollmentIdAdmin: string;
+let operationToApprove: Operation;
 
 jest.setTimeout(60000);
 
@@ -53,8 +61,10 @@ describe("Admissions management", () => {
             const wrappingKey = await deriveKeyFromPassword(encryptionPassword, encKey.salt);
             return await unwrapKey(base64ToArrayBuffer(encKey.key), wrappingKey.key, base64ToArrayBuffer(encKey.iv));
         });
-
         expect(success.returnValue.login).not.toEqual("");
+
+        const success2 = await userManagement.createUser(admin.governmentId, admin.authUser, admin.admin);
+        expect(success2.returnValue).toBe(true);
     });
 
     test("Create student user", async () => {
@@ -80,6 +90,7 @@ describe("Admissions management", () => {
     });
 
     test("Login as student", async () => {
+        resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(authUser);
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
@@ -113,14 +124,69 @@ describe("Admissions management", () => {
         expect(response.statusCode).toBe(201);
         expect(response.returnValue.certificate).not.toBe(undefined);
         expect(response.returnValue.certificate).not.toEqual("");
+        await new Promise((r) => setTimeout(r, 3000));
     });
 
     test("Immatriculate student", async () => {
         const matriculation = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
-        const result = await updateMatriculation(enrollmentId, authUser.username, matriculation, protoURL);
+        const result = await updateMatriculation(authUser.username, enrollmentId, matriculation, protoURL);
 
         expect(result).toBe(true);
+
+        const operationManagement = new OperationManagement();
+
+        const response = await operationManagement.getOperations(true, false, [OperationStatus.PENDING]);
+        expect(response.statusCode).toEqual(200);
+        expect(response.returnValue.length).toEqual(1);
+
+        operationToApprove = response.returnValue[0];
+    });
+
+    test("Login as admin", async () => {
+        resetState(encryptionPassword);
+        const success = await MachineUserAuthenticationManagement._getRefreshToken(admin.authUser);
+        expect(success.returnValue.login).not.toEqual("");
+        certManagement = new CertificateManagement();
+
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+    });
+
+    test("Create and send certificate signing request", async () => {
+        keypair = await createKeyPair();
+        const csr = await createCSR(keypair, enrollmentIdAdmin);
+        const wrappingKeyObject = await deriveKeyFromPassword(encryptionPassword);
+        const encryptedPrivateKey = await wrapKey(keypair.privateKey, wrappingKeyObject.key, iv);
+
+        const base64EncryptedPrivateKey = arrayBufferToBase64(encryptedPrivateKey);
+        const base64iv = arrayBufferToBase64(iv);
+
+        const response = await certManagement.sendCertificateSigningRequest(admin.authUser.username, csr, {
+            iv: base64iv,
+            key: base64EncryptedPrivateKey,
+            salt: wrappingKeyObject.salt,
+        });
+
+        expect(response.statusCode).toBe(201);
+        expect(response.returnValue.certificate).not.toBe(undefined);
+        expect(response.returnValue.certificate).not.toEqual("");
+        await new Promise((r) => setTimeout(r, 3000));
+    });
+
+    test("Approve operation as admin", async () => {
+        const operationManagement = new OperationManagement();
+
+        const success = await approveMatriculation(operationToApprove, protoURL);
+
+        expect(success).toBe(true);
+    });
+
+    test("Login as student", async () => {
+        resetState(encryptionPassword);
+        const success = await MachineUserAuthenticationManagement._getRefreshToken(authUser);
+        expect(success.returnValue.login).not.toEqual("");
+        certManagement = new CertificateManagement();
+        admissionsManagement = new AdmissionManagement();
     });
 
     test("Add course admission", async () => {
@@ -169,8 +235,10 @@ describe("Admissions management", () => {
 
         const success = await userManagement.forceDeleteUser(student.username);
         const success2 = await courseManagement.deleteCourse(courseId);
+        const success3 = await userManagement.forceDeleteUser(admin.authUser.username);
 
         expect(success.returnValue).toBe(true);
         expect(success2.returnValue).toBe(true);
+        expect(success3.returnValue).toBe(true);
     });
 });
