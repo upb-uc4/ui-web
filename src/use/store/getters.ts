@@ -13,7 +13,7 @@ import lodash from "lodash";
 import { GetterTree } from "vuex";
 import { ActionTypes } from "./action-types";
 import { MutationTypes } from "./mutation-types";
-import { State } from "./state";
+import { processedOperations, State } from "./state";
 import { store, useStore } from "./store";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
@@ -26,6 +26,7 @@ export type Getters = {
     privateKey(state: State): () => Promise<CryptoKey>;
     certificate(state: State): () => Promise<Certificate>;
     hasCertificate(state: State): Promise<boolean>;
+    processedOperations(state: State): processedOperations;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -149,5 +150,8 @@ export const getters: GetterTree<State, State> & Getters = {
             store.commit(MutationTypes.SET_HAS_CERTIFICATE, true);
         }
         return state.hasCertificate;
+    },
+    processedOperations: (state) => {
+        return state.processedOperations;
     },
 };

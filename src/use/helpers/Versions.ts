@@ -4,7 +4,9 @@ import CertificateManagement from "@/api/CertificateManagement";
 import ConfigurationManagement from "@/api/ConfigurationManagement";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+import GroupManagement from "@/api/GroupManagement";
 import MatriculationManagement from "@/api/MatriculationManagement";
+import OperationsManagement from "@/api/OperationManagement";
 import ReportManagement from "@/api/ReportManagement";
 import UserManagement from "@/api/UserManagement";
 import axios, { AxiosResponse } from "axios";
@@ -46,6 +48,12 @@ export async function getVersions(): Promise<version[]> {
 
     const admissionsManagementVersion = await AdmissionManagement.getVersion();
     const hlfAdmissionVersion = await AdmissionManagement.getHyperledgerVersion();
+
+    const operationsManagementVersion = await OperationsManagement.getVersion();
+    const hlfoperationsManagementVersion = await OperationsManagement.getHyperledgerVersion();
+
+    const groupManagementVersion = await GroupManagement.getVersion();
+    const hlfGroupManagementVersion = await GroupManagement.getHyperledgerVersion();
 
     versions.push({
         name: "Frontend",
@@ -131,6 +139,26 @@ export async function getVersions(): Promise<version[]> {
             "configuration-" +
             configurationManagementVersion +
             "/product_code/configuration_service/CHANGELOG.md",
+    });
+    versions.push({
+        name: "Operation Management",
+        version: operationsManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "examreg-" +
+            operationsManagementVersion +
+            "/product_code/operation_service/CHANGELOG.md",
+        hlVersions: hlfoperationsManagementVersion,
+    });
+    versions.push({
+        name: "Group Management",
+        version: groupManagementVersion,
+        link:
+            "https://github.com/upb-uc4/University-Credits-4.0/blob/" +
+            "examreg-" +
+            groupManagementVersion +
+            "/product_code/group_service/CHANGELOG.md",
+        hlVersions: hlfGroupManagementVersion,
     });
 
     versions.push({

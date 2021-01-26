@@ -13,16 +13,22 @@ import TransactionMessage from "../api_models/common/Transaction";
 import UnsignedProposalMessage from "../api_models/common/UnsignedProposalMessage";
 import UnsignedTransactionMessage from "../api_models/common/UnsignedTransactionMessage";
 import SubjectMatriculation from "../api_models/matriculation_management/SubjectMatriculation";
+import CertificateManagement from "../CertificateManagement";
+import Operation from "../api_models/operation_management/Operation";
 import APIResponse from "../helpers/models/APIResponse";
+import { validateOperationId } from "../helpers/OperationValidator";
 import { validateCourseAdmissionProposal, validateMatriculationProposal } from "../helpers/ProposalPayloadValidator";
 import { decodeProposal } from "../helpers/ProtobuffDecoding";
 import { decodeTransaction } from "../helpers/TransactionDecoding";
 import { admissionsTransactionValidator, matriculationTransactionValidator } from "../helpers/TransactionValidator";
 import MatriculationManagement from "../MatriculationManagement";
+import OperationManagement from "../OperationManagement";
+import { UC4Identifier } from "../helpers/UC4Identifier";
+import MatriculationData from "../api_models/matriculation_management/MatriculationData";
 
 export async function updateMatriculation(
-    enrollmentId: string,
     username: string,
+    enrollmentId: string,
     matriculation: SubjectMatriculation[],
     protoUrl?: string
 ): Promise<boolean> {
@@ -42,7 +48,7 @@ export async function updateMatriculation(
             return validateMatriculationProposal(payload, enrollmentId, matriculation);
         },
         async (message: SignedProposalMessage) => {
-            return await matriculationManagement.submitSignedMatriculationProposal(username, message);
+            return await matriculationManagement.submitSignedMatriculationProposal(message);
         },
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler.handleResponse(response);
@@ -51,7 +57,7 @@ export async function updateMatriculation(
             return matriculationTransactionValidator(enrollmentId, matriculation, transaction);
         },
         async (message: SignedTransactionMessage) => {
-            return await matriculationManagement.submitSignedMatriculationTransaction(username, message);
+            return await matriculationManagement.submitSignedMatriculationTransaction(message);
         },
         (response: APIResponse<boolean>) => {
             return genericHandler.handleResponse(response);
@@ -130,6 +136,56 @@ export async function dropCourseAdmission(admissionId: string, protoUrl?: string
         },
         protoUrl
     );
+}
+
+export async function approveMatriculation(operation: Operation, protoUrl?: string): Promise<boolean> {
+    if (!(await validateOperationId(operation))) return Promise.reject("OperationId does not fit to transactionInfo");
+
+    const operationManagement = new OperationManagement();
+
+    const response = await operationManagement.getOperation(operation.operationId);
+    let handler = new GenericResponseHandler("operation");
+
+    const operationToApprove = handler.handleResponse(response);
+
+    if (operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION) {
+        const paramsArray: string[] = JSON.parse(operationToApprove.transactionInfo.parameters);
+        const proposalEnrollmentId = paramsArray[0];
+        const proposalMatriculation: SubjectMatriculation[] = <SubjectMatriculation[]>JSON.parse(paramsArray[1]);
+
+        handler = new GenericResponseHandler("enrollmentId");
+        const username = handler.handleResponse(await new CertificateManagement().getUsername(proposalEnrollmentId));
+
+        return await updateMatriculation(username, proposalEnrollmentId, proposalMatriculation, protoUrl);
+    } else if (
+        operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_ADD_MATRICULATION ||
+        operationToApprove.transactionInfo.transactionName === UC4Identifier.TRANSACTION_UPDATE_MATRICULATION
+    ) {
+        const paramsArray: string[] = JSON.parse(operationToApprove.transactionInfo.parameters);
+        const proposalMatriculationData: MatriculationData = <MatriculationData>JSON.parse(paramsArray[0]);
+
+        handler = new GenericResponseHandler("enrollmentId");
+        const username = handler.handleResponse(await new CertificateManagement().getUsername(proposalMatriculationData.enrollmentId));
+
+        return await updateMatriculation(
+            username,
+            proposalMatriculationData.enrollmentId,
+            proposalMatriculationData.matriculationStatus,
+            protoUrl
+        );
+    }
+
+    return false;
+}
+
+export async function rejectOperation(operation: Operation, rejectMessage: string): Promise<boolean> {
+    if (!(await validateOperationId(operation))) return Promise.reject("OperationId does not fit to transactionInfo");
+
+    const operationManagement = new OperationManagement();
+    const response = await operationManagement.getUnsignedRejectionProposal(operation.operationId, rejectMessage);
+
+    const handler = new GenericResponseHandler("rejection");
+    return handler.handleResponse(response).unsignedProposal === "";
 }
 
 async function abstractHandler(
