@@ -71,32 +71,34 @@
             }
 
             async function getOperations() {
+                const promises = [];
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
-                const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
-                const result = handler.handleResponse(response);
 
-                //Show empty list if no results given
-                operations.value = result;
-                gotOps.value = true;
-                await getWatchedOperations();
-            }
+                promises.push(
+                    operationManagement.getOperations(undefined, undefined, undefined, false).then((response) => {
+                        const result = handler.handleResponse(response);
+                        operations.value = result;
+                    })
+                );
 
-            async function getWatchedOperations() {
-                const operationManagement = new OperationManagement();
-                const handler = new GenericResponseHandler("operations");
-                const response = await operationManagement.getOperations(undefined, undefined, undefined, true);
-                const result = handler.handleResponse(response);
-                const ownId = await getOwnEnrollmentId();
-                watchedOperations.value = result.filter((op) => op.initiator != ownId);
-            }
+                let tmpOps = [] as Operation[];
+                promises.push(
+                    operationManagement.getOperations(undefined, undefined, undefined, true).then((response) => {
+                        tmpOps = handler.handleResponse(response);
+                    })
+                );
 
-            async function getOwnEnrollmentId(): Promise<string> {
                 const certificateManagement = new CertificateManagement();
-                const handler = new GenericResponseHandler("enrollment-id");
-                const response = await certificateManagement.getOwnEnrollmentId();
-                const result = handler.handleResponse(response);
-                return result.id;
+                let ownId = "";
+                promises.push(
+                    certificateManagement.getOwnEnrollmentId().then((response) => {
+                        ownId = handler.handleResponse(response).id;
+                    })
+                );
+                await Promise.all(promises);
+                gotOps.value = true;
+                watchedOperations.value = tmpOps.filter((op) => op.initiator != ownId);
             }
 
             function back() {
