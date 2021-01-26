@@ -1,4 +1,4 @@
-# [0.16.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.16.0...v0.16.1) (2021-XX-XX)
+# [0.16.1](https://github.com/upb-uc4/ui-web/compare/v0.16.0...v0.16.1) (2021-26-01)
 ## Feature
 - Add multi user signing dashboard + API on the welcome page + operations archive + all operations page for admin [#785](https://github.com/upb-uc4/ui-web/pull/785)
 
