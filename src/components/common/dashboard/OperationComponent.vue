@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="!loading"
         :id="'op_' + shownOpId"
         class="flex flex-col shadow-xl bg-white hover:bg-gray-200 rounded-lg items-start p-2 sm:p-4"
         @click="toggleDetails"
@@ -169,7 +170,6 @@
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";
-    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
     import { Role } from "@/entities/Role";
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
@@ -201,6 +201,7 @@
         },
         emits: ["marked-read"],
         setup(props: any, { emit }: any) {
+            const loading = ref(false);
             const store = useStore();
             const role = ref(Role.NONE);
             const operation = ref(props.operation as Operation);
@@ -261,11 +262,16 @@
             const showDetails = ref(false);
 
             onBeforeMount(async () => {
+                loading.value = true;
+                const promises = [];
                 await getRole();
                 if (isAdmin.value) {
-                    await getNameByEnrollmentId();
+                    promises.push(getNameByEnrollmentId());
                 }
-                await createDisplayObjects();
+                promises.push(createDisplayObjects());
+
+                await Promise.all(promises);
+                loading.value = false;
             });
 
             const type = getOperationBadgeIdentifier(operation.value);
@@ -393,6 +399,7 @@
                 params,
                 title,
                 shownOpId,
+                loading,
             };
         },
     };
