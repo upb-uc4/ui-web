@@ -10,7 +10,7 @@
 
 <script lang="ts">
     import { useStore } from "@/use/store/store";
-    import StudentCourse from "./StudentCourse.vue";
+    import StudentCourse from "@/components/course/list/student/StudentCourse.vue";
     import CourseManagement from "@/api/CourseManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Course from "@/api/api_models/course_management/Course";

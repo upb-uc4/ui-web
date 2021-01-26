@@ -38,7 +38,7 @@
         <div>
             <course-list
                 :key="refreshKey"
-                :show-all-courses="true"
+                :only-admitted-courses="isMyCoursesPage"
                 :selected-type="selectedType"
                 :filter="message"
                 @updated="matchingCoursesCount = $event"
