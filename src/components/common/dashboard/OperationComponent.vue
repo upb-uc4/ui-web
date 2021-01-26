@@ -9,7 +9,7 @@
                 <div class="flex items-center">
                     <i
                         v-if="showWatchOption"
-                        :id="'toggleWatch_op_' + shownOpId"
+                        :id="'op_' + (isWatched ? 'unwatch' : 'watch') + '_' + shownOpId"
                         class="text-md hover:text-blue-600 text-blue-500 far fa-bookmark cursor-pointer"
                         :class="{ 'fas fa-bookmark': isWatched }"
                         :title="isWatched ? 'Unwatch' : 'Watch'"
@@ -175,6 +175,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { approveOperation, rejectOperation } from "@/api/abstractions/FrontendSigning";
     import { getOperationBadgeIdentifier, printOperation, printOperationTitle } from "@/use/helpers/OperationPrinter";
+    import OperationManagement from "@/api/OperationManagement";
 
     export default {
         name: "OperationComponent",
@@ -234,6 +235,13 @@
 
             const isWatched = ref(props.watched);
 
+            watch(
+                () => props.watched,
+                () => {
+                    isWatched.value = props.watched;
+                }
+            );
+
             const dateFormatOptions = {
                 weekday: "short",
                 year: "numeric",
@@ -286,7 +294,6 @@
 
             async function approve() {
                 if (await approveOperation(operation.value)) {
-                    //TODO Set watch
                     store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                     sentApprove.value = true;
                     provideReason.value = false;
@@ -304,8 +311,6 @@
 
             async function reject() {
                 if (await rejectOperation(operation.value, finalReason.value)) {
-                    //TODO Set watch
-                    //If success
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
                     provideReason.value = !provideReason.value;
@@ -327,10 +332,16 @@
                 }
             }
 
-            function toggleWatch() {
-                //TODO Set watch
-                //isWatched.value = !isWatched.value;
-                showNotYetImplementedToast();
+            async function toggleWatch() {
+                const operation_management = new OperationManagement();
+                const handler = new GenericResponseHandler("watchlist");
+                const response = isWatched.value
+                    ? await operation_management.unwatchOperation(operation.value.operationId)
+                    : await operation_management.watchOperation(operation.value.operationId);
+                const result = handler.handleResponse(response);
+                if (result) {
+                    isWatched.value = !isWatched.value;
+                }
             }
 
             async function getNameByEnrollmentId() {
