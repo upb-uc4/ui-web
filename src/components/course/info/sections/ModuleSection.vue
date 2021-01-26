@@ -1,6 +1,7 @@
 <template>
     <base-section id="moduleSection" title="Module Information" subtitle="Select the module that this course should count to.">
-        <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+        <LoadingSpinner v-if="isLoading" />
+        <div v-else class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
             <div class="lg:w-1/2 w-full">
                 <input v-if="registered" id="selectModule" :value="selectedModuleString" disabled type="text" class="w-full input-text" />
                 <searchable-select
@@ -22,12 +23,16 @@
     import Module from "@/api/api_models/exam_reg_management/Module";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import SearchableSelect from "@/components/common/SearchableSelect.vue";
+    import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
         name: "CourseModulesSection",
         components: {
             SearchableSelect,
             BaseSection,
+            LoadingSpinner,
         },
         props: {
             moduleIds: {
@@ -45,9 +50,10 @@
         },
         emits: ["update:selected"],
         setup(props: any, { emit }: any) {
-            let optionsArray = ref([] as SearchSelectOption[]);
-            let selectedModuleString = ref(props.selected);
-            let selectedModuleOption = ref({} as SearchSelectOption);
+            const isLoading = ref(false);
+            const optionsArray = ref([] as SearchSelectOption[]);
+            const selectedModuleString = ref(props.selected);
+            const selectedModuleOption = ref({} as SearchSelectOption);
 
             onBeforeMount(async () => {
                 if (!props.registered) await getModules();
@@ -59,9 +65,16 @@
             }
 
             async function getModules() {
-                (props.moduleIds as string[]).forEach((s) => {
-                    optionsArray.value.push({ value: { id: s, name: s } as Module, display: s });
+                isLoading.value = true;
+                if ((props.moduleIds as String[]).length == 0) return;
+                const exRegManagement = new ExaminationRegulationManagement();
+                const handler = new GenericResponseHandler("module");
+                const response = await exRegManagement.getModules(props.moduleIds as string[]);
+                let result = handler.handleResponse(response);
+                result.forEach((module) => {
+                    optionsArray.value.push({ value: module, display: `${module.id}: ${module.name}` });
                 });
+                isLoading.value = false;
             }
 
             return {
@@ -69,6 +82,7 @@
                 selectedModuleOption,
                 optionsArray,
                 selectModule,
+                isLoading,
             };
         },
     };

@@ -1,11 +1,13 @@
 <template>
-    <div v-if="busy">
-        <loading-spinner />
-    </div>
-    <div v-else class="flex flex-col items-center justify-center w-full mt-12">
-        <h1 class="text-4xl font-semibold text-blue-800 mb-10">Welcome back, {{ name }}!</h1>
-        <dashboard />
-    </div>
+    <base-view>
+        <div v-if="busy">
+            <loading-spinner />
+        </div>
+        <div v-else class="flex flex-col items-center justify-center w-full mt-12">
+            <h1 class="text-4xl font-semibold text-blue-800 mb-10">Welcome back, {{ name }}!</h1>
+            <dashboard />
+        </div>
+    </base-view>
 </template>
 <script lang="ts">
     import { useStore } from "@/use/store/store";
@@ -14,10 +16,12 @@
     import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
     import Dashboard from "@/components/common/dashboard/Dashboard.vue";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         name: "WelcomePage",
         components: {
+            BaseView,
             LoadingSpinner,
             Dashboard,
         },

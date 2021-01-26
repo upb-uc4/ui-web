@@ -3,7 +3,7 @@
         <section-header title="Immatriculation" />
         <base-section title="History" subtitle="Show your immatriculation history.">
             <div class="w-full">
-                <immatriculation-history :key="refreshKey" v-model:isLoading="isLoading" :username="username" />
+                <immatriculation-history :key="false" v-model:isLoading="isLoading" :username="username" />
             </div>
         </base-section>
         <base-section title="Manage" subtitle="Keep your immatriculation up to date.">
@@ -71,6 +71,7 @@
     import { useStore } from "@/use/store/store";
     import CertificateManagement from "@/api/CertificateManagement";
     import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
+    import { showOperationCreatedToast } from "@/use/helpers/Toasts";
     import BaseView from "@/views/common/BaseView.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
@@ -92,7 +93,6 @@
             SearchableSelect,
         },
         setup() {
-            const refreshKey = ref(false);
             const isLoading = ref(true);
             const fieldsOfStudy = ref([] as string[]);
             const semesterType = ref("");
@@ -186,14 +186,18 @@
                 const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
-                await updateMatriculation(enrollmentId.id, username.value, matriculationEntries);
-
-                selectedFieldsOfStudy.value = [];
-                year.value = "";
-                semesterType.value = "";
+                if (await updateMatriculation(username.value, enrollmentId.id, matriculationEntries)) {
+                    resetEntries();
+                    showOperationCreatedToast("immatriculation");
+                }
 
                 isLoading.value = false;
-                refreshKey.value = !refreshKey.value;
+            }
+
+            function resetEntries() {
+                resetYear();
+                selectedFieldsOfStudy.value = [] as string[];
+                semesterType.value = "";
             }
 
             function removeFieldOfStudy(index: number) {
@@ -218,7 +222,6 @@
                 updateSelectedFieldsOfStudy,
                 updateImmatriculation,
                 validSelection,
-                refreshKey,
                 errorBag,
                 username,
                 searchSelection,
