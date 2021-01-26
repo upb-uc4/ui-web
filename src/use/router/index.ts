@@ -20,6 +20,8 @@ const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 const StudentImmatricultaion = () => import("@/components/study/Immatriculation.vue");
+const OperationsArchive = () => import("@/views/common/OperationsArchive.vue");
+const AllOperationsPage = () => import("@/views/admin/AllOperations.vue");
 const DPA = () => import("@/views/common/DPA.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -241,6 +243,24 @@ const router = createRouter({
             meta: {
                 title: "Settings" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/operations-archive",
+            name: "operations.archive",
+            component: OperationsArchive,
+            meta: {
+                title: "Operations Archive" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/operations-all",
+            name: "operations.all",
+            component: AllOperationsPage,
+            meta: {
+                title: "All Operations" + suffix,
+                roles: ["Admin"],
             },
         },
         {

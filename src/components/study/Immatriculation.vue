@@ -8,7 +8,7 @@
             <div class="flex flex-col">
                 <div class="flex flex-col pl-2 mt-5">
                     <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
-                    <immatriculation-history :key="refreshKey" v-model:busy="busy" :username="username" />
+                    <immatriculation-history :key="false" v-model:busy="busy" :username="username" />
                     <div v-if="busy">
                         <loading-spinner />
                     </div>
@@ -63,7 +63,7 @@
     import { useStore } from "@/use/store/store";
     import CertificateManagement from "@/api/CertificateManagement";
     import { useToast } from "@/toast";
-    import { showAPIToast } from "@/use/helpers/Toasts";
+    import { showOperationCreatedToast } from "@/use/helpers/Toasts";
     import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 
@@ -74,7 +74,6 @@
             ImmatriculationHistory,
         },
         setup(props: any, { emit }: any) {
-            let refreshKey = ref(false);
             let busy = ref(0);
             let fieldsOfStudy = ref([] as string[]);
             let semesterType = ref("");
@@ -165,10 +164,18 @@
                 const responseHandler = new GenericResponseHandler("enrollment id");
                 const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
 
-                await updateMatriculation(enrollmentId.id, username.value, matriculationEntries);
+                if (await updateMatriculation(username.value, enrollmentId.id, matriculationEntries)) {
+                    resetEntries();
+                    showOperationCreatedToast("immatriculation");
+                }
 
                 busy.value--;
-                refreshKey.value = !refreshKey.value;
+            }
+
+            function resetEntries() {
+                resetYear();
+                selectedFieldsOfStudy.value = [] as string[];
+                semesterType.value = "";
             }
 
             return {
@@ -182,7 +189,6 @@
                 updateSelectedFieldsOfStudy,
                 updateImmatriculation,
                 validSelection,
-                refreshKey,
                 errorBag,
                 username,
             };
