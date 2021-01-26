@@ -34,17 +34,20 @@ module.exports = {
                 18: "4.5rem",
                 80: "20rem",
                 108: "27rem",
+                140: "35rem",
                 160: "40rem",
                 180: "45rem",
             },
             minHeight: {
                 20: "5rem",
+                80: "20rem",
             },
             opacity: {
                 90: ".9",
             },
             maxHeight: {
                 50: "50vh",
+                60: "60vh",
             },
         },
     },

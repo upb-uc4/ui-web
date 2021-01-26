@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.15.1",
+    "version": "0.16.0",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -57,7 +57,7 @@
         "protobufjs": "^6.10.2",
         "random-bigint": "0.0.1",
         "tailwindcss": "^2.0.1",
-        "vue": "^3.0.2",
+        "vue": "^3.0.4",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.0-rc.5",
         "vuex": "^4.0.0-rc.1",
@@ -66,6 +66,7 @@
     "devDependencies": {
         "@cypress/code-coverage": "^3.8.5",
         "@peculiar/webcrypto": "^1.1.4",
+        "@tailwindcss/custom-forms": "^0.2.1",
         "@types/jest": "^26.0.15",
         "@types/lodash": "^4.14.165",
         "@types/node": "^14.14.9",

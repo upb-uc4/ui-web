@@ -72,6 +72,46 @@ export default class CertificateManagement extends CommonHyperledger {
         return this.getEnrollmentId(username);
     }
 
+    async getUsername(enrollmentId: string): Promise<APIResponse<string>> {
+        return await this._axios
+            .get(`/certificates/${enrollmentId}/username`)
+            .then((response: AxiosResponse) => {
+                return {
+                    returnValue: response.data.username,
+                    statusCode: response.status,
+                    error: {} as APIError,
+                    networkError: false,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: "",
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getUsername(enrollmentId);
+                    }
+                    return {
+                        returnValue: "",
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: "",
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
     async getEnrollmentId(username: string): Promise<APIResponse<EnrollmentId>> {
         return await this._axios
             .get(`/certificates/${username}/enrollmentId`)

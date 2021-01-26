@@ -4,6 +4,7 @@ import { checkPrivilege } from "@/use/helpers/PermissionHelper";
 import { MutationTypes } from "@/use/store/mutation-types";
 import { useStore } from "@/use/store/store";
 import AboutPage from "@/views/common/About.vue";
+import WelcomePage from "@/views/common/Welcome.vue";
 import Redirect from "@/views/errors/403.vue";
 import PageNotFound from "@/views/errors/404.vue";
 import { createRouter, createWebHistory } from "vue-router";
@@ -19,7 +20,8 @@ const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
 const StudentImmatricultaion = () => import("@/views/student/Immatriculation.vue");
-const Dashboard = () => import("@/views/common/Dashboard.vue");
+const OperationsArchive = () => import("@/views/common/OperationsArchive.vue");
+const AllOperationsPage = () => import("@/views/admin/AllOperations.vue");
 const DPA = () => import("@/views/common/DPA.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -31,18 +33,9 @@ const router = createRouter({
         {
             path: "/welcome",
             name: "welcome",
-            component: Dashboard,
+            component: WelcomePage,
             meta: {
-                title: "Notifications" + suffix,
-                roles: ["Admin", "Lecturer", "Student"],
-            },
-        },
-        {
-            path: "/notifications",
-            name: "notifications",
-            component: Dashboard,
-            meta: {
-                title: "Notifications" + suffix,
+                title: "Welcome" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
             },
         },
@@ -90,6 +83,7 @@ const router = createRouter({
                 roles: ["Student"],
             },
         },
+
         {
             path: "/courses/my-courses",
             name: "student.my-courses",
@@ -249,6 +243,24 @@ const router = createRouter({
             meta: {
                 title: "Settings" + suffix,
                 roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/operations-archive",
+            name: "operations.archive",
+            component: OperationsArchive,
+            meta: {
+                title: "Operations Archive" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/operations-all",
+            name: "operations.all",
+            component: AllOperationsPage,
+            meta: {
+                title: "All Operations" + suffix,
+                roles: ["Admin"],
             },
         },
         {
