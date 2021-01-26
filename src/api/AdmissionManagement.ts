@@ -16,6 +16,7 @@ import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 import CommonHyperledger from "./CommonHyperledger";
 import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
 import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
+import ExamAdmission from "./api_models/admission_management/ExamAdmission";
 
 export default class AdmissionManagement extends CommonHyperledger {
     protected static endpoint = "/admission-management";
@@ -73,6 +74,51 @@ export default class AdmissionManagement extends CommonHyperledger {
             });
     }
 
+    async getExamAdmissions(username?: string, examId?: string, admissionIds?: string[]): Promise<APIResponse<ExamAdmission[]>> {
+        const requestParameter = { params: {} as any };
+        if (username) requestParameter.params.username = username;
+        if (examId) requestParameter.params.examId = examId;
+        if (admissionIds) requestParameter.params.admissionIds = admissionIds.reduce((a, b) => a + "," + b, "");
+
+        return await this._axios
+            .get(`/admissions/exams`, requestParameter)
+            .then((response: AxiosResponse) => {
+                return {
+                    returnValue: response.data as ExamAdmission[],
+                    statusCode: response.status,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: [] as ExamAdmission[],
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getExamAdmissions(username, examId, admissionIds);
+                    }
+                    return {
+                        returnValue: {} as ExamAdmission[],
+                        statusCode: error.response.status,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as ExamAdmission[],
+                        statusCode: 0,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
+                }
+            });
+    }
+
     /**
      * Fetch an unsigned proposal for adding a course admission
      * @param courseAdmission courseAdmission
@@ -118,12 +164,12 @@ export default class AdmissionManagement extends CommonHyperledger {
     }
 
     /**
-     * Fetch an unsigned proposal for dropping a course admission
-     * @param admissionId admission id of admission to drop
+     * Fetch an unsigned proposal for adding a course admission
+     * @param courseAdmission courseAdmission
      */
-    async getUnsignedCourseAdmissionDropProposal(admissionId: string): Promise<APIResponse<UnsignedProposalMessage>> {
+    async getUnsignedExamAdmissionAddProposal(examAdmission: ExamAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/admissions/courses/unsigned_drop_proposal`, { admissionId })
+            .post(`/admissions/exams/unsigned_add_proposal`, examAdmission)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -142,7 +188,51 @@ export default class AdmissionManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUnsignedCourseAdmissionDropProposal(admissionId);
+                        return await this.getUnsignedExamAdmissionAddProposal(examAdmission);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: {} as UnsignedProposalMessage,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    /**
+     * Fetch an unsigned proposal for dropping a course admission
+     * @param admissionId admission id of admission to drop
+     */
+    async getUnsignedAdmissionDropProposal(admissionId: string): Promise<APIResponse<UnsignedProposalMessage>> {
+        return await this._axios
+            .post(`/admissions/unsigned_drop_proposal`, { admissionId })
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: response.data as UnsignedProposalMessage,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as UnsignedProposalMessage,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getUnsignedAdmissionDropProposal(admissionId);
                     }
                     return {
                         statusCode: error.response.status,

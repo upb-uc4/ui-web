@@ -4,4 +4,5 @@ export default interface CourseAdmission {
     moduleId: string;
     admissionId: string;
     timestamp: string;
+    type: "Course";
 }
