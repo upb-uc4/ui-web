@@ -1,3 +1,4 @@
+import { useStore } from "@/use/store/store";
 import { AxiosError, AxiosResponse } from "axios";
 import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
@@ -185,6 +186,47 @@ export default class OperationManagement extends CommonHyperledger {
                         statusCode: 0,
                         error: {} as APIError,
                         returnValue: {} as UnsignedProposalMessage,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
+    async watchOperation(operationId: string): Promise<APIResponse<boolean>> {
+        const username = (await useStore().getters.user).username;
+        return await this._axios
+            .post(`/watchlist/${username}`, { id: operationId })
+            .then((response: AxiosResponse) => {
+                return {
+                    statusCode: response.status,
+                    returnValue: true,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: false,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.watchOperation(operationId);
+                    }
+                    return {
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        returnValue: false,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        statusCode: 0,
+                        error: {} as APIError,
+                        returnValue: false,
                         networkError: true,
                     };
                 }
