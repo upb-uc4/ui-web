@@ -343,6 +343,37 @@ describe("Operation Management tests", () => {
         enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
     });
 
+    test("Fetch empty watchlist", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.getOperations(undefined, undefined, undefined, true);
+        expect(success.returnValue.length).toEqual(0);
+    });
+
+    test("Watch operation", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.watchOperation(operationIdToReject);
+        expect(success.returnValue).toEqual(true);
+    });
+
+    test("Fetch watchlist", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.getOperations(undefined, undefined, undefined, true);
+        expect(success.returnValue.length).toEqual(1);
+        expect(success.returnValue[0].operationId).toEqual(operationIdToReject);
+    });
+
+    test("Unwatch operation", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.unwatchOperation(operationIdToReject);
+        expect(success.returnValue).toEqual(true);
+    });
+
+    test("Fetch empty watchlist", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.getOperations(undefined, undefined, undefined, true);
+        expect(success.returnValue.length).toEqual(0);
+    });
+
     test("Reject operation as admin", async () => {
         const operationManagement = new OperationManagement();
 
