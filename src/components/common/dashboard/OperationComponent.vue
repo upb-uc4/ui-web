@@ -66,7 +66,7 @@
                         Initiated: {{ initiatedTimestamp }}
                         <p class="text-gray-500 ml-2 font-mono" :title="operation.operationId">(ID: {{ shownOpId }})</p>
                     </label>
-                    <label v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between">
+                    <div v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between">
                         <p>Initiator-ID:</p>
                         <div class="ml-4">
                             <router-link
@@ -80,7 +80,7 @@
                             </router-link>
                             <p v-else>not found</p>
                         </div>
-                    </label>
+                    </div>
                 </div>
                 <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
                     <button
@@ -99,7 +99,7 @@
                         :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
                         class="ml-2 w-8 h-8 btn btn-icon-red-filled text-xs"
                         title="Reject"
-                        @click.stop="toogleReasonMenu"
+                        @click.stop="toggleReasonMenu"
                     >
                         <i class="fas fa-times"></i>
                     </button>
@@ -151,7 +151,7 @@
                         <button
                             :id="'op_cancelRejection_' + shownOpId"
                             class="ml-2 btn btn-icon-blue text-sm h-12"
-                            @click.stop="toogleReasonMenu"
+                            @click.stop="toggleReasonMenu"
                         >
                             Cancel
                         </button>
@@ -169,12 +169,10 @@
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";
-    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
     import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
     import { Role } from "@/entities/Role";
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import Router from "@/use/router";
     import { approveOperation, rejectOperation } from "@/api/abstractions/FrontendSigning";
     import { getOperationBadgeIdentifier, printOperation, printOperationTitle } from "@/use/helpers/OperationPrinter";
 
@@ -257,9 +255,9 @@
             onBeforeMount(async () => {
                 await getRole();
                 if (isAdmin.value) {
-                    getNameByEnrollmentId();
+                    await getNameByEnrollmentId();
                 }
-                createDisplayObjects();
+                await createDisplayObjects();
             });
 
             const type = getOperationBadgeIdentifier(operation.value);
@@ -295,7 +293,7 @@
                 }
             }
 
-            function toogleReasonMenu() {
+            function toggleReasonMenu() {
                 if (!showDetails.value) {
                     toggleDetails();
                 }
@@ -371,7 +369,7 @@
                 provideReason,
                 selectedReason,
                 finalReason,
-                toogleReasonMenu,
+                toggleReasonMenu,
                 RejectionReasons,
                 showDetails,
                 toggleDetails,

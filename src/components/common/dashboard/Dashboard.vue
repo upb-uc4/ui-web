@@ -3,7 +3,7 @@
     <div v-if="busy > 0" class="mx-auto">
         <loading-spinner />
     </div>
-    <div v-else class="flex flex-col w-full items-center mt-10">
+    <div v-else class="flex flex-col w-full items-center mt-10 mb-10">
         <div v-if="!hasCertificate" class="w-full flex flex-col items-center">
             <label class="text-md text-gray-700">Before you can view your dashboard, you have to create your personal certificate.</label>
             <button id="createCertificate" class="btn btn-blue-primary w-32 p-2 mt-6" @click="createCertificate">Create Certificate</button>
@@ -12,9 +12,9 @@
             <div class="flex sm:flex-row flex-col-reverse w-full">
                 <search-bar v-model:message="message" @refresh="refresh" />
             </div>
-            <div class="w-full my-5 lg:flex lg:justify-between">
+            <div class="w-full my-5 xl:flex lg:justify-between">
                 <dashboard-component
-                    class="lg:mr-5 lg:w-1/2"
+                    class="lg:mr-5 xl:w-1/2"
                     identifier="finished"
                     :enrollment-id="enrollmentId"
                     :operations="finishedOperations"
@@ -23,7 +23,7 @@
                     @marked-read="markRead"
                 />
                 <dashboard-component
-                    class="mt-5 lg:mt-0 lg:w-1/2"
+                    class="mt-5 xl:mt-0 xl:w-1/2"
                     identifier="actionRequired"
                     :enrollment-id="enrollmentId"
                     :operations="shownActionRequiredOperations"
@@ -59,8 +59,7 @@
 <script lang="ts">
     import { computed, onBeforeMount, ref } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
-    import Operation, { ApprovalList } from "@/api/api_models/operation_management/Operation";
-    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
+    import Operation from "@/api/api_models/operation_management/Operation";
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import { useStore } from "@/use/store/store";
@@ -95,7 +94,7 @@
                 busy.value++;
                 hasCertificate.value = await store.getters.hasCertificate;
                 if (hasCertificate.value) {
-                    loadDashboard();
+                    await loadDashboard();
                 }
                 busy.value--;
             });
@@ -197,7 +196,7 @@
                 let certificate = (await store.getters.certificate()).certificate;
                 if (certificate != "") {
                     hasCertificate.value = true;
-                    loadDashboard();
+                    await loadDashboard();
                 }
                 busy.value--;
             }

@@ -24,6 +24,7 @@
                 identifier="archive"
                 class="w-full mt-5"
                 :operations="filteredOperations"
+                :watched-operations="watchedOperations"
                 title="Archived Operations"
                 :is-archive="true"
             />
@@ -32,19 +33,17 @@
 </template>
 <script lang="ts">
     import { useStore } from "@/use/store/store";
-    import { ref, onBeforeMount, computed } from "vue";
+    import { ref, computed } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
-    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
-    import Operation, { ApprovalList } from "@/api/api_models/operation_management/Operation";
-    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
-    import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
+    import Operation from "@/api/api_models/operation_management/Operation";
     import Router from "@/use/router/";
     import OperationManagement from "@/api/OperationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import SearchBar from "@/components/common/SearchBar.vue";
     import { MutationTypes } from "@/use/store/mutation-types";
     import filterOperations from "@/use/helpers/filterOperations";
+    import CertificateManagement from "@/api/CertificateManagement";
 
     export default {
         name: "AllOperationsPage",
@@ -80,11 +79,24 @@
                 //Show empty list if no results given
                 operations.value = result;
                 gotOps.value = true;
-                getWatchedOperations();
+                await getWatchedOperations();
             }
 
             async function getWatchedOperations() {
-                //TODO API CALL
+                const operationManagement = new OperationManagement();
+                const handler = new GenericResponseHandler("operations");
+                const response = await operationManagement.getOperations(undefined, undefined, undefined, true);
+                const result = handler.handleResponse(response);
+                const ownId = await getOwnEnrollmentId();
+                watchedOperations.value = result.filter((op) => op.initiator != ownId);
+            }
+
+            async function getOwnEnrollmentId(): Promise<string> {
+                const certificateManagement = new CertificateManagement();
+                const handler = new GenericResponseHandler("enrollment-id");
+                const response = await certificateManagement.getOwnEnrollmentId();
+                const result = handler.handleResponse(response);
+                return result.id;
             }
 
             function back() {
