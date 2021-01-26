@@ -59,17 +59,19 @@ export default class CertificateManagement extends CommonHyperledger {
             });
     }
 
-    async getOwnEnrollmentId(): Promise<APIResponse<EnrollmentId>> {
+    async getOwnEnrollmentId(): Promise<APIResponse<{ enrollmentId: string; username: string }[]>> {
         const username = (await useStore().getters.user).username;
-        return this.getEnrollmentId(username);
+        return this.getEnrollmentId([username]);
     }
 
-    async getUsername(enrollmentId: string): Promise<APIResponse<string>> {
+    async getUsername(enrollmentIds: string[]): Promise<APIResponse<{ enrollmentId: string; username: string }[]>> {
+        const requestParameter = { params: {} as any };
+        requestParameter.params.enrollmentId = enrollmentIds.reduce((a, b) => a + "," + b, "");
         return await this._axios
-            .get(`/certificates/${enrollmentId}/username`)
+            .get(`/certificates/username`)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data.username,
+                    returnValue: response.data,
                     statusCode: response.status,
                     error: {} as APIError,
                     networkError: false,
@@ -81,21 +83,21 @@ export default class CertificateManagement extends CommonHyperledger {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: "",
+                            returnValue: [],
                             networkError: false,
                         })
                     ) {
-                        return await this.getUsername(enrollmentId);
+                        return await this.getUsername(enrollmentIds);
                     }
                     return {
-                        returnValue: "",
+                        returnValue: [],
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: "",
+                        returnValue: [],
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,
@@ -104,12 +106,14 @@ export default class CertificateManagement extends CommonHyperledger {
             });
     }
 
-    async getEnrollmentId(username: string): Promise<APIResponse<EnrollmentId>> {
+    async getEnrollmentId(usernames: string[]): Promise<APIResponse<{ enrollmentId: string; username: string }[]>> {
+        const requestParameter = { params: {} as any };
+        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
         return await this._axios
-            .get(`/certificates/${username}/enrollmentId`)
+            .get(`/certificates/enrollmentId`)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data as EnrollmentId,
+                    returnValue: response.data,
                     statusCode: response.status,
                     error: {} as APIError,
                     networkError: false,
@@ -121,21 +125,21 @@ export default class CertificateManagement extends CommonHyperledger {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: {} as EnrollmentId,
+                            returnValue: [],
                             networkError: false,
                         })
                     ) {
-                        return await this.getEnrollmentId(username);
+                        return await this.getEnrollmentId(usernames);
                     }
                     return {
-                        returnValue: {} as EnrollmentId,
+                        returnValue: [],
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: {} as EnrollmentId,
+                        returnValue: [],
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,

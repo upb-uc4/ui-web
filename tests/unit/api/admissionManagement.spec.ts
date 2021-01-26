@@ -98,10 +98,10 @@ describe("Admissions management", () => {
     });
 
     test("Fetch enrollmentId", async () => {
-        const response = await certManagement.getEnrollmentId(authUser.username);
+        const response = await certManagement.getEnrollmentId([authUser.username]);
 
         expect(response.statusCode).toEqual(200);
-        enrollmentId = response.returnValue.id;
+        enrollmentId = response.returnValue[0].enrollmentId;
 
         expect(enrollmentId).not.toEqual("");
     });
@@ -149,7 +149,7 @@ describe("Admissions management", () => {
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
 
-        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId([admin.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Create and send certificate signing request", async () => {
@@ -196,6 +196,7 @@ describe("Admissions management", () => {
             enrollmentId: "",
             moduleId,
             timestamp: "",
+            type: "Course",
         };
 
         const result = await addCourseAdmission(enrollmentId, admission, protoURL);

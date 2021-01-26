@@ -85,10 +85,10 @@ describe("Operation Management tests", () => {
     });
 
     test("Fetch enrollmentId", async () => {
-        const response = await certManagement.getEnrollmentId(student.authUser.username);
+        const response = await certManagement.getEnrollmentId([student.authUser.username]);
 
         expect(response.statusCode).toEqual(200);
-        enrollmentIdStudent = response.returnValue.id;
+        enrollmentIdStudent = response.returnValue[0].enrollmentId;
 
         expect(enrollmentIdStudent).not.toEqual("");
     });
@@ -236,7 +236,7 @@ describe("Operation Management tests", () => {
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
 
-        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId([admin.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Create and send certificate signing request", async () => {
@@ -340,7 +340,7 @@ describe("Operation Management tests", () => {
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
 
-        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId([admin.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Fetch empty watchlist", async () => {
@@ -469,7 +469,7 @@ describe("Operation Management tests", () => {
 
         certManagement = new CertificateManagement();
 
-        enrollmentIdStudent2 = (await certManagement.getEnrollmentId(student2.authUser.username)).returnValue.id;
+        enrollmentIdStudent2 = (await certManagement.getEnrollmentId([student2.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Create and send certificate signing request", async () => {
