@@ -12,6 +12,10 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
     }
 
     handleResponse<T>(response: APIResponse<T>): T {
+        if (response.statusCode == 413) {
+            this.errorList.push({ name: "profilePicture", reason: "The image size is too large (max 1MB)." });
+            return response.returnValue;
+        }
         if (this.isValidationError(response.error)) {
             for (let err of response.error.invalidParams) {
                 this.errorList.push(err);
@@ -47,11 +51,6 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
             }
             case 415: {
                 alert("The uploaded file has unsupported file type!");
-                break;
-            }
-            case 413: {
-                this.errorList.push({ name: "profilePicture", reason: "The image size is too large (max 1MB)." });
-                showAPIToast(response.statusCode);
                 break;
             }
         }

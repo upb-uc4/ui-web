@@ -1,63 +1,73 @@
 <template>
     <BaseSection title="Public Picture" subtitle="Click on the image to either delete your current profile picture or to set a new one.">
-        <div class="w-32 h-32 relative text-center cursor-pointer">
-            <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="openFileBrowser" />
-            <div v-if="isLoading">
-                <img src="@/assets/loading-spinner-alt.svg" alt="loading" />
-            </div>
-            <Menu v-else>
-                <MenuButton id="profilePicture" class="focus:outline-none" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                    <img id="picture" class="w-32 h-32 object-cover rounded-full" :src="selectedPicture" />
-                    <div v-show="isHovered">
-                        <div class="absolute top-0 left-0 w-32 h-32 rounded-full bg-black opacity-50" />
-                        <div class="absolute top-24 left-0 w-full text-white text-sm font-medium tracking-wider">Change</div>
-                    </div>
-                </MenuButton>
-
-                <transition
-                    enter-active-class="transition duration-100 ease-out"
-                    enter-from-class="transform scale-95 opacity-0"
-                    enter-to-class="transform scale-100 opacity-100"
-                    leave-active-class="transition duration-75 ease-out"
-                    leave-from-class="transform scale-100 opacity-100"
-                    leave-to-class="transform scale-95 opacity-0"
-                >
-                    <MenuItems
-                        class="absolute left-0 w-56 mt-2 origin-top-right input-base dark:border-normalgray-800 focus:border-blue-600 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+        <div class="space-y-2">
+            <div class="w-32 h-32 relative text-center cursor-pointer">
+                <input id="uploadFile" hidden type="file" accept=".jpeg, .png, .jpg" @change="openFileBrowser" />
+                <div v-if="isLoading">
+                    <img src="@/assets/loading-spinner-alt.svg" alt="loading" />
+                </div>
+                <Menu v-else>
+                    <MenuButton
+                        id="profilePicture"
+                        class="focus:outline-none"
+                        @mouseenter="isHovered = true"
+                        @mouseleave="isHovered = false"
                     >
-                        <div class="py-1">
-                            <MenuItem id="uploadPicture" v-slot="{ active }">
-                                <span
-                                    :class="
-                                        active
-                                            ? 'text-white bg-blue-600 font-semibold dark:text-gray-200'
-                                            : 'text-gray-900 font-normal dark:text-gray-200'
-                                    "
-                                    class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
-                                    @click="triggerOpenFileBrowser"
-                                >
-                                    Upload a photo
-                                </span>
-                            </MenuItem>
-                            <MenuItem id="deletePicture" v-slot="{ active }">
-                                <span
-                                    :class="
-                                        active
-                                            ? 'text-white bg-blue-600 font-semibold dark:text-gray-200'
-                                            : 'text-gray-900 font-normal dark:text-gray-200'
-                                    "
-                                    class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
-                                    @click="confirmDeletePicture"
-                                >
-                                    Remove photo
-                                </span>
-                            </MenuItem>
+                        <img id="picture" class="w-32 h-32 object-cover rounded-full" :src="selectedPicture" />
+                        <div v-show="isHovered">
+                            <div class="absolute top-0 left-0 w-32 h-32 rounded-full bg-black opacity-50" />
+                            <div class="absolute top-24 left-0 w-full text-white text-sm font-medium tracking-wider">Change</div>
                         </div>
-                    </MenuItems>
-                </transition>
-            </Menu>
+                    </MenuButton>
+
+                    <transition
+                        enter-active-class="transition duration-100 ease-out"
+                        enter-from-class="transform scale-95 opacity-0"
+                        enter-to-class="transform scale-100 opacity-100"
+                        leave-active-class="transition duration-75 ease-out"
+                        leave-from-class="transform scale-100 opacity-100"
+                        leave-to-class="transform scale-95 opacity-0"
+                    >
+                        <MenuItems
+                            class="absolute left-0 w-56 mt-2 origin-top-right input-base dark:border-normalgray-800 focus:border-blue-600 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                        >
+                            <div class="py-1">
+                                <MenuItem id="uploadPicture" v-slot="{ active }">
+                                    <span
+                                        :class="
+                                            active
+                                                ? 'text-white bg-blue-600 font-semibold dark:text-gray-200'
+                                                : 'text-gray-900 font-normal dark:text-gray-200'
+                                        "
+                                        class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
+                                        @click="triggerOpenFileBrowser"
+                                    >
+                                        Upload a photo
+                                    </span>
+                                </MenuItem>
+                                <MenuItem id="deletePicture" v-slot="{ active }">
+                                    <span
+                                        :class="
+                                            active
+                                                ? 'text-white bg-blue-600 font-semibold dark:text-gray-200'
+                                                : 'text-gray-900 font-normal dark:text-gray-200'
+                                        "
+                                        class="flex justify-between w-full py-2 pl-8 pr-4 text-sm leading-5 text-left"
+                                        @click="confirmDeletePicture"
+                                    >
+                                        Remove photo
+                                    </span>
+                                </MenuItem>
+                            </div>
+                        </MenuItems>
+                    </transition>
+                </Menu>
+            </div>
+            <delete-profile-picture-modal ref="deletePictureModal" />
+            <label v-if="errorBag.hasNested('profilePicture')" class="input-label-error">
+                {{ errorBag.getNested("profilePicture") }}
+            </label>
         </div>
-        <delete-profile-picture-modal ref="deletePictureModal" />
     </BaseSection>
 </template>
 
@@ -72,6 +82,8 @@
     import ErrorBag from "@/use/helpers/ErrorBag";
     import DeleteProfilePictureModal from "@/components/modals/DeleteProfilePictureModal.vue";
     import { store, useStore } from "@/use/store/store";
+    import { MutationTypes } from "@/use/store/mutation-types";
+    import { useToast } from "@/toast";
 
     export default {
         name: "ProfilePictureSection",
@@ -100,6 +112,7 @@
             const errorBag = ref(new ErrorBag());
             const deletePictureModal = ref();
             let fileToUpload: File = {} as File;
+            const toast = useToast();
 
             onBeforeMount(async () => {
                 await getUsername();
@@ -123,11 +136,12 @@
                     reader.readAsDataURL(result);
                     reader.onload = (e) => {
                         selectedPicture.value = e.target?.result;
+                        fallbackPicture.value = selectedPicture.value;
                     };
                 } else {
                     selectedPicture.value = "";
+                    fallbackPicture.value = selectedPicture.value;
                 }
-                fallbackPicture.value = selectedPicture.value;
                 isLoading.value = false;
             }
 
@@ -157,8 +171,11 @@
                 const result = await handler.handleResponse(response);
                 if (result) {
                     fallbackPicture.value = selectedPicture.value;
+                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                     errorBag.value = new ErrorBag();
+                    toast.success("Profile picture updated.");
                 } else {
+                    selectedPicture.value = fallbackPicture.value;
                     errorBag.value = new ErrorBag(handler.errorList);
                 }
                 isLoading.value = false;
@@ -175,10 +192,12 @@
                         }
                         case action.DELETE: {
                             deletePicture();
+                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                             break;
                         }
                     }
                 });
+                errorBag.value = new ErrorBag();
             }
 
             async function deletePicture() {
@@ -194,6 +213,8 @@
             }
 
             return {
+                errorBag,
+                fallbackPicture,
                 selectedPicture,
                 isLoading,
                 isHovered,
