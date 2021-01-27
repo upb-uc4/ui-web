@@ -1,3 +1,7 @@
+# [0.16.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.16.1...v0.16.1-hotfix.1) (2021-27-01)
+# Bugfix
+- Catch promise reject when cancelling the certificate creation before displaying the operations dashboard [#817](https://github.com/upb-uc4/ui-web/pull/817)
+
 # [0.16.1](https://github.com/upb-uc4/ui-web/compare/v0.16.0...v0.16.1) (2021-26-01)
 ## Feature
 - Add multi user signing dashboard + API on the welcome page + operations archive + all operations page for admin [#785](https://github.com/upb-uc4/ui-web/pull/785)

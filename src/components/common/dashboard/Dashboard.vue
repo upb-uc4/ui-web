@@ -71,6 +71,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import OperationManagement from "@/api/OperationManagement";
     import filterOperations from "@/use/helpers/filterOperations";
+    import { useToast } from "@/toast";
 
     export default {
         name: "Dashboard",
@@ -201,9 +202,20 @@
 
             async function createCertificate() {
                 busy.value++;
-                let certificate = (await store.getters.certificate()).certificate;
+                let certificate = "";
+                await store.getters
+                    .certificate()
+                    .then((cert) => {
+                        certificate = cert.certificate;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.warning("Certificate creation aborted.");
+                    });
                 if (certificate != "") {
                     hasCertificate.value = true;
+                    // wait for Lagom
+                    await new Promise((r) => setTimeout(r, 3000));
                     await loadDashboard();
                 }
                 busy.value--;
