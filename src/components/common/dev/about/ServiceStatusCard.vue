@@ -18,9 +18,11 @@
             </div>
             <div v-else>
                 <a :href="changelogURL" class="block navigation-link">Version {{ version }}</a>
-                <div v-if="hyperledgerVersion && chaincodeVersion" class="mb-2">
-                    <span class="text-xs text-gray-500">HLF {{ version }}</span> ⋅
-                    <span class="text-xs text-gray-500">CC {{ version }}</span>
+                <div v-if="hasHyperledgerVersion" class="mb-2 text-xs text-gray-500">
+                    <span>HLF {{ hyperledgerVersion }}</span>
+                    <div v-if="chaincodeVersion" class="inline">
+                        ⋅ <span>CC {{ chaincodeVersion }}</span>
+                    </div>
                 </div>
                 <div class="dark:text-gray-500">Active</div>
             </div>
@@ -55,6 +57,7 @@
             const hyperledgerVersion = ref();
             const chaincodeVersion = ref();
 
+            const lagomNoChaincodeResponse = "Service does not use chaincode";
             const hasHyperledgerVersion = computed(() => props.getHyperledgerVersion !== null);
 
             onBeforeMount(() => {
@@ -69,12 +72,14 @@
                 if (hasHyperledgerVersion.value) {
                     props.getHyperledgerVersion.then((version: HyperledgerVersion) => {
                         hyperledgerVersion.value = version.hlfApiVersion;
-                        chaincodeVersion.value = version.chaincodeVersion;
+                        if (version.chaincodeVersion !== lagomNoChaincodeResponse) {
+                            chaincodeVersion.value = version.chaincodeVersion;
+                        }
                     });
                 }
             });
 
-            return { isLoading, isServiceUnreachable, version, changelogURL, hyperledgerVersion, chaincodeVersion };
+            return { isLoading, isServiceUnreachable, version, changelogURL, hasHyperledgerVersion, hyperledgerVersion, chaincodeVersion };
         },
     };
 </script>
