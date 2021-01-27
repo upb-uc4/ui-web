@@ -11,6 +11,8 @@ Remove this, if this PR is not to main!
 ## Please fill out the following checklist:
 - [ ] The version of the package.json is different to every other tag in this repository
 - [ ] The CHANGELOG.md contains all changes (bugfixes, features, dependency updates, ...) for this release
+
+- [ ] The deployed backend versions are compatible with the front end changes to be deployed
 ----------------------------
 
 # Description
