@@ -14,6 +14,7 @@
             <service-status-card title="Group" :get-version="getGroupVersion" />
             <service-status-card title="Admission" :get-version="getAdmissionVersion" />
             <service-status-card title="Operation" :get-version="getOperationVersion" />
+            <service-status-card title="Hyperledger" :get-version="getNetworkVersion" />
         </div>
     </div>
 </template>
@@ -32,6 +33,7 @@
     import AdmissionManagement from "@/api/AdmissionManagement";
     import GroupManagement from "@/api/GroupManagement";
     import OperationManagement from "@/api/OperationManagement";
+    import HyperledgerNetworkVersion from "@/api/api_models/configuration_management/HyperledgerVersion";
 
     export default {
         name: "ServiceStatusSection",
@@ -48,6 +50,20 @@
                 resolve(version);
             });
 
+            const getNetworkVersion = ConfigurationManagement.getHyperledgerNetworkVersion().then(
+                (versionObject: HyperledgerNetworkVersion) => {
+                    const networkVersion = versionObject.networkVersion;
+                    return new Promise<ServiceVersion>(function (resolve) {
+                        //trivial promise which always instantly resolves
+                        const serviceVersion: ServiceVersion = {
+                            version: networkVersion,
+                            changelogURL: `https://github.com/upb-uc4/hlf-network/blob/${networkVersion}/CHANGELOG.md`,
+                        };
+                        resolve(serviceVersion);
+                    });
+                }
+            );
+
             const getAdmissionVersion = new AdmissionManagement().getServiceVersion();
             const getAuthenticationVersion = new AuthenticationManagement().getServiceVersion();
             const getCertificateVersion = new CertificateManagement().getServiceVersion();
@@ -61,7 +77,6 @@
             const getUserVersion = new UserManagement().getServiceVersion();
 
             //todo hlf + scala version
-            //todo hyperledger network version
 
             return {
                 getFrontendVersion,
@@ -76,6 +91,7 @@
                 getOperationVersion,
                 getReportVersion,
                 getUserVersion,
+                getNetworkVersion,
             };
         },
     };
