@@ -10,24 +10,17 @@ import User_List from "./api_models/user_management/User_List";
 import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class UserManagement extends Common {
     protected static endpoint = "/user-management";
+    protected static serviceIdentifier = "examreg";
 
     constructor() {
-        super(UserManagement.endpoint);
+        super(UserManagement.endpoint, UserManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
-    }
-
-    static getServiceVersion(): Promise<ServiceVersion> {
-        return super.getServiceVersion().then(async (version: ServiceVersion) => {
-            version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/user-${version.version}/product_code/user_service/CHANGELOG.md`;
-            return version;
-        });
     }
 
     async getUsers(

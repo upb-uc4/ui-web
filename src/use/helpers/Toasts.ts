@@ -13,6 +13,7 @@ export function showNetworkErrorToast() {
 export function showAPIToast(code: number, msg?: string) {
     switch (code) {
         case 400:
+            break;
         case 500:
             toast.error("Something went wrong on our side. Please consider reporting this bug.");
             break;
@@ -21,6 +22,9 @@ export function showAPIToast(code: number, msg?: string) {
             break;
         case 404:
             toast.error("Could not find " + msg + ".");
+            break;
+        case 413:
+            toast.error("Uploaded file too large");
             break;
         case 503:
             toast.error("Service unavailable. Please consider reporting this.");

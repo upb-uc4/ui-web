@@ -12,10 +12,6 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
     }
 
     handleResponse<T>(response: APIResponse<T>): T {
-        if (response.statusCode == 413) {
-            this.errorList.push({ name: "profilePicture", reason: "The image size is too large (max 1MB)." });
-            return response.returnValue;
-        }
         if (this.isValidationError(response.error)) {
             for (let err of response.error.invalidParams) {
                 this.errorList.push(err);
@@ -28,29 +24,35 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
         switch (response.statusCode) {
             case 400: {
                 showAPIToast(response.statusCode);
-                return response.returnValue;
+                break;
             }
             case 401: {
                 alert("Authentication failed. Please login again!");
-                return response.returnValue;
+                break;
             }
             case 403: {
                 alert("You do not have the neccessary user rights for this action!");
-                return response.returnValue;
+                break;
             }
             case 404: {
                 showAPIToast(response.statusCode, "profile picture");
-                return response.returnValue;
+                break;
             }
             case 500: {
                 showAPIToast(response.statusCode);
-                return response.returnValue;
+                break;
             }
             case 200: {
-                return response.returnValue;
+                break;
             }
             case 415: {
                 alert("The uploaded file has unsupported file type!");
+                break;
+            }
+            case 413: {
+                this.errorList.push({ name: "profilePicture", reason: "The image size is too large (max 1MB)." });
+                showAPIToast(response.statusCode);
+                break;
             }
         }
 

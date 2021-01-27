@@ -9,9 +9,10 @@ import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class ExaminationRegulationManagement extends CommonHyperledger {
     protected static endpoint = "/examreg-management";
+    protected static serviceIdentifier = "examreg";
 
     constructor() {
-        super(ExaminationRegulationManagement.endpoint);
+        super(ExaminationRegulationManagement.endpoint, ExaminationRegulationManagement.serviceIdentifier);
     }
 
     async getModules(moduleIds?: string[]): Promise<APIResponse<Module[]>> {
@@ -226,12 +227,5 @@ export default class ExaminationRegulationManagement extends CommonHyperledger {
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
-    }
-
-    static getServiceVersion(): Promise<ServiceVersion> {
-        return super.getServiceVersion().then(async (version: ServiceVersion) => {
-            version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/examreg-${version.version}/product_code/examreg_service/CHANGELOG.md`;
-            return version;
-        });
     }
 }

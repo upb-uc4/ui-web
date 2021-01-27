@@ -7,9 +7,10 @@ import APIResponse from "./helpers/models/APIResponse";
 
 export default class ConfigurationManagement extends Common {
     protected static endpoint = "/configuration-management";
+    protected static serviceIdentifier = "configuration";
 
     constructor() {
-        super(ConfigurationManagement.endpoint);
+        super(ConfigurationManagement.endpoint, ConfigurationManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

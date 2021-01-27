@@ -14,9 +14,10 @@ import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class MatriculationManagement extends CommonHyperledger {
     protected static endpoint = "/matriculation-management";
+    protected static serviceIdentifier = "matriculation";
 
     constructor() {
-        super(MatriculationManagement.endpoint);
+        super(MatriculationManagement.endpoint, MatriculationManagement.serviceIdentifier);
     }
 
     /**
@@ -197,12 +198,5 @@ export default class MatriculationManagement extends CommonHyperledger {
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
-    }
-
-    static getServiceVersion(): Promise<ServiceVersion> {
-        return super.getServiceVersion().then(async (version: ServiceVersion) => {
-            version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/matriculation-${version.version}/product_code/matriculation_service/CHANGELOG.md`;
-            return version;
-        });
     }
 }

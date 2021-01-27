@@ -3,15 +3,17 @@
         <h2 class="block text-gray-800 dark:text-gray-300 text-lg font-medium mb-1">Server Status</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <service-status-card title="Frontend" :get-version="getFrontendVersion" />
-            <service-status-card title="Authentication" :get-version="AuthenticationManagement.getServiceVersion()" />
-            <service-status-card title="Course" :get-version="CertificateManagement.getServiceVersion()" />
-            <service-status-card title="User" :get-version="UserManagement.getServiceVersion()" />
-            <service-status-card title="Matriculation" :get-version="MatriculationManagement.getServiceVersion()" />
-            <service-status-card title="Certificate" :get-version="CertificateManagement.getServiceVersion()" />
-            <service-status-card title="Exam Regulation" :get-version="ExaminationRegulationManagement.getServiceVersion()" />
-            <service-status-card title="Configuration" :get-version="ConfigurationManagement.getServiceVersion()" />
-            <service-status-card title="Report" :get-version="ReportManagement.getServiceVersion()" />
-            <service-status-card title="Admission" :get-version="AdmissionManagement.getServiceVersion()" />
+            <service-status-card title="Authentication" :get-version="getAuthenticationVersion" />
+            <service-status-card title="Course" :get-version="getCourseVersion" />
+            <service-status-card title="User" :get-version="getUserVersion" />
+            <service-status-card title="Matriculation" :get-version="getMatriculationVersion" />
+            <service-status-card title="Certificate" :get-version="getCertificateVersion" />
+            <service-status-card title="Exam Regulation" :get-version="getExaminationRegulationVersion" />
+            <service-status-card title="Configuration" :get-version="getConfigurationVersion" />
+            <service-status-card title="Report" :get-version="getReportVersion" />
+            <service-status-card title="Group" :get-version="getGroupVersion" />
+            <service-status-card title="Admission" :get-version="getAdmissionVersion" />
+            <service-status-card title="Operation" :get-version="getOperationVersion" />
         </div>
     </div>
 </template>
@@ -28,6 +30,8 @@
     import ConfigurationManagement from "@/api/ConfigurationManagement";
     import ReportManagement from "@/api/ReportManagement";
     import AdmissionManagement from "@/api/AdmissionManagement";
+    import GroupManagement from "@/api/GroupManagement";
+    import OperationManagement from "@/api/OperationManagement";
 
     export default {
         name: "ServiceStatusSection",
@@ -44,17 +48,34 @@
                 resolve(version);
             });
 
+            const getAdmissionVersion = new AdmissionManagement().getServiceVersion();
+            const getAuthenticationVersion = new AuthenticationManagement().getServiceVersion();
+            const getCertificateVersion = new CertificateManagement().getServiceVersion();
+            const getConfigurationVersion = new ConfigurationManagement().getServiceVersion();
+            const getCourseVersion = new CourseManagement().getServiceVersion();
+            const getExaminationRegulationVersion = new ExaminationRegulationManagement().getServiceVersion();
+            const getGroupVersion = new GroupManagement().getServiceVersion();
+            const getMatriculationVersion = new MatriculationManagement().getServiceVersion();
+            const getOperationVersion = new OperationManagement().getServiceVersion();
+            const getReportVersion = new ReportManagement().getServiceVersion();
+            const getUserVersion = new UserManagement().getServiceVersion();
+
+            //todo hlf + scala version
+            //todo hyperledger network version
+
             return {
                 getFrontendVersion,
-                AuthenticationManagement,
-                CourseManagement,
-                UserManagement,
-                MatriculationManagement,
-                CertificateManagement,
-                ExaminationRegulationManagement,
-                ConfigurationManagement,
-                ReportManagement,
-                AdmissionManagement,
+                getAdmissionVersion,
+                getAuthenticationVersion,
+                getCertificateVersion,
+                getConfigurationVersion,
+                getCourseVersion,
+                getExaminationRegulationVersion,
+                getGroupVersion,
+                getMatriculationVersion,
+                getOperationVersion,
+                getReportVersion,
+                getUserVersion,
             };
         },
     };

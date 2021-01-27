@@ -11,20 +11,14 @@ import { useStore } from "@/use/store/store";
 
 export default class CertificateManagement extends CommonHyperledger {
     protected static endpoint = "/certificate-management";
+    protected static serviceIdentifier = "certificate";
 
     constructor() {
-        super(CertificateManagement.endpoint);
+        super(CertificateManagement.endpoint, CertificateManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
-    }
-
-    static getServiceVersion(): Promise<ServiceVersion> {
-        return super.getServiceVersion().then(async (version: ServiceVersion) => {
-            version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/certificate-${version.version}/product_code/certificate_service/CHANGELOG.md`;
-            return version;
-        });
     }
 
     async getCertificate(username: string): Promise<APIResponse<Certificate>> {

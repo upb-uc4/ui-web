@@ -13,20 +13,14 @@ import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class AuthenticationManagement extends Common {
     protected static endpoint = "/authentication-management";
+    protected static serviceIdentifier = "authentication";
 
     constructor() {
-        super(AuthenticationManagement.endpoint);
+        super(AuthenticationManagement.endpoint, AuthenticationManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
-    }
-
-    static getServiceVersion(): Promise<ServiceVersion> {
-        return super.getServiceVersion().then(async (version: ServiceVersion) => {
-            version.changelogURL = `https://github.com/upb-uc4/University-Credits-4.0/blob/authentication-${version.version}/product_code/authentication_service/CHANGELOG.md`;
-            return version;
-        });
     }
 
     async changeOwnPassword(password: string): Promise<APIResponse<boolean>> {
