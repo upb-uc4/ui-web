@@ -14,8 +14,8 @@ export function createNewLecturer(governmentId: string, lecturer: Lecturer, lect
     // create new Lecturer
     cy.get("input[type='radio']").eq(1).click();
     cy.get("input[id='userName']").type(lecturerAuthUser.username);
-    cy.get("input[id='password']").should("exist");
-    cy.get("input[id='password']").type(lecturerAuthUser.password);
+    cy.get("input[id='securitySectionPassword']").should("exist");
+    cy.get("input[id='securitySectionPassword']").type(lecturerAuthUser.password);
     cy.get("input[id='governmentId']").type(governmentId);
     cy.get('button[id="country"]').click();
     cy.get('li[id="countryItem-' + lecturer.address.country + '"]').click();
@@ -46,9 +46,10 @@ export function createNewLecturer(governmentId: string, lecturer: Lecturer, lect
 
 export function createNewStudent(governmentId: string, student: Student, studentAuthUser: Account) {
     navigateToAccountForm();
-    cy.get("input[type='radio']").eq(2).click();
+    cy.wait(10000);
+    cy.get("#role-Student").click();
     cy.get("input[id='userName']").type(student.username);
-    cy.get("input[id='password']").type(studentAuthUser.password);
+    cy.get("input[id='securitySectionPassword']").type(studentAuthUser.password);
     cy.get("input[id='governmentId']").type(governmentId);
     cy.get('button[id="country"]').click();
     cy.get('li[id="countryItem-' + student.address.country + '"]').click();
@@ -80,7 +81,7 @@ export function createNewAdmin(governmentId: string, admin: Admin, adminAuthUser
     navigateToAccountForm();
     cy.get("input[type='radio']").eq(0).click();
     cy.get("input[id='userName']").type(admin.username);
-    cy.get("input[id='password']").type(adminAuthUser.password);
+    cy.get("input[id='securitySectionPassword']").type(adminAuthUser.password);
     cy.get("input[id='governmentId']").type(governmentId);
     cy.get('button[id="country"]').click();
     cy.get('li[id="countryItem-' + admin.address.country + '"]').click();
