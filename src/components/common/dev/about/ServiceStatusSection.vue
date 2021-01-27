@@ -6,14 +6,26 @@
             <service-status-card title="Authentication" :get-version="getAuthenticationVersion" />
             <service-status-card title="Course" :get-version="getCourseVersion" />
             <service-status-card title="User" :get-version="getUserVersion" />
-            <service-status-card title="Matriculation" :get-version="getMatriculationVersion" />
-            <service-status-card title="Certificate" :get-version="getCertificateVersion" />
-            <service-status-card title="Exam Regulation" :get-version="getExaminationRegulationVersion" />
+            <service-status-card
+                title="Matriculation"
+                :get-version="getMatriculationVersion"
+                :get-hyperledger-version="getMatriculationHLFVersion"
+            />
+            <service-status-card
+                title="Certificate"
+                :get-version="getCertificateVersion"
+                :get-hyperledger-version="getCertificateHLFVersion"
+            />
+            <service-status-card
+                title="Exam Regulation"
+                :get-version="getExaminationRegulationVersion"
+                :get-hyperledger-version="getExaminationRegulationHLFVersion"
+            />
             <service-status-card title="Configuration" :get-version="getConfigurationVersion" />
             <service-status-card title="Report" :get-version="getReportVersion" />
-            <service-status-card title="Group" :get-version="getGroupVersion" />
-            <service-status-card title="Admission" :get-version="getAdmissionVersion" />
-            <service-status-card title="Operation" :get-version="getOperationVersion" />
+            <service-status-card title="Group" :get-version="getGroupVersion" :get-hyperledger-version="getGroupHLFVersion" />
+            <service-status-card title="Admission" :get-version="getAdmissionVersion" :get-hyperledger-version="getAdmissionHLFVersion" />
+            <service-status-card title="Operation" :get-version="getOperationVersion" :get-hyperledger-version="getOperationHLFVersion" />
             <service-status-card title="Hyperledger" :get-version="getNetworkVersion" />
         </div>
     </div>
@@ -76,7 +88,12 @@
             const getReportVersion = new ReportManagement().getServiceVersion();
             const getUserVersion = new UserManagement().getServiceVersion();
 
-            //todo hlf + scala version
+            const getAdmissionHLFVersion = AdmissionManagement.getHyperledgerVersion();
+            const getCertificateHLFVersion = CertificateManagement.getHyperledgerVersion();
+            const getExaminationRegulationHLFVersion = ExaminationRegulationManagement.getHyperledgerVersion();
+            const getGroupHLFVersion = GroupManagement.getHyperledgerVersion();
+            const getMatriculationHLFVersion = MatriculationManagement.getHyperledgerVersion();
+            const getOperationHLFVersion = OperationManagement.getHyperledgerVersion();
 
             return {
                 getFrontendVersion,
@@ -92,6 +109,13 @@
                 getReportVersion,
                 getUserVersion,
                 getNetworkVersion,
+
+                getAdmissionHLFVersion,
+                getCertificateHLFVersion,
+                getExaminationRegulationHLFVersion,
+                getGroupHLFVersion,
+                getMatriculationHLFVersion,
+                getOperationHLFVersion,
             };
         },
     };

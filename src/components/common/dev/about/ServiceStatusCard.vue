@@ -17,7 +17,11 @@
                 <div>Unreachable</div>
             </div>
             <div v-else>
-                <a :href="changelogURL" class="navigation-link">Version {{ version }}</a>
+                <a :href="changelogURL" class="block navigation-link">Version {{ version }}</a>
+                <div v-if="hyperledgerVersion && chaincodeVersion" class="mb-2">
+                    <span class="text-xs text-gray-500">HLF {{ version }}</span> ⋅
+                    <span class="text-xs text-gray-500">CC {{ version }}</span>
+                </div>
                 <div class="dark:text-gray-500">Active</div>
             </div>
         </div>
@@ -25,7 +29,8 @@
 </template>
 
 <script lang="ts">
-    import { onBeforeMount, ref } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
+    import { HyperledgerVersion } from "@/api/helpers/models/ServiceVersion";
     export default {
         name: "ServiceStatusCard",
         props: {
@@ -37,12 +42,20 @@
                 type: Promise,
                 required: true,
             },
+            getHyperledgerVersion: {
+                type: Promise,
+                default: null,
+            },
         },
         setup(props: any) {
             const isLoading = ref(true);
             const isServiceUnreachable = ref(false);
             const version = ref("0.0.0");
             const changelogURL = ref("/");
+            const hyperledgerVersion = ref();
+            const chaincodeVersion = ref();
+
+            const hasHyperledgerVersion = computed(() => props.getHyperledgerVersion !== null);
 
             onBeforeMount(() => {
                 props.getVersion
@@ -52,9 +65,16 @@
                     })
                     .catch(() => (isServiceUnreachable.value = true))
                     .finally(() => (isLoading.value = false));
+
+                if (hasHyperledgerVersion.value) {
+                    props.getHyperledgerVersion.then((version: HyperledgerVersion) => {
+                        hyperledgerVersion.value = version.hlfApiVersion;
+                        chaincodeVersion.value = version.chaincodeVersion;
+                    });
+                }
             });
 
-            return { isLoading, isServiceUnreachable, version, changelogURL };
+            return { isLoading, isServiceUnreachable, version, changelogURL, hyperledgerVersion, chaincodeVersion };
         },
     };
 </script>

@@ -4,7 +4,6 @@ import APIError from "./api_models/errors/APIError";
 import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class CourseManagement extends Common {
     protected static endpoint = "/course-management";
