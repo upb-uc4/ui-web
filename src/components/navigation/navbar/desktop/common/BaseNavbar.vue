@@ -1,5 +1,5 @@
 <template>
-    <header class="flex items-center justify-between bg-grayalt dark:bg-normalgray-900 md:h-16 min-h-16">
+    <header class="flex items-center justify-between bg-bluegray-800 dark:bg-normalgray-900 md:h-16 min-h-16">
         <div class="flex items-center w-full">
             <div class="items-center h-16 pl-8 rounded-lg cursor-pointer outline-none" title="Home" @click="routeLogo">
                 <img src="@/assets/logo/logo.svg" alt="uc4-logo" class="h-full py-3" />

@@ -7,6 +7,7 @@ module.exports = {
         colors: {
             transparent: "transparent",
             white: colors.white,
+            bluegray: colors.blueGray,
             black: colors.black,
             gray: colors.coolGray,
             red: colors.red,
@@ -14,7 +15,6 @@ module.exports = {
             yellow: colors.amber,
             green: colors.green,
             lime: colors.lime,
-            grayalt: "#24292e",
             normalgray: colors.gray,
             night: {
                 black: "#121212",

@@ -1,7 +1,7 @@
 <template>
     <base-view class="flex flex-col justify-center">
         <div class="mt-2">
-            <img class="hidden sm:block mx-auto h-16 w-auto" src="@/assets/logo/logo_inverse.svg" alt="uc4_logo" />
+            <img class="hidden sm:block mx-auto h-16 w-auto" src="@/assets/logo/logo.svg" alt="uc4_logo" />
             <h2 class="mt-6 text-center text-2xl text-gray-700 dark:text-gray-300 tracking-tighter">Log in to University Credits 4.0</h2>
         </div>
         <div v-show="hasError" class="relative mt-4 flex justify-center items-center">
@@ -18,7 +18,7 @@
             >
                 <div class="rounded-md shadow-sm">
                     <div class="">
-                        <label class="input-label">Email Address</label>
+                        <label class="input-label">Username</label>
                         <input
                             id="email"
                             v-model="email"
@@ -48,7 +48,7 @@
                 </div>
 
                 <div class="mt-8">
-                    <button id="login" class="w-full btn-add" :disabled="hasNoInputEntered" @click="login">Login</button>
+                    <button id="login" class="w-full btn" :disabled="hasNoInputEntered" @click="login">Login</button>
                 </div>
             </div>
         </form>
