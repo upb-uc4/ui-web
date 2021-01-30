@@ -1,3 +1,5 @@
+# [0.17.0](https://github.com/upb-uc4/ui-web/compare/v0.16.1-hotfix.1...v0.17.0) (2021-29-01)
+
 # [0.16.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.16.1...v0.16.1-hotfix.1) (2021-27-01)
 # Bugfix
 - Catch promise reject when cancelling the certificate creation before displaying the operations dashboard [#817](https://github.com/upb-uc4/ui-web/pull/817)
