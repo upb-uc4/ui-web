@@ -84,6 +84,7 @@ export default class OperationManagement extends CommonHyperledger {
                 };
             })
             .catch(async (error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     if (
                         await handleAuthenticationError({
@@ -285,6 +286,7 @@ export default class OperationManagement extends CommonHyperledger {
                 };
             })
             .catch(async (error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     if (
                         await handleAuthenticationError({
@@ -325,6 +327,7 @@ export default class OperationManagement extends CommonHyperledger {
                 };
             })
             .catch(async (error: AxiosError) => {
+                console.log(error);
                 if (error.response) {
                     if (
                         await handleAuthenticationError({

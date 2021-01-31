@@ -1,7 +1,11 @@
 import { arrayBufferToBase64 } from "@/use/crypto/certificates";
-import Operation from "../api_models/operation_management/Operation";
+import Operation, { TransactionInfo } from "../api_models/operation_management/Operation";
 
 export async function validateOperationId(operation: Operation) {
+    return (await calculateOperationId(operation.transactionInfo)) === operation.operationId;
+}
+
+export async function old(operation: Operation) {
     const crypto = window.crypto.subtle;
 
     const toHash =
@@ -19,7 +23,37 @@ export async function validateOperationId(operation: Operation) {
     operationId = operationId.replace(/\+/g, "-");
     operationId = operationId.replace(/\//g, "_");
 
-    return operationId === operation.operationId;
+    return operationId;
+}
+
+export async function calculateOperationId(transactionInfo: TransactionInfo) {
+    const op: Operation = {
+        existingApprovals: { groups: [], users: [] },
+        initiatedTimestamp: "",
+        initiator: "",
+        lastModifiedTimestamp: "",
+        missingApprovals: { groups: [], users: [] },
+        operationId: "",
+        reason: "",
+        state: "",
+        transactionInfo,
+    };
+
+    console.log("old", await old(op));
+
+    const crypto = window.crypto.subtle;
+
+    const toHash =
+        transactionInfo.contractName + ":" + transactionInfo.transactionName + ":" + transactionInfo.parameters.replace(/s/g, "");
+
+    const operationHash = await crypto.digest("SHA-256", new Uint8Array(toUTF8Array(toHash)));
+
+    let operationId = arrayBufferToBase64(operationHash);
+    operationId = operationId.replace(/\+/g, "-");
+    operationId = operationId.replace(/\//g, "_");
+    //operationId = operationId.replace(/=/g, "");
+    console.log("inside func", transactionInfo, operationId);
+    return operationId;
 }
 
 // https://stackoverflow.com/questions/17191945/conversion-between-utf-8-arraybuffer-and-string/22373135

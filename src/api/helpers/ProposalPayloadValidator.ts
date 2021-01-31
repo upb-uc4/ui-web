@@ -6,6 +6,9 @@ import { ProposalPayload } from "../api_models/common/Proposal";
 import { isEqual } from "lodash";
 import { UC4Identifier } from "./UC4Identifier";
 import CourseAdmission from "../api_models/admission_management/CourseAdmission";
+import { calculateOperationId } from "./OperationValidator";
+import { TransactionInfo } from "../api_models/operation_management/Operation";
+import OperationManagement from "../OperationManagement";
 
 export function validateMatriculationProposal(
     proposalPayload: ProposalPayload,
@@ -115,8 +118,15 @@ export function validateRejectionProposal(proposalPayload: ProposalPayload, oper
 export function validateApprovalProposal(proposalPayload: ProposalPayload, operationId: string): boolean {
     const name = proposalPayload.input.input.args[0];
     const proposalOperationId = proposalPayload.input.input.args[1];
+    const operationManagement = new OperationManagement();
+    operationManagement.getOperation(proposalOperationId).then((val) => {
+        console.log("in prop", val.returnValue);
+        console.log("in prop", val);
+        console.log("in prop", (val.error as any)["invalidParams"]);
+    });
+    console.log(proposalOperationId, operationId);
 
-    if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_REJECTION) return false;
+    if (name !== UC4Identifier.CONTRACT_APPROVAL + UC4Identifier.SEPERATOR + UC4Identifier.TRANSACTION_APPROVAL) return false;
 
     let result = proposalOperationId === operationId;
     return result;

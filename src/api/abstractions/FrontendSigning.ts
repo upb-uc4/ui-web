@@ -16,7 +16,7 @@ import SubjectMatriculation from "../api_models/matriculation_management/Subject
 import CertificateManagement from "../CertificateManagement";
 import Operation from "../api_models/operation_management/Operation";
 import APIResponse from "../helpers/models/APIResponse";
-import { validateOperationId } from "../helpers/OperationValidator";
+import { calculateOperationId, validateOperationId } from "../helpers/OperationValidator";
 import {
     validateApprovalProposal,
     validateCourseAdmissionProposal,
@@ -35,6 +35,11 @@ import MatriculationManagement from "../MatriculationManagement";
 import OperationManagement from "../OperationManagement";
 import { UC4Identifier } from "../helpers/UC4Identifier";
 import MatriculationData from "../api_models/matriculation_management/MatriculationData";
+import {
+    buildTransactionInfoMatriculationAddEntries,
+    buildTransactionInfoMatriculationAddMatriculation,
+    buildTransactionInfoMatriculationUpdateMatriculation,
+} from "../helpers/TransactionInfoBuilder/MatriculationTransactionInfoBuilder";
 
 export async function updateMatriculation(
     username: string,
@@ -55,13 +60,69 @@ export async function updateMatriculation(
             return handler.handleResponse(arg);
         },
         async (payload: ProposalPayload) => {
-            return validateMatriculationProposal(payload, enrollmentId, matriculation);
+            const transactionInfoAddEntries = buildTransactionInfoMatriculationAddEntries(enrollmentId, matriculation);
+            const transactionInfoAddMatriculation = buildTransactionInfoMatriculationAddMatriculation({
+                enrollmentId,
+                matriculationStatus: matriculation,
+            });
+            const transactionInfoUpdateMatriculation = buildTransactionInfoMatriculationUpdateMatriculation({
+                enrollmentId,
+                matriculationStatus: matriculation,
+            });
+
+            const promiseAddEntries = calculateOperationId(transactionInfoAddEntries).then((operationId) => {
+                return validateApprovalProposal(payload, operationId);
+            });
+
+            const promiseAddMatriculation = calculateOperationId(transactionInfoAddMatriculation).then((operationId) => {
+                return validateApprovalProposal(payload, operationId);
+            });
+
+            const promiseUpdateMatriculation = calculateOperationId(transactionInfoUpdateMatriculation).then((operationId) => {
+                return validateApprovalProposal(payload, operationId);
+            });
+
+            const promises = [promiseAddEntries, promiseAddMatriculation, promiseUpdateMatriculation];
+
+            const [validate1, validate2, validate3] = await Promise.all(promises);
+
+            console.log((validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3));
+
+            return (validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3);
         },
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler.handleResponse(response);
         },
-        (transaction: TransactionMessage) => {
-            return matriculationTransactionValidator(enrollmentId, matriculation, transaction);
+        async (transaction: TransactionMessage) => {
+            const transactionInfoAddEntries = buildTransactionInfoMatriculationAddEntries(enrollmentId, matriculation);
+            const transactionInfoAddMatriculation = buildTransactionInfoMatriculationAddMatriculation({
+                enrollmentId,
+                matriculationStatus: matriculation,
+            });
+            const transactionInfoUpdateMatriculation = buildTransactionInfoMatriculationUpdateMatriculation({
+                enrollmentId,
+                matriculationStatus: matriculation,
+            });
+
+            const promiseAddEntries = calculateOperationId(transactionInfoAddEntries).then((operationId) => {
+                return approveTransactionValidator(transaction, operationId);
+            });
+
+            const promiseAddMatriculation = calculateOperationId(transactionInfoAddMatriculation).then((operationId) => {
+                return approveTransactionValidator(transaction, operationId);
+            });
+
+            const promiseUpdateMatriculation = calculateOperationId(transactionInfoUpdateMatriculation).then((operationId) => {
+                return approveTransactionValidator(transaction, operationId);
+            });
+
+            const promises = [promiseAddEntries, promiseAddMatriculation, promiseUpdateMatriculation];
+
+            const [validate1, validate2, validate3] = await Promise.all(promises);
+
+            console.log((validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3));
+
+            return (validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3);
         },
         (response: APIResponse<boolean>) => {
             return genericHandler.handleResponse(response);
@@ -90,7 +151,7 @@ export async function addCourseAdmission(enrollmentId: string, addAdmission: Cou
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler2.handleResponse(response);
         },
-        (transaction: TransactionMessage) => {
+        async (transaction: TransactionMessage) => {
             return admissionsTransactionValidator(transaction, undefined, addAdmission, enrollmentId);
         },
         (response: APIResponse<boolean>) => {
@@ -120,7 +181,7 @@ export async function dropCourseAdmission(admissionId: string, protoUrl?: string
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler2.handleResponse(response);
         },
-        (transaction: TransactionMessage) => {
+        async (transaction: TransactionMessage) => {
             return admissionsTransactionValidator(transaction, admissionId);
         },
         (response: APIResponse<boolean>) => {
@@ -152,7 +213,7 @@ export async function approveOperation(operation: Operation, protoUrl?: string):
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler2.handleResponse(response);
         },
-        (transaction: TransactionMessage) => {
+        async (transaction: TransactionMessage) => {
             return approveTransactionValidator(transaction, operation.operationId);
         },
         (response: APIResponse<boolean>) => {
@@ -184,7 +245,7 @@ export async function rejectOperation(operation: Operation, rejectMessage: strin
         (response: APIResponse<UnsignedTransactionMessage>) => {
             return genericHandler2.handleResponse(response);
         },
-        (transaction: TransactionMessage) => {
+        async (transaction: TransactionMessage) => {
             return rejectionTransactionValidator(transaction, operation.operationId, rejectMessage);
         },
         (response: APIResponse<boolean>) => {
@@ -199,7 +260,7 @@ async function abstractHandler(
     proposalValidationHandler: (...args: any[]) => UnsignedProposalMessage,
     proposalValidator: (...args: any[]) => Promise<boolean>,
     transactionValidationHandler: (...args: any[]) => UnsignedTransactionMessage,
-    transactionValidator: (...args: any[]) => boolean,
+    transactionValidator: (...args: any[]) => Promise<boolean>,
     submitHandler: (...args: any[]) => boolean,
     protoUrl?: string
 ) {
@@ -273,7 +334,7 @@ async function abstractHandler(
         return false;
     }
 
-    const transactionValidation = transactionValidator(transaction);
+    const transactionValidation = await transactionValidator(transaction);
 
     if (!transactionValidation) {
         useToast().error("Transaction validation failed. Your browser or university might be compromised.");

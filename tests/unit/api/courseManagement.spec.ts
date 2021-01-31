@@ -56,6 +56,11 @@ test("Get courses by module", async () => {
     expect(courses.returnValue.length).toBeGreaterThan(0);
 });
 
+test("Get courses by exam reg", async () => {
+    const courses = await courseManagement.getCourses(undefined, undefined, undefined, ["Bachelor Computer Science v3"]);
+    expect(courses.returnValue.length).toBeGreaterThan(0);
+});
+
 test("Update course", async () => {
     createdCourse.courseName = "Worst test course ever!";
     const success = await courseManagement.updateCourse(createdCourse);
