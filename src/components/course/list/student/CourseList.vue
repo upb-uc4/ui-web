@@ -52,9 +52,10 @@
 
             onBeforeMount(async () => {
                 isLoading.value = true;
-                await getUsername();
+                const promises = [];
+                promises.push(getUsername(), getCourses());
+                await Promise.all(promises);
                 await getAdmittedCourses();
-                await getCourses();
                 isLoading.value = false;
             });
 
