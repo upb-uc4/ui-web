@@ -1,15 +1,7 @@
 <template>
-    <div class="w-full relative text-gray-600 flex">
-        <button id="refresh" class="items-center mb-3" title="Search" @click="refresh">
-            <i class="fas fa-search ml-3 absolute text-gray-600 hover:text-gray-700" />
-        </button>
-        <input
-            id="message"
-            v-model="filterMessage"
-            class="w-full border-2 border-gray-300 bg-white h-12 px-12 rounded-lg focus:outline-none"
-            type="search"
-            placeholder="Filter"
-        />
+    <div class="w-full relative flex items-center">
+        <i class="absolute left-3 fas fa-search text-gray-600" />
+        <input id="message" v-model="filterMessage" class="w-full px-10 input-text" type="search" :placeholder="placeholder" />
         <button id="refresh" class="-ml-8 my-1 focus:outline-none" title="Refresh" @click="refresh">
             <i class="inline fas fa-redo-alt text-gray-600 hover:text-gray-700" />
         </button>
@@ -21,11 +13,15 @@
     import { ref } from "vue";
 
     export default {
-        name: "SeachBar",
+        name: "SearchBar",
         props: {
             message: {
                 type: String,
                 required: true,
+            },
+            placeholder: {
+                type: String,
+                default: "Filter",
             },
         },
         emits: ["refresh", "update:message"],

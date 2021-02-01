@@ -12,9 +12,11 @@ import {
 export function createCourse(course: Course) {
     navigateToCourseForm();
     cy.wait(750);
-    cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
+    cy.get("button[id='courseType']").click();
+    cy.get("li[id='courseTypeItem-" + course.courseType + "']").click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
+    cy.get("button[id='courseLanguage']").click();
+    cy.get("li[id='courseLanguageItem-" + course.courseLanguage + "']").click();
     cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
@@ -27,7 +29,8 @@ export function createCourse(course: Course) {
     navigateToMyCoursesLecturer();
     cy.url().should("contain", "course-management");
     cy.wait(3000);
-    cy.get("button[title='Refresh']").click();
+    cy.get("button[id='refresh']").click();
+    cy.wait(3000);
     cy.get("div[id='courseName']").contains(course.courseName).should("exist");
 }
 
@@ -36,10 +39,12 @@ export function createCourseAdmin(course: Course) {
     cy.wait(750);
     cy.get("input[id='lecturerId']").clear();
     cy.get("input[id='lecturerId']").click();
-    cy.get("div[id='lecturerId_options']").get("div").contains(`(@${course.lecturerId})`).click();
-    cy.get("input[type='radio']").get(`input[value='${course.courseType}']`).click();
+    cy.get("div[id='lecturerIdOptionDiv']").get("div").contains(`(@${course.lecturerId})`).click();
+    cy.get("button[id='courseType']").click();
+    cy.get("li[id='courseTypeItem-" + course.courseType + "']").click();
     cy.get('input[id="courseName"]').type(course.courseName);
-    cy.get("select[id='courseLanguage']").select(course.courseLanguage);
+    cy.get("button[id='courseLanguage']").click();
+    cy.get("li[id='courseLanguageItem-" + course.courseLanguage + "']").click();
     cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
@@ -52,7 +57,8 @@ export function createCourseAdmin(course: Course) {
     navigateToCourseListAdmin();
     cy.url().should("contain", "all-courses");
     cy.wait(3000);
-    cy.get("button[title='Refresh']").click();
+    cy.get("button[id='refresh']").click();
+    cy.wait(3000);
     cy.get("div[id='courseName']").contains(course.courseName).should("exist");
 }
 

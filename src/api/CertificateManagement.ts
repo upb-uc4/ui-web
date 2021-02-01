@@ -6,13 +6,15 @@ import EnrollmentId from "./api_models/certificate_management/EnrollmentId";
 import EncryptedPrivateKey from "./api_models/certificate_management/EncryptedPrivateKey";
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 import { useStore } from "@/use/store/store";
 
 export default class CertificateManagement extends CommonHyperledger {
     protected static endpoint = "/certificate-management";
+    protected static serviceIdentifier = "certificate";
 
     constructor() {
-        super(CertificateManagement.endpoint);
+        super(CertificateManagement.endpoint, CertificateManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

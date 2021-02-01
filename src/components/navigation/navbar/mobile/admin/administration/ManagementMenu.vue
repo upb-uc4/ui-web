@@ -9,7 +9,7 @@
 
 <script lang="ts">
     import BaseMenu from "../../common/BaseMenu.vue";
-    import MenuBody from "./ManageAccountsMenuBody.vue";
+    import MenuBody from "./ManagementMenuBody.vue";
 
     export default {
         name: "MobileManageAccountsMenu",

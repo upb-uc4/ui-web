@@ -57,7 +57,7 @@ describe("Student course view", () => {
     });
 
     it("Course exists", () => {
-        cy.get("button[title='Refresh']").click();
+        cy.get("button[id='refresh']").click();
         cy.get("div").contains(course.courseName);
     });
 });

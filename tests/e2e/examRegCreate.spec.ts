@@ -43,7 +43,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Remove module and ensure we cannot create the examination regulation", function () {
         // Remove only module
-        cy.get("button[id='removeModule0'").click();
+        cy.get("button[id='removeModule" + exRegModuleID + "'").click();
         cy.get("button[id='createExamReg']").should("be.disabled");
     });
 
@@ -82,11 +82,13 @@ describe("Account creation, edition and deletion", function () {
             .clear()
             .type(exRegModuleID + "1");
         cy.get("input[id='moduleName']").clear().type(exRegModuleName);
-        cy.get("button[id='addModule']").should("contain.text", "Create Module");
+        cy.get("button[id='addModule']").should("contain.text", "Add Module");
 
         // Add existing module
+        cy.get("input[id='moduleName']").clear();
         cy.get("input[id='moduleID']").clear().type(exRegModuleID);
         cy.get("button[id='addModule']").should("contain.text", "Add Module");
+        cy.get("input[id='moduleName']").should("have.value", exRegModuleName);
         cy.get("button[id='addModule']").click();
         cy.get("button[id='createExamReg']").should("be.enabled");
     });

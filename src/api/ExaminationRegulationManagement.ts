@@ -5,12 +5,14 @@ import Module from "./api_models/exam_reg_management/Module";
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
 import APIResponse from "./helpers/models/APIResponse";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class ExaminationRegulationManagement extends CommonHyperledger {
     protected static endpoint = "/examreg-management";
+    protected static serviceIdentifier = "examreg";
 
     constructor() {
-        super(ExaminationRegulationManagement.endpoint);
+        super(ExaminationRegulationManagement.endpoint, ExaminationRegulationManagement.serviceIdentifier);
     }
 
     async getModules(moduleIds?: string[]): Promise<APIResponse<Module[]>> {

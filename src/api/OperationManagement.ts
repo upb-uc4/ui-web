@@ -8,9 +8,10 @@ import APIResponse from "./helpers/models/APIResponse";
 
 export default class OperationManagement extends CommonHyperledger {
     protected static endpoint = "/operation-management";
+    protected static serviceIdentifier = "operation";
 
     constructor() {
-        super(OperationManagement.endpoint);
+        super(OperationManagement.endpoint, OperationManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

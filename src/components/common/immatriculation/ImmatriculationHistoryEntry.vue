@@ -1,22 +1,18 @@
 <template>
-    <div
-        class="w-full px-4 py-4 whitespace-no-wrap border-gray-300 border-2 bg-gray-100"
-        :class="{ 'rounded-t-lg': isFirstRow, 'rounded-b-lg': isLastRow, 'border-b': !isLastRow }"
-    >
-        <div class="flex items-start justify-between">
-            <div class="w-1/2 text font-medium text-gray-600 mb-1 truncate">
-                {{ semester }}
-            </div>
-            <div class="flex-col w-1/2">
-                <div v-for="fieldOfStudy in fieldsOfStudy" :key="fieldOfStudy" class="text-gray-600">{{ fieldOfStudy }}</div>
+    <div class="space-y-1.5">
+        <div class="flex items-center space-x-6">
+            <div class="bg-blue-700 dark:bg-lime-500 rounded-full h-8 w-8" />
+            <div class="text-base input-label">{{ semester }}</div>
+        </div>
+        <div class="ml-14 space-y-0.5">
+            <div v-for="fieldOfStudy in fieldsOfStudy" :key="fieldOfStudy" class="text-sm text-gray-500">
+                {{ fieldOfStudy }}
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
-
     export default {
         name: "ImmatriculationHistoryEntry",
         props: {
@@ -28,13 +24,7 @@
                 type: Array,
                 required: true,
             },
-            isLastRow: {
-                type: Boolean,
-            },
-            isFirstRow: {
-                type: Boolean,
-            },
         },
-        setup(props: any) {},
+        setup() {},
     };
 </script>

@@ -1,32 +1,36 @@
 <template>
-    <div v-if="!busy">
-        <div v-if="chronologicalList.length > 0">
-            <div v-for="(pair, index) in chronologicalList" :key="pair">
+    <div>
+        <loading-spinner
+            v-if="isLoading"
+            title="Loading Immatriculation History"
+            subtitle="We are querying the blockchain. This might take some seconds."
+        />
+        <div v-else-if="hasEntries" class="relative m-8">
+            <div class="border-r-4 border-blue-700 dark:border-lime-500 absolute h-full top-0" style="left: 15px" />
+            <div class="m-0 p-0 space-y-6">
                 <immatriculation-history-entry
-                    class="w-1/2"
-                    :is-first-row="index == 0"
-                    :is-last-row="index == chronologicalList.length - 1"
-                    :fields-of-study="pair.fieldsOfStudy"
-                    :semester="pair.semester"
+                    v-for="entry in chronologicalList.reverse()"
+                    :key="entry"
+                    :fields-of-study="entry.fieldsOfStudy"
+                    :semester="entry.semester"
                 />
             </div>
         </div>
-        <div v-else>
-            <label class="text-lg">There is no matriculation data, yet!</label>
-        </div>
+        <label v-else class="input-label-warning">There is no matriculation data yet!</label>
     </div>
 </template>
 
 <script lang="ts">
     import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
-    import { reactive, ref, onBeforeMount, watch } from "vue";
-    import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
+    import { reactive, ref, onBeforeMount, watch, computed } from "vue";
     import { historyToSortedList } from "@/use/helpers/ImmatriculationHistoryHandler";
     import ImmatriculationHistoryEntry from "./ImmatriculationHistoryEntry.vue";
     import MatriculationManagement from "@/api/MatriculationManagement";
     import ImmatriculationResponseHandler from "@/use/helpers/ImmatriculationResponseHandler";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     export default {
         components: {
+            LoadingSpinner,
             ImmatriculationHistoryEntry,
         },
         props: {
@@ -34,15 +38,13 @@
                 type: String,
                 required: true,
             },
-            busy: {
-                type: Number,
-                required: true,
-            },
         },
-        emits: ["update:busy"],
-        setup(props: any, { emit }: any) {
+        setup(props: any) {
+            const isLoading = ref(true);
+            const hasEntries = computed(() => chronologicalList.value.length > 0);
+
             let history: MatriculationData = reactive({} as MatriculationData);
-            let chronologicalList = ref({});
+            let chronologicalList = ref([] as { semester: String; fieldsOfStudy: String[] }[]);
 
             watch(
                 () => props.username,
@@ -56,18 +58,18 @@
             async function getHistory() {
                 if (!props.username) return;
 
-                emit("update:busy", props.busy + 1);
                 const matriculationManagement: MatriculationManagement = new MatriculationManagement();
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
                 const responseHandler = new ImmatriculationResponseHandler();
-                const result = responseHandler.handleResponse(response);
-                history = result;
+                history = responseHandler.handleResponse(response);
                 chronologicalList.value = historyToSortedList(history);
-                emit("update:busy", props.busy - 1);
+                isLoading.value = false;
             }
 
             return {
                 chronologicalList,
+                isLoading,
+                hasEntries,
             };
         },
     };

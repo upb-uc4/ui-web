@@ -1,48 +1,57 @@
 <template>
-    <div :id="'course_' + course.courseId" class="flex shadow-xl">
-        <div class="flex flex-col w-full p-4 sm:px-8 bg-white rounded-lg">
-            <div class="flex items-center justify-between sm:justify-start">
-                <span class="inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase bg-teal-200 rounded-full">
-                    {{ course.courseType }}
-                </span>
-                <div class="ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">{{ course.ects }} ECTS</div>
-                <div class="hidden sm:flex ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">
-                    {{ course.courseLanguage }}
-                </div>
-                <!-- todo replace with flag component -->
-                <img :src="flagSrc" class="sm:hidden inline rounded ml-4 w-6 h-4 opacity-90" />
-                <div class="ml-4 text-xs font-semibold tracking-wide text-gray-600 uppercase">
-                    <i class="inline text-lg fas fa-users" />
-                    {{ course.currentParticipants }} / {{ course.maxParticipants }}
-                </div>
+    <div :id="'course_' + course.courseId" class="">
+        <div class="flex items-center justify-between sm:justify-start space-x-4">
+            <div class="flex items-center space-x-2">
+                <span
+                    class="w-3 h-3 rounded-full"
+                    :class="[
+                        { 'bg-lime-400': course.courseType === 'Lecture' },
+                        { 'bg-red-400': course.courseType === 'Seminar' },
+                        { 'bg-yellow-400': course.courseType === 'Project Group' },
+                    ]"
+                />
+                <span class="text-xs font-medium tracking-wide text-gray-500">{{ course.courseType }}</span>
             </div>
 
-            <div class="flex flex-wrap mb-4">
-                <div class="flex flex-col items-start w-2/3 md:w-5/6">
-                    <div id="courseName" class="mt-2 text-2xl font-semibold leading-tight text-gray-900">
-                        {{ course.courseName }}
-                    </div>
-                    <router-link
-                        id="showLecturer"
-                        :to="{ name: 'profile.public', params: { username: course.lecturerId } }"
-                        class="mt-1 font-semibold navigation-link hover:cursor-pointer"
-                    >
-                        {{ lecturerDisplayName }}
-                    </router-link>
+            <div class="text-xs font-medium tracking-wide text-gray-500 uppercase">{{ course.ects }} ECTS</div>
+            <div class="hidden sm:flex ml-4 text-xs font-medium tracking-wide text-gray-500">
+                {{ course.courseLanguage }}
+            </div>
+            <!-- todo replace with flag component -->
+            <img :src="flagSrc" class="sm:hidden inline rounded ml-4 w-6 h-4 opacity-90" />
+            <div class="text-xs font-medium tracking-wide text-gray-500 flex items-center space-x-1">
+                <i class="block fas fa-users" style="font-size: 1.25em" />
+                <span> {{ course.currentParticipants }} / {{ course.maxParticipants }} </span>
+            </div>
+        </div>
 
-                    <div class="w-full sm:flex sm:items-center">
-                        <div class="mt-3 sm:w-5/6 sm:mr-4">
-                            <read-more
-                                more-str="Show more"
-                                :text="course.courseDescription"
-                                less-str="Show less"
-                                :max-chars="180"
-                            ></read-more>
-                        </div>
-                    </div>
+        <div class="mt-2">
+            <div>
+                <label
+                    id="courseName"
+                    :class="{ 'cursor-default': !allowEdit }"
+                    class="text-lg navigation-link font-bold"
+                    @click="editCourse()"
+                >
+                    {{ course.courseName }}
+                </label>
+            </div>
+            <label id="showLecturer" class="mt-1 font-semibold navigation-link cursor-pointer" @click.stop="showLecturer()">
+                {{ lecturerDisplayName }}
+            </label>
+            <div class="w-full sm:flex sm:items-start sm:justify-between">
+                <div class="mt-1 w-2/3 sm:mr-4">
+                    <read-more
+                        v-if="course.courseDescription !== ''"
+                        more-str="Show more"
+                        :text="course.courseDescription"
+                        less-str="Show less"
+                        :max-chars="180"
+                    />
+                    <div v-else class="text-gray-500 text-sm italic">No course description available.</div>
                 </div>
-                <div class="w-full md:w-1/6 mt-6 sm:mt-1">
-                    <button v-if="allowEdit" id="editCourse" class="w-full py-2 btn btn-gray-primary" @click="editCourse()">Edit</button>
+                <div class="w-full sm:w-1/3 mt-6 sm:mt-0 flex justify-end">
+                    <button v-if="allowEdit" id="editCourse" class="w-full sm:w-24 mt-6 sm:mt-0 btn" @click="editCourse()">Edit</button>
                 </div>
             </div>
         </div>
@@ -53,9 +62,8 @@
     import ReadMore from "@/components/common/ReadMore.vue";
     import router from "@/use/router";
     import Course from "@/api/api_models/course_management/Course";
-    import UserManagement from "@/api/UserManagement";
-    import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
+    import Router from "@/use/router";
 
     export default {
         name: "LecturerCourse",
@@ -85,13 +93,21 @@
                     : "https://raw.githubusercontent.com/lipis/flag-icon-css/bb5b59c381b04c651f12bbd7d21c3486da157c88/flags/4x3/de.svg";
 
             function editCourse() {
+                if (!props.allowEdit) {
+                    return;
+                }
                 router.push({ path: "/editCourse/" + props.course.courseId });
+            }
+
+            function showLecturer() {
+                Router.push({ name: "profile.public", params: { username: props.lecturer.username } });
             }
 
             return {
                 lecturerDisplayName,
                 editCourse,
                 flagSrc,
+                showLecturer,
             };
         },
     };
