@@ -1,6 +1,7 @@
 <template>
     <BaseSection subtitle="Select the lecturer that will hold the course." title="Lecturer">
-        <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+        <loading-spinner v-if="isLoading" />
+        <div v-else class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
             <div class="lg:w-1/2 w-full">
                 <searchableSelect
                     :id="'lecturerId'"
@@ -47,12 +48,14 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { Role } from "@/entities/Role";
     import ErrorBag from "@/use/helpers/ErrorBag";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
         name: "Lecturer",
         components: {
             BaseSection,
             SearchableSelect,
+            LoadingSpinner,
         },
         props: {
             lecturerId: {
@@ -66,6 +69,7 @@
         },
         emits: ["update:lecturerId"],
         setup(props: any, { emit }: any) {
+            const isLoading = ref(false);
             const lecturers = ref([] as Lecturer[]);
 
             const currentSelection = ref({} as SearchSelectOption);
@@ -80,7 +84,9 @@
             );
 
             onBeforeMount(async () => {
+                isLoading.value = true;
                 await getLecturers();
+                isLoading.value = false;
             });
 
             async function getLecturers() {
@@ -116,6 +122,7 @@
                 updateLecturer,
                 myLecturers: selectableLecturers,
                 currentSelection,
+                isLoading,
             };
         },
     };
