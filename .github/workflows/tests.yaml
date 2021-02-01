@@ -41,6 +41,7 @@ jobs:
             matrix="{\"tests\": [\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\"]}" 
           fi
           echo "Built matrix: $matrix"
+          echo ""
           echo "::set-output name=matrix::$( echo "$matrix" )"
   api-dev:
     name: API Tests Development Cluster
