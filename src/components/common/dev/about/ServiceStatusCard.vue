@@ -19,7 +19,7 @@
             <div v-else>
                 <a :href="changelogURL" class="block navigation-link">Version {{ version }}</a>
                 <div v-if="hasHyperledgerVersion" class="mb-2 text-xs text-gray-500">
-                    <span>HLF {{ hyperledgerVersion }}</span>
+                    <span>HLF-API {{ hyperledgerVersion }}</span>
                     <div v-if="chaincodeVersion" class="inline">
                         ⋅ <span>CC {{ chaincodeVersion }}</span>
                     </div>
