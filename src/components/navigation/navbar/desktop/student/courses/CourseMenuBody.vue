@@ -6,14 +6,14 @@
                     id="nav_desktop_student_menu_courses_all"
                     title="Enroll in courses"
                     description="Courses you can enroll in"
-                    icon-class="fas fa-vote-yea"
+                    icon-class="fas fa-bookmark"
                     target-route-name="student.courses"
                 />
                 <menu-item
                     id="nav_desktop_student_menu_courses_admitted"
                     title="My Courses"
                     description="Courses you are enrolled in"
-                    icon-class="fas fa-bookmark"
+                    icon-class="fas fa-vote-yea"
                     target-route-name="student.my-courses"
                 />
                 <menu-item
