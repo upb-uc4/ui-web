@@ -74,7 +74,7 @@
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import Select from "@/components/common/Select.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import { onMounted, ref } from "vue";
+    import { onBeforeMount, ref } from "vue";
     import { useStore } from "@/use/store/store";
     import { useToast } from "@/toast";
 
@@ -116,7 +116,7 @@
             const availableLanguages = ref([] as string[]);
             const availableTypes = ref([] as string[]);
 
-            onMounted(async () => {
+            onBeforeMount(async () => {
                 const store = useStore();
                 await store.getters.configuration
                     .then((config) => {
