@@ -1,5 +1,5 @@
 <template>
-    <base-view class="max-w-screen-lg mx-auto">
+    <base-view extra-classes="max-w-screen-lg mx-auto">
         <div class="w-full text-justify">
             <div class="flex flex-col items-center justify-center w-full mt-20 mb-8">
                 <img src="../../assets/logo/logo_long_title_right.svg" alt="" />

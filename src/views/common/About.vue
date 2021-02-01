@@ -1,5 +1,5 @@
 <template>
-    <base-view class="max-w-screen-lg mx-auto space-y-8">
+    <base-view extra-classes="max-w-screen-lg mx-auto space-y-8">
         <h1 class="text-2xl font-medium text-gray-800 dark:text-gray-300 text-center">About Us</h1>
         <hr class="my-4 dark:border-normalgray-700" />
         <div class="lg:flex w-full space-y-8 lg:space-y-0">

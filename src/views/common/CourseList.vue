@@ -1,5 +1,5 @@
 <template>
-    <base-view class="max-w-screen-lg mx-auto">
+    <base-view extra-classes="max-w-screen-lg mx-auto">
         <div class="text-2xl text-center font-medium text-gray-800 dark:text-gray-300 mb-4">{{ title }}</div>
         <div>
             <div class="flex flex-col-reverse md:flex-row items-center justify-between md:space-x-2 space-y-2 space-y-reverse md:space-y-0">
