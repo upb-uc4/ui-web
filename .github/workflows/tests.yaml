@@ -32,9 +32,9 @@ jobs:
         run: | 
           tot_lines=$(find tests/e2e -name "*.spec.ts" | wc -l)
           echo "Found $tot_lines test suites"
-          lines=$(($tot_lines/4))
+          lines=$(($tot_lines/1))
           find tests/e2e -name "*.spec.ts" | split -l $lines -
-          if (($tot_lines % 4)) ; 
+          if (($tot_lines % 1)) ;
           then 
             matrix="{\"tests\": [\"$(cat xaa | tr '\n' ',')\", \"$(cat xab | tr '\n' ',')\", \"$(cat xac | tr '\n' ',')\", \"$(cat xad | tr '\n' ',')\", \"$(cat xae | tr '\n' ',')\"]}"
           else 
