@@ -15,6 +15,7 @@
                         v-model="oldPassword"
                         :type="passwordFieldType"
                         class="w-full"
+                        placeholder="oldPassword"
                         :class="[hasErrorOldPassword ? 'input-text-error' : 'input-text']"
                         @input="resetOldPasswordError()"
                     />
@@ -35,6 +36,7 @@
                         v-model="newPassword"
                         :type="passwordFieldType"
                         class="w-full"
+                        placeholder="newPassword"
                         :class="[hasErrorNewPassword ? 'input-text-error' : 'input-text']"
                         @input="resetNewPasswordErrors()"
                     />
@@ -57,6 +59,7 @@
                         v-model="newPasswordConfirmation"
                         :type="passwordFieldType"
                         class="w-full"
+                        placeholder="newPassword"
                         :class="[hasErrorNewPassword ? 'input-text-error' : 'input-text']"
                         @input="resetNewPasswordErrors()"
                     />
