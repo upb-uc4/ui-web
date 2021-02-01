@@ -13,7 +13,6 @@ export function showNetworkErrorToast() {
 export function showAPIToast(code: number, msg?: string) {
     switch (code) {
         case 400:
-            break;
         case 500:
             toast.error("Something went wrong on our side. Please consider reporting this bug.");
             break;
