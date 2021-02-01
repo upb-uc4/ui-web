@@ -27,7 +27,14 @@
 
         <div class="mt-2">
             <div>
-                <label id="courseName" class="text-lg navigation-link font-bold" @click="editCourse()"> {{ course.courseName }}</label>
+                <label
+                    id="courseName"
+                    :class="{ 'cursor-default': !allowEdit }"
+                    class="text-lg navigation-link font-bold"
+                    @click="editCourse()"
+                >
+                    {{ course.courseName }}
+                </label>
             </div>
             <label id="showLecturer" class="mt-1 font-semibold navigation-link cursor-pointer" @click.stop="showLecturer()">
                 {{ lecturerDisplayName }}
@@ -55,8 +62,6 @@
     import ReadMore from "@/components/common/ReadMore.vue";
     import router from "@/use/router";
     import Course from "@/api/api_models/course_management/Course";
-    import UserManagement from "@/api/UserManagement";
-    import ProfileResponseHandler from "@/use/helpers/ProfileResponseHandler";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import Router from "@/use/router";
 
