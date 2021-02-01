@@ -72,6 +72,7 @@
                             //success
                             errorBag.value.clear();
                             store.commit(MutationTypes.SET_USER, user.value);
+                            oldUser.value = user.value;
                         } else {
                             errorBag.value = new ErrorBag(handler.errorList);
                         }
