@@ -57,6 +57,7 @@
                         v-model="myDescription"
                         rows="5"
                         class="w-full"
+                        placeholder="(optional)"
                         :class="errorBag.has('courseDescription') ? 'input-text-error' : 'input-text'"
                     />
                     <label v-if="errorBag.has('courseDescription')" for="courseDescription" class="input-label-error">
