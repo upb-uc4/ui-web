@@ -1,4 +1,4 @@
-# [0.17.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.17...v0.17.1) (2021-XX-XX)
+# [0.17.1](https://github.com/upb-uc4/ui-web/compare/v0.17...v0.17.1) (2021-01-02)
 - Redesign the UI and upgrade to Tailwind 2. Add dark mode. [#782](https://github.com/upb-uc4/ui-web/pull/782)
 
 # [0.17.0](https://github.com/upb-uc4/ui-web/compare/v0.16.1-hotfix.1...v0.17.0) (2021-29-01)
