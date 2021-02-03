@@ -1,5 +1,3 @@
-import { approveOperation, rejectOperation, updateMatriculation } from "@/api/abstractions/FrontendSigning";
-import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
@@ -11,24 +9,17 @@ import OperationManagement from "@/api/OperationManagement";
 import UserManagement from "@/api/UserManagement";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
-import {
-    arrayBufferToBase64,
-    base64ToArrayBuffer,
-    createCSR,
-    createKeyPair,
-    deriveKeyFromPassword,
-    unwrapKey,
-    wrapKey,
-} from "@/use/crypto/certificates";
-import { MutationTypes } from "@/use/store/mutation-types";
-import { useStore } from "@/use/store/store";
+import { arrayBufferToBase64, createCSR, createKeyPair, deriveKeyFromPassword, wrapKey } from "@/use/crypto/certificates";
 import { readFileSync } from "fs";
 import { isEqual } from "lodash";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import resetState from "../../helper/ResetState";
 import MatriculationManagement from "@/api/MatriculationManagement";
-
+import executeTransaction from "@/api/contracts/ChaincodeUtility";
+import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
+import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
+import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
 jest.setTimeout(60000);
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as {
@@ -117,7 +108,10 @@ describe("Operation Management tests", () => {
     test("Update matriculation", async () => {
         matriculationToApprove = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
-        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToApprove, protoURL);
+        const result = await executeTransaction(
+            new GeneralMatriculationTransactionWrapper(student.authUser.username, matriculationToApprove),
+            protoURL
+        );
 
         expect(result).toBe(true);
 
@@ -279,7 +273,7 @@ describe("Operation Management tests", () => {
 
         if (!operationToApprove) fail();
 
-        const success = await approveOperation(operationToApprove, protoURL);
+        const success = await executeTransaction(new ApproveOperationTransaction(operationToApprove), protoURL);
 
         expect(success).toBe(true);
     });
@@ -294,7 +288,10 @@ describe("Operation Management tests", () => {
     test("Update matriculation for rejection", async () => {
         matriculationToReject = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2021"] }];
 
-        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToReject, protoURL);
+        const result = await executeTransaction(
+            new GeneralMatriculationTransactionWrapper(student.authUser.username, matriculationToReject),
+            protoURL
+        );
 
         expect(result).toBe(true);
 
@@ -311,10 +308,8 @@ describe("Operation Management tests", () => {
     test("Update matriculation for approvalByDifferentStudent", async () => {
         matriculationToApproveWithDifferentStudent = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2019"] }];
 
-        const result = await updateMatriculation(
-            student.authUser.username,
-            enrollmentIdStudent,
-            matriculationToApproveWithDifferentStudent,
+        const result = await executeTransaction(
+            new GeneralMatriculationTransactionWrapper(student.authUser.username, matriculationToApproveWithDifferentStudent),
             protoURL
         );
 
@@ -383,7 +378,7 @@ describe("Operation Management tests", () => {
 
         if (!operationToReject) fail();
 
-        const success = await rejectOperation(operationToReject, rejectionReason, protoURL);
+        const success = await executeTransaction(new RejectOperationTransaction(operationToReject, rejectionReason), protoURL);
 
         expect(success).toBe(true);
     });

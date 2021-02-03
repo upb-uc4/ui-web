@@ -36,11 +36,11 @@ export default abstract class AbstractTransaction {
         const payload: ProposalPayload = transaction.data.actions[0].payload.chainCodeProposalPayload;
         const transactionInfo = this.buildTransactionInfo();
 
-        if (!this.validateProposalOperationId(payload, transactionInfo)) {
+        if (!(await this.validateProposalOperationId(payload, transactionInfo))) {
             return false;
         }
 
-        if (!this.verifyPeerSignatures(transaction)) {
+        if (!(await this.verifyPeerSignatures(transaction))) {
             return false;
         }
 
@@ -62,8 +62,12 @@ export default abstract class AbstractTransaction {
 
     public abstract buildTransactionInfo(...params: any): TransactionInfo;
 
+    public calculateOperationId(transactionInfo: TransactionInfo) {
+        return calculateOperationId(transactionInfo);
+    }
+
     protected async validateProposalOperationId(proposalPayload: ProposalPayload, transactionInfo: TransactionInfo) {
-        const operationId = await calculateOperationId(transactionInfo);
+        const operationId = await this.calculateOperationId(transactionInfo);
 
         const name = proposalPayload.input.input.args[0];
         const proposalOperationId = proposalPayload.input.input.args[1];
@@ -73,7 +77,7 @@ export default abstract class AbstractTransaction {
         return proposalOperationId === operationId;
     }
 
-    private async verifyPeerSignatures(transaction: TransactionMessage): Promise<boolean> {
+    protected async verifyPeerSignatures(transaction: TransactionMessage): Promise<boolean> {
         const endorsements = transaction.data.actions[0].payload.action.endorsements;
         const rawProposalResponsePayload = transaction.data.actions[0].payload.action.rawProposalResponsePayload;
 

@@ -173,9 +173,11 @@
     import { Role } from "@/entities/Role";
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import { approveOperation, rejectOperation } from "@/api/abstractions/FrontendSigning";
     import { getOperationBadgeIdentifier, printOperation, printOperationTitle } from "@/use/helpers/OperationPrinter";
     import OperationManagement from "@/api/OperationManagement";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
+    import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
 
     export default {
         name: "OperationComponent",
@@ -299,7 +301,7 @@
             }
 
             async function approve() {
-                if (await approveOperation(operation.value)) {
+                if (await executeTransaction(new ApproveOperationTransaction(operation.value))) {
                     store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                     sentApprove.value = true;
                     provideReason.value = false;
@@ -316,7 +318,7 @@
             }
 
             async function reject() {
-                if (await rejectOperation(operation.value, finalReason.value)) {
+                if (await executeTransaction(new RejectOperationTransaction(operation.value, finalReason.value))) {
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
                     provideReason.value = !provideReason.value;

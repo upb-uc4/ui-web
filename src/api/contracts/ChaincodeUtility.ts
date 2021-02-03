@@ -38,9 +38,11 @@ export default async function executeTransaction(executableTransaction: Abstract
         return false;
     }
 
-    const proposalValidation = executableTransaction.validateProposal(proposal);
+    const proposalValidation = await executableTransaction.validateProposal(proposal);
 
     if (!proposalValidation) {
+        console.log("failed to validate proposal");
+
         useToast().error("Proposal validation failed. Your browser or university might be compromised.");
         return false;
     }

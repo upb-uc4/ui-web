@@ -6,18 +6,6 @@ export async function validateOperationId(operation: Operation) {
 }
 
 export async function calculateOperationId(transactionInfo: TransactionInfo) {
-    const op: Operation = {
-        existingApprovals: { groups: [], users: [] },
-        initiatedTimestamp: "",
-        initiator: "",
-        lastModifiedTimestamp: "",
-        missingApprovals: { groups: [], users: [] },
-        operationId: "",
-        reason: "",
-        state: "",
-        transactionInfo,
-    };
-
     const crypto = window.crypto.subtle;
 
     const toHash =

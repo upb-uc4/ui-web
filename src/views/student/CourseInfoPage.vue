@@ -83,8 +83,10 @@
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import AdmissionManagement from "@/api/AdmissionManagement";
     import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
-    import { addCourseAdmission, dropCourseAdmission } from "@/api/abstractions/FrontendSigning";
     import CertificateManagement from "@/api/CertificateManagement";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/AddAdmission";
+    import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -198,7 +200,7 @@
                     moduleId: selectedModule.value,
                     timestamp: "",
                 };
-                const result = await addCourseAdmission(enrollmentId.value, newAdmission);
+                const result = await executeTransaction(new AddAdmissionTransaction(enrollmentId.value, newAdmission));
                 if (result) {
                     const toast = useToast();
                     toast.success(`Successfully admitted for course ${course.value.courseName}`);
@@ -209,7 +211,7 @@
 
             async function dropCourse() {
                 busy.value++;
-                const result = await dropCourseAdmission(admission.value.admissionId);
+                const result = await executeTransaction(new DropAdmissionTransaction(admission.value.admissionId));
                 if (result) {
                     const toast = useToast();
                     toast.success(`Successfully dropped course ${course.value.courseName}`);

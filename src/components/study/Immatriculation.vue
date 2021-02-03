@@ -64,8 +64,9 @@
     import CertificateManagement from "@/api/CertificateManagement";
     import { useToast } from "@/toast";
     import { showOperationCreatedToast } from "@/use/helpers/Toasts";
-    import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
 
     export default {
         components: {
@@ -160,11 +161,7 @@
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
 
-                const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(username.value);
-                const responseHandler = new GenericResponseHandler("enrollment id");
-                const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
-
-                if (await updateMatriculation(username.value, enrollmentId.id, matriculationEntries)) {
+                if (await executeTransaction(new GeneralMatriculationTransactionWrapper(username.value, matriculationEntries))) {
                     resetEntries();
                     showOperationCreatedToast("immatriculation");
                 }
