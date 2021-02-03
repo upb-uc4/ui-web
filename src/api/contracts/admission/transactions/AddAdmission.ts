@@ -64,18 +64,9 @@ export class AddAdmissionTransaction extends AbstractTransaction {
     }
 
     public async getProposal(): Promise<UnsignedProposalMessage> {
-        switch (this.admission.type) {
-            case AdmissionTypes.COURSE:
-                return new GenericResponseHandler("course admission").handleResponse(
-                    await new AdmissionManagement().getUnsignedCourseAdmissionAddProposal(this.admission as CourseAdmission)
-                );
-            case AdmissionTypes.EXAM:
-                return new GenericResponseHandler("exam admission").handleResponse(
-                    await new AdmissionManagement().getUnsignedExamAdmissionAddProposal(this.admission as ExamAdmission)
-                );
-            default:
-                throw new Error("Invalid Admission");
-        }
+        return new GenericResponseHandler("admission proposal").handleResponse(
+            await new AdmissionManagement().getUnsignedAdmissionAddProposal(this.admission)
+        );
     }
 
     public validateCourseAdmission(a: CourseAdmission) {

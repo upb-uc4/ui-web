@@ -2,15 +2,17 @@ import { AxiosError, AxiosResponse } from "axios";
 import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
 import APIError from "./api_models/errors/APIError";
 import Exam from "./api_models/exam_management/Exam";
+import ExamResult from "./api_models/exam_result_management/ExamResult";
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
 import APIResponse from "./helpers/models/APIResponse";
 
 export default class ExamResultManagement extends CommonHyperledger {
-    protected static endpoint = "/examresult-management";
+    protected static endpoint = "/exam-result-management";
+    protected static serviceIdentifier = "exam-result";
 
     constructor() {
-        super(ExamResultManagement.endpoint);
+        super(ExamResultManagement.endpoint, ExamResultManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {
@@ -23,7 +25,7 @@ export default class ExamResultManagement extends CommonHyperledger {
         if (username) requestParameter.params.username = username;
 
         return await this._axios
-            .get(`/examresults`, requestParameter)
+            .get(`/exam_results`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data as Exam[],
@@ -61,13 +63,9 @@ export default class ExamResultManagement extends CommonHyperledger {
             });
     }
 
-    /**
-     * Fetch an unsigned proposal for adding a course admission
-     * @param courseAdmission courseAdmission
-     */
-    async getUnsignedExamCreateProposal(exam: Exam): Promise<APIResponse<UnsignedProposalMessage>> {
+    async getUnsignedExamResultAddProposal(examResults: ExamResult[]): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/admissions/courses/unsigned_add_proposal`, exam)
+            .post(`/exan_results/unsigned_add_proposal`, examResults)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -86,7 +84,7 @@ export default class ExamResultManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUnsignedExamCreateProposal(exam);
+                        return await this.getUnsignedExamResultAddProposal(examResults);
                     }
                     return {
                         statusCode: error.response.status,

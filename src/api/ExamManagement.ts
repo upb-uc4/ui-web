@@ -8,9 +8,10 @@ import APIResponse from "./helpers/models/APIResponse";
 
 export default class ExamManagement extends CommonHyperledger {
     protected static endpoint = "/exam-management";
+    protected static serviceIdentifier = "exam";
 
     constructor() {
-        super(ExamManagement.endpoint);
+        super(ExamManagement.endpoint, ExamManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {
@@ -36,7 +37,7 @@ export default class ExamManagement extends CommonHyperledger {
         if (droppableAt) requestParameter.params.droppableAt = droppableAt.toISOString();
 
         return await this._axios
-            .get(`/admissions/exams`, requestParameter)
+            .get(`/exams`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data as Exam[],
@@ -80,7 +81,7 @@ export default class ExamManagement extends CommonHyperledger {
      */
     async getUnsignedExamCreateProposal(exam: Exam): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/admissions/courses/unsigned_add_proposal`, exam)
+            .post(`/exams/unsigned_add_proposal`, exam)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,

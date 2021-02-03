@@ -9,6 +9,7 @@ import CommonHyperledger from "./CommonHyperledger";
 import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
 import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
 import ExamAdmission from "./api_models/admission_management/ExamAdmission";
+import AbstractAdmission from "./api_models/admission_management/AbstractAdmission";
 
 export default class AdmissionManagement extends CommonHyperledger {
     protected static endpoint = "/admission-management";
@@ -112,13 +113,9 @@ export default class AdmissionManagement extends CommonHyperledger {
             });
     }
 
-    /**
-     * Fetch an unsigned proposal for adding a course admission
-     * @param courseAdmission courseAdmission
-     */
-    async getUnsignedCourseAdmissionAddProposal(courseAdmission: CourseAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
+    async getUnsignedAdmissionAddProposal(admission: AbstractAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/admissions/courses/unsigned_add_proposal`, courseAdmission)
+            .post(`/admissions/unsigned_add_proposal`, admission)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -137,7 +134,7 @@ export default class AdmissionManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUnsignedCourseAdmissionAddProposal(courseAdmission);
+                        return await this.getUnsignedAdmissionAddProposal(admission);
                     }
                     return {
                         statusCode: error.response.status,
@@ -157,51 +154,7 @@ export default class AdmissionManagement extends CommonHyperledger {
     }
 
     /**
-     * Fetch an unsigned proposal for adding a course admission
-     * @param courseAdmission courseAdmission
-     */
-    async getUnsignedExamAdmissionAddProposal(examAdmission: ExamAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
-        return await this._axios
-            .post(`/admissions/exams/unsigned_add_proposal`, examAdmission)
-            .then((response: AxiosResponse) => {
-                return {
-                    statusCode: response.status,
-                    returnValue: response.data as UnsignedProposalMessage,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as UnsignedProposalMessage,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.getUnsignedExamAdmissionAddProposal(examAdmission);
-                    }
-                    return {
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        returnValue: {} as UnsignedProposalMessage,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        error: {} as APIError,
-                        returnValue: {} as UnsignedProposalMessage,
-                        networkError: true,
-                    };
-                }
-            });
-    }
-
-    /**
-     * Fetch an unsigned proposal for dropping a course admission
+     * Fetch an unsigned proposal for dropping an admission
      * @param admissionId admission id of admission to drop
      */
     async getUnsignedAdmissionDropProposal(admissionId: string): Promise<APIResponse<UnsignedProposalMessage>> {
