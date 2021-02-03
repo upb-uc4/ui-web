@@ -1,93 +1,56 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <label class="block text-gray-700 text-md font-medium mb-2"> Modules </label>
-                <label class="block text-gray-600"> Add modules to the examination regulation.</label>
+    <BaseSection title="Modules" subtitle="Add or remove modules to or from the examination regulation.">
+        <div class="space-y-12">
+            <div class="space-y-4">
+                <div class="lg:w-1/2 w-full">
+                    <label for="moduleID" class="w-full input-label">Unique Module Identifier</label>
+                    <input id="moduleID" v-model="moduleIdentifier" class="w-full input-text" placeholder="e.g. M.1275.78235" />
+                    <label v-if="moduleUsed" class="input-label-warning">
+                        Module '{{ moduleIdentifier.trim() }}' has already been added.
+                    </label>
+                </div>
+                <div class="lg:w-1/2 w-full">
+                    <label for="moduleName" class="w-full input-label">Module Name</label>
+                    <input
+                        id="moduleName"
+                        :value="moduleName"
+                        :readonly="moduleExists"
+                        class="w-full input-text"
+                        placeholder="e.g. Complexity Theory"
+                        @input="moduleNameInput = $event.target.value"
+                    />
+                </div>
+                <div class="lg:w-1/2 w-full sm:flex space-y-4 sm:space-y-0 sm:justify-end">
+                    <button id="addModule" class="sm:w-32 w-full btn-secondary-add" :disabled="!canAddModule" @click="addModule()">
+                        Add Module
+                    </button>
+                </div>
             </div>
-            <div class="w-full lg:w-2/3">
-                <div class="mb-8 w-full relative">
-                    <div class="mb-4">
-                        <label for="moduleID" class="text-gray-700 text-md font-medium block mb-3"> Choose Module ID </label>
-                        <input id="moduleID" v-model.trim="moduleID" class="w-full form-input input-text" placeholder="Module ID" />
-                    </div>
-                    <div v-if="moduleID !== '' && !moduleUsed && !moduleExists" class="mb-4">
-                        <label for="moduleName" class="text-gray-700 text-md font-medium block mb-3"> Choose Module Name </label>
-                        <input
-                            id="moduleName"
-                            v-model.trim="moduleNameInput"
-                            class="w-full form-input input-text"
-                            placeholder="Module Name"
-                        />
-                    </div>
-                    <div v-else-if="moduleUsed" class="mb-4">
-                        <label class="text-gray-700 text-md font-medium my-3">
-                            <i class="text-red-400 fas fa-times mr-2"></i>
-                            Module '{{ moduleID }}' already selected!
-                        </label>
-                    </div>
-                    <div v-if="moduleID !== '' && moduleName !== '' && !moduleUsed">
-                        <div class="mb-4 p-3 bg-gray-100 rounded">
-                            <div class="relative">
-                                <label class="block text-gray-700 text-md font-medium mb-1">
-                                    {{ moduleID }}
-                                </label>
-                                <label class="block text-gray-600">
-                                    {{ moduleName }}
-                                </label>
-                                <div class="absolute inset-y-0 right-0">
-                                    <div class="hidden sm:flex">
-                                        <button id="addModule" class="btn btn-green-secondary w-48" @click="addCurrentModule">
-                                            {{ moduleExists ? "Add Module" : "Create Module" }}
-                                        </button>
-                                    </div>
-                                    <div class="sm:hidden">
-                                        <button class="btn btn-icon-green ml-3 text-xl w-12 h-12" @click="addCurrentModule">
-                                            <i class="fas fa-plus text-md" />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-4 w-full">
-                    <div v-for="(module, index) in selectedModules" :key="module.id">
-                        <div class="mb-4 p-3 bg-gray-100 rounded-lg shadow-sm flex w-full">
-                            <div class="w-full flex flex-col">
-                                <label class="block text-gray-700 text-md font-medium mb-1">
-                                    {{ module.id }}
-                                </label>
-                                <label class="block text-gray-600">
-                                    {{ module.name }}
-                                </label>
-                            </div>
-                            <div class="w-full flex justify-end">
-                                <div class="hidden sm:flex">
-                                    <button :id="'removeModule' + index" class="w-48 btn btn-red-secondary" @click="removeModule(index)">
-                                        Remove Module
-                                    </button>
-                                </div>
-                                <div class="sm:hidden">
-                                    <button class="btn btn-icon-red ml-3 text-xl w-12 h-12" @click="removeModule(index)">
-                                        <i class="fas fa-trash text-md" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div v-if="hasSelectedModules" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <module-card
+                    v-for="(module, index) in selectedModules"
+                    :key="module.id"
+                    :module-identifier="module.id"
+                    :module-name="module.name"
+                    @remove="removeModule(index)"
+                />
             </div>
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
     import { watch, ref, computed } from "vue";
     import Module from "@/api/api_models/exam_reg_management/Module";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import ModuleCard from "@/components/exreg/ModuleCard.vue";
 
     export default {
         name: "ExRegModuleSection",
+        components: {
+            BaseSection,
+            ModuleCard,
+        },
         props: {
             existingModules: {
                 type: Array,
@@ -101,48 +64,47 @@
         emits: ["update:modules"],
         setup: (props: { existingModules: Module[]; modules: Module[] }, { emit }: any) => {
             const selectedModules = ref(props.modules as Module[]);
-            const moduleID = ref("");
+            const moduleIdentifier = ref("");
             const moduleNameInput = ref("");
-            const moduleExists = computed(() => props.existingModules.map((m) => m.id).includes(moduleID.value));
-            const moduleUsed = computed(() => selectedModules.value.map((m) => m.id).includes(moduleID.value));
             const moduleName = computed(() => {
-                if (moduleExists.value) {
-                    return props.existingModules.filter((m) => m.id === moduleID.value)[0].name;
-                } else {
-                    return moduleNameInput.value;
-                }
+                const m = props.existingModules.find((m) => m.id == moduleIdentifier.value.trim())?.name;
+                return m === undefined ? moduleNameInput.value : m;
+            });
+            const moduleExists = computed(() => props.existingModules.map((m) => m.id).includes(moduleIdentifier.value.trim()));
+            const moduleUsed = computed(() => selectedModules.value.map((m) => m.id).includes(moduleIdentifier.value.trim()));
+            const canAddModule = computed(() => moduleIdentifier.value.trim() !== "" && moduleName.value !== "" && !moduleUsed.value);
+            const hasSelectedModules = computed(() => selectedModules.value !== undefined && selectedModules.value.length > 0);
+
+            watch(props.modules, () => {
+                selectedModules.value = props.modules;
             });
 
-            function addCurrentModule() {
+            function addModule() {
                 const module = {
-                    id: moduleID.value,
-                    name: moduleName.value,
+                    id: moduleIdentifier.value.trim(),
+                    name: moduleName.value.trim(),
                 } as Module;
-                selectedModules.value.unshift(module);
-                moduleID.value = "";
+
+                selectedModules.value.push(module);
+                moduleIdentifier.value = "";
                 moduleNameInput.value = "";
                 emit("update:modules", selectedModules.value);
             }
-
-            watch(
-                () => props.modules,
-                () => {
-                    selectedModules.value = props.modules;
-                }
-            );
 
             function removeModule(index: number) {
                 selectedModules.value.splice(index, 1);
             }
 
             return {
-                moduleID,
+                moduleIdentifier,
+                moduleName,
+                hasSelectedModules,
                 selectedModules,
                 moduleExists,
                 moduleUsed,
-                moduleName,
+                canAddModule,
                 moduleNameInput,
-                addCurrentModule,
+                addModule,
                 removeModule,
             };
         },

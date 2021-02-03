@@ -1,19 +1,19 @@
-.navigation-link {
-    @apply text-blue-700
-}
-
-.navigation-link:hover {
-    @apply text-blue-800;
-}
-
-.navigation-link:focus {
-    @apply outline-none text-blue-800;
-}
-
 .navbar-menu {
-    @apply py-1 px-3 block;
+    @apply py-1 px-3 block font-bold text-sm text-gray-200;
 }
 
 .mobile-navbar-menu {
-    @apply py-1 px-3 block;
+    @apply py-1 px-3 block font-bold text-sm text-gray-200;
+}
+
+
+/*
+    ReDesign
+*/
+
+.navigation-link {
+    @apply cursor-pointer font-medium text-blue-700 transition ease-in-out duration-150
+    hover:text-blue-800
+    focus:outline-none focus:underline
+    dark:text-blue-600
 }

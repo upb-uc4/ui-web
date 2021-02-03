@@ -85,97 +85,62 @@ describe("Change Profile Information", () => {
     it("Check personal information section", () => {
         cy.get("input[id='firstName']").invoke("attr", "readonly").should("exist");
         cy.get("input[id='lastName']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='birthDate']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='day']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='month']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='year']").invoke("attr", "readonly").should("exist");
     });
 
     it("Check contact information section", () => {
-        cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='email']").should("exist");
+        cy.get("input[id='phoneNumber']").should("exist");
     });
 
     it("Validation errors for contact section are shown correctly", () => {
-        cy.get("button[id='editContact']").click();
         cy.get("input[id='email']").clear().type("test");
         cy.get("input[id='phoneNumber']").clear().type("test");
-        cy.get("button[id='saveContact']").click();
-        cy.get("input[id='email']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='phoneNumber']").siblings().get("p").should("have.class", "error-message");
+        cy.get("#updateProfile").click();
+        cy.get("input[id='email']", { timeout: 60000 }).siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='phoneNumber']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='email']").clear();
         cy.get("input[id='phoneNumber']").clear();
     });
 
-    it("Reset contacts inputs on cancel", () => {
-        cy.get("button[id='cancelEditContact']").click();
-        cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='email']").should("not.contain", "test");
-        cy.get("input[id='email']").should("have.value", student.email);
-        cy.get("input[id='phoneNumber']").should("not.contain", "test");
-        cy.get("input[id='phoneNumber']").should("have.value", student.phoneNumber);
-    });
-
     it("Change contact information", () => {
-        cy.get("button[id='editContact']").click();
         // TODO this is not a correct tdl!
         student.email += "a";
         cy.get("input[id='email']").clear().type(student.email);
         student.phoneNumber += "1";
         cy.get("input[id='phoneNumber']").clear().type(student.phoneNumber);
-        cy.get("button[id='saveContact']").click();
-        cy.get("input[id='email']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='phoneNumber']").invoke("attr", "readonly").should("exist");
-    });
-
-    it("Check address information section", () => {
-        cy.get("select[id='country']").should("be.disabled");
-        cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='houseNumber']").invoke("attr", "readonly").should("exist");
+        cy.get("button[id='updateProfile']").click();
+        cy.get("input[id='email']", { timeout: 60000 }).should("have.value", student.email);
+        cy.get("input[id='phoneNumber']").should("have.value", student.phoneNumber);
     });
 
     it("Validation errors for address information section are shown correctly", () => {
-        cy.get("button[id='editAddress']").click();
         cy.get("input[id='city']").clear().type("/");
         cy.get("input[id='zipCode']").clear().type("/");
         cy.get("input[id='street']").clear().type("/");
         cy.get("input[id='houseNumber']").clear().type("/");
-        cy.get("button[id='saveAddress']").click();
-        cy.get("input[id='city']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='zipCode']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='street']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='houseNumber']").siblings().get("p").should("have.class", "error-message");
+        cy.get("button[id='updateProfile']").click();
+        cy.get("input[id='city']", { timeout: 60000 }).siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='zipCode']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='street']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='houseNumber']").siblings().get("label").should("have.class", "input-label-error");
     });
 
-    it("Reset address inputs on cancel", () => {
-        let c: Country;
-        if (student.address.country != Country.AUSTRIA) {
-            c = Country.AUSTRIA;
-        } else {
-            c = Country.BELGIUM;
-        }
-        cy.get("select[id='country']").select(c);
-        cy.get("button[id='cancelEditAddress']").click();
-        cy.get("select[id='country']").should("be.disabled");
-        cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='houseNumber']").invoke("attr", "readonly").should("exist");
-        cy.get("select[id='country']").should("have.value", student.address.country);
-        cy.get("input[id='city']").should("have.value", student.address.city);
-        cy.get("input[id='zipCode']").should("have.value", student.address.zipCode);
-        cy.get("input[id='street']").should("have.value", student.address.street);
-        cy.get("input[id='houseNumber']").should("have.value", student.address.houseNumber);
+    it("Refresh", () => {
+        cy.reload();
+        cy.url().should("contain", "/profile");
     });
 
     it("Change address information", () => {
-        cy.get("button[id='editAddress']").click();
         if (student.address.country != Country.AUSTRIA) {
             student.address.country = Country.AUSTRIA;
         } else {
             student.address.country = Country.BELGIUM;
         }
-        cy.get("select[id='country']").select(student.address.country);
+        cy.get("button[id='country']").click();
+        cy.get(`li[id='countryItem-${student.address.country}']`).click();
         student.address.city += "a";
         cy.get("input[id='city']").clear().type(student.address.city);
         student.address.zipCode = "12345";
@@ -184,16 +149,11 @@ describe("Change Profile Information", () => {
         cy.get("input[id='street']").clear().type(student.address.street);
         student.address.houseNumber = "12345b";
         cy.get("input[id='houseNumber']").clear().type(student.address.houseNumber);
-        cy.get("button[id='saveAddress']").click();
-        cy.get("select[id='country']").should("be.disabled");
-        cy.get("input[id='city']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='zipCode']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='street']").invoke("attr", "readonly").should("exist");
-        cy.get("input[id='houseNumber']").invoke("attr", "readonly").should("exist");
+        cy.get("button[id='updateProfile']").click();
     });
 
     it("Check course of study information section", () => {
-        cy.get("input[id='matriculationId']").invoke("attr", "readonly").should("exist");
+        cy.get("input[id='matriculationId']", { timeout: 60000 }).invoke("attr", "readonly").should("exist");
     });
 
     it("Refresh", () => {
@@ -202,9 +162,9 @@ describe("Change Profile Information", () => {
     });
 
     it("Check changed information", () => {
-        cy.get("input[id='email']").should("have.value", student.email);
+        cy.get("input[id='email']", { timeout: 60000 }).should("have.value", student.email);
         cy.get("input[id='phoneNumber']").should("have.value", student.phoneNumber);
-        cy.get("select[id='country']").should("have.value", student.address.country);
+        cy.get("button[id='country']").should("contain.text", student.address.country);
         cy.get("input[id='city']").should("have.value", student.address.city);
         cy.get("input[id='zipCode']").should("have.value", student.address.zipCode);
         cy.get("input[id='street']").should("have.value", student.address.street);
@@ -218,36 +178,34 @@ describe("Change Profile Information", () => {
     });
 
     it("Check research area information section", () => {
-        cy.get("textarea[id='researchArea']").invoke("attr", "readonly").should("exist");
-        cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
+        cy.get("textarea[id='researchArea']").should("exist");
+        cy.get("textarea[id='freeText']").should("exist");
     });
 
     it("Validation errors for research area information section are shown correctly", () => {
-        cy.get("button[id='editResearchArea']").click();
         cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
-        cy.get("textarea[id='description']").invoke("val", "1".repeat(10001)).trigger("input");
-        cy.get("button[id='saveResearchArea']").click();
-        cy.get("textarea[id='researchArea']").siblings().get("p").should("have.class", "error-message");
-        cy.get("textarea[id='description']").siblings().get("p").should("have.class", "error-message");
+        cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
+        cy.get("#updateProfile").click();
+        cy.get("textarea[id='researchArea']", { timeout: 60000 }).siblings().get("label").should("have.class", "input-label-error");
+        cy.get("textarea[id='freeText']").siblings().get("label").should("have.class", "input-label-error");
     });
 
-    it("Reset research area inputs on cancel", () => {
-        cy.get("button[id='cancelEditResearchArea']").click();
-        cy.get("textarea[id='researchArea']").invoke("attr", "readonly").should("exist");
-        cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
+    it("Refresh", () => {
+        cy.reload();
+        cy.url().should("contain", "/profile");
+    });
+
+    it("Reset research area inputs on reload", () => {
         cy.get("textarea[id='researchArea']").should("have.value", lecturer.researchArea);
-        cy.get("textarea[id='description']").should("have.value", lecturer.freeText);
+        cy.get("textarea[id='freeText']").should("have.value", lecturer.freeText);
     });
 
     it("Change research area information", () => {
-        cy.get("button[id='editResearchArea']").click();
         lecturer.researchArea += " new";
         lecturer.freeText += " new";
         cy.get("textarea[id='researchArea']").clear().type(lecturer.researchArea);
-        cy.get("textarea[id='description']").clear().type(lecturer.freeText);
-        cy.get("button[id='saveResearchArea']").click();
-        cy.get("textarea[id='researchArea']").invoke("attr", "readonly").should("exist");
-        cy.get("textarea[id='description']").invoke("attr", "readonly").should("exist");
+        cy.get("textarea[id='freeText']").clear().type(lecturer.freeText);
+        cy.get("button[id='updateProfile']").click();
     });
 
     it("Refresh", () => {
@@ -256,7 +214,7 @@ describe("Change Profile Information", () => {
     });
 
     it("Check changed information", () => {
-        cy.get("textarea[id='researchArea']").should("have.value", lecturer.researchArea);
-        cy.get("textarea[id='description']").should("have.value", lecturer.freeText);
+        cy.get("textarea[id='researchArea']", { timeout: 60000 }).should("have.value", lecturer.researchArea);
+        cy.get("textarea[id='freeText']").should("have.value", lecturer.freeText);
     });
 });

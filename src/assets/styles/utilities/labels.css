@@ -1,0 +1,29 @@
+
+.input-label {
+    @apply input-label-base mb-1 text-gray-800
+    dark:text-gray-300
+}
+
+.input-label-error {
+    @apply input-label-feedback text-red-600
+}
+
+.input-label-warning {
+    @apply input-label-feedback text-yellow-500
+}
+
+.input-label-feedback {
+    @apply input-label-base mt-1
+}
+
+.input-label-base {
+    @apply block text-sm font-medium tracking-wide
+}
+
+.modal-headline {
+    @apply text-gray-800 dark:text-gray-300 text-lg font-medium
+}
+
+.modal-description {
+    @apply text-gray-500 dark:text-gray-500 text-sm
+}

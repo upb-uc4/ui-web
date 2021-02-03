@@ -62,28 +62,32 @@ describe("Course Filtering", function () {
 
     it("Lecture filter working", function () {
         navigateToCourseListLecturer();
-        cy.get("button[id='courseType-Lecture']").click();
+        cy.get("button[id='selectFilterCourseType']").click();
+        cy.get("li[id='selectFilterCourseTypeItem-Lecture']").click();
         cy.get("div").contains(course1.courseName).should("exist");
         cy.get("div").contains(course2.courseName).should("not.exist");
         cy.get("div").contains(course3.courseName).should("not.exist");
     });
 
     it("Seminar filter working", function () {
-        cy.get("button[id='courseType-Seminar']").click();
+        cy.get("button[id='selectFilterCourseType']").click();
+        cy.get("li[id='selectFilterCourseTypeItem-Seminar']").click();
         cy.get("div").contains(course1.courseName).should("not.exist");
         cy.get("div").contains(course2.courseName).should("exist");
         cy.get("div").contains(course3.courseName).should("not.exist");
     });
 
     it("PG filter working", function () {
-        cy.get("button[id='courseType-Project Group']").click();
+        cy.get("button[id='selectFilterCourseType']").click();
+        cy.get("li[id='selectFilterCourseTypeItem-Project Group']").click();
         cy.get("div").contains(course1.courseName).should("not.exist");
         cy.get("div").contains(course2.courseName).should("not.exist");
         cy.get("div").contains(course3.courseName).should("exist");
     });
 
     it("All filter working", function () {
-        cy.get("button[id='courseType-All']").click();
+        cy.get("button[id='selectFilterCourseType']").click();
+        cy.get("li[id='selectFilterCourseTypeItem-All']").click();
         cy.get("div").contains(course1.courseName).should("exist");
         cy.get("div").contains(course2.courseName).should("exist");
         cy.get("div").contains(course3.courseName).should("exist");

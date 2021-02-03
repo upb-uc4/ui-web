@@ -7,9 +7,10 @@ import APIResponse from "./helpers/models/APIResponse";
 
 export default class CourseManagement extends Common {
     protected static endpoint = "/course-management";
+    protected static serviceIdentifier = "course";
 
     constructor() {
-        super(CourseManagement.endpoint);
+        super(CourseManagement.endpoint, CourseManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

@@ -1,15 +1,16 @@
 <template>
     <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
-            <p class="text-2xl text-gray-900">Delete account</p>
+            <p class="modal-headline">Delete account</p>
         </template>
-
-        Are you sure you want to delete this account?<br />
-        By doing this you will lose all of your saved data and will not be able to restore it.
+        <div class="modal-description">
+            Are you sure you want to delete this account?<br />
+            By doing this you will lose all of your saved data and will not be able to restore it.
+        </div>
 
         <template #footer>
-            <button id="deleteAccountModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="deleteAccountModalDelete" class="w-24 py-2 px-2 btn btn-red-primary" @click="close(action.DELETE)">Delete</button>
+            <button id="deleteAccountModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
+            <button id="deleteAccountModalDelete" class="w-24 py-2 px-2 btn-remove" @click="close(action.DELETE)">Delete</button>
         </template>
     </modal>
 </template>

@@ -1,95 +1,92 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <label class="block text-gray-700 text-md font-medium mb-2">Lecturer</label>
-                <label class="block text-gray-600"> Select a lecturer that will hold the course</label>
-            </div>
-            <div class="w-full lg:w-2/3">
-                <div class="mb-4 w-full">
-                    <label class="text-gray-700 text-md font-medium block mb-4">Lecturer-ID</label>
-                    <search-select
-                        v-model:selected="selectedOption"
-                        :options="optionsArray"
-                        input-id="lecturerId"
-                        :category-name="'Lecturer'"
-                    />
-                    <div :hidden="currentLecturer.username == ''" class="text-gray-700 text-md font-medium my-3">
-                        <label v-if="lecturerFound">
-                            <i class="text-green-400 fas fa-check mr-2"></i>
-                            {{ currentLecturer.firstName }} {{ currentLecturer.lastName }} (
-                            <router-link
-                                class="navigation-link cursor-pointer hover:underline"
-                                target="_blank"
-                                :to="{ name: 'profile.public', params: { username: currentLecturer.username } }"
-                            >
-                                @{{ currentLecturer.username }}
-                            </router-link>
-                            )
-                        </label>
-                        <label v-else>
-                            <i class="text-red-400 fas fa-times mr-2"></i>
-                            Lecturer-ID not found!
-                        </label>
-                    </div>
-                    <p v-if="errorBag.has('lecturerId')" class="error-message">
-                        {{ errorBag.get("lecturerId") }}
-                    </p>
+    <BaseSection subtitle="Select the lecturer that will hold the course." title="Lecturer">
+        <loading-spinner v-if="isLoading" />
+        <div v-else class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+            <div class="lg:w-1/2 w-full">
+                <searchableSelect
+                    :id="'lecturerId'"
+                    label="Lecturer-ID"
+                    :placeholder="currentSelection.display"
+                    :elements="myLecturers"
+                    :selected="currentSelection"
+                    @update:selected="updateLecturer"
+                />
+                <label v-if="errorBag.has('lecturerId')" id="lecturerIdErrorLabel" class="input-label-error">
+                    {{ errorBag.get("lecturerId") }}
+                </label>
+                <div v-if="currentSelection.value !== undefined" class="text-gray-700 text-md font-medium my-3">
+                    <label v-if="currentSelection.value.username" class="input-label">
+                        <i class="text-green-400 dark:text-lime-500 fas fa-check mr-2"></i>
+                        {{ currentSelection.value.firstName }} {{ currentSelection.value.lastName }} (
+                        <router-link
+                            class="navigation-link cursor-pointer hover:underline"
+                            target="_blank"
+                            :to="{ name: 'profile.public', params: { username: currentSelection.value.username } }"
+                        >
+                            @{{ currentSelection.value.username }}
+                        </router-link>
+                        )
+                    </label>
+                    <label v-else class="input-label-error">
+                        <i class="text-red-400 fas fa-times mr-2"></i>
+                        Lecturer-ID not found!
+                    </label>
                 </div>
             </div>
+            <div class="lg:w-1/2 w-full invisible" />
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
-    import { computed, onBeforeMount, ref, watch } from "vue";
+    import SearchableSelect from "@/components/common/SearchableSelect.vue";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import { computed, onBeforeMount, ref } from "vue";
+    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import UserManagement from "@/api/UserManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { Role } from "@/entities/Role";
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import Router from "@/use/router";
-    import SearchSelect from "@/components/common/SearchSelect.vue";
-    import SearchSelectOption from "@/use/helpers/SearchSelectOption";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
-        name: "LecturerSection",
+        name: "Lecturer",
         components: {
-            SearchSelect,
+            BaseSection,
+            SearchableSelect,
+            LoadingSpinner,
         },
         props: {
-            errorBag: {
-                required: true,
-                type: ErrorBag,
-            },
             lecturerId: {
                 type: String,
+                required: true,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
                 required: true,
             },
         },
         emits: ["update:lecturerId"],
         setup(props: any, { emit }: any) {
+            const isLoading = ref(false);
             const lecturers = ref([] as Lecturer[]);
-            const currentLecturer = ref({} as Lecturer);
-            const lecturerFound = ref(false);
 
-            const optionsArray = ref([] as SearchSelectOption[]);
-            const selectedOption = ref({} as SearchSelectOption);
+            const currentSelection = ref({} as SearchSelectOption);
+
+            const selectableLecturers = computed(() =>
+                lecturers.value.map((l: Lecturer) => {
+                    return {
+                        value: l,
+                        display: createOptionString(l),
+                    } as SearchSelectOption;
+                })
+            );
 
             onBeforeMount(async () => {
+                isLoading.value = true;
                 await getLecturers();
-            });
-
-            watch(selectedOption, () => {
-                if (Object.keys(selectedOption.value.value).length != 0) {
-                    currentLecturer.value = selectedOption.value.value as Lecturer;
-                    emit("update:lecturerId", currentLecturer.value.username);
-                    lecturerFound.value = true;
-                } else {
-                    lecturerFound.value = false;
-                    currentLecturer.value = {} as Lecturer;
-                }
+                isLoading.value = false;
             });
 
             async function getLecturers() {
@@ -99,15 +96,22 @@
                 const result = handler.handleResponse(response);
                 if (result) {
                     lecturers.value = result as Lecturer[];
-                    lecturers.value.forEach((l) => {
-                        optionsArray.value.push({ value: l, display: createOptionString(l) });
-                    });
                     if (props.lecturerId != "") {
-                        currentLecturer.value = lecturers.value.filter((e) => e.username == props.lecturerId)[0];
-                        selectedOption.value = { value: currentLecturer, display: createOptionString(currentLecturer.value) };
-                        lecturerFound.value = true;
+                        const initialLecturer = lecturers.value.find((l) => l.username === props.lecturerId);
+                        if (initialLecturer) {
+                            currentSelection.value = {
+                                display: createOptionString(initialLecturer),
+                                value: initialLecturer,
+                            } as SearchSelectOption;
+                        }
                     }
                 }
+            }
+
+            function updateLecturer(element: SearchSelectOption) {
+                currentSelection.value = element;
+                const lecturerId = (currentSelection.value.value as Lecturer).username;
+                emit("update:lecturerId", lecturerId);
             }
 
             function createOptionString(l: Lecturer): string {
@@ -115,11 +119,10 @@
             }
 
             return {
-                lecturers,
-                currentLecturer,
-                lecturerFound,
-                optionsArray,
-                selectedOption,
+                updateLecturer,
+                myLecturers: selectableLecturers,
+                currentSelection,
+                isLoading,
             };
         },
     };

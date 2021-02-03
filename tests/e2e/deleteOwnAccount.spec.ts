@@ -91,7 +91,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='deleteOwnAccountModalConfirm']").click();
         cy.wait(500);
         cy.get("p").contains("Please enter the correct password.").should("exist");
-        cy.get("input[id='enterPasswordForAccountDeletion']").should("have.class", "error");
+        cy.get("input[id='enterPasswordForAccountDeletion']").should("have.class", "input-text-error");
     });
 
     it("Entering correct password works", () => {
@@ -105,6 +105,6 @@ describe("Account creation, edition and deletion", function () {
         cy.get("input[id='email']").type(studentAuthUser.username);
         cy.get("input[id='password']").type(studentAuthUser.password);
         cy.get('button[id="login"]').click();
-        cy.get("input[id='email']").should("have.class", "error");
+        cy.get("input[id='email']").should("have.class", "input-text-error");
     });
 });

@@ -1,7 +1,7 @@
 <template>
-    <section class="flex flex-col lg:flex-row px-8 py-6 border-b -mx-4">
-        <ul class="w-full lg:w-1/2 px-2">
-            <li class="mb-4">
+    <section class="flex flex-col lg:flex-row px-8 py-6 -mx-4">
+        <ul class="w-full lg:w-1/2 px-2 space-y-4">
+            <li>
                 <menu-item
                     id="nav_desktop_lecturer_menu_courses_all"
                     title="All Courses"
@@ -10,7 +10,7 @@
                     target-route-name="shared.courses"
                 />
             </li>
-            <li class="mb-4">
+            <li>
                 <menu-item
                     id="nav_desktop_lecturer_menu_courses_create"
                     title="Create Course"
@@ -20,7 +20,7 @@
                 />
             </li>
         </ul>
-        <ul class="w-full lg:w-1/2 px-4">
+        <ul class="w-full lg:w-1/2 px-4 space-y-4">
             <li>
                 <menu-item
                     id="nav_desktop_lecturer_menu_courses_my_courses"
