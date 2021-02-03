@@ -196,6 +196,9 @@
                 );
 
                 await Promise.all(promises);
+                watchlistPendingOperations.value = watchlistPendingOperations.value.filter(
+                    (op) => !actionRequiredOperations.value.some((op2) => op.operationId == op2.operationId)
+                );
                 busy.value--;
             }
 

@@ -24,7 +24,7 @@
                         <div class="lg:w-1/2 w-full">
                             <label class="input-label"> Year </label>
                             <Select
-                                id="immatriculationSelectSemesterCycle"
+                                id="immatriculationSelectSemesterYear"
                                 v-model:selection="year"
                                 placeholder="Year"
                                 :elements="selectableYears"
@@ -35,6 +35,7 @@
                         <div class="w-full">
                             <label class="input-label"> Select Fields of Study </label>
                             <searchable-select
+                                id="searchSelectFieldsOfStudy"
                                 :selected="searchSelection"
                                 placeholder="Search fields of studies"
                                 :elements="availableFieldsOfStudy"

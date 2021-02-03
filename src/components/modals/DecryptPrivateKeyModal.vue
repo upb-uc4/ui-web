@@ -21,7 +21,7 @@
                     class="w-full input-text"
                     :class="[hasError ? 'input-text-error' : 'input-text']"
                     placeholder="Enter Decryption Password"
-                    @keypress.enter="checkPassword"
+                    @keypress.enter="close(action.CONFIRM)"
                 />
             </div>
             <p v-if="hasError" class="input-label-error">Wrong Password!</p>

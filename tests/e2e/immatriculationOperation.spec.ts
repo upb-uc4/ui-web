@@ -97,7 +97,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Check matriculation history empty in student's account", () => {
         cy.visit(`editAccount/${student.username}`);
-        cy.get("div").contains("There is no matriculation data, yet!").should("exist");
+        cy.get("div").contains("There is no matriculation data yet!");
         logout();
     });
 
@@ -110,36 +110,29 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Check matriculation history is empty", function () {
-        cy.get("div").contains("There is no matriculation data, yet!").should("exist");
+        cy.get("div").contains("There is no matriculation data yet!");
     });
 
     it("Valid FoS selection can be resetted ", function () {
-        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
-        cy.get("select[id='semesterType']").select(fieldOfStudy[0].semesterType);
-        cy.get("select[id='semesterYear']").select(fieldOfStudy[0].year);
-        cy.get("select[id='fieldsOfStudy-1']").select(fieldOfStudy[0].fos[0]);
-        cy.get("button[id='removeFieldOfStudy-1']").click();
-        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
-    });
-
-    // Skip until backend validation is implemented again
-    it.skip("Input a FoS for a semester earlier than birthday results in error", function () {
-        cy.get("button[id='addImmatriculationData']").should("be.disabled");
-        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
-        cy.get("select[id='semesterType']").select("SS");
-        cy.get("select[id='semesterYear']").select("2011");
-        cy.get("select[id='fieldsOfStudy-1']").select(fieldOfStudy[0].fos[0]);
-        cy.get("button[id='addImmatriculationData']").click();
-        cy.wait(4000);
-        cy.get("div[id='immatriculationOptions']").siblings().get("p").should("have.class", "error-message");
-        cy.get("button[id='removeFieldOfStudy-1']").click();
+        cy.get("button[id='immatriculationSelectSemesterCycle']").click();
+        cy.get("li").contains(fieldOfStudy[0].semesterType).click();
+        cy.get("button[id='immatriculationSelectSemesterYear']").click();
+        cy.get("li").contains(fieldOfStudy[0].year).click();
+        cy.get("input[id='searchSelectFieldsOfStudy']").click();
+        cy.get("div").contains(fieldOfStudy[0].fos[0]).click();
+        cy.get(`i[id='remove_${fieldOfStudy[0].fos[0]}']`).click();
+        cy.get(`i[id='remove_${fieldOfStudy[0].fos[0]}']`).should("not.exist");
     });
 
     it("Add two fields of studies for one summer semester", function () {
-        cy.get("select[id=semesterType]").select(fieldOfStudy[0].semesterType);
-        cy.get("select[id=semesterYear]").select(fieldOfStudy[0].year);
-        cy.get("select[id=fieldsOfStudy-1]").select(fieldOfStudy[0].fos[0]);
-        cy.get("select[id=fieldsOfStudy-2]").select(fieldOfStudy[0].fos[1]);
+        cy.get("button[id='immatriculationSelectSemesterCycle']").click();
+        cy.get("li").contains(fieldOfStudy[0].semesterType).click();
+        cy.get("button[id='immatriculationSelectSemesterYear']").click();
+        cy.get("li").contains(fieldOfStudy[0].year).click();
+        cy.get("input[id='searchSelectFieldsOfStudy']").click();
+        cy.get("div").contains(fieldOfStudy[0].fos[0]).click();
+        cy.get("input[id='searchSelectFieldsOfStudy']").click();
+        cy.get("div").contains(fieldOfStudy[0].fos[1]).click();
         cy.get("button[id=addImmatriculationData]").click();
         cy.wait(2000);
     });
@@ -172,9 +165,12 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Add a field of study for one winter semester", function () {
-        cy.get("select[id=semesterType]").select(fieldOfStudy[1].semesterType);
-        cy.get("select[id=semesterYear]").select(fieldOfStudy[1].year);
-        cy.get("select[id=fieldsOfStudy-1]").select(fieldOfStudy[1].fos[0]);
+        cy.get("button[id='immatriculationSelectSemesterCycle']").click();
+        cy.get("li").contains(fieldOfStudy[1].semesterType).click();
+        cy.get("button[id='immatriculationSelectSemesterYear']").click();
+        cy.get("li").contains(fieldOfStudy[1].year).click();
+        cy.get("input[id='searchSelectFieldsOfStudy']").click();
+        cy.get("div").contains(fieldOfStudy[1].fos[0]).click();
         cy.get("button[id=addImmatriculationData]").click();
         cy.wait(5000);
     });
@@ -259,12 +255,12 @@ describe("Account creation, edition and deletion", function () {
         cy.get(`i[id='op_watch_${op1IdShort}']`).should("exist");
         cy.get(`i[id='op_watch_${op2IdShort}']`).click();
         cy.wait(1000);
-        cy.get(`i[id='op_unwatch_${op1IdShort}']`).should("exist");
+        cy.get(`i[id='op_unwatch_${op2IdShort}']`).should("exist");
 
         navigateToAllOperationsPage();
 
-        cy.get("button[id='requestButtons']").click();
-        cy.wait(10000);
+        cy.get("button[id='requestOperations']").click();
+        cy.wait(15000);
 
         cy.get(`i[id='op_watch_${op1IdShort}']`).click();
         cy.wait(1000);
@@ -275,14 +271,14 @@ describe("Account creation, edition and deletion", function () {
         cy.get(`i[id='op_watch_${op2IdShort}']`).should("exist");
 
         navigateToWelcomePage();
-        cy.wait(10000);
+        cy.wait(20000);
 
         cy.get(`i[id='op_unwatch_${op1IdShort}']`).should("exist");
         cy.get(`i[id='op_watch_${op2IdShort}']`).should("exist");
     });
 
     it("Approve first operation", () => {
-        cy.get("div[id='dashboard_actionRequired']").get(`div[id='op_${op1IdShort}']`).get(`button[id='op_approve_${op1IdShort}']`).click();
+        cy.get(`div[id='op_${op1IdShort}']`).get(`button[id='op_approve_${op1IdShort}']`).click();
 
         cy.get("input[id='enterDecryptionPassword']").type(adminAuthUser.password);
         cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
@@ -299,10 +295,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Reject second operation", () => {
-        cy.get("div[id='dashboard_actionRequired']")
-            .get(`div[id='op_${op2IdShort}']`)
-            .get(`button[id='op_startRejection_${op2IdShort}']`)
-            .click();
+        cy.get(`div[id='op_${op2IdShort}']`).get(`button[id='op_startRejection_${op2IdShort}']`).click();
         cy.get("div[id='dashboard_actionRequired']")
             .get(`div[id='op_${op2IdShort}']`)
             .get(`select[id='op_select_reject_reason_${op2IdShort}']`)
@@ -356,7 +349,7 @@ describe("Account creation, edition and deletion", function () {
         cy.wait(10000);
 
         cy.get("div[id='dashboard_finished']").get(`div[id='op_${op1IdShort}']`).get(`i[id='op_markRead_${op2IdShort}']`).click();
-        cy.wait(1000);
+        cy.wait(2000);
 
         cy.get("div[id='dashboard_finished']").get(`div[id='op_${op1IdShort}']`).should("not.exist");
         logout();
