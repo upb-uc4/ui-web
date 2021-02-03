@@ -6,7 +6,7 @@ module.exports = {
         preserveHtmlElements: false,
         content: ["./src/**/*.html", "./src/**/*.vue"],
         options: {
-            safelist: ["bg-night-black"],
+            safelist: [/dark/],
         },
     },
     darkMode: "class",
