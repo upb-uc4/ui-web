@@ -9,7 +9,7 @@
             <div class="border-r-4 border-blue-700 dark:border-lime-500 absolute h-full top-0" style="left: 15px" />
             <div class="m-0 p-0 space-y-6">
                 <immatriculation-history-entry
-                    v-for="entry in chronologicalList.reverse()"
+                    v-for="entry in chronologicalList"
                     :key="entry"
                     :fields-of-study="entry.fieldsOfStudy"
                     :semester="entry.semester"
@@ -62,7 +62,7 @@
                 const response = await matriculationManagement.getMatriculationHistory(props.username);
                 const responseHandler = new ImmatriculationResponseHandler();
                 history = responseHandler.handleResponse(response);
-                chronologicalList.value = historyToSortedList(history);
+                chronologicalList.value = historyToSortedList(history).reverse();
                 isLoading.value = false;
             }
 
