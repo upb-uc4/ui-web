@@ -7,7 +7,7 @@ process.env.VUE_APP_PUBLIC_PATH = "/deploy/";
 // do not add trailing forward slash
 switch (process.env.NODE_ENV) {
     case "production":
-        process.env.VUE_APP_API_BASE_URL = "https://uc4.cs.uni-paderborn.de/api/production";
+        process.env.VUE_APP_API_BASE_URL = "/api1";
         endpoint = "https://uc4.cs.uni-paderborn.de/api/production/";
         break;
     case "development":
@@ -29,6 +29,21 @@ module.exports = {
             fix: false,
         });
         config.plugins.delete("prefetch");
+
+        config.optimization.splitChunks({
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name(module) {
+                        // get the name. E.g. node_modules/packageName/not/this/part.js
+                        // or node_modules/packageName
+                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                        // npm package names are URL-safe, but some servers don't like @ symbols
+                        return `npm.${packageName.replace("@", "")}`;
+                    },
+                },
+            },
+        });
     },
     //publicPath: process.env.NODE_ENV === "production" ? "/deploy/" : "",
     publicPath: process.env.VUE_APP_PUBLIC_PATH,

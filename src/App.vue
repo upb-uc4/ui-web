@@ -12,21 +12,18 @@
 </template>
 
 <script lang="ts">
-    import LoginModal from "@/components/modals/LoginModal.vue";
-    import EncryptPrivateKeyModal from "@/components/modals/EncryptPrivateKeyModal.vue";
-    import DecryptPrivateKeyModal from "@/components/modals/DecryptPrivateKeyModal.vue";
     import Navbar from "@/components/navigation/navbar/Navbar.vue";
-    import { store, useStore } from "./use/store/store";
-    import { ref, onMounted } from "vue";
+    import { useStore } from "./use/store/store";
+    import { ref, onMounted, defineAsyncComponent } from "vue";
     import { MutationTypes } from "./use/store/mutation-types";
 
     export default {
         name: "App",
         components: {
-            LoginModal,
+            LoginModal: defineAsyncComponent(() => import("@/components/modals/LoginModal.vue")),
             Navbar,
-            DecryptPrivateKeyModal,
-            EncryptPrivateKeyModal,
+            DecryptPrivateKeyModal: defineAsyncComponent(() => import("@/components/modals/DecryptPrivateKeyModal.vue")),
+            EncryptPrivateKeyModal: defineAsyncComponent(() => import("@/components/modals/EncryptPrivateKeyModal.vue")),
         },
         setup() {
             let loginModal = ref();
@@ -34,7 +31,7 @@
             let decryptionModal = ref();
             const store = useStore();
 
-            store.subscribe((mutation, state) => {
+            store.subscribe((mutation, _) => {
                 if (mutation.type === MutationTypes.RESET_STATE) {
                     setModals();
                 }

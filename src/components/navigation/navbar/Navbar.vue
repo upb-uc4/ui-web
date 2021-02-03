@@ -1,50 +1,46 @@
 <template>
     <div v-if="role === Role.ADMIN">
-        <admin-navbar-desktop class="hidden md:flex" />
-        <admin-navbar-mobile class="flex md:hidden" />
+        <admin-navbar-desktop v-if="width >= 768" class="flex" />
+        <admin-navbar-mobile v-else class="flex" />
     </div>
     <div v-else-if="role === Role.LECTURER">
-        <lecturer-navbar-desktop class="hidden md:flex" />
-        <lecturer-navbar-mobile class="flex md:hidden" />
+        <lecturer-navbar-desktop v-if="width >= 768" class="flex" />
+        <lecturer-navbar-mobile v-else class="flex" />
     </div>
     <div v-else-if="role === Role.STUDENT">
-        <student-navbar-desktop class="hidden md:flex" />
-        <student-navbar-mobile class="flex md:hidden" />
+        <student-navbar-desktop v-if="width >= 768" class="flex" />
+        <student-navbar-mobile v-else class="flex" />
     </div>
     <div v-else>
-        <guest-navbar-desktop class="hidden md:flex" />
-        <guest-navbar-mobile class="flex md:hidden" />
+        <guest-navbar-desktop v-if="width >= 768" class="flex" />
+        <guest-navbar-mobile v-else class="flex" />
     </div>
 </template>
 
 <script lang="ts">
-    import GuestNavbarDesktop from "@/components/navigation/navbar/desktop/guest/Navbar.vue";
-    import GuestNavbarMobile from "@/components/navigation/navbar/mobile/guest/Navbar.vue";
-    import AdminNavbarDesktop from "@/components/navigation/navbar/desktop/admin/Navbar.vue";
-    import AdminNavbarMobile from "@/components/navigation/navbar/mobile/admin/Navbar.vue";
-    import StudentNavbarDesktop from "@/components/navigation/navbar/desktop/student/Navbar.vue";
-    import StudentNavbarMobile from "@/components/navigation/navbar/mobile/student/Navbar.vue";
-    import LecturerNavbarDesktop from "@/components/navigation/navbar/desktop/lecturer/Navbar.vue";
-    import LecturerNavbarMobile from "@/components/navigation/navbar/mobile/lecturer/Navbar.vue";
+
     import { Role } from "@/entities/Role";
     import { useStore } from "@/use/store/store";
-    import { ref } from "vue";
+    import { computed, ref, watch, defineAsyncComponent } from "vue";
     import { MutationTypes } from "@/use/store/mutation-types";
     import User from "@/api/api_models/user_management/User";
 
     export default {
         name: "Navbar",
         components: {
-            GuestNavbarDesktop,
-            GuestNavbarMobile,
-            AdminNavbarDesktop,
-            AdminNavbarMobile,
-            StudentNavbarDesktop,
-            StudentNavbarMobile,
-            LecturerNavbarDesktop,
-            LecturerNavbarMobile,
+            GuestNavbarDesktop: defineAsyncComponent(() => import("@/components/navigation/navbar/desktop/guest/Navbar.vue")),
+            GuestNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/guest/Navbar.vue")),
+            AdminNavbarDesktop: defineAsyncComponent(() => import("@/components/navigation/navbar/desktop/admin/Navbar.vue")),
+            AdminNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/admin/Navbar.vue")),
+            StudentNavbarDesktop: defineAsyncComponent(() =>  import("@/components/navigation/navbar/desktop/student/Navbar.vue")),
+            StudentNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/student/Navbar.vue")),
+            LecturerNavbarDesktop: defineAsyncComponent(() =>  import("@/components/navigation/navbar/desktop/lecturer/Navbar.vue")),
+            LecturerNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/lecturer/Navbar.vue")),
         },
         setup() {
+            let width = ref(window.innerWidth);
+            window.addEventListener("resize", (e) => width.value = window.innerWidth )
+            
             const store = useStore();
             let role = ref(Role.NONE);
 
@@ -56,7 +52,11 @@
                 }
             });
 
-            return { role, Role };
+            const isMobile = watch([window.innerWidth], () => {
+                return window.innerWidth < 768;
+            })
+
+            return { role, Role, width };
         },
     };
 </script>
