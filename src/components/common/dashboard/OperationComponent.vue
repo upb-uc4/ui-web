@@ -222,7 +222,7 @@
             const selectedReason = ref("");
             const finalReason = ref("");
             const isMyOperation = operation.value.initiator == props.enrollmentId;
-            const showWatchOption = !isMyOperation && isPending;
+            const showWatchOption = !isMyOperation;
 
             const username = ref("...");
             const isAdmin = computed(() => {
