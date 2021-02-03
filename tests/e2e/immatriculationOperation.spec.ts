@@ -220,9 +220,16 @@ describe("Account creation, edition and deletion", function () {
         logout();
     });
 
-    it("Create certificate for admin", () => {
+    it("Cancelling certificate creation does not result in displaying the board", () => {
         loginAsUser(adminAuthUser);
         cy.wait(2000);
+        cy.get("button[id='createCertificate']").click();
+        cy.wait(2000);
+        cy.get("button[id='encryptPrivateKeyModalConfirm']").click();
+        cy.get("button[id='createCertificate']").should("exist");
+    });
+
+    it("Create certificate for admin", () => {
         cy.get("button[id='createCertificate']").click();
         cy.wait(2000);
         const encryptionPassword = adminAuthUser.password;

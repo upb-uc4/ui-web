@@ -1,42 +1,37 @@
 <template>
-    <section id="moduleSection" class="border-t-2 py-8 border-gray-400">
-        <div v-if="busy" class="mx-auto">
-            <loading-spinner />
-        </div>
-        <div v-else class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <label class="block text-gray-700 text-lg font-medium mb-2">Module Information</label>
-                <label class="block text-gray-600"> The module that the course should count to. </label>
-            </div>
-            <div class="flex flex-col lg:w-2/3 w-full">
-                <label class="text-gray-700 text-md font-medium block mb-4">Module</label>
-                <search-select
-                    v-if="!registered"
+    <base-section id="moduleSection" title="Module Information" subtitle="Select the module that this course should count to.">
+        <LoadingSpinner v-if="isLoading" />
+        <div v-else class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+            <div class="lg:w-1/2 w-full">
+                <input v-if="registered" id="selectModule" :value="selectedModuleString" disabled type="text" class="w-full input-text" />
+                <searchable-select
+                    v-else
                     v-model:selected="selectedModuleOption"
-                    :options="optionsArray"
-                    input-id="selectModule"
-                    :category-name="'Module'"
+                    placeholder="Type to search."
+                    :elements="optionsArray"
+                    @update:selected="selectModule"
                 />
-                <input v-else id="selectModule" :value="selectedModuleString" disabled type="text" class="w-full form-input input-text" />
             </div>
+            <div class="invisible lg:w-1/2 w-full" />
         </div>
-    </section>
+    </base-section>
 </template>
 
 <script lang="ts">
-    import SearchSelect from "@/components/common/SearchSelect.vue";
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import { onBeforeMount, ref } from "vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import Module from "@/api/api_models/exam_reg_management/Module";
-    import { watch } from "vue";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import SearchableSelect from "@/components/common/SearchableSelect.vue";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+
     export default {
         name: "CourseModulesSection",
         components: {
-            SearchSelect,
+            SearchableSelect,
+            BaseSection,
             LoadingSpinner,
         },
         props: {
@@ -55,25 +50,22 @@
         },
         emits: ["update:selected"],
         setup(props: any, { emit }: any) {
-            let busy = ref(false);
-            let optionsArray = ref([] as SearchSelectOption[]);
-            let selectedModuleString = ref(props.selected);
-            let selectedModuleOption = ref({} as SearchSelectOption);
+            const isLoading = ref(false);
+            const optionsArray = ref([] as SearchSelectOption[]);
+            const selectedModuleString = ref(props.selected);
+            const selectedModuleOption = ref({} as SearchSelectOption);
 
             onBeforeMount(async () => {
                 if (!props.registered) await getModules();
             });
 
-            watch(
-                () => selectedModuleOption.value,
-                () => {
-                    let emitValue = (selectedModuleOption.value.value as Module).id;
-                    emitValue == undefined ? emit("update:selected", "") : emit("update:selected", emitValue);
-                }
-            );
+            function selectModule(module: SearchSelectOption) {
+                let emitValue = (module.value as Module).id;
+                emitValue == undefined ? emit("update:selected", "") : emit("update:selected", emitValue);
+            }
 
             async function getModules() {
-                busy.value = true;
+                isLoading.value = true;
                 if ((props.moduleIds as String[]).length == 0) return;
                 const exRegManagement = new ExaminationRegulationManagement();
                 const handler = new GenericResponseHandler("module");
@@ -82,14 +74,15 @@
                 result.forEach((module) => {
                     optionsArray.value.push({ value: module, display: `${module.id}: ${module.name}` });
                 });
-                busy.value = false;
+                isLoading.value = false;
             }
 
             return {
-                busy,
                 selectedModuleString,
                 selectedModuleOption,
                 optionsArray,
+                selectModule,
+                isLoading,
             };
         },
     };

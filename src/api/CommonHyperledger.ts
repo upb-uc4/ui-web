@@ -1,5 +1,6 @@
 import Common from "./Common";
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { HyperledgerVersion } from "@/api/helpers/models/ServiceVersion";
 
 export default class CommonHyperledger extends Common {
     protected static endpoint = "";
@@ -22,9 +23,4 @@ export default class CommonHyperledger extends Common {
                 return { chaincodeVersion: "unavailable", hlfApiVersion: "unavailable" };
             });
     }
-}
-
-export interface HyperledgerVersion {
-    hlfApiVersion: string;
-    chaincodeVersion: string;
 }

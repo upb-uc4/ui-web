@@ -19,6 +19,14 @@
                     target-route-name="accountForm.create"
                 />
             </li>
+            <li>
+                <menu-item
+                    id="nav_mobile_admin_menu_exreg_create"
+                    title="Create Exam Regulation"
+                    icon-class="fas fa-folder-plus"
+                    target-route-name="examRegForm"
+                />
+            </li>
         </ul>
     </section>
 </template>

@@ -1,21 +1,28 @@
 <template>
-    <div class="flex w-full sm:mt-64 mt-32 items-center">
+    <base-view extra-classes="flex sm:mt-64 mt-32 items-center">
         <div class="md:flex md:flex-row flex-col justify-center w-full">
-            <div class="sm:mr-12 lg:mr-24 text-6xl font-semibold text-center text-blue-700" style="font-size: 96px">404</div>
+            <div class="sm:mr-12 lg:mr-24 text-6xl font-semibold text-center text-gray-900 dark:text-blue-600" style="font-size: 90px">
+                404
+            </div>
 
             <div class="flex flex-col justify-center">
-                <div class="text-5xl font-bold text-blue-700">Oops...</div>
-                <div class="text-xl font-medium">Unfortunately, this page does not exist :(</div>
-                <div class="mt-10 text-xl font-medium">
-                    <router-link id="takeMeHome" :to="{ name: 'home' }" class="w-full sm:w-auto block sm:inline p-3 btn btn-blue-secondary">
-                        Take me Home
-                    </router-link>
-                </div>
+                <div class="text-5xl font-semibold dark:text-gray-300">Page not found</div>
+                <div class="mt-2 text-xl font-medium dark:text-gray-300">Unfortunately, this page does not exist 😕</div>
+                <router-link id="takeMeHome" class="mt-6 flex items-center navigation-link" :to="{ name: 'home' }">
+                    <span class="mr-2 text-sm font-bold">Take me home</span>
+                    <i class="fas text-sm fa-chevron-right" />
+                </router-link>
             </div>
         </div>
-    </div>
+    </base-view>
 </template>
 
 <script lang="ts">
-    export default {};
+    import BaseView from "@/views/common/BaseView.vue";
+
+    export default {
+        components: {
+            BaseView,
+        },
+    };
 </script>

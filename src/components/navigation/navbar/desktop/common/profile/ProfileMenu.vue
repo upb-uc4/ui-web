@@ -1,19 +1,22 @@
 <template>
     <base-menu>
         <template #hook>
-            <div class="flex items-center">
-                <div v-if="!busy" class="mr-2 text-gray-100 font-semibold tracking-wide">
+            <div class="flex items-center text-gray-200 space-x-2">
+                <div v-if="!busy" class="font-bold text-sm">
                     {{ user.firstName }}
                 </div>
                 <div
-                    class="rounded-full w-10 h-10 bg-no-repeat bg-cover bg-center"
+                    class="rounded-full w-6 h-6 bg-no-repeat bg-cover bg-center"
                     :style="{ backgroundImage: `url('${profilePicture}')` }"
-                ></div>
+                />
+                <i class="fa fa-caret-down text-sm" />
             </div>
         </template>
         <template #content>
             <aside class="absolute bg-transparent md:w-56 right-0 h-8" />
-            <div class="absolute top-auto right-0 bg-white z-30 lg:z-10 shadow-md rounded-lg overflow-hidden border lg:w-56">
+            <div
+                class="absolute top-auto right-0 mt-4 z-30 lg:z-10 shadow-md rounded-lg overflow-hidden lg:w-56 bg-white bg-white dark:bg-normalgray-800"
+            >
                 <menu-body />
             </div>
         </template>

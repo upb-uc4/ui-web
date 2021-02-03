@@ -1,10 +1,12 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class Common {
     protected static endpoint = "";
+    protected serviceIdentifier = "";
     _axios: AxiosInstance;
 
-    constructor(endpoint: string) {
+    constructor(endpoint: string, serviceIdentifier: string) {
         const instance = axios.create({
             baseURL: process.env.VUE_APP_API_BASE_URL + endpoint,
             headers: {
@@ -15,6 +17,7 @@ export default class Common {
         });
 
         this._axios = instance;
+        this.serviceIdentifier = serviceIdentifier;
     }
 
     static async getVersion(): Promise<string> {
@@ -34,5 +37,19 @@ export default class Common {
             .catch((error: AxiosError) => {
                 return "unavailable";
             });
+    }
+
+    getServiceVersion(): Promise<ServiceVersion> {
+        return this._axios.get(`/version`).then((response: AxiosResponse) => {
+            if (response.data.serviceVersion) {
+                const serviceVersion: ServiceVersion = {
+                    version: response.data.serviceVersion,
+                    changelogURL: `https://github.com/upb-uc4/University-Credits-4.0/blob/${this.serviceIdentifier}-${response.data.serviceVersion}/product_code/${this.serviceIdentifier}_service/CHANGELOG.md`,
+                };
+                return serviceVersion;
+            } else {
+                throw new Error("Endpoint Broken");
+            }
+        });
     }
 }

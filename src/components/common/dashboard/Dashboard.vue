@@ -74,6 +74,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import OperationManagement from "@/api/OperationManagement";
     import filterOperations from "@/use/helpers/filterOperations";
+    import { useToast } from "@/toast";
 
     export default {
         name: "Dashboard",
@@ -156,34 +157,45 @@
 
             async function getOperations() {
                 busy.value++;
+                const promises = [];
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
 
                 //Get pending operations from watchlist
-                let response = await operationManagement.getOperations(undefined, undefined, [OperationStatus.PENDING], true);
-                let result = handler.handleResponse(response);
-                watchlistPendingOperations.value = result;
+                promises.push(
+                    operationManagement.getOperations(undefined, undefined, [OperationStatus.PENDING], true).then((response) => {
+                        let result = handler.handleResponse(response);
+                        watchlistPendingOperations.value = result;
+                    })
+                );
 
                 // Get completed operations
-                response = await operationManagement.getOperations(
-                    undefined,
-                    undefined,
-                    [OperationStatus.FINISHED, OperationStatus.REJECTED],
-                    true
+                promises.push(
+                    operationManagement
+                        .getOperations(undefined, undefined, [OperationStatus.FINISHED, OperationStatus.REJECTED], true)
+                        .then((response) => {
+                            let result = handler.handleResponse(response);
+                            watchlistCompletedOperations.value = result;
+                        })
                 );
-                result = handler.handleResponse(response);
-                watchlistCompletedOperations.value = result;
 
                 //Get action required operations
-                response = await operationManagement.getOperations(undefined, true, undefined, undefined);
-                result = handler.handleResponse(response);
-                actionRequiredOperations.value = result;
+                promises.push(
+                    operationManagement.getOperations(undefined, true, undefined, undefined).then((response) => {
+                        let result = handler.handleResponse(response);
+                        actionRequiredOperations.value = result;
+                    })
+                );
 
                 //Get not-selfinitiated operations from watchlist
-                response = await operationManagement.getOperations(false, undefined, undefined, true);
-                result = handler.handleResponse(response);
-                watchlistOperations.value = result;
+                promises.push(
+                    operationManagement.getOperations(false, undefined, undefined, true).then((response) => {
+                        let result = handler.handleResponse(response);
+                        watchlistOperations.value = result;
+                    })
+                );
 
+                await Promise.all(promises);
                 busy.value--;
             }
 
@@ -202,9 +214,20 @@
 
             async function createCertificate() {
                 busy.value++;
-                let certificate = (await store.getters.certificate()).certificate;
+                let certificate = "";
+                await store.getters
+                    .certificate()
+                    .then((cert) => {
+                        certificate = cert.certificate;
+                    })
+                    .catch((reason) => {
+                        const toast = useToast();
+                        toast.warning("Certificate creation aborted.");
+                    });
                 if (certificate != "") {
                     hasCertificate.value = true;
+                    // wait for Lagom
+                    await new Promise((r) => setTimeout(r, 3000));
                     await loadDashboard();
                 }
                 busy.value--;
