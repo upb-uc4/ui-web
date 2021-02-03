@@ -1,59 +1,51 @@
 <template>
     <modal-no-teleport ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
-            <p class="text-2xl text-gray-900">Choose Encryption Password</p>
+            <p class="modal-headline">Choose Encryption Password</p>
         </template>
-        <div class="flex flex-col">
-            <div class="my-2 w-full flex justify-center">
-                <div class="fa-stack fa-2x">
-                    <i class="fas fa-circle fa-stack-2x text-blue-200" />
-                    <i class="fas fa-exclamation fa-stack-1x text-blue-700" />
-                </div>
-            </div>
-            <p>
+        <div>
+            <div class="modal-description">
                 Please choose a password to encrypt your private key, so it can be securely stored on our servers. Ensure that you do not
-                lose this password as it <span class="text-blue-800 font-semibold">cannot be restored</span>.
-            </p>
+                lose this password as it <span class="text-blue-800 font-medium">cannot be restored</span>.
+            </div>
             <div class="mt-6 relative">
+                <label class="input-label">Encryption Password</label>
                 <i
                     :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                    class="fas absolute mt-4 mr-4 right-0 text-gray-500 cursor-pointer"
+                    class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                     @click="togglePassword"
                 />
                 <input
                     id="enterEncryptionPassword"
                     v-model="password"
                     :type="passwordFieldType"
-                    class="w-full form-input input-text"
-                    :class="{ error: hasError }"
-                    placeholder="Enter Encryption Password"
+                    class="w-full input-text"
+                    :class="[hasError ? 'input-text-error' : 'input-text']"
                     @keypress.enter="checkPassword"
                 />
             </div>
 
             <div class="mt-6 relative">
+                <label class="input-label">Confirm Encryption Password</label>
                 <i
                     :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                    class="fas absolute mt-4 mr-4 right-0 text-gray-500 cursor-pointer"
+                    class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                     @click="togglePassword"
                 />
                 <input
                     id="confirmEncryptionPassword"
                     v-model="passwordConfirmation"
                     :type="passwordFieldType"
-                    class="w-full form-input input-text"
-                    :class="{ error: hasError }"
-                    placeholder="Confirm Encryption Password"
+                    class="w-full input-text"
+                    :class="[hasError ? 'input-text-error' : 'input-text']"
                     @keypress.enter="checkPassword"
                 />
             </div>
-            <p v-if="hasError" class="error-message">Please make sure password and confirmation match.</p>
+            <p v-if="hasError" class="input-label-error">Please make sure password and confirmation match.</p>
         </div>
         <template #footer>
-            <button id="encryptPrivateKeyModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="encryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn btn-blue-primary" @click="close(action.CONFIRM)">
-                Confirm
-            </button>
+            <button id="encryptPrivateKeyModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
+            <button id="encryptPrivateKeyModalConfirm" class="w-24 px-2 py-2 btn" @click="close(action.CONFIRM)">Confirm</button>
         </template>
     </modal-no-teleport>
 </template>

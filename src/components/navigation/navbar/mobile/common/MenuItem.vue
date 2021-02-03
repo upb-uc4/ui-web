@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center cursor-pointer rounded-lg p-2 hover:bg-blue-800" @click="onClick">
+    <div class="flex items-center cursor-pointer rounded-lg p-2 hover:bg-gray-800" @click="onClick">
         <i class="fas text-lg text-gray-100 w-4" :class="iconClass" />
         <span class="ml-4">
             <span class="block text-sm text-gray-100 flex items-center">{{ title }}</span>

@@ -1,18 +1,18 @@
 <template>
     <modal ref="baseModal" :action="action" @cancel="close(action.CLOSE)">
         <template #header>
-            <h1 class="text-2xl text-gray-900">Immatriculation History</h1>
+            <h1 class="modal-headline">Immatriculation History</h1>
         </template>
-        <div v-if="busy" class="w-full items-center justify-center">
-            <loading-spinner />
-        </div>
+        <loading-spinner v-if="isLoading" class="w-full items-center justify-center" />
         <div class="w-full">
-            <immatriculation-history :key="historyRefreshKey" v-model:busy="busy" :username="username" />
+            <immatriculation-history :key="historyRefreshKey" v-model:busy="isLoading" :username="username" />
         </div>
         <template #footer>
             <div class="flex justify-between">
-                <button id="immatriculationHistoryRefresh" title="Refresh" class="btn-tertiary mr-10" @click="refresh">Refresh</button>
-                <button id="immatriculationHistoryClose" class="mr-10 btn-tertiary" @click="close(action.CLOSE)">Close</button>
+                <button id="immatriculationHistoryRefresh" title="Refresh" class="btn-tertiary-modal mr-10" @click="refresh">
+                    Refresh
+                </button>
+                <button id="immatriculationHistoryClose" class="mr-10 btn-tertiary-modal" @click="close(action.CLOSE)">Close</button>
             </div>
         </template>
     </modal>
@@ -33,7 +33,7 @@
         },
         setup() {
             const baseModal = ref();
-            let busy = ref(false);
+            let isLoading = ref(false);
             let username = ref("");
             let historyRefreshKey = ref(false);
 
@@ -60,7 +60,7 @@
                 historyRefreshKey.value = !historyRefreshKey.value;
             }
 
-            return { baseModal, show, close, action, busy, username, refresh, historyRefreshKey };
+            return { baseModal, show, close, action, isLoading, username, refresh, historyRefreshKey };
         },
     };
 </script>

@@ -56,3 +56,6 @@ export function navigateToAdmittedCourses() {
 export function navigateToWelcomePage() {
     cy.visit("welcome");
 }
+export function navigateToAllOperationsPage() {
+    cy.visit("all-operations");
+}

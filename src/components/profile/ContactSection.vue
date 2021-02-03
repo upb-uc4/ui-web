@@ -1,117 +1,72 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <div class="flex mb-2 align-baseline">
-                    <label class="block text-gray-700 text-lg font-medium">Contact</label>
-                    <button v-show="!isEditing" id="editContact" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
-                    <button v-show="isEditing" id="saveContact" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
-                    <button v-show="isEditing" id="cancelEditContact" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
-                        Cancel
-                    </button>
+    <BaseSection title="Contact" subtitle="How can we reach you?">
+        <div class="space-y-6">
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label">Email</label>
+                    <base-input
+                        v-model:value="myEmail"
+                        :error-message="errorBag.getNested('email')"
+                        identifier="email"
+                        type="text"
+                        class="w-full"
+                        placeholder="example@mail.com"
+                        validation-query="user.email"
+                    />
                 </div>
-                <label class="block text-gray-600"> How can we reach you? </label>
+                <div class="lg:w-1/2 w-full" />
             </div>
-
-            <div class="w-full lg:w-2/3">
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Email</label>
-                    <input
-                        id="email"
-                        v-model="editedUser.email"
-                        type="email"
-                        :readonly="!isEditing"
-                        class="w-full input-text form-input"
-                        :class="{ error: errorBag.hasNested('email') }"
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label">Phone Number</label>
+                    <base-input
+                        v-model:value="myPhoneNumber"
+                        :error-message="errorBag.getNested('phoneNumber')"
+                        identifier="phoneNumber"
+                        type="text"
+                        class="w-full"
+                        placeholder="+49123456789"
+                        validation-query="user.phoneNumber"
                     />
-                    <p v-if="errorBag.hasNested('email')" class="error-message">
-                        {{ errorBag.getNested("email") }}
-                    </p>
                 </div>
-
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Phone</label>
-                    <input
-                        id="phoneNumber"
-                        v-model="editedUser.phoneNumber"
-                        placeholder="+123 456 789"
-                        :readonly="!isEditing"
-                        class="w-full input-text form-input"
-                        :class="{ error: errorBag.hasNested('phoneNumber') }"
-                    />
-                    <p v-if="errorBag.hasNested('phoneNumber')" class="error-message">
-                        {{ errorBag.getNested("phoneNumber") }}
-                    </p>
-                </div>
+                <div class="lg:w-1/2 w-full" />
             </div>
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
-    import { ref, watch } from "vue";
-    import UserManagement from "@/api/UserManagement";
-    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
-    import { cloneDeep } from "lodash";
+    import BaseInput from "@/components/common/BaseInput.vue";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
+        name: "ContactSection",
+        components: {
+            BaseInput,
+            BaseSection,
+        },
         props: {
-            user: {
+            phoneNumber: {
+                type: String,
                 required: true,
-                type: Object,
+            },
+            email: {
+                type: String,
+                required: true,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
+                required: true,
             },
         },
-        emits: ["update:user"],
+        emits: ["update:email", "update:phoneNumber"],
         setup(props: any, { emit }: any) {
-            const editedUser = ref(cloneDeep(props.user));
-            const isEditing = ref(false);
-            const errorBag = ref(new ErrorBag());
-
-            //react on saved changes from other components
-            watch(
-                () => props.user,
-                () => {
-                    let localContactChanges = {
-                        email: editedUser.value.email,
-                        phoneNumber: editedUser.value.phoneNumber,
-                    };
-                    //update user object
-                    editedUser.value = cloneDeep(props.user);
-                    // restore local changes
-                    editedUser.value.email = localContactChanges.email;
-                    editedUser.value.phoneNumber = localContactChanges.phoneNumber;
-                }
-            );
-
-            function edit() {
-                isEditing.value = true;
-            }
-
-            function cancelEdit() {
-                resetInputs();
-                isEditing.value = false;
-            }
-
-            function resetInputs() {
-                editedUser.value = cloneDeep(props.user);
-                errorBag.value = new ErrorBag();
-            }
-
-            async function save() {
-                const auth: UserManagement = new UserManagement();
-                const response = await auth.updateUser(editedUser.value);
-                const handler = new ValidationResponseHandler("contact data");
-                if (handler.handleResponse(response)) {
-                    isEditing.value = false;
-                    emit("update:user", editedUser.value);
-                    errorBag.value = new ErrorBag();
-                } else {
-                    errorBag.value = new ErrorBag(handler.errorList);
-                }
-            }
-
-            return { isEditing, edit, cancelEdit, save, editedUser, errorBag };
+            return {
+                myPhoneNumber: useModelWrapper(props, emit, "phoneNumber"),
+                myEmail: useModelWrapper(props, emit, "email"),
+            };
         },
     };
 </script>

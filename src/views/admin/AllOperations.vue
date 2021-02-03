@@ -1,35 +1,39 @@
 <template>
-    <button class="flex items-center mb-4 navigation-link mt-12" @click="back">
-        <i class="fas text-xl fa-chevron-left"></i>
-        <span class="font-bold text-sm ml-1">Back</span>
-    </button>
-    <div class="flex flex-col items-center justify-center w-full">
-        <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations</h1>
-        <h2 class="text-xl text-gray-700">
-            In this dashboard, you find all operations in the system. You may watch them for displaying them in your personal dashboard
-            <router-link id="routeWelcomePage" :to="{ name: 'welcome' }" class="navigation-link hover:cursor-pointer hover:underline">
-                here
-            </router-link>
-            .
-        </h2>
-    </div>
-    <div v-if="busy" class="mx-auto">
-        <loading-spinner />
-    </div>
-    <div v-else class="flex flex-col items-center justify-center w-full mt-10">
-        <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
-        <div v-else class="w-full flex flex-col">
-            <search-bar v-model:message="message" @refresh="refresh" />
-            <dashboard-component
-                identifier="archive"
-                class="w-full mt-5"
-                :operations="filteredOperations"
-                :watched-operations="watchedOperations"
-                title="Archived Operations"
-                :is-archive="true"
-            />
+    <base-view>
+        <button class="flex items-center mb-4 navigation-link mt-12" @click="back">
+            <i class="fas text-xl fa-chevron-left"></i>
+            <span class="font-bold text-sm ml-1">Back</span>
+        </button>
+        <div class="flex flex-col items-center justify-center w-full">
+            <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations</h1>
+            <h2 class="text-xl text-gray-700">
+                In this dashboard, you find all operations in the system. You may watch them for displaying them in your personal dashboard
+                <router-link id="routeWelcomePage" :to="{ name: 'welcome' }" class="navigation-link hover:cursor-pointer hover:underline">
+                    here
+                </router-link>
+                .
+            </h2>
         </div>
-    </div>
+        <div v-if="busy" class="mx-auto">
+            <loading-spinner />
+        </div>
+        <div v-else class="flex flex-col items-center justify-center w-full mt-10">
+            <button v-if="!gotOps" id="requestOperations" class="btn btn-blue-primary p-4 mt-10" @click="requestData">
+                Request Operations
+            </button>
+            <div v-else class="w-full flex flex-col">
+                <search-bar v-model:message="message" @refresh="refresh" />
+                <dashboard-component
+                    identifier="archive"
+                    class="w-full mt-5"
+                    :operations="filteredOperations"
+                    :watched-operations="watchedOperations"
+                    title="Archived Operations"
+                    :is-archive="true"
+                />
+            </div>
+        </div>
+    </base-view>
 </template>
 <script lang="ts">
     import { useStore } from "@/use/store/store";
@@ -44,10 +48,12 @@
     import { MutationTypes } from "@/use/store/mutation-types";
     import filterOperations from "@/use/helpers/filterOperations";
     import CertificateManagement from "@/api/CertificateManagement";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         name: "AllOperationsPage",
         components: {
+            BaseView,
             LoadingSpinner,
             DashboardComponent,
             SearchBar,
@@ -71,32 +77,34 @@
             }
 
             async function getOperations() {
+                const promises = [];
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
-                const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
-                const result = handler.handleResponse(response);
 
-                //Show empty list if no results given
-                operations.value = result;
-                gotOps.value = true;
-                await getWatchedOperations();
-            }
+                promises.push(
+                    operationManagement.getOperations(undefined, undefined, undefined, false).then((response) => {
+                        const result = handler.handleResponse(response);
+                        operations.value = result;
+                    })
+                );
 
-            async function getWatchedOperations() {
-                const operationManagement = new OperationManagement();
-                const handler = new GenericResponseHandler("operations");
-                const response = await operationManagement.getOperations(undefined, undefined, undefined, true);
-                const result = handler.handleResponse(response);
-                const ownId = await getOwnEnrollmentId();
-                watchedOperations.value = result.filter((op) => op.initiator != ownId);
-            }
+                let tmpOps = [] as Operation[];
+                promises.push(
+                    operationManagement.getOperations(undefined, undefined, undefined, true).then((response) => {
+                        tmpOps = handler.handleResponse(response);
+                    })
+                );
 
-            async function getOwnEnrollmentId(): Promise<string> {
                 const certificateManagement = new CertificateManagement();
-                const handler = new GenericResponseHandler("enrollment-id");
-                const response = await certificateManagement.getOwnEnrollmentId();
-                const result = handler.handleResponse(response);
-                return result.id;
+                let ownId = "";
+                promises.push(
+                    certificateManagement.getOwnEnrollmentId().then((response) => {
+                        ownId = handler.handleResponse(response).id;
+                    })
+                );
+                await Promise.all(promises);
+                gotOps.value = true;
+                watchedOperations.value = tmpOps.filter((op) => op.initiator != ownId);
             }
 
             function back() {

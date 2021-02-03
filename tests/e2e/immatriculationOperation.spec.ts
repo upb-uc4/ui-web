@@ -3,7 +3,12 @@ import Student from "@/api/api_models/user_management/Student";
 import OperationManagement from "@/api/OperationManagement";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsDefaultAdmin, loginAsUser, logout } from "./helpers/AuthHelper";
-import { navigateToImmatriculationPage, navigateToPrivateProfile, navigateToWelcomePage } from "./helpers/NavigationHelper";
+import {
+    navigateToAllOperationsPage,
+    navigateToImmatriculationPage,
+    navigateToPrivateProfile,
+    navigateToWelcomePage,
+} from "./helpers/NavigationHelper";
 import { createUsers, deleteUsers, getRandomizedGovernmentId, getRandomMatriculationId } from "./helpers/UserHelper";
 import { UserWithAuth } from "./helpers/UserWithAuth";
 
@@ -174,7 +179,6 @@ describe("Account creation, edition and deletion", function () {
         cy.wait(5000);
     });
 
-    // TODO GET OPERATION IDS FROM API
     it("Get operation-IDs", () => {
         cy.wait(15000).then(async () => {
             await getMachineUserAuth(studentAuthUser);
@@ -216,9 +220,16 @@ describe("Account creation, edition and deletion", function () {
         logout();
     });
 
-    it("Create certificate for admin", () => {
+    it("Cancelling certificate creation does not result in displaying the board", () => {
         loginAsUser(adminAuthUser);
         cy.wait(2000);
+        cy.get("button[id='createCertificate']").click();
+        cy.wait(2000);
+        cy.get("button[id='encryptPrivateKeyModalConfirm']").click();
+        cy.get("button[id='createCertificate']").should("exist");
+    });
+
+    it("Create certificate for admin", () => {
         cy.get("button[id='createCertificate']").click();
         cy.wait(2000);
         const encryptionPassword = adminAuthUser.password;
@@ -242,6 +253,32 @@ describe("Account creation, edition and deletion", function () {
             .get(`div[id='op_${op2IdShort}']`)
             .should("contain", fieldOfStudy[1].year)
             .and("contain", fieldOfStudy[1].fos[0]);
+    });
+
+    it("Transfer operations to watchlist works", () => {
+        cy.get(`i[id='op_watch_${op1IdShort}']`).should("exist");
+        cy.get(`i[id='op_watch_${op2IdShort}']`).click();
+        cy.wait(1000);
+        cy.get(`i[id='op_unwatch_${op1IdShort}']`).should("exist");
+
+        navigateToAllOperationsPage();
+
+        cy.get("button[id='requestButtons']").click();
+        cy.wait(10000);
+
+        cy.get(`i[id='op_watch_${op1IdShort}']`).click();
+        cy.wait(1000);
+        cy.get(`i[id='op_unwatch_${op2IdShort}']`).click();
+        cy.wait(1000);
+
+        cy.get(`i[id='op_unwatch_${op1IdShort}']`).should("exist");
+        cy.get(`i[id='op_watch_${op2IdShort}']`).should("exist");
+
+        navigateToWelcomePage();
+        cy.wait(10000);
+
+        cy.get(`i[id='op_unwatch_${op1IdShort}']`).should("exist");
+        cy.get(`i[id='op_watch_${op2IdShort}']`).should("exist");
     });
 
     it("Approve first operation", () => {
@@ -312,7 +349,16 @@ describe("Account creation, edition and deletion", function () {
             .get(`div[id='op_${op2IdShort}']`)
             .get(`button[id='op_startRejection_${op2IdShort}']`)
             .should("be.disabled");
+    });
 
+    it("Watched operation is shown in finished dashboard", () => {
+        cy.get("button[id='refresh']").click();
+        cy.wait(10000);
+
+        cy.get("div[id='dashboard_finished']").get(`div[id='op_${op1IdShort}']`).get(`i[id='op_markRead_${op2IdShort}']`).click();
+        cy.wait(1000);
+
+        cy.get("div[id='dashboard_finished']").get(`div[id='op_${op1IdShort}']`).should("not.exist");
         logout();
     });
 

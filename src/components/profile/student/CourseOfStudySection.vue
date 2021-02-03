@@ -1,47 +1,37 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <div class="flex mb-2 align-baseline">
-                    <label class="block text-gray-700 text-lg font-medium">Course of Study</label>
+    <BaseSection title="Course of Study" subtitle="Information related to your individual academic career.">
+        <div class="space-y-6">
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="lg:w-1/2 w-full">
+                    <label class="input-label">Matriculation-ID</label>
+                    <input id="matriculationId" :value="matriculationId" type="text" readonly class="w-full input-text" />
+                    <label v-if="!latest" class="input-label-warning">You have not yet been matriculated!</label>
                 </div>
-                <label class="block text-gray-600"> Information related to your individual academic career. </label>
             </div>
-            <div class="mb-6 flex flex-col w-full lg:w-2/3">
-                <div class="flex flex-col lg:w-1/2 w-full">
-                    <label class="mb-3 text-sm font-medium text-gray-700">Matriculation-ID</label>
-                    <input
-                        id="matriculationId"
-                        :value="matriculationId"
-                        readonly
-                        type="text"
-                        class="w-full form-input input-text"
-                        placeholder="Matriculation-ID"
-                    />
-                    <p v-if="latest == ''" class="mb-3 mt-1 text-xs font-medium text-gray-600">You have not yet been matriculated!</p>
-                </div>
-                <div v-if="latest != ''" class="flex flex-col w-1/2 mt-3">
-                    <label class="mb-3 text-sm font-medium text-gray-700 flex">
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div v-if="latest" class="lg:w-1/2 w-full">
+                    <label class="input-label">
                         Latest Immatriculation (
-                        <button id="showHistoryButton" class="cursor-pointer text-sm font-medium navigation-link" @click="showHistory">
-                            View History
-                        </button>
+                        <button id="showHistoryButton" class="btn-tertiary" @click="showHistory">View History</button>
                         )
                     </label>
-                    <input id="latestImmatriculation" disabled class="form-input input-text" :value="latest" />
+                    <input id="latestImmatriculation" readonly class="w-full input-text" :value="latest" />
                 </div>
             </div>
         </div>
-    </section>
+    </BaseSection>
     <immatriculation-history-modal ref="historyModal" />
 </template>
 
 <script lang="ts">
+    import BaseSection from "@/components/common/section/BaseSection.vue";
     import { ref } from "vue";
     import ImmatriculationHistoryModal from "@/components/modals/ImmatriculationHistoryModal.vue";
 
     export default {
+        name: "CourseOfStudySection",
         components: {
+            BaseSection,
             ImmatriculationHistoryModal,
         },
         props: {
