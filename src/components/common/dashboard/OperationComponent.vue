@@ -82,8 +82,8 @@
                     <button
                         :id="'op_approve_' + shownOpId"
                         :disabled="sentApprove"
-                        :class="{ 'bg-green-700': sentApprove, 'invisible': sentReject }"
-                        class="w-8 h-8 btn-icon-green text-xs"
+                        :class="{ invisible: sentReject }"
+                        class="w-8 h-8 btn-base btn-icon-green text-xs"
                         title="Approve"
                         @click.stop="approve"
                     >
@@ -92,8 +92,8 @@
                     <button
                         :id="'op_startRejection_' + shownOpId"
                         :disabled="sentReject || provideReason"
-                        :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
-                        class="ml-2 w-8 h-8 btn-icon-red-filled text-xs"
+                        :class="{ invisible: sentApprove }"
+                        class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
                         title="Reject"
                         @click.stop="toggleReasonMenu"
                     >
