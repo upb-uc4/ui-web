@@ -69,8 +69,6 @@
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { useStore } from "@/use/store/store";
-    import CertificateManagement from "@/api/CertificateManagement";
-    import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
     import { showOperationCreatedToast } from "@/use/helpers/Toasts";
     import BaseView from "@/views/common/BaseView.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
@@ -80,6 +78,8 @@
     import TagList from "@/components/common/TagList.vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
 
     export default {
         components: {
@@ -182,11 +182,7 @@
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
 
-                const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(username.value);
-                const responseHandler = new GenericResponseHandler("enrollment id");
-                const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
-
-                if (await updateMatriculation(username.value, enrollmentId.id, matriculationEntries)) {
+                if (await executeTransaction(new GeneralMatriculationTransactionWrapper(username.value, matriculationEntries))) {
                     resetEntries();
                     showOperationCreatedToast("immatriculation");
                 }
