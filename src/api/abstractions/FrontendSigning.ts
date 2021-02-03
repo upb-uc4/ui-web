@@ -86,8 +86,6 @@ export async function updateMatriculation(
 
             const [validate1, validate2, validate3] = await Promise.all(promises);
 
-            console.log((validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3));
-
             return (validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3);
         },
         (response: APIResponse<UnsignedTransactionMessage>) => {
@@ -119,8 +117,6 @@ export async function updateMatriculation(
             const promises = [promiseAddEntries, promiseAddMatriculation, promiseUpdateMatriculation];
 
             const [validate1, validate2, validate3] = await Promise.all(promises);
-
-            console.log((validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3));
 
             return (validate1 || validate2 || validate3) && !(validate1 && validate2 && validate3);
         },

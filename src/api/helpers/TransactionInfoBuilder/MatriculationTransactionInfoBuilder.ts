@@ -14,7 +14,6 @@ export function buildTransactionInfoMatriculationAddEntries(enrollmentId: string
         transactionName: UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION,
         parameters,
     };
-    console.log(transactionInfo);
 
     return transactionInfo;
 }
@@ -30,7 +29,6 @@ export function buildTransactionInfoMatriculationAddMatriculation(matriculation:
         transactionName: UC4Identifier.TRANSACTION_ADD_MATRICULATION,
         parameters,
     };
-    console.log(transactionInfo);
     return transactionInfo;
 }
 
@@ -45,6 +43,5 @@ export function buildTransactionInfoMatriculationUpdateMatriculation(matriculati
         transactionName: UC4Identifier.TRANSACTION_UPDATE_MATRICULATION,
         parameters,
     };
-    console.log(transactionInfo);
     return transactionInfo;
 }
