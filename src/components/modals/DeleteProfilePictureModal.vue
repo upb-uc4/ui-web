@@ -1,17 +1,12 @@
 <template>
     <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
-            <p class="text-2xl text-gray-900">Delete Profile Picture</p>
+            <p class="modal-headline mb-2">Delete Profile Picture</p>
         </template>
-
-        Are you sure you want to delete the profile picture?<br />
-        You will not be able to restore it.
-
+        <div class="modal-description">Are you sure you want to delete the profile picture? You won't be able to restore it.</div>
         <template #footer>
-            <button id="deleteProfilePictureModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="deleteProfilePictureModalDelete" class="w-24 py-2 px-2 btn btn-red-primary" @click="close(action.DELETE)">
-                Delete
-            </button>
+            <button id="deleteProfilePictureModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
+            <button id="deleteProfilePictureModalDelete" class="w-24 py-2 px-2 btn btn-remove" @click="close(action.DELETE)">Delete</button>
         </template>
     </modal>
 </template>

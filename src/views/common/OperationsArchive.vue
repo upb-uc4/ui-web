@@ -1,28 +1,30 @@
 <template>
-    <button class="flex items-center mb-4 navigation-link mt-12" @click="back">
-        <i class="fas text-xl fa-chevron-left"></i>
-        <span class="font-bold text-sm ml-1">Back</span>
-    </button>
-    <div class="flex flex-col items-center justify-center w-full">
-        <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations Archive</h1>
-        <h2 class="text-xl text-gray-700">In this dashboard, you find all operations concerning your account.</h2>
-    </div>
-    <div v-if="busy">
-        <loading-spinner />
-    </div>
-    <div v-else class="flex flex-col items-center justify-center w-full mt-10">
-        <button v-if="!gotArchive" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
-        <div v-else class="w-full flex flex-col">
-            <search-bar v-model:message="message" @refresh="refresh" />
-            <dashboard-component
-                identifier="archive"
-                class="w-full mt-5"
-                :operations="filteredOperations"
-                title="Archived Operations"
-                :is-archive="true"
-            />
+    <base-view>
+        <button class="flex items-center mb-4 navigation-link mt-12" @click="back">
+            <i class="fas text-xl fa-chevron-left"></i>
+            <span class="font-bold text-sm ml-1">Back</span>
+        </button>
+        <div class="flex flex-col items-center justify-center w-full">
+            <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations Archive</h1>
+            <h2 class="text-xl text-gray-700">In this dashboard, you find all operations concerning your account.</h2>
         </div>
-    </div>
+        <div v-if="busy">
+            <loading-spinner />
+        </div>
+        <div v-else class="flex flex-col items-center justify-center w-full mt-10">
+            <button v-if="!gotArchive" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
+            <div v-else class="w-full flex flex-col">
+                <search-bar v-model:message="message" @refresh="refresh" />
+                <dashboard-component
+                    identifier="archive"
+                    class="w-full mt-5"
+                    :operations="filteredOperations"
+                    title="Archived Operations"
+                    :is-archive="true"
+                />
+            </div>
+        </div>
+    </base-view>
 </template>
 <script lang="ts">
     import { useStore } from "@/use/store/store";
@@ -37,10 +39,12 @@
     import { MutationTypes } from "@/use/store/mutation-types";
     import SearchBar from "@/components/common/SearchBar.vue";
     import filterOperations from "@/use/helpers/filterOperations";
+    import BaseView from "@/views/common/BaseView.vue";
 
     export default {
         name: "OperationsArchivePage",
         components: {
+            BaseView,
             LoadingSpinner,
             DashboardComponent,
             SearchBar,

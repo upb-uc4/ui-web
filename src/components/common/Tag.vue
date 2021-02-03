@@ -17,7 +17,7 @@
             },
             bgColor: {
                 type: String,
-                default: "bg-blue-200",
+                default: "bg-blue-200 dark:bg-lime-700",
             },
             hoverBgColor: {
                 type: String,
@@ -25,7 +25,7 @@
             },
             textColor: {
                 type: String,
-                default: "text-blue-700",
+                default: "text-blue-700 dark:text-lime-200",
             },
         },
         emits: ["on-remove"],

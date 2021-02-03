@@ -1,16 +1,8 @@
-import { Account } from "@/entities/Account";
-import { Role } from "@/entities/Role";
-import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-import { MutationTypes } from "@/use/store/mutation-types";
-import { useStore } from "@/use/store/store";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import CourseAdmission from "./api_models/admission_management/CourseAdmission";
 import APIError from "./api_models/errors/APIError";
-import User from "./api_models/user_management/User";
 import handleAuthenticationError from "./AuthenticationHelper";
-import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import UserManagement from "./UserManagement";
 import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
 import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 import CommonHyperledger from "./CommonHyperledger";
@@ -19,9 +11,10 @@ import SignedTransactionMessage from "./api_models/common/SignedTransactionMessa
 
 export default class AdmissionManagement extends CommonHyperledger {
     protected static endpoint = "/admission-management";
+    protected static serviceIdentifier = "admission";
 
     constructor() {
-        super(AdmissionManagement.endpoint);
+        super(AdmissionManagement.endpoint, AdmissionManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

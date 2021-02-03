@@ -1,23 +1,21 @@
 <template>
     <div>
-        <div v-if="busy">
-            <loading-component />
-        </div>
-        <div v-for="course in shownCourses" v-else :key="course.courseId">
-            <student-course :admitted-courses="admittedCourses" :course="course" :lecturer="findLecturer(course)" class="mb-8" />
+        <loading-component v-if="isLoading" title="Loading Courses..." />
+        <div v-for="course in shownCourses" v-else :key="course.courseId" class="mt-6">
+            <student-course :admitted="isAdmittedToCourse(course)" :course="course" :lecturer="findLecturer(course)" />
+            <hr class="my-6 dark:border-normalgray-700" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
     import { useStore } from "@/use/store/store";
-    import { Role } from "@/entities/Role";
-    import StudentCourse from "./StudentCourse.vue";
+    import StudentCourse from "@/components/course/list/student/StudentCourse.vue";
     import CourseManagement from "@/api/CourseManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Course from "@/api/api_models/course_management/Course";
     import APIResponse from "@/api/helpers/models/APIResponse";
-    import { computed, ref, onBeforeMount, watch } from "vue";
+    import { computed, ref, onBeforeMount } from "vue";
     import UserManagement from "@/api/UserManagement";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import Lecturer from "@/api/api_models/user_management/Lecturer";
@@ -44,20 +42,21 @@
                 default: false,
             },
         },
-
-        setup(props: any) {
-            let busy = ref(false);
+        emits: ["updated"],
+        setup(props: any, { emit }: any) {
+            let isLoading = ref(false);
             let lecturers = ref([] as Lecturer[]);
             let courses = ref([] as Course[]);
             let admittedCourses = ref([] as any[]);
             let username = ref("");
 
             onBeforeMount(async () => {
-                busy.value = true;
-                await getUsername();
+                isLoading.value = true;
+                const promises = [];
+                promises.push(getUsername(), getCourses());
+                await Promise.all(promises);
                 await getAdmittedCourses();
-                await getCourses();
-                busy.value = false;
+                isLoading.value = false;
             });
 
             async function getUsername() {
@@ -108,21 +107,26 @@
                     let filter = props.filter.toLowerCase();
                     filteredCourses = filteredCourses.filter(
                         (e) =>
-                            e.courseName.toLowerCase().includes(filter) ||
-                            e.courseDescription.toLowerCase().includes(filter) ||
+                            e.courseName.toLowerCase().replace(/\s/g, "").includes(filter.replace(/\s/g, "")) ||
+                            e.courseDescription.toLowerCase().replace(/\s/g, "").includes(filter.replace(/\s/g, "")) ||
                             e.courseId.toLowerCase().includes(filter) ||
                             e.lecturerId.toLowerCase().includes(filter)
                     );
                 }
+                emit("updated", filteredCourses.length);
                 return filteredCourses;
             });
 
+            function isAdmittedToCourse(course: Course) {
+                return admittedCourses.value.some((admittedCourse: Course) => admittedCourse.courseId === course.courseId);
+            }
+
             return {
-                busy,
+                isLoading,
                 shownCourses,
                 findLecturer,
                 username,
-                admittedCourses,
+                isAdmittedToCourse,
             };
         },
     };

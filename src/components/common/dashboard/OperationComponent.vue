@@ -34,12 +34,7 @@
                 </div>
             </div>
             <div v-if="!isArchive && isFinished" class="pr-2">
-                <button
-                    :id="'op_markRead_' + shownOpId"
-                    class="btn btn-icon-blue text-xs h-6 w-6"
-                    title="Mark as read"
-                    @click.stop="markRead"
-                >
+                <button :id="'op_markRead_' + shownOpId" class="btn-icon-blue text-xs h-6 w-6" title="Mark as read" @click.stop="markRead">
                     <i class="fas fa-check"></i>
                 </button>
             </div>
@@ -87,8 +82,8 @@
                     <button
                         :id="'op_approve_' + shownOpId"
                         :disabled="sentApprove"
-                        :class="{ 'bg-green-700': sentApprove, 'invisible': sentReject }"
-                        class="w-8 h-8 btn btn-icon-green text-xs"
+                        :class="{ invisible: sentReject }"
+                        class="w-8 h-8 btn-base btn-icon-green text-xs"
                         title="Approve"
                         @click.stop="approve"
                     >
@@ -97,8 +92,8 @@
                     <button
                         :id="'op_startRejection_' + shownOpId"
                         :disabled="sentReject || provideReason"
-                        :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
-                        class="ml-2 w-8 h-8 btn btn-icon-red-filled text-xs"
+                        :class="{ invisible: sentApprove }"
+                        class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
                         title="Reject"
                         @click.stop="toggleReasonMenu"
                     >
@@ -144,14 +139,14 @@
                             :id="'op_reject_' + shownOpId"
                             :title="finalReason == '' ? 'Please provide a reason' : 'Reject'"
                             :disabled="finalReason == ''"
-                            class="btn btn-icon-red-filled text-sm h-12"
+                            class="btn btn-remove text-sm h-12"
                             @click.stop="reject"
                         >
                             Reject
                         </button>
                         <button
                             :id="'op_cancelRejection_' + shownOpId"
-                            class="ml-2 btn btn-icon-blue text-sm h-12"
+                            class="ml-2 btn-secondary text-sm h-12"
                             @click.stop="toggleReasonMenu"
                         >
                             Cancel
@@ -229,7 +224,7 @@
             const selectedReason = ref("");
             const finalReason = ref("");
             const isMyOperation = operation.value.initiator == props.enrollmentId;
-            const showWatchOption = !isMyOperation && isPending;
+            const showWatchOption = !isMyOperation;
 
             const username = ref("...");
             const isAdmin = computed(() => {
@@ -286,6 +281,8 @@
                         return "bg-green-300";
                     case OperationStatus.REJECTED:
                         return "bg-red-300";
+                    default:
+                        return "";
                 }
             });
 

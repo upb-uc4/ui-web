@@ -1,43 +1,35 @@
 <template>
-    <div class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
-        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back">
-            <i class="fas text-xl fa-chevron-left"></i>
-            <span class="font-bold text-sm ml-1">Back</span>
-        </button>
-
-        <div class="flex items-end justify-between">
-            <h1 class="text-2xl font-medium text-gray-700 mb-8">
-                {{ student.firstName + " " + student.lastName }} (@{{ student.username }})
-            </h1>
-        </div>
-
-        <div>
-            <profile-picture-section :username="student.username" />
-            <personal-section :first-name="student.firstName" :last-name="student.lastName" :birth-date="student.birthDate" />
-
-            <contact-section v-model:user="student" />
-
-            <address-section v-model:user="student" />
-
-            <course-of-study-section :matriculation-id="student.matriculationId" :latest="student.latestImmatriculation" />
-        </div>
+    <div>
+        <section-header :title="title" />
+        <profile-picture-section :show-own-profile="true" />
+        <personal-section
+            v-model:first-name="firstName"
+            v-model:last-name="lastName"
+            v-model:birth-date="birthDate"
+            :readonly="true"
+            :error-bag="errorBag"
+        />
+        <contact-section v-model:email="email" v-model:phone-number="phoneNumber" :error-bag="errorBag" />
+        <address-section v-model:address="address" :error-bag="errorBag" />
+        <course-of-study-section :latest="user.latestImmatriculation" :matriculation-id="user.matriculationId" />
     </div>
 </template>
 
 <script lang="ts">
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
-    import CourseOfStudySection from "@/components/profile/student/CourseOfStudySection.vue";
-    import { ref } from "vue";
-    import Router from "@/use/router";
-    import UserManagement from "@/api/UserManagement";
+    import { computed } from "vue";
     import Student from "@/api/api_models/user_management/Student";
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
+    import CourseOfStudySection from "@/components/profile/student/CourseOfStudySection.vue";
+    import ErrorBag from "@/use/helpers/ErrorBag";
 
     export default {
         components: {
+            SectionHeader,
             ProfilePictureSection,
             PersonalSection,
             ContactSection,
@@ -49,18 +41,23 @@
                 required: true,
                 type: Object as () => Student,
             },
+            errorBag: {
+                type: Object as () => ErrorBag,
+                required: true,
+            },
         },
         emits: ["update:user"],
         setup(props: any, { emit }: any) {
-            const student = ref(props.user as Student);
-
-            function back() {
-                Router.back();
-            }
+            const title = computed(() => `${props.user.firstName} ${props.user.lastName} (@${props.user.username})`);
 
             return {
-                student: useModelWrapper(props, emit, "user"),
-                back,
+                title,
+                firstName: useObjectModelWrapper(props, emit, "user", "firstName"),
+                lastName: useObjectModelWrapper(props, emit, "user", "lastName"),
+                birthDate: useObjectModelWrapper(props, emit, "user", "birthDate"),
+                email: useObjectModelWrapper(props, emit, "user", "email"),
+                phoneNumber: useObjectModelWrapper(props, emit, "user", "phoneNumber"),
+                address: useObjectModelWrapper(props, emit, "user", "address"),
             };
         },
         //todo add Leave Modal

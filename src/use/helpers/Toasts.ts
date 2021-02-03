@@ -22,6 +22,9 @@ export function showAPIToast(code: number, msg?: string) {
         case 404:
             toast.error("Could not find " + msg + ".");
             break;
+        case 413:
+            toast.error("Uploaded file too large");
+            break;
         case 503:
             toast.error("Service unavailable. Please consider reporting this.");
             break;

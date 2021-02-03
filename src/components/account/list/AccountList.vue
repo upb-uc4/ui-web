@@ -1,8 +1,6 @@
 <template>
-    <div v-if="busy">
-        <loading-spinner />
-    </div>
-    <div v-else class="flex flex-col bg-white rounded-lg shadow">
+    <loading-spinner v-if="busy" title="Loading Users..." />
+    <div v-else>
         <div v-for="(user, index) in shownUsers" :key="user">
             <user-row
                 :user="user"
@@ -16,13 +14,13 @@
 
 <script lang="ts">
     import UserManagement from "@/api/UserManagement";
-    import router from "@/use/router/index";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import UserRow from "./UserRow.vue";
     import { Role } from "@/entities/Role";
     import { computed, ref, onBeforeMount, watch } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import User from "@/api/api_models/user_management/User";
+    import { StatusFilter } from "@/entities/UserStatusFilter";
     import ConfigurationManagement from "@/api/ConfigurationManagement";
 
     export default {
@@ -40,12 +38,13 @@
                 type: String,
                 required: true,
             },
-            showInactive: {
-                type: Boolean,
+            selectedStatus: {
+                type: String,
                 required: true,
             },
         },
-        setup(props: any) {
+        emits: ["on-updated"],
+        setup(props: any, { emit }: any) {
             let busy = ref(false);
             let users = ref([] as User[]);
             const currentSemester = ref("");
@@ -56,7 +55,7 @@
             });
 
             watch(
-                () => props.showInactive,
+                () => props.selectedStatus,
                 () => {
                     getUsers();
                 }
@@ -65,11 +64,19 @@
             async function getUsers() {
                 busy.value = true;
                 const userManagement: UserManagement = new UserManagement();
-
                 const genericResponseHandler = new GenericResponseHandler("users");
-                const response = props.showInactive
-                    ? await userManagement.getUsers()
-                    : await userManagement.getUsers(undefined, undefined, true);
+                let response;
+                switch (props.selectedStatus) {
+                    case StatusFilter.ACTIVE:
+                        response = await userManagement.getUsers(undefined, undefined, true);
+                        break;
+                    case StatusFilter.INACTIVE:
+                        response = await userManagement.getUsers(undefined, undefined, false);
+                        break;
+                    default:
+                        response = await userManagement.getUsers();
+                        break;
+                }
                 const userLists = genericResponseHandler.handleResponse(response);
                 users.value = Object.values(userLists).flat();
                 busy.value = false;
@@ -95,6 +102,7 @@
                             `${e.firstName.toLowerCase()}${e.lastName.toLowerCase()}`.includes(filter)
                     );
                 }
+                emit("on-updated", filteredUsers.length);
                 return filteredUsers;
             });
 

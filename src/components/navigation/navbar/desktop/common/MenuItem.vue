@@ -1,17 +1,26 @@
 <template>
     <router-link :to="{ name: targetRouteName }" class="cursor-pointer" @click="onClick($event)">
-        <div class="rounded-lg" :class="[isHorizontallyAligned ? 'p-4 hover:bg-gray-300' : 'p-2 hover:bg-gray-200']">
+        <div
+            class="rounded-lg font-normal text-base hover:bg-gray-200 dark:hover:bg-blue-600"
+            :class="[isHorizontallyAligned ? 'p-2' : 'p-2']"
+            @mouseenter="isHovered = true"
+            @mouseleave="isHovered = false"
+        >
             <div class="flex items-center">
-                <i class="fas text-lg text-blue-500 group-hover:text-blue-800 w-4" :class="iconClass" />
-                <span class="ml-4">
-                    <span class="block font-bold text-blue-800 group-hover:text-blue-800 flex items-center">{{ title }}</span>
+                <i class="absolute fas text-blue-600 dark:text-white text-xl" :class="iconClass" />
+                <span class="ml-10">
+                    <span class="block text-gray-800 dark:text-gray-300 font-semibold text-sm">{{ title }}</span>
                 </span>
                 <div v-if="isHorizontallyAligned" class="ml-4">
-                    <span class="block text-sm text-gray-600 group-hover:text-blue-800">{{ description }}</span>
+                    <span class="block text-sm" :class="[isHovered ? 'text-gray-100 dark:text-gray-300' : 'text-gray-500']">
+                        {{ description }}
+                    </span>
                 </div>
             </div>
-            <div v-if="!isHorizontallyAligned" class="ml-8">
-                <span class="block text-sm text-gray-600 group-hover:text-blue-800">{{ description }}</span>
+            <div v-if="!isHorizontallyAligned" class="ml-10">
+                <span class="block text-sm" :class="[isHovered ? 'text-gray-500 dark:text-gray-300' : 'text-gray-500']">
+                    {{ description }}
+                </span>
             </div>
         </div>
     </router-link>
@@ -19,6 +28,7 @@
 
 <script lang="ts">
     import Router from "@/use/router";
+    import { ref } from "vue";
 
     export default {
         name: "GenericMenuItem",
@@ -61,7 +71,9 @@
                 }
             }
 
-            return { onClick };
+            const isHovered = ref(false);
+
+            return { onClick, isHovered };
         },
     };
 </script>

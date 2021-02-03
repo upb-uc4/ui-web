@@ -52,14 +52,14 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Show new course page", () => {
-        cy.get('button[id="addCourse"]').click({ force: true });
+        cy.get('a[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
     });
 
     it("Check existence of all fields", () => {
-        cy.get("input[id='courseType']").should("exist");
+        cy.get("button[id='courseType']").should("exist");
         cy.get("input[id='courseName']").should("exist");
-        cy.get("select[id='courseLanguage']").should("exist");
+        cy.get("button[id='courseLanguage']").should("exist");
         cy.get("select[id='exReg-']").should("exist");
         cy.get("textarea[id='courseDescription']").should("exist");
         cy.get("input[id='ects']").should("exist");
@@ -72,21 +72,18 @@ describe("Course creation, edition and deletion", () => {
         cy.get('button[id="createCourse"]').should("be.disabled");
     });
 
-    it("Can change courseType", () => {
-        cy.get("input[type='radio']").should("be.enabled");
-    });
-
     it("Show validation errors", () => {
         cy.get("input[id='courseName']").type("test");
         cy.get('button[id="createCourse"]').click();
-        cy.get("input[id='courseType']").siblings().get("p").should("have.class", "error-message");
-        cy.get("select[id='courseLanguage']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='ects']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='maxParticipants']").siblings().get("div").should("have.class", "error-message");
+        cy.get("button[id='courseType']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("button[id='courseLanguage']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='ects']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='maxParticipants']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='courseName']").clear();
-        cy.get("input[type='radio']").eq(0).click();
+        cy.get("button[id='courseType']").click();
+        cy.get("li[id='courseTypeItem-Lecture']").click();
         cy.get('button[id="createCourse"]').click();
-        cy.get("input[id='courseName']").siblings().get("div").should("have.class", "error-message");
+        cy.get("input[id='courseName']").siblings().get("label").should("have.class", "input-label-error");
     });
 
     it("Show unsaved changes modal", () => {
@@ -102,7 +99,7 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Show new course page", () => {
-        cy.get('button[id="addCourse"]').click({ force: true });
+        cy.get('a[id="addCourse"]').click({ force: true });
         cy.url().should("contain", "/createCourse");
     });
 
@@ -139,7 +136,7 @@ describe("Course creation, edition and deletion", () => {
 
     it("Edit worked", () => {
         cy.wait(3000);
-        cy.get("button[title='Refresh']").click();
+        cy.get("button[id='refresh']").click();
         cy.wait(1000);
         cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
         cy.wait(3000);

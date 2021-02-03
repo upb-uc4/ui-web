@@ -12,3 +12,20 @@ export enum Month {
     NOVEMBER = "November",
     DECEMBER = "December",
 }
+
+export const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+export const days = Array.from({ length: 31 }, (_, i) => String(i + 1));
