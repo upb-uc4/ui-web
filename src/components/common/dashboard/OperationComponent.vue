@@ -34,12 +34,7 @@
                 </div>
             </div>
             <div v-if="!isArchive && isFinished" class="pr-2">
-                <button
-                    :id="'op_markRead_' + shownOpId"
-                    class="btn btn-icon-blue text-xs h-6 w-6"
-                    title="Mark as read"
-                    @click.stop="markRead"
-                >
+                <button :id="'op_markRead_' + shownOpId" class="btn-icon-blue text-xs h-6 w-6" title="Mark as read" @click.stop="markRead">
                     <i class="fas fa-check"></i>
                 </button>
             </div>
@@ -144,14 +139,14 @@
                             :id="'op_reject_' + shownOpId"
                             :title="finalReason == '' ? 'Please provide a reason' : 'Reject'"
                             :disabled="finalReason == ''"
-                            class="btn btn-icon-red-filled text-sm h-12"
+                            class="btn btn-remove text-sm h-12"
                             @click.stop="reject"
                         >
                             Reject
                         </button>
                         <button
                             :id="'op_cancelRejection_' + shownOpId"
-                            class="ml-2 btn btn-icon-blue text-sm h-12"
+                            class="ml-2 btn-secondary text-sm h-12"
                             @click.stop="toggleReasonMenu"
                         >
                             Cancel
@@ -284,6 +279,8 @@
                         return "bg-green-300";
                     case OperationStatus.REJECTED:
                         return "bg-red-300";
+                    default:
+                        return "";
                 }
             });
 
