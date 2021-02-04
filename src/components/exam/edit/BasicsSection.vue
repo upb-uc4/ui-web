@@ -1,5 +1,5 @@
 <template>
-    <BaseSection title="Basic Information" subtitle="Course and module that the exam should be assigned to.">
+    <BaseSection title="Basic Information" subtitle="Course, module and credit points that the exam should be assigned to.">
         <div v-if="!isLoading">
             <label class="input-label">Course</label>
             <selection
@@ -9,13 +9,22 @@
                 :elements="courses"
                 property-to-display="courseName"
             />
-            <label class="input-label mt-5">Module</label>
-            <Select
-                :id="'module'"
-                v-model:selection="selectedModule"
-                :disabled="!enableModuleSelection || viewMode"
-                :elements="availableModules"
-            />
+            <div class="lg:flex justify-between">
+                <div class="flex-col w-full lg:w-1/2">
+                    <label class="input-label mt-5">Module</label>
+                    <Select
+                        :id="'module'"
+                        v-model:selection="selectedModule"
+                        :title="enableModuleSelection ? '' : 'Please select a course first'"
+                        :disabled="!enableModuleSelection || viewMode"
+                        :elements="availableModules"
+                    />
+                </div>
+                <div class="flex-col w-full lg:w-1/3">
+                    <label class="input-label mt-5">ECTS</label>
+                    <input id="ects" :value="ects" type="number" :disabled="viewMode" class="w-full form-input input-text" />
+                </div>
+            </div>
         </div>
     </BaseSection>
 </template>
@@ -27,6 +36,7 @@
     import Course from "@/api/api_models/course_management/Course";
     import Selection from "@/components/common/ObjectSelect.vue";
     import Select from "@/components/common/Select.vue";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         name: "CourseModuleSection",
@@ -44,12 +54,16 @@
                 type: String,
                 required: true,
             },
-            courses: {
-                type: Object as () => Course[],
-                required: true,
-            },
             moduleId: {
                 type: String,
+                required: true,
+            },
+            ects: {
+                type: Number,
+                required: true,
+            },
+            courses: {
+                type: Object as () => Course[],
                 required: true,
             },
             viewMode: {
@@ -57,7 +71,7 @@
                 required: true,
             },
         },
-        emits: ["update-course-id", "update-module-id"],
+        emits: ["update-course-id", "update-module-id", "update-ects"],
         setup(props: any, { emit }: any) {
             const isLoading = ref(false);
             const selectedCourse = ref();
@@ -100,6 +114,7 @@
                 selectedModule,
                 availableModules,
                 enableModuleSelection,
+                myEcts: useModelWrapper(props, emit, "ects"),
             };
         },
     };

@@ -3,9 +3,10 @@
         <loading-spinner v-if="isLoading" />
         <div v-else>
             <section-header :title="heading" />
-            <course-modules-section
-                :module-id="selectedModuleId"
-                :course-id="selectedCourseId"
+            <basics-section
+                v-model:module-id="exam.moduleId"
+                v-model:course-id="exam.courseId"
+                v-model:ects="exam.ects"
                 :error-bag="errorBag"
                 :view-mode="viewMode"
                 :courses="courses"
@@ -43,7 +44,7 @@
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import { ExamEntity } from "@/components/exam/MockExamEntity";
-    import CourseModulesSection from "@/components/exam/edit/CourseModuleSection.vue";
+    import BasicsSection from "@/components/exam/edit/BasicsSection.vue";
     import { useStore } from "vuex";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import CourseManagement from "@/api/CourseManagement";
@@ -54,7 +55,7 @@
         components: {
             BaseView,
             SectionHeader,
-            CourseModulesSection,
+            BasicsSection,
             UnsavedChangesModal,
             LoadingSpinner,
             ButtonSection,
@@ -88,9 +89,6 @@
             let unsavedChangesModal = ref();
 
             const courses = ref([] as Course[]);
-
-            const selectedCourseId = ref("");
-            const selectedModuleId = ref("");
 
             const errorBag = ref(new ErrorBag());
 
@@ -160,8 +158,6 @@
             async function getExam() {
                 //TODO GET EXAM VIA Router.currentRoute.value.params.id as string
                 exam.value = new ExamEntity(mockedExam);
-                selectedCourseId.value = exam.value.courseId;
-                selectedModuleId.value = exam.value.moduleId;
             }
 
             let hasInput = computed(() => {
@@ -186,8 +182,6 @@
 
             return {
                 isLoading,
-                selectedCourseId,
-                selectedModuleId,
                 exam,
                 initialExamState,
                 heading,
