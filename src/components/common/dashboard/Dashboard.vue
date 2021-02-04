@@ -190,7 +190,7 @@
                 //Get not-selfinitiated operations from watchlist
                 promises.push(
                     operationManagement.getOperations(false, undefined, undefined, true).then((response) => {
-                        let result = handler.handleResponse(response);
+                        const result = handler.handleResponse(response);
                         watchlistOperations.value = result;
                     })
                 );
