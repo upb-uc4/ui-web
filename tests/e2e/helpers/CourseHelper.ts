@@ -20,7 +20,7 @@ export function createCourse(course: Course) {
     cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
-    cy.get('select[id="exReg-"]').select("Bachelor Computer Science v3");
+    cy.get('button[id="exReg"]').select("Bachelor Computer Science v3");
     cy.get(`input[id='modules_0']`).click();
     cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
@@ -48,7 +48,7 @@ export function createCourseAdmin(course: Course) {
     cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
-    cy.get('select[id="exReg-"]').select("Bachelor Computer Science v3");
+    cy.get('button[id="exReg"]').select("Bachelor Computer Science v3");
     cy.get(`input[id='modules_0']`).click();
     cy.get("div").contains(course.moduleIds[0]).click();
     cy.wait(100);
