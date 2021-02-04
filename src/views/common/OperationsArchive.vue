@@ -26,7 +26,6 @@
     </base-view>
 </template>
 <script lang="ts">
-    import { useStore } from "@/use/store/store";
     import { ref, computed, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
@@ -35,7 +34,6 @@
     import Router from "@/use/router/";
     import OperationManagement from "@/api/OperationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import { MutationTypes } from "@/use/store/mutation-types";
     import SearchBar from "@/components/common/SearchBar.vue";
     import filterOperations from "@/use/helpers/filterOperations";
     import BaseView from "@/views/common/BaseView.vue";
