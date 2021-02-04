@@ -286,6 +286,9 @@ const router = createRouter({
             path: "/create-exam",
             name: "exams.create",
             component: CreateViewExamForm,
+            props: {
+                viewMode: false,
+            },
             meta: {
                 title: "Create Exam" + suffix,
                 roles: ["Lecturer"],
@@ -295,6 +298,9 @@ const router = createRouter({
             path: "/exam/:id",
             name: "exams.view",
             component: CreateViewExamForm,
+            props: {
+                viewMode: true,
+            },
             meta: {
                 title: "View Exam" + suffix,
                 roles: ["Lecturer"],

@@ -3,18 +3,26 @@
         <loading-spinner v-if="isLoading" />
         <div v-else>
             <section-header :title="heading" />
+            <course-modules-section
+                :module-id="selectedModuleId"
+                :course-id="selectedCourseId"
+                :error-bag="errorBag"
+                :view-mode="viewMode"
+                :courses="courses"
+            />
+
             <button-section>
                 <template #right>
                     <button id="cancel" type="button" class="w-full sm:w-48 btn-secondary" @click="back">Cancel</button>
                     <button
-                        v-if="createMode"
+                        v-if="!viewMode"
                         id="createExam"
                         :disabled="!hasInput"
                         type="button"
                         class="w-full w-48 btn"
                         @click="createExam"
                     >
-                        Save Changes
+                        Create Exam
                     </button>
                 </template>
             </button-section>
@@ -25,7 +33,6 @@
 
 <script lang="ts">
     import Router from "@/use/router/";
-    import { CourseEntity } from "@/entities/CourseEntity";
     import { computed, onBeforeMount, ref } from "vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
@@ -36,18 +43,24 @@
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import { ExamEntity } from "@/components/exam/MockExamEntity";
+    import CourseModulesSection from "@/components/exam/edit/CourseModuleSection.vue";
+    import { useStore } from "vuex";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import CourseManagement from "@/api/CourseManagement";
+    import Course from "@/api/api_models/course_management/Course";
 
     export default {
         name: "LecturerCreateCourseForm",
         components: {
             BaseView,
             SectionHeader,
+            CourseModulesSection,
             UnsavedChangesModal,
             LoadingSpinner,
             ButtonSection,
         },
         props: {
-            createMode: {
+            viewMode: {
                 type: Boolean,
                 required: true,
             },
@@ -68,12 +81,16 @@
             };
 
             let isLoading = ref(false);
-            let isAdmin = ref(false);
             let exam = ref(new ExamEntity());
             let initialExamState = new ExamEntity();
             let heading = props.createMode ? "Create Exam" : "Exam";
             let success = ref(false);
             let unsavedChangesModal = ref();
+
+            const courses = ref([] as Course[]);
+
+            const selectedCourseId = ref("");
+            const selectedModuleId = ref("");
 
             const errorBag = ref(new ErrorBag());
 
@@ -106,16 +123,45 @@
             });
 
             onBeforeMount(async () => {
-                if (!props.createMode) {
-                    await getExam();
+                isLoading.value = true;
+                const promises = [];
+                await getMyCourses();
+                if (props.viewMode) {
+                    getExam();
                 }
+                isLoading.value = false;
             });
 
+            async function getMyCourses() {
+                const store = useStore();
+                const username = (await store.getters.user).username;
+                const genericResponseHandler = new GenericResponseHandler("courses");
+                const courseManagement: CourseManagement = new CourseManagement();
+                const response = await courseManagement.getCourses(undefined, username);
+                courses.value = genericResponseHandler.handleResponse(response);
+
+                //TODO REMOVE MOCK DATA
+                courses.value.push({
+                    courseDescription: "This is another course description.",
+                    courseId: "-1",
+                    courseLanguage: "German",
+                    courseName: "VueJS Programming 1",
+                    courseType: "Lecture",
+                    currentParticipants: 5,
+                    ects: 6,
+                    startDate: "1999-01-01",
+                    endDate: "2000-01-01",
+                    lecturerId: "lecturer",
+                    maxParticipants: 10,
+                    moduleIds: ["M.1275.0000"],
+                } as Course);
+            }
+
             async function getExam() {
-                isLoading.value = true;
                 //TODO GET EXAM VIA Router.currentRoute.value.params.id as string
                 exam.value = new ExamEntity(mockedExam);
-                isLoading.value = false;
+                selectedCourseId.value = exam.value.courseId;
+                selectedModuleId.value = exam.value.moduleId;
             }
 
             let hasInput = computed(() => {
@@ -140,7 +186,8 @@
 
             return {
                 isLoading,
-                isAdmin,
+                selectedCourseId,
+                selectedModuleId,
                 exam,
                 initialExamState,
                 heading,
@@ -151,6 +198,7 @@
                 createExam,
                 unsavedChangesModal,
                 errorBag,
+                courses,
             };
         },
     };
