@@ -14,7 +14,6 @@ describe("Operation Printer Tests", () => {
                 },
             ],
         };
-        console.log(JSON.stringify([matriculation]));
 
         const operation: Operation = {
             existingApprovals: { groups: [], users: [] },

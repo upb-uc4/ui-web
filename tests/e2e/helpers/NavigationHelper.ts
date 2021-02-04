@@ -57,5 +57,5 @@ export function navigateToWelcomePage() {
     cy.visit("welcome");
 }
 export function navigateToAllOperationsPage() {
-    cy.visit("all-operations");
+    cy.visit("operations-all");
 }

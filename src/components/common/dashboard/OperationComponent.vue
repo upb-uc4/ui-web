@@ -212,7 +212,7 @@
             const isFinished = operation.value.state === OperationStatus.FINISHED || isRejected;
             const actionRequired = computed(() => {
                 return (
-                    (operation.value.missingApprovals.users.includes(props.enrollmentID) ||
+                    (operation.value.missingApprovals.users.includes(props.enrollmentId) ||
                         operation.value.missingApprovals.groups.includes(role.value)) &&
                     !isRejected
                 );

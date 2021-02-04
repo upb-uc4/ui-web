@@ -16,9 +16,10 @@ import AuthenticationManagement from "@/api/AuthenticationManagement";
 
 export default class MachineUserAuthenticationManagement extends Common {
     protected static endpoint = "/authentication-management";
+    protected static serviceIdentifier = "authentication";
 
     constructor() {
-        super(MachineUserAuthenticationManagement.endpoint);
+        super(MachineUserAuthenticationManagement.endpoint, MachineUserAuthenticationManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

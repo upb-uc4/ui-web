@@ -190,12 +190,15 @@
                 //Get not-selfinitiated operations from watchlist
                 promises.push(
                     operationManagement.getOperations(false, undefined, undefined, true).then((response) => {
-                        let result = handler.handleResponse(response);
+                        const result = handler.handleResponse(response);
                         watchlistOperations.value = result;
                     })
                 );
 
                 await Promise.all(promises);
+                watchlistPendingOperations.value = watchlistPendingOperations.value.filter(
+                    (op) => !actionRequiredOperations.value.some((op2) => op.operationId == op2.operationId)
+                );
                 busy.value--;
             }
 
