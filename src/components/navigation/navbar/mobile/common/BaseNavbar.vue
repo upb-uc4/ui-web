@@ -1,9 +1,9 @@
 <template>
-    <header class="flex flex-col w-full px-4 bg-grayalt dark:bg-normalgray-900 min-h-16">
+    <header class="flex flex-col w-full px-4 bg-bluegray-800 dark:bg-normalgray-900 min-h-16">
         <div class="flex justify-between pr-2">
             <div class="flex pr-8 mr-8 border-gray-100">
                 <div class="items-center h-20 rounded-lg cursor-pointer outline-none" title="Home" @click="routeLogo">
-                    <img src="../../../../../assets/logo/logo_short_title_right.svg" class="h-full py-5" />
+                    <img src="@/assets/logo/logo_short_title_right.svg" class="h-full py-5" />
                 </div>
             </div>
 
