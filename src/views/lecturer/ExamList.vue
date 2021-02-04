@@ -11,6 +11,17 @@
                         <filter-select id="studentCourseTypeFilter" v-model:selection="selectedType" label="Type" :elements="types" />
                     </div>
                 </div>
+                <div class="w-full flex justify-end">
+                    <router-link
+                        id="addExam"
+                        to="/create-exam"
+                        title="Add a new Exam"
+                        class="btn-add md:w-24 w-full flex items-center justify-center space-x-2"
+                    >
+                        <i class="fas fa-calendar-plus" />
+                        <span class="font-semibold">New</span>
+                    </router-link>
+                </div>
             </div>
         </div>
         <hr class="my-4 dark:border-normalgray-700" />
