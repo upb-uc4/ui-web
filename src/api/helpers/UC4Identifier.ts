@@ -7,7 +7,8 @@ export enum UC4Identifier {
 
     /* TRANSACTIONS */
     //common
-    TRANSACTION_APPROVAL = "approveTransaction",
+    TRANSACTION_APPROVAL = "approveOperation",
+    TRANSACTION_REJECTION = "rejectOperation",
     //matriculation
     TRANSACTION_ADD_MATRICULATION = "addMatriculationData",
     TRANSACTION_UPDATE_MATRICULATION = "updateMatriculationData",
