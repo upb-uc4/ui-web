@@ -88,10 +88,9 @@
                     })
                 );
 
-                let tmpOps = [] as Operation[];
                 promises.push(
-                    operationManagement.getOperations(undefined, undefined, undefined, true).then((response) => {
-                        tmpOps = handler.handleResponse(response);
+                    operationManagement.getOperations(false, undefined, undefined, true).then((response) => {
+                        watchedOperations.value = handler.handleResponse(response);
                     })
                 );
 
@@ -104,7 +103,6 @@
                 );
                 await Promise.all(promises);
                 gotOps.value = true;
-                watchedOperations.value = tmpOps.filter((op) => op.initiator != ownId);
             }
 
             function back() {
