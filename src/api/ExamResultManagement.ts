@@ -19,7 +19,7 @@ export default class ExamResultManagement extends CommonHyperledger {
         return super.getVersion();
     }
 
-    async getExamResults(username?: string, examIds?: string[]): Promise<APIResponse<Exam[]>> {
+    async getExamResults(username?: string, examIds?: string[]): Promise<APIResponse<ExamResult[]>> {
         const requestParameter = { params: {} as any };
         if (examIds) requestParameter.params.examIds = examIds.reduce((a, b) => a + "," + b, "");
         if (username) requestParameter.params.username = username;
@@ -28,7 +28,7 @@ export default class ExamResultManagement extends CommonHyperledger {
             .get(`/exam_results`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data as Exam[],
+                    returnValue: response.data as ExamResult[],
                     statusCode: response.status,
                     networkError: false,
                     error: {} as APIError,

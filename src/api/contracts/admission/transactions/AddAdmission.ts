@@ -17,7 +17,7 @@ export class AddAdmissionTransaction extends AbstractTransaction {
     private enrollmentId: string;
     private operationId: string;
 
-    constructor(enrollmentId: string, admission: CourseAdmission) {
+    constructor(enrollmentId: string, admission: AbstractAdmission) {
         super();
         this.admission = admission;
         this.enrollmentId = enrollmentId;
