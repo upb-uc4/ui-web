@@ -259,7 +259,6 @@ describe("Account creation, edition and deletion", function () {
 
         navigateToAllOperationsPage();
 
-        cy.get("button[id='requestOperations']").click();
         cy.wait(15000);
 
         cy.get(`i[id='op_watch_${op1IdShort}']`).click();
