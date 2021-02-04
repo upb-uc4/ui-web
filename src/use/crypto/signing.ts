@@ -3,7 +3,7 @@ import { ec } from "elliptic";
 import BN from "bn.js";
 const Signature = require("elliptic/lib/elliptic/ec/signature.js");
 import * as asn1js from "asn1js";
-import { ProposalResponsePayload } from "@/api/api_models/common/Transaction";
+import { Endorsement, ProposalResponsePayload } from "@/api/api_models/common/Transaction";
 
 // map for easy lookup of the "N/2" and "N" value per elliptic curve
 const p256ec = new ec("p256");
@@ -124,27 +124,36 @@ export async function verifyProtobufSignature(protobuf: string, signature: strin
 
 export async function verifyProposalResponsePayloadSignature(
     rawProposalResponsePayload: ArrayBuffer,
-    signature: string,
+    endorsement: Endorsement,
     publicKey: CryptoKey
 ) {
-    // TODO implement this as soon as
-    // (1) we can fetch the root ca certificate directly from our chain
-    // (2) we know what peers are doing exactly when signing
+    // TODO implement as soon as possible:
+    // (1) fetch the root ca certificate directly from our chain
 
-    // const crypto = window.crypto.subtle;
-    // const digest = await crypto.digest("SHA-256", rawProposalResponsePayload);
-    // const exportedPublicKey = Buffer.from(await crypto.exportKey("raw", publicKey));
+    const crypto = window.crypto.subtle;
 
-    // const berObject = (asn1js.fromBER(base64ToArrayBuffer(signature)).result.toJSON() as any).valueBlock.value;
+    const plainText = new Uint8Array(endorsement.endorser.rawEndorserBytes.byteLength + rawProposalResponsePayload.byteLength);
+    plainText.set(new Uint8Array(rawProposalResponsePayload), 0);
+    plainText.set(new Uint8Array(endorsement.endorser.rawEndorserBytes), rawProposalResponsePayload.byteLength);
 
-    // const r = fromHexString(berObject[0].valueBlock.valueHex);
-    // const s = fromHexString(berObject[1].valueBlock.valueHex);
+    const digest = await crypto.digest("SHA-256", plainText);
+    const exportedPublicKey = Buffer.from(await crypto.exportKey("raw", publicKey));
 
-    // const sig = { r, s };
+    let signatureValid = false;
 
-    // return _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
+    try {
+        const berObject = (asn1js.fromBER(base64ToArrayBuffer(endorsement.signature)).result.toJSON() as any).valueBlock.value;
 
-    return true;
+        const r = fromHexString(berObject[0].valueBlock.valueHex);
+        const s = fromHexString(berObject[1].valueBlock.valueHex);
+        const sig = { r, s };
+
+        signatureValid = _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
+    } catch (error) {
+        return false;
+    }
+
+    return signatureValid;
 }
 
 export function fromHexString(hexString: string) {
