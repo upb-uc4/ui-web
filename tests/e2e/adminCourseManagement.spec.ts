@@ -16,7 +16,7 @@ describe("Course creation, edition and deletion", () => {
     let adminAuth: Account;
     let lecturerAuth: Account;
     let usersWithAuth: UserWithAuth[] = [];
-    let newModule: String = "M.1275.01159";
+    let newModule: String = "Math 2";
     let lecturerName = "Jane Doe";
 
     before(function () {
@@ -217,8 +217,8 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(5000);
         cy.get("label[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
         cy.wait(5000);
-        cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
-        cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
+        cy.get("div[id='moduleSection']").get("span").contains("Mathe 1").should("not.exist");
+        cy.get("div[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
     });
 
     it("Delete course", () => {
