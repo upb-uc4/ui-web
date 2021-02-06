@@ -161,7 +161,7 @@ describe("Course creation, edition and deletion", () => {
     it("Lecturer sees his new course", () => {
         loginAsDefaultLecturer();
         navigateToMyCoursesLecturer();
-        cy.get("div[id='courseName']").contains(course.courseName).should("exist");
+        cy.get("label[id='courseName']").contains(course.courseName).should("exist");
         logout();
     });
 
@@ -172,7 +172,7 @@ describe("Course creation, edition and deletion", () => {
     // edit course
     it("Show course edit page", () => {
         navigateToCourseListAdmin();
-        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("label[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
 
         cy.get('input[id="courseName"]').should("have.value", course.courseName);
     });
@@ -201,8 +201,8 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit modules", () => {
-        cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
-        cy.get("input[id='modules_0']").click();
+        cy.get("span").contains("Math 1").get(".remove-tag").click();
+        cy.get("input[id='searchSelectInput']").click();
         cy.get("div").contains(`${newModule}`).click();
     });
 
@@ -215,7 +215,7 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(3000);
         cy.get("button[id='refresh']").click();
         cy.wait(5000);
-        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("label[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
         cy.wait(5000);
         cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
         cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
