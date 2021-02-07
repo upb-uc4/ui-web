@@ -114,9 +114,12 @@ describe("Course Admission", () => {
     });
 
     it("Add two fields of studies for one summer semester", function () {
-        cy.get("select[id=semesterType]").select(fieldOfStudy.semesterType);
-        cy.get("select[id=semesterYear]").select(fieldOfStudy.year);
-        cy.get("select[id=fieldsOfStudy-1]").select(fieldOfStudy.fos);
+        cy.get("button[id=immatriculationSelectSemesterCycle]").click();
+        cy.get("li[id=immatriculationSelectSemesterCycleItem-" + fieldOfStudy.semesterType + "]").click();
+        cy.get("button[id=immatriculationSelectSemesterYear]").click();
+        cy.get("li[id=immatriculationSelectSemesterYearItem-" + fieldOfStudy.year + "]").click();
+        cy.get("div[id=searchSelectFieldsOfStudyOptionDiv]").click({ force: true });
+        cy.get("span").contains(fieldOfStudy.fos).click({ force: true });
         cy.get("button[id=addImmatriculationData]").click();
         cy.wait(2000);
     });
@@ -212,7 +215,7 @@ describe("Course Admission", () => {
         cy.get("div").contains(course.courseName).click();
         cy.url().should("contain", "/join");
 
-        cy.get("input[id='lecturerName']").should("have.value", "Jane Doe");
+        cy.get("label[id='showLecturer']").should("contain", "Jane Doe");
         cy.get("input[id='courseType']").should("have.value", course.courseType);
         cy.get("input[id='courseName']").should("have.value", course.courseName);
         cy.get("input[id='courseLanguage']").should("have.value", course.courseLanguage);
