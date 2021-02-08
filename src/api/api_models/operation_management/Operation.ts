@@ -3,11 +3,7 @@ import { OperationStatus } from "./OperationState";
 
 export default interface Operation {
     operationId: string;
-    transactionInfo: {
-        contractName: string;
-        transactionName: string;
-        parameters: string;
-    };
+    transactionInfo: TransactionInfo;
     initiator: string;
     initiatedTimestamp: string;
     lastModifiedTimestamp: string;
@@ -20,4 +16,10 @@ export default interface Operation {
 export interface ApprovalList {
     users: string[];
     groups: string[];
+}
+
+export interface TransactionInfo {
+    contractName: string;
+    transactionName: string;
+    parameters: string;
 }

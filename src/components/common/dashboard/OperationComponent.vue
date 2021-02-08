@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="!loading"
         :id="'op_' + shownOpId"
         class="flex flex-col shadow-xl bg-white hover:bg-gray-200 rounded-lg items-start p-2 sm:p-4"
         @click="toggleDetails"
@@ -9,7 +10,7 @@
                 <div class="flex items-center">
                     <i
                         v-if="showWatchOption"
-                        :id="'toggleWatch_op_' + shownOpId"
+                        :id="'op_' + (isWatched ? 'unwatch' : 'watch') + '_' + shownOpId"
                         class="text-md hover:text-blue-600 text-blue-500 far fa-bookmark cursor-pointer"
                         :class="{ 'fas fa-bookmark': isWatched }"
                         :title="isWatched ? 'Unwatch' : 'Watch'"
@@ -33,12 +34,7 @@
                 </div>
             </div>
             <div v-if="!isArchive && isFinished" class="pr-2">
-                <button
-                    :id="'op_markRead_' + shownOpId"
-                    class="btn btn-icon-blue text-xs h-6 w-6"
-                    title="Mark as read"
-                    @click.stop="markRead"
-                >
+                <button :id="'op_markRead_' + shownOpId" class="btn-icon-blue text-xs h-6 w-6" title="Mark as read" @click.stop="markRead">
                     <i class="fas fa-check"></i>
                 </button>
             </div>
@@ -86,8 +82,8 @@
                     <button
                         :id="'op_approve_' + shownOpId"
                         :disabled="sentApprove"
-                        :class="{ 'bg-green-700': sentApprove, 'invisible': sentReject }"
-                        class="w-8 h-8 btn-icon-green text-xs"
+                        :class="{ invisible: sentReject }"
+                        class="w-8 h-8 btn-base btn-icon-green text-xs"
                         title="Approve"
                         @click.stop="approve"
                     >
@@ -96,8 +92,8 @@
                     <button
                         :id="'op_startRejection_' + shownOpId"
                         :disabled="sentReject || provideReason"
-                        :class="{ 'bg-red-700': sentReject, 'invisible': sentApprove }"
-                        class="ml-2 w-8 h-8 btn-icon-red-filled text-xs"
+                        :class="{ invisible: sentApprove }"
+                        class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
                         title="Reject"
                         @click.stop="toggleReasonMenu"
                     >
@@ -143,14 +139,14 @@
                             :id="'op_reject_' + shownOpId"
                             :title="finalReason == '' ? 'Please provide a reason' : 'Reject'"
                             :disabled="finalReason == ''"
-                            class="btn btn-icon-red-filled text-sm h-12"
+                            class="btn btn-remove text-sm h-12"
                             @click.stop="reject"
                         >
                             Reject
                         </button>
                         <button
                             :id="'op_cancelRejection_' + shownOpId"
-                            class="ml-2 btn btn-icon-blue text-sm h-12"
+                            class="ml-2 btn-secondary text-sm h-12"
                             @click.stop="toggleReasonMenu"
                         >
                             Cancel
@@ -169,12 +165,14 @@
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
     import { RejectionReasons } from "./reasons";
-    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
     import { Role } from "@/entities/Role";
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import { approveMatriculation, rejectOperation } from "@/api/abstractions/FrontendSigning";
     import { getOperationBadgeIdentifier, printOperation, printOperationTitle } from "@/use/helpers/OperationPrinter";
+    import OperationManagement from "@/api/OperationManagement";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
+    import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
 
     export default {
         name: "OperationComponent",
@@ -200,6 +198,7 @@
         },
         emits: ["marked-read"],
         setup(props: any, { emit }: any) {
+            const loading = ref(false);
             const store = useStore();
             const role = ref(Role.NONE);
             const operation = ref(props.operation as Operation);
@@ -213,7 +212,7 @@
             const isFinished = operation.value.state === OperationStatus.FINISHED || isRejected;
             const actionRequired = computed(() => {
                 return (
-                    (operation.value.missingApprovals.users.includes(props.enrollmentID) ||
+                    (operation.value.missingApprovals.users.includes(props.enrollmentId) ||
                         operation.value.missingApprovals.groups.includes(role.value)) &&
                     !isRejected
                 );
@@ -225,7 +224,7 @@
             const selectedReason = ref("");
             const finalReason = ref("");
             const isMyOperation = operation.value.initiator == props.enrollmentId;
-            const showWatchOption = !isMyOperation && isPending;
+            const showWatchOption = !isMyOperation;
 
             const username = ref("...");
             const isAdmin = computed(() => {
@@ -233,6 +232,13 @@
             });
 
             const isWatched = ref(props.watched);
+
+            watch(
+                () => props.watched,
+                () => {
+                    isWatched.value = props.watched;
+                }
+            );
 
             const dateFormatOptions = {
                 weekday: "short",
@@ -253,11 +259,16 @@
             const showDetails = ref(false);
 
             onBeforeMount(async () => {
+                loading.value = true;
+                const promises = [];
                 await getRole();
                 if (isAdmin.value) {
-                    await getNameByEnrollmentId();
+                    promises.push(getNameByEnrollmentId());
                 }
-                await createDisplayObjects();
+                promises.push(createDisplayObjects());
+
+                await Promise.all(promises);
+                loading.value = false;
             });
 
             const type = getOperationBadgeIdentifier(operation.value);
@@ -270,6 +281,8 @@
                         return "bg-green-300";
                     case OperationStatus.REJECTED:
                         return "bg-red-300";
+                    default:
+                        return "";
                 }
             });
 
@@ -285,7 +298,7 @@
             }
 
             async function approve() {
-                if (await approveMatriculation(operation.value)) {
+                if (await executeTransaction(new ApproveOperationTransaction(operation.value))) {
                     store.commit(MutationTypes.ADD_OPERATION_APPROVAL, operation.value.operationId);
                     sentApprove.value = true;
                     provideReason.value = false;
@@ -302,7 +315,7 @@
             }
 
             async function reject() {
-                if (await rejectOperation(operation.value, finalReason.value)) {
+                if (await executeTransaction(new RejectOperationTransaction(operation.value, finalReason.value))) {
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
                     provideReason.value = !provideReason.value;
@@ -324,8 +337,16 @@
                 }
             }
 
-            function toggleWatch() {
-                showNotYetImplementedToast();
+            async function toggleWatch() {
+                const operation_management = new OperationManagement();
+                const handler = new GenericResponseHandler("watchlist");
+                const response = isWatched.value
+                    ? await operation_management.unwatchOperation(operation.value.operationId)
+                    : await operation_management.watchOperation(operation.value.operationId);
+                const result = handler.handleResponse(response);
+                if (result) {
+                    isWatched.value = !isWatched.value;
+                }
             }
 
             async function getNameByEnrollmentId() {
@@ -377,6 +398,7 @@
                 params,
                 title,
                 shownOpId,
+                loading,
             };
         },
     };

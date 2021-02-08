@@ -98,7 +98,8 @@ export function printOperationTitle(operation: Operation): string {
         case UC4Identifier.TRANSACTION_ADD_ENTRIES_MATRICULATION:
         case UC4Identifier.TRANSACTION_ADD_MATRICULATION:
         case UC4Identifier.TRANSACTION_UPDATE_MATRICULATION:
-            return "Update Matriculation";
+            var matrEntry = printMatriculationOperation(operation)[0].split(" ");
+            return "Update Matriculation " + matrEntry[matrEntry.length - 1];
         case UC4Identifier.TRANSACTION_DROP_ADMISSION:
             return "Drop Course";
         case UC4Identifier.TRANSACTION_ADD_ADMISSION:
