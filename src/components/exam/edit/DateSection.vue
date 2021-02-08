@@ -15,8 +15,8 @@
 <script lang="ts">
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import { ref } from "vue";
     import ISODatePicker from "@/components/common/ISODatePicker.vue";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
 
     export default {
         name: "ExamDatesSection",
@@ -46,15 +46,12 @@
                 required: true,
             },
         },
-        emits: ["update-exam-date", "update-admit-until-date", "update-drop-until-date"],
+        emits: ["update:examDate", "update:admitUntilDate", "update:dropUntilDate"],
         setup(props: any, { emit }: any) {
-            const myExamDate = ref(props.examDate);
-            const myAdmitUntilDate = ref(props.admitUntilDate);
-            const myDropUntilDate = ref(props.dropUntilDate);
             return {
-                myExamDate,
-                myAdmitUntilDate,
-                myDropUntilDate,
+                myExamDate: useModelWrapper(props, emit, "examDate"),
+                myAdmitUntilDate: useModelWrapper(props, emit, "admitUntilDate"),
+                myDropUntilDate: useModelWrapper(props, emit, "dropUntilDate"),
             };
         },
     };

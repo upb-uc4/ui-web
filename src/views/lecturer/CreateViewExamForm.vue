@@ -2,6 +2,7 @@
     <base-view>
         <loading-spinner v-if="isLoading" />
         <div v-else>
+            <label class="input-label">{{ exam }}</label>
             <section-header :title="heading" />
             <basics-section
                 v-model:module-id="exam.moduleId"
@@ -75,7 +76,6 @@
                 required: true,
             },
         },
-        emits: ["update:has-input", "update:success"],
 
         setup(props: any, { emit }: any) {
             const mockedExam = {
@@ -104,9 +104,6 @@
             const toast = useToast();
 
             onBeforeRouteLeave(async (to, from, next) => {
-                if (success.value) {
-                    return next();
-                }
                 if (hasInput.value) {
                     const modal = unsavedChangesModal.value;
                     let action = modal.action;
@@ -171,7 +168,6 @@
 
             let hasInput = computed(() => {
                 let returnValue: boolean = !exam.value.equals(initialExamState);
-                emit("update:has-input", returnValue);
                 return returnValue;
             });
 
@@ -182,7 +178,6 @@
 
             async function createExam() {
                 //TODO CREATE EXAM VIA API
-                emit("update:success", success.value);
             }
 
             function back() {

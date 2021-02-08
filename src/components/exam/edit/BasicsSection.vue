@@ -22,7 +22,7 @@
                 </div>
                 <div class="flex-col w-full lg:w-1/3">
                     <label class="input-label mt-5">ECTS</label>
-                    <input id="ects" :value="ects" type="number" :disabled="viewMode" class="w-full form-input input-text" />
+                    <input id="ects" v-model="myEcts" type="number" :disabled="viewMode" class="w-full form-input input-text" />
                 </div>
             </div>
         </div>
@@ -37,6 +37,7 @@
     import Selection from "@/components/common/ObjectSelect.vue";
     import Select from "@/components/common/Select.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
+    import { isInteger } from "lodash";
 
     export default {
         name: "CourseModuleSection",
@@ -71,11 +72,12 @@
                 required: true,
             },
         },
-        emits: ["update-course-id", "update-module-id", "update-ects"],
+        emits: ["update:course-id", "update:module-id", "update:ects"],
         setup(props: any, { emit }: any) {
             const isLoading = ref(false);
             const selectedCourse = ref();
             const selectedModule = ref(props.moduleId);
+            const myEcts = ref(props.ects);
             const availableModules = ref([] as String[]);
 
             const enableModuleSelection = computed(() => {
@@ -92,7 +94,7 @@
 
             watch(selectedCourse, () => {
                 if (!props.viewMode) {
-                    emit("update-course-id", selectedCourse.value.courseId);
+                    emit("update:course-id", selectedCourse.value.courseId);
                     selectedModule.value = "";
                     availableModules.value = (selectedCourse.value as Course).moduleIds;
                 }
@@ -100,7 +102,13 @@
 
             watch(selectedModule, () => {
                 if (!props.viewMode) {
-                    emit("update-module-id", selectedCourse.value.courseId);
+                    emit("update:module-id", selectedCourse.value.courseId);
+                }
+            });
+
+            watch(myEcts, () => {
+                if (!props.viewMode) {
+                    emit("update:ects", parseInt(myEcts.value));
                 }
             });
 
@@ -114,7 +122,7 @@
                 selectedModule,
                 availableModules,
                 enableModuleSelection,
-                myEcts: useModelWrapper(props, emit, "ects"),
+                myEcts,
             };
         },
     };
