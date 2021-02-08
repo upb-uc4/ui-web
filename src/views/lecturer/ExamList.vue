@@ -11,7 +11,7 @@
                         <filter-select id="studentCourseTypeFilter" v-model:selection="selectedType" label="Type" :elements="types" />
                     </div>
                 </div>
-                <div class="w-full flex justify-end">
+                <div v-if="isLecturer" class="w-full flex justify-end">
                     <router-link
                         id="addExam"
                         to="/create-exam"
@@ -55,9 +55,8 @@
 <script lang="ts">
     import ExamList from "@/components/exam/list/ExamList.vue";
     import SearchBar from "@/components/common/SearchBar.vue";
-    import { onBeforeMount, ref, watch } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
     import Select from "@/components/common/Select.vue";
-    import { checkPrivilege } from "@/use/helpers/PermissionHelper";
     import { Role } from "@/entities/Role";
     import BaseView from "@/views/common/BaseView.vue";
     import { useStore } from "@/use/store/store";
@@ -77,6 +76,7 @@
             let title = "Exams";
             let message = ref("");
             let refreshKey = ref(false);
+            const role = ref("");
 
             const defaultType = "All";
             const selectedType = ref(defaultType);
@@ -84,6 +84,7 @@
 
             onBeforeMount(async () => {
                 //TODO GET TYPES VIA CONFIG
+                await getRole();
                 types.value = Object.values(examTypes);
                 types.value.unshift(defaultType);
             });
@@ -109,6 +110,15 @@
                 selectedType.value = defaultType;
             }
 
+            async function getRole() {
+                const store = useStore();
+                role.value = await store.getters.role;
+            }
+
+            const isLecturer = computed(() => {
+                return role.value === Role.LECTURER;
+            });
+
             return {
                 matchingExamsCount,
                 types,
@@ -121,6 +131,7 @@
                 isFiltering,
                 clearFilter,
                 title,
+                isLecturer,
             };
         },
     };

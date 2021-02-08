@@ -279,7 +279,7 @@ const router = createRouter({
             component: ExamList,
             meta: {
                 title: "Your Exams" + suffix,
-                roles: ["Lecturer"],
+                roles: ["Lecturer", "Student"],
             },
         },
         {
@@ -303,7 +303,7 @@ const router = createRouter({
             },
             meta: {
                 title: "View Exam" + suffix,
-                roles: ["Lecturer"],
+                roles: ["Lecturer", "Student"],
             },
         },
         {

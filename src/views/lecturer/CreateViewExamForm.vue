@@ -2,7 +2,6 @@
     <base-view>
         <loading-spinner v-if="isLoading" />
         <div v-else>
-            <label class="input-label">{{ exam }}</label>
             <section-header :title="heading" />
             <basics-section
                 v-model:module-id="exam.moduleId"
@@ -92,7 +91,7 @@
 
             let isLoading = ref(false);
             let exam = ref(new ExamEntity());
-            let initialExamState = new ExamEntity();
+            let initialExamState = ref(new ExamEntity());
             let heading = props.createMode ? "Create Exam" : "Exam";
             let success = ref(false);
             let unsavedChangesModal = ref();
@@ -164,10 +163,11 @@
             async function getExam() {
                 //TODO GET EXAM VIA Router.currentRoute.value.params.id as string
                 exam.value = new ExamEntity(mockedExam);
+                initialExamState.value = new ExamEntity(exam.value);
             }
 
             let hasInput = computed(() => {
-                let returnValue: boolean = !exam.value.equals(initialExamState);
+                let returnValue: boolean = !exam.value.equals(initialExamState.value);
                 return returnValue;
             });
 

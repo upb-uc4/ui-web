@@ -7,6 +7,9 @@
             <course-menu id="nav_desktop_student_menu_courses" class="navbar-menu" />
         </li>
         <li>
+            <exam-menu id="nav_desktop_student_menu_exams" class="navbar-menu" />
+        </li>
+        <li>
             <study-menu id="nav_desktop_student_menu_study" class="navbar-menu" />
         </li>
         <template #right>
@@ -20,14 +23,16 @@
     import CourseMenu from "./courses/CourseMenu.vue";
     import StudyMenu from "./study/StudyMenu.vue";
     import ProfileMenu from "../common/profile/ProfileMenu.vue";
+    import ExamMenu from "./exams/ExamsMenu.vue";
 
     export default {
-        name: "AdminNavbar",
+        name: "StudentNavbar",
         components: {
             BaseNavbar,
             CourseMenu,
             ProfileMenu,
             StudyMenu,
+            ExamMenu,
         },
     };
 </script>
