@@ -47,7 +47,7 @@
 <script lang="ts">
     import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
-    import DatePicker from "@/components/account/edit/DatePicker.vue";
+    import DatePicker from "@/components/common/DatePicker.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
 
