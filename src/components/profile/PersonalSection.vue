@@ -34,7 +34,8 @@
             </div>
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
-                    <birth-date-input v-model:birth-date="myBirthDate" :disabled="readonly" />
+                    <label class="input-label">Date of Birth</label>
+                    <date-picker v-model:birth-date="myBirthDate" :disabled="readonly" />
                     <label v-if="errorBag.hasNested('birthDate')" class="input-label-error">{{ errorBag.getNested("birthDate") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
@@ -46,7 +47,7 @@
 <script lang="ts">
     import BaseInput from "@/components/common/BaseInput.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
-    import BirthDateInput from "@/components/account/edit/BirthDateInput.vue";
+    import DatePicker from "@/components/account/edit/DatePicker.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
 
@@ -55,7 +56,7 @@
         components: {
             BaseInput,
             BaseSection,
-            BirthDateInput,
+            DatePicker,
         },
         props: {
             firstName: {
