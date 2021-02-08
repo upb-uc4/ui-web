@@ -35,9 +35,17 @@
                 <i class="ml-2 text-sm" :class="deadlinesShown ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" />
             </div>
             <div v-if="deadlinesShown" class="flex flex-col mt-1">
-                <label id="admitUntil" class="mt-1 pl-8 text-gray-500"> Admission Deadline: {{ admittableUntilFormatted }} </label>
-                <label id="dropUntil" class="mt-1 pl-8 text-gray-500"> Drop Deadline: {{ droppableUntilFormatted }} </label>
+                <label id="admitUntil" :class="isAdmittable ? 'text-green-400' : 'text-red-400'" class="mt-1 pl-8 text-gray-500">
+                    Admission Deadline: {{ admittableUntilFormatted }}
+                </label>
+                <label id="dropUntil" :class="isDroppable ? 'text-green-400' : 'text-red-400'" class="mt-1 pl-8 text-gray-500">
+                    Drop Deadline: {{ droppableUntilFormatted }}
+                </label>
             </div>
+        </div>
+        <div v-if="isStudent" class="flex justify-end mt-2">
+            <button v-if="!isAdmitted && isAdmittable" class="btn btn-add w-full sm:w-24" @click="admit">Admit</button>
+            <button v-else-if="isAdmitted && isDroppable" class="btn btn-remove sm:w-24" @click="drop">Drop</button>
         </div>
     </div>
 </template>
@@ -50,9 +58,18 @@
     import Exam from "../mockExamInterface";
 
     export default {
-        name: "LecturerCourse",
+        name: "ExamRow",
         components: {},
         props: {
+            isStudent: {
+                type: Boolean,
+                required: true,
+            },
+            examAdmissions: {
+                type: Array,
+                required: false,
+                default: () => [],
+            },
             exam: {
                 type: Object as () => Exam,
                 required: true,
@@ -78,6 +95,11 @@
             const droppableUntilFormatted = new Date(props.exam.droppableUntil).toLocaleString("en-US", dateFormatOptions);
             const deadlinesShown = ref(false);
 
+            const isAdmitted = ref((props.examAdmissions as any[]).some((admission) => admission.examId == props.exam.examId));
+            const now = new Date();
+            const isAdmittable = now < new Date(props.exam.admittableUntil);
+            const isDroppable = now < new Date(props.exam.droppableUntil);
+
             function toggleDeadlinesDisplay() {
                 deadlinesShown.value = !deadlinesShown.value;
             }
@@ -91,6 +113,18 @@
                 Router.push({ path: "/editCourse/" + props.course.courseId });
             }
 
+            async function admit() {
+                //TODO API
+                //if success
+                isAdmitted.value = true;
+            }
+
+            async function drop() {
+                //TODO API
+                //if success
+                isAdmitted.value = false;
+            }
+
             return {
                 viewExam,
                 viewCourse,
@@ -100,6 +134,11 @@
                 examDate,
                 admittableUntilFormatted,
                 droppableUntilFormatted,
+                isAdmitted,
+                isAdmittable,
+                isDroppable,
+                admit,
+                drop,
             };
         },
     };

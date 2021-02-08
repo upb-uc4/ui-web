@@ -2,7 +2,7 @@
     <div>
         <loading-component v-if="isLoading" title="Loading Courses..." />
         <div v-for="exam in shownExams" v-else :key="exam.examId" class="mt-6">
-            <exam-row :exam="exam" :course="getCourse(exam.courseId)" />
+            <exam-row :is-student="isStudent" :exam-admissions="examAdmissions" :exam="exam" :course="getCourse(exam.courseId)" />
             <hr class="my-6 dark:border-normalgray-700" />
         </div>
     </div>
@@ -53,8 +53,8 @@
                     type: "Written Exam",
                     date: "2021-02-12T10:00:00",
                     ects: 6,
-                    admittableUntil: "2021-01-12T23:59:59",
-                    droppableUntil: "2021-02-05T23:59:59",
+                    admittableUntil: "2021-05-12T23:59:59",
+                    droppableUntil: "2021-06-05T23:59:59",
                 },
                 {
                     examId: "ExampleGroup3:M.2:Written Exam:2021-02-26T11:15:00",
@@ -65,7 +65,7 @@
                     date: "2021-02-26T11:15:00",
                     ects: 10,
                     admittableUntil: "2021-01-26T23:59:59",
-                    droppableUntil: "2021-02-19T23:59:59",
+                    droppableUntil: "2021-06-19T23:59:59",
                 },
             ];
             const mockedCourses = [
@@ -99,20 +99,44 @@
                 } as Course,
             ] as Course[];
 
+            const mockedExamAdmissions = [
+                {
+                    admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:AnExampleExamId",
+                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6",
+                    timestamp: "2020-12-01",
+                    type: "Exam",
+                    examId: "ExampleGroup3:M.2:Written Exam:2021-02-26T11:15:00",
+                },
+            ];
+
             let isLoading = ref(false);
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
             const courses = ref([] as Course[]);
             let role = ref("");
             let isAdmin = ref(false);
             let exams = ref([] as Exam[]);
+            const examAdmissions = ref([] as any[]);
             let username = ref("");
 
             onBeforeMount(async () => {
-                await getExams();
-            });
-            async function getExams() {
                 isLoading.value = true;
+                await getExams();
+                await getRole();
+                if (isStudent.value) {
+                    await getExamAdmissions();
+                }
+                isLoading.value = false;
+            });
+
+            const isStudent = computed(() => {
+                return role.value === Role.STUDENT;
+            });
+
+            async function getRole() {
                 const store = useStore();
+                role.value = await store.getters.role;
+            }
+            async function getExams() {
                 const genericResponseHandler = new GenericResponseHandler("exams");
                 // TODO GET EXAMS VIA API
                 exams.value = mockedExams;
@@ -124,7 +148,11 @@
                 // const response = await course_management.getCourses(undefined, undefined, [...courseIds]);
                 // courses.value = handler.handleResponse(response);
                 courses.value = mockedCourses;
-                isLoading.value = false;
+            }
+
+            async function getExamAdmissions() {
+                //TODO API
+                examAdmissions.value = mockedExamAdmissions;
             }
 
             let shownExams = computed(() => {
@@ -159,6 +187,8 @@
                 isAdmin,
                 username,
                 getCourse,
+                examAdmissions,
+                isStudent,
             };
         },
     };
