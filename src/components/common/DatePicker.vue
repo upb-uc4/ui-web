@@ -1,5 +1,5 @@
 <template>
-    <div id="birthdate" class="flex space-x-6">
+    <div id="date" class="flex space-x-6">
         <div class="w-1/3">
             <selection :id="'day'" v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
         </div>
@@ -18,12 +18,12 @@
     import { computed, ref, watch } from "vue";
 
     export default {
-        name: "BirthDatePicker",
+        name: "DatePicker",
         components: {
             Selection: Select,
         },
         props: {
-            birthDate: {
+            date: {
                 type: String,
                 required: true,
             },
@@ -32,7 +32,7 @@
                 default: false,
             },
         },
-        emits: ["update:birthDate"],
+        emits: ["update:date"],
         setup(props: any, { emit }: any) {
             let currentYear = new Date().getFullYear();
             let years: string[] = [];
@@ -47,8 +47,8 @@
 
             const zeroPad = (text: any, places: number) => String(text).padStart(places, "0");
 
-            if (props.birthDate) {
-                let dates = props.birthDate.split("-");
+            if (props.date) {
+                let dates = props.date.split("-");
                 let date = new Date(+dates[0], dates[1] - 1, +dates[2]);
                 selectedDay.value = date.getDay().toString();
                 selectedMonth.value = date.toLocaleString("en-GB", { month: "long" });
@@ -56,10 +56,7 @@
             }
 
             watch([selectedDay, selectedMonth, selectedYear], ([day, month, year]) => {
-                emit(
-                    "update:birthDate",
-                    `${selectedYear.value}-${zeroPad(selectedMonthAsNumber.value, 2)}-${zeroPad(selectedDay.value, 2)}`
-                );
+                emit("update:date", `${selectedYear.value}-${zeroPad(selectedMonthAsNumber.value, 2)}-${zeroPad(selectedDay.value, 2)}`);
             });
 
             return {

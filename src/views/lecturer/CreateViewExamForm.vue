@@ -11,6 +11,13 @@
                 :view-mode="viewMode"
                 :courses="courses"
             />
+            <date-section
+                v-model:exam-date="exam.date"
+                v-model:admit-until-date="exam.admittableUntil"
+                v-model:drop-until-date="exam.droppableUntil"
+                :view-mode="viewMode"
+                :error-bag="errorBag"
+            />
 
             <button-section>
                 <template #right>
@@ -49,6 +56,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import CourseManagement from "@/api/CourseManagement";
     import Course from "@/api/api_models/course_management/Course";
+    import DateSection from "@/components/exam/edit/DateSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -59,6 +67,7 @@
             UnsavedChangesModal,
             LoadingSpinner,
             ButtonSection,
+            DateSection,
         },
         props: {
             viewMode: {
