@@ -32,6 +32,9 @@
                     >
                         Create Exam
                     </button>
+                    <button v-else-if="isLecturer" id="gradeExam" type="button" class="w-full w-48 btn btn-add" @click="gradeExam">
+                        Grade Exam
+                    </button>
                 </template>
             </button-section>
             <unsaved-changes-modal ref="unsavedChangesModal" />
@@ -52,11 +55,12 @@
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import { ExamEntity } from "@/components/exam/MockExamEntity";
     import BasicsSection from "@/components/exam/edit/BasicsSection.vue";
-    import { useStore } from "vuex";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import CourseManagement from "@/api/CourseManagement";
     import Course from "@/api/api_models/course_management/Course";
     import DateSection from "@/components/exam/edit/DateSection.vue";
+    import { useStore } from "@/use/store/store";
+    import { Role } from "@/entities/Role";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -96,6 +100,7 @@
             let success = ref(false);
             let unsavedChangesModal = ref();
 
+            const role = ref("");
             const courses = ref([] as Course[]);
 
             const errorBag = ref(new ErrorBag());
@@ -128,20 +133,37 @@
             onBeforeMount(async () => {
                 isLoading.value = true;
                 const promises = [];
-                await getMyCourses();
+                promises.push(getRole());
                 if (props.viewMode) {
-                    getExam();
+                    promises.push(getExam());
                 }
+                await Promise.all(promises);
+                await getMyCourses();
                 isLoading.value = false;
             });
+
+            const isLecturer = computed(() => {
+                return role.value === Role.LECTURER;
+            });
+
+            async function getRole() {
+                const store = useStore();
+                role.value = await store.getters.role;
+            }
 
             async function getMyCourses() {
                 const store = useStore();
                 const username = (await store.getters.user).username;
                 const genericResponseHandler = new GenericResponseHandler("courses");
                 const courseManagement: CourseManagement = new CourseManagement();
-                const response = await courseManagement.getCourses(undefined, username);
-                courses.value = genericResponseHandler.handleResponse(response);
+                let response;
+                if (props.viewMode) {
+                    response = await courseManagement.getCourse(exam.value.courseId);
+                    courses.value = [genericResponseHandler.handleResponse(response)];
+                } else {
+                    response = await courseManagement.getCourses(undefined, username);
+                    courses.value = genericResponseHandler.handleResponse(response);
+                }
 
                 //TODO REMOVE MOCK DATA
                 courses.value.push({
@@ -184,6 +206,10 @@
                 Router.push("/exams");
             }
 
+            function gradeExam() {
+                //TODO
+            }
+
             return {
                 isLoading,
                 exam,
@@ -197,6 +223,8 @@
                 unsavedChangesModal,
                 errorBag,
                 courses,
+                isLecturer,
+                gradeExam,
             };
         },
     };
