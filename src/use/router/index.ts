@@ -24,7 +24,7 @@ const OperationsArchive = () => import("@/views/common/OperationsArchive.vue");
 const AllOperationsPage = () => import("@/views/admin/AllOperations.vue");
 const DPA = () => import("@/views/common/DPA.vue");
 const ExamList = () => import("@/views/lecturer/ExamList.vue");
-const CreateViewExamForm = () => import("@/views/lecturer/CreateViewExamForm.vue");
+const CreateViewExamForm = () => import("@/views/shared/CreateViewExamForm.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
