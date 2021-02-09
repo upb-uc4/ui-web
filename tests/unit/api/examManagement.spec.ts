@@ -445,7 +445,7 @@ describe("Exam Management", () => {
 
     test("Grade exam", async () => {
         const admissionManagement = new AdmissionManagement();
-        const response = await admissionManagement.getExamAdmissions(undefined, exam.examId);
+        const response = await admissionManagement.getExamAdmissions(undefined, [exam.examId]);
         
         expect(response.statusCode).toBe(200);
         expect(response.returnValue.length).toBe(1);

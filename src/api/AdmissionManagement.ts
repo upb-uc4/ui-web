@@ -68,7 +68,7 @@ export default class AdmissionManagement extends CommonHyperledger {
             });
     }
 
-    async getExamAdmissions(username?: string, examId?: string, admissionIds?: string[]): Promise<APIResponse<ExamAdmission[]>> {
+    async getExamAdmissions(username?: string, examId?: string[], admissionIds?: string[]): Promise<APIResponse<ExamAdmission[]>> {
         const requestParameter = { params: {} as any };
         if (username) requestParameter.params.username = username;
         if (examId) requestParameter.params.examId = examId;
