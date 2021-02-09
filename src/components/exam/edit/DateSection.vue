@@ -1,9 +1,6 @@
 <template>
-    <BaseSection title="Date Information" subtitle="The actual exam date and deadlines that the exam should be assigned to">
+    <BaseSection title="Date Information" subtitle="The deadlines that the exam should be assigned to">
         <div class="lg:w-1/2">
-            <ISODatePicker v-model:iso-date="myExamDate" :disabled="viewMode" title="Exam Date" />
-        </div>
-        <div class="lg:w-1/2 mt-12">
             <ISODatePicker v-model:iso-date="myAdmitUntilDate" :disabled="viewMode" title="Admittable Until" />
         </div>
         <div class="lg:w-1/2 mt-5">
@@ -29,10 +26,6 @@
                 required: true,
                 type: ErrorBag,
             },
-            examDate: {
-                type: String,
-                required: true,
-            },
             admitUntilDate: {
                 type: String,
                 required: true,
@@ -46,10 +39,9 @@
                 required: true,
             },
         },
-        emits: ["update:examDate", "update:admitUntilDate", "update:dropUntilDate"],
+        emits: ["update:admitUntilDate", "update:dropUntilDate"],
         setup(props: any, { emit }: any) {
             return {
-                myExamDate: useModelWrapper(props, emit, "examDate"),
                 myAdmitUntilDate: useModelWrapper(props, emit, "admitUntilDate"),
                 myDropUntilDate: useModelWrapper(props, emit, "dropUntilDate"),
             };

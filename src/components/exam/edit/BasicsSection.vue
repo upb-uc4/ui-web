@@ -25,6 +25,9 @@
                     <input id="ects" v-model="myEcts" type="number" :disabled="viewMode" class="w-full form-input input-text" />
                 </div>
             </div>
+            <div class="lg:w-1/2 mt-8">
+                <ISODatePicker v-model:iso-date="myExamDate" :disabled="viewMode" title="Exam Date" />
+            </div>
         </div>
     </BaseSection>
 </template>
@@ -37,7 +40,7 @@
     import Selection from "@/components/common/ObjectSelect.vue";
     import Select from "@/components/common/Select.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import { isInteger } from "lodash";
+    import ISODatePicker from "@/components/common/ISODatePicker.vue";
 
     export default {
         name: "CourseModuleSection",
@@ -45,11 +48,16 @@
             BaseSection,
             Selection,
             Select,
+            ISODatePicker,
         },
         props: {
             errorBag: {
                 required: true,
                 type: ErrorBag,
+            },
+            examDate: {
+                type: String,
+                required: true,
             },
             courseId: {
                 type: String,
@@ -72,7 +80,7 @@
                 required: true,
             },
         },
-        emits: ["update:course-id", "update:module-id", "update:ects"],
+        emits: ["update:course-id", "update:module-id", "update:ects", "update:examDate"],
         setup(props: any, { emit }: any) {
             const isLoading = ref(false);
             const selectedCourse = ref();
@@ -123,6 +131,7 @@
                 availableModules,
                 enableModuleSelection,
                 myEcts,
+                myExamDate: useModelWrapper(props, emit, "examDate"),
             };
         },
     };

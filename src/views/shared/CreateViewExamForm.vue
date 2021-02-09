@@ -6,13 +6,13 @@
             <basics-section
                 v-model:module-id="exam.moduleId"
                 v-model:course-id="exam.courseId"
+                v-model:exam-date="exam.date"
                 v-model:ects="exam.ects"
                 :error-bag="errorBag"
                 :view-mode="viewMode"
                 :courses="courses"
             />
             <date-section
-                v-model:exam-date="exam.date"
                 v-model:admit-until-date="exam.admittableUntil"
                 v-model:drop-until-date="exam.droppableUntil"
                 :view-mode="viewMode"
