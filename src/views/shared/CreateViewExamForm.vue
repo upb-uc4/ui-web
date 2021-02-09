@@ -32,9 +32,6 @@
                     >
                         Create Exam
                     </button>
-                    <button v-else-if="isLecturer" id="gradeExam" type="button" class="w-full w-48 btn btn-add" @click="gradeExam">
-                        Grade Exam
-                    </button>
                 </template>
             </button-section>
             <unsaved-changes-modal ref="unsavedChangesModal" />
