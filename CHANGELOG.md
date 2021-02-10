@@ -6,6 +6,9 @@
 ## Bugfix
 - fix colour of uc4 logo in mobile navigation [#834](https://github.com/upb-uc4/ui-web/pull/834)
 
+## Refactor 
+- fix centering of modal components [#849](https://github.com/upb-uc4/ui-web/pull/849)
+
 # [0.17.1-hotfix.2](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.1...v0.17.1-hotfix.2) (2021-02-03)
 ## Bugfix
 - Fix a bug that broke matriculation
