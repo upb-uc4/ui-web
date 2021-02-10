@@ -25,27 +25,38 @@
                 <p class="ml-2 navigation-link cursor-pointer" @click.stop="viewCourse()">{{ courseName }}</p>
             </label>
             <label id="module" class="mt-1 text-gray-500"> Module: {{ exam?.moduleId }} </label>
-            <div
-                id="toggleDeadlines"
-                class="mt-1 text-gray-500 flex cursor-pointer items-baseline"
-                :title="deadlinesShown ? 'Collapse' : 'Expand'"
-                @click="toggleDeadlinesDisplay"
-            >
-                Deadlines
-                <i class="ml-2 text-sm" :class="deadlinesShown ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" />
-            </div>
-            <div v-if="deadlinesShown" class="flex flex-col mt-1">
-                <label id="admitUntil" :class="isAdmittable ? 'text-green-400' : 'text-red-400'" class="mt-1 pl-8 text-gray-500">
-                    Admission Deadline: {{ admittableUntilFormatted }}
+            <div v-if="!isGraded" class="flex-none">
+                <label
+                    id="toggleDeadlines"
+                    class="mt-1 text-gray-500 items-baseline cursor-pointer"
+                    :title="deadlinesShown ? 'Collapse' : 'Expand'"
+                    @click="toggleDeadlinesDisplay"
+                >
+                    Deadlines
+                    <i class="ml-2 text-sm" :class="deadlinesShown ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" />
                 </label>
-                <label id="dropUntil" :class="isDroppable ? 'text-green-400' : 'text-red-400'" class="mt-1 pl-8 text-gray-500">
-                    Drop Deadline: {{ droppableUntilFormatted }}
-                </label>
+                <div v-if="deadlinesShown" class="flex flex-col mt-1">
+                    <label id="admitUntil" :class="isAdmittable ? 'text-green-400' : 'text-red-400'" class="mt-1 pl-8 text-gray-500">
+                        Admission Deadline: {{ admittableUntilFormatted }}
+                    </label>
+                    <label id="dropUntil" :class="isDroppable ? 'text-green-400' : 'text-red-400'" class="mt-1 pl-8 text-gray-500">
+                        Drop Deadline: {{ droppableUntilFormatted }}
+                    </label>
+                </div>
             </div>
         </div>
         <div v-if="isStudent" class="flex justify-end mt-2">
-            <button v-if="!isAdmitted && isAdmittable" class="btn btn-add w-full sm:w-24" @click="admit">Admit</button>
-            <button v-else-if="isAdmitted && isDroppable" class="btn btn-remove sm:w-24" @click="drop">Drop</button>
+            <div v-if="isGraded" class="flex">
+                <label class="flex input-label">Result:
+                    <p class="ml-2 font-semibold" :class="isPassed ? 'text-green-400' : 'text-red-400'">{{ examGrade }}</p></label>
+            </div>
+            <div v-else>
+                <div v-if="isAdmitted">
+                    <button v-if="isDroppable" class="btn btn-remove sm:w-24" @click="drop">Drop</button>
+                    <label v-else class="input-label">Not Graded Yet</label>
+                </div>
+                <button v-else-if="isAdmittable" class="btn btn-add w-full sm:w-24" @click="admit">Admit</button>
+            </div>
         </div>
     </div>
 </template>
@@ -56,6 +67,7 @@
     import { ref } from "vue";
 
     import Exam from "../mockExamInterface";
+    import { Grade } from "../MockExamResultInterface";
 
     export default {
         name: "ExamRow",
@@ -69,6 +81,11 @@
                 type: Array,
                 required: false,
                 default: () => [],
+            },
+            examGrade: {
+                type: String,
+                required: false,
+                default: () => Grade.NONE,
             },
             exam: {
                 type: Object as () => Exam,
@@ -99,6 +116,9 @@
             const now = new Date();
             const isAdmittable = now < new Date(props.exam.admittableUntil);
             const isDroppable = now < new Date(props.exam.droppableUntil);
+
+            const isGraded = props.examGrade != Grade.NONE;
+            const isPassed = isGraded && props.examGrade !== Grade.g5_0;
 
             function toggleDeadlinesDisplay() {
                 deadlinesShown.value = !deadlinesShown.value;
@@ -139,6 +159,8 @@
                 isDroppable,
                 admit,
                 drop,
+                isGraded,
+                isPassed,
             };
         },
     };

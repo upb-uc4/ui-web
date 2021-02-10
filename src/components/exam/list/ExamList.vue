@@ -2,7 +2,13 @@
     <div>
         <loading-component v-if="isLoading" title="Loading Courses..." />
         <div v-for="exam in shownExams" v-else :key="exam.examId" class="mt-6">
-            <exam-row :is-student="isStudent" :exam-admissions="examAdmissions" :exam="exam" :course="getCourse(exam.courseId)" />
+            <exam-row
+                :is-student="isStudent"
+                :exam-grade="examResults.find((result) => result.examId == exam.examId)?.grade"
+                :exam-admissions="examAdmissions"
+                :exam="exam"
+                :course="getCourse(exam.courseId)"
+            />
             <hr class="my-6 dark:border-normalgray-700" />
         </div>
     </div>
@@ -20,6 +26,7 @@
     import Exam from "../mockExamInterface";
     import CourseManagement from "@/api/CourseManagement";
     import Course from "@/api/api_models/course_management/Course";
+    import ExamResult, { Grade } from "../MockExamResultInterface";
 
     export default {
         name: "CourseList",
@@ -53,7 +60,7 @@
                     type: "Written Exam",
                     date: "2021-02-12T10:00:00",
                     ects: 6,
-                    admittableUntil: "2021-05-12T23:59:59",
+                    admittableUntil: "2021-02-12T23:59:59",
                     droppableUntil: "2021-06-05T23:59:59",
                 },
                 {
@@ -65,7 +72,7 @@
                     date: "2021-02-26T11:15:00",
                     ects: 10,
                     admittableUntil: "2021-01-26T23:59:59",
-                    droppableUntil: "2021-06-19T23:59:59",
+                    droppableUntil: "2021-01-19T23:59:59",
                 },
             ];
             const mockedCourses = [
@@ -109,6 +116,14 @@
                 },
             ];
 
+            const mockedExamResults = [
+                {
+                    examId: "ExampleGroup3:M.2:Written Exam:2021-02-26T11:15:00a",
+                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6",
+                    grade: Grade.g5_0,
+                },
+            ];
+
             let isLoading = ref(false);
             const roles = Object.values(Role).filter((e) => e != Role.NONE);
             const courses = ref([] as Course[]);
@@ -117,20 +132,29 @@
             let exams = ref([] as Exam[]);
             const examAdmissions = ref([] as any[]);
             let username = ref("");
+            const examResults = ref([] as ExamResult[]);
 
             onBeforeMount(async () => {
                 isLoading.value = true;
-                await getExams();
                 await getRole();
+                let promises = [];
+                promises.push(getExams());
                 if (isStudent.value) {
-                    await getExamAdmissions();
+                    promises.push(getExamAdmissions());
+                    promises.push(getExamResults());
                 }
+                await Promise.all(promises);
                 isLoading.value = false;
             });
 
             const isStudent = computed(() => {
                 return role.value === Role.STUDENT;
             });
+
+            async function getExamResults() {
+                //TODO API CALL
+                examResults.value = mockedExamResults;
+            }
 
             async function getRole() {
                 const store = useStore();
@@ -189,6 +213,7 @@
                 getCourse,
                 examAdmissions,
                 isStudent,
+                examResults,
             };
         },
     };
