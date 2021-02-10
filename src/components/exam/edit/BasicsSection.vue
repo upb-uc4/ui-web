@@ -9,6 +9,9 @@
                 :elements="courses"
                 property-to-display="courseName"
             />
+            <label v-if="errorBag?.has('courseId')" class="input-label-error">
+                {{ errorBag.get("courseId") }}
+            </label>
             <div class="lg:flex justify-between">
                 <div class="flex-col w-full lg:w-1/2">
                     <label class="input-label mt-5">Module</label>
@@ -19,14 +22,23 @@
                         :disabled="!enableModuleSelection || viewMode"
                         :elements="availableModules"
                     />
+                    <label v-if="errorBag?.has('moduleId')" class="input-label-error">
+                        {{ errorBag.get("moduleId") }}
+                    </label>
                 </div>
                 <div class="flex-col w-full lg:w-1/3">
                     <label class="input-label mt-5">ECTS</label>
                     <input id="ects" v-model="myEcts" type="number" :disabled="viewMode" class="w-full form-input input-text" />
+                    <label v-if="errorBag?.has('ects')" class="input-label-error">
+                        {{ errorBag.get("ects") }}
+                    </label>
                 </div>
             </div>
             <div class="lg:w-1/2 mt-8">
                 <ISODatePicker v-model:iso-date="myExamDate" :disabled="viewMode" title="Exam Date" />
+                <label v-if="errorBag?.has('examDate')" class="input-label-error">
+                    {{ errorBag.get("examDate") }}
+                </label>
             </div>
         </div>
     </BaseSection>
