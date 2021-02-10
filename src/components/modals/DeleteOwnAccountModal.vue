@@ -6,7 +6,7 @@
         <div v-if="busy" class="mx-auto">
             <loading-spinner />
         </div>
-        <div v-else class="flex flex-col">
+        <div v-else class="flex flex-col w-full">
             <div class="my-2 w-full flex justify-center my-8">
                 <div class="fa-stack fa-2x">
                     <i class="fas fa-circle fa-stack-2x text-red-200" />

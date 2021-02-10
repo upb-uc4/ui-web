@@ -3,7 +3,7 @@
         <template #header>
             <p class="modal-headline">Login</p>
         </template>
-        <div class="flex flex-col">
+        <div class="flex flex-col w-full">
             <div class="modal-description">Please enter your authentication credentials.</div>
 
             <div class="my-4">
