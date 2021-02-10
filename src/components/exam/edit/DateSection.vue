@@ -2,9 +2,15 @@
     <BaseSection title="Date Information" subtitle="The deadlines that the exam should be assigned to">
         <div class="lg:w-1/2">
             <ISODatePicker v-model:iso-date="myAdmitUntilDate" :disabled="viewMode" title="Admittable Until" />
+            <label v-if="errorBag?.has('admittableUntil')" class="input-label-error">
+                {{ errorBag.get("admittableUntil") }}
+            </label>
         </div>
         <div class="lg:w-1/2 mt-5">
             <ISODatePicker v-model:iso-date="myDropUntilDate" :disabled="viewMode" title="Droppable Until" />
+            <label v-if="errorBag?.has('droppableUntil')" class="input-label-error">
+                {{ errorBag.get("droppableUntil") }}
+            </label>
         </div>
     </BaseSection>
 </template>
