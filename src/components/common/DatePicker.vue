@@ -1,13 +1,19 @@
 <template>
-    <div id="date" class="flex space-x-6">
+    <div :id="`${idPrefix}date`" class="flex space-x-6">
         <div class="w-1/3">
-            <selection :id="'day'" v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
+            <selection :id="`${idPrefix}day`" v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
         </div>
         <div class="w-1/3">
-            <selection :id="'month'" v-model:selection="selectedMonth" :disabled="disabled" :elements="months" placeholder="Month" />
+            <selection
+                :id="`${idPrefix}month`"
+                v-model:selection="selectedMonth"
+                :disabled="disabled"
+                :elements="months"
+                placeholder="Month"
+            />
         </div>
         <div class="w-1/3">
-            <selection :id="'year'" v-model:selection="selectedYear" :disabled="disabled" :elements="years" placeholder="Year" />
+            <selection :id="`${idPrefix}year`" v-model:selection="selectedYear" :disabled="disabled" :elements="years" placeholder="Year" />
         </div>
     </div>
 </template>
@@ -30,6 +36,10 @@
             disabled: {
                 type: Boolean,
                 default: false,
+            },
+            idPrefix: {
+                type: String,
+                default: "",
             },
         },
         emits: ["update:date"],

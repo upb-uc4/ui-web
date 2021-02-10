@@ -1,8 +1,8 @@
 <template>
     <label class="block input-label">{{ title }}</label>
     <div class="space-y-2">
-        <date-picker v-model:date="myDate" :disabled="disabled" />
-        <time-picker v-model:time="myTime" :disabled="disabled" />
+        <date-picker v-model:date="myDate" :id-prefix="idPrefix" :disabled="disabled" />
+        <time-picker v-model:time="myTime" :id-prefix="idPrefix" :disabled="disabled" />
     </div>
 </template>
 
@@ -21,6 +21,10 @@
             isoDate: {
                 type: String,
                 required: true,
+            },
+            idPrefix: {
+                type: String,
+                default: "",
             },
             disabled: {
                 type: Boolean,

@@ -1,8 +1,8 @@
 <template>
-    <div id="time" class="flex space-x-4 items-center">
+    <div :id="`${idPrefix}time`" class="flex space-x-4 items-center">
         <div class="w-1/2">
             <selection
-                :id="'hour'"
+                :id="`${idPrefix}hour`"
                 v-model:selection="selectedHour"
                 :disabled="disabled"
                 :elements="selectableTimes[0]"
@@ -12,7 +12,7 @@
         <label class="input-label">:</label>
         <div class="w-1/2">
             <selection
-                :id="'minutes'"
+                :id="`${idPrefix}minutes`"
                 v-model:selection="selectedMinutes"
                 :disabled="disabled"
                 :elements="selectableTimes[1]"
@@ -36,6 +36,10 @@
             time: {
                 type: String,
                 required: true,
+            },
+            idPrefix: {
+                type: String,
+                default: "",
             },
             disabled: {
                 type: Boolean,

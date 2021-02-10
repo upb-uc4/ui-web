@@ -16,7 +16,7 @@
                 <div class="flex-col w-full lg:w-1/2">
                     <label class="input-label mt-5">Module</label>
                     <Select
-                        :id="'module'"
+                        id="module"
                         v-model:selection="selectedModule"
                         :title="enableModuleSelection ? '' : 'Please select a course first'"
                         :disabled="!enableModuleSelection || viewMode"
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="lg:w-1/2 mt-8">
-                <ISODatePicker v-model:iso-date="myExamDate" :disabled="viewMode" title="Exam Date" />
+                <ISODatePicker v-model:iso-date="myExamDate" id-prefix="examDate_" :disabled="viewMode" title="Exam Date" />
                 <label v-if="errorBag?.has('examDate')" class="input-label-error">
                     {{ errorBag.get("examDate") }}
                 </label>
