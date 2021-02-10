@@ -18,6 +18,7 @@
                 :view-mode="viewMode"
                 :error-bag="errorBag"
             />
+            <grading-section v-if="isLecturer" :exam="exam" />
 
             <button-section>
                 <template #right>
@@ -58,6 +59,7 @@
     import DateSection from "@/components/exam/edit/DateSection.vue";
     import { useStore } from "@/use/store/store";
     import { Role } from "@/entities/Role";
+    import GradingSection from "@/components/exam/edit/GradingSection.vue";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -69,6 +71,7 @@
             LoadingSpinner,
             ButtonSection,
             DateSection,
+            GradingSection,
         },
         props: {
             viewMode: {

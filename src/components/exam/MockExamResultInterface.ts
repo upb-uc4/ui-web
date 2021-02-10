@@ -5,7 +5,7 @@ export default interface ExamResult {
 }
 
 export enum Grade {
-    NONE = "",
+    NONE = "Not Graded",
     g1_0 = "1.0",
     g1_3 = "1.3",
     g1_7 = "1.7",
