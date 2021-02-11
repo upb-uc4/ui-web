@@ -1,3 +1,4 @@
+import { arrayBufferToBase64 } from "@/use/crypto/certificates";
 import { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
 import handleAuthenticationError from "./AuthenticationHelper";
@@ -14,6 +15,57 @@ export default class ReportManagement extends Common {
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
+    }
+
+    async getCertificateOfEnrollment(username: string, semester: string): Promise<APIResponse<File>> {
+        const requestParameter = { params: {} as any };
+
+        let base64UrlSemester = btoa(semester);
+        base64UrlSemester = base64UrlSemester.replace(/\+/g, "-");
+        base64UrlSemester = base64UrlSemester.replace(/\//g, "_");
+        base64UrlSemester = base64UrlSemester.replace(/=/g, "");
+
+        requestParameter.params.semester = base64UrlSemester;
+
+        return await this._axios
+            .get(`/certificates/${username}/enrollment`, requestParameter)
+            .then((response: AxiosResponse) => {
+                let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
+                const file: File = new File([blob], "certificate.pdf", { type: response.headers["content-type"] });
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: file,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as File,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getCertificateOfEnrollment(username, semester);
+                    }
+                    return {
+                        returnValue: {} as File,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as File,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
     }
 
     async getArchive(username: string): Promise<APIResponse<File | string>> {
