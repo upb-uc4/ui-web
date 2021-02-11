@@ -113,8 +113,6 @@
             async function getRole() {
                 const store = useStore();
                 role.value = await store.getters.role;
-                //TODO
-                role.value = Role.LECTURER;
             }
 
             const isLecturer = computed(() => {
