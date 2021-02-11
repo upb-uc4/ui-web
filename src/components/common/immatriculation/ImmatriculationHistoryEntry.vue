@@ -2,7 +2,10 @@
     <div class="space-y-1.5">
         <div class="flex items-center space-x-6">
             <div class="bg-blue-700 dark:bg-lime-500 rounded-full h-8 w-8" />
-            <div class="text-base input-label">{{ semester }}</div>
+            <div v-if="isAdminView || isLoading" class="text-base input-label">{{ semester }}</div>
+            <a v-else id="downloadCertificate" :href="certificateDownloadURL" class="text-base navigation-link" download="certificate.pem">
+                {{ semester }}
+            </a>
         </div>
         <div class="ml-14 space-y-0.5">
             <div v-for="fieldOfStudy in fieldsOfStudy" :key="fieldOfStudy" class="text-sm text-gray-500">
@@ -13,6 +16,11 @@
 </template>
 
 <script lang="ts">
+    import ReportManagement from "@/api/ReportManagement";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import { useStore } from "@/use/store/store";
+    import { onBeforeMount, ref } from "vue";
+
     export default {
         name: "ImmatriculationHistoryEntry",
         props: {
@@ -24,7 +32,40 @@
                 type: Array,
                 required: true,
             },
+            isAdminView: {
+                type: Boolean,
+                default: false,
+            },
         },
-        setup() {},
+        setup(props: any) {
+            const isLoading = ref(false);
+            const store = useStore();
+            const certificateDownloadURL = ref("");
+
+            onBeforeMount(async () => {
+                if (!props.isAdminView) {
+                    isLoading.value = true;
+                    await loadCertificate();
+                    isLoading.value = false;
+                }
+            });
+
+            async function loadCertificate() {
+                const reportManagement = new ReportManagement();
+                const handler = new GenericResponseHandler("certificate");
+                const response = await reportManagement.getCertificateOfEnrollment((await store.getters.user).username, props.semester);
+                createCertificateDownloadURL(handler.handleResponse(response));
+            }
+
+            function createCertificateDownloadURL(certificateContent: File) {
+                let certificateFile = new Blob([certificateContent], { type: "application/pdf" });
+                certificateDownloadURL.value = URL.createObjectURL(certificateFile);
+            }
+
+            return {
+                certificateDownloadURL,
+                isLoading,
+            };
+        },
     };
 </script>

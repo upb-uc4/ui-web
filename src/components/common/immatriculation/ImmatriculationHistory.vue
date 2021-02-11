@@ -11,6 +11,8 @@
                 <immatriculation-history-entry
                     v-for="entry in chronologicalList"
                     :key="entry"
+                    :is-admin-view="isAdminView"
+                    :username="username"
                     :fields-of-study="entry.fieldsOfStudy"
                     :semester="entry.semester"
                 />
@@ -37,6 +39,10 @@
             username: {
                 type: String,
                 required: true,
+            },
+            isAdminView: {
+                type: Boolean,
+                default: false,
             },
         },
         setup(props: any) {

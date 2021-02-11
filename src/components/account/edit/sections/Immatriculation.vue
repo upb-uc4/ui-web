@@ -2,7 +2,7 @@
     <div class="w-full">
         <label class="input-label">Immatriculation History</label>
         <div class="w-full">
-            <immatriculation-history :key="refreshKey" v-model:busy="busy" :username="username" />
+            <immatriculation-history :key="refreshKey" v-model:busy="busy" :is-admin-view="isAdminView" :username="username" />
         </div>
         <div v-if="busy > 0">
             <loading-spinner />
@@ -23,6 +23,10 @@
             username: {
                 type: String,
                 required: true,
+            },
+            isAdminView: {
+                type: Boolean,
+                default: false,
             },
         },
         setup(props: any, { emit }: any) {
