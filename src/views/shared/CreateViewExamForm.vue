@@ -18,7 +18,7 @@
                 :view-mode="viewMode"
                 :error-bag="errorBag"
             />
-            <grading-section v-if="isLecturer" :exam="exam" />
+            <grading-section v-if="isLecturer && viewMode" :exam="exam" />
 
             <button-section>
                 <template #right>

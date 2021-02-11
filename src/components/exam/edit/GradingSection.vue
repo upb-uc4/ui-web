@@ -20,6 +20,7 @@
                             <Select
                                 :id="`grade_${result.enrollmentId.substring(0, 4)}`"
                                 v-model:selection="result.grade"
+                                :disabled="isGraded"
                                 title="Pick a Grade"
                                 :elements="grades"
                             />
@@ -28,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <button-section>
+        <button-section v-if="!isGraded">
             <template #right>
                 <button id="gradeExam" :disabled="!isValid" type="button" class="w-full w-48 btn btn-add" @click="gradeExam">
                     Grade Exam
@@ -115,11 +116,22 @@
             const examResults = ref([] as ExamResult[]);
             const grades = Object.values(Grade);
 
+            const isGraded = ref(false);
+
             onBeforeMount(async () => {
                 isLoading.value = true;
-                await getExamAdmissions();
+                let promises = [];
+                promises.push(getExamAdmissions());
+                promises.push(getExamResults());
+                await Promise.all(promises);
                 isLoading.value = false;
             });
+
+            async function getExamResults() {
+                //TODO
+                //IF FOUND:
+                //isGraded.value = true;
+            }
 
             async function getExamAdmissions() {
                 const admission_management = new AdmissionManagement();
@@ -144,6 +156,8 @@
 
             async function gradeExam() {
                 //TODO
+                //IF SUCCESS
+                isGraded.value = true;
                 console.log("Graded!");
             }
 
@@ -163,6 +177,7 @@
                 grades,
                 exportCSV,
                 importCSV,
+                isGraded,
             };
         },
     };
