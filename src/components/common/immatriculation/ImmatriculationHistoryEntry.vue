@@ -2,10 +2,19 @@
     <div class="space-y-1.5">
         <div class="flex items-center space-x-6">
             <div class="bg-blue-700 dark:bg-lime-500 rounded-full h-8 w-8" />
-            <div v-if="isAdminView || isLoading" class="text-base input-label">{{ semester }}</div>
-            <a v-else id="downloadCertificate" :href="certificateDownloadURL" class="text-base navigation-link" download="certificate.pem">
-                {{ semester }}
-            </a>
+            <div class="flex items-center">
+                <label class="text-lg input-label">{{ semester }}</label>
+                <a
+                    v-if="!(isAdminView || isLoading)"
+                    id="downloadCertificate"
+                    title="Download Certificate of Enrollment"
+                    :href="certificateDownloadURL"
+                    class="text-xs navigation-link-gray ml-2 mb-1"
+                    download="certificate.pem"
+                >
+                    <i class="fas fa-download"></i>
+                </a>
+            </div>
         </div>
         <div class="ml-14 space-y-0.5">
             <div v-for="fieldOfStudy in fieldsOfStudy" :key="fieldOfStudy" class="text-sm text-gray-500">
