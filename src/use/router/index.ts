@@ -23,7 +23,7 @@ const StudentImmatricultaion = () => import("@/views/student/Immatriculation.vue
 const OperationsArchive = () => import("@/views/common/OperationsArchive.vue");
 const AllOperationsPage = () => import("@/views/admin/AllOperations.vue");
 const DPA = () => import("@/views/common/DPA.vue");
-const ExamList = () => import("@/views/lecturer/ExamList.vue");
+const ExamList = () => import("@/views/shared/ExamList.vue");
 const CreateViewExamForm = () => import("@/views/shared/CreateViewExamForm.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
