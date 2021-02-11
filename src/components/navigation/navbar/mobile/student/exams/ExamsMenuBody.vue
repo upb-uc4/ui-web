@@ -2,7 +2,12 @@
     <section class="flex flex-col px-2 pt-3 pb-1">
         <ul class="w-full px-2">
             <li class="mb-2">
-                <menu-item id="nav_mobile_student_menu_exams" title="Exams" icon-class="fas fa-list-alt" target-route-name="exams.list" />
+                <menu-item
+                    id="nav_mobile_student_menu_exams_my_exams"
+                    title="Exams"
+                    icon-class="fas fa-list-alt"
+                    target-route-name="exams.list"
+                />
             </li>
         </ul>
     </section>

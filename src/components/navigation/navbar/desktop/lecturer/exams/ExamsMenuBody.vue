@@ -3,7 +3,7 @@
         <ul class="w-full lg:w-1/2 px-2 space-y-4">
             <li>
                 <menu-item
-                    id="nav_desktop_lecturer_menu_exams"
+                    id="nav_desktop_lecturer_menu_exams_my_exams"
                     title="Exams"
                     description="Existing exams for your courses"
                     icon-class="fas fa-list-alt"

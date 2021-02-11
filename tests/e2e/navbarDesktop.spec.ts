@@ -79,6 +79,19 @@ describe("lecturer", () => {
         cy.get("#nav_desktop_lecturer_menu_courses_my_courses").click();
         cy.url().should("contain", "course-management");
     });
+
+    it("exams", () => {
+        //open the menu
+        cy.get("#nav_desktop_lecturer_menu_exams").trigger("mouseover");
+
+        // create exam
+        cy.get("#nav_desktop_lecturer_menu_exams_create").click();
+        cy.url().should("contain", "create-exam");
+
+        // my exams
+        cy.get("#nav_desktop_lecturer_menu_exams_my_exams").click();
+        cy.url().should("contain", "exams");
+    });
     checkProfile();
 });
 
@@ -107,6 +120,15 @@ describe("student", () => {
         //all courses
         cy.get("#nav_desktop_student_menu_study_immatriculation").click();
         cy.url().should("contain", "immatriculation");
+    });
+
+    it("exams", () => {
+        //open the menu
+        cy.get("#nav_desktop_student_menu_exams").trigger("mouseover");
+
+        // my exams
+        cy.get("#nav_desktop_student_menu_exams_my_exams").click();
+        cy.url().should("contain", "exams");
     });
 
     checkProfile();

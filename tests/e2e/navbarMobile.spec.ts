@@ -127,6 +127,23 @@ describe("lecturer", () => {
         cy.get("#nav_mobile_lecturer_menu_courses_my_courses").click();
         cy.url().should("contain", "course-management");
     });
+
+    it("exams", () => {
+        cy.get(navbar_burger_menu).click();
+
+        //open the menu
+        cy.get("#nav_mobile_lecturer_menu_exams").click();
+
+        //my exams
+        cy.get("#nav_mobile_lecturer_menu_courses_my_exams").click();
+        cy.url().should("contain", "exams");
+
+        cy.get(navbar_burger_menu).click();
+
+        // create course
+        cy.get("#nav_mobile_lecturer_menu_exams_create").click();
+        cy.url().should("contain", "create-exam");
+    });
     checkProfile();
 });
 
@@ -164,6 +181,16 @@ describe("student", () => {
 
         cy.get("#nav_mobile_student_menu_immatriculation").click();
         cy.url().should("contain", "immatriculation");
+    });
+    it("exams", () => {
+        cy.get(navbar_burger_menu).click();
+
+        //open the menu
+        cy.get("#nav_mobile_student_menu_exams").click();
+
+        //my exams
+        cy.get("#nav_mobile_student_menu_courses_my_exams").click();
+        cy.url().should("contain", "exams");
     });
     checkProfile();
 });

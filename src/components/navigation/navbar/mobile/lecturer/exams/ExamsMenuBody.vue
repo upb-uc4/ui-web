@@ -3,7 +3,7 @@
         <ul class="w-full px-2">
             <li class="mb-2">
                 <menu-item
-                    id="nav_mobile_lecturer_menu_exams"
+                    id="nav_mobile_lecturer_menu_exams_my_exams"
                     title="Courses"
                     icon-class="fas fa-list-alt"
                     target-route-name="exams.list"
