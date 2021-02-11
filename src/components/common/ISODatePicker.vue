@@ -9,6 +9,7 @@
 <script lang="ts">
     import DatePicker from "@/components/common/DatePicker.vue";
     import TimePicker from "@/components/common/TimePicker.vue";
+    import numberZeroPad from "@/use/helpers/NumberToZeroPaddedString";
     import { ref, watch } from "vue";
 
     export default {
@@ -45,11 +46,11 @@
 
             if (props.isoDate) {
                 const dateObject = new Date(myIsoDate.value);
-                const paddedMonth = dateObject.getMonth() < 10 ? `0${dateObject.getMonth()}` : `${dateObject.getMonth()}`;
-                const paddedDay = dateObject.getDay() < 10 ? `0${dateObject.getDay()}` : `${dateObject.getDay()}`;
+                const paddedMonth = numberZeroPad(dateObject.getMonth());
+                const paddedDay = numberZeroPad(dateObject.getDay());
                 myDate.value = `${dateObject.getFullYear()}-${paddedMonth}-${paddedDay}`;
-                const paddedHours = dateObject.getHours() < 10 ? `0${dateObject.getHours()}` : `${dateObject.getHours()}`;
-                const paddedMinutes = dateObject.getMinutes() < 10 ? `0${dateObject.getMinutes()}` : `${dateObject.getMinutes()}`;
+                const paddedHours = numberZeroPad(dateObject.getHours());
+                const paddedMinutes = numberZeroPad(dateObject.getMinutes());
                 myTime.value = `${paddedHours}:${paddedMinutes}`;
             }
 
