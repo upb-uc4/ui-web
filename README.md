@@ -9,24 +9,13 @@ This project can be deployed using docker.
 ## Setup
 We recommend using a proxy server like nginx on the host machine to route the backend API endpoint. 
 
-By default, the API will be expected at `localhost/api`.
+By default, the API will be expected at `localhost/api1`.
+
+In production builds, this endpoint is configured in the `vue.config.js`.
 
 ## Configuration
 All configuration which is relevant for deployment can be configured in the `vue.config.js` file in the root directory of this repository.
 
-### PublicPath
-You can edit the publicPath inside the vue config to change the endpoint at which this application will be served.
-
-For example, if you want the website on some.domain.com/deploy/, the config should look like this:
-```js
-//vue.config.js
-module.exports = {
-    publicPath: process.env.NODE_ENV === 'production'
-    ? '/deploy/'
-    : '/'
-};
-```
-Here, `/deploy` is the endpoint used for production builds and `/` is used for development builds.
 ### Backend API URL
 You can configure the API url inside the vue config to change the endpoint at which this application will expect the backend server.
 
@@ -42,6 +31,20 @@ On windows PS:
 $env:NODE_ENV="production"
 $env:NODE_ENV="development"
 $env:NODE_ENV="experimental"
+```
+
+Similarly, the configuration of our jest tests (which are implemented to validate the API and some unit tests), can be configured using
+On windows cmd:
+```
+SET TEST_ENV=production  //to test against production cluster
+SET TEST_ENV=development  //to test against develop cluster
+SET TEST_ENV=experimental  //to test against experimental cluster
+```
+On windows PS:
+```
+$env:TEST_ENV="production"
+$env:TEST_ENV="development"
+$env:TEST_ENV="experimental"
 ```
 
 ## Build docker image
@@ -90,12 +93,26 @@ openssl req -x509 -newkey rsa:4096 -days 365 -nodes -keyout certs/ca-key.pem -ou
 openssl req -newkey rsa:4096 -nodes -keyout certs/server-key.pem -out certs/server-req.pem -subj '/C=DE/ST=NRW/L=Paderborn/CN=localhost'
 openssl x509 -req -in certs/server-req.pem -days 60 -CA certs/ca-cert.pem -CAkey certs/ca-key.pem -CAcreateserial -out certs/server-cert.pem
 ```
-Choose a backend deployment for testing:
+Choose a backend deployment:
 ```
 SET NODE_ENV=production  //to test against production cluster
 SET NODE_ENV=development  //to test against develop cluster
 SET NODE_ENV=experimental  //to test against experimental cluster
 ```
+Similarly, the configuration of our jest tests (which are implemented to validate the API and some unit tests), can be configured using
+On windows cmd:
+```
+SET TEST_ENV=production  //to test against production cluster
+SET TEST_ENV=development  //to test against develop cluster
+SET TEST_ENV=experimental  //to test against experimental cluster
+```
+On windows PS:
+```
+$env:TEST_ENV="production"
+$env:TEST_ENV="development"
+$env:TEST_ENV="experimental"
+```
+
 Run the development frontend:
 ```
 npm run serve
