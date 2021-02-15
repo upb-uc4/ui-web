@@ -80,7 +80,7 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='deleteOwnAccountModalConfirm']").should("be.visible").and("be.disabled");
 
         // enrollementIdSecret is not empty
-        cy.get("a[id='enrollmentIdSecret']").should("not.have.value", "");
+        cy.get("input[id='enrollmentIdSecret']").should("not.have.value", "");
 
         // close with cancel button
         cy.get("button[id='deleteOwnAccountModalCancel']").click();
