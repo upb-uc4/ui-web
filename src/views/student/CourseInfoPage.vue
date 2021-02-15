@@ -44,16 +44,18 @@
     import { useStore } from "@/use/store/store";
     import AdmissionManagement from "@/api/AdmissionManagement";
     import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
-    import { addCourseAdmission, dropCourseAdmission } from "@/api/abstractions/FrontendSigning";
     import CertificateManagement from "@/api/CertificateManagement";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import BaseView from "@/views/common/BaseView.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
     import PresenterSection from "@/components/course/info/sections/PresenterSection.vue";
     import InfoSection from "@/components/course/info/sections/InfoSection.vue";
-    import ModuleSection from "@/components/course/info/sections/ModuleSection.vue";
     import ParticipantsSection from "@/components/course/info/sections/ParticipantsSection.vue";
+    import ModuleSection from "@/components/course/info/sections/ModuleSection.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/AddAdmission";
+    import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -160,7 +162,7 @@
                     moduleId: selectedModule.value,
                     timestamp: "",
                 };
-                const result = await addCourseAdmission(enrollmentId.value, newAdmission);
+                const result = await executeTransaction(new AddAdmissionTransaction(enrollmentId.value, newAdmission));
                 if (result) {
                     const toast = useToast();
                     toast.success(`Successfully admitted for course ${course.value.courseName}`);
@@ -170,7 +172,7 @@
             }
 
             async function dropCourse() {
-                const result = await dropCourseAdmission(admission.value.admissionId);
+                const result = await executeTransaction(new DropAdmissionTransaction(admission.value.admissionId));
                 if (result) {
                     const toast = useToast();
                     toast.success(`Successfully dropped course ${course.value.courseName}`);

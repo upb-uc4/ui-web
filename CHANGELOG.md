@@ -1,3 +1,19 @@
+# [0.18.0](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.18.0) (2021-02-12)
+## Feature
+- add new operations workflow [#832](https://github.com/upb-uc4/ui-web/pull/832)
+- add ability to watch operations
+
+## Bugfix
+- fix colour of uc4 logo in mobile navigation [#834](https://github.com/upb-uc4/ui-web/pull/834)
+- fix bug prventing modules from being updated correctly in courses [#839](https://github.com/upb-uc4/ui-web/pull/839)
+
+## Refactor 
+- fix centering of modal components [#849](https://github.com/upb-uc4/ui-web/pull/849)
+
+# [0.17.1-hotfix.2](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.1...v0.17.1-hotfix.2) (2021-02-03)
+## Bugfix
+- Fix a bug that broke matriculation
+
 # [0.17.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.17.1...v0.17.1-hotfix.1) (2021-02-03)
 ## Bugfix
 - Fix purgecss removing our fancy dark mode background. #828 [#829](https://github.com/upb-uc4/ui-web/pull/829)

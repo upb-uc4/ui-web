@@ -18,6 +18,7 @@
                     identifier="finished"
                     :enrollment-id="enrollmentId"
                     :operations="finishedOperations"
+                    :watched-operations="watchlistOperations"
                     title="Finished Operations"
                     description="Completed Operations. Marking them as read will remove them from the list."
                     @marked-read="markRead"
@@ -27,6 +28,7 @@
                     identifier="actionRequired"
                     :enrollment-id="enrollmentId"
                     :operations="shownActionRequiredOperations"
+                    :watched-operations="watchlistOperations"
                     title="Action Required"
                     description="Operations that require your approval for completion."
                 />
@@ -34,7 +36,8 @@
             <dashboard-component
                 identifier="pending"
                 :enrollment-id="enrollmentId"
-                :operations="pendingOwnOperations"
+                :operations="pendingOperations"
+                :watched-operations="watchlistOperations"
                 title="Pending Operations"
                 description="Your pending operations that wait for approval."
             />
@@ -86,6 +89,7 @@
             const watchlistPendingOperations = ref([] as Operation[]);
             const watchlistCompletedOperations = ref([] as Operation[]);
             const actionRequiredOperations = ref([] as Operation[]);
+            const watchlistOperations = ref([] as Operation[]);
             const store = useStore();
             const hasCertificate = ref(false);
             const role = ref("");
@@ -137,7 +141,7 @@
                 busy.value--;
             }
 
-            const pendingOwnOperations = computed(() => {
+            const pendingOperations = computed(() => {
                 return filterOperations(watchlistPendingOperations.value, message.value);
             });
             const finishedOperations = computed(() => {
@@ -183,7 +187,18 @@
                     })
                 );
 
+                //Get not-selfinitiated operations from watchlist
+                promises.push(
+                    operationManagement.getOperations(false, undefined, undefined, true).then((response) => {
+                        const result = handler.handleResponse(response);
+                        watchlistOperations.value = result;
+                    })
+                );
+
                 await Promise.all(promises);
+                watchlistPendingOperations.value = watchlistPendingOperations.value.filter(
+                    (op) => !actionRequiredOperations.value.some((op2) => op.operationId == op2.operationId)
+                );
                 busy.value--;
             }
 
@@ -224,7 +239,7 @@
             return {
                 busy,
                 hasCertificate,
-                pendingOwnOperations,
+                pendingOperations,
                 finishedOperations,
                 shownActionRequiredOperations,
                 enrollmentId,
@@ -236,6 +251,7 @@
                 isAdmin,
                 routeAllOperationsPage,
                 createCertificate,
+                watchlistOperations,
             };
         },
     };

@@ -110,7 +110,7 @@ describe("Course Admission", () => {
     });
 
     it("Check matriculation history is empty", function () {
-        cy.get("div").contains("There is no matriculation data, yet!").should("exist");
+        cy.get("div").contains("There is no matriculation data yet!");
     });
 
     it("Add two fields of studies for one summer semester", function () {

@@ -3,7 +3,7 @@
         <template #header>
             <p class="modal-headline">Confirmation Needed</p>
         </template>
-        <div>
+        <div class="w-full">
             <p class="modal-description">
                 Please enter the password you used to encrypt your private key. This may differ from your regular application password.
             </p>
@@ -21,7 +21,7 @@
                     class="w-full input-text"
                     :class="[hasError ? 'input-text-error' : 'input-text']"
                     placeholder="Enter Decryption Password"
-                    @keypress.enter="checkPassword"
+                    @keypress.enter="close(action.CONFIRM)"
                 />
             </div>
             <p v-if="hasError" class="input-label-error">Wrong Password!</p>
