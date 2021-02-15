@@ -25,7 +25,7 @@
                 </p>
                 <p class="text-sm font-semibold input-label mt-2 w-full flex justify-center items-center">
                     <input readonly class="form-input input-text text-lg font-bold" :value="enrollmentId" />
-                    <a class="ml-2" :href="secretDownloadURL" download="secret.txt"><i class="fas fa-download cursor-pointer" /></a>
+                    <a id="enrollmentIdSecret" class="ml-2" :href="secretDownloadURL" download="secret.txt"><i class="fas fa-download cursor-pointer"/></a>
                 </p>
             </div>
             <div class="mt-6 relative">
