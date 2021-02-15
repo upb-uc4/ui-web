@@ -1,4 +1,4 @@
-# [WIP 0.17.2](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.17.2) (2021-02-0X)
+# [0.18.0](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.18.0) (2021-02-12)
 ## Feature
 - add new operations workflow [#832](https://github.com/upb-uc4/ui-web/pull/832)
 - add ability to watch operations
