@@ -10,7 +10,7 @@
                     title="Download Certificate of Enrollment"
                     :href="certificateDownloadURL"
                     class="text-xs navigation-link-gray ml-2 mb-1"
-                    download="certificate.pdf"
+                    :download="`${semester}.pdf`"
                 >
                     <i class="fas fa-download"></i>
                 </a>
