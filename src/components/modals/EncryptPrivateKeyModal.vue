@@ -6,7 +6,7 @@
         <div class="w-full">
             <div class="modal-description">
                 Please choose a password to encrypt your private key, so it can be securely stored on our servers. Ensure that you do not
-                lose this password as it <span class="text-blue-800 font-medium">cannot be restored</span>.
+                lose this password as it <span class="text-red-500 font-medium">cannot be restored</span>.
             </div>
             <div class="mt-6 relative">
                 <label class="input-label">Encryption Password</label>
