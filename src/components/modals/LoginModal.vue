@@ -3,11 +3,11 @@
         <template #header>
             <p class="modal-headline">Login</p>
         </template>
-        <div class="flex flex-col">
+        <div class="flex flex-col w-full">
             <div class="modal-description">Please enter your authentication credentials.</div>
 
             <div class="my-4">
-                <label class="input-label">Email Address</label>
+                <label class="input-label">Username</label>
                 <input
                     id="loginModalEmail"
                     v-model="email"

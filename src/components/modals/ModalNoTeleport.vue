@@ -23,7 +23,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="flex mt-4 mr-8">
+                    <div class="flex mt-4">
                         <slot></slot>
                     </div>
                 </div>

@@ -3,7 +3,7 @@
         <template #header>
             <p class="modal-headline">Choose Encryption Password</p>
         </template>
-        <div>
+        <div class="w-full">
             <div class="modal-description">
                 Please choose a password to encrypt your private key, so it can be securely stored on our servers. Ensure that you do not
                 lose this password as it <span class="text-blue-800 font-medium">cannot be restored</span>.

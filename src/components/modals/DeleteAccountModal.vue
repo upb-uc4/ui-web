@@ -3,7 +3,7 @@
         <template #header>
             <p class="modal-headline">Delete account</p>
         </template>
-        <div class="modal-description">
+        <div class="modal-description w-full">
             Are you sure you want to delete this account?<br />
             By doing this you will lose all of your saved data and will not be able to restore it.
         </div>
