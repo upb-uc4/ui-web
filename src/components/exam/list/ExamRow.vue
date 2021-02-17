@@ -130,7 +130,11 @@
             }
 
             function viewCourse() {
-                Router.push({ path: "/editCourse/" + props.course.courseId });
+                if (props.isStudent) {
+                    Router.push({ path: `/courses/${props.course.courseId}/drop` });
+                } else {
+                    Router.push({ path: `/editCourse/${props.course.courseId}` });
+                }
             }
 
             async function admit() {
