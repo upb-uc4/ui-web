@@ -25,6 +25,7 @@ const AllOperationsPage = () => import("@/views/admin/AllOperations.vue");
 const DPA = () => import("@/views/common/DPA.vue");
 const ExamList = () => import("@/views/shared/ExamList.vue");
 const CreateViewExamForm = () => import("@/views/shared/CreateViewExamForm.vue");
+const ExamResultsView = () => import("@/views/student/ExamResults.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -304,6 +305,15 @@ const router = createRouter({
             meta: {
                 title: "View Exam" + suffix,
                 roles: ["Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/exam-results",
+            name: "exams.results",
+            component: ExamResultsView,
+            meta: {
+                title: "Exam Results" + suffix,
+                roles: ["Student"],
             },
         },
         {
