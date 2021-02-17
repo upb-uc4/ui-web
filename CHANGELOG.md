@@ -2,6 +2,9 @@
 ## Bugfix
 - fix profile picture in navbar not updating properly[#855](https://github.com/upb-uc4/ui-web/pull/855)
 
+## Refactor
+- use consistent timeformat for localeDate strings [#799](https://github.com/upb-uc4/ui-web/pull/799)
+
 # [0.18.0](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.18.0) (2021-02-12)
 ## Feature
 - add new operations workflow [#832](https://github.com/upb-uc4/ui-web/pull/832)
