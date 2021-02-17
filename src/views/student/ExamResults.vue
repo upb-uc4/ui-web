@@ -10,7 +10,13 @@
         </div>
         <div v-else>
             <div v-for="exreg in myExamRegs" :key="exreg.name" class="flex flex-col w-full">
-                <label class="input-label font-semibold text-lg"> {{ exreg.name }} </label>
+                <div class="flex justify-between w-full px-6">
+                    <label class="input-label font-semibold text-lg"> {{ exreg.name }} </label>
+                    <div class="w-1/3 flex justify-between text-gray-900 dark:text-gray-300">
+                        <label>ECTS</label>
+                        <label>Grade</label>
+                    </div>
+                </div>
                 <div v-for="mod in exreg.modules" :key="mod.id" class="ml-10 mt-5">
                     <label class="text-gray-600 text-base">{{ `${mod.id}: ${mod.name}` }}</label>
                     <div class="mt-4 px-8">
@@ -26,9 +32,12 @@
                             <label class="navigation-link" title="Show Exam" @click="routeExam(exam.examId)">{{
                                 findCourse(exam.courseId).courseName
                             }}</label>
-                            <label :class="isPassed(findGrade(exam.examId)) ? 'text-green-500' : 'text-red-500'">
-                                {{ findGrade(exam.examId) }}
-                            </label>
+                            <div class="w-1/3 flex justify-between">
+                                <label class="text-gray-400">{{ exam.ects }}</label>
+                                <label :class="isPassed(findGrade(exam.examId)) ? 'text-green-500' : 'text-red-500'">
+                                    {{ findGrade(exam.examId) }}
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <hr class="my-6 dark:border-normalgray-700" />
