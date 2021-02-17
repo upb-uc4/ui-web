@@ -9,6 +9,14 @@
                     target-route-name="exams.list"
                 />
             </li>
+            <li class="mb-2">
+                <menu-item
+                    id="nav_mobile_student_menu_exams_result"
+                    title="Exam Results"
+                    icon-class="fas fa-poll"
+                    target-route-name="exams.results"
+                />
+            </li>
         </ul>
     </section>
 </template>
