@@ -9,12 +9,14 @@ import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
 import UserManagement from "./UserManagement";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class AuthenticationManagement extends Common {
     protected static endpoint = "/authentication-management";
+    protected static serviceIdentifier = "authentication";
 
     constructor() {
-        super(AuthenticationManagement.endpoint);
+        super(AuthenticationManagement.endpoint, AuthenticationManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

@@ -41,7 +41,7 @@ export function logout() {
     cy.get("div[id='menu_profile']").trigger("mouseover");
     cy.get("div[id='menu_profile']").children().eq(1).get("span").contains("Sign out").should("be.visible");
     cy.get("#nav_desktop_logout").click();
-    cy.url().should("eq", `${Cypress.config().baseUrl}/login`);
+    cy.url().should("eq", `${Cypress.config().baseUrl}login`);
 }
 
 export function logoutMobile() {
@@ -49,5 +49,5 @@ export function logoutMobile() {
     cy.get("nav").should("be.visible");
     cy.get("div[id='nav_mobile_menu_profile mobile-navbar-menu']").click();
     cy.get("#nav_mobile_logout").click();
-    cy.url().should("eq", Cypress.config().baseUrl);
+    cy.url().should("eq", `${Cypress.config().baseUrl}login`);
 }

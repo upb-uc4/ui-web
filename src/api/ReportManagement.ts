@@ -1,5 +1,4 @@
 import { AxiosError, AxiosResponse } from "axios";
-import Course from "./api_models/course_management/Course";
 import APIError from "./api_models/errors/APIError";
 import handleAuthenticationError from "./AuthenticationHelper";
 import Common from "./Common";
@@ -7,9 +6,10 @@ import APIResponse from "./helpers/models/APIResponse";
 
 export default class ReportManagement extends Common {
     protected static endpoint = "/report-management";
+    protected static serviceIdentifier = "examreg";
 
     constructor() {
-        super(ReportManagement.endpoint);
+        super(ReportManagement.endpoint, ReportManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

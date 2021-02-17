@@ -7,7 +7,7 @@ import { readFileSync } from "fs";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 
-jest.setTimeout(40000);
+jest.setTimeout(120000);
 
 describe("Report Management Tests", () => {
     const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as { username: string; password: string };
@@ -41,7 +41,7 @@ describe("Report Management Tests", () => {
     });
 
     test("Retrieve data archive", async () => {
-        await new Promise((r) => setTimeout(r, 30000));
+        await new Promise((r) => setTimeout(r, 80000));
         const reportManagement = new ReportManagement();
 
         const response = await reportManagement.getArchive(student.authUser.username);

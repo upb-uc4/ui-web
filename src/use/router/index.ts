@@ -19,7 +19,9 @@ const PrivateProfile = () => import("@/views/common/PrivateProfile.vue");
 const PublicProfile = () => import("@/views/common/PublicProfile.vue");
 const ExamRegForm = () => import("@/views/admin/CreateExamRegForm.vue");
 const Settings = () => import("@/views/common/Settings.vue");
-const StudentImmatricultaion = () => import("@/components/study/Immatriculation.vue");
+const StudentImmatricultaion = () => import("@/views/student/Immatriculation.vue");
+const OperationsArchive = () => import("@/views/common/OperationsArchive.vue");
+const AllOperationsPage = () => import("@/views/admin/AllOperations.vue");
 const DPA = () => import("@/views/common/DPA.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
@@ -244,6 +246,24 @@ const router = createRouter({
             },
         },
         {
+            path: "/operations-archive",
+            name: "operations.archive",
+            component: OperationsArchive,
+            meta: {
+                title: "Operations Archive" + suffix,
+                roles: ["Admin", "Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/operations-all",
+            name: "operations.all",
+            component: AllOperationsPage,
+            meta: {
+                title: "All Operations" + suffix,
+                roles: ["Admin"],
+            },
+        },
+        {
             path: "/data-protection-agreement",
             name: "dpa",
             component: DPA,
@@ -256,7 +276,7 @@ const router = createRouter({
             name: "pageNotFound",
             component: PageNotFound,
             meta: {
-                title: "404" + suffix,
+                title: "Page not found" + suffix,
             },
         },
     ],

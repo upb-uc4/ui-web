@@ -4,15 +4,21 @@
             <li>
                 <menu-item
                     id="nav_mobile_student_menu_courses_all"
-                    title="All Courses"
-                    icon-class="fas fa-list-alt"
+                    title="Enroll in courses"
+                    icon-class="fas fa-bookmark"
                     target-route-name="student.courses"
                 />
                 <menu-item
                     id="nav_mobile_student_menu_courses_admitted"
                     title="My Courses"
-                    icon-class="fas fa-list-alt"
+                    icon-class="fas fa-vote-yea"
                     target-route-name="student.my-courses"
+                />
+                <menu-item
+                    id="nav_desktop_student_menu_course_catalog"
+                    title="Course Catalog"
+                    icon-class="fas fa-list-alt"
+                    target-route-name="courseCatalog"
                 />
             </li>
         </ul>

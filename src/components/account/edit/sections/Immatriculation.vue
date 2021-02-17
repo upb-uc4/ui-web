@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col pl-2 mt-5">
-        <label class="mb-3 text-sm font-medium text-gray-700">Immatriculation History</label>
-        <div class="w-2/3">
+    <div class="w-full">
+        <label class="input-label">Immatriculation History</label>
+        <div class="w-full">
             <immatriculation-history :key="refreshKey" v-model:busy="busy" :username="username" />
         </div>
         <div v-if="busy > 0">

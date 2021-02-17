@@ -5,6 +5,15 @@
                 Login
             </router-link>
         </li>
+        <li>
+            <router-link
+                id="nav_mobile_common_course_catalog"
+                :to="{ name: 'courseCatalog' }"
+                class="hover:bg-blue-800 rounded-lg mobile-navbar-menu"
+            >
+                Course Catalog
+            </router-link>
+        </li>
     </base-navbar>
 </template>
 

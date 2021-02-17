@@ -1,5 +1,5 @@
 import { useStore } from "@/use/store/store";
-import { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
 import MatriculationData from "./api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "./api_models/matriculation_management/SubjectMatriculation";
@@ -10,12 +10,14 @@ import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage
 import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
 import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 
 export default class MatriculationManagement extends CommonHyperledger {
     protected static endpoint = "/matriculation-management";
+    protected static serviceIdentifier = "matriculation";
 
     constructor() {
-        super(MatriculationManagement.endpoint);
+        super(MatriculationManagement.endpoint, MatriculationManagement.serviceIdentifier);
     }
 
     /**
@@ -68,92 +70,9 @@ export default class MatriculationManagement extends CommonHyperledger {
             });
     }
 
-    async submitSignedMatriculationProposal(
-        username: string,
-        message: SignedProposalMessage
-    ): Promise<APIResponse<UnsignedTransactionMessage>> {
-        return await this._axios
-            .post(`/matriculation/${username}/signed_proposal`, message)
-            .then((response: AxiosResponse) => {
-                return {
-                    statusCode: response.status,
-                    returnValue: response.data,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as UnsignedTransactionMessage,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.submitSignedMatriculationProposal(username, message);
-                    }
-                    return {
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        returnValue: {} as UnsignedTransactionMessage,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        error: {} as APIError,
-                        returnValue: {} as UnsignedTransactionMessage,
-                        networkError: true,
-                    };
-                }
-            });
-    }
-
-    async submitSignedMatriculationTransaction(username: string, message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
-        return await this._axios
-            .post(`/matriculation/${username}/signed_transaction`, message)
-            .then((response: AxiosResponse) => {
-                return {
-                    statusCode: response.status,
-                    returnValue: true,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: false,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.submitSignedMatriculationTransaction(username, message);
-                    }
-                    return {
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        returnValue: false,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        error: {} as APIError,
-                        returnValue: false,
-                        networkError: true,
-                    };
-                }
-            });
-    }
-
     async getMatriculationHistory(username: string): Promise<APIResponse<MatriculationData>> {
         return await this._axios
-            .get(`/history/${username}`)
+            .get(`/matriculation/${username}`)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data as MatriculationData,

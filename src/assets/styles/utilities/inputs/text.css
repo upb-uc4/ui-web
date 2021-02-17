@@ -1,19 +1,40 @@
 .input-text {
-    @apply py-3 border-2 border-gray-400 rounded-lg text-gray-600 outline-none opacity-100 !important;
+    @apply input-text-base
+    dark:border-normalgray-900
+    focus:border-blue-600
 }
 
-.input-text:read-only {
-    @apply bg-gray-300 !important;
+.input-text-error {
+    @apply input-text-base border-red-600
+    focus:ring-red-300
+    dark:border-red-500 dark:focus:ring-red-600
 }
 
-.input-text:read-only:focus {
-    @apply outline-none shadow-none border-gray-400 !important;
+.input-text-warning {
+    @apply input-text-base border-yellow-500
+    focus:ring-yellow-200
+    dark:border-yellow-400 dark:focus:ring-yellow-400
 }
 
-.input-text:disabled {
-    @apply bg-gray-300 !important;
+.input-text-base {
+    @apply input-base
 }
 
-.input-text:disabled:focus {
-    @apply outline-none shadow-none border-gray-400 !important;
+.input-text-base:disabled  {
+    @apply bg-gray-200 text-gray-400 border-gray-300
+    dark:bg-normalgray-600 dark:border-normalgray-900
+}
+
+.input-text-base:read-only {
+    @apply bg-gray-200 text-gray-400 border-gray-300
+    focus:border-gray-300
+    dark:bg-normalgray-600 dark:border-normalgray-900
+}
+
+/* also used by selects */
+.input-base {
+    @apply px-3 py-1.5 block border appearance-none text-gray-800 placeholder-gray-500 rounded-md bg-gray-50 text-sm
+    dark:bg-normalgray-800 dark:text-gray-300 dark:placeholder-gray-600
+    focus:outline-none focus:ring
+    sm:leading-5
 }

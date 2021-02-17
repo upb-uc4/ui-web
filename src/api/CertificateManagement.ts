@@ -6,13 +6,15 @@ import EnrollmentId from "./api_models/certificate_management/EnrollmentId";
 import EncryptedPrivateKey from "./api_models/certificate_management/EncryptedPrivateKey";
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
+import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 import { useStore } from "@/use/store/store";
 
 export default class CertificateManagement extends CommonHyperledger {
     protected static endpoint = "/certificate-management";
+    protected static serviceIdentifier = "certificate";
 
     constructor() {
-        super(CertificateManagement.endpoint);
+        super(CertificateManagement.endpoint, CertificateManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {
@@ -62,6 +64,46 @@ export default class CertificateManagement extends CommonHyperledger {
     async getOwnEnrollmentId(): Promise<APIResponse<EnrollmentId>> {
         const username = (await useStore().getters.user).username;
         return this.getEnrollmentId(username);
+    }
+
+    async getUsername(enrollmentId: string): Promise<APIResponse<string>> {
+        return await this._axios
+            .get(`/certificates/${enrollmentId}/username`)
+            .then((response: AxiosResponse) => {
+                return {
+                    returnValue: response.data.username,
+                    statusCode: response.status,
+                    error: {} as APIError,
+                    networkError: false,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: "",
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getUsername(enrollmentId);
+                    }
+                    return {
+                        returnValue: "",
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: "",
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
     }
 
     async getEnrollmentId(username: string): Promise<APIResponse<EnrollmentId>> {

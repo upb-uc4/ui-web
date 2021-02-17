@@ -1,16 +1,8 @@
-import { Account } from "@/entities/Account";
-import { Role } from "@/entities/Role";
-import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-import { MutationTypes } from "@/use/store/mutation-types";
-import { useStore } from "@/use/store/store";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import CourseAdmission from "./api_models/admission_management/CourseAdmission";
 import APIError from "./api_models/errors/APIError";
-import User from "./api_models/user_management/User";
 import handleAuthenticationError from "./AuthenticationHelper";
-import Common from "./Common";
 import APIResponse from "./helpers/models/APIResponse";
-import UserManagement from "./UserManagement";
 import UnsignedProposalMessage from "./api_models/common/UnsignedProposalMessage";
 import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 import CommonHyperledger from "./CommonHyperledger";
@@ -19,97 +11,14 @@ import SignedTransactionMessage from "./api_models/common/SignedTransactionMessa
 
 export default class AdmissionManagement extends CommonHyperledger {
     protected static endpoint = "/admission-management";
+    protected static serviceIdentifier = "admission";
 
     constructor() {
-        super(AdmissionManagement.endpoint);
+        super(AdmissionManagement.endpoint, AdmissionManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {
         return super.getVersion();
-    }
-
-    /**
-     * Submit a signed admissions proposal
-     * @param signedProposal signed proposal
-     */
-    async submitSignedAdmissionsProposal(signedProposal: SignedProposalMessage): Promise<APIResponse<UnsignedTransactionMessage>> {
-        return await this._axios
-            .post(`/admissions/signed_proposal`, signedProposal)
-            .then((response: AxiosResponse) => {
-                return {
-                    statusCode: response.status,
-                    returnValue: response.data,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: {} as any,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.submitSignedAdmissionsProposal(signedProposal);
-                    }
-                    return {
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        returnValue: {} as any,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        error: {} as APIError,
-                        returnValue: {} as any,
-                        networkError: true,
-                    };
-                }
-            });
-    }
-
-    async submitSignedAdmissionsTransaction(message: SignedTransactionMessage): Promise<APIResponse<boolean>> {
-        return await this._axios
-            .post(`/admissions/signed_transaction`, message)
-            .then((response: AxiosResponse) => {
-                return {
-                    statusCode: response.status,
-                    returnValue: true,
-                    networkError: false,
-                    error: {} as APIError,
-                };
-            })
-            .catch(async (error: AxiosError) => {
-                if (error.response) {
-                    if (
-                        await handleAuthenticationError({
-                            statusCode: error.response.status,
-                            error: error.response.data as APIError,
-                            returnValue: false,
-                            networkError: false,
-                        })
-                    ) {
-                        return await this.submitSignedAdmissionsTransaction(message);
-                    }
-                    return {
-                        statusCode: error.response.status,
-                        error: error.response.data as APIError,
-                        returnValue: false,
-                        networkError: false,
-                    };
-                } else {
-                    return {
-                        statusCode: 0,
-                        error: {} as APIError,
-                        returnValue: false,
-                        networkError: true,
-                    };
-                }
-            });
     }
 
     async getCourseAdmissions(username?: string, courseId?: string, moduleId?: string): Promise<APIResponse<CourseAdmission[]>> {

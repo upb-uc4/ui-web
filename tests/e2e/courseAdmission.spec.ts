@@ -1,5 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
+import Admin from "@/api/api_models/user_management/Admin";
 import Student from "@/api/api_models/user_management/Student";
+import OperationManagement from "@/api/OperationManagement";
 import { Account } from "@/entities/Account";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
 import { createCourses, deleteCourses } from "./helpers/CourseHelper";
@@ -10,6 +12,8 @@ import { UserWithAuth } from "./helpers/UserWithAuth";
 describe("Course Admission", () => {
     const random = Math.floor(Math.random() * 9999);
 
+    let admin: Admin;
+    let adminAuthUser: Account;
     let student: Student;
     let studentAuthUser: Account;
     let fieldOfStudy = { semesterType: "SS", year: "2020", fos: "Bachelor Computer Science v3" };
@@ -17,6 +21,9 @@ describe("Course Admission", () => {
     let lecturerAuth: Account;
     let course: Course;
     let usersWithAuth: UserWithAuth[] = [];
+
+    let op1Id = "";
+    let op1IdShort = "";
 
     before(() => {
         cy.clearCookies();
@@ -27,6 +34,20 @@ describe("Course Admission", () => {
         cy.fixture("logins/admin.json")
             .then((admin) => {
                 adminAuth = admin;
+            })
+            .then(() => {
+                cy.fixture("admin.json").then((a) => {
+                    (a as Admin).username += random;
+                    admin = a as Admin;
+                });
+            })
+            .then(() => {
+                cy.fixture("adminAuthUser.json").then((a) => {
+                    (a as Admin).username += random;
+                    adminAuthUser = a as Account;
+                    let governmentId = getRandomizedGovernmentId();
+                    usersWithAuth.push({ governmentId, userInfo: admin, auth: adminAuthUser });
+                });
             })
             .then(() => {
                 cy.fixture("course.json").then((c) => {
@@ -72,8 +93,10 @@ describe("Course Admission", () => {
     });
 
     after(() => {
-        deleteCourses([course]);
-        deleteUsers([studentAuthUser], adminAuth);
+        getMachineUserAuth(adminAuth).then(() => {
+            deleteCourses([course]);
+            deleteUsers([studentAuthUser], adminAuth);
+        });
         logout();
     });
 
@@ -81,16 +104,21 @@ describe("Course Admission", () => {
         loginAsUser(studentAuthUser);
     });
 
-    //Immatriculate first
-    it("Select a field of study", () => {
+    it("Navigate to settings page", () => {
         navigateToImmatriculationPage();
-        cy.wait(20000);
-        cy.get("button[id='removeFieldOfStudy-1']").should("not.exist");
-        cy.get("select[id='semesterType']").select(fieldOfStudy.semesterType);
-        cy.get("select[id='semesterYear']").select(fieldOfStudy.year);
-        cy.get("select[id='fieldsOfStudy-1']").select(fieldOfStudy.fos);
+        cy.wait(9000);
+    });
+
+    it("Check matriculation history is empty", function () {
+        cy.get("div").contains("There is no matriculation data yet!");
+    });
+
+    it("Add two fields of studies for one summer semester", function () {
+        cy.get("select[id=semesterType]").select(fieldOfStudy.semesterType);
+        cy.get("select[id=semesterYear]").select(fieldOfStudy.year);
+        cy.get("select[id=fieldsOfStudy-1]").select(fieldOfStudy.fos);
         cy.get("button[id=addImmatriculationData]").click();
-        cy.wait(5000);
+        cy.wait(2000);
     });
 
     it("Encryption modal should be shown", () => {
@@ -105,32 +133,78 @@ describe("Course Admission", () => {
         cy.get("input[id='enterEncryptionPassword']").clear().type(encryptionPassword);
         cy.get("input[id='confirmEncryptionPassword']").clear().type(encryptionPassword);
         cy.get("button[id='encryptPrivateKeyModalConfirm']").click();
-        // wait for certificate to be created and the immatriculation data to be written
-        cy.wait(40000);
     });
 
+    //TODO What happens if we cancel here?
     it("Decryption modal shown", () => {
         cy.get("input[id='enterDecryptionPassword']").type(studentAuthUser.password);
         cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
-        cy.wait(60000);
+        cy.wait(5000);
     });
 
-    it("Correct immatriculation entries are shown", () => {
-        cy.get("div").contains("Immatriculation History");
-        cy.get("div").should("contain", fieldOfStudy.year).and("contain", fieldOfStudy.fos);
+    it("Get operation-IDs", () => {
+        cy.wait(15000).then(async () => {
+            await getMachineUserAuth(studentAuthUser);
+
+            const operationManagement = new OperationManagement();
+            let response = await operationManagement.getOperations(true, undefined, undefined, true);
+
+            let ops = response.returnValue;
+            console.log(ops);
+            for (var op of ops) {
+                console.log(op.operationId);
+                if (op.transactionInfo.parameters.includes(fieldOfStudy.year)) {
+                    op1Id = op.operationId;
+                    op1IdShort = op1Id.substring(0, 4);
+                }
+            }
+            expect(op1IdShort).to.not.equal("");
+        });
+    });
+
+    it("Create certificate for admin", () => {
+        logout();
+        loginAsUser(adminAuthUser);
+        cy.wait(2000);
+        cy.get("button[id='createCertificate']").click();
+        cy.wait(2000);
+        const encryptionPassword = adminAuthUser.password;
+        cy.get("input[id='enterEncryptionPassword']").clear().type(encryptionPassword);
+        cy.get("input[id='confirmEncryptionPassword']").clear().type(encryptionPassword);
+        cy.get("button[id='encryptPrivateKeyModalConfirm']").click();
+        cy.wait(15000);
+    });
+
+    it("Approve first operation", () => {
+        cy.get("div[id='dashboard_actionRequired']").get(`div[id='op_${op1IdShort}']`).get(`button[id='op_approve_${op1IdShort}']`).click();
+
+        cy.get("input[id='enterDecryptionPassword']").type(adminAuthUser.password);
+        cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
+        cy.wait(8000);
+
+        cy.get("div[id='dashboard_actionRequired']")
+            .get(`div[id='op_${op1IdShort}']`)
+            .get(`button[id='op_approve_${op1IdShort}']`)
+            .should("be.disabled");
+        cy.get("div[id='dashboard_actionRequired']")
+            .get(`div[id='op_${op1IdShort}']`)
+            .get(`button[id='op_startRejection_${op1IdShort}']`)
+            .should("not.be.visible");
+        logout();
     });
 
     it("Admitted Courses Page should be empty", () => {
+        loginAsUser(studentAuthUser);
         navigateToAdmittedCourses();
         //Call on chain to get admissions
-        cy.wait(20000);
+        cy.wait(5000);
         cy.get("div").contains(course.courseName).should("not.exist");
     });
 
     it("Navigate to available courses", () => {
         navigateToCourseListStudent();
         //Call on chain to get admissions
-        cy.wait(20000);
+        cy.wait(5000);
         cy.get("div").contains(course.courseName).should("exist");
     });
 
@@ -144,10 +218,15 @@ describe("Course Admission", () => {
         cy.get("input[id='courseLanguage']").should("have.value", course.courseLanguage);
         cy.get("input[id='ects']").should("have.value", course.ects);
         cy.get("textarea[id='courseDescription']").should("have.value", course.courseDescription);
+        cy.get("input[id='selectModule']").click();
+        for (let m of course.moduleIds) {
+            cy.get("div").contains(m).should("exist");
+        }
     });
 
     it("Select a module and join the course", () => {
         cy.get("input[id='selectModule']").clear().type(course.moduleIds[0]);
+        cy.get("div[id='selectModule_options']").click();
         cy.get("button[id='joinCourse']").click();
     });
 
@@ -156,17 +235,17 @@ describe("Course Admission", () => {
         cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
 
         //Call on chain (add admission + get admissions on course list)
-        cy.wait(60000);
+        cy.wait(15000);
     });
 
     it("Course is flagged with admitted", () => {
         cy.url().should("contain", "courses");
-        cy.get("div").contains(course.courseName).parent().should("contain", "Registered");
+        cy.get("div").contains(course.courseName).parent().should("contain", "registered");
     });
 
     it("Admitted courses list contains course", () => {
         navigateToAdmittedCourses();
-        cy.wait(20000);
+        cy.wait(8000);
         cy.get("div").contains(course.courseName).should("exist");
     });
 
@@ -174,14 +253,14 @@ describe("Course Admission", () => {
         cy.get("div").contains(course.courseName).click();
         cy.url().should("contain", "drop");
         //Call on chain to get admissions
-        cy.wait(20000);
+        cy.wait(10000);
 
         cy.get("button[id='dropCourse']").click();
 
         //Call on chain (add admission + get admissions on course list)
         cy.get("input[id='enterDecryptionPassword']").type(studentAuthUser.password);
         cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
-        cy.wait(45000);
+        cy.wait(15000);
         cy.get("div").contains(course.courseName).should("not.exist");
     });
 });

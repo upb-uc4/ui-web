@@ -1,118 +1,68 @@
 <template>
-    <section class="border-t-2 py-8 border-gray-400" @keydown.esc="cancelEdit">
-        <div class="lg:flex">
-            <div class="w-full lg:w-1/3 lg:block mr-12 flex flex-col mb-4">
-                <div class="flex mb-2 align-baseline">
-                    <label class="block text-gray-700 text-lg font-medium">Research Area</label>
-                    <button v-show="!isEditing" id="editResearchArea" class="ml-4 text-sm btn-blue-tertiary" @click="edit">Edit</button>
-                    <button v-show="isEditing" id="saveResearchArea" class="ml-4 text-sm btn-blue-tertiary" @click="save">Save</button>
-                    <button v-show="isEditing" id="cancelEditResearchArea" class="ml-4 text-sm btn-blue-tertiary" @click="cancelEdit">
-                        Cancel
-                    </button>
-                </div>
-                <label class="block text-gray-600"> This section can be publicly seen. </label>
-            </div>
-
-            <div class="w-full lg:w-2/3">
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Research Area</label>
+    <BaseSection title="Research Area" subtitle="This section can be publicly seen.">
+        <div class="space-y-6">
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="w-full">
+                    <label class="input-label">Research Area</label>
                     <textarea
                         id="researchArea"
-                        v-model="editedUser.researchArea"
-                        :readonly="!isEditing"
+                        v-model="myResearchArea"
+                        class="w-full"
                         rows="3"
-                        class="w-full input-text form-textarea"
-                        :class="{ error: errorBag.hasNested('description') }"
+                        :class="errorBag.hasNested('description') ? 'input-text-error' : 'input-text'"
                     />
-                    <p v-if="errorBag.hasNested('description')" class="error-message">
-                        {{ errorBag.getNested("description") }}
-                    </p>
+                    <label v-if="errorBag.hasNested('description')" class="input-label-error">{{
+                        errorBag.getNested("description")
+                    }}</label>
                 </div>
-
-                <div class="mb-6 flex flex-col">
-                    <label class="text-gray-700 text-md font-medium mb-3">Description</label>
+            </div>
+            <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
+                <div class="w-full">
+                    <label class="input-label">Description</label>
                     <textarea
-                        id="description"
-                        v-model="editedUser.freeText"
-                        :readonly="!isEditing"
-                        rows="3"
-                        class="w-full input-text form-textarea"
-                        :class="{ error: errorBag.hasNested('freeText') }"
+                        id="freeText"
+                        v-model="myFreeText"
+                        class="w-full"
+                        rows="5"
+                        :class="errorBag.hasNested('freeText') ? 'input-text-error' : 'input-text'"
                     />
-                    <p v-if="errorBag.hasNested('freeText')" class="error-message">
-                        {{ errorBag.getNested("freeText") }}
-                    </p>
+                    <label v-if="errorBag.hasNested('freeText')" class="input-label-error">{{ errorBag.getNested("freeText") }}</label>
                 </div>
             </div>
         </div>
-    </section>
+    </BaseSection>
 </template>
 
 <script lang="ts">
-    import { ref, watch } from "vue";
-    import UserManagement from "@/api/UserManagement";
-    import ValidationResponseHandler from "@/use/helpers/ValidationResponseHandler";
-    import { cloneDeep } from "lodash";
+    import BaseSection from "@/components/common/section/BaseSection.vue";
+    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ErrorBag from "@/use/helpers/ErrorBag";
-    import Lecturer from "@/api/api_models/user_management/Lecturer";
 
     export default {
+        name: "ResearchSection",
+        components: {
+            BaseSection,
+        },
         props: {
-            user: {
+            freeText: {
+                type: String,
                 required: true,
-                type: Object as () => Lecturer,
+            },
+            researchArea: {
+                type: String,
+                required: true,
+            },
+            errorBag: {
+                type: Object as () => ErrorBag,
+                required: true,
             },
         },
-        emits: ["update:user"],
+        emits: ["update:freeText", "update:researchArea"],
         setup(props: any, { emit }: any) {
-            const editedUser = ref(cloneDeep(props.user));
-            const isEditing = ref(false);
-            const errorBag = ref(new ErrorBag());
-
-            //react on saved changes from other components
-            watch(
-                () => props.user,
-                () => {
-                    let localResearchChanges = {
-                        researchArea: editedUser.value.researchArea,
-                        freeText: editedUser.value.freeText,
-                    };
-                    //update user object
-                    editedUser.value = cloneDeep(props.user);
-                    // restore local changes
-                    editedUser.value.researchArea = localResearchChanges.researchArea;
-                    editedUser.value.freeText = localResearchChanges.freeText;
-                }
-            );
-
-            function edit() {
-                isEditing.value = true;
-            }
-
-            function cancelEdit() {
-                resetInputs();
-                isEditing.value = false;
-            }
-
-            function resetInputs() {
-                editedUser.value = cloneDeep(props.user);
-                errorBag.value = new ErrorBag();
-            }
-
-            async function save() {
-                const auth: UserManagement = new UserManagement();
-                const response = await auth.updateUser(editedUser.value);
-                const handler = new ValidationResponseHandler("research data");
-                if (handler.handleResponse(response)) {
-                    isEditing.value = false;
-                    emit("update:user", editedUser.value);
-                    errorBag.value = new ErrorBag();
-                } else {
-                    errorBag.value = new ErrorBag(handler.errorList);
-                }
-            }
-
-            return { isEditing, edit, cancelEdit, save, editedUser, errorBag };
+            return {
+                myFreeText: useModelWrapper(props, emit, "freeText"),
+                myResearchArea: useModelWrapper(props, emit, "researchArea"),
+            };
         },
     };
 </script>

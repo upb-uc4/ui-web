@@ -6,7 +6,7 @@
         <div v-if="busy" class="mx-auto">
             <loading-spinner />
         </div>
-        <div v-else class="flex flex-col">
+        <div v-else class="flex flex-col w-full">
             <div class="my-2 w-full flex justify-center my-8">
                 <div class="fa-stack fa-2x">
                     <i class="fas fa-circle fa-stack-2x text-red-200" />
@@ -14,11 +14,11 @@
                 </div>
             </div>
             <div class="flex flex-col">
-                <p class="flex font-semibold">
+                <p class="flex font-semibold input-label">
                     <span class="text-red-700 mr-2 mb-4 font-bold">Warning!</span>
                     You are about to delete your UC4 account.
                 </p>
-                <p class="text-sm font-semibold">
+                <p class="text-sm font-semibold input-label">
                     If you continue, all your saved personal data will be permanently deleted and you will no will no longer be able to use
                     the system. Stored study data remains, but you may only access it by requesting it using your secret used for
                     enrollment.
@@ -27,7 +27,7 @@
             <div class="mt-6 relative">
                 <i
                     :class="[isPasswordVisible() ? 'fa-eye-slash' : 'fa-eye']"
-                    class="fas absolute mt-4 mr-4 right-0 text-gray-500 cursor-pointer"
+                    class="fas absolute z-20 mt-2.5 mr-4 right-0 text-gray-500 cursor-pointer"
                     @click="togglePassword"
                 />
                 <input
@@ -35,7 +35,7 @@
                     v-model="password"
                     :type="passwordFieldType"
                     class="w-full form-input input-text"
-                    :class="{ error: hasError }"
+                    :class="hasError ? 'input-text-error' : ''"
                     placeholder="Enter Password"
                     @keypress.enter="checkPassword"
                 />

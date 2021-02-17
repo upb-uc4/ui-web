@@ -106,7 +106,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Show new account page", function () {
-        cy.get('button[id="addAccount"]').click({ force: true });
+        cy.get('a[id="addAccount"]').click({ force: true });
         cy.url().should("contain", "/createAccount");
     });
 
@@ -123,14 +123,14 @@ describe("Account creation, edition and deletion", function () {
 
         cy.get("input[id='userName']").should("exist");
         cy.get("input[id='email']").should("exist");
-        cy.get("input[id='password']").should("exist");
+        cy.get("input[id='securitySectionPassword']").should("exist");
         cy.get("input[id='phoneNumber']").should("exist");
         cy.get("input[id='firstName']").should("exist");
         cy.get("input[id='lastName']").should("exist");
-        cy.get("select[id='day']").should("exist");
-        cy.get("select[id='month']").should("exist");
-        cy.get("select[id='year']").should("exist");
-        cy.get("select[id='country']").should("exist");
+        cy.get("button[id='day']").should("exist");
+        cy.get("button[id='month']").should("exist");
+        cy.get("button[id='year']").should("exist");
+        cy.get("button[id='country']").should("exist");
         cy.get("input[id='street']").should("exist");
         cy.get("input[id='houseNumber']").should("exist");
         cy.get("input[id='zipCode']").should("exist");
@@ -167,43 +167,44 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Show new account page", () => {
-        cy.get('button[id="addAccount"]').click({ force: true });
+        cy.get('a[id="addAccount"]').click({ force: true });
         cy.url().should("contain", "/createAccount");
     });
 
     it("Show validation errors", () => {
         cy.get("input[id='userName']").type(student.username);
         cy.get("button[id='createAccount']").click();
-        cy.get("div[id='roleSelection']").siblings().get("p").should("have.class", "error-message");
+        cy.get("div[id='roleSelection']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[type='radio']").eq(1).click();
         cy.get("textarea[id='researchArea']").invoke("val", "1".repeat(201)).trigger("input");
         cy.get("textarea[id='freeText']").invoke("val", "1".repeat(10001)).trigger("input");
         cy.get("input[id='userName']").clear();
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='userName']").siblings().get("div").should("have.class", "error-message");
-        cy.get("input[id='email']").siblings().get("div").should("have.class", "error-message");
-        cy.get("input[id='phoneNumber']").siblings().get("div").should("have.class", "error-message");
-        cy.get("input[id='password']").siblings().get("div").should("have.class", "error-message");
-        cy.get("input[id='firstName']").siblings().get("div").should("have.class", "error-message");
-        cy.get("input[id='lastName']").siblings().get("div").should("have.class", "error-message");
-        cy.get("div[id='birthdate']").siblings().get("p").should("have.class", "error-message");
-        cy.get("select[id='country']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='street']").siblings().get("div").should("have.class", "error-message");
-        cy.get("input[id='houseNumber']").siblings().get("div").should("have.class", "error-message");
-        cy.get("input[id='zipCode']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='city']").siblings().get("div").should("have.class", "error-message");
-        cy.get("textarea[id='researchArea']").siblings().get("p").should("have.class", "error-message");
-        cy.get("textarea[id='freeText']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='userName']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='email']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='phoneNumber']").siblings().get("label").should("have.class", "input-label-error");
+        //TODO include when password is not optional
+        //cy.get("input[id='password']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='firstName']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='lastName']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("div[id='birthdate']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("button[id='country']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='street']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='houseNumber']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='zipCode']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='city']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("textarea[id='researchArea']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("textarea[id='freeText']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[type='radio']").eq(2).click();
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='matriculationId']").siblings().get("p").should("have.class", "error-message");
-        cy.get("input[id='governmentId']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='matriculationId']").siblings().get("label").should("have.class", "input-label-error");
+        cy.get("input[id='governmentId']").siblings().get("label").should("have.class", "input-label-error");
     });
 
     it("Duplicate username detected", () => {
         cy.get("input[id='userName']").type("student");
         cy.get("button[id='createAccount']").click();
-        cy.get("input[id='userName']").siblings().get("p").should("have.class", "error-message");
+        cy.get("input[id='userName']").siblings().get("label").should("have.class", "input-label-error");
         cy.get("input[id='userName']").clear();
     });
     // create student account
@@ -224,7 +225,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Can not edit role", function () {
         // check that I can not change role
-        cy.get("input[type='radio']").should("be.disabled");
+        cy.get("input[type='radio']").should("not.exist");
     });
 
     it("Can not edit username", function () {
@@ -233,7 +234,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can not edit password", function () {
-        cy.get("input[id='password']").should("not.exist");
+        cy.get("input[id='securitySectionPassword']").should("not.exist");
     });
 
     it("Can change email address", () => {
@@ -241,9 +242,12 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Country enum is filled", function () {
-        cy.get('select[id="country"]').select("Germany");
-        cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(student.address.country);
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-Germany"]').click();
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-United States"]').click();
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-' + student.address.country + '"]').click();
     });
 
     it("Can change name", function () {
@@ -273,7 +277,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Can not edit role", function () {
         // check that I can not change role
-        cy.get("input[type='radio']").should("be.disabled");
+        cy.get("input[type='radio']").should("not.exist");
     });
 
     it("Can not edit username", function () {
@@ -282,7 +286,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can not edit password", function () {
-        cy.get("input[id='password']").should("not.exist");
+        cy.get("input[id='securitySectionPassword']").should("not.exist");
     });
 
     it("Can change email address", () => {
@@ -290,9 +294,12 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Country enum is filled", function () {
-        cy.get('select[id="country"]').select("Germany");
-        cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(lecturer.address.country);
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-Germany"]').click();
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-United States"]').click();
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-' + student.address.country + '"]').click();
     });
 
     it("Can change description", function () {
@@ -334,7 +341,7 @@ describe("Account creation, edition and deletion", function () {
 
     it("Can not edit role", function () {
         // check that I can not change role
-        cy.get("input[type='radio']").should("be.disabled");
+        cy.get("input[type='radio']").should("not.exist");
     });
 
     it("Can not edit username", function () {
@@ -343,7 +350,7 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Can not edit password", function () {
-        cy.get("input[id='password']").should("not.exist");
+        cy.get("input[id='securitySectionPassword']").should("not.exist");
     });
 
     it("Can change email address", () => {
@@ -351,9 +358,12 @@ describe("Account creation, edition and deletion", function () {
     });
 
     it("Country enum is filled", function () {
-        cy.get('select[id="country"]').select("Germany");
-        cy.get('select[id="country"]').select("United States");
-        cy.get('select[id="country"]').select(admin.address.country);
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-Germany"]').click();
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-United States"]').click();
+        cy.get('button[id="country"]').click();
+        cy.get('li[id="countryItem-' + student.address.country + '"]').click();
     });
 
     it("Can change name", function () {

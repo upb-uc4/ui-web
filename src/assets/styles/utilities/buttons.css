@@ -1,104 +1,122 @@
-.btn {
-    @apply font-semibold py-3 rounded-lg text-center tracking-wider border-2;
-}
+/* PRIMARY BUTTONS */
 
-.btn:focus {
-    @apply outline-none;
+/* e.g. accept, login, etc. */
+.btn {
+    @apply btn-primary-base bg-blue-600 border-blue-600
+    hover:bg-blue-700 hover:border-blue-700
+    dark:bg-blue-700 dark:border-blue-700 dark:hover:bg-blue-800 dark:hover:border-blue-800
 }
 
 .btn:disabled {
-    @apply opacity-50 cursor-not-allowed;
+    @apply hover:bg-blue-600 hover:border-blue-600
 }
 
-
-/* PRIMARY BUTTONS */
-
-.btn-blue-primary {
-    @apply bg-blue-700 border-blue-700 text-white;
+/* when adding/creating is the primary action on the page */
+.btn-add {
+    @apply btn-primary-base bg-green-600 border-green-600
+    hover:bg-green-700 hover:border-green-700
+    dark:bg-green-700 dark:border-green-700 dark:hover:bg-green-800 dark:hover:border-green-800
 }
 
-.btn-blue-primary:hover {
-    @apply bg-blue-800 border-blue-800 text-white;
+.btn-add:disabled {
+    @apply hover:bg-green-600 hover:border-green-600
+    dark:bg-green-700 dark:border-green-700
 }
 
-.btn-red-primary {
-    @apply bg-red-700 border-red-700 text-white;
+/* when removing/deleting is the primary action on the page */
+.btn-remove {
+    @apply btn-primary-base bg-red-600 border-red-600 hover:bg-red-700 hover:border-red-700
+    dark:bg-red-800 dark:border-red-800 dark:hover:bg-red-900 dark:hover:border-red-900
 }
 
-.btn-red-primary:hover {
-    @apply bg-red-800 border-red-800 text-white;
+.btn-remove:disabled {
+    @apply hover:bg-red-600 hover:border-red-600
+    dark:bg-red-800 dark:border-red-800
 }
-
-.btn-green-primary-500 {
-    @apply bg-green-500 border-green-500 text-white;
-}
-
-.btn-green-primary-500:hover {
-    @apply bg-green-600 border-green-600 text-white;
-}
-
-.btn-gray-primary {
-    @apply bg-gray-600 border-gray-600 text-white;
-}
-
-.btn-gray-primary:hover {
-    @apply bg-gray-700 border-gray-700 text-white;
-}
-
 
 /* SECONDARY BUTTONS */
 
-.btn-blue-secondary {
-    @apply text-blue-700 border-blue-700;
+/* e.g. cancel button next to a primary action button */
+.btn-secondary {
+    @apply btn-secondary-base text-blue-600 border-blue-600
+    hover:bg-blue-600 hover:text-white
 }
 
-.btn-blue-secondary:hover {
-    @apply bg-blue-800 border-blue-800 text-white;
+.btn-secondary:disabled {
+    @apply bg-transparent text-blue-600
 }
 
-.btn-green-secondary {
-    @apply text-green-700 border-green-700;
+/* when adding is the secondary action on the page */
+.btn-secondary-add {
+    @apply btn-secondary-base text-green-600 border-green-600
+    hover:bg-green-600 hover:text-white
 }
 
-.btn-green-secondary:hover {
-    @apply bg-green-800 border-green-800 text-white;
+.btn-secondary-add:disabled {
+    @apply bg-transparent text-green-600
 }
 
-.btn-red-secondary {
-    @apply text-red-700 border-red-700;
+/* when removing is the secondary action on the page */
+.btn-secondary-remove {
+    @apply btn-secondary-base text-red-600 border-red-600
+    hover:bg-red-600 hover:text-white
 }
 
-.btn-red-secondary:hover {
-    @apply bg-red-800 border-red-800 text-white;
+.btn-secondary-remove:disabled {
+    @apply bg-transparent text-red-600
 }
 
 
 /* TERTIARY BUTTONS */
 
+.btn-tertiary-modal {
+    @apply btn-tertiary-base text-gray-600 hover:text-gray-700 dark:text-gray-200 hover:text-gray-300
+}
+
+/* e.g. cancel button next to a primary action button */
 .btn-tertiary {
-    @apply font-semibold text-gray-600 tracking-wider
+    @apply btn-tertiary-base text-blue-600 hover:text-blue-700
 }
 
-.btn-tertiary:hover {
-    @apply text-gray-700
+.btn-tertiary:disabled {
+    @apply hover:text-blue-600
 }
 
-.btn-tertiary:focus {
-    @apply outline-none;
+/* when adding is the secondary action on the page */
+.btn-tertiary-add {
+    @apply btn-tertiary-base text-green-600 hover:text-green-700
 }
 
-.btn-blue-tertiary {
-    @apply font-semibold text-blue-700
+.btn-tertiary-add:disabled {
+    @apply hover:text-green-600
 }
 
-.btn-blue-tertiary:hover {
-    @apply text-blue-800
+/* when removing is the secondary action on the page */
+.btn-tertiary-remove {
+    @apply btn-tertiary-base text-red-600 hover:text-red-700
 }
 
-.btn-blue-tertiary:focus {
-    @apply outline-none;
+.btn-tertiary-remove:disabled {
+    @apply hover:text-red-600
 }
 
+.btn-tertiary-base {
+    @apply btn-base border-0 p-0 !important;
+}
+
+.btn-secondary-base {
+    @apply btn-base
+}
+
+.btn-primary-base {
+    @apply btn-base text-white
+}
+
+.btn-base {
+    @apply p-1.5 border-2 rounded-md leading-5 font-medium text-sm focus:outline-none tracking-wide
+    transition duration-150 ease-in-out cursor-pointer text-center
+    disabled:opacity-50 disabled:cursor-not-allowed
+}
 
 /* ICON BUTTONS */
 
@@ -123,6 +141,18 @@
 }
 
 .btn-icon-red:focus {
+    @apply outline-none
+}
+
+.btn-icon-red-filled {
+    @apply p-1 bg-red-500 text-white rounded-lg border border-red-400
+}
+
+.btn-icon-red-filled:hover {
+    @apply text-white bg-red-600 border-red-700
+}
+
+.btn-icon-red-filled:focus {
     @apply outline-none
 }
 

@@ -1,16 +1,12 @@
 <template>
     <modal ref="baseModal" :action="action" @cancel="close(action.CANCEL)">
         <template #header>
-            <p class="text-2xl text-gray-900">Unsaved Changes</p>
+            <p class="modal-headline">Unsaved Changes</p>
         </template>
-
-        Do you really want to continue and leave this page? You have unsaved changes.
-
+        <div class="modal-description w-full">Do you really want to continue and leave this page? You have unsaved changes.</div>
         <template #footer>
-            <button id="unsavedChangesModalCancel" class="mr-10 btn-tertiary" @click="close(action.CANCEL)">Cancel</button>
-            <button id="unsavedChangesModalConfirmLeave" class="w-24 py-2 px-2 btn btn-blue-primary" @click="close(action.CONFIRM)">
-                Leave
-            </button>
+            <button id="unsavedChangesModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
+            <button id="unsavedChangesModalConfirmLeave" class="w-24 py-2 px-2 btn" @click="close(action.CONFIRM)">Leave</button>
         </template>
     </modal>
 </template>

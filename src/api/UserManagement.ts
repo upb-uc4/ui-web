@@ -13,9 +13,10 @@ import APIResponse from "./helpers/models/APIResponse";
 
 export default class UserManagement extends Common {
     protected static endpoint = "/user-management";
+    protected static serviceIdentifier = "examreg";
 
     constructor() {
-        super(UserManagement.endpoint);
+        super(UserManagement.endpoint, UserManagement.serviceIdentifier);
     }
 
     static async getVersion(): Promise<string> {

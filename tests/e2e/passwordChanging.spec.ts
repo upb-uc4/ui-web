@@ -62,31 +62,15 @@ describe("Change password", () => {
         navigateToSettingsPage();
     });
 
-    it("Open password change modal", () => {
-        cy.get("#modal-wrapper").should("exist");
-
-        // open
-        cy.get("button[id='updatePassword'").click();
-
-        // close with cancel button
-        cy.get("button[id='enterPasswordModalConfirm']").should("be.visible");
-        cy.get("button[id='enterPasswordModalCancel']").click();
-
-        // open
-        cy.get("button[id='updatePassword'").click();
-    });
-
     it("Enter wrong password should show error", () => {
-        cy.get("input[id='enterPasswordModalPassword']").type(studentAuthUser.password + "wrong!");
-        cy.get("button[id='enterPasswordModalConfirm']").click();
+        cy.get("input[id='oldPassword']").type(studentAuthUser.password + "wrong!");
+        cy.get("button[id='updatePassword']").click();
 
-        cy.get("p").should("have.class", "error-message").should("exist");
+        cy.get("label").should("have.class", "input-label-error").should("exist");
     });
 
     it("Enter correct password", () => {
-        cy.get("input[id='enterPasswordModalPassword']").clear().type(studentAuthUser.password);
-        cy.get("button[id='enterPasswordModalConfirm']").click();
-        cy.get("div[id='modal-wrapper']").children().should("not.be.visible");
+        cy.get("input[id='oldPassword']").clear().type(studentAuthUser.password);
     });
 
     it("Password fields should be password fields", () => {
@@ -95,38 +79,30 @@ describe("Change password", () => {
     });
 
     it("Converting password fields to text fields works", () => {
-        cy.get("button[id='toggleNewPassword']").click();
+        cy.get("i[id='toggleNewPassword']").click();
 
         cy.get("input[id='newPassword']").invoke("attr", "type").should("equal", "text");
         cy.get("input[id='confirmationPassword']").invoke("attr", "type").should("equal", "text");
 
-        cy.get("button[id='toggleConfirmationPassword']").click();
+        cy.get("i[id='toggleConfirmationPassword']").click();
 
         cy.get("input[id='newPassword']").invoke("attr", "type").should("equal", "password");
         cy.get("input[id='confirmationPassword']").invoke("attr", "type").should("equal", "password");
     });
 
     it("Entering different passwords should block button", () => {
-        cy.get("button[id='changePassword']").should("be.disabled");
         cy.get("input[id='newPassword']").type("password-a");
         cy.get("input[id='confirmationPassword']").type("password-b");
-        cy.get("button[id='changePassword']").should("be.disabled");
+
+        cy.get("button[id='updatePassword']").click();
+        cy.get("label").should("have.class", "input-label-error").should("exist");
     });
 
     it("Entering the same password should be valid", () => {
-        cy.get("button[id='changePassword']").should("be.disabled");
         studentAuthUser.password += "-new";
         cy.get("input[id='newPassword']").clear().type(studentAuthUser.password);
         cy.get("input[id='confirmationPassword']").clear().type(studentAuthUser.password);
-        cy.get("button[id='changePassword']").should("not.be.disabled");
-        cy.get("button[id='changePassword']").click();
-    });
-
-    it("Password change should hide inputs", () => {
-        cy.get("input[id='newPassword']").should("not.exist");
-        cy.get("input[id='confirmationPassword']").should("not.exist");
-        cy.get("button[id='changePassword']").should("not.exist");
-        cy.wait(300);
+        cy.get("button[id='updatePassword']").click();
     });
 
     it("Login with new password", () => {

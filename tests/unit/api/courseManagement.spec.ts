@@ -1,7 +1,7 @@
 import Course from "@/api/api_models/course_management/Course";
 import CourseManagement from "@/api/CourseManagement";
-import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import { readFileSync } from "fs";
+import { getRandomizedCourse } from "../../helper/Courses";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 
 var courseManagement: CourseManagement;
@@ -52,7 +52,12 @@ test("Get lecturers courses by name", async () => {
 });
 
 test("Get courses by module", async () => {
-    const courses = await courseManagement.getCourses(undefined, undefined, ["M.1275.01159"]);
+    const courses = await courseManagement.getCourses(undefined, undefined, ["M.1275.01158"]);
+    expect(courses.returnValue.length).toBeGreaterThan(0);
+});
+
+test("Get courses by exam reg", async () => {
+    const courses = await courseManagement.getCourses(undefined, undefined, undefined, ["Bachelor Computer Science v3"]);
     expect(courses.returnValue.length).toBeGreaterThan(0);
 });
 

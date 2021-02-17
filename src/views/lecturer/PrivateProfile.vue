@@ -1,43 +1,36 @@
 <template>
-    <div class="w-full lg:mt-16 mt-8 bg-gray-300 mx-auto h-screen">
-        <button id="navigateBack" class="flex items-center mb-4 navigation-link" @click="back">
-            <i class="fas text-xl fa-chevron-left"></i>
-            <span class="font-bold text-sm ml-1">Back</span>
-        </button>
-
-        <div class="flex items-end justify-between">
-            <h1 class="text-2xl font-medium text-gray-700 mb-8">
-                {{ lecturer.firstName + " " + lecturer.lastName }} (@{{ lecturer.username }})
-            </h1>
-        </div>
-
-        <div>
-            <profile-picture-section :username="lecturer.username" />
-            <personal-section :first-name="lecturer.firstName" :last-name="lecturer.lastName" :birth-date="lecturer.birthDate" />
-
-            <contact-section v-model:user="lecturer" />
-
-            <address-section v-model:user="lecturer" />
-
-            <research-section v-model:user="lecturer" />
-        </div>
+    <div>
+        <section-header :title="title" />
+        <profile-picture-section :show-own-profile="true" />
+        <personal-section
+            v-model:first-name="firstName"
+            v-model:last-name="lastName"
+            v-model:birth-date="birthDate"
+            :readonly="true"
+            :error-bag="errorBag"
+        />
+        <contact-section v-model:email="email" v-model:phone-number="phoneNumber" :error-bag="errorBag" />
+        <address-section v-model:address="address" :error-bag="errorBag" />
+        <research-section v-model:free-text="freeText" v-model:research-area="researchArea" :error-bag="errorBag" />
     </div>
 </template>
 
 <script lang="ts">
+    import SectionHeader from "@/components/common/section/SectionHeader.vue";
+    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
     import PersonalSection from "@/components/profile/PersonalSection.vue";
     import ContactSection from "@/components/profile/ContactSection.vue";
     import AddressSection from "@/components/profile/AddressSection.vue";
     import ResearchSection from "@/components/profile/lecturer/ResearchSection.vue";
-    import { ref } from "vue";
-    import Router from "@/use/router";
-    import UserManagement from "@/api/UserManagement";
+
     import Lecturer from "@/api/api_models/user_management/Lecturer";
-    import { useModelWrapper } from "@/use/helpers/ModelWrapper";
-    import ProfilePictureSection from "@/components/profile/ProfilePictureSection.vue";
+    import { useObjectModelWrapper } from "@/use/helpers/ModelWrapper";
+    import ErrorBag from "@/use/helpers/ErrorBag";
+    import { computed } from "vue";
 
     export default {
         components: {
+            SectionHeader,
             ProfilePictureSection,
             PersonalSection,
             ContactSection,
@@ -49,16 +42,26 @@
                 required: true,
                 type: Object as () => Lecturer,
             },
+            errorBag: {
+                type: Object as () => ErrorBag,
+                required: true,
+            },
         },
         emits: ["update:user"],
         setup(props: any, { emit }: any) {
-            const lecturer = ref(props.user);
+            const title = computed(() => `${props.user.firstName} ${props.user.lastName} (@${props.user.username})`);
 
-            function back() {
-                Router.back();
-            }
-
-            return { lecturer: useModelWrapper(props, emit, "user"), back };
+            return {
+                title,
+                firstName: useObjectModelWrapper(props, emit, "user", "firstName"),
+                lastName: useObjectModelWrapper(props, emit, "user", "lastName"),
+                birthDate: useObjectModelWrapper(props, emit, "user", "birthDate"),
+                email: useObjectModelWrapper(props, emit, "user", "email"),
+                phoneNumber: useObjectModelWrapper(props, emit, "user", "phoneNumber"),
+                address: useObjectModelWrapper(props, emit, "user", "address"),
+                freeText: useObjectModelWrapper(props, emit, "user", "freeText"),
+                researchArea: useObjectModelWrapper(props, emit, "user", "researchArea"),
+            };
         },
     };
 </script>

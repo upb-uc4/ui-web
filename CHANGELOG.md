@@ -1,9 +1,51 @@
-# [0.15.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.15.1...v0.15.2) (2021-01-XX)
+# [WIP 0.18.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.1) (2021-XX-XX)
+## Bugfix
+- fix profile picture in navbar not updating properly[#855](https://github.com/upb-uc4/ui-web/pull/855)
+
+# [0.18.0](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.18.0) (2021-02-12)
+## Feature
+- add new operations workflow [#832](https://github.com/upb-uc4/ui-web/pull/832)
+- add ability to watch operations
+
+## Bugfix
+- fix colour of uc4 logo in mobile navigation [#834](https://github.com/upb-uc4/ui-web/pull/834)
+- fix bug prventing modules from being updated correctly in courses [#839](https://github.com/upb-uc4/ui-web/pull/839)
+
+## Refactor 
+- fix centering of modal components [#849](https://github.com/upb-uc4/ui-web/pull/849)
+
+# [0.17.1-hotfix.2](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.1...v0.17.1-hotfix.2) (2021-02-03)
+## Bugfix
+- Fix a bug that broke matriculation
+
+# [0.17.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.17.1...v0.17.1-hotfix.1) (2021-02-03)
+## Bugfix
+- Fix purgecss removing our fancy dark mode background. #828 [#829](https://github.com/upb-uc4/ui-web/pull/829)
+  
+# [0.17.1](https://github.com/upb-uc4/ui-web/compare/v0.17.0...v0.17.1) (2021-02-02)
+## Feature
+- Redesign the UI and upgrade to Tailwind 2. Add dark mode. [#782](https://github.com/upb-uc4/ui-web/pull/782)
+
+# [0.17.0](https://github.com/upb-uc4/ui-web/compare/v0.16.1-hotfix.1...v0.17.0) (2021-29-01)
+
+# [0.16.1-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.16.1...v0.16.1-hotfix.1) (2021-27-01)
+# Bugfix
+- Catch promise reject when cancelling the certificate creation before displaying the operations dashboard [#817](https://github.com/upb-uc4/ui-web/pull/817)
+
+# [0.16.1](https://github.com/upb-uc4/ui-web/compare/v0.16.0...v0.16.1) (2021-26-01)
+## Feature
+- Add multi user signing dashboard + API on the welcome page + operations archive + all operations page for admin [#785](https://github.com/upb-uc4/ui-web/pull/785)
+
+# Refactor
+- show module names as well in course info page [#795](https://github.com/upb-uc4/ui-web/pull/795)
+
+# [0.16.0](https://github.com/upb-uc4/ui-web/compare/v0.15.1...v0.16.0) (2021-01-18)
 ## Feature
 - add a simple data protection agreement page with a placeholder text referring to the university [#792](https://github.com/upb-uc4/ui-web/pull/792)
 
 ## Bugfix
 - fix bug where proto for decoding could not be found [793](https://github.com/upb-uc4/ui-web/pull/793)
+
 # [0.15.1](https://github.com/upb-uc4/ui-web/compare/v0.15.0...v0.15.1) (2021-01-07)
 ## Feature
 - add frontend validation using backend regex [#755](https://github.com/upb-uc4/ui-web/pull/755)
