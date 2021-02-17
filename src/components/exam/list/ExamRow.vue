@@ -63,6 +63,7 @@
 
 <script lang="ts">
     import Course from "@/api/api_models/course_management/Course";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
     import Router from "@/use/router";
     import { ref } from "vue";
 
@@ -99,17 +100,9 @@
         setup(props: any) {
             const courseName = ref(props.course.courseName);
 
-            const dateFormatOptions = {
-                weekday: "short",
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-            };
-            const examDate = new Date(props.exam.date).toLocaleString("en-US", dateFormatOptions);
-            const admittableUntilFormatted = new Date(props.exam.admittableUntil).toLocaleString("en-US", dateFormatOptions);
-            const droppableUntilFormatted = new Date(props.exam.droppableUntil).toLocaleString("en-US", dateFormatOptions);
+            const examDate = new Date(props.exam.date).toLocaleString("en-GB", dateFormatOptions);
+            const admittableUntilFormatted = new Date(props.exam.admittableUntil).toLocaleString("en-GB", dateFormatOptions);
+            const droppableUntilFormatted = new Date(props.exam.droppableUntil).toLocaleString("en-GB", dateFormatOptions);
             const deadlinesShown = ref(false);
 
             const isAdmitted = ref((props.examAdmissions as any[]).some((admission) => admission.examId == props.exam.examId));

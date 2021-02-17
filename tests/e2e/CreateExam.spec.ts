@@ -5,6 +5,7 @@ import Student from "@/api/api_models/user_management/Student";
 import OperationManagement from "@/api/OperationManagement";
 import { Account } from "@/entities/Account";
 import { months } from "@/entities/Month";
+import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
 import numberZeroPad from "@/use/helpers/NumberToZeroPaddedString";
 import { CourseType } from "tests/fixtures/CourseType";
 import { getMachineUserAuth, loginAsUser, logout } from "./helpers/AuthHelper";
@@ -281,6 +282,6 @@ describe("Account creation, edition and deletion", function () {
         cy.get("div")
             .contains(`Exam: ${course.courseName}`)
             .should("contain", course.moduleIds[0])
-            .and("contain", examDate.toLocaleString());
+            .and("contain", examDate.toLocaleString("en-GB", dateFormatOptions));
     });
 });
