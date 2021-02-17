@@ -10,6 +10,15 @@
                     target-route-name="exams.list"
                 />
             </li>
+            <li>
+                <menu-item
+                    id="nav_desktop_student_menu_exams_results"
+                    title="Exam Results"
+                    description="Your performances for admitted exams"
+                    icon-class="fas fa-poll"
+                    target-route-name="exams.results"
+                />
+            </li>
         </ul>
     </section>
 </template>

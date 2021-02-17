@@ -2,7 +2,7 @@
     <base-view extra-classes="max-w-screen-lg mx-auto">
         <div class="text-2xl text-center font-medium text-gray-800 dark:text-gray-300 mb-4">Exam Results</div>
         <div class="text-lg text-center font-medium text-gray-800 dark:text-gray-400 mb-4">
-            Here, you can find the result of all your admitted exams.
+            Here, you can find the results of all your admitted exams.
         </div>
         <hr class="my-4 dark:border-normalgray-700" />
         <div v-if="isLoading" class="mx-auto">

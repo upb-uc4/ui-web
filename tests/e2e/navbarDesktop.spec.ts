@@ -129,6 +129,10 @@ describe("student", () => {
         // my exams
         cy.get("#nav_desktop_student_menu_exams_my_exams").click();
         cy.url().should("contain", "exams");
+
+        // exam results
+        cy.get("#nav_desktop_student_menu_exams_results").click();
+        cy.url().should("contain", "exam-results");
     });
 
     checkProfile();
