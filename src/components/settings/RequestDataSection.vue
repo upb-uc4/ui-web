@@ -78,6 +78,7 @@
     import ReportManagement from "@/api/ReportManagement";
     import { useStore } from "@/use/store/store";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
 
     export default {
         name: "RequestDataSection",
@@ -90,15 +91,6 @@
             const timestamp = ref("");
             let data = {} as File;
             let dataUrl = ref("");
-
-            const dateFormatOptions = {
-                weekday: "short",
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-            };
 
             async function requestData() {
                 busy.value = true;
