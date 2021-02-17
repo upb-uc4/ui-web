@@ -12,7 +12,7 @@
             <div v-for="exreg in myExamRegs" :key="exreg.name" class="flex flex-col w-full">
                 <div class="flex justify-between w-full">
                     <label class="input-label font-semibold text-lg"> {{ exreg.name }} </label>
-                    <div class="w-1/3 hidden sm:flex justify-between text-gray-900 dark:text-gray-300">
+                    <div class="w-1/3 hidden sm:flex justify-between text-gray-400">
                         <label>ECTS</label>
                         <label>Grade</label>
                     </div>
