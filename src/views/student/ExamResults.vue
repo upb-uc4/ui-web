@@ -6,34 +6,34 @@
         </div>
         <hr class="my-4 dark:border-normalgray-700" />
         <div v-if="isLoading" class="mx-auto">
-            <loading-component title="Loading exam perfomances" />
+            <loading-component title="Loading exam performances" />
         </div>
         <div v-else>
             <div v-for="exreg in myExamRegs" :key="exreg.name" class="flex flex-col w-full">
-                <div class="flex justify-between w-full px-6">
+                <div class="flex justify-between w-full">
                     <label class="input-label font-semibold text-lg"> {{ exreg.name }} </label>
-                    <div class="w-1/3 flex justify-between text-gray-900 dark:text-gray-300">
+                    <div class="w-1/3 hidden sm:flex justify-between text-gray-900 dark:text-gray-300">
                         <label>ECTS</label>
                         <label>Grade</label>
                     </div>
                 </div>
-                <div v-for="mod in exreg.modules" :key="mod.id" class="ml-10 mt-5">
+                <div v-for="mod in exreg.modules" :key="mod.id" class="flex flex-col my-3 justify-center">
                     <label class="text-gray-600 text-base">{{ `${mod.id}: ${mod.name}` }}</label>
-                    <div class="mt-4 px-8">
+                    <div class="sm:ml-6">
                         <div v-if="myExams.filter((ex) => ex.moduleId == mod.id).length == 0">
-                            <label class="input-label-warning text-sm">No results found!</label>
+                            <label class="input-label-warning text-sm sm:pl-6">No results found!</label>
                         </div>
                         <div
                             v-for="exam in myExams.filter((ex) => ex.moduleId == mod.id)"
                             v-else
                             :key="exam.examId"
-                            class="flex justify-between my-4"
+                            class="flex justify-between my-2"
                         >
                             <label class="navigation-link" title="Show Exam" @click="routeExam(exam.examId)">{{
                                 findCourse(exam.courseId).courseName
                             }}</label>
                             <div class="w-1/3 flex justify-between">
-                                <label class="text-gray-400">{{ exam.ects }}</label>
+                                <label class="text-gray-400 pr-2 flex items-center">{{ exam.ects }}<i class="flex text-xs sm:hidden pl-1 fas fa-coins"/></label>
                                 <label :class="isPassed(findGrade(exam.examId)) ? 'text-green-500' : 'text-red-500'">
                                     {{ findGrade(exam.examId) }}
                                 </label>
