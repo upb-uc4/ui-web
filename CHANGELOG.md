@@ -1,6 +1,7 @@
 # [WIP 0.18.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.1) (2021-XX-XX)
 ## Bugfix
 - fix profile picture in navbar not updating properly[#855](https://github.com/upb-uc4/ui-web/pull/855)
+- fix a bug that the year selection would not reset properly[#827](https://github.com/upb-uc4/ui-web/pull/827)
 
 ## Refactor
 - use consistent timeformat for localeDate strings [#799](https://github.com/upb-uc4/ui-web/pull/799)
