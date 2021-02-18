@@ -4,16 +4,21 @@
             <div class="bg-blue-700 dark:bg-lime-500 rounded-full h-8 w-8" />
             <div class="flex items-center">
                 <label class="text-lg input-label">{{ semester }}</label>
-                <a
+                <label
                     v-if="!(isAdminView || isLoading)"
                     id="downloadCertificate"
                     title="Download Certificate of Enrollment"
-                    :href="certificateDownloadURL"
                     class="text-xs navigation-link-gray ml-2 mb-1"
-                    :download="`${semester}.pdf`"
+                    @click="downloadCertificate()"
                 >
                     <i class="fas fa-download"></i>
-                </a>
+                </label>
+                <img
+                    v-else-if="isLoading"
+                    src="@/assets/loading-spinner-alt.svg"
+                    title="Fetching certificate..."
+                    class="h-5 w-5 ml-2 mb-1"
+                />
             </div>
         </div>
         <div class="ml-14 space-y-0.5">
@@ -28,7 +33,7 @@
     import ReportManagement from "@/api/ReportManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { useStore } from "@/use/store/store";
-    import { onBeforeMount, ref } from "vue";
+    import { ref } from "vue";
 
     export default {
         name: "ImmatriculationHistoryEntry",
@@ -51,14 +56,6 @@
             const store = useStore();
             const certificateDownloadURL = ref("");
 
-            onBeforeMount(async () => {
-                if (!props.isAdminView) {
-                    isLoading.value = true;
-                    await loadCertificate();
-                    isLoading.value = false;
-                }
-            });
-
             async function loadCertificate() {
                 const reportManagement = new ReportManagement();
                 const handler = new GenericResponseHandler("certificate");
@@ -71,9 +68,22 @@
                 certificateDownloadURL.value = URL.createObjectURL(certificateFile);
             }
 
+            async function downloadCertificate() {
+                isLoading.value = true;
+                await loadCertificate();
+                var fileLink = document.createElement("a");
+                fileLink.href = certificateDownloadURL.value;
+                fileLink.setAttribute("download", `${props.semester}.pdf`);
+
+                document.body.appendChild(fileLink);
+                fileLink.click();
+                isLoading.value = false;
+            }
+
             return {
                 certificateDownloadURL,
                 isLoading,
+                downloadCertificate,
             };
         },
     };
