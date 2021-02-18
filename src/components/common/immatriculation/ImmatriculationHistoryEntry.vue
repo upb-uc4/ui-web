@@ -77,6 +77,8 @@
 
                 document.body.appendChild(fileLink);
                 fileLink.click();
+                document.body.removeChild(fileLink);
+                URL.revokeObjectURL(certificateDownloadURL.value);
                 isLoading.value = false;
             }
 
