@@ -16,6 +16,10 @@ import {
     base64ToArrayBuffer,
 } from "@/use/crypto/certificates";
 import { usedAlgorithmObject } from "@/use/crypto/certificates";
+import * as asn1js from "asn1js";
+import * as pvutils from "pvutils";
+import Certificate from "pkijs/src/Certificate";
+import { validateCertificate } from "@/use/crypto/certificateValidation";
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as {
     username: string;
@@ -30,6 +34,7 @@ const student2 = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: s
 const governmentId2 = student2.governmentId;
 let keypair = {} as CryptoKeyPair;
 let certManagement: CertificateManagement;
+let ownCertificate = "";
 
 jest.setTimeout(60000);
 
@@ -128,6 +133,18 @@ describe("Certificate management tests", () => {
 
         expect(response.statusCode).toBe(200);
         expect(response.returnValue.certificate).not.toEqual("");
+
+        ownCertificate = response.returnValue.certificate;
+    });
+
+    test("Validate certificate chain", async () => {
+        const ownCertPem = ownCertificate.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
+        const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
+        const asn1User = asn1js.fromBER(berUser);
+        const cert = new Certificate({ schema: asn1User.result });
+
+        const valid = await validateCertificate(cert);
+        expect(valid).toBe(true);
     });
 
     test("Login as student2", async () => {
