@@ -23,14 +23,21 @@
                 </div>
                 <div v-else>
                     <div v-if="gotTimestamp" class="flex flex-col w-full">
-                        <div class="flex w-full space-x-4">
-                            <input id="timestamp" disabled class="input-text-base" :value="timestamp" />
-                            <button id="refreshRequest" class="btn-secondary" title="Refresh the requested data" @click="refresh">
-                                <i class="inline fas fa-redo-alt p-2" />
-                            </button>
-                            <button id="deletePendingRequest" class="btn-secondary-remove" title="Delete your request" @click="deleteData">
-                                <i class="inline fas fa-trash-alt p-2" />
-                            </button>
+                        <div class="sm:flex w-full">
+                            <input id="timestamp" disabled class="input-text-base w-full sm:w-1/3" :value="timestamp" />
+                            <div class="sm:ml-4 mt-4 sm:mt-0">
+                                <button id="refreshRequest" class="btn-secondary" title="Refresh the requested data" @click="refresh">
+                                    <i class="inline fas fa-redo-alt p-2" />
+                                </button>
+                                <button
+                                    id="deletePendingRequest"
+                                    class="btn-secondary-remove ml-4"
+                                    title="Delete your request"
+                                    @click="deleteData"
+                                >
+                                    <i class="inline fas fa-trash-alt p-2" />
+                                </button>
+                            </div>
                         </div>
                         <p class="text-xs text-gray-600 w-1/2 mt-2">
                             You have already requested your stored data. It can take up to 5 minutes until the data is ready. You can hit
@@ -69,6 +76,7 @@
     import { useStore } from "@/use/store/store";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BaseSection from "@/components/common/section/BaseSection.vue";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
 
     export default {
         name: "RequestDataSection",
@@ -103,7 +111,7 @@
                 if (typeof value === "string" && value != "") {
                     gotTimestamp.value = true;
                     isPending.value = true;
-                    timestamp.value = new Date(value).toLocaleString();
+                    timestamp.value = new Date(value).toLocaleString("en-GB", dateFormatOptions);
                 } else if (typeof value === "object" && value.size != 0) {
                     isPending.value = true;
                     gotData.value = true;

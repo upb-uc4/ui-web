@@ -1,4 +1,16 @@
-# [WIP 0.17.2](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.17.2) (2021-02-0X)
+# [WIP 0.18.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.1) (2021-XX-XX)
+## Feature
+- Add Certificate of enrollment [#850](https://github.com/upb-uc4/ui-web/pull/850)
+- Restrict student course list to showing only admittable courses (semester + ExReg) [#851](https://github.com/upb-uc4/ui-web/pull/851)
+
+## Bugfix
+- fix profile picture in navbar not updating properly[#855](https://github.com/upb-uc4/ui-web/pull/855)
+- fix a bug that the year selection would not reset properly[#827](https://github.com/upb-uc4/ui-web/pull/827)
+
+## Refactor
+- use consistent timeformat for localeDate strings [#799](https://github.com/upb-uc4/ui-web/pull/799)
+
+# [0.18.0](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.18.0) (2021-02-12)
 ## Feature
 - add new operations workflow [#832](https://github.com/upb-uc4/ui-web/pull/832)
 - add ability to watch operations
