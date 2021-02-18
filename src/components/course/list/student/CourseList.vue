@@ -94,10 +94,9 @@
                 const response = await matriculation_management.getOwnMatriculationHistory();
                 const result = handler.handleResponse(response);
                 const currentSemester = handler.handleResponse(await new ConfigurationManagement().getCurrentSemester());
-                let returnValue = result.matriculationStatus
+                return result.matriculationStatus
                     .filter((matriculation) => matriculation.semesters.includes(currentSemester))
                     .map((matriculation) => matriculation.fieldOfStudy);
-                return returnValue;
             }
 
             async function getAdmittedCourses() {
