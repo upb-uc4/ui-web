@@ -18,17 +18,17 @@ export default class ReportManagement extends Common {
     }
 
     async getCertificateOfEnrollment(username: string, semester: string): Promise<APIResponse<File>> {
-        const requestParameter = { params: {} as any };
+        const params = {} as any
 
         let base64UrlSemester = btoa(semester);
         base64UrlSemester = base64UrlSemester.replace(/\+/g, "-");
         base64UrlSemester = base64UrlSemester.replace(/\//g, "_");
         base64UrlSemester = base64UrlSemester.replace(/=/g, "");
 
-        requestParameter.params.semester = base64UrlSemester;
+        params.semester = base64UrlSemester;
 
         return await this._axios
-            .get(`/certificates/${username}/enrollment`, requestParameter)
+            .get(`/certificates/${username}/enrollment`, {params, responseType: "arraybuffer"})
             .then((response: AxiosResponse) => {
                 let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
                 const file: File = new File([blob], "certificate.pdf", { type: response.headers["content-type"] });
