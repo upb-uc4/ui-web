@@ -16,7 +16,7 @@
                 :module-ids="course.moduleIds"
                 :error-bag="errorBag"
                 :edit-mode="editMode"
-                @update-modules-ids="updateModuleIds"
+                @update-module-ids="updateModuleIds"
             />
             <restrictions-section v-model:maxParticipants="course.maxParticipants" :error-bag="errorBag" />
             <time-section v-model:start="course.startDate" v-model:end="course.endDate" :error-bag="errorBag" />
