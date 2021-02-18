@@ -54,10 +54,7 @@
 
             onBeforeMount(async () => {
                 isLoading.value = true;
-                const promises = [];
-                promises.push(getUsername(), getCourses());
-                await Promise.all(promises);
-                await getAdmittedCourses();
+                await getCourses();
                 isLoading.value = false;
             });
 
@@ -70,6 +67,7 @@
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
                 if (props.onlyAdmittedCourses) {
+                    await getAdmittedCourses();
                     let tmpCourses = [] as Course[];
                     for (const m of admittedCourses.value) {
                         let response: APIResponse<Course>;
@@ -100,6 +98,7 @@
             }
 
             async function getAdmittedCourses() {
+                await getUsername();
                 const admissionManagement = new AdmissionManagement();
                 const handler = new GenericResponseHandler("admitted courses");
                 const resp = await admissionManagement.getCourseAdmissions(username.value);
