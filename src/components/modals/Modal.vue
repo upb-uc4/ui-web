@@ -24,7 +24,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <div class="flex mt-4 mr-8 text-lg text-gray-600 leading-relaxed tracking-wide">
+                        <div class="flex mt-4 text-lg text-gray-600 leading-relaxed tracking-wide">
                             <slot></slot>
                         </div>
                     </div>
