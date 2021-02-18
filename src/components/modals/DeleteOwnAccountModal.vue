@@ -24,7 +24,7 @@
                     to store it safely!
                 </p>
                 <p class="text-sm font-semibold input-label mt-2 w-full flex justify-center items-center">
-                    <input readonly class="form-input input-text text-lg font-bold" :value="enrollmentId" />
+                    <input readonly class="form-input input-text" :value="enrollmentIdSecret" />
                     <a id="enrollmentIdSecret" class="ml-2" :href="secretDownloadURL" download="secret.txt"><i class="fas fa-download cursor-pointer"/></a>
                 </p>
             </div>
@@ -81,12 +81,12 @@
             const passwordFieldType = ref("password");
             const loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
             const valid = computed(() => password.value != "");
-            const enrollmentId = ref("");
+            const enrollmentIdSecret = ref("");
             const secretDownloadURL = ref("");
 
             onBeforeMount(async () => {
-                enrollmentId.value = (await useStore().getters.user).enrollmentIdSecret;
-                let certificateFile = new Blob([enrollmentId.value], { type: "text" });
+                enrollmentIdSecret.value = (await useStore().getters.user).enrollmentIdSecret;
+                let certificateFile = new Blob([enrollmentIdSecret.value], { type: "text" });
                 secretDownloadURL.value = URL.createObjectURL(certificateFile);
             });
 
@@ -146,7 +146,7 @@
                 close,
                 action,
                 valid,
-                enrollmentId,
+                enrollmentIdSecret,
                 secretDownloadURL,
             };
         },
