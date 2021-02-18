@@ -19,6 +19,7 @@ import { MutationTypes } from "./mutation-types";
 import { processedOperations, State } from "./state";
 import { store, useStore } from "./store";
 import * as asn1js from "asn1js";
+import { validateCertificate } from "../crypto/certificateValidation";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -138,7 +139,20 @@ export const getters: GetterTree<State, State> & Getters = {
                     return Promise.reject("Could not create certificate.");
                 });
             } else {
-                store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);
+                const ownCertificate = certificateResponse.returnValue;
+
+                const ownCertPem = ownCertificate.certificate.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
+                const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
+                const asn1User = asn1js.fromBER(berUser);
+                const cert = new CertificatePKI({ schema: asn1User.result });
+        
+                const valid = await validateCertificate(cert);
+                if (!valid) {
+                    return Promise.reject("Invalid remote certificate signature.")
+                };
+
+
+                store.commit(MutationTypes.SET_CERTIFICATE, ownCertificate);
             }
         }
         return state.certificate;
