@@ -22,6 +22,7 @@
     import User_List from "@/api/api_models/user_management/User_List";
     import AdmissionManagement from "@/api/AdmissionManagement";
     import MatriculationManagement from "@/api/MatriculationManagement";
+    import ConfigurationManagement from "@/api/ConfigurationManagement";
 
     export default {
         name: "CourseList",
@@ -92,9 +93,12 @@
                 const handler = new GenericResponseHandler("examination regulations");
                 const response = await matriculation_management.getOwnMatriculationHistory();
                 const result = handler.handleResponse(response);
+                const currentSemester = handler.handleResponse(await new ConfigurationManagement().getCurrentSemester());
                 let returnValue = [] as string[];
                 result.matriculationStatus.forEach((matriculation) => {
-                    returnValue.push(matriculation.fieldOfStudy);
+                    if (matriculation.semesters.includes(currentSemester)) {
+                        returnValue.push(matriculation.fieldOfStudy);
+                    }
                 });
                 return returnValue;
             }
