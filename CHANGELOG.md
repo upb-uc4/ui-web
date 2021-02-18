@@ -1,3 +1,7 @@
+# [0.18.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.0-hotfix.1) (2021-02-19)
+## Bugfix
+- fix execution calls on "My Courses" page of the student causing no courses being shown [#861](https://github.com/upb-uc4/ui-web/pull/861)
+
 # [0.18.0](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.18.0) (2021-02-12)
 ## Feature
 - add new operations workflow [#832](https://github.com/upb-uc4/ui-web/pull/832)
