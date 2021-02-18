@@ -14,14 +14,18 @@
                 </div>
             </div>
             <div class="flex flex-col">
-                <p class="flex font-semibold input-label">
-                    <span class="text-red-700 mr-2 mb-4 font-bold">Warning!</span>
-                    You are about to delete your UC4 account.
-                </p>
                 <p class="text-sm font-semibold input-label">
                     If you continue, all your saved personal data will be permanently deleted and you will no will no longer be able to use
                     the system. Stored study data remains, but you may only access it by requesting it using your secret used for
                     enrollment.
+                </p>
+                <p class="text-sm font-bold input-label mt-2">
+                    <span class="text-red-700">Attention</span>: To restore your study data, you will need the following secret. Make sure
+                    to store it safely!
+                </p>
+                <p class="text-sm font-semibold input-label mt-2 w-full flex justify-center items-center">
+                    <input readonly class="form-input input-text" :value="enrollmentIdSecret" />
+                    <a id="enrollmentIdSecret" class="ml-2" :href="secretDownloadURL" download="secret.txt"><i class="fas fa-download cursor-pointer"/></a>
                 </p>
             </div>
             <div class="mt-6 relative">
@@ -58,7 +62,7 @@
 
 <script lang="ts">
     import ModalNoTeleport from "@/components/modals/ModalNoTeleport.vue";
-    import { computed, ref } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
     import AuthenticationManagement from "@/api/AuthenticationManagement";
     import LoginResponseHandler from "@/use/helpers/LoginResponseHandler";
     import { useStore } from "@/use/store/store";
@@ -72,11 +76,19 @@
         setup() {
             const busy = ref(false);
             const baseModal = ref();
-            let hasError = ref(false);
-            let password = ref("");
-            let passwordFieldType = ref("password");
-            let loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
-            let valid = computed(() => password.value != "");
+            const hasError = ref(false);
+            const password = ref("");
+            const passwordFieldType = ref("password");
+            const loginResponseHandler: LoginResponseHandler = new LoginResponseHandler();
+            const valid = computed(() => password.value != "");
+            const enrollmentIdSecret = ref("");
+            const secretDownloadURL = ref("");
+
+            onBeforeMount(async () => {
+                enrollmentIdSecret.value = (await useStore().getters.user).enrollmentIdSecret;
+                let certificateFile = new Blob([enrollmentIdSecret.value], { type: "text" });
+                secretDownloadURL.value = URL.createObjectURL(certificateFile);
+            });
 
             enum action {
                 CANCEL,
@@ -134,6 +146,8 @@
                 close,
                 action,
                 valid,
+                enrollmentIdSecret,
+                secretDownloadURL,
             };
         },
     };
