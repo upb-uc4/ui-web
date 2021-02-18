@@ -71,7 +71,7 @@
             async function downloadCertificate() {
                 isLoading.value = true;
                 await loadCertificate();
-                var fileLink = document.createElement("a");
+                const fileLink = document.createElement("a");
                 fileLink.href = certificateDownloadURL.value;
                 fileLink.setAttribute("download", `${props.semester}.pdf`);
 
