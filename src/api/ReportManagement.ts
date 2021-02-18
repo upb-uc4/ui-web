@@ -1,4 +1,3 @@
-import { arrayBufferToBase64 } from "@/use/crypto/certificates";
 import { AxiosError, AxiosResponse } from "axios";
 import APIError from "./api_models/errors/APIError";
 import handleAuthenticationError from "./AuthenticationHelper";
@@ -18,7 +17,7 @@ export default class ReportManagement extends Common {
     }
 
     async getCertificateOfEnrollment(username: string, semester: string): Promise<APIResponse<File>> {
-        const params = {} as any
+        const params = {} as any;
 
         let base64UrlSemester = btoa(semester);
         base64UrlSemester = base64UrlSemester.replace(/\+/g, "-");
@@ -28,7 +27,7 @@ export default class ReportManagement extends Common {
         params.semester = base64UrlSemester;
 
         return await this._axios
-            .get(`/certificates/${username}/enrollment`, {params, responseType: "arraybuffer"})
+            .get(`/certificates/${username}/enrollment`, { params, responseType: "arraybuffer" })
             .then((response: AxiosResponse) => {
                 let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
                 const file: File = new File([blob], "certificate.pdf", { type: response.headers["content-type"] });
