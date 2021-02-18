@@ -3,7 +3,7 @@
         <template #header>
             <p class="modal-headline">Unsaved Changes</p>
         </template>
-        <div class="modal-description">Do you really want to continue and leave this page? You have unsaved changes.</div>
+        <div class="modal-description w-full">Do you really want to continue and leave this page? You have unsaved changes.</div>
         <template #footer>
             <button id="unsavedChangesModalCancel" class="mr-10 btn-tertiary-modal" @click="close(action.CANCEL)">Cancel</button>
             <button id="unsavedChangesModalConfirmLeave" class="w-24 py-2 px-2 btn" @click="close(action.CONFIRM)">Leave</button>

@@ -4,7 +4,7 @@
             <p class="modal-headline">Delete course</p>
         </template>
 
-        <div class="modal-description">
+        <div class="modal-description w-full">
             Are you sure you want to delete this course?<br />
             By doing this you will lose all of your saved data and will not be able to restore it.
         </div>

@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.17.1-hotfix.2",
+    "version": "0.18.0",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
