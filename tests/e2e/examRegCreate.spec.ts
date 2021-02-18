@@ -100,7 +100,9 @@ describe("Account creation, edition and deletion", function () {
 
     it("Check if examination regulation was created", function () {
         navigateToCourseFormAdmin();
-        cy.get("#exReg").select(exRegName);
-        cy.get("section[id='moduleSection']").should("contain.text", exRegModuleID + ": " + exRegModuleName);
+        cy.get("button[id='exReg']").click();
+        cy.get("span").contains(exRegName).click();
+        cy.get("input[id='searchSelectInput']").click();
+        cy.get("span").contains(exRegModuleName).should("exist");
     });
 });
