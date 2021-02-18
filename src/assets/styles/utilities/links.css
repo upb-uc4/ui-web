@@ -17,3 +17,20 @@
     focus:outline-none focus:underline
     dark:text-blue-600
 }
+.navigation-link:hover {
+    @apply text-blue-800
+    dark:text-blue-700
+}
+
+.navigation-link-gray {
+    @apply cursor-pointer font-medium text-gray-800 transition ease-in-out duration-150
+    hover:text-gray-900
+    focus:outline-none focus:underline
+    dark:text-gray-300
+}
+
+.navigation-link-gray:hover {
+    @apply text-gray-900 
+    dark:text-gray-400
+}
+
