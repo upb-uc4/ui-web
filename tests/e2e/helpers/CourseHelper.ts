@@ -20,9 +20,10 @@ export function createCourse(course: Course) {
     cy.get('input[id="ects"]').clear().type(course.ects.toString());
     cy.get('textarea[id="courseDescription"]').type(course.courseDescription);
     cy.get('input[id="maxParticipants"]').clear().type(course.maxParticipants.toString());
-    cy.get('button[id="exReg"]').select("Bachelor Computer Science v3");
-    cy.get(`input[id='modules_0']`).click();
-    cy.get("div").contains(course.moduleIds[0]).click();
+    cy.get("button[id='exReg']").click();
+    cy.get("span").contains("Bachelor Computer Science v3").click();
+    cy.get("input[id='searchSelectInput']").click();
+    cy.get("span").contains("Math 1").click();
     cy.wait(100);
     cy.get('button[id="createCourse"]').click();
     cy.url().should("not.eq", Cypress.config().baseUrl + "createCourse");

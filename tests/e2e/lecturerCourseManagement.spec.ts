@@ -20,7 +20,7 @@ describe("Course creation, edition and deletion", () => {
 
     let course: Course;
     let lecturerAuth: Account;
-    let newModule: String = "M.1275.01159";
+    let newModule: String = "Math 2";
 
     before(function () {
         cy.clearCookies();
@@ -109,7 +109,7 @@ describe("Course creation, edition and deletion", () => {
 
     // edit course
     it("Show course edit page", () => {
-        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("label[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
 
         cy.get('input[id="courseName"]').should("have.value", course.courseName);
     });
@@ -124,9 +124,9 @@ describe("Course creation, edition and deletion", () => {
     });
 
     it("Can edit modules", () => {
-        cy.get("span").contains(course.moduleIds[0]).get(".remove-tag").click();
-        cy.get(`input[id='modules_0']`).click();
-        cy.get("div").contains(`${newModule}`).click();
+        cy.get("span").contains("Math 1").get(".remove-tag").click();
+        cy.get("input[id='searchSelectInput']").click();
+        cy.get("span").contains(`${newModule}`).click();
     });
 
     it("Can save course", () => {
@@ -138,10 +138,12 @@ describe("Course creation, edition and deletion", () => {
         cy.wait(3000);
         cy.get("button[id='refresh']").click();
         cy.wait(1000);
-        cy.get("div[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
+        cy.get("label[id='courseName']").contains(course.courseName).parent().parent().find("button[id='editCourse']").click();
         cy.wait(3000);
-        cy.get("section[id='moduleSection']").get("span").contains(course.moduleIds[0]).should("not.exist");
-        cy.get("section[id='moduleSection']").get("span").contains(`${newModule}`).should("exist");
+        cy.get("div[id='moduleTagList']").within(($tagList) => {
+            cy.get("span").contains("Math 1").should("not.exist");
+            cy.get("span").contains(`${newModule}`).should("exist");
+        });
     });
 
     it("Can modify participation limit with arrow keys", () => {

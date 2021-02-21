@@ -3,6 +3,7 @@
         <div class="space-y-4">
             <tag-list
                 v-if="selectedModules.length > 0"
+                id="moduleTagList"
                 :elements="selectedModules"
                 property-to-display="display"
                 @on-remove="removeModule"
