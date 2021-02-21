@@ -47,7 +47,7 @@
                     <button v-if="!isCourseFull && !admitted" id="joinCourse" class="w-full sm:w-24 btn" @click="showCourseInfo()">
                         Join
                     </button>
-                    <p v-else-if="admitted" class="w-full sm:text-right input-label-error">You are already registered.</p>
+                    <p v-else-if="admitted" class="w-full sm:text-right text-sm text-green-400">You are already registered.</p>
                     <p v-else class="w-full sm:text-right input-label-error">Course is already full.</p>
                 </div>
             </div>
