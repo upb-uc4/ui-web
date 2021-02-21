@@ -64,6 +64,8 @@ describe("Change password", () => {
 
     it("Enter wrong password should show error", () => {
         cy.get("input[id='oldPassword']").type(studentAuthUser.password + "wrong!");
+        cy.get("input[id='newPassword']").type("password-a");
+        cy.get("input[id='confirmationPassword']").type("password-a");
         cy.get("button[id='updatePassword']").click();
 
         cy.get("label").should("have.class", "input-label-error").should("exist");
