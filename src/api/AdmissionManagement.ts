@@ -68,10 +68,10 @@ export default class AdmissionManagement extends CommonHyperledger {
             });
     }
 
-    async getExamAdmissions(username?: string, examId?: string[], admissionIds?: string[]): Promise<APIResponse<ExamAdmission[]>> {
+    async getExamAdmissions(username?: string, examIds?: string[], admissionIds?: string[]): Promise<APIResponse<ExamAdmission[]>> {
         const requestParameter = { params: {} as any };
         if (username) requestParameter.params.username = username;
-        if (examId) requestParameter.params.examId = examId;
+        if (examIds) requestParameter.params.examIds = examIds?.reduce((a, b) => a + "," + b, "");
         if (admissionIds) requestParameter.params.admissionIds = admissionIds.reduce((a, b) => a + "," + b, "");
 
         return await this._axios
@@ -94,7 +94,7 @@ export default class AdmissionManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getExamAdmissions(username, examId, admissionIds);
+                        return await this.getExamAdmissions(username, examIds, admissionIds);
                     }
                     return {
                         returnValue: {} as ExamAdmission[],

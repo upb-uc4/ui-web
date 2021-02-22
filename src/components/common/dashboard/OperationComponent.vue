@@ -352,10 +352,10 @@
             async function getNameByEnrollmentId() {
                 const certificateManagement = new CertificateManagement();
                 const handler = new GenericResponseHandler(`user-id ${operation.value.initiator}`);
-                const response = await certificateManagement.getUsername(operation.value.initiator);
+                const response = await certificateManagement.getUsername([operation.value.initiator]);
                 const result = handler.handleResponse(response);
-                if (result != "") {
-                    username.value = result;
+                if (result.length !== 0) {
+                    username.value = result[0].username;
                 } else {
                     username.value = "not active";
                 }

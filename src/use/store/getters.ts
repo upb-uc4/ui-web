@@ -145,12 +145,11 @@ export const getters: GetterTree<State, State> & Getters = {
                 const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
                 const asn1User = asn1js.fromBER(berUser);
                 const cert = new CertificatePKI({ schema: asn1User.result });
-        
+
                 const valid = await validateCertificate(cert);
                 if (!valid) {
-                    return Promise.reject("Invalid remote certificate signature.")
-                };
-
+                    return Promise.reject("Invalid remote certificate signature.");
+                }
 
                 store.commit(MutationTypes.SET_CERTIFICATE, ownCertificate);
             }
@@ -189,5 +188,5 @@ export const getters: GetterTree<State, State> & Getters = {
         }
 
         return state.caCerts;
-    }
+    },
 };

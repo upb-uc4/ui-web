@@ -68,9 +68,9 @@ export default class CertificateManagement extends CommonHyperledger {
 
     async getUsername(enrollmentIds: string[]): Promise<APIResponse<{ enrollmentId: string; username: string }[]>> {
         const requestParameter = { params: {} as any };
-        requestParameter.params.enrollmentId = enrollmentIds.reduce((a, b) => a + "," + b, "");
+        requestParameter.params.enrollmentIds = enrollmentIds.reduce((a, b) => a + "," + b, "");
         return await this._axios
-            .get(`/certificates/username`)
+            .get(`/certificates/username`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data,
@@ -112,7 +112,7 @@ export default class CertificateManagement extends CommonHyperledger {
         const requestParameter = { params: {} as any };
         requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
         return await this._axios
-            .get(`/certificates/enrollmentId`)
+            .get(`/certificates/enrollmentId`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
                     returnValue: response.data,

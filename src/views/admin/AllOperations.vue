@@ -91,7 +91,7 @@
                 let ownId = "";
                 promises.push(
                     certificateManagement.getOwnEnrollmentId().then((response) => {
-                        ownId = handler.handleResponse(response).id;
+                        ownId = handler.handleResponse(response)[0].enrollmentId;
                     })
                 );
                 await Promise.all(promises);

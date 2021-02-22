@@ -65,7 +65,7 @@ export default class ExamResultManagement extends CommonHyperledger {
 
     async getUnsignedExamResultAddProposal(examResults: ExamResult[]): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/exan_results/unsigned_add_proposal`, examResults)
+            .post(`/exam_results/unsigned_add_proposal`, { examResultEntries: examResults })
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,

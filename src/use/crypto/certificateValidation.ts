@@ -1,7 +1,5 @@
-import Certificate from "pkijs/src/Certificate"
-import { useStore } from "../store/store"
-import * as asn1js from "asn1js";
-import * as pvutils from "pvutils";
+import Certificate from "pkijs/src/Certificate";
+import { useStore } from "../store/store";
 import CertificateChainValidationEngine from "pkijs/src/CertificateChainValidationEngine";
 
 export const validateCertificate = async (cert: Certificate): Promise<boolean> => {
@@ -14,4 +12,4 @@ export const validateCertificate = async (cert: Certificate): Promise<boolean> =
     });
 
     return (await certEngine.verify()).result;
-}
+};

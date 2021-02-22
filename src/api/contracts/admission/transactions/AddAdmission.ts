@@ -93,10 +93,6 @@ export class AddAdmissionTransaction extends AbstractTransaction {
     public validateAdmission(a: AbstractAdmission) {
         let isValid = a.type == this.admission.type;
         isValid = isValid && a.enrollmentId == this.enrollmentId;
-        const dateDelta = new Date().getMilliseconds() - new Date(a.timestamp).getMilliseconds();
-        isValid = isValid && dateDelta > 0;
-        isValid = isValid && dateDelta < 60000; // less than one minute ago
-
         return isValid;
     }
 }

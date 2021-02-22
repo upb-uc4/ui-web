@@ -32,6 +32,7 @@ import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/
 import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
 import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
 import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
+import { AdmissionTypes } from "@/api/api_models/admission_management/AdmissionTypes";
 
 let userManagement: UserManagement;
 let certManagement: CertificateManagement;
@@ -200,7 +201,7 @@ describe("Admissions management", () => {
             enrollmentId: "",
             moduleId,
             timestamp: "",
-            type: "Course",
+            type: AdmissionTypes.COURSE,
         };
 
         const result = await executeTransaction(new AddAdmissionTransaction(enrollmentId, admission), protoURL);

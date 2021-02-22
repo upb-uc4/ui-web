@@ -6,7 +6,7 @@ import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import AbstractTransaction from "../../AbstractTransaction";
 
-export class AddExamTransaction extends AbstractTransaction {
+export class AddExamResultTransaction extends AbstractTransaction {
     private examResults: ExamResult[];
 
     constructor(examResults: ExamResult[]) {
@@ -15,17 +15,17 @@ export class AddExamTransaction extends AbstractTransaction {
     }
 
     public buildTransactionInfo(): TransactionInfo {
-        return AddExamTransaction.buildTransactionInfo(this.examResults);
+        return AddExamResultTransaction.buildTransactionInfo(this.examResults);
     }
 
     public static buildTransactionInfo(examResults: ExamResult[]): TransactionInfo {
-        const examJSONString = JSON.stringify(examResults);
+        const examJSONString = JSON.stringify({examResultEntries: examResults});
         const paramArray: string[] = [examJSONString];
 
         const parameters = JSON.stringify(paramArray);
 
         const transactionInfo = {
-            contractName: UC4Identifier.CONTRACT_EXAM,
+            contractName: UC4Identifier.CONTRACT_EXAM_RESULT,
             transactionName: UC4Identifier.TRANSACTION_ADD_EXAM_RESULT,
             parameters,
         };

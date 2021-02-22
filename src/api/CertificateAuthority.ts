@@ -10,11 +10,11 @@ export default class CertificateAuthority {
         const instance = axios.create({
             baseURL: process.env.VUE_APP_CA_BASE_URL,
             headers: {
-                "Accept": "*/*",
+                Accept: "*/*",
             },
             withCredentials: false,
         });
-        delete instance.defaults.headers.common.Authorization
+        delete instance.defaults.headers.common.Authorization;
 
         this._axios = instance;
     }
@@ -48,8 +48,6 @@ export default class CertificateAuthority {
                 };
             })
             .catch(async (error: AxiosError) => {
-                console.log(error);
-                
                 if (error.response) {
                     return {
                         returnValue: "",
