@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-    import { computed, onBeforeMount, ref } from "vue";
+    import { computed, onBeforeMount, ref, watch } from "vue";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
@@ -170,10 +170,6 @@
                 year.value = "";
             }
 
-            function updateSelectedFieldsOfStudy(value: any) {
-                selectedFieldsOfStudy.value = value.value;
-            }
-
             async function updateImmatriculation() {
                 isLoading.value = true;
                 const matriculationEntries: SubjectMatriculation[] = [];
@@ -205,18 +201,21 @@
                 selectedFieldsOfStudy.value.push(field.value as string);
             }
 
+            watch(semesterType, (currentSemesterType) => {
+                //reset the year because the year selection is different per semester type (SS -> YYYY vs. WS -> YYYY/YYYY)
+                year.value = "";
+            });
+
             return {
                 addFieldOfStudy,
                 removeFieldOfStudy,
                 availableFieldsOfStudy,
                 isLoading,
-                resetYear,
                 fieldsOfStudy,
                 selectableYears,
                 year,
                 semesterType,
                 selectedFieldsOfStudy,
-                updateSelectedFieldsOfStudy,
                 updateImmatriculation,
                 validSelection,
                 errorBag,

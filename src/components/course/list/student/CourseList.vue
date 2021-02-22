@@ -21,6 +21,8 @@
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import User_List from "@/api/api_models/user_management/User_List";
     import AdmissionManagement from "@/api/AdmissionManagement";
+    import MatriculationManagement from "@/api/MatriculationManagement";
+    import ConfigurationManagement from "@/api/ConfigurationManagement";
 
     export default {
         name: "CourseList",
@@ -52,10 +54,7 @@
 
             onBeforeMount(async () => {
                 isLoading.value = true;
-                const promises = [];
-                promises.push(getUsername(), getCourses());
-                await Promise.all(promises);
-                await getAdmittedCourses();
+                await getCourses();
                 isLoading.value = false;
             });
 
@@ -68,6 +67,7 @@
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
                 if (props.onlyAdmittedCourses) {
+                    await getAdmittedCourses();
                     let tmpCourses = [] as Course[];
                     for (const m of admittedCourses.value) {
                         let response: APIResponse<Course>;
@@ -78,7 +78,7 @@
                     courses.value = tmpCourses;
                 } else {
                     let response: APIResponse<Course[]>;
-                    response = await courseManagement.getCourses();
+                    response = await courseManagement.getCourses(undefined, undefined, undefined, await getOwnExamRegNames());
                     courses.value = genericResponseHandler.handleResponse(response);
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
@@ -86,7 +86,19 @@
                 lecturers.value = (genericResponseHandler.handleResponse(resp) as User_List).lecturers;
             }
 
+            async function getOwnExamRegNames(): Promise<string[]> {
+                const matriculation_management = new MatriculationManagement();
+                const handler = new GenericResponseHandler("examination regulations");
+                const response = await matriculation_management.getOwnMatriculationHistory();
+                const result = handler.handleResponse(response);
+                const currentSemester = handler.handleResponse(await new ConfigurationManagement().getCurrentSemester());
+                return result.matriculationStatus
+                    .filter((matriculation) => matriculation.semesters.includes(currentSemester))
+                    .map((matriculation) => matriculation.fieldOfStudy);
+            }
+
             async function getAdmittedCourses() {
+                await getUsername();
                 const admissionManagement = new AdmissionManagement();
                 const handler = new GenericResponseHandler("admitted courses");
                 const resp = await admissionManagement.getCourseAdmissions(username.value);
