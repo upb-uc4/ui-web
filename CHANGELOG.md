@@ -7,6 +7,7 @@
 ## Bugfix
 - fix profile picture in navbar not updating properly[#855](https://github.com/upb-uc4/ui-web/pull/855)
 - fix a bug that the year selection would not reset properly[#827](https://github.com/upb-uc4/ui-web/pull/827)
+- fix a bug that caused displaying the certificate text area without a certificate [#858](https://github.com/upb-uc4/ui-web/pull/858)
 
 ## Refactor
 - use consistent timeformat for localeDate strings [#799](https://github.com/upb-uc4/ui-web/pull/799)
