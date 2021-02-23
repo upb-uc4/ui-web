@@ -67,6 +67,7 @@
     import { AdmissionTypes } from "@/api/api_models/admission_management/AdmissionTypes";
     import ExamAdmission from "@/api/api_models/admission_management/ExamAdmission";
     import Course from "@/api/api_models/course_management/Course";
+    import Exam from "@/api/api_models/exam_management/Exam";
     import CertificateManagement from "@/api/CertificateManagement";
     import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/AddAdmission";
     import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
@@ -76,8 +77,6 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Router from "@/use/router";
     import { ref } from "vue";
-
-    import Exam from "../mockExamInterface";
     import { Grade } from "../MockExamResultInterface";
 
     export default {

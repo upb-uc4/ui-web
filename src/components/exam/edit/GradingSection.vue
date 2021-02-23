@@ -47,7 +47,7 @@
 <script lang="ts">
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import { computed, onBeforeMount, ref, watch } from "vue";
-    import { ExamEntity } from "../MockExamEntity";
+    import { ExamEntity } from "../../../entities/ExamEntity";
     import { Grade } from "../MockExamResultInterface";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import AdmissionManagement from "@/api/AdmissionManagement";

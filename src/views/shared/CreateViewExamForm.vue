@@ -51,7 +51,7 @@
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import SectionHeader from "@/components/common/section/SectionHeader.vue";
-    import { ExamEntity } from "@/components/exam/MockExamEntity";
+    import { ExamEntity } from "@/entities/ExamEntity";
     import BasicsSection from "@/components/exam/edit/BasicsSection.vue";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import CourseManagement from "@/api/CourseManagement";

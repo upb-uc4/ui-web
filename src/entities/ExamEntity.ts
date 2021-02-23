@@ -1,4 +1,4 @@
-import Exam from "./mockExamInterface";
+import Exam from "@/api/api_models/exam_management/Exam";
 
 export class ExamEntity implements Exam {
     examId = "";
