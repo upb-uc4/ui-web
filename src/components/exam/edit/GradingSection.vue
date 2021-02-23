@@ -20,7 +20,7 @@
                             <Select
                                 :id="`grade_${result.enrollmentId.substring(0, 4)}`"
                                 v-model:selection="result.grade"
-                                :disabled="isGraded"
+                                :disabled="!isGradable"
                                 title="Pick a Grade"
                                 :elements="grades"
                             />
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <button-section v-if="!isGraded">
+        <button-section v-if="isGradable">
             <template #right>
                 <button id="gradeExam" :disabled="!isValid" type="button" class="w-full w-48 btn btn-add" @click="gradeExam">
                     Grade Exam
@@ -40,6 +40,7 @@
                 <button id="exportCSV" type="button" class="w-full w-48 btn-secondary ml-4" @click="exportCSV">Export</button>
             </template>
         </button-section>
+        <label v-else class="input-label-warning">Exam not finished.</label>
     </BaseSection>
 </template>
 
@@ -47,11 +48,13 @@
     import BaseSection from "@/components/common/section/BaseSection.vue";
     import { computed, onBeforeMount, ref, watch } from "vue";
     import { ExamEntity } from "../MockExamEntity";
-    import ExamResult, { Grade } from "../MockExamResultInterface";
+    import { Grade } from "../MockExamResultInterface";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import AdmissionManagement from "@/api/AdmissionManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Select from "@/components/common/Select.vue";
+    import ExamResultManagement from "@/api/ExamResultManagement";
+    import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
 
     export default {
         name: "CourseModuleSection",
@@ -117,30 +120,36 @@
             const grades = Object.values(Grade);
 
             const isGraded = ref(false);
+            const isGradable = computed(() => {
+                return new Date() > new Date(props.exam.date) && !isGraded.value;
+            });
 
             onBeforeMount(async () => {
                 isLoading.value = true;
                 let promises = [];
-                promises.push(getExamAdmissions());
-                promises.push(getExamResults());
-                await Promise.all(promises);
+                if (!(await getExamResults())) {
+                    getExamAdmissions();
+                }
                 isLoading.value = false;
             });
 
-            async function getExamResults() {
-                //TODO
-                //IF FOUND:
-                //isGraded.value = true;
+            async function getExamResults(): Promise<boolean> {
+                const exam_result_management = new ExamResultManagement();
+                const handler = new GenericResponseHandler("exam results");
+                const result = handler.handleResponse(await exam_result_management.getExamResults(undefined, [props.exam.examId]));
+                if (result.length > 0) {
+                    examResults.value = result;
+                    isGraded.value = true;
+                    return true;
+                }
+                return false;
             }
 
             async function getExamAdmissions() {
                 const admission_management = new AdmissionManagement();
                 const handler = new GenericResponseHandler("exam admissions");
-                // TODO API
-                //const response  = admission_management.getExamAdmissions(props.exam.examId)
-                //const result = handler.handleResponse(response);
-                const result = mockedAdmissions;
-
+                const response = await admission_management.getExamAdmissions(undefined, [props.exam.examId]);
+                const result = handler.handleResponse(response);
                 result.forEach((admission) => {
                     examResults.value.push({
                         examId: props.exam.examId,
@@ -178,6 +187,7 @@
                 exportCSV,
                 importCSV,
                 isGraded,
+                isGradable,
             };
         },
     };
