@@ -7,7 +7,8 @@
                     <label class="w-2/3 input-label text-xs">Student-ID (Hover for Full ID)</label>
                     <label class="w-1/2 ml-4 input-label text-xs">Grade</label>
                 </div>
-                <div v-for="result in examResults" :key="result.enrollmentId" class="flex w-full mb-4">
+                <label v-if="examResults.length == 0" class="input-label-warning my-4">No students registered</label>
+                <div v-for="result in examResults" v-else :key="result.enrollmentId" class="flex w-full mb-4">
                     <input
                         :value="result.enrollmentId.substring(0, 20)"
                         :title="result.enrollmentId"
@@ -30,20 +31,21 @@
             </div>
         </div>
         <button-section v-if="isGradable">
-            <template #right>
-                <div class="w-48 flex justify-center">
-                    <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" class="h-8 w-8" />
-                    <button v-else id="gradeExam" :disabled="!isValid" type="button" class="w-full btn btn-add" @click="gradeExam">
-                        Grade Exam
-                    </button>
-                </div>
-            </template>
-            <template #left>
-                <button id="importCSV" type="button" class="w-full btn-secondary" @click="importCSV">Import</button>
-                <button id="exportCSV" type="button" class="w-full btn-secondary ml-4" @click="exportCSV">Export</button>
-            </template>
-        </button-section>
-        <label v-else-if="!isGraded" class="input-label-warning">Exam not finished.</label>
+            <button-section>
+                <template #right>
+                    <div v-if="isGradable" class="w-48 flex justify-center">
+                        <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" class="h-8 w-8" />
+                        <button id="gradeExam" :disabled="!isValid" type="button" class="w-full btn btn-add" @click="gradeExam">
+                            Grade Exam
+                        </button>
+                    </div>
+                </template>
+                <template #left>
+                    <button v-if="isGradable" id="importCSV" type="button" class="w-full btn-secondary" @click="importCSV">Import</button>
+                    <button v-if="isGraded || isGradable" id="exportCSV" type="button" class="w-full btn-secondary ml-4" @click="exportCSV">Export</button>
+                </template>
+            </button-section>
+            <label v-if="!isGraded && !isGradable" class="input-label-warning">Exam not finished.</label>
     </BaseSection>
 </template>
 
@@ -62,7 +64,9 @@
     import executeTransaction from "@/api/contracts/ChaincodeUtility";
     import { AddExamResultTransaction } from "@/api/contracts/exam_result/transactions/AddExamResultTransaction";
     import { useToast } from "@/toast";
-    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
+    import { buildGradingTable, readGradingTable } from "@/use/xlsx/GradingTable";
+    import * as xlsx from "xlsx";
+import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
 
     export default {
         name: "CourseModuleSection",
@@ -146,14 +150,18 @@
             }
 
             async function exportCSV() {
-                //TODO
-                showNotYetImplementedToast();
+                if (examResults.value.length > 0) {
+                    const workbook = await buildGradingTable(examResults.value);
+                    xlsx.writeFile(workbook, "exam.csv");
+                } else {
+                    useToast().warning("Nothing to export.");
+                }
             }
 
             async function importCSV() {
-                //TODO
                 showNotYetImplementedToast();
             }
+
 
             return {
                 isLoading,
