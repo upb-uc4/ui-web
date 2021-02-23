@@ -35,7 +35,7 @@
                 <template #right>
                     <div v-if="isGradable" class="w-48 flex justify-center">
                         <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" class="h-8 w-8" />
-                        <button id="gradeExam" :disabled="!isValid" type="button" class="w-full btn btn-add" @click="gradeExam">
+                        <button v-else id="gradeExam" :disabled="!isValid" type="button" class="w-full btn btn-add" @click="gradeExam">
                             Grade Exam
                         </button>
                     </div>
@@ -66,7 +66,7 @@
     import { useToast } from "@/toast";
     import { buildGradingTable, readGradingTable } from "@/use/xlsx/GradingTable";
     import * as xlsx from "xlsx";
-import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
+    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
 
     export default {
         name: "CourseModuleSection",
