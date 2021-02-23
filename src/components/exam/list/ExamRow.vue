@@ -69,6 +69,7 @@
     import Course from "@/api/api_models/course_management/Course";
     import CertificateManagement from "@/api/CertificateManagement";
     import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/AddAdmission";
+    import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
     import executeTransaction from "@/api/contracts/ChaincodeUtility";
     import { useToast } from "@/toast";
     import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
@@ -158,9 +159,13 @@
             }
 
             async function drop() {
-                //TODO API
-                //if success
-                isAdmitted.value = false;
+                const admissionId = (props.examAdmissions as ExamAdmission[]).filter(
+                    (admission) => admission.examId == props.exam.examId
+                )[0].admissionId;
+                if (await executeTransaction(new DropAdmissionTransaction(admissionId))) {
+                    useToast().success("Successfully dropped exam.");
+                    isAdmitted.value = false;
+                }
             }
 
             return {
