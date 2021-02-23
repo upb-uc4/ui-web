@@ -23,7 +23,6 @@
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import CourseManagement from "@/api/CourseManagement";
     import Course from "@/api/api_models/course_management/Course";
-    import { Grade } from "../Grades";
     import ExamManagement from "@/api/ExamManagement";
     import CertificateManagement from "@/api/CertificateManagement";
     import APIResponse from "@/api/helpers/models/APIResponse";
