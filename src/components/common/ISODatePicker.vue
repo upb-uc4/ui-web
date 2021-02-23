@@ -1,6 +1,7 @@
 <template>
     <label class="block input-label">{{ title }}</label>
-    <div class="space-y-2">
+    <input v-if="viewMode" class="w-full form-input input-text" disabled :value="createDateDisplayString(myIsoDate)" />
+    <div v-else class="space-y-2">
         <date-picker v-model:date="myDate" :id-prefix="idPrefix" :disabled="disabled" />
         <time-picker v-model:time="myTime" :id-prefix="idPrefix" :disabled="disabled" />
     </div>
@@ -9,6 +10,7 @@
 <script lang="ts">
     import DatePicker from "@/components/common/DatePicker.vue";
     import TimePicker from "@/components/common/TimePicker.vue";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
     import numberZeroPad from "@/use/helpers/NumberToZeroPaddedString";
     import { ref, watch } from "vue";
 
@@ -36,6 +38,10 @@
                 required: false,
                 default: "Pick a Date",
             },
+            viewMode: {
+                type: Boolean,
+                default: false,
+            },
         },
         emits: ["update:iso-date"],
         setup(props: any, { emit }: any) {
@@ -61,9 +67,15 @@
                 }
             });
 
+            function createDateDisplayString(date: string): string {
+                return new Date(date).toLocaleString("en-GB", dateFormatOptions);
+            }
+
             return {
                 myDate,
                 myTime,
+                myIsoDate,
+                createDateDisplayString,
             };
         },
     };

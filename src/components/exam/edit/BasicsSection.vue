@@ -1,41 +1,41 @@
 <template>
     <BaseSection title="Basic Information" subtitle="Course, module and credit points that the exam should be assigned to.">
-        <div v-if="!isLoading">
+        <div v-if="!isLoading" class="lg:w-1/2">
             <label class="input-label">Course</label>
-            <selection
-                id="select_course"
-                v-model:selection="selectedCourse"
-                :disabled="viewMode"
-                :elements="courses"
-                property-to-display="courseName"
-            />
-            <label v-if="errorBag?.has('courseId')" class="input-label-error">
-                {{ errorBag.get("courseId") }}
-            </label>
-            <div class="lg:flex justify-between">
-                <div class="flex-col w-full lg:w-1/2">
-                    <label class="input-label mt-5">Module</label>
-                    <Select
-                        id="module"
-                        v-model:selection="selectedModule"
-                        :title="enableModuleSelection ? '' : 'Please select a course first'"
-                        :disabled="!enableModuleSelection || viewMode"
-                        :elements="availableModules"
-                    />
-                    <label v-if="errorBag?.has('moduleId')" class="input-label-error">
-                        {{ errorBag.get("moduleId") }}
-                    </label>
-                </div>
-                <div class="flex-col w-full lg:w-1/3">
-                    <label class="input-label mt-5">ECTS</label>
-                    <input id="ects" v-model="myEcts" type="number" :disabled="viewMode" class="w-full form-input input-text" />
-                    <label v-if="errorBag?.has('ects')" class="input-label-error">
-                        {{ errorBag.get("ects") }}
-                    </label>
-                </div>
+            <input v-if="viewMode" id="shownCourse" disabled class="form-input input-text w-full" :value="selectedCourse.courseName" />
+            <div v-else>
+                <selection id="select_course" v-model:selection="selectedCourse" :elements="courses" property-to-display="courseName" />
+                <label v-if="errorBag?.has('courseId')" class="input-label-error">
+                    {{ errorBag.get("courseId") }}
+                </label>
             </div>
-            <div class="lg:w-1/2 mt-8">
-                <ISODatePicker v-model:iso-date="myExamDate" id-prefix="examDate_" :disabled="viewMode" title="Exam Date" />
+            <label class="input-label mt-5">Module</label>
+            <input v-if="viewMode" id="shownModule" disabled class="form-input input-text w-full" :value="selectedModule" />
+            <div v-else>
+                <Select
+                    id="moduleSelect"
+                    v-model:selection="selectedModule"
+                    :title="enableModuleSelection ? '' : 'Please select a course first'"
+                    :disabled="!enableModuleSelection"
+                    :elements="availableModules"
+                />
+                <label v-if="errorBag?.has('moduleId')" class="input-label-error">
+                    {{ errorBag.get("moduleId") }}
+                </label>
+            </div>
+            <label class="input-label mt-5">ECTS</label>
+            <input id="ects" v-model="myEcts" type="number" :disabled="viewMode" class="form-input input-text w-full" />
+            <label v-if="errorBag?.has('ects')" class="input-label-error">
+                {{ errorBag.get("ects") }}
+            </label>
+            <div class="mt-8">
+                <ISODatePicker
+                    v-model:iso-date="myExamDate"
+                    id-prefix="examDate_"
+                    :disabled="viewMode"
+                    :view-mode="viewMode"
+                    title="Exam Date"
+                />
                 <label v-if="errorBag?.has('examDate')" class="input-label-error">
                     {{ errorBag.get("examDate") }}
                 </label>
@@ -53,6 +53,7 @@
     import Select from "@/components/common/Select.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ISODatePicker from "@/components/common/ISODatePicker.vue";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
 
     export default {
         name: "CourseModuleSection",
