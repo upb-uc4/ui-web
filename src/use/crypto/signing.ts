@@ -3,7 +3,7 @@ import { ec } from "elliptic";
 import BN from "bn.js";
 const Signature = require("elliptic/lib/elliptic/ec/signature.js");
 import * as asn1js from "asn1js";
-import { Endorsement, ProposalResponsePayload } from "@/api/api_models/common/Transaction";
+import { Endorsement } from "@/api/api_models/common/Transaction";
 
 // map for easy lookup of the "N/2" and "N" value per elliptic curve
 const p256ec = new ec("p256");
@@ -148,7 +148,8 @@ export async function verifyProposalResponsePayloadSignature(
         const s = fromHexString(berObject[1].valueBlock.valueHex);
         const sig = { r, s };
 
-        signatureValid = _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
+        signatureValid =
+            _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
     } catch (error) {
         return false;
     }
