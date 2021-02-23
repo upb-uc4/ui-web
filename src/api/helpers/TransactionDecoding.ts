@@ -79,10 +79,16 @@ export async function decodeTransaction(base64Proposal: string, protoURL?: strin
 
                 // action endorsements
                 for (let endorsement of (chaincodeActionPayload as any)["action"]["endorsements"]) {
-                    const identity: { mspId: string; idBytes: string } = {} as { mspId: string; idBytes: string };
+                    const identity: { mspId: string; idBytes: string; rawEndorserBytes: ArrayBuffer } = {} as {
+                        mspId: string;
+                        idBytes: string;
+                        rawEndorserBytes: ArrayBuffer;
+                    };
                     const endorser = serializedIdentityType.decode((endorsement as any)["endorser"]);
                     identity.mspId = endorser as any["mspid"];
                     identity.idBytes = Utf8ArrayToStr((endorser as any)["idBytes"]);
+
+                    identity.rawEndorserBytes = (endorsement as any)["endorser"];
 
                     const signature = arrayBufferToBase64((endorsement as any)["signature"]);
 
