@@ -48,10 +48,12 @@
         <div v-if="isStudent" class="flex justify-end mt-2">
             <div v-if="isGraded" class="flex">
                 <label class="flex input-label">Result:
-                    <p class="ml-2 font-semibold" :class="isPassed ? 'text-green-400' : 'text-red-400'">{{ examGrade }}</p></label>
+                    <p class="ml-2 font-semibold" :class="isPassed ? 'text-green-400' : 'text-red-400'">{{ examGrade }}</p>
+                </label>
             </div>
-            <div v-else>
-                <div v-if="isAdmitted">
+            <div v-else class="flex w-24 justify-center">
+                <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" class="h-8 w-8" />
+                <div v-else-if="isAdmitted">
                     <button v-if="isDroppable" class="btn btn-remove sm:w-24" @click="drop">Drop</button>
                     <label v-else class="input-label">Not Graded Yet</label>
                 </div>
@@ -62,8 +64,6 @@
 </template>
 
 <script lang="ts">
-    import AdmissionManagement from "@/api/AdmissionManagement";
-    import AbstractAdmission from "@/api/api_models/admission_management/AbstractAdmission";
     import { AdmissionTypes } from "@/api/api_models/admission_management/AdmissionTypes";
     import ExamAdmission from "@/api/api_models/admission_management/ExamAdmission";
     import Course from "@/api/api_models/course_management/Course";
@@ -108,6 +108,7 @@
             },
         },
         setup(props: any) {
+            const isLoading = ref(false);
             const courseName = ref(props.course.courseName);
 
             const examDate = new Date(props.exam.date).toLocaleString("en-GB", dateFormatOptions);
@@ -141,6 +142,7 @@
             }
 
             async function admit() {
+                isLoading.value = true;
                 const examAdmission: ExamAdmission = {
                     admissionId: "",
                     timestamp: "",
@@ -156,9 +158,11 @@
                     useToast().success("Successfully admitted for exam.");
                     isAdmitted.value = true;
                 }
+                isLoading.value = false;
             }
 
             async function drop() {
+                isLoading.value = true;
                 const admissionId = (props.examAdmissions as ExamAdmission[]).filter(
                     (admission) => admission.examId == props.exam.examId
                 )[0].admissionId;
@@ -166,6 +170,7 @@
                     useToast().success("Successfully dropped exam.");
                     isAdmitted.value = false;
                 }
+                isLoading.value = false;
             }
 
             return {
@@ -184,6 +189,7 @@
                 drop,
                 isGraded,
                 isPassed,
+                isLoading,
             };
         },
     };
