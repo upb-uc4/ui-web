@@ -1,9 +1,12 @@
-import { arrayBufferToBase64, base64ToArrayBuffer, signingAlgorithm } from "../crypto/certificates";
+import { arrayBufferToBase64, base64ToArrayBuffer, getPublicKeyFromCertificate, signingAlgorithm } from "../crypto/certificates";
 import { ec } from "elliptic";
 import BN from "bn.js";
 const Signature = require("elliptic/lib/elliptic/ec/signature.js");
 import * as asn1js from "asn1js";
 import { Endorsement } from "@/api/api_models/common/Transaction";
+import { validateCertificate } from "./certificateValidation";
+import Certificate from "pkijs/src/Certificate";
+import * as pvutils from "pvutils";
 
 // map for easy lookup of the "N/2" and "N" value per elliptic curve
 const p256ec = new ec("p256");
@@ -125,11 +128,8 @@ export async function verifyProtobufSignature(protobuf: string, signature: strin
 export async function verifyProposalResponsePayloadSignature(
     rawProposalResponsePayload: ArrayBuffer,
     endorsement: Endorsement,
-    publicKey: CryptoKey
+    certificate: string
 ) {
-    // TODO implement as soon as possible:
-    // (1) fetch the root ca certificate directly from our chain
-
     const crypto = window.crypto.subtle;
 
     const plainText = new Uint8Array(endorsement.endorser.rawEndorserBytes.byteLength + rawProposalResponsePayload.byteLength);
@@ -137,6 +137,7 @@ export async function verifyProposalResponsePayloadSignature(
     plainText.set(new Uint8Array(endorsement.endorser.rawEndorserBytes), rawProposalResponsePayload.byteLength);
 
     const digest = await crypto.digest("SHA-256", plainText);
+    const publicKey = await getPublicKeyFromCertificate(certificate);
     const exportedPublicKey = Buffer.from(await crypto.exportKey("raw", publicKey));
 
     let signatureValid = false;
@@ -150,6 +151,15 @@ export async function verifyProposalResponsePayloadSignature(
 
         signatureValid =
             _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
+
+        if (signatureValid) {
+            const ownCertPem = certificate.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
+            const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
+            const asn1User = asn1js.fromBER(berUser);
+            const cert = new Certificate({ schema: asn1User.result });
+            signatureValid = signatureValid && (await validateCertificate(cert));
+            console.log("certChain:", signatureValid);
+        }
     } catch (error) {
         return false;
     }
