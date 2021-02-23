@@ -62,8 +62,17 @@
 </template>
 
 <script lang="ts">
+    import AdmissionManagement from "@/api/AdmissionManagement";
+    import AbstractAdmission from "@/api/api_models/admission_management/AbstractAdmission";
+    import { AdmissionTypes } from "@/api/api_models/admission_management/AdmissionTypes";
+    import ExamAdmission from "@/api/api_models/admission_management/ExamAdmission";
     import Course from "@/api/api_models/course_management/Course";
+    import CertificateManagement from "@/api/CertificateManagement";
+    import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/AddAdmission";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { useToast } from "@/toast";
     import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
+    import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Router from "@/use/router";
     import { ref } from "vue";
 
@@ -131,9 +140,21 @@
             }
 
             async function admit() {
-                //TODO API
-                //if success
-                isAdmitted.value = true;
+                const examAdmission: ExamAdmission = {
+                    admissionId: "",
+                    timestamp: "",
+                    type: AdmissionTypes.EXAM,
+                    enrollmentId: "",
+                    examId: props.exam.examId,
+                };
+                const enrollmentId = new GenericResponseHandler("enrollment-Id").handleResponse(
+                    await new CertificateManagement().getOwnEnrollmentId()
+                )[0].enrollmentId;
+                console.log(enrollmentId);
+                if (await executeTransaction(new AddAdmissionTransaction(enrollmentId, examAdmission))) {
+                    useToast().success("Successfully admitted for exam.");
+                    isAdmitted.value = true;
+                }
             }
 
             async function drop() {

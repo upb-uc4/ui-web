@@ -192,11 +192,14 @@
                     if (result) tmpCourses.unshift(result);
                 }
                 courses.value = tmpCourses;
+
                 const genericResponseHandler = new GenericResponseHandler("exams");
                 const exam_management = new ExamManagement();
                 const examResponse = await exam_management.getExams(
                     undefined,
-                    courses.value.map((course) => course.courseId)
+                    courses.value.map((course) => course.courseId),
+                    undefined,
+                    result.map((r) => r.moduleId)
                 );
                 exams.value = genericResponseHandler.handleResponse(examResponse);
             }
@@ -208,8 +211,11 @@
             }
 
             async function getExamAdmissions() {
-                //TODO API
-                examAdmissions.value = mockedExamAdmissions;
+                const admission_management = new AdmissionManagement();
+                const handler = new GenericResponseHandler("exam admissions");
+                examAdmissions.value = handler.handleResponse(
+                    await admission_management.getExamAdmissions((await useStore().getters.user).username)
+                );
             }
 
             let shownExams = computed(() => {
