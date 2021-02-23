@@ -1,10 +1,32 @@
-# [WIP 0.17.2](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.17.2) (2021-02-0X)
+# [WIP 0.18.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.1) (2021-XX-XX)
+## Feature
+- Add Certificate of enrollment [#850](https://github.com/upb-uc4/ui-web/pull/850)
+- Restrict student course list to showing only admittable courses (semester + ExReg) [#851](https://github.com/upb-uc4/ui-web/pull/851)
+- Show enrollment-ID secret to user on settings page and on account deletion [#856](https://github.com/upb-uc4/ui-web/pull/856)
+
+## Bugfix
+- fix profile picture in navbar not updating properly[#855](https://github.com/upb-uc4/ui-web/pull/855)
+- fix a bug that the year selection would not reset properly[#827](https://github.com/upb-uc4/ui-web/pull/827)
+- fix a bug that caused displaying the certificate text area without a certificate [#858](https://github.com/upb-uc4/ui-web/pull/858)
+
+## Refactor
+- use consistent timeformat for localeDate strings [#799](https://github.com/upb-uc4/ui-web/pull/799)
+
+# [0.18.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.0-hotfix.1) (2021-02-19)
+## Bugfix
+- fix execution calls on "My Courses" page of the student causing no courses being shown [#861](https://github.com/upb-uc4/ui-web/pull/861)
+
+# [0.18.0](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.2...v0.18.0) (2021-02-12)
 ## Feature
 - add new operations workflow [#832](https://github.com/upb-uc4/ui-web/pull/832)
 - add ability to watch operations
 
 ## Bugfix
 - fix colour of uc4 logo in mobile navigation [#834](https://github.com/upb-uc4/ui-web/pull/834)
+- fix bug prventing modules from being updated correctly in courses [#839](https://github.com/upb-uc4/ui-web/pull/839)
+
+## Refactor 
+- fix centering of modal components [#849](https://github.com/upb-uc4/ui-web/pull/849)
 
 # [0.17.1-hotfix.2](https://github.com/upb-uc4/ui-web/compare/v0.17.1-hotfix.1...v0.17.1-hotfix.2) (2021-02-03)
 ## Bugfix

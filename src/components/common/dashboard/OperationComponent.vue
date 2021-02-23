@@ -173,6 +173,7 @@
     import executeTransaction from "@/api/contracts/ChaincodeUtility";
     import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
     import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
 
     export default {
         name: "OperationComponent",
@@ -240,21 +241,12 @@
                 }
             );
 
-            const dateFormatOptions = {
-                weekday: "short",
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-            };
-
             const params = ref([] as string[]);
             const title = ref("");
             const shownOpId = operation.value.operationId.substring(0, 4);
 
-            const initiatedTimestamp = new Date(operation.value.initiatedTimestamp).toLocaleString("en-US", dateFormatOptions);
-            const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-US", dateFormatOptions);
+            const initiatedTimestamp = new Date(operation.value.initiatedTimestamp).toLocaleString("en-GB", dateFormatOptions);
+            const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-GB", dateFormatOptions);
 
             const showDetails = ref(false);
 
