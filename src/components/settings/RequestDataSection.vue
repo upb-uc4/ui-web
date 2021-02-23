@@ -5,6 +5,19 @@
                 <loading-spinner />
             </div>
             <div v-else class="w-full">
+                <div class="lg:flex w-full mb-6">
+                    <div class="lg:w-1/2 w-full items-center">
+                        <label class="input-label">Enrollment-ID Secret</label>
+                        <input
+                            id="enrollmentIdSecretSettings"
+                            title="You will need this secret whenever you want to restore your study data after your account was deleted. Store it safely!"
+                            :value="enrollmentIdSecret"
+                            type="text"
+                            class="w-full input-text"
+                            readonly
+                        />
+                    </div>
+                </div>
                 <div v-if="!isPending">
                     <button id="requestData" class="btn w-48" @click="requestData">Request Data</button>
                 </div>
@@ -57,7 +70,7 @@
 </template>
 
 <script lang="ts">
-    import { ref } from "vue";
+    import { onBeforeMount, ref } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ReportManagement from "@/api/ReportManagement";
     import { useStore } from "@/use/store/store";
@@ -79,6 +92,12 @@
             const timestamp = ref("");
             let data = {} as File;
             let dataUrl = ref("");
+
+            const enrollmentIdSecret = ref("");
+
+            onBeforeMount(async () => {
+                enrollmentIdSecret.value = (await useStore().getters.user).enrollmentIdSecret;
+            });
 
             async function requestData() {
                 busy.value = true;
@@ -137,6 +156,7 @@
                 refresh,
                 deleteData,
                 dataUrl,
+                enrollmentIdSecret,
             };
         },
     };

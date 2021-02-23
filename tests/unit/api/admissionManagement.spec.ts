@@ -32,6 +32,7 @@ import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/
 import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
 import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
 import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
+import { AdmissionTypes } from "@/api/api_models/admission_management/AdmissionTypes";
 
 let userManagement: UserManagement;
 let certManagement: CertificateManagement;
@@ -102,10 +103,10 @@ describe("Admissions management", () => {
     });
 
     test("Fetch enrollmentId", async () => {
-        const response = await certManagement.getEnrollmentId(authUser.username);
+        const response = await certManagement.getEnrollmentId([authUser.username]);
 
         expect(response.statusCode).toEqual(200);
-        enrollmentId = response.returnValue.id;
+        enrollmentId = response.returnValue[0].enrollmentId;
 
         expect(enrollmentId).not.toEqual("");
     });
@@ -153,7 +154,7 @@ describe("Admissions management", () => {
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
 
-        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId([admin.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Create and send certificate signing request", async () => {
@@ -200,6 +201,7 @@ describe("Admissions management", () => {
             enrollmentId: "",
             moduleId,
             timestamp: "",
+            type: AdmissionTypes.COURSE,
         };
 
         const result = await executeTransaction(new AddAdmissionTransaction(enrollmentId, admission), protoURL);

@@ -3,6 +3,7 @@ import Configuration from "@/api/api_models/configuration_management/Configurati
 import Admin from "@/api/api_models/user_management/Admin";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
+import CertificatePKI from "pkijs/src/Certificate";
 import { MutationTree } from "vuex";
 import { MutationTypes } from "./mutation-types";
 import defaultState, { State } from "./state";
@@ -24,6 +25,7 @@ export type Mutations<S = State> = {
     [MutationTypes.ADD_OPERATION_APPROVAL](state: S, payload: string): void;
     [MutationTypes.ADD_OPERATION_REJECTION](state: S, payload: string): void;
     [MutationTypes.CLEAR_PROCESSED_OPERATIONS](state: S, payload: void): void;
+    [MutationTypes.ADD_CA_CERTIFICATES](state: S, payload: CertificatePKI[]): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -75,5 +77,8 @@ export const mutations: MutationTree<State> & Mutations = {
     [MutationTypes.CLEAR_PROCESSED_OPERATIONS](state: State) {
         state.processedOperations.approved = [] as string[];
         state.processedOperations.rejected = [] as string[];
+    },
+    [MutationTypes.ADD_CA_CERTIFICATES](state: State, payload: CertificatePKI[]) {
+        state.caCerts = payload;
     },
 };

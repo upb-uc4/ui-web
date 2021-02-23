@@ -25,9 +25,9 @@ export const actions: ActionTree<State, State> & Actions = {
         const keypair = await createKeyPair();
 
         const username = (await store.getters.user).username;
-        const response = await certificateManagement.getEnrollmentId(username);
+        const response = await certificateManagement.getEnrollmentId([username]);
 
-        const enrollmentId = response.returnValue.id;
+        const enrollmentId = response.returnValue[0].enrollmentId;
         const csr = await createCSR(keypair, enrollmentId);
 
         const password = await store.state.encryptPrivateKeyModal();

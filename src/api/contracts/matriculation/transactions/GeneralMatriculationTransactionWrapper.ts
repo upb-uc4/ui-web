@@ -26,7 +26,7 @@ export class GeneralMatriculationTransactionWrapper extends AbstractTransaction 
     }
 
     public async validateProposal(proposal: Proposal): Promise<boolean> {
-        const enrollmentId = (await new CertificateManagement().getEnrollmentId(this.usernameToEnroll)).returnValue.id;
+        const enrollmentId = (await new CertificateManagement().getEnrollmentId([this.usernameToEnroll])).returnValue[0].enrollmentId;
 
         const addEntries = await new AddEntriesToMatriculationTransaction(
             this.usernameToEnroll,
@@ -46,7 +46,7 @@ export class GeneralMatriculationTransactionWrapper extends AbstractTransaction 
     }
 
     public async validateTransaction(transcation: TransactionMessage): Promise<boolean> {
-        const enrollmentId = (await new CertificateManagement().getEnrollmentId(this.usernameToEnroll)).returnValue.id;
+        const enrollmentId = (await new CertificateManagement().getEnrollmentId([this.usernameToEnroll])).returnValue[0].enrollmentId;
 
         const addEntries = await new AddEntriesToMatriculationTransaction(
             this.usernameToEnroll,

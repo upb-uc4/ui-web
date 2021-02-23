@@ -135,8 +135,8 @@
                 const handler = new GenericResponseHandler("enrollment-id");
                 const response = await certificateManagement.getOwnEnrollmentId();
                 const result = handler.handleResponse(response);
-                if (result) {
-                    enrollmentId.value = result.id;
+                if (result.length !== 0) {
+                    enrollmentId.value = result[0].enrollmentId;
                 }
                 busy.value--;
             }

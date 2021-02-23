@@ -1,10 +1,9 @@
 import { AdmissionTypes } from "./AdmissionTypes";
 
-export default interface CourseAdmission {
+export default interface ExamAdmission {
     enrollmentId: string;
-    courseId: string;
-    moduleId: string;
     admissionId: string;
     timestamp: string;
-    type: AdmissionTypes.COURSE;
+    examId: string;
+    type: AdmissionTypes.EXAM;
 }

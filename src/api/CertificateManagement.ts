@@ -2,12 +2,13 @@ import APIResponse from "./helpers/models/APIResponse";
 import { AxiosResponse, AxiosError } from "axios";
 import APIError from "./api_models/errors/APIError";
 import Certificate from "./api_models/certificate_management/Certificate";
-import EnrollmentId from "./api_models/certificate_management/EnrollmentId";
+import EnrollmentId from "./api_models/certificate_management/EnrollmentIdUsernamePair";
 import EncryptedPrivateKey from "./api_models/certificate_management/EncryptedPrivateKey";
 import handleAuthenticationError from "./AuthenticationHelper";
 import CommonHyperledger from "./CommonHyperledger";
 import ServiceVersion from "@/api/helpers/models/ServiceVersion";
 import { useStore } from "@/use/store/store";
+import EnrollmentIdUsernamePair from "./api_models/certificate_management/EnrollmentIdUsernamePair";
 
 export default class CertificateManagement extends CommonHyperledger {
     protected static endpoint = "/certificate-management";
@@ -61,17 +62,19 @@ export default class CertificateManagement extends CommonHyperledger {
             });
     }
 
-    async getOwnEnrollmentId(): Promise<APIResponse<EnrollmentId>> {
+    async getOwnEnrollmentId(): Promise<APIResponse<EnrollmentIdUsernamePair[]>> {
         const username = (await useStore().getters.user).username;
-        return this.getEnrollmentId(username);
+        return this.getEnrollmentId([username]);
     }
 
-    async getUsername(enrollmentId: string): Promise<APIResponse<string>> {
+    async getUsername(enrollmentIds: string[]): Promise<APIResponse<EnrollmentIdUsernamePair[]>> {
+        const requestParameter = { params: {} as any };
+        requestParameter.params.enrollmentIds = enrollmentIds.reduce((a, b) => a + "," + b, "");
         return await this._axios
-            .get(`/certificates/${enrollmentId}/username`)
+            .get(`/certificates/username`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data.username,
+                    returnValue: response.data,
                     statusCode: response.status,
                     error: {} as APIError,
                     networkError: false,
@@ -83,21 +86,21 @@ export default class CertificateManagement extends CommonHyperledger {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: "",
+                            returnValue: [],
                             networkError: false,
                         })
                     ) {
-                        return await this.getUsername(enrollmentId);
+                        return await this.getUsername(enrollmentIds);
                     }
                     return {
-                        returnValue: "",
+                        returnValue: [],
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: "",
+                        returnValue: [],
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,
@@ -106,12 +109,14 @@ export default class CertificateManagement extends CommonHyperledger {
             });
     }
 
-    async getEnrollmentId(username: string): Promise<APIResponse<EnrollmentId>> {
+    async getEnrollmentId(usernames: string[]): Promise<APIResponse<EnrollmentIdUsernamePair[]>> {
+        const requestParameter = { params: {} as any };
+        requestParameter.params.usernames = usernames.reduce((a, b) => a + "," + b, "");
         return await this._axios
-            .get(`/certificates/${username}/enrollmentId`)
+            .get(`/certificates/enrollmentId`, requestParameter)
             .then((response: AxiosResponse) => {
                 return {
-                    returnValue: response.data as EnrollmentId,
+                    returnValue: response.data,
                     statusCode: response.status,
                     error: {} as APIError,
                     networkError: false,
@@ -123,21 +128,21 @@ export default class CertificateManagement extends CommonHyperledger {
                         await handleAuthenticationError({
                             statusCode: error.response.status,
                             error: error.response.data as APIError,
-                            returnValue: {} as EnrollmentId,
+                            returnValue: [],
                             networkError: false,
                         })
                     ) {
-                        return await this.getEnrollmentId(username);
+                        return await this.getEnrollmentId(usernames);
                     }
                     return {
-                        returnValue: {} as EnrollmentId,
+                        returnValue: [],
                         statusCode: error.response.status,
                         error: error.response.data as APIError,
                         networkError: false,
                     };
                 } else {
                     return {
-                        returnValue: {} as EnrollmentId,
+                        returnValue: [],
                         statusCode: 0,
                         error: {} as APIError,
                         networkError: true,
