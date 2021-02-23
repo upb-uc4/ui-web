@@ -30,22 +30,23 @@
                 </div>
             </div>
         </div>
-        <button-section v-if="isGradable">
-            <button-section>
-                <template #right>
-                    <div v-if="isGradable" class="w-48 flex justify-center">
-                        <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" class="h-8 w-8" />
-                        <button v-else id="gradeExam" :disabled="!isValid" type="button" class="w-full btn btn-add" @click="gradeExam">
-                            Grade Exam
-                        </button>
-                    </div>
-                </template>
-                <template #left>
-                    <button v-if="isGradable" id="importCSV" type="button" class="w-full btn-secondary" @click="importCSV">Import</button>
-                    <button v-if="isGraded || isGradable" id="exportCSV" type="button" class="w-full btn-secondary ml-4" @click="exportCSV">Export</button>
-                </template>
-            </button-section>
-            <label v-if="!isGraded && !isGradable" class="input-label-warning">Exam not finished.</label>
+        <button-section>
+            <template #right>
+                <div v-if="isGradable" class="w-48 flex justify-center">
+                    <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" class="h-8 w-8" />
+                    <button v-else id="gradeExam" :disabled="!isValid" type="button" class="w-full btn btn-add" @click="gradeExam">
+                        Grade Exam
+                    </button>
+                </div>
+            </template>
+            <template #left>
+                <button v-if="isGradable" id="importCSV" type="button" class="w-full btn-secondary" @click="importCSV">Import</button>
+                <button v-if="isGraded || isGradable" id="exportCSV" type="button" class="w-full btn-secondary ml-4" @click="exportCSV">
+                    Export
+                </button>
+            </template>
+        </button-section>
+        <label v-if="!isGraded && !isGradable" class="input-label-warning">Exam not finished.</label>
     </BaseSection>
 </template>
 
@@ -161,7 +162,6 @@
             async function importCSV() {
                 showNotYetImplementedToast();
             }
-
 
             return {
                 isLoading,
