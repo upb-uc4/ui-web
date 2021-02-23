@@ -1,6 +1,6 @@
 <template>
     <div>
-        <loading-component v-if="isLoading" title="Loading Courses..." />
+        <loading-component v-if="isLoading" title="Loading Exams..." />
         <div v-for="exam in shownExams" v-else :key="exam.examId" class="mt-6">
             <exam-row
                 :is-student="isStudent"
@@ -26,6 +26,7 @@
     import Course from "@/api/api_models/course_management/Course";
     import ExamResult, { Grade } from "../MockExamResultInterface";
     import ExamManagement from "@/api/ExamManagement";
+    import CertificateManagement from "@/api/CertificateManagement";
 
     export default {
         name: "CourseList",
@@ -161,16 +162,22 @@
                 username.value = (await store.getters.user).username;
             }
             async function getExams() {
+                const enrollmentId = await getOwnEnrollmentId();
                 const genericResponseHandler = new GenericResponseHandler("exams");
                 const exam_management = new ExamManagement();
-                const examResponse = await exam_management.getExams(undefined, undefined, [username.value]);
+                const examResponse = await exam_management.getExams(undefined, undefined, [enrollmentId]);
                 exams.value = genericResponseHandler.handleResponse(examResponse);
 
-                const courseIds = new Set(exams.value.map((exam) => exam.courseId));
                 const course_management = new CourseManagement();
                 const handler = new GenericResponseHandler("courses");
-                const courseResponse = await course_management.getCourses(undefined, undefined, [...courseIds]);
+                const courseResponse = await course_management.getCourses(undefined, (await useStore().getters.user).username);
                 courses.value = handler.handleResponse(courseResponse);
+            }
+
+            async function getOwnEnrollmentId(): Promise<string> {
+                const cert_management = new CertificateManagement();
+                const handler = new GenericResponseHandler("enrollment-ID");
+                return handler.handleResponse(await cert_management.getOwnEnrollmentId())[0].enrollmentId;
             }
 
             async function getExamAdmissions() {
