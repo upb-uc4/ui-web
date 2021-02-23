@@ -76,9 +76,9 @@ export default class ExamManagement extends CommonHyperledger {
     }
 
     /**
-     * Fetch an unsigned proposal for adding a course admission
-     * @param courseAdmission courseAdmission
-     */
+     * Fetch an unsigned proposal for creating an exam
+     * @param exam exam
+      */
     async getUnsignedExamCreateProposal(exam: Exam): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
             .post(`/exams/unsigned_add_proposal`, exam)
