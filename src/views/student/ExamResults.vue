@@ -29,11 +29,14 @@
                             :key="exam.examId"
                             class="flex justify-between my-2"
                         >
-                            <label class="navigation-link" title="Show Exam" @click="routeExam(exam.examId)">{{
-                                findCourse(exam.courseId).courseName
-                            }}</label>
+                            <label class="navigation-link" title="Show Exam" @click="routeExam(exam.examId)">
+                                {{ findCourse(exam.courseId).courseName }}
+                            </label>
                             <div class="w-1/3 flex justify-between">
-                                <label class="text-gray-400 pr-2 flex items-center">{{ exam.ects }}<i class="flex text-xs sm:hidden pl-1 fas fa-coins"/></label>
+                                <label class="text-gray-400 pr-2 flex items-center">
+                                    {{ exam.ects }}
+                                    <i class="flex text-xs sm:hidden pl-1 fas fa-coins" />
+                                </label>
                                 <label :class="isPassed(findGrade(exam.examId)) ? 'text-green-500' : 'text-red-500'">
                                     {{ findGrade(exam.examId) }}
                                 </label>
@@ -61,6 +64,10 @@
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
     import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
     import Exam from "@/api/api_models/exam_management/Exam";
+    import ExamResultManagement from "@/api/ExamResultManagement";
+    import { useStore } from "@/use/store/store";
+    import CourseManagement from "@/api/CourseManagement";
+    import ExamManagement from "@/api/ExamManagement";
 
     export default {
         name: "StudentExamResults",
@@ -70,103 +77,6 @@
         },
         props: {},
         setup(props: any) {
-            const mockedExams = [
-                {
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                    courseId: "-1",
-                    lecturerEnrollmentId: "0123456",
-                    moduleId: "M.1275.78235",
-                    type: "Written Exam",
-                    date: "2021-02-12T10:00:00",
-                    ects: 6,
-                    admittableUntil: "2021-02-12T23:59:59",
-                    droppableUntil: "2021-06-05T23:59:59",
-                },
-                {
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00a",
-                    courseId: "-5",
-                    lecturerEnrollmentId: "0123456",
-                    moduleId: "M.1275.78235",
-                    type: "Written Exam",
-                    date: "2021-02-12T10:00:00",
-                    ects: 6,
-                    admittableUntil: "2021-02-12T23:59:59",
-                    droppableUntil: "2021-06-05T23:59:59",
-                },
-                {
-                    examId: "ExampleGroup3:M.2:Written Exam:2021-02-26T11:15:00",
-                    courseId: "-2",
-                    lecturerEnrollmentId: "0123456",
-                    moduleId: "M.1278.15686",
-                    type: "Oral Exam",
-                    date: "2021-02-26T11:15:00",
-                    ects: 10,
-                    admittableUntil: "2021-01-26T23:59:59",
-                    droppableUntil: "2021-01-19T23:59:59",
-                },
-            ];
-            const mockedCourses = [
-                {
-                    courseDescription: "This is a course description.",
-                    courseId: "-2",
-                    courseLanguage: "English",
-                    courseName: "Algebra 1",
-                    courseType: "Lecture",
-                    currentParticipants: 5,
-                    ects: 6,
-                    startDate: "1999-01-01",
-                    endDate: "2000-01-01",
-                    lecturerId: "lecturer",
-                    maxParticipants: 10,
-                    moduleIds: ["M.1278.79512"],
-                } as Course,
-                {
-                    courseDescription: "This is another course description.",
-                    courseId: "-1",
-                    courseLanguage: "German",
-                    courseName: "VueJS Programming 1",
-                    courseType: "Lecture",
-                    currentParticipants: 5,
-                    ects: 6,
-                    startDate: "1999-01-01",
-                    endDate: "2000-01-01",
-                    lecturerId: "lecturer",
-                    maxParticipants: 10,
-                    moduleIds: ["M.1275.0000"],
-                } as Course,
-                {
-                    courseDescription: "This is another course description.",
-                    courseId: "-5",
-                    courseLanguage: "German",
-                    courseName: "VueJS Programming 2",
-                    courseType: "Lecture",
-                    currentParticipants: 5,
-                    ects: 6,
-                    startDate: "1999-01-01",
-                    endDate: "2000-01-01",
-                    lecturerId: "lecturer",
-                    maxParticipants: 10,
-                    moduleIds: ["M.1275.0000"],
-                } as Course,
-            ] as Course[];
-            const mockedExamResults = [
-                {
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6",
-                    grade: Grade.g1_0,
-                },
-                {
-                    examId: "ExampleGroup3:M.2:Written Exam:2021-02-26T11:15:00",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6",
-                    grade: Grade.g5_0,
-                },
-                {
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00a",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6",
-                    grade: Grade.g1_3,
-                },
-            ];
-
             const isLoading = ref(false);
             const myExamRegs = ref([] as ExaminationRegulation[]);
             const myExamResults = ref([] as ExamResult[]);
@@ -199,27 +109,27 @@
             }
 
             async function getExamResults() {
-                //TODO API
-                myExamResults.value = mockedExamResults;
-                let promises = [];
-                promises.push(getRelevantExams());
-                promises.push(getRelevantCourses());
-                await Promise.all(promises);
+                const exam_result_management = new ExamResultManagement();
+                const handler = new GenericResponseHandler("exam results");
+                myExamResults.value = handler.handleResponse(
+                    await exam_result_management.getExamResults((await useStore().getters.user).username)
+                );
+                await getRelevantExams();
+                await getRelevantCourses();
             }
 
             async function getRelevantExams() {
-                //TODO get Exams via examIds in examResults
-                myExams.value = mockedExams;
+                const exam_management = new ExamManagement();
+                const handler = new GenericResponseHandler("exams");
+                myExams.value = handler.handleResponse(await exam_management.getExams(myExamResults.value.map((result) => result.examId)));
             }
 
             async function getRelevantCourses() {
-                //TODO comment in
-                // const course_management = new CourseManagement();
-                // const handler = new GenericResponseHandler("course");
-                // for (let exam of myExams.value) {
-                //     myCourses.value.push(handler.handleResponse(await course_management.getCourse(exam.courseId)));
-                // }
-                myCourses.value = mockedCourses;
+                const course_management = new CourseManagement();
+                const handler = new GenericResponseHandler("course");
+                for (let exam of myExams.value) {
+                    myCourses.value.push(handler.handleResponse(await course_management.getCourse(exam.courseId)));
+                }
             }
 
             function findGrade(examId: string): string {
