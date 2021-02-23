@@ -31,30 +31,38 @@
         </div>
         <button-section v-if="isGradable">
             <template #right>
-                <button id="gradeExam" :disabled="!isValid" type="button" class="w-full w-48 btn btn-add" @click="gradeExam">
-                    Grade Exam
-                </button>
+                <div class="w-48 flex justify-center">
+                    <img v-if="isLoading" src="@/assets/loading-spinner-alt.svg" class="h-8 w-8" />
+                    <button v-else id="gradeExam" :disabled="!isValid" type="button" class="w-full btn btn-add" @click="gradeExam">
+                        Grade Exam
+                    </button>
+                </div>
             </template>
             <template #left>
-                <button id="importCSV" type="button" class="w-full w-48 btn-secondary" @click="importCSV">Import</button>
-                <button id="exportCSV" type="button" class="w-full w-48 btn-secondary ml-4" @click="exportCSV">Export</button>
+                <button id="importCSV" type="button" class="w-full btn-secondary" @click="importCSV">Import</button>
+                <button id="exportCSV" type="button" class="w-full btn-secondary ml-4" @click="exportCSV">Export</button>
             </template>
         </button-section>
-        <label v-else class="input-label-warning">Exam not finished.</label>
+        <label v-else-if="!isGraded" class="input-label-warning">Exam not finished.</label>
     </BaseSection>
 </template>
 
 <script lang="ts">
     import BaseSection from "@/components/common/section/BaseSection.vue";
-    import { computed, onBeforeMount, ref, watch } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
     import { ExamEntity } from "../../../entities/ExamEntity";
-    import { Grade } from "../MockExamResultInterface";
+    import { Grade } from "../Grades";
     import ButtonSection from "@/components/common/section/ButtonSection.vue";
     import AdmissionManagement from "@/api/AdmissionManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Select from "@/components/common/Select.vue";
     import ExamResultManagement from "@/api/ExamResultManagement";
     import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
+    import ConfigurationManagement from "@/api/ConfigurationManagement";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { AddExamResultTransaction } from "@/api/contracts/exam_result/transactions/AddExamResultTransaction";
+    import { useToast } from "@/toast";
+    import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
 
     export default {
         name: "CourseModuleSection",
@@ -70,68 +78,32 @@
             },
         },
         setup(props: any, { emit }: any) {
-            const mockedAdmissions = [
-                {
-                    admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:AnExampleExamId",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6",
-                    timestamp: "2020-12-01",
-                    type: "Exam",
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                },
-                {
-                    admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:AnExampleExamId12",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a612",
-                    timestamp: "2020-12-01",
-                    type: "Exam",
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                },
-                {
-                    admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:AnExampleExamId13",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a613",
-                    timestamp: "2020-12-01",
-                    type: "Exam",
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                },
-                {
-                    admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:AnExampleExamId14",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a614",
-                    timestamp: "2020-12-01",
-                    type: "Exam",
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                },
-                {
-                    admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:AnExampleExamId15",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a615",
-                    timestamp: "2020-12-01",
-                    type: "Exam",
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                },
-                {
-                    admissionId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a6:AnExampleExamId16",
-                    enrollmentId: "e53143d725255d70945989901ebc137a7d35c2b61ffdfecb9a135c6136eea4a616",
-                    timestamp: "2020-12-01",
-                    type: "Exam",
-                    examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                },
-            ];
-
             const isLoading = ref(false);
             const examResults = ref([] as ExamResult[]);
-            const grades = Object.values(Grade);
+            const grades = ref([] as string[]);
 
             const isGraded = ref(false);
             const isGradable = computed(() => {
                 return new Date() > new Date(props.exam.date) && !isGraded.value;
             });
 
+            const grades2 = ref([]);
+
             onBeforeMount(async () => {
                 isLoading.value = true;
-                let promises = [];
                 if (!(await getExamResults())) {
-                    getExamAdmissions();
+                    await getExamAdmissions();
                 }
+                await getConfig();
                 isLoading.value = false;
             });
+
+            async function getConfig() {
+                const configuration_management = new ConfigurationManagement();
+                const handler = new GenericResponseHandler("configuration");
+                grades.value = handler.handleResponse(await configuration_management.getConfiguration()).grades;
+                grades.value.push("");
+            }
 
             async function getExamResults(): Promise<boolean> {
                 const exam_result_management = new ExamResultManagement();
@@ -152,10 +124,10 @@
                 const result = handler.handleResponse(response);
                 result.forEach((admission) => {
                     examResults.value.push({
-                        examId: props.exam.examId,
                         enrollmentId: admission.enrollmentId,
+                        examId: props.exam.examId,
                         grade: Grade.NONE,
-                    });
+                    } as ExamResult);
                 });
             }
 
@@ -164,18 +136,23 @@
             });
 
             async function gradeExam() {
-                //TODO
-                //IF SUCCESS
-                isGraded.value = true;
-                console.log("Graded!");
+                isLoading.value = true;
+                console.log(examResults.value);
+                if (await executeTransaction(new AddExamResultTransaction(examResults.value))) {
+                    useToast().success("Exam graded.");
+                    isGraded.value = true;
+                }
+                isLoading.value = false;
             }
 
             async function exportCSV() {
                 //TODO
+                showNotYetImplementedToast();
             }
 
             async function importCSV() {
                 //TODO
+                showNotYetImplementedToast();
             }
 
             return {

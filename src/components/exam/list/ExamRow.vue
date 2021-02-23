@@ -77,7 +77,7 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import Router from "@/use/router";
     import { ref } from "vue";
-    import { Grade } from "../MockExamResultInterface";
+    import { Grade } from "../Grades";
 
     export default {
         name: "ExamRow",

@@ -55,12 +55,12 @@
     import MatriculationManagement from "@/api/MatriculationManagement";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
     import ExaminationRegulation from "@/api/api_models/exam_reg_management/ExaminationRegulation";
-    import ExamResult, { Grade } from "@/components/exam/MockExamResultInterface";
+    import { Grade } from "@/components/exam/Grades";
     import Course from "@/api/api_models/course_management/Course";
-    import Exam from "@/components/exam/mockExamInterface";
-    import CourseManagement from "@/api/CourseManagement";
     import router from "@/use/router";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
+    import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
+    import Exam from "@/api/api_models/exam_management/Exam";
 
     export default {
         name: "StudentExamResults",

@@ -1,9 +1,3 @@
-export default interface ExamResult {
-    examId: String;
-    enrollmentId: String;
-    grade: Grade;
-}
-
 export enum Grade {
     NONE = "Not Graded",
     g1_0 = "1.0",

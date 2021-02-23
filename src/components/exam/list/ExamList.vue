@@ -21,14 +21,15 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { computed, ref, onBeforeMount, watch } from "vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import Exam from "../mockExamInterface";
     import CourseManagement from "@/api/CourseManagement";
     import Course from "@/api/api_models/course_management/Course";
-    import ExamResult, { Grade } from "../MockExamResultInterface";
+    import { Grade } from "../Grades";
     import ExamManagement from "@/api/ExamManagement";
     import CertificateManagement from "@/api/CertificateManagement";
     import APIResponse from "@/api/helpers/models/APIResponse";
     import AdmissionManagement from "@/api/AdmissionManagement";
+    import Exam from "@/api/api_models/exam_management/Exam";
+    import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
 
     export default {
         name: "CourseList",
