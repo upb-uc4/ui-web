@@ -30,6 +30,7 @@
     import AdmissionManagement from "@/api/AdmissionManagement";
     import Exam from "@/api/api_models/exam_management/Exam";
     import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
+    import ExamResultManagement from "@/api/ExamResultManagement";
 
     export default {
         name: "CourseList",
@@ -157,8 +158,9 @@
             });
 
             async function getExamResults() {
-                //TODO API CALL
-                examResults.value = mockedExamResults;
+                const exam_result_management = new ExamResultManagement();
+                const handler = new GenericResponseHandler("exam results");
+                examResults.value = handler.handleResponse(await exam_result_management.getExamResults(username.value));
             }
 
             async function getUserInfo() {
