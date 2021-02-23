@@ -1,7 +1,7 @@
 import Proposal from "@/api/api_models/common/Proposal";
 import UnsignedProposalMessage from "@/api/api_models/common/UnsignedProposalMessage";
 import Exam from "@/api/api_models/exam_management/Exam";
-import Operation, { TransactionInfo } from "@/api/api_models/operation_management/Operation";
+import { TransactionInfo } from "@/api/api_models/operation_management/Operation";
 import ExamManagement from "@/api/ExamManagement";
 import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 import OperationManagement from "@/api/OperationManagement";
@@ -24,7 +24,9 @@ export class CreateExamTransaction extends AbstractTransaction {
 
     public async validateProposal(proposal: Proposal) {
         const proposalOperationId = proposal.payload.input.input.args[1];
-        const examProposal: Exam = JSON.parse(JSON.parse((await new OperationManagement().getOperation(proposalOperationId)).returnValue.transactionInfo.parameters)[0]);
+        const examProposal: Exam = JSON.parse(
+            JSON.parse((await new OperationManagement().getOperation(proposalOperationId)).returnValue.transactionInfo.parameters)[0]
+        );
 
         if (!examProposal) {
             return false;
@@ -37,7 +39,7 @@ export class CreateExamTransaction extends AbstractTransaction {
         isValid = isValid && examProposal.ects == this.exam.ects;
         isValid = isValid && examProposal.lecturerEnrollmentId === this.exam.lecturerEnrollmentId;
         isValid = isValid && examProposal.moduleId === this.exam.moduleId;
-        isValid = isValid && examProposal.type === this.exam.type; 
+        isValid = isValid && examProposal.type === this.exam.type;
 
         if (isValid) {
             this.operationId = proposalOperationId;
