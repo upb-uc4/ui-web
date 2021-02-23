@@ -61,6 +61,7 @@
     import BaseView from "@/views/common/BaseView.vue";
     import { useStore } from "@/use/store/store";
     import { examTypes } from "@/components/exam/mockExamInterface";
+    import { clone } from "lodash";
 
     export default {
         name: "StudentCourseList",
@@ -83,10 +84,9 @@
             const types = ref([] as string[]);
 
             onBeforeMount(async () => {
-                //TODO GET TYPES VIA CONFIG
-                await getRole();
-                types.value = Object.values(examTypes);
-                types.value.unshift(defaultType);
+                let promises = [];
+                promises.push(getRole(), getConfig());
+                await Promise.all(promises);
             });
 
             function refresh() {
@@ -113,6 +113,12 @@
             async function getRole() {
                 const store = useStore();
                 role.value = await store.getters.role;
+            }
+
+            async function getConfig() {
+                const store = useStore();
+                types.value = clone((await store.getters.configuration).examTypes);
+                types.value.unshift(defaultType);
             }
 
             const isLecturer = computed(() => {
