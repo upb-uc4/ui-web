@@ -173,12 +173,10 @@
             }
 
             async function getExam() {
-                //TODO GET EXAM VIA Router.currentRoute.value.params.id as string
                 const exam_management = new ExamManagement();
                 const handler = new GenericResponseHandler("exam");
                 const response = await exam_management.getExams([router.currentRoute.value.params.id as string]);
-                //exam.value = handler.handleResponse(response)[0];
-                exam.value = new ExamEntity(mockedExam);
+                exam.value = new ExamEntity(handler.handleResponse(response)[0]);
                 initialExamState.value = new ExamEntity(exam.value);
             }
 
