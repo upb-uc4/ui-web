@@ -122,7 +122,7 @@
 
             watch(selectedModule, () => {
                 if (!props.viewMode) {
-                    emit("update:module-id", selectedCourse.value.courseId);
+                    emit("update:module-id", selectedModule.value);
                 }
             });
 

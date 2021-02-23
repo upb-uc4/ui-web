@@ -60,6 +60,12 @@
     import { useStore } from "@/use/store/store";
     import { Role } from "@/entities/Role";
     import GradingSection from "@/components/exam/edit/GradingSection.vue";
+    import ExamManagement from "@/api/ExamManagement";
+    import router from "@/use/router/";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { CreateExamTransaction } from "@/api/contracts/exam/transactions/CreateExamTransaction";
+    import { showOperationCreatedToast } from "@/use/helpers/Toasts";
+    import CertificateManagement from "@/api/CertificateManagement";
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -164,26 +170,14 @@
                     response = await courseManagement.getCourses(undefined, username);
                     courses.value = genericResponseHandler.handleResponse(response);
                 }
-
-                //TODO REMOVE MOCK DATA
-                courses.value.push({
-                    courseDescription: "This is another course description.",
-                    courseId: "-1",
-                    courseLanguage: "German",
-                    courseName: "VueJS Programming 1",
-                    courseType: "Lecture",
-                    currentParticipants: 5,
-                    ects: 6,
-                    startDate: "1999-01-01",
-                    endDate: "2000-01-01",
-                    lecturerId: "lecturer",
-                    maxParticipants: 10,
-                    moduleIds: ["M.1275.0000"],
-                } as Course);
             }
 
             async function getExam() {
                 //TODO GET EXAM VIA Router.currentRoute.value.params.id as string
+                const exam_management = new ExamManagement();
+                const handler = new GenericResponseHandler("exam");
+                const response = await exam_management.getExams([router.currentRoute.value.params.id as string]);
+                //exam.value = handler.handleResponse(response)[0];
                 exam.value = new ExamEntity(mockedExam);
                 initialExamState.value = new ExamEntity(exam.value);
             }
@@ -199,7 +193,25 @@
             });
 
             async function createExam() {
-                //TODO CREATE EXAM VIA API
+                isLoading.value = true;
+                const store = useStore();
+                exam.value.lecturerEnrollmentId = await getOwnEnrollmentID();
+                //Set the type to "written exam" as "oral exams" are not supported yet
+                exam.value.type = (await store.getters.configuration).examTypes[0];
+                console.log(exam.value);
+                if (await executeTransaction(new CreateExamTransaction(exam.value))) {
+                    showOperationCreatedToast("exam");
+                    exam.value = initialExamState.value;
+                    back();
+                }
+                isLoading.value = false;
+            }
+
+            async function getOwnEnrollmentID(): Promise<string> {
+                const cert_management = new CertificateManagement();
+                const handler = new GenericResponseHandler("enrollment-ID");
+                const pair = handler.handleResponse(await cert_management.getOwnEnrollmentId())[0];
+                return pair.enrollmentId;
             }
 
             function back() {
