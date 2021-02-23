@@ -21,12 +21,11 @@
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import { computed, ref, onBeforeMount, watch } from "vue";
     import LoadingComponent from "@/components/common/loading/Spinner.vue";
-    import Lecturer from "@/api/api_models/user_management/Lecturer";
-
     import Exam from "../mockExamInterface";
     import CourseManagement from "@/api/CourseManagement";
     import Course from "@/api/api_models/course_management/Course";
     import ExamResult, { Grade } from "../MockExamResultInterface";
+    import ExamManagement from "@/api/ExamManagement";
 
     export default {
         name: "CourseList",
@@ -136,7 +135,7 @@
 
             onBeforeMount(async () => {
                 isLoading.value = true;
-                await getRole();
+                await getUserInfo();
                 let promises = [];
                 promises.push(getExams());
                 if (isStudent.value) {
@@ -156,22 +155,22 @@
                 examResults.value = mockedExamResults;
             }
 
-            async function getRole() {
+            async function getUserInfo() {
                 const store = useStore();
                 role.value = await store.getters.role;
+                username.value = (await store.getters.user).username;
             }
             async function getExams() {
                 const genericResponseHandler = new GenericResponseHandler("exams");
-                // TODO GET EXAMS VIA API
-                exams.value = mockedExams;
+                const exam_management = new ExamManagement();
+                const examResponse = await exam_management.getExams(undefined, undefined, [username.value]);
+                exams.value = genericResponseHandler.handleResponse(examResponse);
 
-                //TODO INCLUDE WHEN HAVING THE EXAMS API
-                // const courseIds = new Set(exams.value.map((exam) => exam.courseId));
-                // const course_management = new CourseManagement();
-                // const handler = new GenericResponseHandler("courses");
-                // const response = await course_management.getCourses(undefined, undefined, [...courseIds]);
-                // courses.value = handler.handleResponse(response);
-                courses.value = mockedCourses;
+                const courseIds = new Set(exams.value.map((exam) => exam.courseId));
+                const course_management = new CourseManagement();
+                const handler = new GenericResponseHandler("courses");
+                const courseResponse = await course_management.getCourses(undefined, undefined, [...courseIds]);
+                courses.value = handler.handleResponse(courseResponse);
             }
 
             async function getExamAdmissions() {

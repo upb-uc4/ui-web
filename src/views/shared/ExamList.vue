@@ -60,7 +60,6 @@
     import { Role } from "@/entities/Role";
     import BaseView from "@/views/common/BaseView.vue";
     import { useStore } from "@/use/store/store";
-    import { examTypes } from "@/components/exam/mockExamInterface";
     import { clone } from "lodash";
 
     export default {
