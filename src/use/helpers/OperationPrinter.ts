@@ -1,11 +1,14 @@
 import AdmissionManagement from "@/api/AdmissionManagement";
 import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
+import Exam from "@/api/api_models/exam_management/Exam";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 import Operation from "@/api/api_models/operation_management/Operation";
+import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import { dateFormatOptions } from "./DateFormatOptions";
 
 export async function printOperation(operation: Operation): Promise<string[]> {
     const contractName = operation.transactionInfo.contractName;
@@ -15,9 +18,24 @@ export async function printOperation(operation: Operation): Promise<string[]> {
             return printMatriculationOperation(operation);
         case UC4Identifier.CONTRACT_ADMISSION:
             return await printAdmissionOperation(operation);
+        case UC4Identifier.CONTRACT_EXAM:
+            return await printExamOperation(operation);
         default:
             return [];
     }
+}
+
+async function printExamOperation(operation: Operation): Promise<string[]> {
+    const paramsArray: string[] = JSON.parse(operation.transactionInfo.parameters);
+    const exam: Exam = <Exam>JSON.parse(paramsArray[0]);
+    const retArray = [] as string[];
+    const courseName = new GenericResponseHandler("course").handleResponse(await new CourseManagement().getCourse(exam.courseId))
+        .courseName;
+    retArray.push(`Course: ${courseName}`);
+    retArray.push(`Module: ${exam.moduleId}`);
+    retArray.push(`Date: ${new Date(exam.date).toLocaleString("en-Gb", dateFormatOptions)}`);
+    retArray.push(`ECTS: ${exam.ects}`);
+    return retArray;
 }
 
 async function printAdmissionOperation(operation: Operation): Promise<string[]> {
@@ -104,6 +122,8 @@ export function printOperationTitle(operation: Operation): string {
             return "Drop Course";
         case UC4Identifier.TRANSACTION_ADD_ADMISSION:
             return "Course Admission";
+        case UC4Identifier.TRANSACTION_ADD_EXAM:
+            return "Exam Creation";
         default:
             return "";
     }
@@ -115,6 +135,8 @@ export function getOperationBadgeIdentifier(operation: Operation): string {
             return "Matriculation";
         case UC4Identifier.CONTRACT_ADMISSION:
             return "Course Admission";
+        case UC4Identifier.CONTRACT_EXAM:
+            return "Exam";
         default:
             return "";
     }
