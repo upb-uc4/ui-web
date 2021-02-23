@@ -30,7 +30,7 @@ export async function buildGradingTable(examResults: ExamResult[]) {
 
         const sheet = xlsx.utils.json_to_sheet(results);
 
-        xlsx.utils.book_append_sheet(workbook, sheet, "exam_" + ex);
+        xlsx.utils.book_append_sheet(workbook, sheet, "exam_" + ex.substring(0, 4));
     }
 
     return workbook;
