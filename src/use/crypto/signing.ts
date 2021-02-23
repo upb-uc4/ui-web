@@ -158,7 +158,6 @@ export async function verifyProposalResponsePayloadSignature(
             const asn1User = asn1js.fromBER(berUser);
             const cert = new Certificate({ schema: asn1User.result });
             signatureValid = signatureValid && (await validateCertificate(cert));
-            console.log("certChain:", signatureValid);
         }
     } catch (error) {
         return false;
