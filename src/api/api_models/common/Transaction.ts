@@ -26,7 +26,7 @@ export interface ChaincodeEndorsedAction {
 }
 
 export interface Endorsement {
-    endorser: { mspId: string; idBytes: string };
+    endorser: { mspId: string; idBytes: string; rawEndorserBytes: ArrayBuffer };
     signature: string;
 }
 

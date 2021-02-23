@@ -3,6 +3,7 @@
 - Add Certificate of enrollment [#850](https://github.com/upb-uc4/ui-web/pull/850)
 - Restrict student course list to showing only admittable courses (semester + ExReg) [#851](https://github.com/upb-uc4/ui-web/pull/851)
 - Show enrollment-ID secret to user on settings page and on account deletion [#856](https://github.com/upb-uc4/ui-web/pull/856)
+- Verify peer endorsements on transactions [#859](https://github.com/upb-uc4/ui-web/pull/859)
 
 ## Bugfix
 - fix profile picture in navbar not updating properly[#855](https://github.com/upb-uc4/ui-web/pull/855)
