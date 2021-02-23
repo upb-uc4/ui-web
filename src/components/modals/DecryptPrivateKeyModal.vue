@@ -3,7 +3,7 @@
         <template #header>
             <p class="modal-headline">Confirmation Needed</p>
         </template>
-        <div>
+        <div class="w-full">
             <p class="modal-description">
                 Please enter the password you used to encrypt your private key. This may differ from your regular application password.
             </p>

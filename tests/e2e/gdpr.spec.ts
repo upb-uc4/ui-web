@@ -81,6 +81,10 @@ describe("Account creation, edition and deletion", function () {
         cy.get("button[id='refreshRequest']").should("not.exist");
     });
 
+    it("EnrollmentIdSecret shown", () => {
+        cy.get("input[id='enrollmentIdSecretSettings]").should("not.have.value", "");
+    });
+
     it("Request data", () => {
         cy.get("button[id='requestData']").click();
         cy.get("input[id='timestamp']").should("not.have.value", "");
