@@ -27,6 +27,8 @@
     import ExamResult, { Grade } from "../MockExamResultInterface";
     import ExamManagement from "@/api/ExamManagement";
     import CertificateManagement from "@/api/CertificateManagement";
+    import APIResponse from "@/api/helpers/models/APIResponse";
+    import AdmissionManagement from "@/api/AdmissionManagement";
 
     export default {
         name: "CourseList",
@@ -138,10 +140,12 @@
                 isLoading.value = true;
                 await getUserInfo();
                 let promises = [];
-                promises.push(getExams());
                 if (isStudent.value) {
+                    promises.push(getStudentExams());
                     promises.push(getExamAdmissions());
                     promises.push(getExamResults());
+                } else {
+                    promises.push(getLecturerExams());
                 }
                 await Promise.all(promises);
                 isLoading.value = false;
@@ -161,7 +165,7 @@
                 role.value = await store.getters.role;
                 username.value = (await store.getters.user).username;
             }
-            async function getExams() {
+            async function getLecturerExams() {
                 const enrollmentId = await getOwnEnrollmentId();
                 const genericResponseHandler = new GenericResponseHandler("exams");
                 const exam_management = new ExamManagement();
@@ -172,6 +176,29 @@
                 const handler = new GenericResponseHandler("courses");
                 const courseResponse = await course_management.getCourses(undefined, (await useStore().getters.user).username);
                 courses.value = handler.handleResponse(courseResponse);
+            }
+
+            async function getStudentExams() {
+                const admissionManagement = new AdmissionManagement();
+                const course_management = new CourseManagement();
+                const handler = new GenericResponseHandler("admitted courses");
+                const resp = await admissionManagement.getCourseAdmissions(username.value);
+                const result = handler.handleResponse(resp);
+                let tmpCourses = [] as Course[];
+                for (const m of result) {
+                    let response: APIResponse<Course>;
+                    response = await course_management.getCourse(m.courseId);
+                    let result = handler.handleResponse(response);
+                    if (result) tmpCourses.unshift(result);
+                }
+                courses.value = tmpCourses;
+                const genericResponseHandler = new GenericResponseHandler("exams");
+                const exam_management = new ExamManagement();
+                const examResponse = await exam_management.getExams(
+                    undefined,
+                    courses.value.map((course) => course.courseId)
+                );
+                exams.value = genericResponseHandler.handleResponse(examResponse);
             }
 
             async function getOwnEnrollmentId(): Promise<string> {
