@@ -7,7 +7,9 @@ import Operation from "@/api/api_models/operation_management/Operation";
 import CourseManagement from "@/api/CourseManagement";
 import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
 import { UC4Identifier } from "@/api/helpers/UC4Identifier";
+import { Role } from "@/entities/Role";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import { useStore } from "../store/store";
 import { dateFormatOptions } from "./DateFormatOptions";
 
 export async function printOperation(operation: Operation): Promise<string[]> {
@@ -59,9 +61,17 @@ async function printAdmissionOperation(operation: Operation): Promise<string[]> 
 
         const admissionManagement = new AdmissionManagement();
 
-        const response = await admissionManagement.getCourseAdmissions();
-        const handler = new GenericResponseHandler("admissions");
-        const admissions = handler.handleResponse(response);
+        const store = useStore();
+        let admissions: CourseAdmission[] = [];
+        if ((await store.getters.user).role != Role.ADMIN) {
+            const response = await admissionManagement.getCourseAdmissions((await store.getters.user).username);
+            const handler = new GenericResponseHandler("admissions");
+            admissions = handler.handleResponse(response);
+        } else {
+            const response = await admissionManagement.getCourseAdmissions();
+            const handler = new GenericResponseHandler("admissions");
+            admissions = handler.handleResponse(response);
+        }
 
         const admission = admissions.find((e) => e.admissionId === admissionId);
 
