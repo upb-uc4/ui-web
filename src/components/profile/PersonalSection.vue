@@ -35,7 +35,7 @@
             <div class="lg:flex lg:space-x-12 lg:space-y-0 space-y-4 w-full">
                 <div class="lg:w-1/2 w-full">
                     <label class="input-label">Date of Birth</label>
-                    <date-picker v-model:birth-date="myBirthDate" :disabled="readonly" />
+                    <date-picker v-model:date="myBirthDate" :disabled="readonly" />
                     <label v-if="errorBag.hasNested('birthDate')" class="input-label-error">{{ errorBag.getNested("birthDate") }}</label>
                 </div>
                 <div class="lg:w-1/2 w-full invisible" />
