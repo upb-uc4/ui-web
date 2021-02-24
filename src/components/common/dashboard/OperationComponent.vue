@@ -164,7 +164,7 @@
     import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
     import { useStore } from "@/use/store/store";
     import { MutationTypes } from "@/use/store/mutation-types";
-    import { RejectionReasons } from "./reasons";
+    import { ExamRejectionReasons, MatriculationRejectionReasons } from "./reasons";
     import { Role } from "@/entities/Role";
     import CertificateManagement from "@/api/CertificateManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
@@ -174,6 +174,7 @@
     import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
     import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
     import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
+    import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 
     export default {
         name: "OperationComponent",
@@ -247,6 +248,11 @@
 
             const initiatedTimestamp = new Date(operation.value.initiatedTimestamp).toLocaleString("en-GB", dateFormatOptions);
             const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-GB", dateFormatOptions);
+
+            const RejectionReasons =
+                operation.value.transactionInfo.contractName == UC4Identifier.CONTRACT_MATRICULATION
+                    ? MatriculationRejectionReasons
+                    : ExamRejectionReasons;
 
             const showDetails = ref(false);
 
