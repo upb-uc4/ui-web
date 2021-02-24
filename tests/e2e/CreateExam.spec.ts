@@ -38,7 +38,7 @@ let opIdShort = "";
 
 let ects = 42;
 
-describe("Account creation, edition and deletion", function () {
+describe.skip("Account creation, edition and deletion", function () {
     before(function () {
         cy.clearCookies();
         Cypress.Cookies.defaults({
