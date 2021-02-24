@@ -47,7 +47,8 @@
         </div>
         <div v-if="isStudent" class="flex justify-end mt-2">
             <div v-if="isGraded" class="flex">
-                <label class="flex input-label">Result:
+                <label class="flex input-label">
+                    <p>Result:</p>
                     <p class="ml-2 font-semibold" :class="isPassed ? 'text-green-400' : 'text-red-400'">{{ examGrade }}</p>
                 </label>
             </div>
