@@ -87,18 +87,6 @@
         },
 
         setup(props: any, { emit }: any) {
-            const mockedExam = {
-                examId: "ExampleGroup:M.1:Written Exam:2021-02-12T10:00:00",
-                courseId: "-1",
-                lecturerEnrollmentId: "0123456",
-                moduleId: "M.1275.1111",
-                type: "Written Exam",
-                date: "2021-02-12T10:00:00",
-                ects: 6,
-                admittableUntil: "2021-01-12T23:59:59",
-                droppableUntil: "2021-02-05T23:59:59",
-            };
-
             let isLoading = ref(false);
             let exam = ref(new ExamEntity());
             let initialExamState = ref(new ExamEntity());
@@ -185,11 +173,6 @@
                 return returnValue;
             });
 
-            let isValid = computed(() => {
-                //TODO
-                return true;
-            });
-
             async function createExam() {
                 isLoading.value = true;
                 const store = useStore();
@@ -216,10 +199,6 @@
                 Router.push("/exams");
             }
 
-            function gradeExam() {
-                //TODO
-            }
-
             return {
                 isLoading,
                 exam,
@@ -227,14 +206,12 @@
                 heading,
                 success,
                 hasInput,
-                isValid,
                 back,
                 createExam,
                 unsavedChangesModal,
                 errorBag,
                 courses,
                 isLecturer,
-                gradeExam,
             };
         },
     };

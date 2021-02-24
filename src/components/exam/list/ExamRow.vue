@@ -128,7 +128,6 @@
             }
 
             function viewExam() {
-                //TODO
                 Router.push({ name: "exams.view", params: { id: props.exam.examId } });
             }
 
