@@ -7,24 +7,29 @@
                     <label class="w-2/3 input-label text-xs">Student-ID (Hover for Full ID)</label>
                     <label class="w-1/2 ml-4 input-label text-xs">Grade</label>
                 </div>
-                <label v-if="examResults.length == 0" class="input-label-warning my-4">No students registered</label>
-                <div v-for="result in examResults" v-else :key="result.enrollmentId" class="flex w-full mb-4">
-                    <input
-                        :value="result.enrollmentId.substring(0, 20)"
-                        :title="result.enrollmentId"
-                        type="text"
-                        class="w-2/3 form-input input-text"
-                        readonly
-                    />
-                    <div class="w-1/2 ml-4">
-                        <div class="w-full">
-                            <Select
-                                :id="`grade_${result.enrollmentId.substring(0, 4)}`"
-                                v-model:selection="result.grade"
-                                :disabled="!isGradable"
-                                title="Pick a Grade"
-                                :elements="grades"
-                            />
+                <div v-if="isLoading" class="mx-auto">
+                    <loading-spinner title="Loading Students" />
+                </div>
+                <div v-else>
+                    <label v-if="examResults.length == 0" class="input-label-warning my-4">No students registered</label>
+                    <div v-for="result in examResults" v-else :key="result.enrollmentId" class="flex w-full mb-4">
+                        <input
+                            :value="result.enrollmentId.substring(0, 20)"
+                            :title="result.enrollmentId"
+                            type="text"
+                            class="w-2/3 form-input input-text"
+                            readonly
+                        />
+                        <div class="w-1/2 ml-4">
+                            <div class="w-full">
+                                <Select
+                                    :id="`grade_${result.enrollmentId.substring(0, 4)}`"
+                                    v-model:selection="result.grade"
+                                    :disabled="!isGradable"
+                                    title="Pick a Grade"
+                                    :elements="grades"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,6 +73,7 @@
     import { buildGradingTable, readGradingTable } from "@/use/xlsx/GradingTable";
     import * as xlsx from "xlsx";
     import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
+    import LoadingSpinner from "@/components/common/loading/Spinner.vue";
 
     export default {
         name: "CourseModuleSection",
@@ -75,6 +81,7 @@
             BaseSection,
             ButtonSection,
             Select,
+            LoadingSpinner,
         },
         props: {
             exam: {
