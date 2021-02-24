@@ -114,8 +114,10 @@
                 myExamResults.value = handler.handleResponse(
                     await exam_result_management.getExamResults((await useStore().getters.user).username)
                 );
-                await getRelevantExams();
-                await getRelevantCourses();
+                if (myExamResults.value.length > 0) {
+                    await getRelevantExams();
+                    await getRelevantCourses();
+                }
             }
 
             async function getRelevantExams() {
