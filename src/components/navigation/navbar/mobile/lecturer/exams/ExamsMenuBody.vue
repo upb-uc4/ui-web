@@ -4,7 +4,7 @@
             <li class="mb-2">
                 <menu-item
                     id="nav_mobile_lecturer_menu_exams_my_exams"
-                    title="Courses"
+                    title="Exams"
                     icon-class="fas fa-list-alt"
                     target-route-name="exams.list"
                 />
