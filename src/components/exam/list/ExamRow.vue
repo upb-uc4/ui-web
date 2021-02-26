@@ -149,7 +149,6 @@
                 const enrollmentId = new GenericResponseHandler("enrollment-Id").handleResponse(
                     await new CertificateManagement().getOwnEnrollmentId()
                 )[0].enrollmentId;
-                console.log(enrollmentId);
                 if (await executeTransaction(new AddAdmissionTransaction(enrollmentId, examAdmission))) {
                     useToast().success("Successfully admitted for exam.");
                     isAdmitted.value = true;

@@ -150,7 +150,6 @@
 
             async function gradeExam() {
                 isLoading.value = true;
-                console.log(examResults.value);
                 if (await executeTransaction(new AddExamResultTransaction(examResults.value))) {
                     useToast().success("Exam graded.");
                     isGraded.value = true;
