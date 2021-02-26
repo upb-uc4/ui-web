@@ -117,15 +117,12 @@
                 </div>
                 <div v-if="provideReason || sentReject" class="mt-6 flex flex-col border-t border-red-700">
                     <p class="text-red-700 my-2 font-semibold">{{ sentReject ? "Reason" : "Please provide a reason for rejection" }}</p>
-                    <select
+                    <Select
                         :id="'op_select_reject_reason_' + shownOpId"
-                        v-model="selectedReason"
+                        v-model:selection="selectedReason"
                         :disabled="sentReject"
-                        class="form-select input-select"
-                    >
-                        <option value="" disabled>Select a reason</option>
-                        <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
-                    </select>
+                        :elements="Object.values(RejectionReasons)"
+                    />
                     <input
                         v-if="selectedReason == RejectionReasons.OTHER"
                         :id="'op_written_reject_reason_' + shownOpId"
@@ -174,10 +171,11 @@
     import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
     import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
     import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
+    import Select from "@/components/common/Select.vue";
 
     export default {
         name: "OperationComponent",
-        components: {},
+        components: { Select },
         props: {
             operation: {
                 type: Object as () => Operation,
