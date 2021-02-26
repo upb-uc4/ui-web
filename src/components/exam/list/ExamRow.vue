@@ -2,10 +2,7 @@
     <div :id="'course_' + exam?.examId" class="">
         <div class="flex items-center justify-between sm:justify-start space-x-4">
             <div class="flex items-center space-x-2">
-                <span
-                    class="w-3 h-3 rounded-full"
-                    :class="[{ 'bg-lime-400': exam?.type === 'Written Exam' }, { 'bg-yellow-400': exam?.type === 'Oral Exam' }]"
-                />
+                <span class="w-3 h-3 rounded-full bg-lime-400" />
                 <span class="text-xs font-medium tracking-wide text-gray-500">{{ exam?.type }}</span>
             </div>
 
