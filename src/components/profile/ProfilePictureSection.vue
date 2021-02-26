@@ -192,7 +192,6 @@
                         }
                         case action.DELETE: {
                             deletePicture();
-                            store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                             break;
                         }
                     }
@@ -208,6 +207,7 @@
                 const result = await handler.handleResponse(response);
                 if (result) {
                     await getProfilePicture();
+                    store.commit(MutationTypes.FORCE_UPDATE_PROFILE_PICTURE);
                 }
                 isLoading.value = false;
             }

@@ -6,11 +6,13 @@
             subtitle="We are querying the blockchain. This might take some seconds."
         />
         <div v-else-if="hasEntries" class="relative m-8">
-            <div class="border-r-4 border-blue-700 dark:border-lime-500 absolute h-full top-0" style="left: 15px" />
+            <div class="border-r-4 border-blue-700 dark:border-lime-500 absolute h-full top-0" style="left: 14px" />
             <div class="m-0 p-0 space-y-6">
                 <immatriculation-history-entry
                     v-for="entry in chronologicalList"
                     :key="entry"
+                    :is-admin-view="isAdminView"
+                    :username="username"
                     :fields-of-study="entry.fieldsOfStudy"
                     :semester="entry.semester"
                 />
@@ -37,6 +39,10 @@
             username: {
                 type: String,
                 required: true,
+            },
+            isAdminView: {
+                type: Boolean,
+                default: false,
             },
         },
         setup(props: any) {

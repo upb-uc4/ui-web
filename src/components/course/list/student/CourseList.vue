@@ -21,6 +21,8 @@
     import Lecturer from "@/api/api_models/user_management/Lecturer";
     import User_List from "@/api/api_models/user_management/User_List";
     import AdmissionManagement from "@/api/AdmissionManagement";
+    import MatriculationManagement from "@/api/MatriculationManagement";
+    import ConfigurationManagement from "@/api/ConfigurationManagement";
 
     export default {
         name: "CourseList",
@@ -76,12 +78,23 @@
                     courses.value = tmpCourses;
                 } else {
                     let response: APIResponse<Course[]>;
-                    response = await courseManagement.getCourses();
+                    response = await courseManagement.getCourses(undefined, undefined, undefined, await getOwnExamRegNames());
                     courses.value = genericResponseHandler.handleResponse(response);
                 }
                 const lecturerIds = new Set(courses.value.map((course) => course.lecturerId));
                 const resp = await userManagement.getUsers(undefined, Array.from(lecturerIds));
                 lecturers.value = (genericResponseHandler.handleResponse(resp) as User_List).lecturers;
+            }
+
+            async function getOwnExamRegNames(): Promise<string[]> {
+                const matriculation_management = new MatriculationManagement();
+                const handler = new GenericResponseHandler("examination regulations");
+                const response = await matriculation_management.getOwnMatriculationHistory();
+                const result = handler.handleResponse(response);
+                const currentSemester = handler.handleResponse(await new ConfigurationManagement().getCurrentSemester());
+                return result.matriculationStatus
+                    .filter((matriculation) => matriculation.semesters.includes(currentSemester))
+                    .map((matriculation) => matriculation.fieldOfStudy);
             }
 
             async function getAdmittedCourses() {

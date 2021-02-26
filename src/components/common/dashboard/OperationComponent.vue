@@ -2,7 +2,7 @@
     <div
         v-if="!loading"
         :id="'op_' + shownOpId"
-        class="flex flex-col shadow-xl bg-white hover:bg-gray-200 rounded-lg items-start p-2 sm:p-4"
+        class="flex flex-col shadow-xl bg-white dark:bg-normalgray-800 dark:hover:bg-normalgray-700 hover:bg-gray-200 rounded-lg items-start p-2 sm:p-4"
         @click="toggleDetails"
     >
         <div class="flex w-full items-center justify-between sm:justify-start mb-2">
@@ -16,7 +16,7 @@
                         :title="isWatched ? 'Unwatch' : 'Watch'"
                         @click.stop="toggleWatch"
                     ></i>
-                    <div class="ml-1 text-xs font-semiboldtext-gray-600 uppercase">{{ type }}</div>
+                    <div class="ml-1 text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase">{{ type }}</div>
                     <span
                         :id="'op_state_' + shownOpId"
                         class="ml-4 inline-block px-2 text-xs font-semibold tracking-wide text-teal-800 uppercase rounded-full"
@@ -55,14 +55,14 @@
         <div class="flex flex-col w-full">
             <div class="flex flex-auto w-full">
                 <div class="flex flex-col w-full md:w-2/3">
-                    <label id="opName" class="text-xl font-semibold leading-tight text-gray-900 flex items-center">
+                    <label id="opName" class="text-xl font-semibold leading-tight text-gray-900 flex items-center dark:text-gray-400">
                         {{ title }}
                     </label>
                     <label class="mt-1 text-xs text-gray-600 flex items-center">
                         Initiated: {{ initiatedTimestamp }}
                         <p class="text-gray-500 ml-2 font-mono" :title="operation.operationId">(ID: {{ shownOpId }})</p>
                     </label>
-                    <div v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between">
+                    <div v-if="!isMyOperation && isAdmin" class="mt-1 flex w-full justify-between dark:text-gray-400">
                         <p>Initiator-ID:</p>
                         <div class="ml-4">
                             <router-link
@@ -101,7 +101,7 @@
                     </button>
                 </div>
             </div>
-            <div v-if="showDetails" class="flex flex-col w-full mt-4">
+            <div v-if="showDetails" class="flex flex-col w-full mt-4 dark:text-gray-400">
                 <div class="flex flex-wrap mb-4">
                     <div class="flex flex-col items-start">
                         <div class="flex flex-row text-sm">
@@ -117,15 +117,12 @@
                 </div>
                 <div v-if="provideReason || sentReject" class="mt-6 flex flex-col border-t border-red-700">
                     <p class="text-red-700 my-2 font-semibold">{{ sentReject ? "Reason" : "Please provide a reason for rejection" }}</p>
-                    <select
+                    <Select
                         :id="'op_select_reject_reason_' + shownOpId"
-                        v-model="selectedReason"
+                        v-model:selection="selectedReason"
                         :disabled="sentReject"
-                        class="form-select input-select"
-                    >
-                        <option value="" disabled>Select a reason</option>
-                        <option v-for="reason in RejectionReasons" :key="reason">{{ reason }}</option>
-                    </select>
+                        :elements="Object.values(RejectionReasons)"
+                    />
                     <input
                         v-if="selectedReason == RejectionReasons.OTHER"
                         :id="'op_written_reject_reason_' + shownOpId"
@@ -173,10 +170,12 @@
     import executeTransaction from "@/api/contracts/ChaincodeUtility";
     import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
     import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
+    import Select from "@/components/common/Select.vue";
 
     export default {
         name: "OperationComponent",
-        components: {},
+        components: { Select },
         props: {
             operation: {
                 type: Object as () => Operation,
@@ -240,21 +239,12 @@
                 }
             );
 
-            const dateFormatOptions = {
-                weekday: "short",
-                year: "numeric",
-                month: "numeric",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-            };
-
             const params = ref([] as string[]);
             const title = ref("");
             const shownOpId = operation.value.operationId.substring(0, 4);
 
-            const initiatedTimestamp = new Date(operation.value.initiatedTimestamp).toLocaleString("en-US", dateFormatOptions);
-            const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-US", dateFormatOptions);
+            const initiatedTimestamp = new Date(operation.value.initiatedTimestamp).toLocaleString("en-GB", dateFormatOptions);
+            const lastUpdateTimestamp = new Date(operation.value.lastModifiedTimestamp).toLocaleString("en-GB", dateFormatOptions);
 
             const showDetails = ref(false);
 
