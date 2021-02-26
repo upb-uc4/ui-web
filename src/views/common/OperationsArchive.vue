@@ -5,8 +5,8 @@
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
         <div class="flex flex-col items-center justify-center w-full">
-            <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations Archive</h1>
-            <h2 class="text-xl text-gray-700">In this dashboard, you find all operations concerning your account.</h2>
+            <h1 class="text-4xl font-semibold text-blue-700 mb-10">Operations Archive</h1>
+            <h2 class="text-xl text-gray-700 dark:text-gray-400">In this dashboard, you find all operations concerning your account.</h2>
         </div>
         <div v-if="busy">
             <loading-spinner />
