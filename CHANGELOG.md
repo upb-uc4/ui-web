@@ -12,6 +12,7 @@
 
 ## Refactor
 - use consistent timeformat for localeDate strings [#799](https://github.com/upb-uc4/ui-web/pull/799)
+- adjust operation component's color schemes to light and darkmode [#869](https://github.com/upb-uc4/ui-web/pull/869)
 
 # [0.18.0-hotfix.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.0-hotfix.1) (2021-02-19)
 ## Bugfix
