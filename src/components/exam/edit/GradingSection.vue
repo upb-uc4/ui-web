@@ -35,6 +35,7 @@
                 </div>
             </div>
         </div>
+        <input id="uploadCSVFile" hidden type="file" accept=".xlsx" @change="openFileBrowser" />
         <button-section>
             <template #right>
                 <div v-if="isGradable" class="w-48 flex justify-center">
@@ -70,7 +71,7 @@
     import executeTransaction from "@/api/contracts/ChaincodeUtility";
     import { AddExamResultTransaction } from "@/api/contracts/exam_result/transactions/AddExamResultTransaction";
     import { useToast } from "@/toast";
-    import { buildGradingTable, readGradingTable } from "@/use/xlsx/GradingTable";
+    import { buildGradingTable, readGradingTable, readGradingTableFile } from "@/use/xlsx/GradingTable";
     import * as xlsx from "xlsx";
     import { showNotYetImplementedToast } from "@/use/helpers/Toasts";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
@@ -160,14 +161,56 @@
             async function exportCSV() {
                 if (examResults.value.length > 0) {
                     const workbook = await buildGradingTable(examResults.value);
-                    xlsx.writeFile(workbook, "exam.csv");
+                    xlsx.writeFile(workbook, "exam.xlsx");
                 } else {
                     useToast().warning("Nothing to export.");
                 }
             }
 
             async function importCSV() {
-                showNotYetImplementedToast();
+                (document.getElementById("uploadCSVFile") as any).click();
+            }
+
+            function openFileBrowser(e: Event) {
+                const files: FileList | null = (e.target as HTMLInputElement)?.files;
+                if (files == null || files?.length == 0) return;
+
+                const file = files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    handleCSV(e.target?.result);
+                };
+                reader.readAsArrayBuffer(file);
+            }
+
+            function handleCSV(file: any) {
+                const tmpResults = readGradingTableFile(file);
+                let validInput = true;
+                if (uploadIsValid(tmpResults)) {
+                    examResults.value = tmpResults;
+                }
+            }
+
+            function uploadIsValid(upload: ExamResult[]): Boolean {
+                if (examResults.value.length != upload.length) {
+                    useToast().error("Uploaded results do not match!");
+                    return false;
+                }
+                for (let result of upload) {
+                    if (!examResults.value.some((r) => r.enrollmentId === result.enrollmentId)) {
+                        useToast().error("One or more enrollment-IDs do no match!");
+                        return false;
+                    }
+                    if (result.examId !== props.exam.examId) {
+                        useToast().error("One or more exam-IDs do not match!");
+                        return false;
+                    }
+                    if (!grades.value.includes(result.grade)) {
+                        useToast().error("One or more grades do not have the required form!");
+                        return false;
+                    }
+                }
+                return true;
             }
 
             return {
@@ -179,6 +222,7 @@
                 exportCSV,
                 importCSV,
                 isGraded,
+                openFileBrowser,
                 isGradable,
             };
         },
