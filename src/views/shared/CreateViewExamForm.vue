@@ -179,7 +179,6 @@
                 exam.value.lecturerEnrollmentId = await getOwnEnrollmentID();
                 //Set the type to "written exam" as "oral exams" are not supported yet
                 exam.value.type = (await store.getters.configuration).examTypes[0];
-                console.log(exam.value);
                 if (await executeTransaction(new CreateExamTransaction(exam.value))) {
                     showOperationCreatedToast("exam");
                     exam.value = initialExamState.value;
