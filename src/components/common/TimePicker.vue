@@ -57,7 +57,7 @@
             }
             selectableTimes.value.push(tmp);
             tmp = [];
-            for (let i = 0; i < 59; i++) {
+            for (let i = 0; i < 60; i++) {
                 tmp.push(i < 10 ? `0${i}` : `${i}`);
             }
             selectableTimes.value.push(tmp);
