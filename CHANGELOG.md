@@ -1,4 +1,4 @@
-# [WIP 0.18.1](https://github.com/upb-uc4/ui-web/compare/v0.18.0...v0.18.1) (2021-XX-XX)
+# [0.19.0](https://github.com/upb-uc4/ui-web/compare/v0.18.0-hotfix.1...v0.19.0) (2021-02-26)
 ## Feature
 - Add Certificate of enrollment [#850](https://github.com/upb-uc4/ui-web/pull/850)
 - Restrict student course list to showing only admittable courses (semester + ExReg) [#851](https://github.com/upb-uc4/ui-web/pull/851)
