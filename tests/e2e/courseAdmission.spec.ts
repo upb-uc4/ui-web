@@ -219,7 +219,7 @@ describe("Course Admission", () => {
         cy.get("input[id='courseType']").should("have.value", course.courseType);
         cy.get("input[id='courseName']").should("have.value", course.courseName);
         cy.get("input[id='courseLanguage']").should("have.value", course.courseLanguage);
-        cy.get("input[id='ects']").should("have.value", course.ects);
+        cy.get("input[id='courseCredits']").should("have.value", course.ects);
         cy.get("textarea[id='courseDescription']").should("have.value", course.courseDescription);
         cy.get("input[id='selectModule']").click();
         for (let m of course.moduleIds) {
@@ -229,7 +229,7 @@ describe("Course Admission", () => {
 
     it("Select a module and join the course", () => {
         cy.get("input[id='selectModule']").clear().type(course.moduleIds[0]);
-        cy.get("div[id='selectModule_options']").click();
+        cy.get("div[id='selectModuleOptionDiv']").click();
         cy.get("button[id='joinCourse']").click();
     });
 

@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">Credits</label>
-                    <input id="ects" :value="ects" type="number" disabled class="w-full form-input input-text" />
+                    <input id="courseCredits" :value="ects" type="number" disabled class="w-full form-input input-text" />
                 </div>
                 <div class="mb-4 flex flex-col">
                     <label class="text-gray-700 text-md font-medium mb-3">
