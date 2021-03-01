@@ -5,8 +5,8 @@
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
         <div class="flex flex-col items-center justify-center w-full">
-            <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations</h1>
-            <h2 class="text-xl text-gray-700">
+            <h1 class="text-4xl font-semibold text-blue-700 mb-10">Operations</h1>
+            <h2 class="text-xl text-gray-700 dark:text-gray-400">
                 In this dashboard, you find all operations in the system. You may watch them for displaying them in your personal dashboard
                 <router-link id="routeWelcomePage" :to="{ name: 'welcome' }" class="navigation-link hover:cursor-pointer hover:underline">
                     here
