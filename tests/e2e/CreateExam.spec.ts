@@ -211,7 +211,6 @@ describe.skip("Account creation, edition and deletion", function () {
         cy.get("button[id='encryptPrivateKeyModalConfirm']").click();
     });
 
-    //TODO What happens if we cancel here?
     it("Decryption modal shown", () => {
         cy.get("input[id='enterDecryptionPassword']").type(studentAuthUser.password);
         cy.get("button[id='decryptPrivateKeyModalConfirm']").click();
