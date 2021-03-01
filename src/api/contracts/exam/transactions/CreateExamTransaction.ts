@@ -5,14 +5,15 @@ import { TransactionInfo } from "@/api/api_models/operation_management/Operation
 import ExamManagement from "@/api/ExamManagement";
 import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 import OperationManagement from "@/api/OperationManagement";
+import { ExamEntity } from "@/entities/ExamEntity";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
 import AbstractTransaction from "../../AbstractTransaction";
 
 export class CreateExamTransaction extends AbstractTransaction {
-    private exam: Exam;
+    private exam: ExamEntity;
     private operationId: string;
 
-    constructor(exam: Exam) {
+    constructor(exam: ExamEntity) {
         super();
         this.exam = exam;
         this.operationId = "This is not a valid ID.";
@@ -24,22 +25,17 @@ export class CreateExamTransaction extends AbstractTransaction {
 
     public async validateProposal(proposal: Proposal) {
         const proposalOperationId = proposal.payload.input.input.args[1];
-        const examProposal: Exam = JSON.parse(
-            JSON.parse((await new OperationManagement().getOperation(proposalOperationId)).returnValue.transactionInfo.parameters)[0]
+        const examProposal: ExamEntity = new ExamEntity(
+            JSON.parse(
+                JSON.parse((await new OperationManagement().getOperation(proposalOperationId)).returnValue.transactionInfo.parameters)[0]
+            )
         );
 
         if (!examProposal) {
             return false;
         }
 
-        let isValid = examProposal.admittableUntil === this.exam.admittableUntil;
-        isValid = isValid && examProposal.courseId === this.exam.courseId;
-        isValid = isValid && examProposal.date === this.exam.date;
-        isValid = isValid && examProposal.droppableUntil === this.exam.droppableUntil;
-        isValid = isValid && examProposal.ects == this.exam.ects;
-        isValid = isValid && examProposal.lecturerEnrollmentId === this.exam.lecturerEnrollmentId;
-        isValid = isValid && examProposal.moduleId === this.exam.moduleId;
-        isValid = isValid && examProposal.type === this.exam.type;
+        let isValid = examProposal.equals(this.exam);
 
         if (isValid) {
             this.operationId = proposalOperationId;
