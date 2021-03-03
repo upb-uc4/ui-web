@@ -324,12 +324,12 @@
                 provideReason.value = !provideReason.value;
             }
 
-            async function reject(abortOwn?: boolean) {
-                const reason = abortOwn ? "Abort" : finalReason.value;
+            async function reject(isCancellation?: boolean) {
+                const reason = isCancellation ? "Abort" : finalReason.value;
                 if (await executeTransaction(new RejectOperationTransaction(operation.value, reason))) {
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
-                    if (!abortOwn) {
+                    if (!isCancellation) {
                         provideReason.value = !provideReason.value;
                     }
                     toggleDetails();
