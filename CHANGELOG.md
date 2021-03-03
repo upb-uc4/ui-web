@@ -1,4 +1,4 @@
-# [0.19.1 WIP](https://github.com/upb-uc4/ui-web/compare/v0.19.0...v0.19.1) (2021-03-XX)
+# [0.19.1](https://github.com/upb-uc4/ui-web/compare/v0.19.0...v0.19.1) (2021-03-03)
 ## Feature
 - Add exams API [#864](https://github.com/upb-uc4/ui-web/pull/864)
 - Add exams UI [#844](https://github.com/upb-uc4/ui-web/pull/844)
