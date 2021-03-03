@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full flex items-center justify-center">
-        <label class="text-gray-500 font-medium flex"> No relevant {{ contentType }} found. </label>
+        <label class="text-gray-500 font-medium text-sm sm:text-lg flex"> No relevant {{ contentType }} found. </label>
     </div>
 </template>
 

@@ -13,20 +13,20 @@
                 </div>
             </div>
         </div>
-        <div v-else>
-            <p class="text-gray-700 text-center">No relevant operations found.</p>
-        </div>
+        <list-placeholder v-else content-type="operations" />
     </div>
 </template>
 
 <script lang="ts">
     import Operation from "@/api/api_models/operation_management/Operation";
     import OperationComponent from "@/components/common/dashboard/OperationComponent.vue";
+    import ListPlaceholder from "@/components/common/ListPlaceholder.vue";
 
     export default {
         name: "OperationList",
         components: {
             OperationComponent,
+            ListPlaceholder,
         },
         props: {
             operations: {

@@ -1,6 +1,7 @@
 <template>
     <div>
         <loading-component v-if="isLoading" title="Loading Exams..." />
+        <list-placeholder v-else-if="shownExams.length == 0" content-type="exams" />
         <div v-for="exam in shownExams" v-else :key="exam.examId" class="mt-6">
             <exam-row
                 :is-student="isStudent"
@@ -30,12 +31,14 @@
     import Exam from "@/api/api_models/exam_management/Exam";
     import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
     import ExamResultManagement from "@/api/ExamResultManagement";
+    import ListPlaceholder from "@/components/common/ListPlaceholder.vue";
 
     export default {
         name: "CourseList",
         components: {
             ExamRow,
             LoadingComponent,
+            ListPlaceholder,
         },
         props: {
             selectedType: {

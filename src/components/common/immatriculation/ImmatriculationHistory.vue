@@ -18,7 +18,9 @@
                 />
             </div>
         </div>
-        <label v-else class="input-label-warning">There is no matriculation data yet!</label>
+        <div v-else class="flex items-center mt-8">
+            <list-placeholder content-type="matriculation data" />
+        </div>
     </div>
 </template>
 
@@ -30,10 +32,13 @@
     import MatriculationManagement from "@/api/MatriculationManagement";
     import ImmatriculationResponseHandler from "@/use/helpers/ImmatriculationResponseHandler";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
+    import ListPlaceholder from "@/components/common/ListPlaceholder.vue";
+
     export default {
         components: {
             LoadingSpinner,
             ImmatriculationHistoryEntry,
+            ListPlaceholder,
         },
         props: {
             username: {
