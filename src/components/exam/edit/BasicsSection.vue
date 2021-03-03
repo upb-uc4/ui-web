@@ -53,7 +53,6 @@
     import Select from "@/components/common/Select.vue";
     import { useModelWrapper } from "@/use/helpers/ModelWrapper";
     import ISODatePicker from "@/components/common/ISODatePicker.vue";
-    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
 
     export default {
         name: "CourseModuleSection",
@@ -97,7 +96,7 @@
         setup(props: any, { emit }: any) {
             const isLoading = ref(false);
             const selectedCourse = ref();
-            const selectedModule = ref(props.moduleId);
+            const selectedModule = ref("");
             const myEcts = ref(props.ects);
             const availableModules = ref([] as String[]);
 
@@ -107,8 +106,10 @@
 
             onBeforeMount(async () => {
                 isLoading.value = true;
-                if (props.viewMode) {
-                    selectedCourse.value = getCourse();
+                selectedCourse.value = getCourse();
+                if (selectedCourse.value) {
+                    availableModules.value = (selectedCourse.value as Course)?.moduleIds;
+                    selectedModule.value = props.moduleId;
                 }
                 isLoading.value = false;
             });
