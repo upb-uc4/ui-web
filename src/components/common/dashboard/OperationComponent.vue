@@ -104,11 +104,11 @@
                     <div v-else-if="isMyOperation">
                         <button
                             :id="'op_cancel_' + shownOpId"
-                            :disabled="sentReject || provideReason"
+                            :disabled="sentReject"
                             :class="{ invisible: sentApprove }"
                             class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
                             title="Abort this operation"
-                            @click.stop="abortOperation"
+                            @click.stop="reject(true)"
                         >
                             <i class="fas fa-times"></i>
                         </button>
@@ -151,7 +151,7 @@
                             :title="finalReason == '' ? 'Please provide a reason' : 'Reject'"
                             :disabled="finalReason == ''"
                             class="btn btn-remove text-sm h-12"
-                            @click.stop="reject"
+                            @click.stop="reject()"
                         >
                             Reject
                         </button>
@@ -324,11 +324,14 @@
                 provideReason.value = !provideReason.value;
             }
 
-            async function reject() {
-                if (await executeTransaction(new RejectOperationTransaction(operation.value, finalReason.value))) {
+            async function reject(abortOwn?: boolean) {
+                const reason = abortOwn ? "Abort" : finalReason.value;
+                if (await executeTransaction(new RejectOperationTransaction(operation.value, reason))) {
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
-                    provideReason.value = !provideReason.value;
+                    if (!abortOwn) {
+                        provideReason.value = !provideReason.value;
+                    }
                     toggleDetails();
                 }
             }
@@ -376,10 +379,6 @@
                 params.value = await printOperation(operation.value);
             }
 
-            async function abortOperation() {
-                //TODO
-            }
-
             return {
                 statusColor,
                 type,
@@ -413,7 +412,6 @@
                 title,
                 shownOpId,
                 loading,
-                abortOperation,
             };
         },
     };
