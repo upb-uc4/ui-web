@@ -78,27 +78,41 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
-                    <button
-                        :id="'op_approve_' + shownOpId"
-                        :disabled="sentApprove"
-                        :class="{ invisible: sentReject }"
-                        class="w-8 h-8 btn-base btn-icon-green text-xs"
-                        title="Approve"
-                        @click.stop="approve"
-                    >
-                        <i class="fas fa-check"></i>
-                    </button>
-                    <button
-                        :id="'op_startRejection_' + shownOpId"
-                        :disabled="sentReject || provideReason"
-                        :class="{ invisible: sentApprove }"
-                        class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
-                        title="Reject"
-                        @click.stop="toggleReasonMenu"
-                    >
-                        <i class="fas fa-times"></i>
-                    </button>
+                <div v-if="isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
+                    <div v-if="actionRequired">
+                        <button
+                            :id="'op_approve_' + shownOpId"
+                            :disabled="sentApprove"
+                            :class="{ invisible: sentReject }"
+                            class="w-8 h-8 btn-base btn-icon-green text-xs"
+                            title="Approve"
+                            @click.stop="approve"
+                        >
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button
+                            :id="'op_startRejection_' + shownOpId"
+                            :disabled="sentReject || provideReason"
+                            :class="{ invisible: sentApprove }"
+                            class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
+                            title="Reject"
+                            @click.stop="toggleReasonMenu"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div v-else-if="isMyOperation">
+                        <button
+                            :id="'op_cancel_' + shownOpId"
+                            :disabled="sentReject || provideReason"
+                            :class="{ invisible: sentApprove }"
+                            class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
+                            title="Abort this operation"
+                            @click.stop="abortOperation"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div v-if="showDetails" class="flex flex-col w-full mt-4 dark:text-gray-400">
@@ -362,6 +376,10 @@
                 params.value = await printOperation(operation.value);
             }
 
+            async function abortOperation() {
+                //TODO
+            }
+
             return {
                 statusColor,
                 type,
@@ -395,6 +413,7 @@
                 title,
                 shownOpId,
                 loading,
+                abortOperation,
             };
         },
     };
