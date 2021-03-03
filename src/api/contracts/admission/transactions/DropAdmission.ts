@@ -33,7 +33,7 @@ export class DropAdmissionTransaction extends AbstractTransaction {
 
     public async getProposal(): Promise<UnsignedProposalMessage> {
         return new GenericResponseHandler("matriculation").handleResponse(
-            await new AdmissionManagement().getUnsignedCourseAdmissionDropProposal(this.admissionId)
+            await new AdmissionManagement().getUnsignedAdmissionDropProposal(this.admissionId)
         );
     }
 }

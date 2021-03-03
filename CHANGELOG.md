@@ -1,3 +1,8 @@
+# [0.19.1](https://github.com/upb-uc4/ui-web/compare/v0.19.0...v0.19.1) (2021-03-03)
+## Feature
+- Add exams API [#864](https://github.com/upb-uc4/ui-web/pull/864)
+- Add exams UI [#844](https://github.com/upb-uc4/ui-web/pull/844)
+
 # [0.19.0](https://github.com/upb-uc4/ui-web/compare/v0.18.0-hotfix.1...v0.19.0) (2021-02-26)
 ## Feature
 - Add Certificate of enrollment [#850](https://github.com/upb-uc4/ui-web/pull/850)

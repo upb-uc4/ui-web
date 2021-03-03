@@ -1,6 +1,6 @@
 {
     "name": "ui-web",
-    "version": "0.19.0",
+    "version": "0.19.1",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
@@ -55,13 +55,15 @@
         "pkijs": "^2.1.90",
         "postcss": "^8.1.8",
         "protobufjs": "^6.10.2",
+        "pvutils": "^1.0.17",
         "random-bigint": "0.0.1",
         "tailwindcss": "^2.0.1",
         "vue": "^3.0.4",
         "vue-property-decorator": "^8.5.1",
         "vue-router": "^4.0.3",
         "vue-toastification": "^2.0.0-beta.7",
-        "vuex": "^4.0.0-rc.1"
+        "vuex": "^4.0.0-rc.1",
+        "xlsx": "^0.16.9"
     },
     "devDependencies": {
         "@cypress/code-coverage": "^3.8.5",

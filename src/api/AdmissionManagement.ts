@@ -8,6 +8,8 @@ import SignedProposalMessage from "./api_models/common/SignedProposalMessage";
 import CommonHyperledger from "./CommonHyperledger";
 import UnsignedTransactionMessage from "./api_models/common/UnsignedTransactionMessage";
 import SignedTransactionMessage from "./api_models/common/SignedTransactionMessage";
+import ExamAdmission from "./api_models/admission_management/ExamAdmission";
+import AbstractAdmission from "./api_models/admission_management/AbstractAdmission";
 
 export default class AdmissionManagement extends CommonHyperledger {
     protected static endpoint = "/admission-management";
@@ -66,13 +68,54 @@ export default class AdmissionManagement extends CommonHyperledger {
             });
     }
 
-    /**
-     * Fetch an unsigned proposal for adding a course admission
-     * @param courseAdmission courseAdmission
-     */
-    async getUnsignedCourseAdmissionAddProposal(courseAdmission: CourseAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
+    async getExamAdmissions(username?: string, examIds?: string[], admissionIds?: string[]): Promise<APIResponse<ExamAdmission[]>> {
+        const requestParameter = { params: {} as any };
+        if (username) requestParameter.params.username = username;
+        if (examIds) requestParameter.params.examIds = examIds?.reduce((a, b) => a + "," + b, "");
+        if (admissionIds) requestParameter.params.admissionIds = admissionIds.reduce((a, b) => a + "," + b, "");
+
         return await this._axios
-            .post(`/admissions/courses/unsigned_add_proposal`, courseAdmission)
+            .get(`/admissions/exams`, requestParameter)
+            .then((response: AxiosResponse) => {
+                return {
+                    returnValue: response.data as ExamAdmission[],
+                    statusCode: response.status,
+                    networkError: false,
+                    error: {} as APIError,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: [] as ExamAdmission[],
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getExamAdmissions(username, examIds, admissionIds);
+                    }
+                    return {
+                        returnValue: {} as ExamAdmission[],
+                        statusCode: error.response.status,
+                        networkError: false,
+                        error: error.response.data as APIError,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as ExamAdmission[],
+                        statusCode: 0,
+                        networkError: true,
+                        error: {} as APIError,
+                    };
+                }
+            });
+    }
+
+    async getUnsignedAdmissionAddProposal(admission: AbstractAdmission): Promise<APIResponse<UnsignedProposalMessage>> {
+        return await this._axios
+            .post(`/admissions/unsigned_add_proposal`, admission)
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -91,7 +134,7 @@ export default class AdmissionManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUnsignedCourseAdmissionAddProposal(courseAdmission);
+                        return await this.getUnsignedAdmissionAddProposal(admission);
                     }
                     return {
                         statusCode: error.response.status,
@@ -111,12 +154,12 @@ export default class AdmissionManagement extends CommonHyperledger {
     }
 
     /**
-     * Fetch an unsigned proposal for dropping a course admission
+     * Fetch an unsigned proposal for dropping an admission
      * @param admissionId admission id of admission to drop
      */
-    async getUnsignedCourseAdmissionDropProposal(admissionId: string): Promise<APIResponse<UnsignedProposalMessage>> {
+    async getUnsignedAdmissionDropProposal(admissionId: string): Promise<APIResponse<UnsignedProposalMessage>> {
         return await this._axios
-            .post(`/admissions/courses/unsigned_drop_proposal`, { admissionId })
+            .post(`/admissions/unsigned_drop_proposal`, { admissionId })
             .then((response: AxiosResponse) => {
                 return {
                     statusCode: response.status,
@@ -135,7 +178,7 @@ export default class AdmissionManagement extends CommonHyperledger {
                             networkError: false,
                         })
                     ) {
-                        return await this.getUnsignedCourseAdmissionDropProposal(admissionId);
+                        return await this.getUnsignedAdmissionDropProposal(admissionId);
                     }
                     return {
                         statusCode: error.response.status,

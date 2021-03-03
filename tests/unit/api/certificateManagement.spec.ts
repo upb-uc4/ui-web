@@ -16,6 +16,10 @@ import {
     base64ToArrayBuffer,
 } from "@/use/crypto/certificates";
 import { usedAlgorithmObject } from "@/use/crypto/certificates";
+import * as asn1js from "asn1js";
+import * as pvutils from "pvutils";
+import Certificate from "pkijs/src/Certificate";
+import { validateCertificate } from "@/use/crypto/certificateValidation";
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as {
     username: string;
@@ -30,6 +34,7 @@ const student2 = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: s
 const governmentId2 = student2.governmentId;
 let keypair = {} as CryptoKeyPair;
 let certManagement: CertificateManagement;
+let ownCertificate = "";
 
 jest.setTimeout(60000);
 
@@ -51,16 +56,16 @@ describe("Certificate management tests", () => {
 
     test("Fetch username by enrollmentId", async () => {
         certManagement = new CertificateManagement();
-        const adminEnrollmentId = (await certManagement.getEnrollmentId(adminAuth.username)).returnValue.id;
-        const adminUsername = (await certManagement.getUsername(adminEnrollmentId)).returnValue;
+        const adminEnrollmentId = (await certManagement.getEnrollmentId([adminAuth.username])).returnValue[0].enrollmentId;
+        const adminUsername = (await certManagement.getUsername([adminEnrollmentId])).returnValue[0].username;
         expect(adminUsername).toEqual(adminAuth.username);
 
-        const studentEnrollmentId = (await certManagement.getEnrollmentId(student.authUser.username)).returnValue.id;
-        const studentUsername = (await certManagement.getUsername(studentEnrollmentId)).returnValue;
+        const studentEnrollmentId = (await certManagement.getEnrollmentId([student.authUser.username])).returnValue[0].enrollmentId;
+        const studentUsername = (await certManagement.getUsername([studentEnrollmentId])).returnValue[0].username;
         expect(studentUsername).toEqual(student.authUser.username);
 
-        const student2EnrollmentId = (await certManagement.getEnrollmentId(student2.authUser.username)).returnValue.id;
-        const student2Username = (await certManagement.getUsername(student2EnrollmentId)).returnValue;
+        const student2EnrollmentId = (await certManagement.getEnrollmentId([student2.authUser.username])).returnValue[0].enrollmentId;
+        const student2Username = (await certManagement.getUsername([student2EnrollmentId])).returnValue[0].username;
         expect(student2Username).toEqual(student2.authUser.username);
     });
 
@@ -71,12 +76,20 @@ describe("Certificate management tests", () => {
     });
 
     test("Fetch enrollmentId", async () => {
-        const response = await certManagement.getEnrollmentId(student.authUser.username);
+        const response = await certManagement.getEnrollmentId([student.authUser.username]);
 
         expect(response.statusCode).toEqual(200);
-        enrollmentId = response.returnValue.id;
+        enrollmentId = response.returnValue[0].enrollmentId;
 
         expect(enrollmentId).not.toEqual("");
+    });
+
+    test("Fetch username", async () => {
+        const response = await certManagement.getUsername([enrollmentId]);
+
+        expect(response.statusCode).toEqual(200);
+
+        expect(response.returnValue[0].username).toEqual(student.authUser.username);
     });
 
     test("Create and send certificate signing request", async () => {
@@ -120,6 +133,18 @@ describe("Certificate management tests", () => {
 
         expect(response.statusCode).toBe(200);
         expect(response.returnValue.certificate).not.toEqual("");
+
+        ownCertificate = response.returnValue.certificate;
+    });
+
+    test("Validate certificate chain", async () => {
+        const ownCertPem = ownCertificate.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
+        const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
+        const asn1User = asn1js.fromBER(berUser);
+        const cert = new Certificate({ schema: asn1User.result });
+
+        const valid = await validateCertificate(cert);
+        expect(valid).toBe(true);
     });
 
     test("Login as student2", async () => {
@@ -136,10 +161,10 @@ describe("Certificate management tests", () => {
     });
 
     test("Fetch enrollmentId", async () => {
-        const response = await certManagement.getEnrollmentId(student2.authUser.username);
+        const response = await certManagement.getEnrollmentId([student2.authUser.username]);
 
         expect(response.statusCode).toEqual(200);
-        enrollmentId = response.returnValue.id;
+        enrollmentId = response.returnValue[0].enrollmentId;
 
         expect(enrollmentId).not.toEqual("");
     });
