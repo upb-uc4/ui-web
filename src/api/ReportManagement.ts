@@ -75,7 +75,7 @@ export default class ReportManagement extends Common {
         base64UrlExregName = base64UrlExregName.replace(/\//g, "_");
         base64UrlExregName = base64UrlExregName.replace(/=/g, "");
 
-        params.exregName = base64UrlExregName;
+        params.exam_reg_name = base64UrlExregName;
 
         return await this._axios
             .get(`/certificates/${username}/transcript_of_records`, { params, responseType: "arraybuffer" })
