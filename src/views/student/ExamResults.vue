@@ -179,7 +179,7 @@
                 if (!result.type) {
                     return false;
                 }
-                createRecordsDownloadURL(handler.handleResponse(response));
+                createRecordsDownloadURL(result);
                 return true;
             }
 
