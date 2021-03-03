@@ -82,9 +82,7 @@ export default abstract class AbstractTransaction {
         const rawProposalResponsePayload = transaction.data.actions[0].payload.action.rawProposalResponsePayload;
 
         for (let endorsement of endorsements) {
-            const pubKey = await getPublicKeyFromCertificate(endorsement.endorser.idBytes);
-
-            if (!(await verifyProposalResponsePayloadSignature(rawProposalResponsePayload, endorsement, pubKey))) {
+            if (!(await verifyProposalResponsePayloadSignature(rawProposalResponsePayload, endorsement, endorsement.endorser.idBytes))) {
                 return false;
             }
         }

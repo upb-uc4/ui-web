@@ -16,7 +16,7 @@ export async function calculateOperationId(transactionInfo: TransactionInfo) {
     let operationId = arrayBufferToBase64(operationHash);
     operationId = operationId.replace(/\+/g, "-");
     operationId = operationId.replace(/\//g, "_");
-    //operationId = operationId.replace(/=/g, "");
+    operationId = operationId.replace(/=/g, "");
 
     return operationId;
 }

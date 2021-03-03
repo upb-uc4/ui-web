@@ -56,6 +56,7 @@
     import executeTransaction from "@/api/contracts/ChaincodeUtility";
     import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/AddAdmission";
     import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
+import { AdmissionTypes } from '@/api/api_models/admission_management/AdmissionTypes';
 
     export default {
         name: "LecturerCreateCourseForm",
@@ -148,8 +149,8 @@
 
                 const resp = await certificateManagement.getOwnEnrollmentId();
                 const result = genericResponseHandler.handleResponse(resp);
-                if (result) {
-                    enrollmentId.value = result.id;
+                if (result.length !== 0) {
+                    enrollmentId.value = result[0].enrollmentId;
                 }
             }
 
@@ -160,6 +161,7 @@
                     enrollmentId: "",
                     courseId: course.value.courseId,
                     moduleId: selectedModule.value,
+                    type: AdmissionTypes.COURSE,
                     timestamp: "",
                 };
                 const result = await executeTransaction(new AddAdmissionTransaction(enrollmentId.value, newAdmission));

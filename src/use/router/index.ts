@@ -23,6 +23,9 @@ const StudentImmatricultaion = () => import("@/views/student/Immatriculation.vue
 const OperationsArchive = () => import("@/views/common/OperationsArchive.vue");
 const AllOperationsPage = () => import("@/views/admin/AllOperations.vue");
 const DPA = () => import("@/views/common/DPA.vue");
+const ExamList = () => import("@/views/shared/ExamList.vue");
+const CreateViewExamForm = () => import("@/views/shared/CreateViewExamForm.vue");
+const ExamResultsView = () => import("@/views/student/ExamResults.vue");
 
 const routerHistory = createWebHistory(process.env.BASE_URL);
 const suffix: string = " | UC4";
@@ -269,6 +272,48 @@ const router = createRouter({
             component: DPA,
             meta: {
                 title: "Data Protection Agreement" + suffix,
+            },
+        },
+        {
+            path: "/exams",
+            name: "exams.list",
+            component: ExamList,
+            meta: {
+                title: "Your Exams" + suffix,
+                roles: ["Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/create-exam",
+            name: "exams.create",
+            component: CreateViewExamForm,
+            props: {
+                viewMode: false,
+            },
+            meta: {
+                title: "Create Exam" + suffix,
+                roles: ["Lecturer"],
+            },
+        },
+        {
+            path: "/exam/:id",
+            name: "exams.view",
+            component: CreateViewExamForm,
+            props: {
+                viewMode: true,
+            },
+            meta: {
+                title: "View Exam" + suffix,
+                roles: ["Lecturer", "Student"],
+            },
+        },
+        {
+            path: "/exam-results",
+            name: "exams.results",
+            component: ExamResultsView,
+            meta: {
+                title: "Exam Results" + suffix,
+                roles: ["Student"],
             },
         },
         {
