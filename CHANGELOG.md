@@ -1,3 +1,6 @@
+# [0.19.2](https://github.com/upb-uc4/ui-web/compare/v0.19.1...v0.19.2) (2021-03-XX)+
+- Add option to cancel own pending operations [#881](https://github.com/upb-uc4/ui-web/pull/881)
+
 # [0.19.1](https://github.com/upb-uc4/ui-web/compare/v0.19.0...v0.19.1) (2021-03-03)
 ## Feature
 - Add exams API [#864](https://github.com/upb-uc4/ui-web/pull/864)
