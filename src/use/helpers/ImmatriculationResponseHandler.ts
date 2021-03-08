@@ -53,7 +53,7 @@ export class MatriculationValidationResponseHandler implements ResponseHandler<U
     }
 
     isUnsignedProposalMessage(object: any): object is UnsignedProposalMessage {
-        return (object as UnsignedProposalMessage).unsignedProposal !== undefined;
+        return (object as UnsignedProposalMessage).unsignedProposalJwt !== undefined;
     }
 
     handleResponse(response: APIResponse<UnsignedProposalMessage>): UnsignedProposalMessage {
