@@ -27,9 +27,12 @@ export default async function executeTransaction(executableTransaction: Abstract
 
     const unsignedProposal = await executableTransaction.getProposal();
 
-    if (!unsignedProposal.unsignedProposal) return false;
+    if (!unsignedProposal.unsignedProposalJwt) return false;
 
-    const proposal = await executableTransaction.decodeProposal(unsignedProposal, protoUrl).catch((reason: any) => {
+    const proposalTokenPayload = JSON.parse(atob(unsignedProposal.unsignedProposalJwt.split(".")[1]));
+    const unsignedProposalBytes = proposalTokenPayload["unsignedBytes"];
+
+    const proposal = await executableTransaction.decodeProposal(unsignedProposalBytes, protoUrl).catch((reason: any) => {
         useToast().error("Could not decode proposal. This is a bug on our side, please consider reporting this.");
     });
 
@@ -45,9 +48,9 @@ export default async function executeTransaction(executableTransaction: Abstract
         return false;
     }
 
-    const proposalSignature = await signProtobuf(unsignedProposal.unsignedProposal, privateKey);
+    const proposalSignature = await signProtobuf(unsignedProposalBytes, privateKey);
 
-    const proposalSignatureValidation = await verifyProtobufSignature(unsignedProposal.unsignedProposal, proposalSignature, publicKey);
+    const proposalSignatureValidation = await verifyProtobufSignature(unsignedProposalBytes, proposalSignature, publicKey);
 
     if (!proposalSignatureValidation) {
         useToast().error("Could not verify own signature. Your private key or certificate might be compromised.");
@@ -56,14 +59,17 @@ export default async function executeTransaction(executableTransaction: Abstract
 
     const signedProposalMessage: SignedProposalMessage = {
         signature: proposalSignature,
-        unsignedProposal: unsignedProposal.unsignedProposal,
+        unsignedProposalJwt: unsignedProposal.unsignedProposalJwt,
     };
 
     const unsignedTransaction = await executableTransaction.getTransaction(signedProposalMessage);
 
-    if (!unsignedTransaction.unsignedTransaction) return false;
+    if (!unsignedTransaction.unsignedTransactionJwt) return false;
 
-    const transaction = await executableTransaction.decodeTransaction(unsignedTransaction, protoUrl).catch((reason: any) => {
+    const transactionTokenPayload = JSON.parse(atob(unsignedTransaction.unsignedTransactionJwt.split(".")[1]));
+    const unsignedTransactionBytes = transactionTokenPayload["unsignedBytes"];
+
+    const transaction = await executableTransaction.decodeTransaction(unsignedTransactionBytes, protoUrl).catch((reason: any) => {
         useToast().error("Could not decode transaction. This is a bug on our side, please consider reporting this.");
     });
 
@@ -79,12 +85,8 @@ export default async function executeTransaction(executableTransaction: Abstract
         return false;
     }
 
-    const transactionSignature = await signProtobuf(unsignedTransaction.unsignedTransaction, privateKey);
-    const transactionSignatureValidation = await verifyProtobufSignature(
-        unsignedTransaction.unsignedTransaction,
-        transactionSignature,
-        publicKey
-    );
+    const transactionSignature = await signProtobuf(unsignedTransactionBytes, privateKey);
+    const transactionSignatureValidation = await verifyProtobufSignature(unsignedTransactionBytes, transactionSignature, publicKey);
 
     if (!transactionSignatureValidation) {
         useToast().error("Could not verify own signature. Your private key or certificate might be compromised.");
@@ -93,7 +95,7 @@ export default async function executeTransaction(executableTransaction: Abstract
 
     const signedTransactionMessage: SignedTransactionMessage = {
         signature: transactionSignature,
-        unsignedTransaction: unsignedTransaction.unsignedTransaction,
+        unsignedTransactionJwt: unsignedTransaction.unsignedTransactionJwt,
     };
 
     return await executableTransaction.submitTransaction(signedTransactionMessage);
