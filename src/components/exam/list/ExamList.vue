@@ -120,16 +120,17 @@
                     if (result) tmpCourses.unshift(result);
                 }
                 courses.value = tmpCourses;
-
-                const genericResponseHandler = new GenericResponseHandler("exams");
-                const exam_management = new ExamManagement();
-                const examResponse = await exam_management.getExams(
-                    undefined,
-                    courses.value.map((course) => course.courseId),
-                    undefined,
-                    result.map((r) => r.moduleId)
-                );
-                exams.value = genericResponseHandler.handleResponse(examResponse);
+                if (courses.value.length > 0) {
+                    const genericResponseHandler = new GenericResponseHandler("exams");
+                    const exam_management = new ExamManagement();
+                    const examResponse = await exam_management.getExams(
+                        undefined,
+                        courses.value.map((course) => course.courseId),
+                        undefined,
+                        result.map((r) => r.moduleId)
+                    );
+                    exams.value = genericResponseHandler.handleResponse(examResponse);
+                }
             }
 
             async function getOwnEnrollmentId(): Promise<string> {
