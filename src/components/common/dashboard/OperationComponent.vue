@@ -325,7 +325,7 @@
             }
 
             async function reject(isCancellation?: boolean) {
-                const reason = isCancellation ? "Abort" : finalReason.value;
+                const reason = isCancellation ? "Operation aborted by initiator." : finalReason.value;
                 if (await executeTransaction(new RejectOperationTransaction(operation.value, reason))) {
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
