@@ -70,12 +70,7 @@ export default class ReportManagement extends Common {
     async getTranscriptOfRecords(username: string, exregName: string): Promise<APIResponse<File>> {
         const params = {} as any;
 
-        let base64UrlExregName = btoa(exregName);
-        base64UrlExregName = base64UrlExregName.replace(/\+/g, "-");
-        base64UrlExregName = base64UrlExregName.replace(/\//g, "_");
-        base64UrlExregName = base64UrlExregName.replace(/=/g, "");
-
-        params.exam_reg_name = base64UrlExregName;
+        params.exam_reg_name = exregName;
 
         return await this._axios
             .get(`/certificates/${username}/transcript_of_records`, { params, responseType: "arraybuffer" })
