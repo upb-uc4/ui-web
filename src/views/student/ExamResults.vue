@@ -16,7 +16,7 @@
                         <label
                             v-if="!waitingForDownload"
                             id="downloadCertificate"
-                            title="Download Certificate of Enrollment"
+                            title="Download Transcript of Records"
                             class="text-xs navigation-link-gray ml-4 mb-1"
                             @click="downloadRecords(exreg)"
                         >
