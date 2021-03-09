@@ -12,18 +12,21 @@
 </template>
 
 <script lang="ts">
+    import LoginModal from "@/components/modals/LoginModal.vue";
+    import EncryptPrivateKeyModal from "@/components/modals/EncryptPrivateKeyModal.vue";
+    import DecryptPrivateKeyModal from "@/components/modals/DecryptPrivateKeyModal.vue";
     import Navbar from "@/components/navigation/navbar/Navbar.vue";
     import { useStore } from "./use/store/store";
-    import { ref, onMounted, defineAsyncComponent } from "vue";
+    import { ref, onMounted } from "vue";
     import { MutationTypes } from "./use/store/mutation-types";
 
     export default {
         name: "App",
         components: {
-            LoginModal: defineAsyncComponent(() => import("@/components/modals/LoginModal.vue")),
+            LoginModal,
             Navbar,
-            DecryptPrivateKeyModal: defineAsyncComponent(() => import("@/components/modals/DecryptPrivateKeyModal.vue")),
-            EncryptPrivateKeyModal: defineAsyncComponent(() => import("@/components/modals/EncryptPrivateKeyModal.vue")),
+            DecryptPrivateKeyModal,
+            EncryptPrivateKeyModal,
         },
         setup() {
             let loginModal = ref();

@@ -18,10 +18,9 @@
 </template>
 
 <script lang="ts">
-
     import { Role } from "@/entities/Role";
     import { useStore } from "@/use/store/store";
-    import { computed, ref, watch, defineAsyncComponent } from "vue";
+    import { ref, watch, defineAsyncComponent } from "vue";
     import { MutationTypes } from "@/use/store/mutation-types";
     import User from "@/api/api_models/user_management/User";
 
@@ -29,18 +28,18 @@
         name: "Navbar",
         components: {
             GuestNavbarDesktop: defineAsyncComponent(() => import("@/components/navigation/navbar/desktop/guest/Navbar.vue")),
-            GuestNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/guest/Navbar.vue")),
+            GuestNavbarMobile: defineAsyncComponent(() => import("@/components/navigation/navbar/mobile/guest/Navbar.vue")),
             AdminNavbarDesktop: defineAsyncComponent(() => import("@/components/navigation/navbar/desktop/admin/Navbar.vue")),
-            AdminNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/admin/Navbar.vue")),
-            StudentNavbarDesktop: defineAsyncComponent(() =>  import("@/components/navigation/navbar/desktop/student/Navbar.vue")),
-            StudentNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/student/Navbar.vue")),
-            LecturerNavbarDesktop: defineAsyncComponent(() =>  import("@/components/navigation/navbar/desktop/lecturer/Navbar.vue")),
-            LecturerNavbarMobile: defineAsyncComponent(() =>  import("@/components/navigation/navbar/mobile/lecturer/Navbar.vue")),
+            AdminNavbarMobile: defineAsyncComponent(() => import("@/components/navigation/navbar/mobile/admin/Navbar.vue")),
+            StudentNavbarDesktop: defineAsyncComponent(() => import("@/components/navigation/navbar/desktop/student/Navbar.vue")),
+            StudentNavbarMobile: defineAsyncComponent(() => import("@/components/navigation/navbar/mobile/student/Navbar.vue")),
+            LecturerNavbarDesktop: defineAsyncComponent(() => import("@/components/navigation/navbar/desktop/lecturer/Navbar.vue")),
+            LecturerNavbarMobile: defineAsyncComponent(() => import("@/components/navigation/navbar/mobile/lecturer/Navbar.vue")),
         },
         setup() {
             let width = ref(window.innerWidth);
-            window.addEventListener("resize", (e) => width.value = window.innerWidth )
-            
+            window.addEventListener("resize", (e) => (width.value = window.innerWidth));
+
             const store = useStore();
             let role = ref(Role.NONE);
 
@@ -51,10 +50,6 @@
                     role.value = Role.NONE;
                 }
             });
-
-            const isMobile = watch([window.innerWidth], () => {
-                return window.innerWidth < 768;
-            })
 
             return { role, Role, width };
         },
