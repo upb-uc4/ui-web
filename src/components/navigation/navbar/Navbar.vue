@@ -1,18 +1,18 @@
 <template>
     <div v-if="role === Role.ADMIN">
-        <admin-navbar-desktop v-if="width >= 768" class="flex" />
+        <admin-navbar-desktop v-if="width >= mobileSizeGuard" class="flex" />
         <admin-navbar-mobile v-else class="flex" />
     </div>
     <div v-else-if="role === Role.LECTURER">
-        <lecturer-navbar-desktop v-if="width >= 768" class="flex" />
+        <lecturer-navbar-desktop v-if="width >= mobileSizeGuard" class="flex" />
         <lecturer-navbar-mobile v-else class="flex" />
     </div>
     <div v-else-if="role === Role.STUDENT">
-        <student-navbar-desktop v-if="width >= 768" class="flex" />
+        <student-navbar-desktop v-if="width >= mobileSizeGuard" class="flex" />
         <student-navbar-mobile v-else class="flex" />
     </div>
     <div v-else>
-        <guest-navbar-desktop v-if="width >= 768" class="flex" />
+        <guest-navbar-desktop v-if="width >= mobileSizeGuard" class="flex" />
         <guest-navbar-mobile v-else class="flex" />
     </div>
 </template>
@@ -37,13 +37,14 @@
             LecturerNavbarMobile: defineAsyncComponent(() => import("@/components/navigation/navbar/mobile/lecturer/Navbar.vue")),
         },
         setup() {
+            const mobileSizeGuard = 768;
             let width = ref(window.innerWidth);
             window.addEventListener("resize", (e) => (width.value = window.innerWidth));
 
             const store = useStore();
             let role = ref(Role.NONE);
 
-            store.subscribe((mutation, state) => {
+            store.subscribe((mutation, _) => {
                 if (mutation.type === MutationTypes.SET_USER) {
                     role.value = (mutation.payload as User).role;
                 } else if (mutation.type === MutationTypes.RESET_STATE) {
@@ -51,7 +52,7 @@
                 }
             });
 
-            return { role, Role, width };
+            return { role, Role, width, mobileSizeGuard };
         },
     };
 </script>
