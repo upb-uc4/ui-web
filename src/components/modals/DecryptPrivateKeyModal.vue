@@ -36,7 +36,6 @@
 <script lang="ts">
     import ModalNoTeleport from "@/components/modals/ModalNoTeleport.vue";
     import { ref } from "vue";
-    import { base64ToArrayBuffer, deriveKeyFromPassword, unwrapKey } from "@/use/crypto/certificates";
     import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 
     export default {
@@ -79,15 +78,18 @@
             }
 
             async function checkPassword() {
-                const wrappingKey = await deriveKeyFromPassword(password.value, encKey.salt);
-                await unwrapKey(base64ToArrayBuffer(encKey.key), wrappingKey.key, base64ToArrayBuffer(encKey.iv))
-                    .then((response) => {
-                        hasError.value = false;
-                        key = response;
-                    })
-                    .catch((reason) => {
-                        hasError.value = true;
-                    });
+                await import("@/use/crypto/certificates").then(async (module) => {
+                    const wrappingKey = await module.deriveKeyFromPassword(password.value, encKey.salt);
+                    await module
+                        .unwrapKey(module.base64ToArrayBuffer(encKey.key), wrappingKey.key, module.base64ToArrayBuffer(encKey.iv))
+                        .then((response) => {
+                            hasError.value = false;
+                            key = response;
+                        })
+                        .catch((reason) => {
+                            hasError.value = true;
+                        });
+                });
             }
 
             async function close(a: action) {
