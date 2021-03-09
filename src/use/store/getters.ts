@@ -4,16 +4,21 @@ import Admin from "@/api/api_models/user_management/Admin";
 import Lecturer from "@/api/api_models/user_management/Lecturer";
 import Student from "@/api/api_models/user_management/Student";
 import AuthenticationManagement from "@/api/AuthenticationManagement";
+import CertificateAuthority from "@/api/CertificateAuthority";
 import CertificateManagement from "@/api/CertificateManagement";
 import ConfigurationManagement from "@/api/ConfigurationManagement";
 import { Role } from "@/entities/Role";
 import { useToast } from "@/toast";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import CertificatePKI from "pkijs/src/Certificate";
+import * as pvutils from "pvutils";
 import { GetterTree } from "vuex";
 import { ActionTypes } from "./action-types";
 import { MutationTypes } from "./mutation-types";
 import { processedOperations, State } from "./state";
 import { store, useStore } from "./store";
+import * as asn1js from "asn1js";
+import { validateCertificate } from "../crypto/certificateValidation";
 
 //example code: https://dev.to/3vilarthas/vuex-typescript-m4j
 export type Getters = {
@@ -26,6 +31,7 @@ export type Getters = {
     certificate(state: State): () => Promise<Certificate>;
     hasCertificate(state: State): Promise<boolean>;
     processedOperations(state: State): processedOperations;
+    getCACertificates(state: State): () => Promise<CertificatePKI[]>;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -132,7 +138,19 @@ export const getters: GetterTree<State, State> & Getters = {
                     return Promise.reject("Could not create certificate.");
                 });
             } else {
-                store.commit(MutationTypes.SET_CERTIFICATE, certificateResponse.returnValue);
+                const ownCertificate = certificateResponse.returnValue;
+
+                const ownCertPem = ownCertificate.certificate.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
+                const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
+                const asn1User = asn1js.fromBER(berUser);
+                const cert = new CertificatePKI({ schema: asn1User.result });
+
+                const valid = await validateCertificate(cert);
+                if (!valid) {
+                    return Promise.reject("Invalid remote certificate signature.");
+                }
+
+                store.commit(MutationTypes.SET_CERTIFICATE, ownCertificate);
             }
         }
         return state.certificate;
@@ -152,6 +170,23 @@ export const getters: GetterTree<State, State> & Getters = {
     },
     processedOperations: (state) => {
         return state.processedOperations;
+    },
+    getCACertificates: (state) => async () => {
+        if (state.caCerts.length == 0) {
+            const caManagement = new CertificateAuthority();
+            const certs = await caManagement.getAllCACertificates();
+            const caCerts = certs.map((certPem) => {
+                const cert = certPem.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
+                const berCA = pvutils.stringToArrayBuffer(pvutils.fromBase64(cert));
+                const asn1CA = asn1js.fromBER(berCA);
+                const caCert = new CertificatePKI({ schema: asn1CA.result });
+                return caCert;
+            });
+
+            store.commit(MutationTypes.ADD_CA_CERTIFICATES, caCerts);
+        }
+
+        return state.caCerts;
     },
 };
 

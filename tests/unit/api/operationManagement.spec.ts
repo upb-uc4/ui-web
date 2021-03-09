@@ -1,5 +1,3 @@
-import { approveMatriculation, rejectOperation, updateMatriculation } from "@/api/abstractions/FrontendSigning";
-import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
 import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
@@ -11,24 +9,18 @@ import OperationManagement from "@/api/OperationManagement";
 import UserManagement from "@/api/UserManagement";
 import { Account } from "@/entities/Account";
 import { Role } from "@/entities/Role";
-import {
-    arrayBufferToBase64,
-    base64ToArrayBuffer,
-    createCSR,
-    createKeyPair,
-    deriveKeyFromPassword,
-    unwrapKey,
-    wrapKey,
-} from "@/use/crypto/certificates";
-import { MutationTypes } from "@/use/store/mutation-types";
-import { useStore } from "@/use/store/store";
+import { arrayBufferToBase64, createCSR, createKeyPair, deriveKeyFromPassword, wrapKey } from "@/use/crypto/certificates";
 import { readFileSync } from "fs";
 import { isEqual } from "lodash";
 import MachineUserAuthenticationManagement from "../../helper/MachineUserAuthenticationManagement";
 import { getRandomizedUserAndAuthUser } from "../../helper/Users";
 import resetState from "../../helper/ResetState";
 import MatriculationManagement from "@/api/MatriculationManagement";
-
+import executeTransaction from "@/api/contracts/ChaincodeUtility";
+import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
+import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
+import { RejectOperationTransaction } from "@/api/contracts/operation/transactions/RejectOperation";
+import ReportManagement from "@/api/ReportManagement";
 jest.setTimeout(60000);
 
 const adminAuth = JSON.parse(readFileSync("tests/fixtures/logins/admin.json", "utf-8")) as {
@@ -85,10 +77,10 @@ describe("Operation Management tests", () => {
     });
 
     test("Fetch enrollmentId", async () => {
-        const response = await certManagement.getEnrollmentId(student.authUser.username);
+        const response = await certManagement.getEnrollmentId([student.authUser.username]);
 
         expect(response.statusCode).toEqual(200);
-        enrollmentIdStudent = response.returnValue.id;
+        enrollmentIdStudent = response.returnValue[0].enrollmentId;
 
         expect(enrollmentIdStudent).not.toEqual("");
     });
@@ -117,7 +109,10 @@ describe("Operation Management tests", () => {
     test("Update matriculation", async () => {
         matriculationToApprove = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
-        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToApprove, protoURL);
+        const result = await executeTransaction(
+            new GeneralMatriculationTransactionWrapper(student.authUser.username, matriculationToApprove),
+            protoURL
+        );
 
         expect(result).toBe(true);
 
@@ -236,7 +231,7 @@ describe("Operation Management tests", () => {
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
 
-        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId([admin.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Create and send certificate signing request", async () => {
@@ -279,7 +274,7 @@ describe("Operation Management tests", () => {
 
         if (!operationToApprove) fail();
 
-        const success = await approveMatriculation(operationToApprove, protoURL);
+        const success = await executeTransaction(new ApproveOperationTransaction(operationToApprove), protoURL);
 
         expect(success).toBe(true);
     });
@@ -294,7 +289,10 @@ describe("Operation Management tests", () => {
     test("Update matriculation for rejection", async () => {
         matriculationToReject = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2021"] }];
 
-        const result = await updateMatriculation(student.authUser.username, enrollmentIdStudent, matriculationToReject, protoURL);
+        const result = await executeTransaction(
+            new GeneralMatriculationTransactionWrapper(student.authUser.username, matriculationToReject),
+            protoURL
+        );
 
         expect(result).toBe(true);
 
@@ -311,10 +309,8 @@ describe("Operation Management tests", () => {
     test("Update matriculation for approvalByDifferentStudent", async () => {
         matriculationToApproveWithDifferentStudent = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2019"] }];
 
-        const result = await updateMatriculation(
-            student.authUser.username,
-            enrollmentIdStudent,
-            matriculationToApproveWithDifferentStudent,
+        const result = await executeTransaction(
+            new GeneralMatriculationTransactionWrapper(student.authUser.username, matriculationToApproveWithDifferentStudent),
             protoURL
         );
 
@@ -340,7 +336,38 @@ describe("Operation Management tests", () => {
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
 
-        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId([admin.authUser.username])).returnValue[0].enrollmentId;
+    });
+
+    test("Fetch empty watchlist", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.getOperations(undefined, undefined, undefined, true);
+        expect(success.returnValue.length).toEqual(0);
+    });
+
+    test("Watch operation", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.watchOperation(operationIdToReject);
+        expect(success.returnValue).toEqual(true);
+    });
+
+    test("Fetch watchlist", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.getOperations(undefined, undefined, undefined, true);
+        expect(success.returnValue.length).toEqual(1);
+        expect(success.returnValue[0].operationId).toEqual(operationIdToReject);
+    });
+
+    test("Unwatch operation", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.unwatchOperation(operationIdToReject);
+        expect(success.returnValue).toEqual(true);
+    });
+
+    test("Fetch empty watchlist", async () => {
+        const operationManagement = new OperationManagement();
+        const success = await operationManagement.getOperations(undefined, undefined, undefined, true);
+        expect(success.returnValue.length).toEqual(0);
     });
 
     test("Reject operation as admin", async () => {
@@ -352,7 +379,7 @@ describe("Operation Management tests", () => {
 
         if (!operationToReject) fail();
 
-        const success = await rejectOperation(operationToReject, rejectionReason);
+        const success = await executeTransaction(new RejectOperationTransaction(operationToReject, rejectionReason), protoURL);
 
         expect(success).toBe(true);
     });
@@ -388,7 +415,6 @@ describe("Operation Management tests", () => {
 
         const response = await operationManagement.getOperations(true, false, undefined, true);
         expect(response.statusCode).toEqual(200);
-        console.log(response.returnValue);
 
         expect(response.returnValue.find((e) => e.operationId == operationIdToApprove)).not.toBe(undefined);
     });
@@ -438,7 +464,7 @@ describe("Operation Management tests", () => {
 
         certManagement = new CertificateManagement();
 
-        enrollmentIdStudent2 = (await certManagement.getEnrollmentId(student2.authUser.username)).returnValue.id;
+        enrollmentIdStudent2 = (await certManagement.getEnrollmentId([student2.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Create and send certificate signing request", async () => {
@@ -481,27 +507,6 @@ describe("Operation Management tests", () => {
         expect(response.returnValue.operationId).toBe(undefined);
     });
 
-    test.skip("Reject operation as other student", async () => {
-        const operationManagement = new OperationManagement();
-
-        const response = await operationManagement.getUnsignedRejectionProposal(operationIdToApproveWithDifferentStudent, rejectionReason);
-
-        expect(response.statusCode).not.toEqual(200);
-        expect(response.statusCode).toEqual(403);
-    });
-
-    // owner mismatch for now
-    test.skip("Approve operation as other student", async () => {
-        const success = await updateMatriculation(
-            student.authUser.username,
-            enrollmentIdStudent,
-            matriculationToApproveWithDifferentStudent,
-            protoURL
-        );
-
-        expect(success).toBe(true);
-    });
-
     test("Login as student", async () => {
         resetState(encryptionPassword);
         const success = await MachineUserAuthenticationManagement._getRefreshToken(student.authUser);
@@ -529,6 +534,14 @@ describe("Operation Management tests", () => {
         expect(response.returnValue.matriculationStatus[0].semesters.length).toEqual(1);
         expect(response.returnValue.matriculationStatus[0].semesters[0]).toEqual(matriculationToApprove[0].semesters[0]);
     });
+
+    test("Fetch certificate of enrollment", async () => {
+        const reportManagement = new ReportManagement();
+        
+        const response = await reportManagement.getCertificateOfEnrollment(student.authUser.username, "SS2020");
+
+        expect(response.returnValue.size).toBeGreaterThan(0);
+    })
 
     afterAll(async () => {
         resetState(encryptionPassword);

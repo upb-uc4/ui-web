@@ -19,7 +19,6 @@ import {
 import CourseAdmission from "@/api/api_models/admission_management/CourseAdmission";
 import CourseManagement from "@/api/CourseManagement";
 import { getRandomizedCourse } from "../../helper/Courses";
-import { addCourseAdmission, approveMatriculation, dropCourseAdmission, updateMatriculation } from "@/api/abstractions/FrontendSigning";
 import { useStore } from "@/use/store/store";
 import EncryptedPrivateKey from "@/api/api_models/certificate_management/EncryptedPrivateKey";
 import { MutationTypes } from "@/use/store/mutation-types";
@@ -28,6 +27,12 @@ import resetState from "../../helper/ResetState";
 import OperationManagement from "@/api/OperationManagement";
 import { OperationStatus } from "@/api/api_models/operation_management/OperationState";
 import Operation from "@/api/api_models/operation_management/Operation";
+import executeTransaction from "@/api/contracts/ChaincodeUtility";
+import { AddAdmissionTransaction } from "@/api/contracts/admission/transactions/AddAdmission";
+import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions/DropAdmission";
+import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
+import { ApproveOperationTransaction } from "@/api/contracts/operation/transactions/ApproveOperation";
+import { AdmissionTypes } from "@/api/api_models/admission_management/AdmissionTypes";
 
 let userManagement: UserManagement;
 let certManagement: CertificateManagement;
@@ -98,10 +103,10 @@ describe("Admissions management", () => {
     });
 
     test("Fetch enrollmentId", async () => {
-        const response = await certManagement.getEnrollmentId(authUser.username);
+        const response = await certManagement.getEnrollmentId([authUser.username]);
 
         expect(response.statusCode).toEqual(200);
-        enrollmentId = response.returnValue.id;
+        enrollmentId = response.returnValue[0].enrollmentId;
 
         expect(enrollmentId).not.toEqual("");
     });
@@ -130,7 +135,7 @@ describe("Admissions management", () => {
     test("Immatriculate student", async () => {
         const matriculation = [{ fieldOfStudy: EXAM_REG_1, semesters: ["SS2020"] }];
 
-        const result = await updateMatriculation(authUser.username, enrollmentId, matriculation, protoURL);
+        const result = await executeTransaction(new GeneralMatriculationTransactionWrapper(authUser.username, matriculation), protoURL);
 
         expect(result).toBe(true);
 
@@ -149,7 +154,7 @@ describe("Admissions management", () => {
         expect(success.returnValue.login).not.toEqual("");
         certManagement = new CertificateManagement();
 
-        enrollmentIdAdmin = (await certManagement.getEnrollmentId(admin.authUser.username)).returnValue.id;
+        enrollmentIdAdmin = (await certManagement.getEnrollmentId([admin.authUser.username])).returnValue[0].enrollmentId;
     });
 
     test("Create and send certificate signing request", async () => {
@@ -176,7 +181,7 @@ describe("Admissions management", () => {
     test("Approve operation as admin", async () => {
         const operationManagement = new OperationManagement();
 
-        const success = await approveMatriculation(operationToApprove, protoURL);
+        const success = await executeTransaction(new ApproveOperationTransaction(operationToApprove), protoURL);
 
         expect(success).toBe(true);
     });
@@ -196,9 +201,10 @@ describe("Admissions management", () => {
             enrollmentId: "",
             moduleId,
             timestamp: "",
+            type: AdmissionTypes.COURSE,
         };
 
-        const result = await addCourseAdmission(enrollmentId, admission, protoURL);
+        const result = await executeTransaction(new AddAdmissionTransaction(enrollmentId, admission), protoURL);
 
         expect(result).toBe(true);
     });
@@ -216,7 +222,7 @@ describe("Admissions management", () => {
     });
 
     test("Drop admission", async () => {
-        const result = await dropCourseAdmission(courseAdmission.admissionId, protoURL);
+        const result = await executeTransaction(new DropAdmissionTransaction(courseAdmission.admissionId), protoURL);
 
         expect(result).toBe(true);
     });

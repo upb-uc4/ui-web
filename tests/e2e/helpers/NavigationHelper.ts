@@ -56,3 +56,15 @@ export function navigateToAdmittedCourses() {
 export function navigateToWelcomePage() {
     cy.visit("welcome");
 }
+export function navigateToAllOperationsPage() {
+    cy.visit("operations-all");
+}
+export function navigateToExamList() {
+    cy.visit("exams");
+}
+export function navigateToExamForm() {
+    cy.visit("create-exam");
+}
+export function navigateToExamView(examId: string) {
+    cy.visit(`exam/${examId}`);
+}

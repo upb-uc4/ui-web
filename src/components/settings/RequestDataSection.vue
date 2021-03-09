@@ -5,19 +5,39 @@
                 <loading-spinner />
             </div>
             <div v-else class="w-full">
+                <div class="lg:flex w-full mb-6">
+                    <div class="lg:w-1/2 w-full items-center">
+                        <label class="input-label">Enrollment-ID Secret</label>
+                        <input
+                            id="enrollmentIdSecretSettings"
+                            title="You will need this secret whenever you want to restore your study data after your account was deleted. Store it safely!"
+                            :value="enrollmentIdSecret"
+                            type="text"
+                            class="w-full input-text"
+                            readonly
+                        />
+                    </div>
+                </div>
                 <div v-if="!isPending">
                     <button id="requestData" class="btn w-48" @click="requestData">Request Data</button>
                 </div>
                 <div v-else>
                     <div v-if="gotTimestamp" class="flex flex-col w-full">
-                        <div class="flex w-full space-x-4">
-                            <input id="timestamp" disabled class="input-text-base" :value="timestamp" />
-                            <button id="refreshRequest" class="btn-secondary" title="Refresh the requested data" @click="refresh">
-                                <i class="inline fas fa-redo-alt p-2" />
-                            </button>
-                            <button id="deletePendingRequest" class="btn-secondary-remove" title="Delete your request" @click="deleteData">
-                                <i class="inline fas fa-trash-alt p-2" />
-                            </button>
+                        <div class="sm:flex w-full">
+                            <input id="timestamp" disabled class="input-text-base w-full sm:w-1/3" :value="timestamp" />
+                            <div class="sm:ml-4 mt-4 sm:mt-0">
+                                <button id="refreshRequest" class="btn-secondary" title="Refresh the requested data" @click="refresh">
+                                    <i class="inline fas fa-redo-alt p-2" />
+                                </button>
+                                <button
+                                    id="deletePendingRequest"
+                                    class="btn-secondary-remove ml-4"
+                                    title="Delete your request"
+                                    @click="deleteData"
+                                >
+                                    <i class="inline fas fa-trash-alt p-2" />
+                                </button>
+                            </div>
                         </div>
                         <p class="text-xs text-gray-600 w-1/2 mt-2">
                             You have already requested your stored data. It can take up to 5 minutes until the data is ready. You can hit
@@ -50,12 +70,13 @@
 </template>
 
 <script lang="ts">
-    import { ref } from "vue";
+    import { onBeforeMount, ref } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ReportManagement from "@/api/ReportManagement";
     import { useStore } from "@/use/store/store";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import BaseSection from "@/components/common/section/BaseSection.vue";
+    import { dateFormatOptions } from "@/use/helpers/DateFormatOptions";
 
     export default {
         name: "RequestDataSection",
@@ -72,6 +93,12 @@
             let data = {} as File;
             let dataUrl = ref("");
 
+            const enrollmentIdSecret = ref("");
+
+            onBeforeMount(async () => {
+                enrollmentIdSecret.value = (await useStore().getters.user).enrollmentIdSecret;
+            });
+
             async function requestData() {
                 busy.value = true;
                 const username = (await useStore().getters.user).username;
@@ -84,7 +111,7 @@
                 if (typeof value === "string" && value != "") {
                     gotTimestamp.value = true;
                     isPending.value = true;
-                    timestamp.value = new Date(value).toLocaleString();
+                    timestamp.value = new Date(value).toLocaleString("en-GB", dateFormatOptions);
                 } else if (typeof value === "object" && value.size != 0) {
                     isPending.value = true;
                     gotData.value = true;
@@ -129,6 +156,7 @@
                 refresh,
                 deleteData,
                 dataUrl,
+                enrollmentIdSecret,
             };
         },
     };

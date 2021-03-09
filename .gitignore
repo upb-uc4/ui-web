@@ -42,3 +42,6 @@ cypress/fixtures/
 
 # localhost tls certificate + key
 certs/
+
+# tmp folder
+tmp/

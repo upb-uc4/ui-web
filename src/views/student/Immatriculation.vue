@@ -24,7 +24,7 @@
                         <div class="lg:w-1/2 w-full">
                             <label class="input-label"> Year </label>
                             <Select
-                                id="immatriculationSelectSemesterCycle"
+                                id="immatriculationSelectSemesterYear"
                                 v-model:selection="year"
                                 placeholder="Year"
                                 :elements="selectableYears"
@@ -35,6 +35,7 @@
                         <div class="w-full">
                             <label class="input-label"> Select Fields of Study </label>
                             <searchable-select
+                                id="searchSelectFieldsOfStudy"
                                 :selected="searchSelection"
                                 placeholder="Search fields of studies"
                                 :elements="availableFieldsOfStudy"
@@ -62,15 +63,13 @@
 </template>
 
 <script lang="ts">
-    import { computed, onBeforeMount, ref } from "vue";
+    import { computed, onBeforeMount, ref, watch } from "vue";
     import SubjectMatriculation from "@/api/api_models/matriculation_management/SubjectMatriculation";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import ImmatriculationHistory from "@/components/common/immatriculation/ImmatriculationHistory.vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import { useStore } from "@/use/store/store";
-    import CertificateManagement from "@/api/CertificateManagement";
-    import { updateMatriculation } from "@/api/abstractions/FrontendSigning";
     import { showOperationCreatedToast } from "@/use/helpers/Toasts";
     import BaseView from "@/views/common/BaseView.vue";
     import BaseSection from "@/components/common/section/BaseSection.vue";
@@ -80,6 +79,8 @@
     import TagList from "@/components/common/TagList.vue";
     import SearchSelectOption from "@/use/helpers/SearchSelectOption";
     import ExaminationRegulationManagement from "@/api/ExaminationRegulationManagement";
+    import executeTransaction from "@/api/contracts/ChaincodeUtility";
+    import { GeneralMatriculationTransactionWrapper } from "@/api/contracts/matriculation/transactions/GeneralMatriculationTransactionWrapper";
 
     export default {
         components: {
@@ -169,10 +170,6 @@
                 year.value = "";
             }
 
-            function updateSelectedFieldsOfStudy(value: any) {
-                selectedFieldsOfStudy.value = value.value;
-            }
-
             async function updateImmatriculation() {
                 isLoading.value = true;
                 const matriculationEntries: SubjectMatriculation[] = [];
@@ -182,11 +179,7 @@
                         matriculationEntries.push({ fieldOfStudy: entry, semesters: [selectedSemester.value] });
                     });
 
-                const enrollmentIdResponse = await new CertificateManagement().getEnrollmentId(username.value);
-                const responseHandler = new GenericResponseHandler("enrollment id");
-                const enrollmentId = responseHandler.handleResponse(enrollmentIdResponse);
-
-                if (await updateMatriculation(username.value, enrollmentId.id, matriculationEntries)) {
+                if (await executeTransaction(new GeneralMatriculationTransactionWrapper(username.value, matriculationEntries))) {
                     resetEntries();
                     showOperationCreatedToast("immatriculation");
                 }
@@ -208,18 +201,21 @@
                 selectedFieldsOfStudy.value.push(field.value as string);
             }
 
+            watch(semesterType, (currentSemesterType) => {
+                //reset the year because the year selection is different per semester type (SS -> YYYY vs. WS -> YYYY/YYYY)
+                year.value = "";
+            });
+
             return {
                 addFieldOfStudy,
                 removeFieldOfStudy,
                 availableFieldsOfStudy,
                 isLoading,
-                resetYear,
                 fieldsOfStudy,
                 selectableYears,
                 year,
                 semesterType,
                 selectedFieldsOfStudy,
-                updateSelectedFieldsOfStudy,
                 updateImmatriculation,
                 validSelection,
                 errorBag,

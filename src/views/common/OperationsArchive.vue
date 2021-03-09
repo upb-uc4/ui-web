@@ -5,16 +5,15 @@
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
         <div class="flex flex-col items-center justify-center w-full">
-            <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations Archive</h1>
-            <h2 class="text-xl text-gray-700">In this dashboard, you find all operations concerning your account.</h2>
+            <h1 class="text-4xl font-semibold text-blue-700 mb-10">Operations Archive</h1>
+            <h2 class="text-xl text-gray-700 dark:text-gray-400">In this dashboard, you find all operations concerning your account.</h2>
         </div>
         <div v-if="busy">
             <loading-spinner />
         </div>
         <div v-else class="flex flex-col items-center justify-center w-full mt-10">
-            <button v-if="!gotArchive" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Archive</button>
-            <div v-else class="w-full flex flex-col">
-                <search-bar v-model:message="message" @refresh="refresh" />
+            <div class="w-full flex flex-col">
+                <search-bar v-model:message="message" @refresh="getOperationsArchive" />
                 <dashboard-component
                     identifier="archive"
                     class="w-full mt-5"
@@ -27,8 +26,7 @@
     </base-view>
 </template>
 <script lang="ts">
-    import { useStore } from "@/use/store/store";
-    import { ref, computed } from "vue";
+    import { ref, computed, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import Operation from "@/api/api_models/operation_management/Operation";
@@ -36,7 +34,6 @@
     import Router from "@/use/router/";
     import OperationManagement from "@/api/OperationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
-    import { MutationTypes } from "@/use/store/mutation-types";
     import SearchBar from "@/components/common/SearchBar.vue";
     import filterOperations from "@/use/helpers/filterOperations";
     import BaseView from "@/views/common/BaseView.vue";
@@ -52,7 +49,6 @@
 
         setup() {
             const busy = ref(false);
-            const gotArchive = ref(false);
             const operations = ref([] as Operation[]);
             const message = ref("");
 
@@ -60,13 +56,12 @@
                 return filterOperations(operations.value, message.value);
             });
 
-            async function requestData() {
-                busy.value = true;
+            onBeforeMount(async () => {
                 await getOperationsArchive();
-                busy.value = false;
-            }
+            });
 
             async function getOperationsArchive() {
+                busy.value = true;
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
                 let response = await operationManagement.getOperations(
@@ -79,27 +74,17 @@
 
                 //Show empty archive if no results given
                 operations.value = result;
-                gotArchive.value = true;
+                busy.value = false;
             }
 
             function back() {
                 Router.go(-1);
             }
 
-            async function refresh() {
-                busy.value = true;
-                let store = useStore();
-                store.commit(MutationTypes.CLEAR_PROCESSED_OPERATIONS);
-                await getOperationsArchive();
-                busy.value = false;
-            }
-
             return {
-                requestData,
+                getOperationsArchive,
                 busy,
                 back,
-                gotArchive,
-                refresh,
                 message,
                 filteredOperations,
             };

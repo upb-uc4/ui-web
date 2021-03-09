@@ -1,14 +1,19 @@
 <template>
-    <label class="block input-label">Date of Birth</label>
-    <div id="birthdate" class="flex space-x-6">
+    <div :id="`${idPrefix}date`" class="flex space-x-6">
         <div class="w-1/3">
-            <selection :id="'day'" v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
+            <selection :id="`${idPrefix}day`" v-model:selection="selectedDay" :disabled="disabled" :elements="days" placeholder="Day" />
         </div>
         <div class="w-1/3">
-            <selection :id="'month'" v-model:selection="selectedMonth" :disabled="disabled" :elements="months" placeholder="Month" />
+            <selection
+                :id="`${idPrefix}month`"
+                v-model:selection="selectedMonth"
+                :disabled="disabled"
+                :elements="months"
+                placeholder="Month"
+            />
         </div>
         <div class="w-1/3">
-            <selection :id="'year'" v-model:selection="selectedYear" :disabled="disabled" :elements="years" placeholder="Year" />
+            <selection :id="`${idPrefix}year`" v-model:selection="selectedYear" :disabled="disabled" :elements="years" placeholder="Year" />
         </div>
     </div>
 </template>
@@ -19,12 +24,12 @@
     import { computed, ref, watch } from "vue";
 
     export default {
-        name: "BirthDatePicker",
+        name: "DatePicker",
         components: {
             Selection: Select,
         },
         props: {
-            birthDate: {
+            date: {
                 type: String,
                 required: true,
             },
@@ -32,8 +37,12 @@
                 type: Boolean,
                 default: false,
             },
+            idPrefix: {
+                type: String,
+                default: "",
+            },
         },
-        emits: ["update:birthDate"],
+        emits: ["update:date"],
         setup(props: any, { emit }: any) {
             let currentYear = new Date().getFullYear();
             let years: string[] = [];
@@ -48,19 +57,16 @@
 
             const zeroPad = (text: any, places: number) => String(text).padStart(places, "0");
 
-            if (props.birthDate) {
-                let dates = props.birthDate.split("-");
+            if (props.date) {
+                let dates = props.date.split("-");
                 let date = new Date(+dates[0], dates[1] - 1, +dates[2]);
-                selectedDay.value = date.getDay().toString();
+                selectedDay.value = date.getDate().toString();
                 selectedMonth.value = date.toLocaleString("en-GB", { month: "long" });
                 selectedYear.value = date.getFullYear().toString();
             }
 
             watch([selectedDay, selectedMonth, selectedYear], ([day, month, year]) => {
-                emit(
-                    "update:birthDate",
-                    `${selectedYear.value}-${zeroPad(selectedMonthAsNumber.value, 2)}-${zeroPad(selectedDay.value, 2)}`
-                );
+                emit("update:date", `${selectedYear.value}-${zeroPad(selectedMonthAsNumber.value, 2)}-${zeroPad(selectedDay.value, 2)}`);
             });
 
             return {

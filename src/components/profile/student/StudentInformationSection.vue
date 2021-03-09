@@ -26,7 +26,12 @@
                 </div>
                 <div class="w-full lg:w-1/2 invisible"></div>
             </div>
-            <immatriculation v-if="editMode" v-model:immatriculation-has-change="studentImmatriculationHasChange" :username="username" />
+            <immatriculation
+                v-if="editMode"
+                v-model:immatriculation-has-change="studentImmatriculationHasChange"
+                :is-admin-view="true"
+                :username="username"
+            />
         </div>
     </base-section>
 </template>

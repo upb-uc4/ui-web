@@ -5,8 +5,8 @@
             <span class="font-bold text-sm ml-1">Back</span>
         </button>
         <div class="flex flex-col items-center justify-center w-full">
-            <h1 class="text-4xl font-semibold text-blue-800 mb-10">Operations</h1>
-            <h2 class="text-xl text-gray-700">
+            <h1 class="text-4xl font-semibold text-blue-700 mb-10">Operations</h1>
+            <h2 class="text-xl text-gray-700 dark:text-gray-400">
                 In this dashboard, you find all operations in the system. You may watch them for displaying them in your personal dashboard
                 <router-link id="routeWelcomePage" :to="{ name: 'welcome' }" class="navigation-link hover:cursor-pointer hover:underline">
                     here
@@ -18,15 +18,14 @@
             <loading-spinner />
         </div>
         <div v-else class="flex flex-col items-center justify-center w-full mt-10">
-            <button v-if="!gotOps" class="btn btn-blue-primary p-4 mt-10" @click="requestData">Request Operations</button>
-            <div v-else class="w-full flex flex-col">
-                <search-bar v-model:message="message" @refresh="refresh" />
+            <div class="w-full flex flex-col">
+                <search-bar v-model:message="message" @refresh="getOperations" />
                 <dashboard-component
-                    identifier="archive"
+                    identifier="operations_all"
                     class="w-full mt-5"
                     :operations="filteredOperations"
                     :watched-operations="watchedOperations"
-                    title="Archived Operations"
+                    title="All Ongoing Operations"
                     :is-archive="true"
                 />
             </div>
@@ -34,8 +33,7 @@
     </base-view>
 </template>
 <script lang="ts">
-    import { useStore } from "@/use/store/store";
-    import { ref, computed } from "vue";
+    import { ref, computed, onBeforeMount } from "vue";
     import LoadingSpinner from "@/components/common/loading/Spinner.vue";
     import DashboardComponent from "@/components/common/dashboard/DashboardComponent.vue";
     import Operation from "@/api/api_models/operation_management/Operation";
@@ -43,7 +41,6 @@
     import OperationManagement from "@/api/OperationManagement";
     import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
     import SearchBar from "@/components/common/SearchBar.vue";
-    import { MutationTypes } from "@/use/store/mutation-types";
     import filterOperations from "@/use/helpers/filterOperations";
     import CertificateManagement from "@/api/CertificateManagement";
     import BaseView from "@/views/common/BaseView.vue";
@@ -59,7 +56,6 @@
 
         setup() {
             const busy = ref(false);
-            const gotOps = ref(false);
             const operations = ref([] as Operation[]);
             const watchedOperations = ref([] as Operation[]);
             const message = ref("");
@@ -68,61 +64,50 @@
                 return filterOperations(operations.value, message.value);
             });
 
-            async function requestData() {
-                busy.value = true;
+            onBeforeMount(async () => {
                 await getOperations();
-                busy.value = false;
-            }
+            });
 
             async function getOperations() {
+                busy.value = true;
+                const promises = [];
                 const operationManagement = new OperationManagement();
                 const handler = new GenericResponseHandler("operations");
-                const response = await operationManagement.getOperations(undefined, undefined, undefined, false);
-                const result = handler.handleResponse(response);
 
-                //Show empty list if no results given
-                operations.value = result;
-                gotOps.value = true;
-                await getWatchedOperations();
-            }
+                promises.push(
+                    operationManagement.getOperations(undefined, undefined, undefined, false).then((response) => {
+                        const result = handler.handleResponse(response);
+                        operations.value = result;
+                    })
+                );
 
-            async function getWatchedOperations() {
-                const operationManagement = new OperationManagement();
-                const handler = new GenericResponseHandler("operations");
-                const response = await operationManagement.getOperations(undefined, undefined, undefined, true);
-                const result = handler.handleResponse(response);
-                const ownId = await getOwnEnrollmentId();
-                watchedOperations.value = result.filter((op) => op.initiator != ownId);
-            }
+                promises.push(
+                    operationManagement.getOperations(false, undefined, undefined, true).then((response) => {
+                        watchedOperations.value = handler.handleResponse(response);
+                    })
+                );
 
-            async function getOwnEnrollmentId(): Promise<string> {
                 const certificateManagement = new CertificateManagement();
-                const handler = new GenericResponseHandler("enrollment-id");
-                const response = await certificateManagement.getOwnEnrollmentId();
-                const result = handler.handleResponse(response);
-                return result.id;
+                let ownId = "";
+                promises.push(
+                    certificateManagement.getOwnEnrollmentId().then((response) => {
+                        ownId = handler.handleResponse(response)[0].enrollmentId;
+                    })
+                );
+                await Promise.all(promises);
+                busy.value = false;
             }
 
             function back() {
                 Router.go(-1);
             }
 
-            async function refresh() {
-                busy.value = true;
-                let store = useStore();
-                store.commit(MutationTypes.CLEAR_PROCESSED_OPERATIONS);
-                await getOperations();
-                busy.value = false;
-            }
-
             return {
                 filteredOperations,
-                requestData,
+                getOperations,
                 busy,
                 back,
-                gotOps,
                 watchedOperations,
-                refresh,
                 message,
             };
         },

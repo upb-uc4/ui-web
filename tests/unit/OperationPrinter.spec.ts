@@ -4,7 +4,7 @@ import { UC4Identifier } from "@/api/helpers/UC4Identifier";
 import { printOperation } from "@/use/helpers/OperationPrinter";
 
 describe("Operation Printer Tests", () => {
-    test("Test add matriculation", () => {
+    test("Test add matriculation", async () => {
         const matriculation: MatriculationData = {
             enrollmentId: "",
             matriculationStatus: [
@@ -14,7 +14,6 @@ describe("Operation Printer Tests", () => {
                 },
             ],
         };
-        console.log(JSON.stringify([matriculation]));
 
         const operation: Operation = {
             existingApprovals: { groups: [], users: [] },
@@ -32,13 +31,13 @@ describe("Operation Printer Tests", () => {
             },
         };
 
-        const printed = printOperation(operation);
+        const printed = await printOperation(operation);
 
         expect(printed.length).toBe(1);
         expect(printed[0]).toEqual("Bachelor of Science SS2020, SS2021");
     });
 
-    test("Test addentries matriculation", () => {
+    test("Test addentries matriculation", async () => {
         const matriculation: MatriculationData = {
             enrollmentId: "",
             matriculationStatus: [
@@ -65,7 +64,7 @@ describe("Operation Printer Tests", () => {
             },
         };
 
-        const printed = printOperation(operation);
+        const printed = await printOperation(operation);
 
         expect(printed.length).toBe(1);
         expect(printed[0]).toEqual("Bachelor of Science SS2020, SS2021");

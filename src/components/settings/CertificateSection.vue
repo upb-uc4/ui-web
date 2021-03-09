@@ -62,7 +62,10 @@
                 return store.getters
                     .certificate()
                     .then((certificateObject) => (certificate.value = certificateObject.certificate))
-                    .then(() => createCertificateDownloadURL(certificate.value));
+                    .then(() => {
+                        createCertificateDownloadURL(certificate.value);
+                        hasCertificate.value = true;
+                    });
             }
 
             function createCertificateDownloadURL(certificateContent: string) {
@@ -70,12 +73,10 @@
                 certificateDownloadURL.value = URL.createObjectURL(certificateFile);
             }
 
-            function createCertificate() {
+            async function createCertificate() {
                 isLoading.value = true;
-                loadCertificate().finally(() => {
-                    hasCertificate.value = true;
-                    isLoading.value = false;
-                });
+                await loadCertificate().catch((e) => console.error(e));
+                isLoading.value = false;
             }
 
             return {
