@@ -119,11 +119,13 @@
                 const responseMatr = await mat_management.getOwnMatriculationHistory();
                 let result = handler.handleResponse(responseMatr).matriculationStatus;
                 let tmp = [] as string[];
-                result.forEach((matr) => {
-                    if (!tmp.includes(matr.fieldOfStudy)) {
-                        tmp.push(matr.fieldOfStudy);
-                    }
-                });
+                if (result) {
+                    result.forEach((matr) => {
+                        if (!tmp.includes(matr.fieldOfStudy)) {
+                            tmp.push(matr.fieldOfStudy);
+                        }
+                    });
+                }
                 const exam_reg_management = new ExaminationRegulationManagement();
                 const responseExReg = await exam_reg_management.getExaminationRegulation(tmp);
                 myExamRegs.value = handler.handleResponse(responseExReg);
