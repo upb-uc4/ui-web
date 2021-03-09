@@ -2,6 +2,10 @@
 ## Feature
 - Add option to cancel own pending operations [#881](https://github.com/upb-uc4/ui-web/pull/881)
 
+## Refactor
+- Improve performance by lazyloading [#835](https://github.com/upb-uc4/ui-web/pull/835)
+- remove unused dependencies [#835](https://github.com/upb-uc4/ui-web/pull/835)
+
 ## Bugfix
 - fix multiple bugs with exams [#878](https://github.com/upb-uc4/ui-web/pull/878)
 
