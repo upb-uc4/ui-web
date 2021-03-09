@@ -80,7 +80,7 @@
         "@vue/test-utils": "^2.0.0-beta.10",
         "babel-eslint": "^10.1.0",
         "babel-plugin-istanbul": "^6.0.0",
-        "core-js": "^3.8.1",
+        "core-js": "^3.9.1",
         "cross-conf-env": "^1.2.1",
         "cypress": "^6.0.0",
         "cypress-file-upload": "^4.1.1",
