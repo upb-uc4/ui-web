@@ -1,14 +1,3 @@
-# [0.19.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.19.1...v0.19.2) (2021-03-XX)
-## Feature
-- Add option to cancel own pending operations [#881](https://github.com/upb-uc4/ui-web/pull/881)
-
-## Refactor
-- Improve performance by lazyloading [#835](https://github.com/upb-uc4/ui-web/pull/835)
-- remove unused dependencies [#835](https://github.com/upb-uc4/ui-web/pull/835)
-
-## Bugfix
-- fix multiple bugs with exams [#878](https://github.com/upb-uc4/ui-web/pull/878)
-
 # [0.19.1](https://github.com/upb-uc4/ui-web/compare/v0.19.0...v0.19.1) (2021-03-03)
 ## Feature
 - Add exams API [#864](https://github.com/upb-uc4/ui-web/pull/864)

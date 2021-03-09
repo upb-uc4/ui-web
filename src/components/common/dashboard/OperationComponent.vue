@@ -78,41 +78,27 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
-                    <div v-if="actionRequired">
-                        <button
-                            :id="'op_approve_' + shownOpId"
-                            :disabled="sentApprove"
-                            :class="{ invisible: sentReject }"
-                            class="w-8 h-8 btn-base btn-icon-green text-xs"
-                            title="Approve"
-                            @click.stop="approve"
-                        >
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <button
-                            :id="'op_startRejection_' + shownOpId"
-                            :disabled="sentReject || provideReason"
-                            :class="{ invisible: sentApprove }"
-                            class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
-                            title="Reject"
-                            @click.stop="toggleReasonMenu"
-                        >
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div v-else-if="isMyOperation">
-                        <button
-                            :id="'op_cancel_' + shownOpId"
-                            :disabled="sentReject"
-                            :class="{ invisible: sentApprove }"
-                            class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
-                            title="Abort this operation"
-                            @click.stop="reject(true)"
-                        >
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
+                <div v-if="actionRequired && isPending" class="w-full md:w-1/3 flex justify-end items-baseline">
+                    <button
+                        :id="'op_approve_' + shownOpId"
+                        :disabled="sentApprove"
+                        :class="{ invisible: sentReject }"
+                        class="w-8 h-8 btn-base btn-icon-green text-xs"
+                        title="Approve"
+                        @click.stop="approve"
+                    >
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button
+                        :id="'op_startRejection_' + shownOpId"
+                        :disabled="sentReject || provideReason"
+                        :class="{ invisible: sentApprove }"
+                        class="ml-2 w-8 h-8 btn-base btn-icon-red-filled text-xs"
+                        title="Reject"
+                        @click.stop="toggleReasonMenu"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </div>
             <div v-if="showDetails" class="flex flex-col w-full mt-4 dark:text-gray-400">
@@ -151,7 +137,7 @@
                             :title="finalReason == '' ? 'Please provide a reason' : 'Reject'"
                             :disabled="finalReason == ''"
                             class="btn btn-remove text-sm h-12"
-                            @click.stop="reject()"
+                            @click.stop="reject"
                         >
                             Reject
                         </button>
@@ -324,14 +310,11 @@
                 provideReason.value = !provideReason.value;
             }
 
-            async function reject(isCancellation?: boolean) {
-                const reason = isCancellation ? "Operation aborted by initiator." : finalReason.value;
-                if (await executeTransaction(new RejectOperationTransaction(operation.value, reason))) {
+            async function reject() {
+                if (await executeTransaction(new RejectOperationTransaction(operation.value, finalReason.value))) {
                     store.commit(MutationTypes.ADD_OPERATION_REJECTION, operation.value.operationId);
                     sentReject.value = true;
-                    if (!isCancellation) {
-                        provideReason.value = !provideReason.value;
-                    }
+                    provideReason.value = !provideReason.value;
                     toggleDetails();
                 }
             }

@@ -16,7 +16,7 @@
     import EncryptPrivateKeyModal from "@/components/modals/EncryptPrivateKeyModal.vue";
     import DecryptPrivateKeyModal from "@/components/modals/DecryptPrivateKeyModal.vue";
     import Navbar from "@/components/navigation/navbar/Navbar.vue";
-    import { useStore } from "./use/store/store";
+    import { store, useStore } from "./use/store/store";
     import { ref, onMounted } from "vue";
     import { MutationTypes } from "./use/store/mutation-types";
 
@@ -34,7 +34,7 @@
             let decryptionModal = ref();
             const store = useStore();
 
-            store.subscribe((mutation, _) => {
+            store.subscribe((mutation, state) => {
                 if (mutation.type === MutationTypes.RESET_STATE) {
                     setModals();
                 }

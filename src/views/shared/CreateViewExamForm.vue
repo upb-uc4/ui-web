@@ -42,7 +42,7 @@
 
 <script lang="ts">
     import Router from "@/use/router/";
-    import { computed, onBeforeMount, ref, watch } from "vue";
+    import { computed, onBeforeMount, ref } from "vue";
     import ErrorBag from "@/use/helpers/ErrorBag";
     import UnsavedChangesModal from "@/components/modals/UnsavedChangesModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
@@ -90,7 +90,7 @@
             let isLoading = ref(false);
             let exam = ref(new ExamEntity());
             let initialExamState = ref(new ExamEntity());
-            let heading = ref(props.viewMode ? "Exam" : "Create Exam");
+            let heading = props.createMode ? "Create Exam" : "Exam";
             let success = ref(false);
             let unsavedChangesModal = ref();
 
@@ -135,19 +135,6 @@
                 await getMyCourses();
                 isLoading.value = false;
             });
-
-            watch(
-                () => props.viewMode,
-                () => {
-                    heading.value = props.viewMode ? "Exam" : "Create Exam";
-                    if (!props.viewMode) {
-                        isLoading.value = true;
-                        exam.value = new ExamEntity();
-                        initialExamState.value = new ExamEntity();
-                        isLoading.value = false;
-                    }
-                }
-            );
 
             const isLecturer = computed(() => {
                 return role.value === Role.LECTURER;

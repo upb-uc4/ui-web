@@ -60,7 +60,7 @@
             if (props.date) {
                 let dates = props.date.split("-");
                 let date = new Date(+dates[0], dates[1] - 1, +dates[2]);
-                selectedDay.value = date.getDate().toString();
+                selectedDay.value = date.getDay().toString();
                 selectedMonth.value = date.toLocaleString("en-GB", { month: "long" });
                 selectedYear.value = date.getFullYear().toString();
             }

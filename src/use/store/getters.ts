@@ -10,6 +10,7 @@ import ConfigurationManagement from "@/api/ConfigurationManagement";
 import { Role } from "@/entities/Role";
 import { useToast } from "@/toast";
 import GenericResponseHandler from "@/use/helpers/GenericResponseHandler";
+import lodash from "lodash";
 import CertificatePKI from "pkijs/src/Certificate";
 import * as pvutils from "pvutils";
 import { GetterTree } from "vuex";
@@ -56,7 +57,7 @@ export const getters: GetterTree<State, State> & Getters = {
         return (await store.getters.user).role;
     },
     validation: async (state) => {
-        if (isEmpty(state.validation)) {
+        if (lodash.isEmpty(state.validation)) {
             const response = await new ConfigurationManagement().getValidation();
             const handler = new GenericResponseHandler("validation");
             const validation = handler.handleResponse(response);
@@ -188,11 +189,4 @@ export const getters: GetterTree<State, State> & Getters = {
 
         return state.caCerts;
     },
-};
-
-let isEmpty = (obj: any) => {
-    if (typeof obj === 'object' && obj != null) {
-        return Object.keys(obj).length >= 1 ? false : true;
-    }
-    return true;
 };

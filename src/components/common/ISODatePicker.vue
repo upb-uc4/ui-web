@@ -52,8 +52,8 @@
 
             if (props.isoDate) {
                 const dateObject = new Date(myIsoDate.value);
-                const paddedMonth = numberZeroPad(dateObject.getMonth() + 1);
-                const paddedDay = numberZeroPad(dateObject.getDate());
+                const paddedMonth = numberZeroPad(dateObject.getMonth());
+                const paddedDay = numberZeroPad(dateObject.getDay());
                 myDate.value = `${dateObject.getFullYear()}-${paddedMonth}-${paddedDay}`;
                 const paddedHours = numberZeroPad(dateObject.getHours());
                 const paddedMinutes = numberZeroPad(dateObject.getMinutes());
