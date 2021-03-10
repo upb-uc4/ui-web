@@ -12,7 +12,7 @@
                 <i class="fa fa-times ml-20 pl-1 cursor-pointer text-red-400" @click="resetError" />
             </span>
         </div>
-        <form class="flex justify-center" @submit.prevent="login">
+        <div class="flex justify-center">
             <div
                 class="max-w-sm w-full mt-6 bg-gray-50 dark:bg-night-base border border-gray-200 dark:border-night-base sm:px-6 py-6 p-4 rounded-lg shadow-lg relative"
             >
@@ -51,7 +51,7 @@
                     <button id="login" class="w-full btn" :disabled="hasNoInputEntered" @click="login">Login</button>
                 </div>
             </div>
-        </form>
+        </div>
     </base-view>
 </template>
 

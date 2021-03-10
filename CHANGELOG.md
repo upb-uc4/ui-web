@@ -8,6 +8,7 @@
 
 ## Bugfix
 - fix multiple bugs with exams [#878](https://github.com/upb-uc4/ui-web/pull/878)
+- add HTTP 502 to response handlers [#886](https://github.com/upb-uc4/ui-web/pull/886)
 
 # [0.19.1](https://github.com/upb-uc4/ui-web/compare/v0.19.0...v0.19.1) (2021-03-03)
 ## Feature
