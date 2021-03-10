@@ -1,8 +1,8 @@
 import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
 import APIResponse from "@/api/helpers/models/APIResponse";
-import ResponseHandler from "./ResponseHandler";
 import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
+import ResponseHandler from "./ResponseHandler";
 
 export default class ProfilePictureUpdateResponseHandler implements ResponseHandler<boolean> {
     errorList: Error[] = [] as Error[];
@@ -42,7 +42,9 @@ export default class ProfilePictureUpdateResponseHandler implements ResponseHand
                 showAPIToast(response.statusCode, "profile picture");
                 break;
             }
-            case 500: {
+            case 500:
+            case 502:
+            case 503: {
                 showAPIToast(response.statusCode);
                 break;
             }
