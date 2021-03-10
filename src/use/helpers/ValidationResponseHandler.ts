@@ -1,9 +1,9 @@
 import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
-import APIResponse from "@/api/helpers/models/APIResponse";
-import ResponseHandler from "./ResponseHandler";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
+import APIResponse from "@/api/helpers/models/APIResponse";
 import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
+import ResponseHandler from "./ResponseHandler";
 
 /**
  * Use this class for API calls, that return a boolean and can have validation errors (put, post)
@@ -48,7 +48,9 @@ export default class ValidationResponseHandler implements ResponseHandler<boolea
             case 422: {
                 return false;
             }
-            case 500: {
+            case 500:
+            case 502:
+            case 503: {
                 showAPIToast(response.statusCode);
                 return false;
             }
