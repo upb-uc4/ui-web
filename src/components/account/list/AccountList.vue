@@ -1,6 +1,7 @@
 <template>
     <loading-spinner v-if="busy" title="Loading Users..." />
     <div v-else>
+        <list-placeholder v-if="shownUsers.length == 0" content-type="users" />
         <div v-for="(user, index) in shownUsers" :key="user">
             <user-row
                 :user="user"
@@ -22,12 +23,14 @@
     import User from "@/api/api_models/user_management/User";
     import { StatusFilter } from "@/entities/UserStatusFilter";
     import ConfigurationManagement from "@/api/ConfigurationManagement";
+    import ListPlaceholder from "@/components/common/ListPlaceholder.vue";
 
     export default {
         name: "AccountList",
         components: {
             UserRow,
             LoadingSpinner,
+            ListPlaceholder,
         },
         props: {
             selectedRole: {
