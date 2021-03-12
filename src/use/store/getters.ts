@@ -191,7 +191,7 @@ export const getters: GetterTree<State, State> & Getters = {
 };
 
 let isEmpty = (obj: any) => {
-    if (typeof obj === 'object' && obj != null) {
+    if (typeof obj === "object" && obj != null) {
         return Object.keys(obj).length >= 1 ? false : true;
     }
     return true;

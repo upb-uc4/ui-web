@@ -67,6 +67,52 @@ export default class ReportManagement extends Common {
             });
     }
 
+    async getTranscriptOfRecords(username: string, exregName: string): Promise<APIResponse<File>> {
+        const params = {} as any;
+
+        params.exam_reg_name = exregName;
+
+        return await this._axios
+            .get(`/certificates/${username}/transcript_of_records`, { params, responseType: "arraybuffer" })
+            .then((response: AxiosResponse) => {
+                let blob: Blob = new Blob([response.data], { type: response.headers["content-type"] });
+                const file: File = new File([blob], "records.pdf", { type: response.headers["content-type"] });
+                return {
+                    error: {} as APIError,
+                    networkError: false,
+                    statusCode: response.status,
+                    returnValue: file,
+                };
+            })
+            .catch(async (error: AxiosError) => {
+                if (error.response) {
+                    if (
+                        await handleAuthenticationError({
+                            statusCode: error.response.status,
+                            error: error.response.data as APIError,
+                            returnValue: {} as File,
+                            networkError: false,
+                        })
+                    ) {
+                        return await this.getTranscriptOfRecords(username, exregName);
+                    }
+                    return {
+                        returnValue: {} as File,
+                        statusCode: error.response.status,
+                        error: error.response.data as APIError,
+                        networkError: false,
+                    };
+                } else {
+                    return {
+                        returnValue: {} as File,
+                        statusCode: 0,
+                        error: {} as APIError,
+                        networkError: true,
+                    };
+                }
+            });
+    }
+
     async getArchive(username: string): Promise<APIResponse<File | string>> {
         return await this._axios
             .get(`/reports/${username}/archive`, {

@@ -123,6 +123,7 @@
                     if (result) tmpCourses.unshift(result);
                 }
                 courses.value = tmpCourses;
+
                 if (courses.value.length > 0) {
                     const genericResponseHandler = new GenericResponseHandler("exams");
                     const exam_management = new ExamManagement();

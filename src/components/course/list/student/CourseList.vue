@@ -57,6 +57,7 @@
 
             onBeforeMount(async () => {
                 isLoading.value = true;
+                await getAdmittedCourses();
                 await getCourses();
                 isLoading.value = false;
             });
@@ -70,7 +71,6 @@
                 const courseManagement: CourseManagement = new CourseManagement();
                 const userManagement: UserManagement = new UserManagement();
                 if (props.onlyAdmittedCourses) {
-                    await getAdmittedCourses();
                     let tmpCourses = [] as Course[];
                     for (const m of admittedCourses.value) {
                         let response: APIResponse<Course>;
