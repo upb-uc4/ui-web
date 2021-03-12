@@ -1,3 +1,3 @@
 export default interface UnsignedProposalMessage {
-    unsignedProposal: string;
+    unsignedProposalJwt: string;
 }
