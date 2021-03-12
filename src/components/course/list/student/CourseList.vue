@@ -1,6 +1,7 @@
 <template>
     <div>
         <loading-component v-if="isLoading" title="Loading Courses..." />
+        <list-placeholder v-else-if="shownCourses.length == 0" content-type="courses" />
         <div v-for="course in shownCourses" v-else :key="course.courseId" class="mt-6">
             <student-course :admitted="isAdmittedToCourse(course)" :course="course" :lecturer="findLecturer(course)" />
             <hr class="my-6 dark:border-normalgray-700" />
@@ -23,12 +24,14 @@
     import AdmissionManagement from "@/api/AdmissionManagement";
     import MatriculationManagement from "@/api/MatriculationManagement";
     import ConfigurationManagement from "@/api/ConfigurationManagement";
+    import ListPlaceholder from "@/components/common/ListPlaceholder.vue";
 
     export default {
         name: "CourseList",
         components: {
             StudentCourse,
             LoadingComponent,
+            ListPlaceholder,
         },
         props: {
             selectedType: {

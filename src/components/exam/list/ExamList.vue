@@ -1,6 +1,7 @@
 <template>
     <div>
         <loading-component v-if="isLoading" title="Loading Exams..." />
+        <list-placeholder v-else-if="shownExams.length == 0" content-type="exams" />
         <div v-for="exam in shownExams" v-else :key="exam.examId" class="mt-6">
             <exam-row
                 :is-student="isStudent"
@@ -30,12 +31,14 @@
     import Exam from "@/api/api_models/exam_management/Exam";
     import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
     import ExamResultManagement from "@/api/ExamResultManagement";
+    import ListPlaceholder from "@/components/common/ListPlaceholder.vue";
 
     export default {
         name: "CourseList",
         components: {
             ExamRow,
             LoadingComponent,
+            ListPlaceholder,
         },
         props: {
             selectedType: {
@@ -120,16 +123,17 @@
                     if (result) tmpCourses.unshift(result);
                 }
                 courses.value = tmpCourses;
-
-                const genericResponseHandler = new GenericResponseHandler("exams");
-                const exam_management = new ExamManagement();
-                const examResponse = await exam_management.getExams(
-                    undefined,
-                    courses.value.map((course) => course.courseId),
-                    undefined,
-                    result.map((r) => r.moduleId)
-                );
-                exams.value = genericResponseHandler.handleResponse(examResponse);
+                if (courses.value.length > 0) {
+                    const genericResponseHandler = new GenericResponseHandler("exams");
+                    const exam_management = new ExamManagement();
+                    const examResponse = await exam_management.getExams(
+                        undefined,
+                        courses.value.map((course) => course.courseId),
+                        undefined,
+                        result.map((r) => r.moduleId)
+                    );
+                    exams.value = genericResponseHandler.handleResponse(examResponse);
+                }
             }
 
             async function getOwnEnrollmentId(): Promise<string> {
