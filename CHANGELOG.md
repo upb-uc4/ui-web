@@ -2,6 +2,7 @@
 ## Feature
 - Add option to cancel own pending operations [#881](https://github.com/upb-uc4/ui-web/pull/881)
 - Add placeholder component for empty lists [#880](https://github.com/upb-uc4/ui-web/pull/880)
+- Add support for timed frontend signing tokens [#882](https://github.com/upb-uc4/ui-web/pull/882)
 
 ## Refactor
 - Improve performance by lazyloading [#835](https://github.com/upb-uc4/ui-web/pull/835)

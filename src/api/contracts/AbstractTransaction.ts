@@ -52,12 +52,12 @@ export default abstract class AbstractTransaction {
         return new GenericResponseHandler("transaction").handleResponse(response);
     }
 
-    public decodeProposal(proposal: UnsignedProposalMessage, protoUrl?: string) {
-        return decodeProposal(proposal.unsignedProposal, protoUrl);
+    public decodeProposal(base64Proposal: string, protoUrl?: string) {
+        return decodeProposal(base64Proposal, protoUrl);
     }
 
-    public decodeTransaction(transaction: UnsignedTransactionMessage, protoUrl?: string) {
-        return decodeTransaction(transaction.unsignedTransaction, protoUrl);
+    public decodeTransaction(base64Transaction: string, protoUrl?: string) {
+        return decodeTransaction(base64Transaction, protoUrl);
     }
 
     public abstract buildTransactionInfo(...params: any): TransactionInfo;

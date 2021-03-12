@@ -537,11 +537,11 @@ describe("Operation Management tests", () => {
 
     test("Fetch certificate of enrollment", async () => {
         const reportManagement = new ReportManagement();
-        
+
         const response = await reportManagement.getCertificateOfEnrollment(student.authUser.username, "SS2020");
 
         expect(response.returnValue.size).toBeGreaterThan(0);
-    })
+    });
 
     afterAll(async () => {
         resetState(encryptionPassword);
