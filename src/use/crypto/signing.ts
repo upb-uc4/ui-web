@@ -99,7 +99,6 @@ export async function signProtobuf(base64Protobuf: string, privateKey: CryptoKey
     var s = signature.slice(32);
 
     const newSignature = preventMalleability({ r: new Uint8Array(r), s: new Uint8Array(s) }, { name: signingAlgorithm.namedCurve });
-
     const sig = new Signature({ r: newSignature.r, s: newSignature.s });
 
     return arrayBufferToBase64(sig.toDER());
@@ -112,17 +111,28 @@ export async function signProtobuf(base64Protobuf: string, privateKey: CryptoKey
  */
 export async function verifyProtobufSignature(protobuf: string, signature: string, publicKey: CryptoKey) {
     const crypto = window.crypto.subtle;
-    const digest = await crypto.digest("SHA-256", base64ToArrayBuffer(protobuf));
-    const exportedPublicKey = Buffer.from(await crypto.exportKey("raw", publicKey));
-
     const berObject = (asn1js.fromBER(base64ToArrayBuffer(signature)).result.toJSON() as any).valueBlock.value;
 
-    const r = fromHexString(berObject[0].valueBlock.valueHex);
-    const s = fromHexString(berObject[1].valueBlock.valueHex);
+    let r = fromHexString(berObject[0].valueBlock.valueHex);
+    let s = fromHexString(berObject[1].valueBlock.valueHex);
 
     const sig = { r, s };
 
-    return _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
+    let signatureValid = _checkMalleability(sig, { name: signingAlgorithm.namedCurve });
+
+    // part of the signature might be left-padded with 0 due to DER vs IEEE encoding
+    if (r[0] == 0) {
+        r = r.slice(1);
+    }
+
+    const signatureForWebCrypto = new Uint8Array(r.length + s.length);
+    signatureForWebCrypto.set(r, 0);
+    signatureForWebCrypto.set(s, r.length);
+
+    signatureValid =
+        signatureValid && (await crypto.verify(signingAlgorithm, publicKey, signatureForWebCrypto, base64ToArrayBuffer(protobuf)));
+
+    return signatureValid;
 }
 
 export async function verifyProposalResponsePayloadSignature(
@@ -130,40 +140,27 @@ export async function verifyProposalResponsePayloadSignature(
     endorsement: Endorsement,
     certificate: string
 ) {
-    const crypto = window.crypto.subtle;
-
     const plainText = new Uint8Array(endorsement.endorser.rawEndorserBytes.byteLength + rawProposalResponsePayload.byteLength);
     plainText.set(new Uint8Array(rawProposalResponsePayload), 0);
     plainText.set(new Uint8Array(endorsement.endorser.rawEndorserBytes), rawProposalResponsePayload.byteLength);
 
-    const digest = await crypto.digest("SHA-256", plainText);
     const publicKey = await getPublicKeyFromCertificate(certificate);
-    const exportedPublicKey = Buffer.from(await crypto.exportKey("raw", publicKey));
-
-    let signatureValid = false;
 
     try {
-        const berObject = (asn1js.fromBER(base64ToArrayBuffer(endorsement.signature)).result.toJSON() as any).valueBlock.value;
+        const ownCertPem = certificate.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
+        const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
+        const asn1User = asn1js.fromBER(berUser);
+        const cert = new Certificate({ schema: asn1User.result });
 
-        const r = fromHexString(berObject[0].valueBlock.valueHex);
-        const s = fromHexString(berObject[1].valueBlock.valueHex);
-        const sig = { r, s };
+        const valid = await Promise.all([
+            verifyProtobufSignature(arrayBufferToBase64(plainText), endorsement.signature, publicKey),
+            validateCertificate(cert),
+        ]);
 
-        signatureValid =
-            _checkMalleability(sig, { name: signingAlgorithm.namedCurve }) && p256ec.verify(new Uint8Array(digest), sig, exportedPublicKey);
-
-        if (signatureValid) {
-            const ownCertPem = certificate.replace(/(-----(BEGIN|END) CERTIFICATE-----|\r|\n)/g, "");
-            const berUser = pvutils.stringToArrayBuffer(pvutils.fromBase64(ownCertPem));
-            const asn1User = asn1js.fromBER(berUser);
-            const cert = new Certificate({ schema: asn1User.result });
-            signatureValid = signatureValid && (await validateCertificate(cert));
-        }
+        return valid[0] && valid[1];
     } catch (error) {
         return false;
     }
-
-    return signatureValid;
 }
 
 export function fromHexString(hexString: string) {
