@@ -34,6 +34,7 @@ import { DropAdmissionTransaction } from "@/api/contracts/admission/transactions
 import ExamResult from "@/api/api_models/exam_result_management/ExamResult";
 import { AddExamResultTransaction } from "@/api/contracts/exam_result/transactions/AddExamResultTransaction";
 import ExamResultManagement from "@/api/ExamResultManagement";
+import { ExamEntity } from "@/entities/ExamEntity";
 
 const student = getRandomizedUserAndAuthUser(Role.STUDENT) as { governmentId: string; authUser: Account; student: Student };
 const admin = getRandomizedUserAndAuthUser(Role.ADMIN) as { governmentId: string; authUser: Account; admin: Admin };
@@ -265,7 +266,7 @@ describe("Exam Management", () => {
             droppableUntil,
         };
 
-        const success = await executeTransaction(new CreateExamTransaction(exam), protoURL);
+        const success = await executeTransaction(new CreateExamTransaction(new ExamEntity(exam)), protoURL);
         expect(success).toBe(true);
 
         examOperation = (await new OperationManagement().getOperations()).returnValue[0];

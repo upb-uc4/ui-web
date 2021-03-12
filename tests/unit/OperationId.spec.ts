@@ -3,7 +3,7 @@ import { validateOperationId } from "@/api/helpers/OperationValidator";
 
 test("Operation Id Validation", async () => {
     const op: Operation = {
-        operationId: "5aggxV9rJela3N1wblsxFdMzlzwCT5lyGUv6zRUAcfY=",
+        operationId: "5aggxV9rJela3N1wblsxFdMzlzwCT5lyGUv6zRUAcfY",
         transactionInfo: {
             contractName: "UC4.MatriculationData",
             transactionName: "addMatriculationData",
