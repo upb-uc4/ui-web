@@ -1,4 +1,4 @@
-# [0.19.2 WIP](https://github.com/upb-uc4/ui-web/compare/v0.19.1...v0.19.2) (2021-03-XX)
+# [1.0.0](https://github.com/upb-uc4/ui-web/compare/v0.19.1...v1.0.0) (2021-03-15)
 ## Feature
 - Add option to cancel own pending operations [#881](https://github.com/upb-uc4/ui-web/pull/881)
 - Add placeholder component for empty lists [#880](https://github.com/upb-uc4/ui-web/pull/880)
