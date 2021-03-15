@@ -1,3 +1,3 @@
 export default interface UnsignedTransactionMessage {
-    unsignedTransaction: string;
+    unsignedTransactionJwt: string;
 }

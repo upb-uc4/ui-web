@@ -25,6 +25,7 @@ export function showAPIToast(code: number, msg?: string) {
         case 413:
             toast.error("Uploaded file too large");
             break;
+        case 502:
         case 503:
             toast.error("Service unavailable. Please consider reporting this.");
             break;

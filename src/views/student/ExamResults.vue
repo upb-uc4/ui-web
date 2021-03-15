@@ -11,7 +11,24 @@
         <div v-else>
             <div v-for="exreg in myExamRegs" :key="exreg.name" class="flex flex-col w-full">
                 <div class="flex justify-between w-full">
-                    <label class="input-label font-semibold text-lg"> {{ exreg.name }} </label>
+                    <div class="flex items-center">
+                        <label class="input-label font-semibold text-lg">{{ exreg.name }}</label>
+                        <label
+                            v-if="!waitingForDownload"
+                            id="downloadCertificate"
+                            title="Download Transcript of Records"
+                            class="text-xs navigation-link-gray ml-4 mb-1"
+                            @click="downloadRecords(exreg)"
+                        >
+                            <i class="fas fa-download"></i>
+                        </label>
+                        <img
+                            v-else-if="waitingForDownload"
+                            src="@/assets/loading-spinner-alt.svg"
+                            title="Fetching certificate..."
+                            class="h-5 w-5 ml-4 mb-1"
+                        />
+                    </div>
                     <div class="w-1/3 hidden sm:flex justify-between text-gray-400">
                         <label>ECTS</label>
                         <label>Grade</label>
@@ -68,6 +85,7 @@
     import { useStore } from "@/use/store/store";
     import CourseManagement from "@/api/CourseManagement";
     import ExamManagement from "@/api/ExamManagement";
+    import ReportManagement from "@/api/ReportManagement";
 
     export default {
         name: "StudentExamResults",
@@ -78,10 +96,13 @@
         props: {},
         setup(props: any) {
             const isLoading = ref(false);
+            const waitingForDownload = ref(false);
             const myExamRegs = ref([] as ExaminationRegulation[]);
             const myExamResults = ref([] as ExamResult[]);
             const myExams = ref([] as Exam[]);
             const myCourses = ref([] as Course[]);
+
+            const recordsDownloadURL = ref("");
 
             onBeforeMount(async () => {
                 isLoading.value = true;
@@ -98,11 +119,13 @@
                 const responseMatr = await mat_management.getOwnMatriculationHistory();
                 let result = handler.handleResponse(responseMatr).matriculationStatus;
                 let tmp = [] as string[];
-                result.forEach((matr) => {
-                    if (!tmp.includes(matr.fieldOfStudy)) {
-                        tmp.push(matr.fieldOfStudy);
-                    }
-                });
+                if (result) {
+                    result.forEach((matr) => {
+                        if (!tmp.includes(matr.fieldOfStudy)) {
+                            tmp.push(matr.fieldOfStudy);
+                        }
+                    });
+                }
                 const exam_reg_management = new ExaminationRegulationManagement();
                 const responseExReg = await exam_reg_management.getExaminationRegulation(tmp);
                 myExamRegs.value = handler.handleResponse(responseExReg);
@@ -150,8 +173,41 @@
                 router.push({ name: "exams.view", params: { id: id } });
             }
 
+            async function loadRecords(exreg: ExaminationRegulation): Promise<boolean> {
+                const reportManagement = new ReportManagement();
+                const handler = new GenericResponseHandler("records");
+                const response = await reportManagement.getTranscriptOfRecords((await useStore().getters.user).username, exreg.name);
+                const result = handler.handleResponse(response);
+                if (!result.type) {
+                    return false;
+                }
+                createRecordsDownloadURL(result);
+                return true;
+            }
+
+            function createRecordsDownloadURL(certificateContent: File) {
+                let recordsFile = new Blob([certificateContent], { type: "application/pdf" });
+                recordsDownloadURL.value = URL.createObjectURL(recordsFile);
+            }
+
+            async function downloadRecords(exreg: ExaminationRegulation) {
+                waitingForDownload.value = true;
+                if (await loadRecords(exreg)) {
+                    const fileLink = document.createElement("a");
+                    fileLink.href = recordsDownloadURL.value;
+                    fileLink.setAttribute("download", `${exreg.name}_${(await useStore().getters.user).lastName}.pdf`);
+
+                    document.body.appendChild(fileLink);
+                    fileLink.click();
+                    document.body.removeChild(fileLink);
+                    URL.revokeObjectURL(recordsDownloadURL.value);
+                }
+                waitingForDownload.value = false;
+            }
+
             return {
                 isLoading,
+                waitingForDownload,
                 myExamRegs,
                 myExams,
                 myCourses,
@@ -160,6 +216,7 @@
                 isPassed,
                 findCourse,
                 routeExam,
+                downloadRecords,
             };
         },
     };

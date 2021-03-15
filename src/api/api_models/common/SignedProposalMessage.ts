@@ -1,4 +1,4 @@
 export default interface SignedProposalMessage {
-    unsignedProposal: string;
+    unsignedProposalJwt: string;
     signature: string;
 }

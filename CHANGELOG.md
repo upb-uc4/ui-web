@@ -1,3 +1,19 @@
+# [1.0.0](https://github.com/upb-uc4/ui-web/compare/v0.19.1...v1.0.0) (2021-03-15)
+## Feature
+- Add option to cancel own pending operations [#881](https://github.com/upb-uc4/ui-web/pull/881)
+- Add placeholder component for empty lists [#880](https://github.com/upb-uc4/ui-web/pull/880)
+- Add support for timed frontend signing tokens [#882](https://github.com/upb-uc4/ui-web/pull/882)
+- Add transcript of records [#879](https://github.com/upb-uc4/ui-web/pull/879)
+
+## Refactor
+- Improve performance by lazyloading [#835](https://github.com/upb-uc4/ui-web/pull/835)
+- remove unused dependencies [#835](https://github.com/upb-uc4/ui-web/pull/835)
+- speed up transaction validation [#888](https://github.com/upb-uc4/ui-web/pull/888)
+
+## Bugfix
+- fix multiple bugs with exams [#878](https://github.com/upb-uc4/ui-web/pull/878)
+- add HTTP 502 to response handlers [#886](https://github.com/upb-uc4/ui-web/pull/886)
+
 # [0.19.1](https://github.com/upb-uc4/ui-web/compare/v0.19.0...v0.19.1) (2021-03-03)
 ## Feature
 - Add exams API [#864](https://github.com/upb-uc4/ui-web/pull/864)

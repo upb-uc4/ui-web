@@ -56,11 +56,16 @@
             const store = useStore();
             const certificateDownloadURL = ref("");
 
-            async function loadCertificate() {
+            async function loadCertificate(): Promise<boolean> {
                 const reportManagement = new ReportManagement();
                 const handler = new GenericResponseHandler("certificate");
                 const response = await reportManagement.getCertificateOfEnrollment((await store.getters.user).username, props.semester);
-                createCertificateDownloadURL(handler.handleResponse(response));
+                const result = handler.handleResponse(response);
+                if (!result.type) {
+                    return false;
+                }
+                createCertificateDownloadURL(result);
+                return true;
             }
 
             function createCertificateDownloadURL(certificateContent: File) {
@@ -70,15 +75,16 @@
 
             async function downloadCertificate() {
                 isLoading.value = true;
-                await loadCertificate();
-                const fileLink = document.createElement("a");
-                fileLink.href = certificateDownloadURL.value;
-                fileLink.setAttribute("download", `${props.semester}.pdf`);
+                if (await loadCertificate()) {
+                    const fileLink = document.createElement("a");
+                    fileLink.href = certificateDownloadURL.value;
+                    fileLink.setAttribute("download", `${props.semester}.pdf`);
 
-                document.body.appendChild(fileLink);
-                fileLink.click();
-                document.body.removeChild(fileLink);
-                URL.revokeObjectURL(certificateDownloadURL.value);
+                    document.body.appendChild(fileLink);
+                    fileLink.click();
+                    document.body.removeChild(fileLink);
+                    URL.revokeObjectURL(certificateDownloadURL.value);
+                }
                 isLoading.value = false;
             }
 

@@ -1,7 +1,6 @@
 import UnsignedProposalMessage from "@/api/api_models/common/UnsignedProposalMessage";
 import Error from "@/api/api_models/errors/Error";
 import ValidationError from "@/api/api_models/errors/ValidationError";
-import MatriculationData from "@/api/api_models/matriculation_management/MatriculationData";
 import handleAuthenticationError from "@/api/AuthenticationHelper";
 import APIResponse from "@/api/helpers/models/APIResponse";
 import { showAPIToast, showNetworkErrorToast } from "@/use/helpers/Toasts";
@@ -29,7 +28,9 @@ export default class GenericImmatriculationResponseHandler implements ResponseHa
             case 404: {
                 return response.returnValue;
             }
-            case 500: {
+            case 500:
+            case 502:
+            case 503: {
                 showAPIToast(response.statusCode);
                 return response.returnValue;
             }
@@ -53,7 +54,7 @@ export class MatriculationValidationResponseHandler implements ResponseHandler<U
     }
 
     isUnsignedProposalMessage(object: any): object is UnsignedProposalMessage {
-        return (object as UnsignedProposalMessage).unsignedProposal !== undefined;
+        return (object as UnsignedProposalMessage).unsignedProposalJwt !== undefined;
     }
 
     handleResponse(response: APIResponse<UnsignedProposalMessage>): UnsignedProposalMessage {

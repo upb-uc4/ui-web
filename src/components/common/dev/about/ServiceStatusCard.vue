@@ -63,8 +63,12 @@
             onBeforeMount(() => {
                 props.getVersion
                     .then((versionResult: any) => {
-                        version.value = versionResult.version.replace("v", "");
-                        changelogURL.value = versionResult.changelogURL;
+                        if (!((versionResult.version as string) == "unavailable")) {
+                            version.value = versionResult.version.replace("v", "");
+                            changelogURL.value = versionResult.changelogURL;
+                        } else {
+                            isServiceUnreachable.value = true;
+                        }
                     })
                     .catch(() => (isServiceUnreachable.value = true))
                     .finally(() => (isLoading.value = false));
