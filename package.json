@@ -49,7 +49,7 @@
         "bn.js": "^5.1.3",
         "elliptic": "^6.5.3",
         "lodash": "^4.17.20",
-        "pkijs": "^2.1.90",
+        "pkijs": "^2.1.94",
         "protobufjs": "^6.10.2",
         "pvutils": "^1.0.17",
         "tailwindcss": "^2.0.1",
