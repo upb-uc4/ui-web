@@ -206,6 +206,7 @@ describe("Change Profile Information", () => {
         cy.get("textarea[id='researchArea']").clear().type(lecturer.researchArea);
         cy.get("textarea[id='freeText']").clear().type(lecturer.freeText);
         cy.get("button[id='updateProfile']").click();
+        cy.wait(5000);
     });
 
     it("Refresh", () => {

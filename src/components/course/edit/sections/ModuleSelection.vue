@@ -1,8 +1,9 @@
 <template>
-    <div class="p-4 rounded-md border-2 border-gray-200 dark:border-normalgray-700">
+    <div id="moduleSection" class="p-4 rounded-md border-2 border-gray-200 dark:border-normalgray-700">
         <div class="space-y-4">
             <tag-list
                 v-if="selectedModules.length > 0"
+                id="moduleTagList"
                 :elements="selectedModules"
                 property-to-display="display"
                 @on-remove="removeModule"

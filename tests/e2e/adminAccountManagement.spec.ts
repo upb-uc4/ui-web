@@ -379,7 +379,9 @@ describe("Account creation, edition and deletion", function () {
 
     it("Delete users as admin", function () {
         deleteUser(student);
+        cy.wait(10000);
         deleteUser(lecturer);
+        cy.wait(10000);
         deleteUser(admin);
     });
 });
